@@ -1,5 +1,5 @@
 {
-  "latest": "v.2026.05.02-r54",
-  "updatedAt": "2026-05-15T15:00:00Z",
+  "latest": "v.2026.05.02-r55",
+  "updatedAt": "2026-05-15T16:00:00Z",
   "auto": "Actualizado por .github/workflows/update-admira-studio-manifest.yml en cada push a main que toque v.*/"
 }
