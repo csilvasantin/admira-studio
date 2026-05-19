@@ -1107,16 +1107,18 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   max-height: 4.5em; overflow: hidden;
 }
 .stock-comment {
-  margin: 0;
-  padding: 8px 10px;
-  border-left: 2px solid var(--audio);
-  background: rgba(80, 200, 255, .06);
+  margin: 10px -14px -12px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--line);
+  border-left: 3px solid var(--audio);
+  background: rgba(80, 200, 255, .08);
   color: var(--ink);
   font-size: 12px;
   line-height: 1.45;
   white-space: pre-wrap;
   word-break: break-word;
 }
+.stock-card-body { padding-bottom: 12px; }
 .stock-lightbox-meta .stock-comment {
   padding: 10px 12px;
   font-size: 13px;
