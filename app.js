@@ -2131,8 +2131,19 @@
         const publishBtn = player?.querySelector('.publish-btn');
         const result = await publishToStock(importMeta, publishBtn);
         if (result && result.ok) {
-          stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ✅ disponible en Stock`;
-          setTimeout(() => dlg.close(), 1500);
+          stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ✅ en Stock · saltando…`;
+          const newId = result.id || '';
+          setTimeout(() => {
+            dlg.close();
+            const target = 'stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
+            const isStock = (document.body.dataset.page === 'stock') || /stock\.html$/.test(location.pathname);
+            if (isStock) {
+              // ya estamos en stock → recarga con highlight
+              location.assign(target);
+            } else {
+              location.href = target;
+            }
+          }, 900);
         } else {
           stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ❌ Stock: ${(result && result.error || 'fallo').slice(0, 120)}\n// el archivo sigue en el player; pulsa 📌 para reintentar`;
         }

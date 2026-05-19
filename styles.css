@@ -1102,6 +1102,18 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 }
 .stock-empty strong { color: var(--matrix); }
 
+/* Flash de una card recién importada (?highlight=<id>) */
+.stock-card-flash {
+  animation: stockCardFlash 2.4s ease-out 1;
+  position: relative;
+}
+@keyframes stockCardFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(0,255,65,0); border-color: var(--line-bright); }
+  10%  { box-shadow: 0 0 0 8px rgba(0,255,65,.45), 0 0 28px rgba(0,255,65,.6); border-color: var(--matrix); }
+  50%  { box-shadow: 0 0 0 4px rgba(0,255,65,.25), 0 0 22px rgba(0,255,65,.4); border-color: var(--matrix); }
+  100% { box-shadow: 0 0 0 0 rgba(0,255,65,0); border-color: var(--line-bright); }
+}
+
 /* ── Botones de maximizar / eliminar sobre cada card ── */
 .stock-card-actions {
   position: absolute; top: 8px; right: 8px;
