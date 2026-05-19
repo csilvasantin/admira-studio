@@ -28,7 +28,7 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r60</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r61</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
@@ -93,7 +93,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r60</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r61</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -171,13 +171,23 @@
       }
       return `<pre>${JSON.stringify(it).slice(0,200)}</pre>`;
     }
+    function escAttr(s){ return String(s||'').replace(/"/g,'&quot;'); }
+    function renderPromptHtml(raw) {
+      const safe = String(raw || '').replace(/</g,'&lt;');
+      const trunc = safe.slice(0, 140) + (safe.length > 140 ? '…' : '');
+      if (/^https?:\/\//i.test(raw)) {
+        return `<a class="stock-prompt-link" href="${escAttr(raw)}" target="_blank" rel="noopener" title="${escAttr(raw)}">${trunc}</a>`;
+      }
+      return `<span title="${escAttr(raw)}">${trunc}</span>`;
+    }
     function renderCard(it) {
-      const promptStr = (it.prompt || '').replace(/</g,'&lt;');
       const idAttr = String(it.id || '').replace(/[^A-Za-z0-9-]/g, '');
-      return `<article class="stock-card" data-type="${it.type}" data-motor="${it.motor}" data-id="${idAttr}">
+      const assetUrl = escAttr(it.url || '');
+      return `<article class="stock-card" data-type="${it.type}" data-motor="${it.motor}" data-id="${idAttr}" tabindex="0" role="button" aria-label="Maximizar ${it.type}">
         <div class="stock-card-media">
           ${renderPreview(it)}
           <div class="stock-card-actions">
+            <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Abrir asset en pestaña nueva" data-act="open"><span aria-hidden="true">↗</span></a>
             <button type="button" class="stock-card-btn" data-act="max" title="Maximizar"><span aria-hidden="true">⛶</span></button>
             <button type="button" class="stock-card-btn danger" data-act="del" title="Eliminar"><span aria-hidden="true">🗑</span></button>
           </div>
@@ -187,7 +197,7 @@
             <span class="stock-type ${it.type}">${it.type}</span>
             <span class="stock-motor">${it.motor}</span>
           </header>
-          <p class="stock-prompt" title="${promptStr.replace(/"/g,'&quot;')}">${promptStr.slice(0, 140)}${promptStr.length>140?'…':''}</p>
+          <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
           <footer>
             <span class="stock-cost">${it.costEst || ''}</span>
             <span class="stock-date">${fmtDate(it.createdAt)}</span>
@@ -260,7 +270,6 @@
     }
 
     function openLightbox(it) {
-      const promptStr = (it.prompt || '').replace(/</g,'&lt;');
       let media = '';
       if (it.type === 'image') {
         media = `<img src="${it.thumbnail || it.url}" alt="">`;
@@ -276,9 +285,10 @@
       lightboxInner.innerHTML = media;
       lightboxMeta.innerHTML = `
         <div><span class="stock-type ${it.type}">${it.type}</span> <span class="stock-motor">${it.motor || ''}</span> <span class="stock-date">${fmtDate(it.createdAt)}</span></div>
-        <p class="stock-prompt">${promptStr}</p>
+        <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
         <div class="stock-lightbox-actions">
-          <a class="btn" href="${it.url}" download target="_blank" rel="noopener">⬇ Descargar</a>
+          <a class="btn" href="${it.url}" target="_blank" rel="noopener" download>⬇ Descargar archivo</a>
+          <a class="btn" href="${it.url}" target="_blank" rel="noopener">↗ Abrir asset</a>
         </div>`;
       lightbox.hidden = false;
       lightbox.setAttribute('aria-hidden', 'false');
@@ -316,14 +326,37 @@
     }
 
     grid.addEventListener('click', e => {
+      // Botones de acciones (max/del/open) — el "open" es un <a> y deja burbujear,
+      // pero detenemos para no abrir también el lightbox.
       const btn = e.target.closest('.stock-card-btn');
-      if (!btn) return;
-      const card = btn.closest('.stock-card');
-      const id = card?.dataset.id;
-      const item = allItems.find(i => i.id === id);
-      if (!item) return;
-      if (btn.dataset.act === 'max') openLightbox(item);
-      else if (btn.dataset.act === 'del') deleteAsset(id, card);
+      if (btn) {
+        const card = btn.closest('.stock-card');
+        const id = card?.dataset.id;
+        const item = allItems.find(i => i.id === id);
+        if (!item) return;
+        if (btn.dataset.act === 'max') { e.preventDefault(); openLightbox(item); }
+        else if (btn.dataset.act === 'del') { e.preventDefault(); deleteAsset(id, card); }
+        // 'open' es <a target=_blank> → deja burbujear sin preventDefault
+        e.stopPropagation();
+        return;
+      }
+      // Click en el enlace del prompt: no abrimos lightbox, dejamos la nav
+      if (e.target.closest('.stock-prompt-link')) return;
+      // Click en los controles nativos de <audio>/<video>: dejarlos
+      if (e.target.closest('audio, video')) return;
+      // Click en cualquier otra parte de la card → abrir lightbox
+      const card = e.target.closest('.stock-card');
+      if (!card) return;
+      const item = allItems.find(i => i.id === card.dataset.id);
+      if (item) openLightbox(item);
+    });
+    grid.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const card = e.target.closest('.stock-card');
+      if (!card || e.target !== card) return;
+      e.preventDefault();
+      const item = allItems.find(i => i.id === card.dataset.id);
+      if (item) openLightbox(item);
     });
     function buildMotorChips() {
       const motors = Array.from(new Set(allItems.map(i => i.motor))).sort();
