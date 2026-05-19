@@ -28,7 +28,7 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r63</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r64</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
@@ -107,7 +107,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r63</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r64</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -351,6 +351,7 @@
           <a class="btn" href="${it.url}" target="_blank" rel="noopener" download>⬇ Descargar archivo</a>
           <a class="btn" href="${it.url}" target="_blank" rel="noopener">↗ Abrir asset</a>
         </div>`;
+      window.__lightboxItemId = it.id || null;
       lightbox.hidden = false;
       lightbox.setAttribute('aria-hidden', 'false');
       document.body.classList.add('stock-lightbox-open');
@@ -481,6 +482,31 @@
     dateFrom.addEventListener('change', () => { filters.dateFrom = dateFrom.value; applyFilters(); });
     dateTo.addEventListener('change', () => { filters.dateTo = dateTo.value; applyFilters(); });
     document.getElementById('stockRefresh').addEventListener('click', load);
+
+    // Track de reproducciones: 1 POST por asset + sesión cuando empieza a sonar
+    const trackedPlays = new Set();
+    function trackPlay(media) {
+      const card = media.closest('.stock-card') || media.closest('#stockLightbox');
+      let id;
+      if (card && card.classList.contains('stock-card')) {
+        id = card.dataset.id;
+      } else {
+        // lightbox: lee del último item abierto si lo guardamos
+        id = window.__lightboxItemId || null;
+      }
+      if (!id || trackedPlays.has(id)) return;
+      trackedPlays.add(id);
+      try {
+        fetch(`${STOCK_BASE}/stock/track/${encodeURIComponent(id)}?event=play`, {
+          method: 'POST', keepalive: true,
+        }).catch(() => {});
+      } catch {}
+    }
+    // Captura el 'play' de cualquier <video>/<audio> en el documento
+    document.addEventListener('play', e => {
+      const t = e.target;
+      if (t && (t.tagName === 'VIDEO' || t.tagName === 'AUDIO')) trackPlay(t);
+    }, true);
 
     // Si llegamos con ?highlight=<id> (post-importación), hacemos scroll
     // a la card recién creada y un flash visual.
