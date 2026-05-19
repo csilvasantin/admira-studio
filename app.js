@@ -1612,7 +1612,9 @@
         type: meta.type,
         motor: meta.motor,
         prompt: meta.prompt || '',
+        title: meta.title || null,
         comment: meta.comment || null,
+        tags: Array.isArray(meta.tags) ? meta.tags : null,
         costEst: meta.costEst || null,
         thumbnail: meta.thumbnail || null,
       };
@@ -2096,6 +2098,9 @@
           progress?.error(`ERROR ${r.status}`);
           return;
         }
+        // Lee el título que añade admira-tube (X-Tube-Title encoded URI)
+        let importedTitle = '';
+        try { importedTitle = decodeURIComponent(r.headers.get('X-Tube-Title') || ''); } catch {}
         const { blob, totalBytes, receivedBytes } = await fetchWithProgress(r, (received, total, sec) => {
           progress?.update(received, total, sec);
         });
@@ -2112,6 +2117,7 @@
           type: kind,
           motor: 'yt-dlp',
           prompt: url,
+          title: importedTitle || null,
           comment: comment || null,
           costEst: `gratis · ${sizeMB}MB · ${sec}s`,
           url: blobUrl,

@@ -28,7 +28,7 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r64</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r65</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
@@ -107,7 +107,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r64</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r65</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -171,7 +171,7 @@
     const STOCK_LIST_URL = STOCK_BASE + '/stock/list';
     const TYPE_ORDER = { audio: 0, music: 1, image: 2, video: 3 };
     let allItems = [];
-    let filters = { type: '', motor: '', q: '', dateQuick: '', dateFrom: '', dateTo: '' };
+    let filters = { type: '', motor: '', q: '', tag: '', dateQuick: '', dateFrom: '', dateTo: '' };
     let sortMode = 'date-desc';
 
     function fmtDate(iso) {
@@ -201,14 +201,26 @@
       }
       return `<span title="${escAttr(raw)}">${trunc}</span>`;
     }
+    function renderTagsHtml(tags) {
+      if (!Array.isArray(tags) || tags.length === 0) return '';
+      return `<div class="stock-tags">${tags.map(t => {
+        const safe = String(t).replace(/</g, '&lt;');
+        return `<button type="button" class="stock-tag" data-tag="${escAttr(t)}" title="Filtrar por #${escAttr(t)}">#${safe}</button>`;
+      }).join('')}</div>`;
+    }
     function renderCard(it) {
       const idAttr = String(it.id || '').replace(/[^A-Za-z0-9-]/g, '');
       const assetUrl = escAttr(it.url || '');
+      const titleRaw = (it.title || '').trim();
+      const titleBlock = titleRaw
+        ? `<p class="stock-title" title="${escAttr(titleRaw)}">${titleRaw.replace(/</g,'&lt;').slice(0, 90)}${titleRaw.length > 90 ? '…' : ''}</p>`
+        : '';
       const commentRaw = (it.comment || '').trim();
       const commentSafe = commentRaw.replace(/</g, '&lt;');
       const commentBlock = commentRaw
         ? `<p class="stock-comment" title="${escAttr(commentRaw)}">💬 ${commentSafe.slice(0, 200)}${commentRaw.length > 200 ? '…' : ''}</p>`
         : '';
+      const tagsBlock = renderTagsHtml(it.tags);
       return `<article class="stock-card" data-type="${it.type}" data-motor="${it.motor}" data-id="${idAttr}" tabindex="0" role="button" aria-label="Maximizar ${it.type}">
         <div class="stock-card-media">
           ${renderPreview(it)}
@@ -223,6 +235,8 @@
             <span class="stock-type ${it.type}">${it.type}</span>
             <span class="stock-motor">${it.motor}</span>
           </header>
+          ${titleBlock}
+          ${tagsBlock}
           <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
           <footer>
             <span class="stock-cost">${it.costEst || ''}</span>
@@ -278,6 +292,22 @@
       `).join('');
     }
 
+    function renderActiveTagBanner() {
+      let banner = document.getElementById('stockTagBanner');
+      if (!filters.tag) { if (banner) banner.remove(); return; }
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'stockTagBanner';
+        banner.className = 'stock-tag-banner';
+        document.querySelector('.stock-controls').appendChild(banner);
+      }
+      banner.innerHTML = `Filtrando por <b>#${filters.tag.replace(/</g,'&lt;')}</b> <button type="button" class="stock-tag-clear">✕ limpiar</button>`;
+      banner.querySelector('.stock-tag-clear').addEventListener('click', () => {
+        filters.tag = '';
+        renderActiveTagBanner();
+        applyFilters();
+      });
+    }
     function inDateRange(iso) {
       if (!iso) return false;
       const t = new Date(iso).getTime();
@@ -305,8 +335,17 @@
       const items = allItems.filter(it => {
         if (filters.type && it.type !== filters.type) return false;
         if (filters.motor && it.motor !== filters.motor) return false;
+        if (filters.tag) {
+          const tags = Array.isArray(it.tags) ? it.tags.map(t => String(t).toLowerCase()) : [];
+          if (!tags.includes(filters.tag.toLowerCase())) return false;
+        }
         if (filters.q) {
-          const hay = ((it.prompt || '') + ' ' + (it.comment || '')).toLowerCase();
+          const hay = (
+            (it.prompt || '') + ' ' +
+            (it.title || '') + ' ' +
+            (it.comment || '') + ' ' +
+            (Array.isArray(it.tags) ? it.tags.join(' ') : '')
+          ).toLowerCase();
           if (!hay.includes(filters.q)) return false;
         }
         if (!inDateRange(it.createdAt)) return false;
@@ -338,13 +377,18 @@
         media = `<pre>${JSON.stringify(it, null, 2)}</pre>`;
       }
       lightboxInner.innerHTML = media;
+      const titleRaw = (it.title || '').trim();
+      const titleBlock = titleRaw ? `<p class="stock-title">${titleRaw.replace(/</g,'&lt;')}</p>` : '';
       const commentRaw = (it.comment || '').trim();
       const commentSafe = commentRaw.replace(/</g, '&lt;');
       const commentBlock = commentRaw
         ? `<p class="stock-comment">💬 ${commentSafe}</p>`
         : '';
+      const tagsBlock = renderTagsHtml(it.tags);
       lightboxMeta.innerHTML = `
         <div><span class="stock-type ${it.type}">${it.type}</span> <span class="stock-motor">${it.motor || ''}</span> <span class="stock-date">${fmtDate(it.createdAt)}</span></div>
+        ${titleBlock}
+        ${tagsBlock}
         <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
         ${commentBlock}
         <div class="stock-lightbox-actions">
@@ -388,6 +432,17 @@
     }
 
     grid.addEventListener('click', e => {
+      // Click en chip de tag → activa filtro por ese tag (no abre lightbox)
+      const tagBtn = e.target.closest('.stock-tag');
+      if (tagBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const t = tagBtn.dataset.tag || '';
+        filters.tag = (filters.tag === t) ? '' : t; // toggle
+        renderActiveTagBanner();
+        applyFilters();
+        return;
+      }
       // Botones de acciones (max/del/open) — el "open" es un <a> y deja burbujear,
       // pero detenemos para no abrir también el lightbox.
       const btn = e.target.closest('.stock-card-btn');
