@@ -1106,6 +1106,21 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   margin: 0;
   max-height: 4.5em; overflow: hidden;
 }
+.stock-comment {
+  margin: 0;
+  padding: 8px 10px;
+  border-left: 2px solid var(--audio);
+  background: rgba(80, 200, 255, .06);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.stock-lightbox-meta .stock-comment {
+  padding: 10px 12px;
+  font-size: 13px;
+}
 .stock-card-body footer {
   display: flex; justify-content: space-between;
   color: var(--muted); font-size: 11px;

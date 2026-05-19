@@ -28,7 +28,7 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r61</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r62</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
@@ -59,9 +59,23 @@
           <label class="chip"><input type="radio" name="ftype" value="video">Video</label>
         </div>
         <div class="chips" data-filter="motor" id="motorFilter"></div>
-        <div class="field" style="margin:0;min-width:240px;">
-          <label for="stockSearch" class="sr-only">Búsqueda por prompt</label>
-          <input id="stockSearch" type="text" placeholder="🔍 buscar en prompts..." autocomplete="off">
+        <div class="field" style="margin:0;min-width:260px;flex:1 1 260px;">
+          <label for="stockSearch" class="sr-only">Búsqueda por prompt o comentario</label>
+          <input id="stockSearch" type="text" placeholder="🔍 buscar en prompts y comentarios…" autocomplete="off">
+        </div>
+        <div class="chips" data-filter="date" id="dateFilter">
+          <label class="chip active"><input type="radio" name="fdate" value="" checked>Cualquier fecha</label>
+          <label class="chip"><input type="radio" name="fdate" value="today">Hoy</label>
+          <label class="chip"><input type="radio" name="fdate" value="7d">7 días</label>
+          <label class="chip"><input type="radio" name="fdate" value="30d">30 días</label>
+        </div>
+        <div class="field" style="margin:0;min-width:160px;">
+          <label for="stockDateFrom" class="sr-only">Desde fecha</label>
+          <input id="stockDateFrom" type="date" title="Desde">
+        </div>
+        <div class="field" style="margin:0;min-width:160px;">
+          <label for="stockDateTo" class="sr-only">Hasta fecha</label>
+          <input id="stockDateTo" type="date" title="Hasta">
         </div>
         <div class="field" style="margin:0;min-width:200px;">
           <label for="stockSort" class="sr-only">Orden</label>
@@ -93,7 +107,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r61</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r62</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -114,6 +128,10 @@
             <span class="import-fmt-label"><b>VIDEO</b><small>mp4 · video + audio</small></span>
           </label>
         </div>
+      </div>
+      <div class="field">
+        <label for="import-comment">Comentarios <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(opcional · indexable por búsqueda en Stock)</small></label>
+        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notas, etiquetas, contexto… (luego se puede buscar)"></textarea>
       </div>
       <div class="import-progress" id="importProgress" hidden>
         <div class="import-progress-head">
@@ -142,6 +160,9 @@
     const empty = document.getElementById('stockEmpty');
     const search = document.getElementById('stockSearch');
     const motorFilter = document.getElementById('motorFilter');
+    const dateFilter = document.getElementById('dateFilter');
+    const dateFrom = document.getElementById('stockDateFrom');
+    const dateTo = document.getElementById('stockDateTo');
     const sortSelect = document.getElementById('stockSort');
     const lightbox = document.getElementById('stockLightbox');
     const lightboxInner = document.getElementById('stockLightboxInner');
@@ -150,7 +171,7 @@
     const STOCK_LIST_URL = STOCK_BASE + '/stock/list';
     const TYPE_ORDER = { audio: 0, music: 1, image: 2, video: 3 };
     let allItems = [];
-    let filters = { type: '', motor: '', q: '' };
+    let filters = { type: '', motor: '', q: '', dateQuick: '', dateFrom: '', dateTo: '' };
     let sortMode = 'date-desc';
 
     function fmtDate(iso) {
@@ -183,6 +204,11 @@
     function renderCard(it) {
       const idAttr = String(it.id || '').replace(/[^A-Za-z0-9-]/g, '');
       const assetUrl = escAttr(it.url || '');
+      const commentRaw = (it.comment || '').trim();
+      const commentSafe = commentRaw.replace(/</g, '&lt;');
+      const commentBlock = commentRaw
+        ? `<p class="stock-comment" title="${escAttr(commentRaw)}">💬 ${commentSafe.slice(0, 200)}${commentRaw.length > 200 ? '…' : ''}</p>`
+        : '';
       return `<article class="stock-card" data-type="${it.type}" data-motor="${it.motor}" data-id="${idAttr}" tabindex="0" role="button" aria-label="Maximizar ${it.type}">
         <div class="stock-card-media">
           ${renderPreview(it)}
@@ -198,6 +224,7 @@
             <span class="stock-motor">${it.motor}</span>
           </header>
           <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
+          ${commentBlock}
           <footer>
             <span class="stock-cost">${it.costEst || ''}</span>
             <span class="stock-date">${fmtDate(it.createdAt)}</span>
@@ -251,12 +278,40 @@
       `).join('');
     }
 
+    function inDateRange(iso) {
+      if (!iso) return false;
+      const t = new Date(iso).getTime();
+      if (isNaN(t)) return false;
+      const now = Date.now();
+      if (filters.dateQuick === 'today') {
+        const start = new Date(); start.setHours(0,0,0,0);
+        if (t < start.getTime()) return false;
+      } else if (filters.dateQuick === '7d') {
+        if (t < now - 7 * 86400000) return false;
+      } else if (filters.dateQuick === '30d') {
+        if (t < now - 30 * 86400000) return false;
+      }
+      if (filters.dateFrom) {
+        const from = new Date(filters.dateFrom + 'T00:00:00').getTime();
+        if (t < from) return false;
+      }
+      if (filters.dateTo) {
+        const to = new Date(filters.dateTo + 'T23:59:59').getTime();
+        if (t > to) return false;
+      }
+      return true;
+    }
     function applyFilters() {
-      const items = allItems.filter(it =>
-        (!filters.type || it.type === filters.type) &&
-        (!filters.motor || it.motor === filters.motor) &&
-        (!filters.q || (it.prompt || '').toLowerCase().includes(filters.q))
-      );
+      const items = allItems.filter(it => {
+        if (filters.type && it.type !== filters.type) return false;
+        if (filters.motor && it.motor !== filters.motor) return false;
+        if (filters.q) {
+          const hay = ((it.prompt || '') + ' ' + (it.comment || '')).toLowerCase();
+          if (!hay.includes(filters.q)) return false;
+        }
+        if (!inDateRange(it.createdAt)) return false;
+        return true;
+      });
       const sorted = sortItems(items, sortMode);
       if (sortMode === 'type' || sortMode === 'motor') {
         grid.classList.add('stock-grid-grouped');
@@ -283,9 +338,15 @@
         media = `<pre>${JSON.stringify(it, null, 2)}</pre>`;
       }
       lightboxInner.innerHTML = media;
+      const commentRaw = (it.comment || '').trim();
+      const commentSafe = commentRaw.replace(/</g, '&lt;');
+      const commentBlock = commentRaw
+        ? `<p class="stock-comment">💬 ${commentSafe}</p>`
+        : '';
       lightboxMeta.innerHTML = `
         <div><span class="stock-type ${it.type}">${it.type}</span> <span class="stock-motor">${it.motor || ''}</span> <span class="stock-date">${fmtDate(it.createdAt)}</span></div>
         <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
+        ${commentBlock}
         <div class="stock-lightbox-actions">
           <a class="btn" href="${it.url}" target="_blank" rel="noopener" download>⬇ Descargar archivo</a>
           <a class="btn" href="${it.url}" target="_blank" rel="noopener">↗ Abrir asset</a>
@@ -409,6 +470,16 @@
       sortMode = sortSelect.value;
       applyFilters();
     });
+    dateFilter.querySelectorAll('input').forEach(i => i.addEventListener('change', () => {
+      filters.dateQuick = i.value;
+      dateFilter.querySelectorAll('.chip').forEach(c => {
+        const ip = c.querySelector('input');
+        c.classList.toggle('active', ip && ip.checked);
+      });
+      applyFilters();
+    }));
+    dateFrom.addEventListener('change', () => { filters.dateFrom = dateFrom.value; applyFilters(); });
+    dateTo.addEventListener('change', () => { filters.dateTo = dateTo.value; applyFilters(); });
     document.getElementById('stockRefresh').addEventListener('click', load);
 
     // Si llegamos con ?highlight=<id> (post-importación), hacemos scroll

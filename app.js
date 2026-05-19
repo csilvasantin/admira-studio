@@ -1612,6 +1612,7 @@
         type: meta.type,
         motor: meta.motor,
         prompt: meta.prompt || '',
+        comment: meta.comment || null,
         costEst: meta.costEst || null,
         thumbnail: meta.thumbnail || null,
       };
@@ -1985,6 +1986,8 @@
       const progressFill = document.getElementById('importProgressFill');
       if (progressWrap) progressWrap.hidden = true;
       if (progressFill) { progressFill.style.width = '0%'; progressFill.style.background = ''; }
+      const cmt = document.getElementById('import-comment');
+      if (cmt) cmt.value = '';
       dlg.showModal();
     });
     document.getElementById('closeImport')?.addEventListener('click', () => dlg.close());
@@ -2072,6 +2075,7 @@
     document.getElementById('doImport')?.addEventListener('click', async () => {
       const url = document.getElementById('import-url').value.trim();
       const fmt = document.querySelector('input[name="import-fmt"]:checked')?.value || 'audio';
+      const comment = (document.getElementById('import-comment')?.value || '').trim();
       if (!url) return;
       const stat = document.getElementById('importStatus');
       stat.style.display = 'block';
@@ -2108,6 +2112,7 @@
           type: kind,
           motor: 'yt-dlp',
           prompt: url,
+          comment: comment || null,
           costEst: `gratis · ${sizeMB}MB · ${sec}s`,
           url: blobUrl,
           mime,
