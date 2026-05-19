@@ -568,7 +568,9 @@
     if (isProUnlocked()) return true;
     return await unlockPro();
   }
-  // Pequeño badge fijo top-right que muestra estado y permite bloquear/desbloquear.
+  // Badge insertado en .topnav-actions (al lado del estado XTORE) para no
+  // solaparse con la banda superior Admira·Xperience. Cae a position:fixed
+  // si no encuentra el contenedor.
   function updateProLockBadge() {
     let el = document.getElementById('proLockBadge');
     if (!el) {
@@ -576,7 +578,7 @@
       el.id = 'proLockBadge';
       el.type = 'button';
       el.title = 'Estado de modelos PRO (Better+Best). Click para alternar.';
-      el.style.cssText = 'position:fixed;top:8px;right:8px;z-index:9999;border:1px solid rgba(120,243,255,.35);background:rgba(5,19,28,.78);color:#cceef5;font:600 11px/1 ui-monospace,monospace;letter-spacing:.04em;padding:6px 9px;border-radius:8px;cursor:pointer';
+      el.style.cssText = 'border:1px solid rgba(120,243,255,.35);background:rgba(5,19,28,.78);color:#cceef5;font:600 11px/1 ui-monospace,monospace;letter-spacing:.04em;padding:6px 9px;border-radius:8px;cursor:pointer';
       el.addEventListener('click', async () => {
         if (isProUnlocked()) {
           if (confirm('¿Bloquear de nuevo los modelos PRO? Tendrás que reintroducir el password.')) {
@@ -586,7 +588,13 @@
           await unlockPro();
         }
       });
-      document.body.appendChild(el);
+      const host = document.querySelector('.topnav-actions');
+      if (host) {
+        host.appendChild(el);
+      } else {
+        el.style.cssText += ';position:fixed;top:64px;right:14px;z-index:9999';
+        document.body.appendChild(el);
+      }
     }
     const on = isProUnlocked();
     el.textContent = on ? '🔓 PRO' : '🔒 PRO';
