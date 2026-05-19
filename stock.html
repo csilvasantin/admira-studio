@@ -28,7 +28,7 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r67</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r68</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
@@ -98,6 +98,25 @@
         <p>// Stock vacío.</p>
         <p>Genera un asset en Audio/Música/Imágenes/Video y pulsa <strong>📌 PUBLICAR EN STOCK</strong>.</p>
       </div>
+      <nav id="stockPager" class="stock-pager" hidden aria-label="Paginación">
+        <div class="stock-pager-size">
+          <label for="stockPageSize">Por página</label>
+          <select id="stockPageSize">
+            <option value="12">12</option>
+            <option value="24" selected>24</option>
+            <option value="48">48</option>
+            <option value="96">96</option>
+            <option value="0">todos</option>
+          </select>
+        </div>
+        <div class="stock-pager-controls">
+          <button type="button" class="stock-pager-btn" id="stockPagerFirst" title="Primera página">«</button>
+          <button type="button" class="stock-pager-btn" id="stockPagerPrev" title="Anterior">‹</button>
+          <span class="stock-pager-info" id="stockPagerInfo">— / —</span>
+          <button type="button" class="stock-pager-btn" id="stockPagerNext" title="Siguiente">›</button>
+          <button type="button" class="stock-pager-btn" id="stockPagerLast" title="Última página">»</button>
+        </div>
+      </nav>
     </section>
 
     <div id="stockLightbox" class="stock-lightbox" hidden aria-hidden="true">
@@ -107,7 +126,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r67</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r68</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -173,6 +192,11 @@
     let allItems = [];
     let filters = { type: '', motor: '', q: '', tag: '', dateQuick: '', dateFrom: '', dateTo: '' };
     let sortMode = 'date-desc';
+    let pageSize = 24; // 0 = mostrar todos
+    let currentPage = 1;
+    const pager = document.getElementById('stockPager');
+    const pagerInfo = document.getElementById('stockPagerInfo');
+    const pageSizeSel = document.getElementById('stockPageSize');
 
     function fmtDate(iso) {
       try { return new Date(iso).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }); }
@@ -338,7 +362,7 @@
       banner.querySelector('.stock-tag-clear').addEventListener('click', () => {
         filters.tag = '';
         renderActiveTagBanner();
-        applyFilters();
+        applyFilters(true);
       });
     }
     function inDateRange(iso) {
@@ -364,7 +388,7 @@
       }
       return true;
     }
-    function applyFilters() {
+    function applyFilters(resetPage) {
       const items = allItems.filter(it => {
         if (filters.type && it.type !== filters.type) return false;
         if (filters.motor && it.motor !== filters.motor) return false;
@@ -385,15 +409,42 @@
         return true;
       });
       const sorted = sortItems(items, sortMode);
+
+      // Paginación (0 = todos)
+      const totalPages = pageSize > 0 ? Math.max(1, Math.ceil(sorted.length / pageSize)) : 1;
+      if (resetPage) currentPage = 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+      const pageItems = pageSize > 0
+        ? sorted.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+        : sorted;
+
       if (sortMode === 'type' || sortMode === 'motor') {
         grid.classList.add('stock-grid-grouped');
-        grid.innerHTML = renderGrouped(sorted, sortMode);
+        grid.innerHTML = renderGrouped(pageItems, sortMode);
       } else {
         grid.classList.remove('stock-grid-grouped');
-        grid.innerHTML = sorted.map(renderCard).join('');
+        grid.innerHTML = pageItems.map(renderCard).join('');
       }
       empty.hidden = items.length > 0;
-      status.textContent = `// ${items.length} de ${allItems.length} assets · orden ${sortMode}`;
+
+      // Pager UI
+      if (pager) {
+        if (pageSize === 0 || sorted.length <= pageSize) {
+          pager.hidden = true;
+        } else {
+          pager.hidden = false;
+          pagerInfo.textContent = `Página ${currentPage} / ${totalPages}`;
+          document.getElementById('stockPagerFirst').disabled = currentPage <= 1;
+          document.getElementById('stockPagerPrev').disabled = currentPage <= 1;
+          document.getElementById('stockPagerNext').disabled = currentPage >= totalPages;
+          document.getElementById('stockPagerLast').disabled = currentPage >= totalPages;
+        }
+      }
+
+      const showing = pageSize > 0
+        ? `${pageItems.length} (pág ${currentPage}/${totalPages})`
+        : `${sorted.length}`;
+      status.textContent = `// ${showing} de ${items.length} filtrados · ${allItems.length} total · orden ${sortMode}`;
     }
 
     function openLightbox(it) {
@@ -505,7 +556,7 @@
         const t = tagBtn.dataset.tag || '';
         filters.tag = (filters.tag === t) ? '' : t; // toggle
         renderActiveTagBanner();
-        applyFilters();
+        applyFilters(true);
         return;
       }
       // Botones de acciones (max/del/open) — el "open" es un <a> y deja burbujear,
@@ -550,7 +601,7 @@
           const ip = c.querySelector('input');
           c.classList.toggle('active', ip && ip.checked);
         });
-        applyFilters();
+        applyFilters(true);
       }));
     }
     async function load() {
@@ -584,16 +635,16 @@
           const ip = c.querySelector('input');
           c.classList.toggle('active', ip && ip.checked);
         });
-        applyFilters();
+        applyFilters(true);
       });
     });
     search.addEventListener('input', () => {
       filters.q = search.value.trim().toLowerCase();
-      applyFilters();
+      applyFilters(true);
     });
     sortSelect.addEventListener('change', () => {
       sortMode = sortSelect.value;
-      applyFilters();
+      applyFilters(true);
     });
     dateFilter.querySelectorAll('input').forEach(i => i.addEventListener('change', () => {
       filters.dateQuick = i.value;
@@ -601,11 +652,26 @@
         const ip = c.querySelector('input');
         c.classList.toggle('active', ip && ip.checked);
       });
-      applyFilters();
+      applyFilters(true);
     }));
-    dateFrom.addEventListener('change', () => { filters.dateFrom = dateFrom.value; applyFilters(); });
-    dateTo.addEventListener('change', () => { filters.dateTo = dateTo.value; applyFilters(); });
+    dateFrom.addEventListener('change', () => { filters.dateFrom = dateFrom.value; applyFilters(true); });
+    dateTo.addEventListener('change', () => { filters.dateTo = dateTo.value; applyFilters(true); });
     document.getElementById('stockRefresh').addEventListener('click', load);
+
+    // Pager
+    pageSizeSel.addEventListener('change', () => {
+      pageSize = parseInt(pageSizeSel.value, 10) || 0;
+      try { localStorage.setItem('stockPageSize', String(pageSize)); } catch {}
+      applyFilters(true);
+    });
+    try {
+      const saved = parseInt(localStorage.getItem('stockPageSize') || '', 10);
+      if (!isNaN(saved)) { pageSize = saved; pageSizeSel.value = String(saved); }
+    } catch {}
+    document.getElementById('stockPagerFirst').addEventListener('click', () => { currentPage = 1; applyFilters(); window.scrollTo({top:0,behavior:'smooth'}); });
+    document.getElementById('stockPagerPrev').addEventListener('click', () => { currentPage = Math.max(1, currentPage - 1); applyFilters(); window.scrollTo({top:0,behavior:'smooth'}); });
+    document.getElementById('stockPagerNext').addEventListener('click', () => { currentPage += 1; applyFilters(); window.scrollTo({top:0,behavior:'smooth'}); });
+    document.getElementById('stockPagerLast').addEventListener('click', () => { currentPage = 99999; applyFilters(); window.scrollTo({top:0,behavior:'smooth'}); });
 
     // Track de reproducciones: 1 POST por asset + sesión cuando empieza a sonar
     const trackedPlays = new Set();

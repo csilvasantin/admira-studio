@@ -1243,6 +1243,69 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   border-top: 1px solid var(--line);
   padding-top: 8px;
 }
+.stock-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin: 24px 0 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--line-bright);
+  background: rgba(0, 20, 5, .35);
+}
+.stock-pager[hidden] { display: none; }
+.stock-pager-size {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .04em;
+}
+.stock-pager-size label::before { content: "> "; opacity: .7; }
+.stock-pager-size select {
+  background: #000;
+  color: var(--matrix);
+  border: 1px solid var(--line-bright);
+  font-family: inherit;
+  font-size: 12px;
+  padding: 4px 8px;
+}
+.stock-pager-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stock-pager-btn {
+  appearance: none;
+  min-width: 36px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line-bright);
+  background: #000;
+  color: var(--matrix);
+  font-family: monospace;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.stock-pager-btn:hover:not(:disabled) {
+  border-color: var(--matrix);
+  background: rgba(0, 255, 65, .08);
+  text-shadow: var(--glow);
+}
+.stock-pager-btn:disabled { opacity: .35; cursor: not-allowed; }
+.stock-pager-info {
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--ink);
+  padding: 0 10px;
+  letter-spacing: .06em;
+}
+
 .stock-empty {
   text-align: center; padding: 60px 20px; color: var(--muted);
   border: 1px dashed var(--line-bright); margin-top: 20px;
