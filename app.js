@@ -1981,9 +1981,94 @@
     open.addEventListener('click', () => {
       const stat = document.getElementById('importStatus');
       if (stat) { stat.style.display = 'none'; stat.textContent = ''; }
+      const progressWrap = document.getElementById('importProgress');
+      const progressFill = document.getElementById('importProgressFill');
+      if (progressWrap) progressWrap.hidden = true;
+      if (progressFill) { progressFill.style.width = '0%'; progressFill.style.background = ''; }
       dlg.showModal();
     });
     document.getElementById('closeImport')?.addEventListener('click', () => dlg.close());
+    // Helpers para la barra de progreso del modal
+    function importProgressStart(fmt) {
+      const wrap = document.getElementById('importProgress');
+      const kind = document.getElementById('importProgressKind');
+      const stats = document.getElementById('importProgressStats');
+      const fill = document.getElementById('importProgressFill');
+      const indet = document.getElementById('importProgressIndet');
+      if (!wrap) return null;
+      wrap.hidden = false;
+      wrap.dataset.kind = fmt; // for CSS styling (audio vs video)
+      if (kind) kind.textContent = fmt === 'video' ? '🎬 VIDEO · descargando' : '🎵 AUDIO · descargando';
+      if (stats) stats.textContent = '0 MB · 0.0s';
+      if (fill) fill.style.width = '0%';
+      if (indet) indet.hidden = false;
+      return {
+        update(receivedBytes, totalBytes, sec) {
+          const mb = (receivedBytes / 1024 / 1024).toFixed(2);
+          if (totalBytes > 0) {
+            const pct = Math.min(100, (receivedBytes / totalBytes) * 100);
+            if (fill) fill.style.width = pct.toFixed(1) + '%';
+            if (indet) indet.hidden = true;
+            if (stats) stats.textContent = `${mb} / ${(totalBytes / 1024 / 1024).toFixed(2)} MB · ${pct.toFixed(0)}% · ${sec.toFixed(1)}s`;
+          } else {
+            if (indet) indet.hidden = false;
+            if (stats) stats.textContent = `${mb} MB · ${sec.toFixed(1)}s`;
+          }
+        },
+        done(receivedBytes, sec) {
+          const mb = (receivedBytes / 1024 / 1024).toFixed(2);
+          if (fill) fill.style.width = '100%';
+          if (indet) indet.hidden = true;
+          if (kind) kind.textContent = (fmt === 'video' ? '🎬 VIDEO' : '🎵 AUDIO') + ' · ✅ listo';
+          if (stats) stats.textContent = `${mb} MB · ${sec.toFixed(1)}s`;
+        },
+        error(msg) {
+          if (kind) kind.textContent = (fmt === 'video' ? '🎬 VIDEO' : '🎵 AUDIO') + ' · ❌ error';
+          if (indet) indet.hidden = true;
+          if (fill) fill.style.background = '#ff6d6d';
+          if (stats) stats.textContent = String(msg || '').slice(0, 80);
+        },
+        hide() { if (wrap) wrap.hidden = true; },
+      };
+    }
+
+    // Streaming fetch: lee la respuesta como ReadableStream y va contando bytes
+    // para alimentar la barra de progreso. Devuelve { blob, totalBytes, receivedBytes }.
+    async function fetchWithProgress(response, onProgress) {
+      const contentLength = parseInt(response.headers.get('Content-Length') || '0', 10);
+      const reader = response.body?.getReader();
+      if (!reader) {
+        const blob = await response.blob();
+        return { blob, totalBytes: blob.size, receivedBytes: blob.size };
+      }
+      const chunks = [];
+      let received = 0;
+      const t0 = performance.now();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        received += value.byteLength;
+        if (onProgress) onProgress(received, contentLength, (performance.now() - t0) / 1000);
+      }
+      const blob = new Blob(chunks, { type: response.headers.get('Content-Type') || 'application/octet-stream' });
+      return { blob, totalBytes: contentLength || received, receivedBytes: received };
+    }
+
+    // Sincroniza el highlight del chip de formato con el radio
+    document.querySelectorAll('input[name="import-fmt"]').forEach(input => {
+      input.addEventListener('change', () => {
+        document.querySelectorAll('.import-fmt-chip').forEach(chip => {
+          const ip = chip.querySelector('input[name="import-fmt"]');
+          chip.classList.toggle('is-selected', !!(ip && ip.checked));
+        });
+      });
+      // Init
+      if (input.checked) {
+        input.closest('.import-fmt-chip')?.classList.add('is-selected');
+      }
+    });
+
     document.getElementById('doImport')?.addEventListener('click', async () => {
       const url = document.getElementById('import-url').value.trim();
       const fmt = document.querySelector('input[name="import-fmt"]:checked')?.value || 'audio';
@@ -1992,6 +2077,7 @@
       stat.style.display = 'block';
       const ep = pickImportEndpoint();
       stat.textContent = `// llamando a ${ep.kind} (${fmt})...\n// puede tardar 10-60s según media`;
+      const progress = importProgressStart(fmt);
       const t0 = Date.now();
       try {
         const r = await fetch(ep.url, {
@@ -2003,11 +2089,15 @@
           let err = '';
           try { err = JSON.stringify(await r.json()); } catch { err = await r.text(); }
           stat.textContent = `// ERROR ${r.status}\n${err.slice(0, 400)}`;
+          progress?.error(`ERROR ${r.status}`);
           return;
         }
-        const blob = await r.blob();
+        const { blob, totalBytes, receivedBytes } = await fetchWithProgress(r, (received, total, sec) => {
+          progress?.update(received, total, sec);
+        });
         const sec = ((Date.now() - t0) / 1000).toFixed(1);
         const sizeMB = (blob.size / 1024 / 1024).toFixed(2);
+        progress?.done(blob.size, parseFloat(sec));
         const blobUrl = URL.createObjectURL(blob);
         const kind = fmt === 'video' ? 'video' : 'audio';
         const elTag = kind;
@@ -2047,6 +2137,7 @@
           stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ❌ Stock: ${(result && result.error || 'fallo').slice(0, 120)}\n// el archivo sigue en el player; pulsa 📌 para reintentar`;
         }
       } catch (e) {
+        progress?.error(String(e).slice(0, 80));
         if (ep.kind === 'admira-tube') {
           stat.textContent = `// ERROR: ${String(e)}\n// El proxy admira-tube (Funnel) no responde.\n// En el Mac Mini: cd ~/GitHub/01.-AdmiraXperience-Game && ./start-admira-tube.sh`;
         } else {

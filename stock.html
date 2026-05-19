@@ -28,7 +28,7 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r57</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r58</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
@@ -63,6 +63,16 @@
           <label for="stockSearch" class="sr-only">Búsqueda por prompt</label>
           <input id="stockSearch" type="text" placeholder="🔍 buscar en prompts..." autocomplete="off">
         </div>
+        <div class="field" style="margin:0;min-width:200px;">
+          <label for="stockSort" class="sr-only">Orden</label>
+          <select id="stockSort" title="Ordenar por">
+            <option value="date-desc">Más recientes primero</option>
+            <option value="date-asc">Más antiguos primero</option>
+            <option value="type">Por tipo (audio·música·imagen·video)</option>
+            <option value="motor">Por motor</option>
+            <option value="size-desc">Por tamaño (grandes primero)</option>
+          </select>
+        </div>
         <button type="button" class="btn" id="stockRefresh" title="Volver a pedir la lista al worker">↻ Refrescar</button>
       </div>
       <div id="stockStatus" class="stock-status">// cargando stock...</div>
@@ -75,20 +85,44 @@
         <p>Genera un asset en Audio/Música/Imágenes/Video y pulsa <strong>📌 PUBLICAR EN STOCK</strong>.</p>
       </div>
     </section>
+
+    <div id="stockLightbox" class="stock-lightbox" hidden aria-hidden="true">
+      <button type="button" class="stock-lightbox-close" id="stockLightboxClose" aria-label="Cerrar">✕</button>
+      <div class="stock-lightbox-inner" id="stockLightboxInner"></div>
+      <div class="stock-lightbox-meta" id="stockLightboxMeta"></div>
+    </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r57</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r58</a></footer>
 
   <dialog id="importModal" class="keys-modal">
-    <form method="dialog" class="keys-form">
+    <form method="dialog" class="keys-form import-form">
       <h3>📥 IMPORTAR DESDE URL</h3>
       <p class="keys-warn">yt-dlp en Mac Mini (audio mp3 + video mp4). Hosts permitidos: YouTube, Vimeo, Twitter/X, TikTok, Instagram. Si abres en local también funciona suno-local (:3777).</p>
       <div class="field"><label for="import-url">URL</label><input id="import-url" type="text" autocomplete="off" placeholder="https://www.youtube.com/watch?v=..."></div>
       <div class="field">
         <label>Formato</label>
-        <div class="chips">
-          <label class="chip"><input type="radio" name="import-fmt" value="audio" checked> Audio (mp3)</label>
-          <label class="chip"><input type="radio" name="import-fmt" value="video"> Video (mp4)</label>
+        <div class="import-fmt" role="radiogroup" aria-label="Formato de importación">
+          <label class="import-fmt-chip is-audio">
+            <input type="radio" name="import-fmt" value="audio" checked>
+            <span class="import-fmt-icon" aria-hidden="true">🎵</span>
+            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · sólo pista de audio</small></span>
+          </label>
+          <label class="import-fmt-chip is-video">
+            <input type="radio" name="import-fmt" value="video">
+            <span class="import-fmt-icon" aria-hidden="true">🎬</span>
+            <span class="import-fmt-label"><b>VIDEO</b><small>mp4 · video + audio</small></span>
+          </label>
+        </div>
+      </div>
+      <div class="import-progress" id="importProgress" hidden>
+        <div class="import-progress-head">
+          <span class="import-progress-kind" id="importProgressKind">— ESPERANDO —</span>
+          <span class="import-progress-stats" id="importProgressStats">0 MB · 0s</span>
+        </div>
+        <div class="import-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+          <div class="import-progress-fill" id="importProgressFill"></div>
+          <div class="import-progress-indet" id="importProgressIndet" hidden></div>
         </div>
       </div>
       <div class="keys-actions">
@@ -108,9 +142,16 @@
     const empty = document.getElementById('stockEmpty');
     const search = document.getElementById('stockSearch');
     const motorFilter = document.getElementById('motorFilter');
-    const STOCK_LIST_URL = 'https://pixer-eleven.csilvasantin.workers.dev/stock/list';
+    const sortSelect = document.getElementById('stockSort');
+    const lightbox = document.getElementById('stockLightbox');
+    const lightboxInner = document.getElementById('stockLightboxInner');
+    const lightboxMeta = document.getElementById('stockLightboxMeta');
+    const STOCK_BASE = 'https://pixer-eleven.csilvasantin.workers.dev';
+    const STOCK_LIST_URL = STOCK_BASE + '/stock/list';
+    const TYPE_ORDER = { audio: 0, music: 1, image: 2, video: 3 };
     let allItems = [];
     let filters = { type: '', motor: '', q: '' };
+    let sortMode = 'date-desc';
 
     function fmtDate(iso) {
       try { return new Date(iso).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }); }
@@ -132,8 +173,15 @@
     }
     function renderCard(it) {
       const promptStr = (it.prompt || '').replace(/</g,'&lt;');
-      return `<article class="stock-card" data-type="${it.type}" data-motor="${it.motor}">
-        <div class="stock-card-media">${renderPreview(it)}</div>
+      const idAttr = String(it.id || '').replace(/[^A-Za-z0-9-]/g, '');
+      return `<article class="stock-card" data-type="${it.type}" data-motor="${it.motor}" data-id="${idAttr}">
+        <div class="stock-card-media">
+          ${renderPreview(it)}
+          <div class="stock-card-actions">
+            <button type="button" class="stock-card-btn" data-act="max" title="Maximizar"><span aria-hidden="true">⛶</span></button>
+            <button type="button" class="stock-card-btn danger" data-act="del" title="Eliminar"><span aria-hidden="true">🗑</span></button>
+          </div>
+        </div>
         <div class="stock-card-body">
           <header>
             <span class="stock-type ${it.type}">${it.type}</span>
@@ -147,16 +195,136 @@
         </div>
       </article>`;
     }
+    function sortItems(items, mode) {
+      const sorted = items.slice();
+      if (mode === 'date-desc') {
+        sorted.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+      } else if (mode === 'date-asc') {
+        sorted.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
+      } else if (mode === 'type') {
+        sorted.sort((a, b) => {
+          const ta = TYPE_ORDER[a.type] ?? 99;
+          const tb = TYPE_ORDER[b.type] ?? 99;
+          if (ta !== tb) return ta - tb;
+          return (b.createdAt || '').localeCompare(a.createdAt || '');
+        });
+      } else if (mode === 'motor') {
+        sorted.sort((a, b) => {
+          const cmp = String(a.motor || '').localeCompare(String(b.motor || ''));
+          if (cmp !== 0) return cmp;
+          return (b.createdAt || '').localeCompare(a.createdAt || '');
+        });
+      } else if (mode === 'size-desc') {
+        sorted.sort((a, b) => (b.size || 0) - (a.size || 0));
+      }
+      return sorted;
+    }
+
+    function renderGrouped(items, mode) {
+      if (mode !== 'type' && mode !== 'motor') return items.map(renderCard).join('');
+      const groups = new Map();
+      const keyFor = it => mode === 'type' ? it.type : (it.motor || 'sin-motor');
+      const labelFor = key => {
+        if (mode === 'type') {
+          return { audio: '🎵 Audio', music: '🎶 Música', image: '🖼 Imágenes', video: '🎬 Video' }[key] || key;
+        }
+        return '⚙ ' + key;
+      };
+      for (const it of items) {
+        const k = keyFor(it);
+        if (!groups.has(k)) groups.set(k, []);
+        groups.get(k).push(it);
+      }
+      return Array.from(groups.entries()).map(([k, arr]) => `
+        <h3 class="stock-group-head">${labelFor(k)} <span class="stock-group-count">${arr.length}</span></h3>
+        <div class="stock-grid stock-group-grid">${arr.map(renderCard).join('')}</div>
+      `).join('');
+    }
+
     function applyFilters() {
       const items = allItems.filter(it =>
         (!filters.type || it.type === filters.type) &&
         (!filters.motor || it.motor === filters.motor) &&
         (!filters.q || (it.prompt || '').toLowerCase().includes(filters.q))
       );
-      grid.innerHTML = items.map(renderCard).join('');
+      const sorted = sortItems(items, sortMode);
+      if (sortMode === 'type' || sortMode === 'motor') {
+        grid.classList.add('stock-grid-grouped');
+        grid.innerHTML = renderGrouped(sorted, sortMode);
+      } else {
+        grid.classList.remove('stock-grid-grouped');
+        grid.innerHTML = sorted.map(renderCard).join('');
+      }
       empty.hidden = items.length > 0;
-      status.textContent = `// ${items.length} de ${allItems.length} assets`;
+      status.textContent = `// ${items.length} de ${allItems.length} assets · orden ${sortMode}`;
     }
+
+    function openLightbox(it) {
+      const promptStr = (it.prompt || '').replace(/</g,'&lt;');
+      let media = '';
+      if (it.type === 'image') {
+        media = `<img src="${it.thumbnail || it.url}" alt="">`;
+      } else if (it.type === 'video') {
+        media = `<video src="${it.url}" ${it.thumbnail ? `poster="${it.thumbnail}"` : ''} controls autoplay></video>`;
+      } else if (it.type === 'audio' || it.type === 'music') {
+        const cover = it.thumbnail || '';
+        media = `${cover ? `<img class="stock-cover" src="${cover}" alt="">` : '<div class="stock-cover-empty">▶</div>'}
+                 <audio src="${it.url}" controls autoplay></audio>`;
+      } else {
+        media = `<pre>${JSON.stringify(it, null, 2)}</pre>`;
+      }
+      lightboxInner.innerHTML = media;
+      lightboxMeta.innerHTML = `
+        <div><span class="stock-type ${it.type}">${it.type}</span> <span class="stock-motor">${it.motor || ''}</span> <span class="stock-date">${fmtDate(it.createdAt)}</span></div>
+        <p class="stock-prompt">${promptStr}</p>
+        <div class="stock-lightbox-actions">
+          <a class="btn" href="${it.url}" download target="_blank" rel="noopener">⬇ Descargar</a>
+        </div>`;
+      lightbox.hidden = false;
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('stock-lightbox-open');
+    }
+    function closeLightbox() {
+      lightbox.hidden = true;
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightboxInner.innerHTML = '';
+      lightboxMeta.innerHTML = '';
+      document.body.classList.remove('stock-lightbox-open');
+    }
+    document.getElementById('stockLightboxClose').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !lightbox.hidden) closeLightbox(); });
+
+    async function deleteAsset(id, card) {
+      if (!id) return;
+      if (!confirm('¿Eliminar este asset del Stock? Borra el archivo y la metadata en R2. No se puede deshacer.')) return;
+      const beforeStatus = status.textContent;
+      status.textContent = `// borrando ${id}...`;
+      try {
+        const r = await fetch(`${STOCK_BASE}/stock/${encodeURIComponent(id)}`, { method: 'DELETE' });
+        if (!r.ok) {
+          let body = '';
+          try { body = JSON.stringify(await r.json()); } catch {}
+          status.textContent = `// ERROR ${r.status} borrando: ${body.slice(0, 120)}`;
+          return;
+        }
+        allItems = allItems.filter(i => i.id !== id);
+        applyFilters();
+      } catch (e) {
+        status.textContent = `// ERROR red: ${e}`;
+      }
+    }
+
+    grid.addEventListener('click', e => {
+      const btn = e.target.closest('.stock-card-btn');
+      if (!btn) return;
+      const card = btn.closest('.stock-card');
+      const id = card?.dataset.id;
+      const item = allItems.find(i => i.id === id);
+      if (!item) return;
+      if (btn.dataset.act === 'max') openLightbox(item);
+      else if (btn.dataset.act === 'del') deleteAsset(id, card);
+    });
     function buildMotorChips() {
       const motors = Array.from(new Set(allItems.map(i => i.motor))).sort();
       motorFilter.innerHTML = `<label class="chip active"><input type="radio" name="fmotor" value="" checked>Todos los motores</label>`
@@ -182,9 +350,7 @@
           return;
         }
         const data = await r.json();
-        allItems = (data.items || []).sort((a, b) =>
-          (b.createdAt || '').localeCompare(a.createdAt || '')
-        );
+        allItems = data.items || [];
         buildMotorChips();
         applyFilters();
       } catch (e) {
@@ -204,6 +370,10 @@
     });
     search.addEventListener('input', () => {
       filters.q = search.value.trim().toLowerCase();
+      applyFilters();
+    });
+    sortSelect.addEventListener('change', () => {
+      sortMode = sortSelect.value;
       applyFilters();
     });
     document.getElementById('stockRefresh').addEventListener('click', load);
