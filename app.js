@@ -2,32 +2,9 @@
   const STORAGE_KEY = 'pixer-brief-v.2026.05.02-r35';
   const KEYS_STORE = 'pixer-keys';
   const VERSION = 'v.2026.05.02-r35';
-  const RELEASE = 'r56';
   const COSTES_FECHA = '2026-05-15';
   const ELEVEN_WORKER_URL = 'https://pixer-eleven.csilvasantin.workers.dev';
   const XAI_WORKER_URL    = 'https://pixer-eleven.csilvasantin.workers.dev';
-
-  function slugifyForFile(s, maxLen) {
-    return String(s == null ? '' : s)
-      .toLowerCase()
-      .normalize('NFD').replace(/[̀-ͯ]/g, '')
-      .replace(/^https?:\/\//, '')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, maxLen || 40)
-      .replace(/-+$/g, '');
-  }
-  function todayTag() {
-    const d = new Date();
-    const pad = n => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-  }
-  function buildAssetFilename(meta, ext) {
-    const type   = slugifyForFile(meta && meta.type,  16) || 'asset';
-    const motor  = slugifyForFile(meta && meta.motor, 24) || 'motor';
-    const slug   = slugifyForFile((meta && meta.slug) || (meta && meta.prompt), 40) || 'sintitulo';
-    return ['admira', type, motor, slug, todayTag(), RELEASE].join('-') + '.' + ext;
-  }
 
   // ─── API keys (localStorage) ───────────────────────────────────────
   function loadKeys() {
@@ -423,7 +400,7 @@
         const slug = (d.cliente || (scopeKeys && scopeKeys[0]) || 'brief').toLowerCase()
           .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'brief';
         a.href = url;
-        a.download = buildAssetFilename({ type: 'brief', motor: 'json', prompt: slug }, 'json');
+        a.download = `${slug}-pixer-admira-${d.meta.version}.json`;
         a.click();
         URL.revokeObjectURL(url);
       },
@@ -922,7 +899,7 @@
           ${l3Cover ? `<img src="${escAttr(l3Cover)}" style="width:100%;max-height:240px;object-fit:cover;border:1px solid var(--matrix);box-shadow:0 0 12px rgba(0,255,65,.3);">` : ''}
           <audio controls autoplay src="${url}" data-pixer-title="${escAttr(l3Title)}"${l3Cover ? ` data-pixer-cover="${escAttr(l3Cover)}"` : ''} style="width:100%;"></audio>
           ${captionText ? `<pre class="player-body">${captionText}</pre>` : ''}
-          <a class="btn" download="${buildAssetFilename(pubMeta, 'mp3')}" href="${url}">⬇ Descargar MP3</a>
+          <a class="btn" download="lyria3-${Date.now()}.mp3" href="${url}">⬇ Descargar MP3</a>
           ${publishBtnHTML(pubMeta)}
           <small class="player-foot">// Vertex Gemini · ${model} · ${bytes.length} bytes</small>
         </div>`);
@@ -1408,7 +1385,7 @@
               <div class="player-head">▶ VIDEO · ${label} (Google) · ${aspect} · ${dur4or6or8}s · 720p · audio nativo</div>
               <video controls autoplay src="${proxyUrl}" data-pixer-title="${escAttr(veoTitle)}" style="width:100%; max-height:55vh; border:1px solid var(--matrix); box-shadow:0 0 24px rgba(0,255,65,.30);"></video>
               <pre class="player-body">${prompt.replace(/</g,'&lt;')}</pre>
-              <a class="btn" download="${buildAssetFilename(pubMeta, 'mp4')}" href="${proxyUrl}">⬇ Descargar MP4</a>
+              <a class="btn" download="veo-${Date.now()}.mp4" href="${proxyUrl}">⬇ Descargar MP4</a>
               ${publishBtnHTML(pubMeta)}
               <small class="player-foot">// Gemini Veo · ${cost} · ${elapsed}s de procesado</small>
             </div>`);
@@ -2033,7 +2010,6 @@
           type: kind,
           motor: 'yt-dlp',
           prompt: url,
-          slug: ytMatch ? `yt-${ytMatch[1]}` : null,
           costEst: `gratis · ${sizeMB}MB · ${sec}s`,
           url: blobUrl,
           mime,
@@ -2047,7 +2023,7 @@
               <div class="player-head">📥 IMPORTADO · ${kind.toUpperCase()} · ${sizeMB} MB · ${sec}s · ${ep.kind}</div>
               <${elTag} controls autoplay src="${blobUrl}" style="width:100%;${kind === 'video' ? 'max-height:55vh;' : ''}"></${elTag}>
               <pre class="player-body">${url.replace(/</g, '&lt;')}</pre>
-              <a class="btn" download="${buildAssetFilename(importMeta, fmt === 'video' ? 'mp4' : 'mp3')}" href="${blobUrl}">⬇ Descargar</a>
+              <a class="btn" download="import-${Date.now()}.${fmt === 'video' ? 'mp4' : 'mp3'}" href="${blobUrl}">⬇ Descargar</a>
               ${publishBtnHTML(importMeta)}
               <small class="player-foot">// vía yt-dlp (${ep.kind}) · publicando en Stock automáticamente...</small>
             </div>`;
