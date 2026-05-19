@@ -1139,6 +1139,61 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   color: #fff;
   background: rgba(170, 136, 255, .25);
 }
+.stock-tags-editor {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px dashed var(--line-bright);
+  border-radius: 6px;
+  background: rgba(170, 136, 255, .04);
+}
+.stock-tag-edit {
+  display: inline-flex;
+  align-items: stretch;
+  background: rgba(170, 136, 255, .12);
+  border: 1px solid var(--line-bright);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.stock-tag-edit .stock-tag {
+  border: 0;
+  border-radius: 999px 0 0 999px;
+  background: transparent;
+}
+.stock-tag-edit .stock-tag-x {
+  appearance: none;
+  border: 0;
+  border-left: 1px solid var(--line-bright);
+  background: transparent;
+  color: #ff8866;
+  font: inherit;
+  font-size: 10px;
+  padding: 0 8px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.stock-tag-edit .stock-tag-x:hover {
+  background: rgba(255, 136, 102, .15);
+  color: #ff6648;
+}
+.stock-tag-add {
+  appearance: none;
+  border: 1px dashed #aa88ff;
+  background: transparent;
+  color: #aa88ff;
+  font-family: inherit;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.stock-tag-add:hover {
+  background: rgba(170, 136, 255, .18);
+  color: #fff;
+}
 .stock-tag-banner {
   margin-top: 10px;
   padding: 8px 12px;

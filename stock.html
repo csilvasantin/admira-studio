@@ -28,7 +28,7 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r65</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r66</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
@@ -107,7 +107,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r65</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r66</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -207,6 +207,39 @@
         const safe = String(t).replace(/</g, '&lt;');
         return `<button type="button" class="stock-tag" data-tag="${escAttr(t)}" title="Filtrar por #${escAttr(t)}">#${safe}</button>`;
       }).join('')}</div>`;
+    }
+    function renderTagsEditorHtml(id, tags) {
+      const safeId = String(id || '').replace(/[^A-Za-z0-9-]/g, '');
+      const chips = (Array.isArray(tags) ? tags : []).map(t => {
+        const safe = String(t).replace(/</g, '&lt;');
+        return `<span class="stock-tag-edit"><button type="button" class="stock-tag" data-tag="${escAttr(t)}" title="Filtrar por #${escAttr(t)}">#${safe}</button><button type="button" class="stock-tag-x" data-act="remove-tag" data-tag="${escAttr(t)}" title="Quitar etiqueta" aria-label="Quitar #${escAttr(t)}">✕</button></span>`;
+      }).join('');
+      return `<div class="stock-tags-editor" data-edit-id="${safeId}">
+        ${chips}
+        <button type="button" class="stock-tag-add" data-act="add-tag" title="Añadir etiqueta">+ etiqueta</button>
+      </div>`;
+    }
+    async function saveTags(id, tags) {
+      try {
+        const r = await fetch(`${STOCK_BASE}/stock/${encodeURIComponent(id)}/tags`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tags }),
+        });
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const d = await r.json();
+        // Actualiza el item local
+        const it = allItems.find(x => x.id === id);
+        if (it) it.tags = d.tags || [];
+        return d.tags || [];
+      } catch (e) {
+        alert('Error guardando etiquetas: ' + e.message);
+        return null;
+      }
+    }
+    function currentItemInLightbox() {
+      const id = window.__lightboxItemId;
+      return id ? allItems.find(i => i.id === id) : null;
     }
     function renderCard(it) {
       const idAttr = String(it.id || '').replace(/[^A-Za-z0-9-]/g, '');
@@ -384,11 +417,11 @@
       const commentBlock = commentRaw
         ? `<p class="stock-comment">💬 ${commentSafe}</p>`
         : '';
-      const tagsBlock = renderTagsHtml(it.tags);
+      const tagsEditor = renderTagsEditorHtml(it.id, it.tags);
       lightboxMeta.innerHTML = `
         <div><span class="stock-type ${it.type}">${it.type}</span> <span class="stock-motor">${it.motor || ''}</span> <span class="stock-date">${fmtDate(it.createdAt)}</span></div>
         ${titleBlock}
-        ${tagsBlock}
+        ${tagsEditor}
         <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
         ${commentBlock}
         <div class="stock-lightbox-actions">
@@ -410,6 +443,38 @@
     document.getElementById('stockLightboxClose').addEventListener('click', closeLightbox);
     lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && !lightbox.hidden) closeLightbox(); });
+
+    // Edición de tags dentro del lightbox (quitar / añadir)
+    lightboxMeta.addEventListener('click', async e => {
+      const removeBtn = e.target.closest('[data-act="remove-tag"]');
+      const addBtn = e.target.closest('[data-act="add-tag"]');
+      if (!removeBtn && !addBtn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const it = currentItemInLightbox();
+      if (!it) return;
+      let nextTags = Array.isArray(it.tags) ? it.tags.slice() : [];
+      if (removeBtn) {
+        const t = removeBtn.dataset.tag;
+        nextTags = nextTags.filter(x => x !== t);
+      } else {
+        const fresh = (prompt('Añadir etiqueta (1-2 palabras):') || '').trim().toLowerCase();
+        if (!fresh) return;
+        if (nextTags.includes(fresh)) { return; }
+        if (nextTags.length >= 8) { alert('Máximo 8 etiquetas por asset.'); return; }
+        nextTags.push(fresh);
+      }
+      const saved = await saveTags(it.id, nextTags);
+      if (saved) {
+        it.tags = saved;
+        // Re-render del bloque de editor
+        const newHtml = renderTagsEditorHtml(it.id, saved);
+        const oldEditor = lightboxMeta.querySelector('.stock-tags-editor');
+        if (oldEditor) oldEditor.outerHTML = newHtml;
+        // Re-render del grid para reflejar el cambio en la card
+        applyFilters();
+      }
+    });
 
     async function deleteAsset(id, card) {
       if (!id) return;
