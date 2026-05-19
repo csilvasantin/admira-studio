@@ -552,10 +552,14 @@ p { margin: 0; }
   padding: 0;
   max-width: 520px;
   width: calc(100% - 32px);
+  max-height: calc(100vh - 32px);
   box-shadow: 0 0 48px rgba(0,255,65,.35), 0 0 96px rgba(0,255,65,.18);
 }
+/* Modal de import necesita más espacio (chips + progress + status) */
+#importModal.keys-modal { max-width: 640px; }
 .keys-modal::backdrop { background: rgba(0, 0, 0, .78); backdrop-filter: blur(3px); }
 .keys-form { display: grid; gap: 14px; padding: 22px; margin: 0; }
+.keys-form.import-form { gap: 12px; padding: 22px 24px; }
 .keys-form h3 { margin: 0; color: var(--matrix); text-shadow: var(--glow); font-size: 16px; letter-spacing: .12em; }
 .keys-warn { margin: 0; color: var(--muted); font-size: 12px; letter-spacing: .04em; border-left: 2px solid var(--matrix); padding-left: 10px; }
 .keys-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
@@ -566,25 +570,35 @@ p { margin: 0; }
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
-.import-fmt-chip {
-  display: grid;
-  grid-template-columns: 36px 1fr;
+/* Mayor especificidad para vencer a .field label { text-transform: uppercase } */
+.import-fmt label.import-fmt-chip {
+  display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
+  gap: 10px;
+  padding: 10px 12px;
   border: 1.5px solid var(--line-bright);
   border-radius: 4px;
   background: rgba(0,0,0,.5);
   color: var(--ink);
   font-family: inherit;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  text-shadow: none;
   cursor: pointer;
   transition: border-color .15s ease, background .15s ease, transform .15s ease;
 }
+.import-fmt label.import-fmt-chip::before { content: none; }
+.import-fmt-chip .import-fmt-label { min-width: 0; flex: 1; }
+.import-fmt-chip .import-fmt-label b,
+.import-fmt-chip .import-fmt-label small { display: block; }
+.import-fmt-chip .import-fmt-label small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .import-fmt-chip:hover { border-color: var(--matrix); transform: translateY(-1px); }
-.import-fmt-chip input { position: absolute; opacity: 0; pointer-events: none; }
-.import-fmt-chip .import-fmt-icon { font-size: 24px; text-align: center; }
-.import-fmt-chip .import-fmt-label { display: grid; gap: 2px; line-height: 1.2; }
-.import-fmt-chip .import-fmt-label b { font-size: 13px; letter-spacing: .12em; color: var(--ink); }
+.import-fmt-chip input { width: 0; height: 0; opacity: 0; pointer-events: none; margin: 0; padding: 0; border: 0; flex: 0 0 0; }
+.import-fmt-chip .import-fmt-icon { font-size: 16px; text-align: center; line-height: 1; flex: 0 0 auto; }
+.import-fmt-chip .import-fmt-label { line-height: 1.25; }
+.import-fmt-chip .import-fmt-label b { font-size: 12px; letter-spacing: .12em; color: var(--ink); }
 .import-fmt-chip .import-fmt-label small { font-size: 10px; color: var(--muted); letter-spacing: .04em; }
 .import-fmt-chip.is-audio.is-selected {
   border-color: #50c8ff;
