@@ -49,8 +49,8 @@
   </header>
 
   <main>
-    <section class="stock-controls">
-      <div class="stock-filters">
+    <section class="stock-toolbar">
+      <div class="stock-toolbar-row">
         <div class="chips" data-filter="type">
           <label class="chip active"><input type="radio" name="ftype" value="" checked>Todos</label>
           <label class="chip"><input type="radio" name="ftype" value="audio">Audio</label>
@@ -59,7 +59,7 @@
           <label class="chip"><input type="radio" name="ftype" value="video">Video</label>
         </div>
         <div class="chips" data-filter="motor" id="motorFilter"></div>
-        <div class="field" style="margin:0;min-width:260px;flex:1 1 260px;">
+        <div class="field stock-search-field">
           <label for="stockSearch" class="sr-only">Búsqueda por prompt o comentario</label>
           <input id="stockSearch" type="text" placeholder="🔍 buscar en prompts y comentarios…" autocomplete="off">
         </div>
@@ -69,11 +69,11 @@
           <label class="chip"><input type="radio" name="fdate" value="7d">7 días</label>
           <label class="chip"><input type="radio" name="fdate" value="30d">30 días</label>
         </div>
-        <div class="field" style="margin:0;min-width:160px;">
+        <div class="field" style="margin:0;min-width:150px;">
           <label for="stockDateFrom" class="sr-only">Desde fecha</label>
           <input id="stockDateFrom" type="date" title="Desde">
         </div>
-        <div class="field" style="margin:0;min-width:160px;">
+        <div class="field" style="margin:0;min-width:150px;">
           <label for="stockDateTo" class="sr-only">Hasta fecha</label>
           <input id="stockDateTo" type="date" title="Hasta">
         </div>
@@ -84,37 +84,38 @@
           <button type="button" class="stock-view-btn" data-view="medium" title="Medio">◻</button>
         </div>
       </div>
+      <div class="stock-toolbar-row stock-toolbar-sortpage">
+        <div class="stock-sortbar" id="stockSortBar" role="group" aria-label="Ordenar por">
+          <span class="stock-sortbar-label">Ordenar:</span>
+          <button type="button" class="stock-sort-th" data-key="name">Nombre <span class="stock-sort-arrow">⇅</span></button>
+          <button type="button" class="stock-sort-th" data-key="date">Fecha <span class="stock-sort-arrow">⇅</span></button>
+          <button type="button" class="stock-sort-th" data-key="type">Tipo <span class="stock-sort-arrow">⇅</span></button>
+          <button type="button" class="stock-sort-th" data-key="motor">Motor <span class="stock-sort-arrow">⇅</span></button>
+        </div>
+        <nav class="stock-pager stock-pager-top" hidden aria-label="Paginación (arriba)">
+          <div class="stock-pager-size">
+            <label>Por página <select class="stock-page-size" aria-label="Resultados por página">
+              <option value="10" selected>10</option>
+              <option value="12">12</option>
+              <option value="24">24</option>
+              <option value="48">48</option>
+              <option value="96">96</option>
+              <option value="0">todos</option>
+            </select></label>
+          </div>
+          <div class="stock-pager-controls">
+            <button type="button" class="stock-pager-btn" data-page="first" title="Primera página">«</button>
+            <button type="button" class="stock-pager-btn" data-page="prev" title="Anterior">‹</button>
+            <span class="stock-pager-info">— / —</span>
+            <button type="button" class="stock-pager-btn" data-page="next" title="Siguiente">›</button>
+            <button type="button" class="stock-pager-btn" data-page="last" title="Última página">»</button>
+          </div>
+        </nav>
+      </div>
       <div id="stockStatus" class="stock-status">// cargando stock...</div>
     </section>
 
     <section>
-      <div class="stock-sortbar" id="stockSortBar" role="group" aria-label="Ordenar por">
-        <span class="stock-sortbar-label">Ordenar:</span>
-        <button type="button" class="stock-sort-th" data-key="name">Nombre <span class="stock-sort-arrow">⇅</span></button>
-        <button type="button" class="stock-sort-th" data-key="date">Fecha <span class="stock-sort-arrow">⇅</span></button>
-        <button type="button" class="stock-sort-th" data-key="type">Tipo <span class="stock-sort-arrow">⇅</span></button>
-        <button type="button" class="stock-sort-th" data-key="motor">Motor <span class="stock-sort-arrow">⇅</span></button>
-      </div>
-
-      <nav class="stock-pager stock-pager-top" hidden aria-label="Paginación (arriba)">
-        <div class="stock-pager-size">
-          <label>Por página <select class="stock-page-size" aria-label="Resultados por página">
-            <option value="10" selected>10</option>
-            <option value="12">12</option>
-            <option value="24">24</option>
-            <option value="48">48</option>
-            <option value="96">96</option>
-            <option value="0">todos</option>
-          </select></label>
-        </div>
-        <div class="stock-pager-controls">
-          <button type="button" class="stock-pager-btn" data-page="first" title="Primera página">«</button>
-          <button type="button" class="stock-pager-btn" data-page="prev" title="Anterior">‹</button>
-          <span class="stock-pager-info">— / —</span>
-          <button type="button" class="stock-pager-btn" data-page="next" title="Siguiente">›</button>
-          <button type="button" class="stock-pager-btn" data-page="last" title="Última página">»</button>
-        </div>
-      </nav>
 
       <div id="stockGrid" class="stock-grid"></div>
       <div id="stockEmpty" class="stock-empty" hidden>
@@ -351,7 +352,7 @@
         banner = document.createElement('div');
         banner.id = 'stockTagBanner';
         banner.className = 'stock-tag-banner';
-        document.querySelector('.stock-controls').appendChild(banner);
+        document.querySelector('.stock-toolbar').appendChild(banner);
       }
       banner.innerHTML = `Filtrando por <b>#${filters.tag.replace(/</g,'&lt;')}</b> <button type="button" class="stock-tag-clear">✕ limpiar</button>`;
       banner.querySelector('.stock-tag-clear').addEventListener('click', () => {
