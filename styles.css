@@ -1122,8 +1122,9 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 }
 .stock-card-body { padding: 12px 14px; display: grid; gap: 8px; }
 .stock-card-body header {
-  display: flex; gap: 8px; align-items: center; justify-content: space-between;
+  display: flex; gap: 8px; align-items: center;
 }
+.stock-card-body header .stock-motor { margin-left: auto; }
 .stock-type {
   display: inline-block; padding: 2px 8px; font-size: 10px;
   letter-spacing: .12em; text-transform: uppercase;
@@ -1383,19 +1384,15 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 
 /* ── Botones de maximizar / eliminar sobre cada card ── */
 .stock-card-actions {
-  position: absolute; top: 8px; right: 8px;
-  display: flex; gap: 6px;
-  opacity: 0; transition: opacity .15s ease;
+  display: inline-flex; gap: 6px; align-items: center;
   z-index: 2;
 }
-.stock-card:hover .stock-card-actions,
-.stock-card:focus-within .stock-card-actions { opacity: 1; }
 .stock-card-btn {
-  width: 30px; height: 30px;
+  width: 26px; height: 26px;
   border: 1px solid var(--line-bright);
   background: rgba(0, 0, 0, .78);
   color: var(--matrix);
-  font-size: 14px; line-height: 1;
+  font-size: 13px; line-height: 1;
   display: grid; place-items: center;
   cursor: pointer;
   border-radius: 4px;

@@ -28,7 +28,7 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r69</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r70</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
@@ -136,7 +136,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r69</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r70</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -288,15 +288,15 @@
       return `<article class="stock-card" data-type="${it.type}" data-motor="${it.motor}" data-id="${idAttr}" tabindex="0" role="button" aria-label="Maximizar ${it.type}">
         <div class="stock-card-media">
           ${renderPreview(it)}
-          <div class="stock-card-actions">
-            <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Abrir asset en pestaña nueva" data-act="open"><span aria-hidden="true">↗</span></a>
-            <button type="button" class="stock-card-btn" data-act="max" title="Maximizar"><span aria-hidden="true">⛶</span></button>
-            <button type="button" class="stock-card-btn danger" data-act="del" title="Eliminar"><span aria-hidden="true">🗑</span></button>
-          </div>
         </div>
         <div class="stock-card-body">
           <header>
             <span class="stock-type ${it.type}">${it.type}</span>
+            <div class="stock-card-actions">
+              <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Abrir asset en pestaña nueva" data-act="open"><span aria-hidden="true">↗</span></a>
+              <button type="button" class="stock-card-btn" data-act="max" title="Maximizar"><span aria-hidden="true">⛶</span></button>
+              <button type="button" class="stock-card-btn danger" data-act="del" title="Eliminar"><span aria-hidden="true">🗑</span></button>
+            </div>
             <span class="stock-motor">${it.motor}</span>
           </header>
           ${titleBlock}
