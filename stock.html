@@ -107,8 +107,9 @@
         <div class="stock-pager-size">
           <label for="stockPageSize">Por página</label>
           <select id="stockPageSize">
+            <option value="10" selected>10</option>
             <option value="12">12</option>
-            <option value="24" selected>24</option>
+            <option value="24">24</option>
             <option value="48">48</option>
             <option value="96">96</option>
             <option value="0">todos</option>
@@ -197,7 +198,7 @@
     let allItems = [];
     let filters = { type: '', motor: '', q: '', tag: '', dateQuick: '', dateFrom: '', dateTo: '' };
     let sortMode = 'date-desc';
-    let pageSize = 24; // 0 = mostrar todos
+    let pageSize = 10; // 0 = mostrar todos
     let currentPage = 1;
     const pager = document.getElementById('stockPager');
     const pagerInfo = document.getElementById('stockPagerInfo');
@@ -675,8 +676,8 @@
       try { localStorage.setItem('stockView', view); } catch {}
     }
     viewBtns.forEach(b => b.addEventListener('click', () => applyStockView(b.dataset.view)));
-    let savedView = 'medium';
-    try { savedView = localStorage.getItem('stockView') || 'medium'; } catch {}
+    let savedView = 'list';
+    try { savedView = localStorage.getItem('stockView') || 'list'; } catch {}
     applyStockView(savedView);
 
     // Pager
