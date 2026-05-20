@@ -1027,6 +1027,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 }
 .stock-pager-search { flex: 1 1 220px; min-width: 160px; }
 .stock-pager-search input[type="text"] { width: 100%; }
+.stock-refresh-icon { flex: 0 0 auto; padding: 6px 11px; }
 .stock-status:empty { display: none; }
 .stock-toolbar input[type="text"] {
   width: 100%;

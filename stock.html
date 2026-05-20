@@ -65,22 +65,13 @@
           <label class="chip"><input type="radio" name="fdate" value="7d">7 días</label>
           <label class="chip"><input type="radio" name="fdate" value="30d">30 días</label>
         </div>
-        <div class="field" style="margin:0;min-width:150px;">
-          <label for="stockDateFrom" class="sr-only">Desde fecha</label>
-          <input id="stockDateFrom" type="date" title="Desde">
-        </div>
-        <div class="field" style="margin:0;min-width:150px;">
-          <label for="stockDateTo" class="sr-only">Hasta fecha</label>
-          <input id="stockDateTo" type="date" title="Hasta">
-        </div>
-        <button type="button" class="btn" id="stockRefresh" title="Volver a pedir la lista al worker">↻ Refrescar</button>
+      </div>
+      <nav class="stock-pager stock-pager-top" aria-label="Vista, búsqueda, orden y paginación">
         <div class="stock-view" role="group" aria-label="Tamaño de vista">
           <button type="button" class="stock-view-btn" data-view="list" title="Lista">☰</button>
           <button type="button" class="stock-view-btn" data-view="compact" title="Compacto · más vídeos de un vistazo">▦</button>
           <button type="button" class="stock-view-btn" data-view="medium" title="Medio">◻</button>
         </div>
-      </div>
-      <nav class="stock-pager stock-pager-top" aria-label="Búsqueda, orden y paginación">
         <div class="stock-pager-search">
           <label for="stockSearch" class="sr-only">Búsqueda por prompt, comentario o etiqueta</label>
           <input id="stockSearch" type="text" placeholder="🔍 buscar en prompts, comentarios, tags…" autocomplete="off">
@@ -109,6 +100,7 @@
           <button type="button" class="stock-pager-btn" data-page="next" title="Siguiente">›</button>
           <button type="button" class="stock-pager-btn" data-page="last" title="Última página">»</button>
         </div>
+        <button type="button" class="btn stock-refresh-icon" id="stockRefresh" title="Refrescar — volver a pedir la lista">↻</button>
       </nav>
       <div id="stockStatus" class="stock-status" role="status" aria-live="polite"></div>
     </section>
@@ -203,8 +195,6 @@
     const search = document.getElementById('stockSearch');
     const motorFilter = document.getElementById('motorFilter');
     const dateFilter = document.getElementById('dateFilter');
-    const dateFrom = document.getElementById('stockDateFrom');
-    const dateTo = document.getElementById('stockDateTo');
     const sortBar = document.getElementById('stockSortBar');
     const lightbox = document.getElementById('stockLightbox');
     const lightboxInner = document.getElementById('stockLightboxInner');
@@ -665,8 +655,6 @@
       });
       applyFilters(true);
     }));
-    dateFrom.addEventListener('change', () => { filters.dateFrom = dateFrom.value; applyFilters(true); });
-    dateTo.addEventListener('change', () => { filters.dateTo = dateTo.value; applyFilters(true); });
     document.getElementById('stockRefresh').addEventListener('click', load);
 
     // Densidad de vista: lista / compacto / medio (persistida en localStorage).
