@@ -196,7 +196,7 @@
     const lightboxMeta = document.getElementById('stockLightboxMeta');
     const STOCK_BASE = 'https://pixer-eleven.csilvasantin.workers.dev';
     const STOCK_LIST_URL = STOCK_BASE + '/stock/list';
-    const TYPE_ORDER = { audio: 0, music: 1, image: 2, video: 3 };
+    const TYPE_ORDER = { audio: 0, music: 1, image: 2, video: 3, animation: 4 };
     let allItems = [];
     let filters = { type: '', motor: '', q: '', tag: '', dateQuick: '', dateFrom: '', dateTo: '' };
     let sortMode = 'date-desc';
@@ -213,7 +213,7 @@
       if (it.type === 'image') {
         return `<img src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
       }
-      if (it.type === 'video') {
+      if (it.type === 'video' || it.type === 'animation') {
         return `<video src="${it.url}" ${it.thumbnail ? `poster="${it.thumbnail}"` : ''} preload="metadata" controls></video>`;
       }
       if (it.type === 'audio' || it.type === 'music') {
@@ -349,7 +349,9 @@
     // admite un type 'animation' real sin redeploy).
     function matchesType(it, t) {
       if (!t) return true;
-      const isAnim = String(it.motor || '').toLowerCase() === 'ainimation';
+      // Animación = tipo real 'animation' o (compat) lo publicado por ainimation
+      // como video con motor=ainimation antes de existir el tipo real.
+      const isAnim = it.type === 'animation' || String(it.motor || '').toLowerCase() === 'ainimation';
       if (t === 'animation') return isAnim;
       if (t === 'video') return it.type === 'video' && !isAnim;
       return it.type === t;
@@ -413,7 +415,7 @@
       let media = '';
       if (it.type === 'image') {
         media = `<img src="${it.thumbnail || it.url}" alt="">`;
-      } else if (it.type === 'video') {
+      } else if (it.type === 'video' || it.type === 'animation') {
         media = `<video src="${it.url}" ${it.thumbnail ? `poster="${it.thumbnail}"` : ''} controls autoplay></video>`;
       } else if (it.type === 'audio' || it.type === 'music') {
         const cover = it.thumbnail || '';

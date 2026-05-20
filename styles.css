@@ -1129,6 +1129,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 .stock-type.music { color: var(--music); }
 .stock-type.image { color: var(--image); }
 .stock-type.video { color: var(--video); }
+.stock-type.animation { color: #b78cff; }
 .stock-motor {
   color: var(--muted); font-size: 11px; letter-spacing: .04em;
 }
