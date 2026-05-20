@@ -1976,6 +1976,7 @@
       kind: 'admira-tube',
       url: 'https://macmini.tail48b61c.ts.net/admira/tube/download',
       healthUrl: 'https://macmini.tail48b61c.ts.net/admira/tube/health',
+      jobBase: 'https://macmini.tail48b61c.ts.net/admira/tube',
       bodyFor: (u, fmt) => ({ url: u, format: fmt }),
     };
     return isLocalOrigin ? [sunoLocal, admiraTube] : [admiraTube];
@@ -2114,6 +2115,65 @@
       return null;
     }
 
+    // Flujo asíncrono start → status → get: peticiones cortas para no disparar
+    // el timeout del Funnel con descargas largas. Devuelve {blob, title}, o el
+    // string 'fallback' si el server aún no tiene los endpoints nuevos (404).
+    async function importViaJob(ep, url, fmt, progress, stat) {
+      const startR = await fetch(ep.jobBase + '/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url, format: fmt }),
+      });
+      // Cualquier respuesta no-OK o no-JSON ⇒ el server no tiene los endpoints
+      // nuevos (404/HTML estático) o rechazó la URL ⇒ caemos al POST único, que
+      // mostrará el error real (p. ej. host no permitido) si lo hubiera.
+      if (!startR.ok) return 'fallback';
+      let jobId;
+      try { jobId = (await startR.json()).jobId; } catch { return 'fallback'; }
+      if (!jobId) return 'fallback';
+      const tPoll = Date.now();
+      const MAX_MS = 6 * 60 * 1000;
+      while (true) {
+        await new Promise(r => setTimeout(r, 1500));
+        if (Date.now() - tPoll > MAX_MS) throw new Error('timeout esperando al proxy (>6 min)');
+        let st;
+        try { st = await (await fetch(`${ep.jobBase}/status?id=${encodeURIComponent(jobId)}`, { cache: 'no-store' })).json(); }
+        catch { continue; } // un poll fallido no aborta; reintenta en el siguiente ciclo
+        if (st.state === 'running') {
+          const mb = (st.size || 0) / 1024 / 1024;
+          if (stat) stat.textContent = `// ${ep.kind} · descargando ${fmt}… ${mb.toFixed(1)} MB`;
+          progress?.update(st.size || 0, 0, (Date.now() - tPoll) / 1000);
+          continue;
+        }
+        if (st.state === 'done') break;
+        throw new Error(st.error || st.state || 'estado desconocido del proxy');
+      }
+      const getR = await fetch(`${ep.jobBase}/get?id=${encodeURIComponent(jobId)}`, { cache: 'no-store' });
+      if (!getR.ok) {
+        let err = ''; try { err = JSON.stringify(await getR.json()); } catch { err = await getR.text(); }
+        throw new Error(`get ${getR.status}: ${err.slice(0, 200)}`);
+      }
+      let title = ''; try { title = decodeURIComponent(getR.headers.get('X-Tube-Title') || ''); } catch {}
+      const { blob } = await fetchWithProgress(getR, (received, total, sec) => progress?.update(received, total, sec));
+      return { blob, title };
+    }
+
+    // Flujo de un solo POST (suno-local, o admira-tube antiguo como fallback).
+    async function importOneShot(ep, url, fmt, progress) {
+      const r = await fetch(ep.url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(ep.bodyFor(url, fmt)),
+      });
+      if (!r.ok) {
+        let err = ''; try { err = JSON.stringify(await r.json()); } catch { err = await r.text(); }
+        throw new Error(`ERROR ${r.status}: ${err.slice(0, 300)}`);
+      }
+      let title = ''; try { title = decodeURIComponent(r.headers.get('X-Tube-Title') || ''); } catch {}
+      const { blob } = await fetchWithProgress(r, (received, total, sec) => progress?.update(received, total, sec));
+      return { blob, title };
+    }
+
     async function runImport() {
       if (importInFlight || !lastImportArgs) return;
       const { url, fmt, comment } = lastImportArgs;
@@ -2138,25 +2198,13 @@
         const progress = importProgressStart(fmt);
         const t0 = Date.now();
         try {
-          const r = await fetch(ep.url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(ep.bodyFor(url, fmt)),
-          });
-          if (!r.ok) {
-            let err = '';
-            try { err = JSON.stringify(await r.json()); } catch { err = await r.text(); }
-            stat.textContent = `// ERROR ${r.status}\n${err.slice(0, 400)}`;
-            progress?.error(`ERROR ${r.status}`);
-            retryBtn.hidden = false;
-            return;
-          }
-          // Lee el título que añade admira-tube (X-Tube-Title encoded URI)
-          let importedTitle = '';
-          try { importedTitle = decodeURIComponent(r.headers.get('X-Tube-Title') || ''); } catch {}
-          const { blob } = await fetchWithProgress(r, (received, total, sec) => {
-            progress?.update(received, total, sec);
-          });
+          // admira-tube: flujo asíncrono (start→status→get) que evita el timeout
+          // del Funnel. Si el server aún no tiene esos endpoints (404), cae al
+          // POST único de siempre. suno-local usa siempre el POST único.
+          let out = ep.jobBase ? await importViaJob(ep, url, fmt, progress, stat) : 'fallback';
+          if (out === 'fallback') out = await importOneShot(ep, url, fmt, progress);
+          const blob = out.blob;
+          const importedTitle = out.title || '';
           const sec = ((Date.now() - t0) / 1000).toFixed(1);
           const sizeMB = (blob.size / 1024 / 1024).toFixed(2);
           progress?.done(blob.size, parseFloat(sec));
@@ -2206,19 +2254,18 @@
             stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ❌ Stock: ${(result && result.error || 'fallo').slice(0, 120)}\n// el archivo sigue en el player; pulsa 📌 para reintentar`;
           }
         } catch (e) {
-          progress?.error(String(e).slice(0, 80));
-          // El backend pasó el health-check pero la transferencia se cortó. Caso típico:
-          // VIDEO grande — el proxy retiene la respuesta hasta que yt-dlp termina de
-          // descargar+remuxear y el Funnel corta por inactividad antes del primer byte.
-          // El audio es más rápido/pequeño y termina antes del timeout → por eso sí importa.
-          if (fmt === 'video') {
-            stat.textContent = `// ERROR: ${String(e)}\n`
+          const msg = String(e && e.message || e);
+          progress?.error(msg.slice(0, 80));
+          const isNetwork = /Failed to fetch|NetworkError|ERR_|load failed/i.test(msg);
+          if (isNetwork && fmt === 'video') {
+            stat.textContent = `// ERROR: ${msg}\n`
               + `// ${ep.kind} respondió al health-check → el proxy NO está caído.\n`
-              + `// El vídeo tarda más (descarga vídeo+audio y remuxea) y el Funnel\n`
-              + `// corta la conexión por inactividad antes del primer byte.\n`
-              + `// Por eso el AUDIO sí importa. Reintenta (↻) o importa como AUDIO.`;
+              + `// Probable timeout del Funnel con la descarga de vídeo.\n`
+              + `// Reintenta (↻) o importa como AUDIO.`;
+          } else if (isNetwork) {
+            stat.textContent = `// ERROR: ${msg}\n// La conexión con ${ep.kind} se cortó. Reintenta (↻).`;
           } else {
-            stat.textContent = `// ERROR: ${String(e)}\n// La descarga se cortó pese a que ${ep.kind} respondía. Reintenta (↻).`;
+            stat.textContent = `// ${msg}\n// Reintenta (↻).`;
           }
           retryBtn.hidden = false;
         }
