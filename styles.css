@@ -1023,10 +1023,10 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 .stock-toolbar-row .chips { gap: 6px; }
 .stock-pager-sort {
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
-  flex: 1 1 auto; justify-content: center;
+  flex: 0 1 auto;
 }
-.stock-search-row { gap: 10px; border-top: 1px solid var(--line); padding-top: 10px; }
-.stock-search-row input[type="text"] { flex: 1 1 100%; }
+.stock-pager-search { flex: 1 1 220px; min-width: 160px; }
+.stock-pager-search input[type="text"] { width: 100%; }
 .stock-status:empty { display: none; }
 .stock-toolbar input[type="text"] {
   width: 100%;
@@ -1042,7 +1042,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 /* El pager y la barra de orden, dentro del toolbar, sin caja propia */
 .stock-toolbar .stock-pager {
   border: 0; background: transparent; margin: 0; padding: 0;
-  justify-content: space-between; gap: 14px;
+  justify-content: flex-start; gap: 14px;
 }
 .stock-toolbar .stock-pager-top {
   border-top: 1px solid var(--line); padding-top: 10px;

@@ -80,7 +80,11 @@
           <button type="button" class="stock-view-btn" data-view="medium" title="Medio">◻</button>
         </div>
       </div>
-      <nav class="stock-pager stock-pager-top" aria-label="Orden y paginación">
+      <nav class="stock-pager stock-pager-top" aria-label="Búsqueda, orden y paginación">
+        <div class="stock-pager-search">
+          <label for="stockSearch" class="sr-only">Búsqueda por prompt, comentario o etiqueta</label>
+          <input id="stockSearch" type="text" placeholder="🔍 buscar en prompts, comentarios, tags…" autocomplete="off">
+        </div>
         <div class="stock-pager-size">
           <label>Por página <select class="stock-page-size" aria-label="Resultados por página">
             <option value="10" selected>10</option>
@@ -106,10 +110,6 @@
           <button type="button" class="stock-pager-btn" data-page="last" title="Última página">»</button>
         </div>
       </nav>
-      <div class="stock-toolbar-row stock-search-row">
-        <label for="stockSearch" class="sr-only">Búsqueda por prompt, comentario o etiqueta</label>
-        <input id="stockSearch" type="text" placeholder="🔍 buscar en prompts, comentarios y etiquetas…" autocomplete="off">
-      </div>
       <div id="stockStatus" class="stock-status" role="status" aria-live="polite"></div>
     </section>
 
