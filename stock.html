@@ -88,6 +88,11 @@
           </select>
         </div>
         <button type="button" class="btn" id="stockRefresh" title="Volver a pedir la lista al worker">↻ Refrescar</button>
+        <div class="stock-view" role="group" aria-label="Tamaño de vista">
+          <button type="button" class="stock-view-btn" data-view="list" title="Lista">☰</button>
+          <button type="button" class="stock-view-btn" data-view="compact" title="Compacto · más vídeos de un vistazo">▦</button>
+          <button type="button" class="stock-view-btn" data-view="medium" title="Medio">◻</button>
+        </div>
       </div>
       <div id="stockStatus" class="stock-status">// cargando stock...</div>
     </section>
@@ -657,6 +662,22 @@
     dateFrom.addEventListener('change', () => { filters.dateFrom = dateFrom.value; applyFilters(true); });
     dateTo.addEventListener('change', () => { filters.dateTo = dateTo.value; applyFilters(true); });
     document.getElementById('stockRefresh').addEventListener('click', load);
+
+    // Densidad de vista: lista / compacto / medio (persistida en localStorage).
+    // La clase va en #stockGrid; render() solo cambia innerHTML y la clase
+    // stock-grid-grouped, así que la vista se conserva entre renders.
+    const viewBtns = document.querySelectorAll('.stock-view-btn');
+    function applyStockView(v) {
+      const view = (v === 'list' || v === 'compact') ? v : 'medium';
+      grid.classList.remove('view-list', 'view-compact', 'view-medium');
+      grid.classList.add('view-' + view);
+      viewBtns.forEach(b => b.classList.toggle('active', b.dataset.view === view));
+      try { localStorage.setItem('stockView', view); } catch {}
+    }
+    viewBtns.forEach(b => b.addEventListener('click', () => applyStockView(b.dataset.view)));
+    let savedView = 'medium';
+    try { savedView = localStorage.getItem('stockView') || 'medium'; } catch {}
+    applyStockView(savedView);
 
     // Pager
     pageSizeSel.addEventListener('change', () => {

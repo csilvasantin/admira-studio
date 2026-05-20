@@ -1376,6 +1376,46 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   gap: 18px;
 }
 
+/* ── Stock: selector de densidad de vista (lista / compacto / medio) ── */
+.stock-view { display: inline-flex; border: 1px solid var(--line-bright); }
+.stock-view-btn {
+  appearance: none; background: transparent; color: var(--muted);
+  border: 0; border-left: 1px solid var(--line-bright);
+  font-family: inherit; font-size: 14px; line-height: 1;
+  padding: 8px 11px; cursor: pointer; transition: background .15s, color .15s;
+}
+.stock-view-btn:first-child { border-left: 0; }
+.stock-view-btn:hover { color: var(--ink); background: rgba(0, 255, 65, .08); }
+.stock-view-btn.active { color: #001400; background: var(--matrix); }
+
+/* Compacto: más columnas, cuerpo denso, media protagonista */
+.stock-grid.view-compact,
+.stock-grid.view-compact .stock-group-grid {
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+}
+.stock-grid.view-compact .stock-card-body { padding: 7px 9px; gap: 4px; }
+.stock-grid.view-compact .stock-prompt,
+.stock-grid.view-compact .stock-comment,
+.stock-grid.view-compact .stock-tags,
+.stock-grid.view-compact .stock-motor { display: none; }
+.stock-grid.view-compact .stock-title { font-size: 12px; max-height: 2.7em; }
+
+/* Lista: una fila por asset, miniatura a la izquierda */
+.stock-grid.view-list,
+.stock-grid.view-list .stock-group-grid { display: block; }
+.stock-grid.view-list .stock-card {
+  flex-direction: row; align-items: stretch; margin-bottom: 8px;
+}
+.stock-grid.view-list .stock-card-media {
+  flex: 0 0 200px; width: 200px; aspect-ratio: 16/10;
+}
+.stock-grid.view-list .stock-card-body { flex: 1 1 auto; padding: 8px 14px; }
+.stock-grid.view-list .stock-prompt { max-height: 3em; }
+@media (max-width: 560px) {
+  .stock-grid.view-list .stock-card-media { flex-basis: 130px; width: 130px; }
+}
+
 /* ── Lightbox: maximizar un asset ── */
 .stock-lightbox {
   position: fixed; inset: 0; z-index: 1500;
