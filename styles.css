@@ -1025,7 +1025,9 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
   flex: 1 1 auto; justify-content: center;
 }
-.stock-search-field { flex: 1 1 220px; min-width: 180px; margin: 0; }
+.stock-search-row { gap: 10px; border-top: 1px solid var(--line); padding-top: 10px; }
+.stock-search-row input[type="text"] { flex: 1 1 100%; }
+.stock-status:empty { display: none; }
 .stock-toolbar input[type="text"] {
   width: 100%;
   background: var(--bg);

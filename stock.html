@@ -59,10 +59,6 @@
           <label class="chip"><input type="radio" name="ftype" value="video">Video</label>
         </div>
         <div class="chips" data-filter="motor" id="motorFilter"></div>
-        <div class="field stock-search-field">
-          <label for="stockSearch" class="sr-only">Búsqueda por prompt o comentario</label>
-          <input id="stockSearch" type="text" placeholder="🔍 buscar en prompts y comentarios…" autocomplete="off">
-        </div>
         <div class="chips" data-filter="date" id="dateFilter">
           <label class="chip active"><input type="radio" name="fdate" value="" checked>Cualquier fecha</label>
           <label class="chip"><input type="radio" name="fdate" value="today">Hoy</label>
@@ -110,7 +106,11 @@
           <button type="button" class="stock-pager-btn" data-page="last" title="Última página">»</button>
         </div>
       </nav>
-      <div id="stockStatus" class="stock-status">// cargando stock...</div>
+      <div class="stock-toolbar-row stock-search-row">
+        <label for="stockSearch" class="sr-only">Búsqueda por prompt, comentario o etiqueta</label>
+        <input id="stockSearch" type="text" placeholder="🔍 buscar en prompts, comentarios y etiquetas…" autocomplete="off">
+      </div>
+      <div id="stockStatus" class="stock-status" role="status" aria-live="polite"></div>
     </section>
 
     <section>
@@ -436,11 +436,6 @@
         p.querySelector('[data-page="next"]').disabled = currentPage >= totalPages;
         p.querySelector('[data-page="last"]').disabled = currentPage >= totalPages;
       });
-
-      const showing = pageSize > 0
-        ? `${pageItems.length} (pág ${currentPage}/${totalPages})`
-        : `${sorted.length}`;
-      status.textContent = `// ${showing} de ${items.length} filtrados · ${allItems.length} total · orden ${sortMode}`;
     }
 
     function openLightbox(it) {
@@ -615,6 +610,7 @@
         allItems = data.items || [];
         buildMotorChips();
         applyFilters();
+        status.textContent = '';
         // Alimenta la lluvia Matrix con los títulos (subliminal)
         window.MATRIX_TITLES_FEED = allItems
           .map(it => (it.title || it.comment || it.prompt || '').toString().trim())
