@@ -1021,10 +1021,9 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
 }
 .stock-toolbar-row .chips { gap: 6px; }
-.stock-toolbar-sortpage {
-  justify-content: space-between;
-  border-top: 1px solid var(--line);
-  padding-top: 10px;
+.stock-pager-sort {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  flex: 1 1 auto; justify-content: center;
 }
 .stock-search-field { flex: 1 1 220px; min-width: 180px; margin: 0; }
 .stock-toolbar input[type="text"] {
@@ -1039,10 +1038,12 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   outline: none; border-color: var(--matrix); box-shadow: var(--glow);
 }
 /* El pager y la barra de orden, dentro del toolbar, sin caja propia */
-.stock-toolbar .stock-sortbar { margin: 0; }
 .stock-toolbar .stock-pager {
   border: 0; background: transparent; margin: 0; padding: 0;
-  justify-content: flex-end; gap: 14px;
+  justify-content: space-between; gap: 14px;
+}
+.stock-toolbar .stock-pager-top {
+  border-top: 1px solid var(--line); padding-top: 10px;
 }
 .stock-status {
   margin-top: 8px;

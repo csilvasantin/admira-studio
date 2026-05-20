@@ -84,34 +84,32 @@
           <button type="button" class="stock-view-btn" data-view="medium" title="Medio">◻</button>
         </div>
       </div>
-      <div class="stock-toolbar-row stock-toolbar-sortpage">
-        <div class="stock-sortbar" id="stockSortBar" role="group" aria-label="Ordenar por">
+      <nav class="stock-pager stock-pager-top" aria-label="Orden y paginación">
+        <div class="stock-pager-size">
+          <label>Por página <select class="stock-page-size" aria-label="Resultados por página">
+            <option value="10" selected>10</option>
+            <option value="12">12</option>
+            <option value="24">24</option>
+            <option value="48">48</option>
+            <option value="96">96</option>
+            <option value="0">todos</option>
+          </select></label>
+        </div>
+        <div class="stock-pager-sort" id="stockSortBar" role="group" aria-label="Ordenar por">
           <span class="stock-sortbar-label">Ordenar:</span>
           <button type="button" class="stock-sort-th" data-key="name">Nombre <span class="stock-sort-arrow">⇅</span></button>
           <button type="button" class="stock-sort-th" data-key="date">Fecha <span class="stock-sort-arrow">⇅</span></button>
           <button type="button" class="stock-sort-th" data-key="type">Tipo <span class="stock-sort-arrow">⇅</span></button>
           <button type="button" class="stock-sort-th" data-key="motor">Motor <span class="stock-sort-arrow">⇅</span></button>
         </div>
-        <nav class="stock-pager stock-pager-top" hidden aria-label="Paginación (arriba)">
-          <div class="stock-pager-size">
-            <label>Por página <select class="stock-page-size" aria-label="Resultados por página">
-              <option value="10" selected>10</option>
-              <option value="12">12</option>
-              <option value="24">24</option>
-              <option value="48">48</option>
-              <option value="96">96</option>
-              <option value="0">todos</option>
-            </select></label>
-          </div>
-          <div class="stock-pager-controls">
-            <button type="button" class="stock-pager-btn" data-page="first" title="Primera página">«</button>
-            <button type="button" class="stock-pager-btn" data-page="prev" title="Anterior">‹</button>
-            <span class="stock-pager-info">— / —</span>
-            <button type="button" class="stock-pager-btn" data-page="next" title="Siguiente">›</button>
-            <button type="button" class="stock-pager-btn" data-page="last" title="Última página">»</button>
-          </div>
-        </nav>
-      </div>
+        <div class="stock-pager-controls">
+          <button type="button" class="stock-pager-btn" data-page="first" title="Primera página">«</button>
+          <button type="button" class="stock-pager-btn" data-page="prev" title="Anterior">‹</button>
+          <span class="stock-pager-info">— / —</span>
+          <button type="button" class="stock-pager-btn" data-page="next" title="Siguiente">›</button>
+          <button type="button" class="stock-pager-btn" data-page="last" title="Última página">»</button>
+        </div>
+      </nav>
       <div id="stockStatus" class="stock-status">// cargando stock...</div>
     </section>
 
@@ -418,10 +416,19 @@
       grid.innerHTML = pageItems.map(renderCard).join('');
       empty.hidden = items.length > 0;
 
-      // Pager UI (arriba y abajo)
+      // Pager UI. El superior lleva el orden integrado, así que no se oculta del
+      // todo: solo escondemos sus flechas cuando hay una única página. El inferior
+      // (solo paginación) sí se oculta entero.
       const hidePagers = (pageSize === 0 || sorted.length <= pageSize);
       pagers.forEach(p => {
-        p.hidden = hidePagers;
+        const isTop = p.classList.contains('stock-pager-top');
+        const controls = p.querySelector('.stock-pager-controls');
+        if (isTop) {
+          p.hidden = false;
+          if (controls) controls.hidden = hidePagers;
+        } else {
+          p.hidden = hidePagers;
+        }
         if (hidePagers) return;
         p.querySelector('.stock-pager-info').textContent = `Página ${currentPage} / ${totalPages}`;
         p.querySelector('[data-page="first"]').disabled = currentPage <= 1;
