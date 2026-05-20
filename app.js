@@ -1959,22 +1959,26 @@
   // Whitelist de hosts en ambos: YouTube, Vimeo, Twitter/X, TikTok, Instagram.
   // Desde GitHub Pages (https://...) el browser bloquea fetch a http://localhost
   // por mixed-content, asi que routeamos al Funnel.
-  function pickImportEndpoint() {
+  // Backends posibles, en orden de preferencia. Cada uno con su health-check.
+  // En https público el navegador bloquea fetch a http://localhost (mixed-content),
+  // así que ahí solo está admira-tube. En local probamos suno-local y caemos a admira-tube.
+  function importEndpoints() {
     const isLocalOrigin = location.protocol === 'http:'
       || location.hostname === 'localhost'
       || location.hostname === '127.0.0.1';
-    if (isLocalOrigin) {
-      return {
-        kind: 'suno-local',
-        url: 'http://127.0.0.1:3777/yt/import',
-        bodyFor: (u, fmt) => ({ url: u, format: fmt }),
-      };
-    }
-    return {
-      kind: 'admira-tube',
-      url: 'https://macmini.tail48b61c.ts.net/admira/tube/download',
+    const sunoLocal = {
+      kind: 'suno-local',
+      url: 'http://127.0.0.1:3777/yt/import',
+      healthUrl: 'http://127.0.0.1:3777/healthz',
       bodyFor: (u, fmt) => ({ url: u, format: fmt }),
     };
+    const admiraTube = {
+      kind: 'admira-tube',
+      url: 'https://macmini.tail48b61c.ts.net/admira/tube/download',
+      healthUrl: 'https://macmini.tail48b61c.ts.net/admira/tube/health',
+      bodyFor: (u, fmt) => ({ url: u, format: fmt }),
+    };
+    return isLocalOrigin ? [sunoLocal, admiraTube] : [admiraTube];
   }
 
   function bindImportModal() {
@@ -1990,6 +1994,8 @@
       if (progressFill) { progressFill.style.width = '0%'; progressFill.style.background = ''; }
       const cmt = document.getElementById('import-comment');
       if (cmt) cmt.value = '';
+      const rb = document.getElementById('retryImport');
+      if (rb) rb.hidden = true;
       dlg.showModal();
     });
     document.getElementById('closeImport')?.addEventListener('click', () => dlg.close());
@@ -2074,92 +2080,161 @@
       }
     });
 
-    document.getElementById('doImport')?.addEventListener('click', async () => {
+    // Botón de reintento: se inyecta junto a los demás y se muestra tras un fallo.
+    let lastImportArgs = null;
+    let importInFlight = false;
+    const retryBtn = document.createElement('button');
+    retryBtn.type = 'button';
+    retryBtn.className = 'btn';
+    retryBtn.id = 'retryImport';
+    retryBtn.textContent = '↻ Reintentar';
+    retryBtn.hidden = true;
+    document.querySelector('#importModal .keys-actions')?.appendChild(retryBtn);
+
+    // Pre-chequeo de salud del backend (rápido, abortable). true = responde.
+    async function importHealthOk(ep, ms = 4500) {
+      if (!ep.healthUrl) return true;
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), ms);
+      try {
+        const r = await fetch(ep.healthUrl, { method: 'GET', signal: ctrl.signal, cache: 'no-store' });
+        if (!r.ok) return false;
+        try { const j = await r.json(); return j.ok !== false && j.available !== false; }
+        catch { return true; }
+      } catch { return false; }
+      finally { clearTimeout(timer); }
+    }
+
+    // Elige el primer backend sano de la lista (fallback automático).
+    async function pickHealthyEndpoint(stat) {
+      for (const ep of importEndpoints()) {
+        if (stat) stat.textContent = `// comprobando ${ep.kind}…`;
+        if (await importHealthOk(ep)) return ep;
+      }
+      return null;
+    }
+
+    async function runImport() {
+      if (importInFlight || !lastImportArgs) return;
+      const { url, fmt, comment } = lastImportArgs;
+      const stat = document.getElementById('importStatus');
+      stat.style.display = 'block';
+      retryBtn.hidden = true;
+      importInFlight = true;
+      try {
+        // 1) Pre-chequeo: ¿hay backend vivo? Evita esperar a un timeout largo.
+        const ep = await pickHealthyEndpoint(stat);
+        if (!ep) {
+          stat.textContent = `// El proxy de importación no responde (ningún backend sano).\n`
+            + `// admira-tube (Funnel) caído. En el Mac Mini:\n`
+            + `//   cd ~/GitHub/01.-AdmiraXperience-Game && ./start-admira-tube.sh\n`
+            + `// suno-local (solo en local):\n`
+            + `//   cd ~/Documents/New\\ project/csilvasantin-repos/suno-local && node server.js`;
+          retryBtn.hidden = false;
+          return;
+        }
+
+        stat.textContent = `// ${ep.kind} OK · descargando ${fmt}…\n// puede tardar 10-60s según media`;
+        const progress = importProgressStart(fmt);
+        const t0 = Date.now();
+        try {
+          const r = await fetch(ep.url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(ep.bodyFor(url, fmt)),
+          });
+          if (!r.ok) {
+            let err = '';
+            try { err = JSON.stringify(await r.json()); } catch { err = await r.text(); }
+            stat.textContent = `// ERROR ${r.status}\n${err.slice(0, 400)}`;
+            progress?.error(`ERROR ${r.status}`);
+            retryBtn.hidden = false;
+            return;
+          }
+          // Lee el título que añade admira-tube (X-Tube-Title encoded URI)
+          let importedTitle = '';
+          try { importedTitle = decodeURIComponent(r.headers.get('X-Tube-Title') || ''); } catch {}
+          const { blob } = await fetchWithProgress(r, (received, total, sec) => {
+            progress?.update(received, total, sec);
+          });
+          const sec = ((Date.now() - t0) / 1000).toFixed(1);
+          const sizeMB = (blob.size / 1024 / 1024).toFixed(2);
+          progress?.done(blob.size, parseFloat(sec));
+          const blobUrl = URL.createObjectURL(blob);
+          const kind = fmt === 'video' ? 'video' : 'audio';
+          const elTag = kind;
+          const mime = fmt === 'video' ? 'video/mp4' : 'audio/mpeg';
+          const ytMatch = url.match(/(?:youtube\.com\/.*[?&]v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
+          const thumbnail = ytMatch ? `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg` : null;
+          const importMeta = {
+            type: kind,
+            motor: 'yt-dlp',
+            prompt: url,
+            title: importedTitle || null,
+            comment: comment || null,
+            costEst: `gratis · ${sizeMB}MB · ${sec}s`,
+            url: blobUrl,
+            mime,
+            thumbnail,
+          };
+          const player = document.getElementById('player');
+          if (player) {
+            player.hidden = false;
+            player.innerHTML = `
+              <div class="player-card">
+                <div class="player-head">📥 IMPORTADO · ${kind.toUpperCase()} · ${sizeMB} MB · ${sec}s · ${ep.kind}</div>
+                <${elTag} controls autoplay src="${blobUrl}" style="width:100%;${kind === 'video' ? 'max-height:55vh;' : ''}"></${elTag}>
+                <pre class="player-body">${url.replace(/</g, '&lt;')}</pre>
+                <a class="btn" download="import-${Date.now()}.${fmt === 'video' ? 'mp4' : 'mp3'}" href="${blobUrl}">⬇ Descargar</a>
+                ${publishBtnHTML(importMeta)}
+                <small class="player-foot">// vía yt-dlp (${ep.kind}) · publicando en Stock automáticamente...</small>
+              </div>`;
+          }
+          stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · subiendo a Stock...`;
+          // Auto-publicar en Stock al finalizar la importación
+          const publishBtn = player?.querySelector('.publish-btn');
+          const result = await publishToStock(importMeta, publishBtn);
+          if (result && result.ok) {
+            stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ✅ en Stock · saltando…`;
+            const newId = result.id || '';
+            setTimeout(() => {
+              try { dlg.close(); } catch {}
+              const target = 'https://admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
+              location.href = target;
+            }, 900);
+          } else {
+            stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ❌ Stock: ${(result && result.error || 'fallo').slice(0, 120)}\n// el archivo sigue en el player; pulsa 📌 para reintentar`;
+          }
+        } catch (e) {
+          progress?.error(String(e).slice(0, 80));
+          // El backend pasó el health-check pero la transferencia se cortó. Caso típico:
+          // VIDEO grande — el proxy retiene la respuesta hasta que yt-dlp termina de
+          // descargar+remuxear y el Funnel corta por inactividad antes del primer byte.
+          // El audio es más rápido/pequeño y termina antes del timeout → por eso sí importa.
+          if (fmt === 'video') {
+            stat.textContent = `// ERROR: ${String(e)}\n`
+              + `// ${ep.kind} respondió al health-check → el proxy NO está caído.\n`
+              + `// El vídeo tarda más (descarga vídeo+audio y remuxea) y el Funnel\n`
+              + `// corta la conexión por inactividad antes del primer byte.\n`
+              + `// Por eso el AUDIO sí importa. Reintenta (↻) o importa como AUDIO.`;
+          } else {
+            stat.textContent = `// ERROR: ${String(e)}\n// La descarga se cortó pese a que ${ep.kind} respondía. Reintenta (↻).`;
+          }
+          retryBtn.hidden = false;
+        }
+      } finally {
+        importInFlight = false;
+      }
+    }
+
+    retryBtn.addEventListener('click', runImport);
+    document.getElementById('doImport')?.addEventListener('click', () => {
       const url = document.getElementById('import-url').value.trim();
       const fmt = document.querySelector('input[name="import-fmt"]:checked')?.value || 'audio';
       const comment = (document.getElementById('import-comment')?.value || '').trim();
       if (!url) return;
-      const stat = document.getElementById('importStatus');
-      stat.style.display = 'block';
-      const ep = pickImportEndpoint();
-      stat.textContent = `// llamando a ${ep.kind} (${fmt})...\n// puede tardar 10-60s según media`;
-      const progress = importProgressStart(fmt);
-      const t0 = Date.now();
-      try {
-        const r = await fetch(ep.url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(ep.bodyFor(url, fmt)),
-        });
-        if (!r.ok) {
-          let err = '';
-          try { err = JSON.stringify(await r.json()); } catch { err = await r.text(); }
-          stat.textContent = `// ERROR ${r.status}\n${err.slice(0, 400)}`;
-          progress?.error(`ERROR ${r.status}`);
-          return;
-        }
-        // Lee el título que añade admira-tube (X-Tube-Title encoded URI)
-        let importedTitle = '';
-        try { importedTitle = decodeURIComponent(r.headers.get('X-Tube-Title') || ''); } catch {}
-        const { blob, totalBytes, receivedBytes } = await fetchWithProgress(r, (received, total, sec) => {
-          progress?.update(received, total, sec);
-        });
-        const sec = ((Date.now() - t0) / 1000).toFixed(1);
-        const sizeMB = (blob.size / 1024 / 1024).toFixed(2);
-        progress?.done(blob.size, parseFloat(sec));
-        const blobUrl = URL.createObjectURL(blob);
-        const kind = fmt === 'video' ? 'video' : 'audio';
-        const elTag = kind;
-        const mime = fmt === 'video' ? 'video/mp4' : 'audio/mpeg';
-        const ytMatch = url.match(/(?:youtube\.com\/.*[?&]v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
-        const thumbnail = ytMatch ? `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg` : null;
-        const importMeta = {
-          type: kind,
-          motor: 'yt-dlp',
-          prompt: url,
-          title: importedTitle || null,
-          comment: comment || null,
-          costEst: `gratis · ${sizeMB}MB · ${sec}s`,
-          url: blobUrl,
-          mime,
-          thumbnail,
-        };
-        const player = document.getElementById('player');
-        if (player) {
-          player.hidden = false;
-          player.innerHTML = `
-            <div class="player-card">
-              <div class="player-head">📥 IMPORTADO · ${kind.toUpperCase()} · ${sizeMB} MB · ${sec}s · ${ep.kind}</div>
-              <${elTag} controls autoplay src="${blobUrl}" style="width:100%;${kind === 'video' ? 'max-height:55vh;' : ''}"></${elTag}>
-              <pre class="player-body">${url.replace(/</g, '&lt;')}</pre>
-              <a class="btn" download="import-${Date.now()}.${fmt === 'video' ? 'mp4' : 'mp3'}" href="${blobUrl}">⬇ Descargar</a>
-              ${publishBtnHTML(importMeta)}
-              <small class="player-foot">// vía yt-dlp (${ep.kind}) · publicando en Stock automáticamente...</small>
-            </div>`;
-        }
-        stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · subiendo a Stock...`;
-        // Auto-publicar en Stock al finalizar la importación
-        const publishBtn = player?.querySelector('.publish-btn');
-        const result = await publishToStock(importMeta, publishBtn);
-        if (result && result.ok) {
-          stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ✅ en Stock · saltando…`;
-          const newId = result.id || '';
-          setTimeout(() => {
-            try { dlg.close(); } catch {}
-            const target = 'https://admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
-            location.href = target;
-          }, 900);
-        } else {
-          stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ❌ Stock: ${(result && result.error || 'fallo').slice(0, 120)}\n// el archivo sigue en el player; pulsa 📌 para reintentar`;
-        }
-      } catch (e) {
-        progress?.error(String(e).slice(0, 80));
-        if (ep.kind === 'admira-tube') {
-          stat.textContent = `// ERROR: ${String(e)}\n// El proxy admira-tube (Funnel) no responde.\n// En el Mac Mini: cd ~/GitHub/01.-AdmiraXperience-Game && ./start-admira-tube.sh`;
-        } else {
-          stat.textContent = `// ERROR: ${String(e)}\n// ¿está suno-local arrancado en localhost:3777?\n//   cd ~/Documents/New\\ project/csilvasantin-repos/suno-local && node server.js`;
-        }
-      }
+      lastImportArgs = { url, fmt, comment };
+      runImport();
     });
   }
 
