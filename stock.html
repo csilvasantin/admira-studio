@@ -77,16 +77,6 @@
           <label for="stockDateTo" class="sr-only">Hasta fecha</label>
           <input id="stockDateTo" type="date" title="Hasta">
         </div>
-        <div class="field" style="margin:0;min-width:200px;">
-          <label for="stockSort" class="sr-only">Orden</label>
-          <select id="stockSort" title="Ordenar por">
-            <option value="date-desc">Más recientes primero</option>
-            <option value="date-asc">Más antiguos primero</option>
-            <option value="type">Por tipo (audio·música·imagen·video)</option>
-            <option value="motor">Por motor</option>
-            <option value="size-desc">Por tamaño (grandes primero)</option>
-          </select>
-        </div>
         <button type="button" class="btn" id="stockRefresh" title="Volver a pedir la lista al worker">↻ Refrescar</button>
         <div class="stock-view" role="group" aria-label="Tamaño de vista">
           <button type="button" class="stock-view-btn" data-view="list" title="Lista">☰</button>
@@ -98,29 +88,57 @@
     </section>
 
     <section>
-      <div id="stockGrid" class="stock-grid"></div>
-      <div id="stockEmpty" class="stock-empty" hidden>
-        <p>// Stock vacío.</p>
-        <p>Genera un asset en Audio/Música/Imágenes/Video y pulsa <strong>📌 PUBLICAR EN STOCK</strong>.</p>
+      <div class="stock-sortbar" id="stockSortBar" role="group" aria-label="Ordenar por">
+        <span class="stock-sortbar-label">Ordenar:</span>
+        <button type="button" class="stock-sort-th" data-key="name">Nombre <span class="stock-sort-arrow">⇅</span></button>
+        <button type="button" class="stock-sort-th" data-key="date">Fecha <span class="stock-sort-arrow">⇅</span></button>
+        <button type="button" class="stock-sort-th" data-key="type">Tipo <span class="stock-sort-arrow">⇅</span></button>
+        <button type="button" class="stock-sort-th" data-key="motor">Motor <span class="stock-sort-arrow">⇅</span></button>
       </div>
-      <nav id="stockPager" class="stock-pager" hidden aria-label="Paginación">
+
+      <nav class="stock-pager stock-pager-top" hidden aria-label="Paginación (arriba)">
         <div class="stock-pager-size">
-          <label for="stockPageSize">Por página</label>
-          <select id="stockPageSize">
+          <label>Por página <select class="stock-page-size" aria-label="Resultados por página">
             <option value="10" selected>10</option>
             <option value="12">12</option>
             <option value="24">24</option>
             <option value="48">48</option>
             <option value="96">96</option>
             <option value="0">todos</option>
-          </select>
+          </select></label>
         </div>
         <div class="stock-pager-controls">
-          <button type="button" class="stock-pager-btn" id="stockPagerFirst" title="Primera página">«</button>
-          <button type="button" class="stock-pager-btn" id="stockPagerPrev" title="Anterior">‹</button>
-          <span class="stock-pager-info" id="stockPagerInfo">— / —</span>
-          <button type="button" class="stock-pager-btn" id="stockPagerNext" title="Siguiente">›</button>
-          <button type="button" class="stock-pager-btn" id="stockPagerLast" title="Última página">»</button>
+          <button type="button" class="stock-pager-btn" data-page="first" title="Primera página">«</button>
+          <button type="button" class="stock-pager-btn" data-page="prev" title="Anterior">‹</button>
+          <span class="stock-pager-info">— / —</span>
+          <button type="button" class="stock-pager-btn" data-page="next" title="Siguiente">›</button>
+          <button type="button" class="stock-pager-btn" data-page="last" title="Última página">»</button>
+        </div>
+      </nav>
+
+      <div id="stockGrid" class="stock-grid"></div>
+      <div id="stockEmpty" class="stock-empty" hidden>
+        <p>// Stock vacío.</p>
+        <p>Genera un asset en Audio/Música/Imágenes/Video y pulsa <strong>📌 PUBLICAR EN STOCK</strong>.</p>
+      </div>
+
+      <nav class="stock-pager stock-pager-bottom" hidden aria-label="Paginación (abajo)">
+        <div class="stock-pager-size">
+          <label>Por página <select class="stock-page-size" aria-label="Resultados por página">
+            <option value="10" selected>10</option>
+            <option value="12">12</option>
+            <option value="24">24</option>
+            <option value="48">48</option>
+            <option value="96">96</option>
+            <option value="0">todos</option>
+          </select></label>
+        </div>
+        <div class="stock-pager-controls">
+          <button type="button" class="stock-pager-btn" data-page="first" title="Primera página">«</button>
+          <button type="button" class="stock-pager-btn" data-page="prev" title="Anterior">‹</button>
+          <span class="stock-pager-info">— / —</span>
+          <button type="button" class="stock-pager-btn" data-page="next" title="Siguiente">›</button>
+          <button type="button" class="stock-pager-btn" data-page="last" title="Última página">»</button>
         </div>
       </nav>
     </section>
@@ -188,7 +206,7 @@
     const dateFilter = document.getElementById('dateFilter');
     const dateFrom = document.getElementById('stockDateFrom');
     const dateTo = document.getElementById('stockDateTo');
-    const sortSelect = document.getElementById('stockSort');
+    const sortBar = document.getElementById('stockSortBar');
     const lightbox = document.getElementById('stockLightbox');
     const lightboxInner = document.getElementById('stockLightboxInner');
     const lightboxMeta = document.getElementById('stockLightboxMeta');
@@ -200,9 +218,8 @@
     let sortMode = 'date-desc';
     let pageSize = 10; // 0 = mostrar todos
     let currentPage = 1;
-    const pager = document.getElementById('stockPager');
-    const pagerInfo = document.getElementById('stockPagerInfo');
-    const pageSizeSel = document.getElementById('stockPageSize');
+    const pagers = Array.from(document.querySelectorAll('.stock-pager'));
+    const pageSizeSels = Array.from(document.querySelectorAll('.stock-page-size'));
 
     function fmtDate(iso) {
       try { return new Date(iso).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }); }
@@ -311,48 +328,20 @@
     }
     function sortItems(items, mode) {
       const sorted = items.slice();
-      if (mode === 'date-desc') {
-        sorted.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
-      } else if (mode === 'date-asc') {
-        sorted.sort((a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''));
-      } else if (mode === 'type') {
-        sorted.sort((a, b) => {
-          const ta = TYPE_ORDER[a.type] ?? 99;
-          const tb = TYPE_ORDER[b.type] ?? 99;
-          if (ta !== tb) return ta - tb;
-          return (b.createdAt || '').localeCompare(a.createdAt || '');
-        });
-      } else if (mode === 'motor') {
-        sorted.sort((a, b) => {
-          const cmp = String(a.motor || '').localeCompare(String(b.motor || ''));
-          if (cmp !== 0) return cmp;
-          return (b.createdAt || '').localeCompare(a.createdAt || '');
-        });
-      } else if (mode === 'size-desc') {
-        sorted.sort((a, b) => (b.size || 0) - (a.size || 0));
-      }
-      return sorted;
-    }
-
-    function renderGrouped(items, mode) {
-      if (mode !== 'type' && mode !== 'motor') return items.map(renderCard).join('');
-      const groups = new Map();
-      const keyFor = it => mode === 'type' ? it.type : (it.motor || 'sin-motor');
-      const labelFor = key => {
-        if (mode === 'type') {
-          return { audio: '🎵 Audio', music: '🎶 Música', image: '🖼 Imágenes', video: '🎬 Video' }[key] || key;
-        }
-        return '⚙ ' + key;
+      const recent = (a, b) => (b.createdAt || '').localeCompare(a.createdAt || '');
+      const name = it => (it.title || it.prompt || '').trim();
+      const comparators = {
+        'date-desc': recent,
+        'date-asc':  (a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''),
+        'name-asc':  (a, b) => name(a).localeCompare(name(b), 'es', { sensitivity: 'base' }) || recent(a, b),
+        'name-desc': (a, b) => name(b).localeCompare(name(a), 'es', { sensitivity: 'base' }) || recent(a, b),
+        'type-asc':  (a, b) => ((TYPE_ORDER[a.type] ?? 99) - (TYPE_ORDER[b.type] ?? 99)) || recent(a, b),
+        'type-desc': (a, b) => ((TYPE_ORDER[b.type] ?? 99) - (TYPE_ORDER[a.type] ?? 99)) || recent(a, b),
+        'motor-asc': (a, b) => String(a.motor || '').localeCompare(String(b.motor || ''), 'es', { sensitivity: 'base' }) || recent(a, b),
+        'motor-desc':(a, b) => String(b.motor || '').localeCompare(String(a.motor || ''), 'es', { sensitivity: 'base' }) || recent(a, b),
       };
-      for (const it of items) {
-        const k = keyFor(it);
-        if (!groups.has(k)) groups.set(k, []);
-        groups.get(k).push(it);
-      }
-      return Array.from(groups.entries()).map(([k, arr]) => `
-        <h3 class="stock-group-head">${labelFor(k)} <span class="stock-group-count">${arr.length}</span></h3>
-        <div class="stock-grid stock-group-grid">${arr.map(renderCard).join('')}</div>
-      `).join('');
+      sorted.sort(comparators[mode] || recent);
+      return sorted;
     }
 
     function renderActiveTagBanner() {
@@ -424,28 +413,21 @@
         ? sorted.slice((currentPage - 1) * pageSize, currentPage * pageSize)
         : sorted;
 
-      if (sortMode === 'type' || sortMode === 'motor') {
-        grid.classList.add('stock-grid-grouped');
-        grid.innerHTML = renderGrouped(pageItems, sortMode);
-      } else {
-        grid.classList.remove('stock-grid-grouped');
-        grid.innerHTML = pageItems.map(renderCard).join('');
-      }
+      grid.classList.remove('stock-grid-grouped');
+      grid.innerHTML = pageItems.map(renderCard).join('');
       empty.hidden = items.length > 0;
 
-      // Pager UI
-      if (pager) {
-        if (pageSize === 0 || sorted.length <= pageSize) {
-          pager.hidden = true;
-        } else {
-          pager.hidden = false;
-          pagerInfo.textContent = `Página ${currentPage} / ${totalPages}`;
-          document.getElementById('stockPagerFirst').disabled = currentPage <= 1;
-          document.getElementById('stockPagerPrev').disabled = currentPage <= 1;
-          document.getElementById('stockPagerNext').disabled = currentPage >= totalPages;
-          document.getElementById('stockPagerLast').disabled = currentPage >= totalPages;
-        }
-      }
+      // Pager UI (arriba y abajo)
+      const hidePagers = (pageSize === 0 || sorted.length <= pageSize);
+      pagers.forEach(p => {
+        p.hidden = hidePagers;
+        if (hidePagers) return;
+        p.querySelector('.stock-pager-info').textContent = `Página ${currentPage} / ${totalPages}`;
+        p.querySelector('[data-page="first"]').disabled = currentPage <= 1;
+        p.querySelector('[data-page="prev"]').disabled = currentPage <= 1;
+        p.querySelector('[data-page="next"]').disabled = currentPage >= totalPages;
+        p.querySelector('[data-page="last"]').disabled = currentPage >= totalPages;
+      });
 
       const showing = pageSize > 0
         ? `${pageItems.length} (pág ${currentPage}/${totalPages})`
@@ -648,10 +630,29 @@
       filters.q = search.value.trim().toLowerCase();
       applyFilters(true);
     });
-    sortSelect.addEventListener('change', () => {
-      sortMode = sortSelect.value;
+    // Cabezales ordenables (Nombre / Fecha / Tipo / Motor) — clic alterna asc/desc
+    const SORT_DEFAULT_DIR = { name: 'asc', date: 'desc', type: 'asc', motor: 'asc' };
+    const SORT_VALID = new Set(['name-asc','name-desc','date-asc','date-desc','type-asc','type-desc','motor-asc','motor-desc']);
+    function applySortIndicators() {
+      const [key, dir] = sortMode.split('-');
+      sortBar.querySelectorAll('.stock-sort-th').forEach(b => {
+        const active = b.dataset.key === key;
+        b.classList.toggle('active', active);
+        const arrow = b.querySelector('.stock-sort-arrow');
+        if (arrow) arrow.textContent = active ? (dir === 'asc' ? '▲' : '▼') : '⇅';
+      });
+    }
+    sortBar.querySelectorAll('.stock-sort-th').forEach(b => b.addEventListener('click', () => {
+      const key = b.dataset.key;
+      const [curKey, curDir] = sortMode.split('-');
+      const dir = curKey === key ? (curDir === 'asc' ? 'desc' : 'asc') : (SORT_DEFAULT_DIR[key] || 'asc');
+      sortMode = `${key}-${dir}`;
+      try { localStorage.setItem('stockSort', sortMode); } catch {}
+      applySortIndicators();
       applyFilters(true);
-    });
+    }));
+    try { const s = localStorage.getItem('stockSort'); if (s && SORT_VALID.has(s)) sortMode = s; } catch {}
+    applySortIndicators();
     dateFilter.querySelectorAll('input').forEach(i => i.addEventListener('change', () => {
       filters.dateQuick = i.value;
       dateFilter.querySelectorAll('.chip').forEach(c => {
@@ -680,20 +681,26 @@
     try { savedView = localStorage.getItem('stockView') || 'list'; } catch {}
     applyStockView(savedView);
 
-    // Pager
-    pageSizeSel.addEventListener('change', () => {
-      pageSize = parseInt(pageSizeSel.value, 10) || 0;
+    // Pager (arriba y abajo, sincronizados)
+    pageSizeSels.forEach(sel => sel.addEventListener('change', () => {
+      pageSize = parseInt(sel.value, 10) || 0;
+      pageSizeSels.forEach(s => { s.value = String(pageSize); });
       try { localStorage.setItem('stockPageSize', String(pageSize)); } catch {}
       applyFilters(true);
-    });
+    }));
     try {
       const saved = parseInt(localStorage.getItem('stockPageSize') || '', 10);
-      if (!isNaN(saved)) { pageSize = saved; pageSizeSel.value = String(saved); }
+      if (!isNaN(saved)) { pageSize = saved; pageSizeSels.forEach(s => { s.value = String(saved); }); }
     } catch {}
-    document.getElementById('stockPagerFirst').addEventListener('click', () => { currentPage = 1; applyFilters(); window.scrollTo({top:0,behavior:'smooth'}); });
-    document.getElementById('stockPagerPrev').addEventListener('click', () => { currentPage = Math.max(1, currentPage - 1); applyFilters(); window.scrollTo({top:0,behavior:'smooth'}); });
-    document.getElementById('stockPagerNext').addEventListener('click', () => { currentPage += 1; applyFilters(); window.scrollTo({top:0,behavior:'smooth'}); });
-    document.getElementById('stockPagerLast').addEventListener('click', () => { currentPage = 99999; applyFilters(); window.scrollTo({top:0,behavior:'smooth'}); });
+    pagers.forEach(p => p.querySelectorAll('.stock-pager-btn').forEach(btn => btn.addEventListener('click', () => {
+      const act = btn.dataset.page;
+      if (act === 'first') currentPage = 1;
+      else if (act === 'prev') currentPage = Math.max(1, currentPage - 1);
+      else if (act === 'next') currentPage += 1;
+      else if (act === 'last') currentPage = 99999;
+      applyFilters();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    })));
 
     // Track de reproducciones: 1 POST por asset + sesión cuando empieza a sonar
     const trackedPlays = new Set();

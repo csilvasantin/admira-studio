@@ -1243,6 +1243,27 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   border-top: 1px solid var(--line);
   padding-top: 8px;
 }
+/* ── Stock: barra de cabezales ordenables ── */
+.stock-sortbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  margin: 0 0 12px;
+}
+.stock-sortbar-label {
+  color: var(--muted); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+}
+.stock-sort-th {
+  appearance: none; background: rgba(0, 20, 5, .35); color: var(--ink);
+  border: 1px solid var(--line-bright); font-family: inherit;
+  font-size: 12px; letter-spacing: .04em; padding: 6px 12px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.stock-sort-th:hover { border-color: var(--matrix); color: #fff; }
+.stock-sort-th.active { border-color: var(--matrix); color: var(--matrix); background: rgba(0, 255, 65, .08); }
+.stock-sort-arrow { font-size: 10px; color: var(--muted); }
+.stock-sort-th.active .stock-sort-arrow { color: var(--matrix); }
+.stock-pager-top { margin-top: 0; margin-bottom: 14px; }
+
 .stock-pager {
   display: flex;
   align-items: center;
