@@ -1027,6 +1027,11 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 }
 .stock-pager-search { flex: 1 1 220px; min-width: 160px; }
 .stock-pager-search input[type="text"] { width: 100%; }
+.stock-pager-filters { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+.stock-pager-filters select {
+  background: #000; color: var(--matrix); border: 1px solid var(--line-bright);
+  font-family: inherit; font-size: 12px; padding: 5px 6px; max-width: 140px;
+}
 .stock-refresh-icon { flex: 0 0 auto; padding: 6px 11px; }
 .stock-status:empty { display: none; }
 .stock-toolbar input[type="text"] {
