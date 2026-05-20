@@ -1043,8 +1043,16 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 /* El pager y la barra de orden, dentro del toolbar, sin caja propia */
 .stock-toolbar .stock-pager {
   border: 0; background: transparent; margin: 0; padding: 0;
-  justify-content: flex-start; gap: 14px;
+  justify-content: flex-start; gap: 8px;
 }
+.stock-toolbar .stock-pager-sort { flex-wrap: nowrap; }
+.stock-toolbar .stock-pager-search { flex: 1 1 140px; min-width: 120px; }
+.stock-toolbar .stock-pager-controls { gap: 4px; }
+.stock-toolbar .stock-sort-th { padding: 5px 9px; }
+.stock-toolbar .stock-pager-size select { padding: 4px 6px; }
+.stock-toolbar .stock-pager-btn { min-width: 28px; height: 28px; padding: 0 7px; font-size: 13px; }
+.stock-toolbar .stock-pager-info { font-size: 12px; min-width: 30px; text-align: center; }
+.stock-toolbar .stock-refresh-icon { padding: 4px 9px; height: 28px; }
 .stock-toolbar .stock-pager-top {
   border-top: 1px solid var(--line); padding-top: 10px;
 }

@@ -77,14 +77,14 @@
           <input id="stockSearch" type="text" placeholder="🔍 buscar en prompts, comentarios, tags…" autocomplete="off">
         </div>
         <div class="stock-pager-size">
-          <label>Por página <select class="stock-page-size" aria-label="Resultados por página">
+          <select class="stock-page-size" title="Resultados por página" aria-label="Resultados por página">
             <option value="10" selected>10</option>
             <option value="12">12</option>
             <option value="24">24</option>
             <option value="48">48</option>
             <option value="96">96</option>
             <option value="0">todos</option>
-          </select></label>
+          </select>
         </div>
         <div class="stock-pager-sort" id="stockSortBar" role="group" aria-label="Ordenar por">
           <span class="stock-sortbar-label">Ordenar:</span>
@@ -115,14 +115,14 @@
 
       <nav class="stock-pager stock-pager-bottom" hidden aria-label="Paginación (abajo)">
         <div class="stock-pager-size">
-          <label>Por página <select class="stock-page-size" aria-label="Resultados por página">
+          <select class="stock-page-size" title="Resultados por página" aria-label="Resultados por página">
             <option value="10" selected>10</option>
             <option value="12">12</option>
             <option value="24">24</option>
             <option value="48">48</option>
             <option value="96">96</option>
             <option value="0">todos</option>
-          </select></label>
+          </select>
         </div>
         <div class="stock-pager-controls">
           <button type="button" class="stock-pager-btn" data-page="first" title="Primera página">«</button>
@@ -420,7 +420,7 @@
           p.hidden = hidePagers;
         }
         if (hidePagers) return;
-        p.querySelector('.stock-pager-info').textContent = `Página ${currentPage} / ${totalPages}`;
+        p.querySelector('.stock-pager-info').textContent = `${currentPage}/${totalPages}`;
         p.querySelector('[data-page="first"]').disabled = currentPage <= 1;
         p.querySelector('[data-page="prev"]').disabled = currentPage <= 1;
         p.querySelector('[data-page="next"]').disabled = currentPage >= totalPages;
