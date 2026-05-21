@@ -28,7 +28,7 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r70</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r71</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
@@ -136,7 +136,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r70</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · Pixer.ia × Admira.xp · v.2026.05.02-r71</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -276,9 +276,12 @@
       const idAttr = String(it.id || '').replace(/[^A-Za-z0-9-]/g, '');
       const assetUrl = escAttr(it.url || '');
       const titleRaw = (it.title || '').trim();
-      const titleBlock = titleRaw
-        ? `<p class="stock-title" title="${escAttr(titleRaw)}">${titleRaw.replace(/</g,'&lt;').slice(0, 90)}${titleRaw.length > 90 ? '…' : ''}</p>`
+      const titleInline = titleRaw
+        ? `<span class="stock-title-inline" title="${escAttr(titleRaw)}">${titleRaw.replace(/</g,'&lt;').slice(0, 90)}${titleRaw.length > 90 ? '…' : ''}</span>`
         : '';
+      // Meta de cabecera (sube footer + motor a la línea del badge): motor · coste · fecha
+      const headMeta = [it.motor, it.costEst, fmtDate(it.createdAt)]
+        .filter(Boolean).map(s => String(s).replace(/</g, '&lt;')).join(' · ');
       const commentRaw = (it.comment || '').trim();
       const commentSafe = commentRaw.replace(/</g, '&lt;');
       const commentBlock = commentRaw
@@ -297,15 +300,11 @@
               <button type="button" class="stock-card-btn" data-act="max" title="Maximizar"><span aria-hidden="true">⛶</span></button>
               <button type="button" class="stock-card-btn danger" data-act="del" title="Eliminar"><span aria-hidden="true">🗑</span></button>
             </div>
-            <span class="stock-motor">${it.motor}</span>
+            ${titleInline}
+            <span class="stock-head-meta">${headMeta}</span>
           </header>
-          ${titleBlock}
           ${tagsBlock}
           <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
-          <footer>
-            <span class="stock-cost">${it.costEst || ''}</span>
-            <span class="stock-date">${fmtDate(it.createdAt)}</span>
-          </footer>
           ${commentBlock}
         </div>
       </article>`;

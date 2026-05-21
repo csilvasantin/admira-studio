@@ -1120,11 +1120,22 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   font-size: 40px; color: var(--matrix);
   text-shadow: var(--glow);
 }
-.stock-card-body { padding: 12px 14px; display: grid; gap: 8px; }
+.stock-card-body { padding: 12px 14px; display: grid; gap: 8px; min-width: 0; }
 .stock-card-body header {
-  display: flex; gap: 8px; align-items: center;
+  display: flex; gap: 8px; align-items: center; min-width: 0;
 }
-.stock-card-body header .stock-motor { margin-left: auto; }
+/* Título inline en la cabecera (junto al badge + iconos) */
+.stock-title-inline {
+  flex: 1 1 auto; min-width: 0;
+  color: var(--ink); font-size: 13px; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* Meta combinada a la derecha: motor · coste · fecha */
+.stock-head-meta {
+  margin-left: auto; flex: 0 0 auto;
+  color: var(--muted); font-size: 11px; white-space: nowrap;
+}
+.stock-grid.view-compact .stock-head-meta { display: none; }
 .stock-type {
   display: inline-block; padding: 2px 8px; font-size: 10px;
   letter-spacing: .12em; text-transform: uppercase;
