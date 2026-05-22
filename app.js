@@ -2109,6 +2109,80 @@
     retryBtn.hidden = true;
     document.querySelector('#importModal .keys-actions')?.appendChild(retryBtn);
 
+    // Plan B (fallback degradado): subir un archivo local directo al Stock.
+    // El Stock (worker pixer-eleven en Cloudflare) está siempre encendido, así que
+    // esto funciona aunque el Mac Mini (importador yt-dlp) esté dormido o apagado.
+    const localInput = document.createElement('input');
+    localInput.type = 'file';
+    localInput.accept = 'audio/*,video/*,image/*';
+    localInput.hidden = true;
+    localInput.id = 'importLocalFile';
+    dlg.appendChild(localInput);
+    const localBtn = document.createElement('button');
+    localBtn.type = 'button';
+    localBtn.className = 'btn';
+    localBtn.id = 'importLocalBtn';
+    localBtn.textContent = '📂 Archivo local → Stock';
+    localBtn.title = 'Sube un archivo desde este dispositivo directo al Stock (no depende del Mac Mini)';
+    document.querySelector('#importModal .keys-actions')?.appendChild(localBtn);
+    localBtn.addEventListener('click', () => localInput.click());
+    localInput.addEventListener('change', () => {
+      const file = localInput.files && localInput.files[0];
+      if (file) publishLocalFile(file);
+      localInput.value = '';
+    });
+
+    // Publica un archivo del dispositivo directo al Stock, sin pasar por el Mac.
+    async function publishLocalFile(file) {
+      if (importInFlight) return;
+      const stat = document.getElementById('importStatus');
+      stat.style.display = 'block';
+      retryBtn.hidden = true;
+      importInFlight = true;
+      const mt = file.type || '';
+      const type = mt.startsWith('video') ? 'video' : mt.startsWith('image') ? 'image' : 'audio';
+      const progress = importProgressStart(type === 'video' ? 'video' : 'audio');
+      try {
+        const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+        stat.textContent = `// archivo local: ${file.name} · ${sizeMB} MB · subiendo al Stock…`;
+        const dataUrl = await new Promise((res, rej) => {
+          const fr = new FileReader();
+          fr.onload = () => res(fr.result);
+          fr.onerror = () => rej(fr.error || new Error('no se pudo leer el archivo'));
+          fr.readAsDataURL(file);
+        });
+        const comment = (document.getElementById('import-comment')?.value || '').trim();
+        const meta = {
+          type, motor: 'local',
+          prompt: file.name,
+          title: file.name.replace(/\.[^.]+$/, ''),
+          comment: comment || null,
+          costEst: `local · ${sizeMB}MB`,
+          url: dataUrl,
+          mime: mt || null,
+        };
+        const result = await publishToStock(meta, null);
+        if (result && result.ok) {
+          progress?.done(file.size, 0);
+          stat.textContent = `✓ ${file.name} · ✅ en Stock · saltando…`;
+          const newId = result.id || '';
+          setTimeout(() => {
+            try { dlg.close(); } catch {}
+            location.href = 'https://admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
+          }, 900);
+        } else {
+          progress?.error('fallo al publicar');
+          stat.textContent = `❌ Stock: ${(result && result.error || 'fallo').slice(0, 140)}`;
+        }
+      } catch (e) {
+        const msg = String(e && e.message || e);
+        progress?.error(msg.slice(0, 80));
+        stat.textContent = `// ERROR archivo local: ${msg}`;
+      } finally {
+        importInFlight = false;
+      }
+    }
+
     // Pre-chequeo de salud del backend (rápido, abortable). true = responde.
     async function importHealthOk(ep, ms = 4500) {
       if (!ep.healthUrl) return true;
@@ -2202,12 +2276,12 @@
         // 1) Pre-chequeo: ¿hay backend vivo? Evita esperar a un timeout largo.
         const ep = await pickHealthyEndpoint(stat);
         if (!ep) {
-          stat.textContent = `// El proxy de importación no responde (ningún backend sano).\n`
-            + `// admira-tube (Funnel) caído. En el Mac Mini:\n`
-            + `//   cd ~/GitHub/01.-AdmiraXperience-Game && ./start-admira-tube.sh\n`
-            + `// suno-local (solo en local):\n`
-            + `//   cd ~/Documents/New\\ project/csilvasantin-repos/suno-local && node server.js`;
+          stat.textContent = `// El importador (Mac Mini) está dormido o apagado ahora mismo.\n`
+            + `// PLAN B: pulsa «📂 Archivo local → Stock» para subir un archivo\n`
+            + `//   desde este dispositivo directo al Stock (funciona sin el Mac).\n`
+            + `// O reintenta (↻) en unos segundos por si el Mac despierta.`;
           retryBtn.hidden = false;
+          try { localBtn.focus(); } catch {}
           return;
         }
 
