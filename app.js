@@ -102,6 +102,20 @@
       duracion: '15s',
       reusa: ['audio', 'musica'],
     },
+    publicidad: {
+      source: 'Simulador local',
+      screen: 'escaparate',
+      privacy: 'No guardar imagen, no identificar personas, usar solo señal efímera agregada',
+      product: 'Colección XpaceOS Retail',
+      context: 'Escaparate interactivo en tienda física',
+      offerMale: 'Rendimiento, tecnología y estilo urbano',
+      offerFemale: 'Diseño, comodidad y expresión personal',
+      offerNeutral: 'Nueva colección disponible hoy',
+      cta: 'Toca la pantalla y pruébalo en el gemelo',
+      style: 'Matrix retail, neón verde, producto hero, texto alto contraste',
+      segment: 'neutral',
+      confidence: '0.64',
+    },
   };
 
   function applyDefaults() {
@@ -111,7 +125,7 @@
     // lo movemos al nuevo default de marca 'AdmiraNext' (el separador "//"
     // se aplica via deriveAssetTitle, no aqui).
     if (!store.cliente || store.cliente === 'Demo Pixer.ai') { store.cliente = DEFAULTS.cliente; changed = true; }
-    for (const key of ['audio', 'musica', 'imagenes', 'video']) {
+    for (const key of ['audio', 'musica', 'imagenes', 'video', 'publicidad']) {
       if (!store[key] || Object.keys(store[key]).length === 0) {
         store[key] = JSON.parse(JSON.stringify(DEFAULTS[key]));
         changed = true;
@@ -366,6 +380,7 @@
       ['musica', 'Musica'],
       ['imagenes', 'Imagenes'],
       ['video', 'Video'],
+      ['publicidad', 'Publicidad segmentada'],
     ];
     for (const [key, title] of sections) {
       if (!d[key]) continue;
@@ -1542,6 +1557,169 @@
     setTimeout(playVideo, 900);
   }
 
+  const AUDIENCE_LABELS = {
+    male: 'Segmento hombre',
+    female: 'Segmento mujer',
+    neutral: 'Segmento neutral',
+  };
+
+  function normalizeAudienceSegment(value) {
+    const v = String(value || '').trim().toLowerCase();
+    if (['male', 'man', 'hombre', 'masculino', 'm'].includes(v)) return 'male';
+    if (['female', 'woman', 'mujer', 'femenino', 'f'].includes(v)) return 'female';
+    return 'neutral';
+  }
+
+  function currentAdData() {
+    const store = loadStore();
+    const ad = { ...DEFAULTS.publicidad, ...(store.publicidad || {}) };
+    ad.segment = normalizeAudienceSegment(ad.segment);
+    ad.confidence = String(ad.confidence || DEFAULTS.publicidad.confidence);
+    return { store, ad };
+  }
+
+  function segmentedOffer(ad) {
+    if (ad.segment === 'male') return ad.offerMale || DEFAULTS.publicidad.offerMale;
+    if (ad.segment === 'female') return ad.offerFemale || DEFAULTS.publicidad.offerFemale;
+    return ad.offerNeutral || DEFAULTS.publicidad.offerNeutral;
+  }
+
+  function segmentedHeadline(ad) {
+    const product = (ad.product || DEFAULTS.publicidad.product).replace(/\s+/g, ' ').trim();
+    if (ad.segment === 'male') return `${product}: potencia tu siguiente movimiento`;
+    if (ad.segment === 'female') return `${product}: diseñado para moverte a tu manera`;
+    return `${product}: entra en la experiencia`;
+  }
+
+  function segmentedTheme(ad) {
+    if (ad.segment === 'male') return { a: '#00ff41', b: '#50c8ff', c: '#07140d', label: 'HOMBRE' };
+    if (ad.segment === 'female') return { a: '#d4ff5a', b: '#ff5cc8', c: '#140716', label: 'MUJER' };
+    return { a: '#c8ffd0', b: '#00ff41', c: '#020602', label: 'NEUTRAL' };
+  }
+
+  function segmentedAdSvg(ad, store) {
+    const theme = segmentedTheme(ad);
+    const esc = (v) => String(v || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const headline = segmentedHeadline(ad);
+    const offer = segmentedOffer(ad);
+    const cta = ad.cta || DEFAULTS.publicidad.cta;
+    const source = ad.source || DEFAULTS.publicidad.source;
+    const confidence = Math.round(Math.max(0, Math.min(1, parseFloat(ad.confidence || '0.64'))) * 100);
+    const brand = (store.cliente || 'ADmiraNeXT · XpaceOS').slice(0, 42);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+      <defs>
+        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="${theme.c}"/><stop offset=".52" stop-color="#020602"/><stop offset="1" stop-color="#001406"/></linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse"><path d="M64 0H0V64" fill="none" stroke="${theme.a}" stroke-opacity=".18" stroke-width="1"/></pattern>
+      </defs>
+      <rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#grid)"/>
+      <circle cx="1260" cy="180" r="260" fill="${theme.b}" opacity=".12"/><circle cx="1220" cy="660" r="330" fill="${theme.a}" opacity=".10"/>
+      <path d="M1040 150h330l120 120v390l-150 120h-330L900 650V260z" fill="none" stroke="${theme.a}" stroke-width="5" opacity=".78" filter="url(#glow)"/>
+      <path d="M1120 238h200l76 76v264l-94 76h-208l-76-76V314z" fill="${theme.a}" opacity=".10" stroke="${theme.b}" stroke-width="3"/>
+      <text x="80" y="96" fill="${theme.a}" font-family="JetBrains Mono, Menlo, monospace" font-size="34" font-weight="800" letter-spacing="4">${esc(brand)}</text>
+      <text x="80" y="152" fill="#c8ffd0" opacity=".72" font-family="JetBrains Mono, Menlo, monospace" font-size="22" letter-spacing="3">XPACEOS LIVE AD ROUTER · ${theme.label} · ${confidence}%</text>
+      <foreignObject x="80" y="245" width="860" height="310"><div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Inter,Arial,sans-serif;color:#f5fff6;font-weight:900;font-size:76px;line-height:.95;letter-spacing:-1px;text-transform:uppercase">${esc(headline)}</div></foreignObject>
+      <foreignObject x="84" y="560" width="720" height="120"><div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Inter,Arial,sans-serif;color:#c8ffd0;font-size:34px;line-height:1.15">${esc(offer)}</div></foreignObject>
+      <rect x="84" y="720" width="640" height="86" fill="${theme.a}" filter="url(#glow)"/><text x="124" y="774" fill="#020602" font-family="JetBrains Mono, Menlo, monospace" font-size="28" font-weight="900" letter-spacing="2">${esc(cta).slice(0, 42)}</text>
+      <text x="930" y="820" fill="${theme.b}" font-family="JetBrains Mono, Menlo, monospace" font-size="21" letter-spacing="2">SEÑAL: ${esc(source)} · no image stored · ephemeral segment</text>
+      <text x="1190" y="478" fill="${theme.a}" font-family="JetBrains Mono, Menlo, monospace" font-size="118" font-weight="900" text-anchor="middle" filter="url(#glow)">AD</text>
+      <text x="1190" y="532" fill="#c8ffd0" font-family="JetBrains Mono, Menlo, monospace" font-size="26" text-anchor="middle" letter-spacing="4">DIGITAL TWIN</text>
+    </svg>`;
+  }
+
+  function setAudienceSegment(segment, opts = {}) {
+    const normalized = normalizeAudienceSegment(segment);
+    const store = loadStore();
+    store.publicidad = { ...DEFAULTS.publicidad, ...(store.publicidad || {}), segment: normalized };
+    if (opts.confidence !== undefined) store.publicidad.confidence = String(opts.confidence);
+    if (opts.source) store.publicidad.source = String(opts.source);
+    saveStore(store);
+    updateSegmentedAdUi();
+    if (opts.autoplay) playPublicidad();
+  }
+
+  function updateSegmentedAdUi() {
+    const { ad } = currentAdData();
+    document.querySelectorAll('[data-ad-segment]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.adSegment === ad.segment));
+    });
+    const dot = document.getElementById('adSignalDot');
+    if (dot) dot.dataset.segment = ad.segment;
+    const label = document.getElementById('adSignalLabel');
+    if (label) label.textContent = AUDIENCE_LABELS[ad.segment] || AUDIENCE_LABELS.neutral;
+    const meta = document.getElementById('adSignalMeta');
+    if (meta) meta.textContent = `fuente: ${ad.source || 'Simulador local'} · confianza ${ad.confidence || '0.64'}`;
+    const sourceSelect = document.getElementById('ad-source');
+    if (sourceSelect && [...sourceSelect.options].some((option) => option.value === ad.source)) {
+      sourceSelect.value = ad.source;
+    }
+  }
+
+  function playPublicidad() {
+    const { store, ad } = currentAdData();
+    const svg = segmentedAdSvg(ad, store);
+    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    const title = `${store.cliente || 'XpaceOS'} // ${AUDIENCE_LABELS[ad.segment] || 'Segmento'} // ${ad.product || 'Publicidad'}`;
+    const plan = {
+      segment: ad.segment,
+      confidence: ad.confidence,
+      source: ad.source,
+      screen: ad.screen,
+      headline: segmentedHeadline(ad),
+      offer: segmentedOffer(ad),
+      cta: ad.cta,
+      privacy: ad.privacy,
+    };
+    showPlayer(`
+      <div class="player-card segmented-player">
+        <div class="player-head">▶ PUBLICIDAD SEGMENTADA · ${AUDIENCE_LABELS[ad.segment] || 'Segmento neutral'} · ${ad.source || 'señal local'}</div>
+        <div class="player-img-wrap segmented-preview">
+          <img class="player-img" src="${url}" alt="Creatividad segmentada" data-pixer-title="${escAttr(title)}">
+        </div>
+        <pre class="player-body">${JSON.stringify(plan, null, 2).replace(/</g,'&lt;')}</pre>
+        <small class="player-foot">// Asset SVG generado localmente · listo para enviar a Admira XP / XpaceOS Signage</small>
+      </div>`);
+  }
+
+  function bindSegmentedAds() {
+    if (document.body.dataset.page !== 'publicidad') return;
+    const params = new URLSearchParams(location.search);
+    const incoming = params.get('segment') || params.get('audience');
+    if (incoming) {
+      setAudienceSegment(incoming, {
+        confidence: params.get('confidence') || undefined,
+        source: params.get('source') || 'XpaceOS URL signal',
+      });
+    }
+    document.querySelectorAll('[data-ad-segment]').forEach((button) => {
+      button.addEventListener('click', () => setAudienceSegment(button.dataset.adSegment, { source: 'Manual operator' }));
+    });
+    document.getElementById('adSimulatePass')?.addEventListener('click', () => {
+      const seq = ['male', 'female', 'neutral'];
+      const current = currentAdData().ad.segment;
+      const next = seq[(seq.indexOf(current) + 1) % seq.length] || 'neutral';
+      setAudienceSegment(next, { confidence: (0.68 + Math.random() * 0.24).toFixed(2), source: 'Simulador local', autoplay: true });
+    });
+    window.ADMIRA_SEGMENTED_AD = {
+      setAudience: ({ segment, confidence, source, autoplay } = {}) => setAudienceSegment(segment, { confidence, source: source || 'XpaceOS LiveCam', autoplay: autoplay !== false }),
+      render: playPublicidad,
+    };
+    window.addEventListener('message', (event) => {
+      const data = event.data || {};
+      if (data.type === 'xpaceos:audience-segment') {
+        setAudienceSegment(data.segment, { confidence: data.confidence, source: data.source || 'XpaceOS LiveCam', autoplay: data.autoplay !== false });
+      }
+    });
+    try {
+      const bc = new BroadcastChannel('xpaceos-audience');
+      bc.addEventListener('message', (event) => {
+        const data = event.data || {};
+        if (data.segment) setAudienceSegment(data.segment, { confidence: data.confidence, source: data.source || 'XpaceOS LiveCam', autoplay: data.autoplay !== false });
+      });
+    } catch {}
+    updateSegmentedAdUi();
+  }
+
   function bindPlay(page) {
     const btn = document.getElementById('playOutput');
     if (!btn) return;
@@ -1551,6 +1729,7 @@
       imagenes: playImagenes,
       video: playVideo,
       plataforma: playPlataforma,
+      publicidad: playPublicidad,
     };
     const fn = map[page];
     if (!fn) { btn.hidden = true; return; }
@@ -1560,6 +1739,7 @@
       imagenes: '✨ GENERAR OTRA',
       video: '▶ REPRODUCIR DE NUEVO',
       plataforma: '▶ REPRODUCIR TODO DE NUEVO',
+      publicidad: '✨ REGENERAR ANUNCIO',
     };
     btn.addEventListener('click', () => {
       fn();
@@ -2396,12 +2576,14 @@
         musica: ['musica'],
         imagenes: ['imagenes'],
         video: ['video'],
+        publicidad: ['publicidad'],
         plataforma: ['audio', 'musica', 'imagenes', 'video'],
       };
       const scope = scopeMap[page] || null;
       if (out) bindBriefActions(out, scope);
       bindPlay(page);
       bindGenLyrics();
+      bindSegmentedAds();
       bindSendToAdmiraXP();
 
       const demoBtn = document.getElementById('loadDemo');
