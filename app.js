@@ -2176,7 +2176,16 @@
       jobBase: 'https://macmini.tail48b61c.ts.net/admira/tube',
       bodyFor: (u, fmt) => ({ url: u, format: fmt }),
     };
-    return isLocalOrigin ? [sunoLocal, admiraTube] : [admiraTube];
+    // Backup/failover: si el Mac Mini no responde al health-check, pickHealthyEndpoint()
+    // cae automáticamente a este nodo (MacBook Pro 16) expuesto por su propio Funnel.
+    const admiraTubeBackup = {
+      kind: 'admira-tube-backup',
+      url: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube/download',
+      healthUrl: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube/health',
+      jobBase: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube',
+      bodyFor: (u, fmt) => ({ url: u, format: fmt }),
+    };
+    return isLocalOrigin ? [sunoLocal, admiraTube, admiraTubeBackup] : [admiraTube, admiraTubeBackup];
   }
 
   function bindImportModal() {
