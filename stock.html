@@ -230,6 +230,19 @@
       return `<pre>${JSON.stringify(it).slice(0,200)}</pre>`;
     }
     function escAttr(s){ return String(s||'').replace(/"/g,'&quot;'); }
+    function ainimationImportHref(it) {
+      const params = new URLSearchParams();
+      params.set('admiraStockUrl', it.url || '');
+      params.set('admiraStockType', it.type || '');
+      params.set('admiraStockTitle', it.title || it.prompt || 'Admira Stock asset');
+      if (it.id) params.set('admiraStockId', it.id);
+      if (it.prompt) params.set('admiraStockPrompt', it.prompt);
+      if (it.thumbnail) params.set('admiraStockThumbnail', it.thumbnail);
+      if (it.width) params.set('admiraStockWidth', it.width);
+      if (it.height) params.set('admiraStockHeight', it.height);
+      if (it.duration) params.set('admiraStockDuration', it.duration);
+      return `https://ainimation.studio/studio.html?${params.toString()}`;
+    }
     function renderPromptHtml(raw) {
       const safe = String(raw || '').replace(/</g,'&lt;');
       const trunc = safe.slice(0, 140) + (safe.length > 140 ? '…' : '');
@@ -302,6 +315,7 @@
           <header>
             <span class="stock-type ${it.type}">${it.type}</span>
             <div class="stock-card-actions">
+              <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Abrir en AINimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>
               <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Abrir asset en pestaña nueva" data-act="open"><span aria-hidden="true">↗</span></a>
               <button type="button" class="stock-card-btn" data-act="max" title="Maximizar"><span aria-hidden="true">⛶</span></button>
               <button type="button" class="stock-card-btn danger" data-act="del" title="Eliminar"><span aria-hidden="true">🗑</span></button>
@@ -445,6 +459,7 @@
         <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
         ${commentBlock}
         <div class="stock-lightbox-actions">
+          <a class="btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener">AI Abrir en AINimation</a>
           <a class="btn" href="${it.url}" target="_blank" rel="noopener" download>⬇ Descargar archivo</a>
           <a class="btn" href="${it.url}" target="_blank" rel="noopener">↗ Abrir asset</a>
         </div>`;
