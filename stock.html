@@ -74,6 +74,7 @@
             <option value="image">Imágenes</option>
             <option value="video">Video</option>
             <option value="animation">Animaciones</option>
+            <option value="furni">Mobiliario</option>
           </select>
           <select id="stockMotorFilter" title="Filtrar por motor" aria-label="Filtrar por motor">
             <option value="">Todos los motores</option>
@@ -216,6 +217,10 @@
       catch { return iso; }
     }
     function renderPreview(it) {
+      if (it.type === 'furni') {
+        // Mobiliario del gemelo: sprite pixelado → render nítido.
+        return `<img src="${it.url}" alt="" loading="lazy" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
+      }
       if (it.type === 'image') {
         return `<img src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
       }
@@ -432,7 +437,9 @@
 
     function openLightbox(it) {
       let media = '';
-      if (it.type === 'image') {
+      if (it.type === 'furni') {
+        media = `<img src="${it.url}" alt="" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
+      } else if (it.type === 'image') {
         media = `<img src="${it.thumbnail || it.url}" alt="">`;
       } else if (it.type === 'video' || it.type === 'animation') {
         media = `<video src="${it.url}" ${it.thumbnail ? `poster="${it.thumbnail}"` : ''} controls autoplay></video>`;
