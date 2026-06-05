@@ -321,6 +321,7 @@
             <span class="stock-type ${it.type}">${it.type}</span>
             <div class="stock-card-actions">
               <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Abrir en AINimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>
+              <button type="button" class="stock-card-btn" data-act="feed" title="Enviar al Pixer Feed (pantallas / gemelo)"><span aria-hidden="true">📺</span></button>
               <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Abrir asset en pestaña nueva" data-act="open"><span aria-hidden="true">↗</span></a>
               <button type="button" class="stock-card-btn" data-act="max" title="Maximizar"><span aria-hidden="true">⛶</span></button>
               <button type="button" class="stock-card-btn danger" data-act="del" title="Eliminar"><span aria-hidden="true">🗑</span></button>
@@ -538,6 +539,35 @@
       }
     }
 
+    // Envía un asset del Stock al Pixer Feed (signage) → lo pollean las
+    // pantallas y el gemelo (/signage/feed). Broadcast (sin target = todas).
+    async function sendToPixerFeed(it, btn) {
+      if (!it || !it.url) return;
+      const kind = (it.type === 'video' || it.type === 'animation') ? 'video'
+                 : (it.type === 'audio' || it.type === 'music') ? 'audio'
+                 : 'image'; // image y furni → image
+      const label = (it.title || it.prompt || it.id || '').slice(0, 60);
+      status.textContent = `// enviando "${label}" al Pixer Feed…`;
+      if (btn) btn.disabled = true;
+      try {
+        const r = await fetch(`${STOCK_BASE}/signage/push`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ kind, src: it.url, title: it.title || it.prompt || '', mime: it.mime || null }),
+        });
+        const data = await r.json().catch(() => ({}));
+        if (r.ok && data.ok) {
+          status.textContent = `📺 "${label}" enviado al Pixer Feed — aparecerá en pantallas y en el gemelo`;
+        } else {
+          status.textContent = `// ERROR feed ${r.status}: ${String(data.error || '').slice(0, 120)}`;
+        }
+      } catch (e) {
+        status.textContent = `// ERROR red Pixer Feed: ${e}`;
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
     grid.addEventListener('click', e => {
       // Click en chip de tag → activa filtro por ese tag (no abre lightbox)
       const tagBtn = e.target.closest('.stock-tag');
@@ -560,6 +590,7 @@
         if (!item) return;
         if (btn.dataset.act === 'max') { e.preventDefault(); openLightbox(item); }
         else if (btn.dataset.act === 'del') { e.preventDefault(); deleteAsset(id, card); }
+        else if (btn.dataset.act === 'feed') { e.preventDefault(); sendToPixerFeed(item, btn); }
         // 'open' es <a target=_blank> → deja burbujear sin preventDefault
         e.stopPropagation();
         return;
