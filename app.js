@@ -102,20 +102,6 @@
       duracion: '15s',
       reusa: ['audio', 'musica'],
     },
-    publicidad: {
-      source: 'Simulador local',
-      screen: 'escaparate',
-      privacy: 'No guardar imagen, no identificar personas, usar solo señal efímera agregada',
-      product: 'Colección XpaceOS Retail',
-      context: 'Escaparate interactivo en tienda física',
-      offerMale: 'Rendimiento, tecnología y estilo urbano',
-      offerFemale: 'Diseño, comodidad y expresión personal',
-      offerNeutral: 'Nueva colección disponible hoy',
-      cta: 'Toca la pantalla y pruébalo en el gemelo',
-      style: 'Matrix retail, neón verde, producto hero, texto alto contraste',
-      segment: 'neutral',
-      confidence: '0.64',
-    },
   };
 
   function applyDefaults() {
@@ -125,7 +111,7 @@
     // lo movemos al nuevo default de marca 'AdmiraNext' (el separador "//"
     // se aplica via deriveAssetTitle, no aqui).
     if (!store.cliente || store.cliente === 'Demo PixerIA') { store.cliente = DEFAULTS.cliente; changed = true; }
-    for (const key of ['audio', 'musica', 'imagenes', 'video', 'publicidad']) {
+    for (const key of ['audio', 'musica', 'imagenes', 'video']) {
       if (!store[key] || Object.keys(store[key]).length === 0) {
         store[key] = JSON.parse(JSON.stringify(DEFAULTS[key]));
         changed = true;
@@ -380,7 +366,6 @@
       ['musica', 'Musica'],
       ['imagenes', 'Imagenes'],
       ['video', 'Video'],
-      ['publicidad', 'Publicidad segmentada'],
     ];
     for (const [key, title] of sections) {
       if (!d[key]) continue;
@@ -428,16 +413,10 @@
         const store = loadStore();
         if (scopeKeys && scopeKeys.length === 1 && scopeKeys[0] !== 'all') {
           delete store[scopeKeys[0]];
-          if (scopeKeys[0] === 'publicidad') {
-            adBaseImage = null;
-            updateAdImagePreview();
-          }
         } else {
           for (const k of (scopeKeys || ['audio', 'musica', 'imagenes', 'video', 'cliente'])) {
             delete store[k];
           }
-          adBaseImage = null;
-          updateAdImagePreview();
         }
         saveStore(store);
         document.querySelectorAll('input[type=text], select, textarea').forEach(el => { if (el.name) el.value = ''; });
@@ -1563,277 +1542,6 @@
     setTimeout(playVideo, 900);
   }
 
-  const AUDIENCE_LABELS = {
-    male: 'Segmento hombre',
-    female: 'Segmento mujer',
-    neutral: 'Segmento neutral',
-  };
-  let adBaseImage = null;
-
-  function normalizeAudienceSegment(value) {
-    const v = String(value || '').trim().toLowerCase();
-    if (['male', 'man', 'hombre', 'masculino', 'm'].includes(v)) return 'male';
-    if (['female', 'woman', 'mujer', 'femenino', 'f'].includes(v)) return 'female';
-    return 'neutral';
-  }
-
-  function currentAdData() {
-    const store = loadStore();
-    const ad = { ...DEFAULTS.publicidad, ...(store.publicidad || {}) };
-    ad.segment = normalizeAudienceSegment(ad.segment);
-    ad.confidence = String(ad.confidence || DEFAULTS.publicidad.confidence);
-    return { store, ad };
-  }
-
-  function segmentedOffer(ad) {
-    if (ad.segment === 'male') return ad.offerMale || DEFAULTS.publicidad.offerMale;
-    if (ad.segment === 'female') return ad.offerFemale || DEFAULTS.publicidad.offerFemale;
-    return ad.offerNeutral || DEFAULTS.publicidad.offerNeutral;
-  }
-
-  function segmentedHeadline(ad) {
-    const product = (ad.product || DEFAULTS.publicidad.product).replace(/\s+/g, ' ').trim();
-    if (ad.segment === 'male') return `${product}: potencia tu siguiente movimiento`;
-    if (ad.segment === 'female') return `${product}: diseñado para moverte a tu manera`;
-    return `${product}: entra en la experiencia`;
-  }
-
-  function segmentedTheme(ad) {
-    if (ad.segment === 'male') return { a: '#00ff41', b: '#50c8ff', c: '#07140d', label: 'HOMBRE' };
-    if (ad.segment === 'female') return { a: '#d4ff5a', b: '#ff5cc8', c: '#140716', label: 'MUJER' };
-    return { a: '#c8ffd0', b: '#00ff41', c: '#020602', label: 'NEUTRAL' };
-  }
-
-  function segmentedAdSvg(ad, store) {
-    const theme = segmentedTheme(ad);
-    const esc = (v) => String(v || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    const headline = segmentedHeadline(ad);
-    const offer = segmentedOffer(ad);
-    const cta = ad.cta || DEFAULTS.publicidad.cta;
-    const source = ad.source || DEFAULTS.publicidad.source;
-    const confidence = Math.round(Math.max(0, Math.min(1, parseFloat(ad.confidence || '0.64'))) * 100);
-    const brand = (store.cliente || 'ADmiraNeXT · XpaceOS').slice(0, 42);
-    const baseImage = adBaseImage && adBaseImage.dataUrl
-      ? `<image href="${escAttr(adBaseImage.dataUrl)}" x="960" y="150" width="500" height="500" preserveAspectRatio="xMidYMid slice" opacity=".95"/>`
-      : '';
-    const baseImageFrame = adBaseImage && adBaseImage.dataUrl
-      ? `<rect x="960" y="150" width="500" height="500" fill="url(#imageWash)" opacity=".38"/><rect x="960" y="150" width="500" height="500" fill="none" stroke="${theme.b}" stroke-width="3"/>`
-      : `<path d="M1120 238h200l76 76v264l-94 76h-208l-76-76V314z" fill="${theme.a}" opacity=".10" stroke="${theme.b}" stroke-width="3"/>`;
-    const baseImageCaption = adBaseImage && adBaseImage.name
-      ? `BASE IMAGE · ${esc(adBaseImage.name.slice(0, 36))}`
-      : 'NO BASE IMAGE · CREATIVE SHELL';
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
-      <defs>
-        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="${theme.c}"/><stop offset=".52" stop-color="#020602"/><stop offset="1" stop-color="#001406"/></linearGradient>
-        <linearGradient id="imageWash" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${theme.c}" stop-opacity=".00"/><stop offset="1" stop-color="${theme.c}" stop-opacity=".90"/></linearGradient>
-        <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse"><path d="M64 0H0V64" fill="none" stroke="${theme.a}" stroke-opacity=".18" stroke-width="1"/></pattern>
-      </defs>
-      <rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#grid)"/>
-      <circle cx="1260" cy="180" r="260" fill="${theme.b}" opacity=".12"/><circle cx="1220" cy="660" r="330" fill="${theme.a}" opacity=".10"/>
-      <path d="M1040 150h330l120 120v390l-150 120h-330L900 650V260z" fill="none" stroke="${theme.a}" stroke-width="5" opacity=".78" filter="url(#glow)"/>
-      ${baseImage}
-      ${baseImageFrame}
-      <text x="80" y="96" fill="${theme.a}" font-family="JetBrains Mono, Menlo, monospace" font-size="34" font-weight="800" letter-spacing="4">${esc(brand)}</text>
-      <text x="80" y="152" fill="#c8ffd0" opacity=".72" font-family="JetBrains Mono, Menlo, monospace" font-size="22" letter-spacing="3">XPACEOS LIVE AD ROUTER · ${theme.label} · ${confidence}%</text>
-      <foreignObject x="80" y="245" width="860" height="310"><div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Inter,Arial,sans-serif;color:#f5fff6;font-weight:900;font-size:76px;line-height:.95;letter-spacing:-1px;text-transform:uppercase">${esc(headline)}</div></foreignObject>
-      <foreignObject x="84" y="560" width="720" height="120"><div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Inter,Arial,sans-serif;color:#c8ffd0;font-size:34px;line-height:1.15">${esc(offer)}</div></foreignObject>
-      <rect x="84" y="720" width="640" height="86" fill="${theme.a}" filter="url(#glow)"/><text x="124" y="774" fill="#020602" font-family="JetBrains Mono, Menlo, monospace" font-size="28" font-weight="900" letter-spacing="2">${esc(cta).slice(0, 42)}</text>
-      <text x="930" y="820" fill="${theme.b}" font-family="JetBrains Mono, Menlo, monospace" font-size="21" letter-spacing="2">SEÑAL: ${esc(source)} · no image stored · ephemeral segment</text>
-      <text x="1190" y="478" fill="${theme.a}" font-family="JetBrains Mono, Menlo, monospace" font-size="118" font-weight="900" text-anchor="middle" filter="url(#glow)">AD</text>
-      <text x="1190" y="532" fill="#c8ffd0" font-family="JetBrains Mono, Menlo, monospace" font-size="26" text-anchor="middle" letter-spacing="4">DIGITAL TWIN</text>
-      <text x="1190" y="620" fill="${theme.b}" font-family="JetBrains Mono, Menlo, monospace" font-size="18" text-anchor="middle" letter-spacing="2">${baseImageCaption}</text>
-    </svg>`;
-  }
-
-  function updateAdImagePreview() {
-    const wrap = document.getElementById('ad-image-preview');
-    const img = document.getElementById('ad-image-preview-img');
-    const meta = document.getElementById('ad-image-meta');
-    if (!wrap || !img || !meta) return;
-    if (adBaseImage && adBaseImage.dataUrl) {
-      wrap.hidden = false;
-      img.src = adBaseImage.dataUrl;
-      meta.textContent = `${adBaseImage.name || 'imagen'} · lista para segmentar`;
-    } else {
-      wrap.hidden = true;
-      img.removeAttribute('src');
-      meta.textContent = 'Sin imagen cargada';
-    }
-  }
-
-  function bindPublicidadImageUpload() {
-    if (document.body.dataset.page !== 'publicidad') return;
-    const input = document.getElementById('ad-image-file');
-    const pick = document.getElementById('ad-image-pick');
-    const clear = document.getElementById('ad-image-clear');
-    if (!input || !pick || !clear) return;
-    pick.addEventListener('click', () => input.click());
-    clear.addEventListener('click', () => {
-      adBaseImage = null;
-      input.value = '';
-      updateAdImagePreview();
-    });
-    input.addEventListener('change', async () => {
-      const file = input.files && input.files[0];
-      if (!file) return;
-      try {
-        const dataUrl = await new Promise((resolve, reject) => {
-          const fr = new FileReader();
-          fr.onload = () => resolve(fr.result);
-          fr.onerror = () => reject(fr.error || new Error('No se pudo leer la imagen'));
-          fr.readAsDataURL(file);
-        });
-        adBaseImage = {
-          name: file.name,
-          type: file.type || 'image/*',
-          dataUrl: String(dataUrl),
-        };
-        updateAdImagePreview();
-        showToast('Imagen base cargada');
-      } catch (err) {
-        showToast((err && err.message) || 'No se pudo cargar la imagen');
-      } finally {
-        input.value = '';
-      }
-    });
-    updateAdImagePreview();
-  }
-
-  function segmentedVariantData(store, baseAd, segment) {
-    const ad = { ...baseAd, segment };
-    const svg = segmentedAdSvg(ad, store);
-    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-    const title = `${store.cliente || 'XpaceOS'} // ${AUDIENCE_LABELS[segment] || 'Segmento'} // ${ad.product || 'Publicidad'}`;
-    return {
-      segment,
-      label: AUDIENCE_LABELS[segment] || 'Segmento',
-      url,
-      title,
-      headline: segmentedHeadline(ad),
-      offer: segmentedOffer(ad),
-      cta: ad.cta || DEFAULTS.publicidad.cta,
-      source: ad.source || DEFAULTS.publicidad.source,
-      confidence: ad.confidence,
-      hasBaseImage: !!(adBaseImage && adBaseImage.dataUrl),
-      baseImageName: adBaseImage && adBaseImage.name ? adBaseImage.name : '',
-    };
-  }
-
-  function setAudienceSegment(segment, opts = {}) {
-    const normalized = normalizeAudienceSegment(segment);
-    const store = loadStore();
-    store.publicidad = { ...DEFAULTS.publicidad, ...(store.publicidad || {}), segment: normalized };
-    if (opts.confidence !== undefined) store.publicidad.confidence = String(opts.confidence);
-    if (opts.source) store.publicidad.source = String(opts.source);
-    saveStore(store);
-    updateSegmentedAdUi();
-    if (opts.autoplay) playPublicidad();
-  }
-
-  function updateSegmentedAdUi() {
-    const { ad } = currentAdData();
-    document.querySelectorAll('[data-ad-segment]').forEach((button) => {
-      button.setAttribute('aria-pressed', String(button.dataset.adSegment === ad.segment));
-    });
-    const dot = document.getElementById('adSignalDot');
-    if (dot) dot.dataset.segment = ad.segment;
-    const label = document.getElementById('adSignalLabel');
-    if (label) label.textContent = AUDIENCE_LABELS[ad.segment] || AUDIENCE_LABELS.neutral;
-    const meta = document.getElementById('adSignalMeta');
-    if (meta) meta.textContent = `fuente: ${ad.source || 'Simulador local'} · confianza ${ad.confidence || '0.64'}`;
-    const sourceSelect = document.getElementById('ad-source');
-    if (sourceSelect && [...sourceSelect.options].some((option) => option.value === ad.source)) {
-      sourceSelect.value = ad.source;
-    }
-  }
-
-  function playPublicidad() {
-    const { store, ad } = currentAdData();
-    const variants = ['male', 'female'].map((segment) => segmentedVariantData(store, ad, segment));
-    const selectedSegment = normalizeAudienceSegment(ad.segment === 'neutral' ? 'female' : ad.segment);
-    const plan = {
-      baseImage: adBaseImage ? { name: adBaseImage.name, type: adBaseImage.type } : null,
-      source: ad.source,
-      screen: ad.screen,
-      privacy: ad.privacy,
-      variants: variants.map((variant) => ({
-        segment: variant.segment,
-        headline: variant.headline,
-        offer: variant.offer,
-        cta: variant.cta,
-        confidence: variant.confidence,
-      })),
-    };
-    showPlayer(`
-      <div class="player-card segmented-player">
-        <div class="player-head">▶ PUBLICIDAD SEGMENTADA · 2 versiones · ${ad.source || 'señal local'}</div>
-        <div class="segmented-variants">
-          ${variants.map((variant) => `
-            <article class="segmented-variant${variant.segment === selectedSegment ? ' selected' : ''}" data-segmented-variant="${variant.segment}">
-              <div class="segmented-variant-head">
-                <strong>${variant.label}</strong>
-                <span>${variant.hasBaseImage ? 'base image' : 'creative shell'}</span>
-              </div>
-              <div class="player-img-wrap segmented-preview">
-                <img class="player-img" src="${variant.url}" alt="Creatividad ${variant.label}" data-pixer-title="${escAttr(variant.title)}">
-              </div>
-              <div class="segmented-variant-meta">${`${variant.headline} · ${variant.offer}`.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
-            </article>
-          `).join('')}
-        </div>
-        <pre class="player-body">${JSON.stringify(plan, null, 2).replace(/</g,'&lt;')}</pre>
-        <small class="player-foot">// Dos assets SVG generados localmente a partir de la misma imagen base · haz clic en una variante para enviarla a Admira XP</small>
-      </div>`);
-    document.querySelectorAll('[data-segmented-variant]').forEach((card) => {
-      card.addEventListener('click', () => {
-        document.querySelectorAll('[data-segmented-variant]').forEach((node) => node.classList.remove('selected'));
-        card.classList.add('selected');
-        setAudienceSegment(card.dataset.segmentedVariant, { source: ad.source || 'Manual operator' });
-      });
-    });
-  }
-
-  function bindSegmentedAds() {
-    if (document.body.dataset.page !== 'publicidad') return;
-    bindPublicidadImageUpload();
-    const params = new URLSearchParams(location.search);
-    const incoming = params.get('segment') || params.get('audience');
-    if (incoming) {
-      setAudienceSegment(incoming, {
-        confidence: params.get('confidence') || undefined,
-        source: params.get('source') || 'XpaceOS URL signal',
-      });
-    }
-    document.querySelectorAll('[data-ad-segment]').forEach((button) => {
-      button.addEventListener('click', () => setAudienceSegment(button.dataset.adSegment, { source: 'Manual operator' }));
-    });
-    document.getElementById('adSimulatePass')?.addEventListener('click', () => {
-      const seq = ['male', 'female', 'neutral'];
-      const current = currentAdData().ad.segment;
-      const next = seq[(seq.indexOf(current) + 1) % seq.length] || 'neutral';
-      setAudienceSegment(next, { confidence: (0.68 + Math.random() * 0.24).toFixed(2), source: 'Simulador local', autoplay: true });
-    });
-    window.ADMIRA_SEGMENTED_AD = {
-      setAudience: ({ segment, confidence, source, autoplay } = {}) => setAudienceSegment(segment, { confidence, source: source || 'XpaceOS LiveCam', autoplay: autoplay !== false }),
-      render: playPublicidad,
-    };
-    window.addEventListener('message', (event) => {
-      const data = event.data || {};
-      if (data.type === 'xpaceos:audience-segment') {
-        setAudienceSegment(data.segment, { confidence: data.confidence, source: data.source || 'XpaceOS LiveCam', autoplay: data.autoplay !== false });
-      }
-    });
-    try {
-      const bc = new BroadcastChannel('xpaceos-audience');
-      bc.addEventListener('message', (event) => {
-        const data = event.data || {};
-        if (data.segment) setAudienceSegment(data.segment, { confidence: data.confidence, source: data.source || 'XpaceOS LiveCam', autoplay: data.autoplay !== false });
-      });
-    } catch {}
-    updateSegmentedAdUi();
-  }
-
   function bindPlay(page) {
     const btn = document.getElementById('playOutput');
     if (!btn) return;
@@ -1843,7 +1551,6 @@
       imagenes: playImagenes,
       video: playVideo,
       plataforma: playPlataforma,
-      publicidad: playPublicidad,
     };
     const fn = map[page];
     if (!fn) { btn.hidden = true; return; }
@@ -1853,7 +1560,6 @@
       imagenes: '✨ GENERAR OTRA',
       video: '▶ REPRODUCIR DE NUEVO',
       plataforma: '▶ REPRODUCIR TODO DE NUEVO',
-      publicidad: '✨ REGENERAR ANUNCIO',
     };
     btn.addEventListener('click', () => {
       fn();
@@ -2050,15 +1756,6 @@
   function detectLatestAsset() {
     const player = document.getElementById('player');
     if (!player || player.hidden) return null;
-    const selectedVariantImg = player.querySelector('.segmented-variant.selected img[src]');
-    if (selectedVariantImg) {
-      return {
-        kind: 'image',
-        src: selectedVariantImg.getAttribute('src') || selectedVariantImg.src,
-        title: (selectedVariantImg.dataset && selectedVariantImg.dataset.pixerTitle) || '',
-        cover: (selectedVariantImg.dataset && selectedVariantImg.dataset.pixerCover) || '',
-      };
-    }
     // Compare grid: si el usuario marcó una celda como seleccionada
     // (.compare-cell.selected), la imagen de esa celda gana sobre el resto.
     // Por defecto auto-selecciona la primera tras la generacion (compareSelectedImages).
@@ -2299,16 +1996,7 @@
       jobBase: 'https://macmini.tail48b61c.ts.net/admira/tube',
       bodyFor: (u, fmt) => ({ url: u, format: fmt }),
     };
-    // Backup/failover: si el Mac Mini no responde al health-check, pickHealthyEndpoint()
-    // cae automáticamente a este nodo (MacBook Pro 16) expuesto por su propio Funnel.
-    const admiraTubeBackup = {
-      kind: 'admira-tube-backup',
-      url: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube/download',
-      healthUrl: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube/health',
-      jobBase: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube',
-      bodyFor: (u, fmt) => ({ url: u, format: fmt }),
-    };
-    return isLocalOrigin ? [sunoLocal, admiraTube, admiraTubeBackup] : [admiraTube, admiraTubeBackup];
+    return isLocalOrigin ? [sunoLocal, admiraTube] : [admiraTube];
   }
 
   function bindImportModal() {
@@ -2421,80 +2109,6 @@
     retryBtn.hidden = true;
     document.querySelector('#importModal .keys-actions')?.appendChild(retryBtn);
 
-    // Plan B (fallback degradado): subir un archivo local directo al Stock.
-    // El Stock (worker pixer-eleven en Cloudflare) está siempre encendido, así que
-    // esto funciona aunque el Mac Mini (importador yt-dlp) esté dormido o apagado.
-    const localInput = document.createElement('input');
-    localInput.type = 'file';
-    localInput.accept = 'audio/*,video/*,image/*';
-    localInput.hidden = true;
-    localInput.id = 'importLocalFile';
-    dlg.appendChild(localInput);
-    const localBtn = document.createElement('button');
-    localBtn.type = 'button';
-    localBtn.className = 'btn';
-    localBtn.id = 'importLocalBtn';
-    localBtn.textContent = '📂 Archivo local → Stock';
-    localBtn.title = 'Sube un archivo desde este dispositivo directo al Stock (no depende del Mac Mini)';
-    document.querySelector('#importModal .keys-actions')?.appendChild(localBtn);
-    localBtn.addEventListener('click', () => localInput.click());
-    localInput.addEventListener('change', () => {
-      const file = localInput.files && localInput.files[0];
-      if (file) publishLocalFile(file);
-      localInput.value = '';
-    });
-
-    // Publica un archivo del dispositivo directo al Stock, sin pasar por el Mac.
-    async function publishLocalFile(file) {
-      if (importInFlight) return;
-      const stat = document.getElementById('importStatus');
-      stat.style.display = 'block';
-      retryBtn.hidden = true;
-      importInFlight = true;
-      const mt = file.type || '';
-      const type = mt.startsWith('video') ? 'video' : mt.startsWith('image') ? 'image' : 'audio';
-      const progress = importProgressStart(type === 'video' ? 'video' : 'audio');
-      try {
-        const sizeMB = (file.size / 1024 / 1024).toFixed(2);
-        stat.textContent = `// archivo local: ${file.name} · ${sizeMB} MB · subiendo al Stock…`;
-        const dataUrl = await new Promise((res, rej) => {
-          const fr = new FileReader();
-          fr.onload = () => res(fr.result);
-          fr.onerror = () => rej(fr.error || new Error('no se pudo leer el archivo'));
-          fr.readAsDataURL(file);
-        });
-        const comment = (document.getElementById('import-comment')?.value || '').trim();
-        const meta = {
-          type, motor: 'local',
-          prompt: file.name,
-          title: file.name.replace(/\.[^.]+$/, ''),
-          comment: comment || null,
-          costEst: `local · ${sizeMB}MB`,
-          url: dataUrl,
-          mime: mt || null,
-        };
-        const result = await publishToStock(meta, null);
-        if (result && result.ok) {
-          progress?.done(file.size, 0);
-          stat.textContent = `✓ ${file.name} · ✅ en Stock · saltando…`;
-          const newId = result.id || '';
-          setTimeout(() => {
-            try { dlg.close(); } catch {}
-            location.href = 'https://admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
-          }, 900);
-        } else {
-          progress?.error('fallo al publicar');
-          stat.textContent = `❌ Stock: ${(result && result.error || 'fallo').slice(0, 140)}`;
-        }
-      } catch (e) {
-        const msg = String(e && e.message || e);
-        progress?.error(msg.slice(0, 80));
-        stat.textContent = `// ERROR archivo local: ${msg}`;
-      } finally {
-        importInFlight = false;
-      }
-    }
-
     // Pre-chequeo de salud del backend (rápido, abortable). true = responde.
     async function importHealthOk(ep, ms = 4500) {
       if (!ep.healthUrl) return true;
@@ -2588,12 +2202,12 @@
         // 1) Pre-chequeo: ¿hay backend vivo? Evita esperar a un timeout largo.
         const ep = await pickHealthyEndpoint(stat);
         if (!ep) {
-          stat.textContent = `// El importador (Mac Mini) está dormido o apagado ahora mismo.\n`
-            + `// PLAN B: pulsa «📂 Archivo local → Stock» para subir un archivo\n`
-            + `//   desde este dispositivo directo al Stock (funciona sin el Mac).\n`
-            + `// O reintenta (↻) en unos segundos por si el Mac despierta.`;
+          stat.textContent = `// El proxy de importación no responde (ningún backend sano).\n`
+            + `// admira-tube (Funnel) caído. En el Mac Mini:\n`
+            + `//   cd ~/GitHub/01.-AdmiraXperience-Game && ./start-admira-tube.sh\n`
+            + `// suno-local (solo en local):\n`
+            + `//   cd ~/Documents/New\\ project/csilvasantin-repos/suno-local && node server.js`;
           retryBtn.hidden = false;
-          try { localBtn.focus(); } catch {}
           return;
         }
 
@@ -2708,14 +2322,12 @@
         musica: ['musica'],
         imagenes: ['imagenes'],
         video: ['video'],
-        publicidad: ['publicidad'],
         plataforma: ['audio', 'musica', 'imagenes', 'video'],
       };
       const scope = scopeMap[page] || null;
       if (out) bindBriefActions(out, scope);
       bindPlay(page);
       bindGenLyrics();
-      bindSegmentedAds();
       bindSendToAdmiraXP();
 
       const demoBtn = document.getElementById('loadDemo');

@@ -3,10 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
-  <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
-  <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Digital Twin XpaceOS powered by ADmira | ADmiraNeXT Studio · Stock</title>
+  <title>Stock · PixerIA x Admira.xp</title>
   <meta name="description" content="Galería pública de assets generados por los motores IA — audio, música, imágenes y video — desplegados a Stock.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
   <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/tokens.css">
@@ -24,24 +21,21 @@
     </a>
     <div class="admira-nav-items">
       <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">PixerIA</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Consejo Live</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
       <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
     </div>
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">PixerIA × Admira.xp</span><span class="brand-version">v.2026.05.02-r71</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">PixerIA × Admira.xp</span><span class="brand-version">v.2026.05.02-r69</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
       <a href="imagenes.html" data-nav="imagenes">Imágenes</a>
       <a href="video.html" data-nav="video">Video</a>
-      <a href="publicidad.html" data-nav="publicidad">Publicidad</a>
+      <button type="button" class="nav-import" id="openImport" title="Importa un video/audio (YouTube/Vimeo/X/TikTok/IG) vía yt-dlp local">📥 YouTube</button>
       <a href="stock.html" data-nav="stock">Stock</a>
-      <button type="button" class="nav-import" id="openImport" title="Importa un video/audio (YouTube/Vimeo/X/TikTok/IG) vía yt-dlp local">📥 Importar</button>
     </nav>
     <div class="topnav-actions">
       <button type="button" class="btn-back" onclick="history.length>1?history.back():location.href='index.html'">← Volver</button>
@@ -74,7 +68,6 @@
             <option value="image">Imágenes</option>
             <option value="video">Video</option>
             <option value="animation">Animaciones</option>
-            <option value="furni">Mobiliario</option>
           </select>
           <select id="stockMotorFilter" title="Filtrar por motor" aria-label="Filtrar por motor">
             <option value="">Todos los motores</option>
@@ -143,7 +136,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · PixerIA × Admira.xp · v.2026.05.02-r71</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · PixerIA × Admira.xp · v.2026.05.02-r69</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -217,10 +210,6 @@
       catch { return iso; }
     }
     function renderPreview(it) {
-      if (it.type === 'furni') {
-        // Mobiliario del gemelo: sprite pixelado → render nítido.
-        return `<img src="${it.url}" alt="" loading="lazy" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
-      }
       if (it.type === 'image') {
         return `<img src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
       }
@@ -235,19 +224,6 @@
       return `<pre>${JSON.stringify(it).slice(0,200)}</pre>`;
     }
     function escAttr(s){ return String(s||'').replace(/"/g,'&quot;'); }
-    function ainimationImportHref(it) {
-      const params = new URLSearchParams();
-      params.set('admiraStockUrl', it.url || '');
-      params.set('admiraStockType', it.type || '');
-      params.set('admiraStockTitle', it.title || it.prompt || 'Admira Stock asset');
-      if (it.id) params.set('admiraStockId', it.id);
-      if (it.prompt) params.set('admiraStockPrompt', it.prompt);
-      if (it.thumbnail) params.set('admiraStockThumbnail', it.thumbnail);
-      if (it.width) params.set('admiraStockWidth', it.width);
-      if (it.height) params.set('admiraStockHeight', it.height);
-      if (it.duration) params.set('admiraStockDuration', it.duration);
-      return `https://ainimation.studio/studio.html?${params.toString()}`;
-    }
     function renderPromptHtml(raw) {
       const safe = String(raw || '').replace(/</g,'&lt;');
       const trunc = safe.slice(0, 140) + (safe.length > 140 ? '…' : '');
@@ -300,12 +276,9 @@
       const idAttr = String(it.id || '').replace(/[^A-Za-z0-9-]/g, '');
       const assetUrl = escAttr(it.url || '');
       const titleRaw = (it.title || '').trim();
-      const titleInline = titleRaw
-        ? `<span class="stock-title-inline" title="${escAttr(titleRaw)}">${titleRaw.replace(/</g,'&lt;').slice(0, 90)}${titleRaw.length > 90 ? '…' : ''}</span>`
+      const titleBlock = titleRaw
+        ? `<p class="stock-title" title="${escAttr(titleRaw)}">${titleRaw.replace(/</g,'&lt;').slice(0, 90)}${titleRaw.length > 90 ? '…' : ''}</p>`
         : '';
-      // Meta de cabecera (sube footer + motor a la línea del badge): motor · coste · fecha
-      const headMeta = [it.motor, it.costEst, fmtDate(it.createdAt)]
-        .filter(Boolean).map(s => String(s).replace(/</g, '&lt;')).join(' · ');
       const commentRaw = (it.comment || '').trim();
       const commentSafe = commentRaw.replace(/</g, '&lt;');
       const commentBlock = commentRaw
@@ -315,22 +288,24 @@
       return `<article class="stock-card" data-type="${it.type}" data-motor="${it.motor}" data-id="${idAttr}" tabindex="0" role="button" aria-label="Maximizar ${it.type}">
         <div class="stock-card-media">
           ${renderPreview(it)}
+          <div class="stock-card-actions">
+            <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Abrir asset en pestaña nueva" data-act="open"><span aria-hidden="true">↗</span></a>
+            <button type="button" class="stock-card-btn" data-act="max" title="Maximizar"><span aria-hidden="true">⛶</span></button>
+            <button type="button" class="stock-card-btn danger" data-act="del" title="Eliminar"><span aria-hidden="true">🗑</span></button>
+          </div>
         </div>
         <div class="stock-card-body">
           <header>
             <span class="stock-type ${it.type}">${it.type}</span>
-            <div class="stock-card-actions">
-              <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Abrir en AINimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>
-              <button type="button" class="stock-card-btn" data-act="feed" title="Enviar al Pixer Feed (pantallas / gemelo)"><span aria-hidden="true">📺</span></button>
-              <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Abrir asset en pestaña nueva" data-act="open"><span aria-hidden="true">↗</span></a>
-              <button type="button" class="stock-card-btn" data-act="max" title="Maximizar"><span aria-hidden="true">⛶</span></button>
-              <button type="button" class="stock-card-btn danger" data-act="del" title="Eliminar"><span aria-hidden="true">🗑</span></button>
-            </div>
-            ${titleInline}
-            <span class="stock-head-meta">${headMeta}</span>
+            <span class="stock-motor">${it.motor}</span>
           </header>
+          ${titleBlock}
           ${tagsBlock}
           <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
+          <footer>
+            <span class="stock-cost">${it.costEst || ''}</span>
+            <span class="stock-date">${fmtDate(it.createdAt)}</span>
+          </footer>
           ${commentBlock}
         </div>
       </article>`;
@@ -438,9 +413,7 @@
 
     function openLightbox(it) {
       let media = '';
-      if (it.type === 'furni') {
-        media = `<img src="${it.url}" alt="" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
-      } else if (it.type === 'image') {
+      if (it.type === 'image') {
         media = `<img src="${it.thumbnail || it.url}" alt="">`;
       } else if (it.type === 'video' || it.type === 'animation') {
         media = `<video src="${it.url}" ${it.thumbnail ? `poster="${it.thumbnail}"` : ''} controls autoplay></video>`;
@@ -467,7 +440,6 @@
         <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
         ${commentBlock}
         <div class="stock-lightbox-actions">
-          <a class="btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener">AI Abrir en AINimation</a>
           <a class="btn" href="${it.url}" target="_blank" rel="noopener" download>⬇ Descargar archivo</a>
           <a class="btn" href="${it.url}" target="_blank" rel="noopener">↗ Abrir asset</a>
         </div>`;
@@ -539,35 +511,6 @@
       }
     }
 
-    // Envía un asset del Stock al Pixer Feed (signage) → lo pollean las
-    // pantallas y el gemelo (/signage/feed). Broadcast (sin target = todas).
-    async function sendToPixerFeed(it, btn) {
-      if (!it || !it.url) return;
-      const kind = (it.type === 'video' || it.type === 'animation') ? 'video'
-                 : (it.type === 'audio' || it.type === 'music') ? 'audio'
-                 : 'image'; // image y furni → image
-      const label = (it.title || it.prompt || it.id || '').slice(0, 60);
-      status.textContent = `// enviando "${label}" al Pixer Feed…`;
-      if (btn) btn.disabled = true;
-      try {
-        const r = await fetch(`${STOCK_BASE}/signage/push`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ kind, src: it.url, title: it.title || it.prompt || '', mime: it.mime || null }),
-        });
-        const data = await r.json().catch(() => ({}));
-        if (r.ok && data.ok) {
-          status.textContent = `📺 "${label}" enviado al Pixer Feed — aparecerá en pantallas y en el gemelo`;
-        } else {
-          status.textContent = `// ERROR feed ${r.status}: ${String(data.error || '').slice(0, 120)}`;
-        }
-      } catch (e) {
-        status.textContent = `// ERROR red Pixer Feed: ${e}`;
-      } finally {
-        if (btn) btn.disabled = false;
-      }
-    }
-
     grid.addEventListener('click', e => {
       // Click en chip de tag → activa filtro por ese tag (no abre lightbox)
       const tagBtn = e.target.closest('.stock-tag');
@@ -590,7 +533,6 @@
         if (!item) return;
         if (btn.dataset.act === 'max') { e.preventDefault(); openLightbox(item); }
         else if (btn.dataset.act === 'del') { e.preventDefault(); deleteAsset(id, card); }
-        else if (btn.dataset.act === 'feed') { e.preventDefault(); sendToPixerFeed(item, btn); }
         // 'open' es <a target=_blank> → deja burbujear sin preventDefault
         e.stopPropagation();
         return;
@@ -620,62 +562,29 @@
         + motors.map(m => `<option value="${String(m).replace(/"/g, '&quot;')}">${String(m).replace(/</g, '&lt;')}</option>`).join('');
       motorFilter.value = motors.includes(cur) ? cur : '';
     }
-    const STOCK_CACHE_KEY = 'stockCache_v1';
-    function readCache() {
-      try { const c = JSON.parse(localStorage.getItem(STOCK_CACHE_KEY) || 'null'); return (c && Array.isArray(c.items)) ? c : null; }
-      catch { return null; }
-    }
-    function writeCache(items) {
-      try { localStorage.setItem(STOCK_CACHE_KEY, JSON.stringify({ items, ts: Date.now() })); } catch {}
-    }
-    async function fetchList() {
-      // 3 intentos con backoff: un único fetch fallido (hipo de red o arranque
-      // en frío del worker) NO debe vaciar la vista ni parecer pérdida de datos.
-      let lastErr;
-      for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-          const r = await fetch(STOCK_LIST_URL + '?limit=200', { cache: 'no-store' });
-          if (!r.ok) throw new Error('HTTP ' + r.status);
-          const data = await r.json();
-          if (!data || !Array.isArray(data.items)) throw new Error('respuesta sin items');
-          return data.items;
-        } catch (e) {
-          lastErr = e;
-          if (attempt < 3) await new Promise(res => setTimeout(res, attempt * 800));
-        }
-      }
-      throw lastErr;
-    }
-    function feedMatrix() {
-      window.MATRIX_TITLES_FEED = allItems
-        .map(it => (it.title || it.comment || it.prompt || '').toString().trim())
-        .filter(Boolean);
-    }
     async function load() {
       status.textContent = '// cargando stock...';
       empty.hidden = true;
       grid.innerHTML = '';
       try {
-        allItems = await fetchList();
-        writeCache(allItems);
+        const r = await fetch(STOCK_LIST_URL + '?limit=200');
+        if (!r.ok) {
+          status.textContent = `// ERROR ${r.status} · el endpoint /stock/list aún no está disponible en pixer-eleven`;
+          empty.hidden = false;
+          return;
+        }
+        const data = await r.json();
+        allItems = data.items || [];
         buildMotorOptions();
         applyFilters();
         status.textContent = '';
-        feedMatrix();
+        // Alimenta la lluvia Matrix con los títulos (subliminal)
+        window.MATRIX_TITLES_FEED = allItems
+          .map(it => (it.title || it.comment || it.prompt || '').toString().trim())
+          .filter(Boolean);
       } catch (e) {
-        // Fallo de red/worker: NO es pérdida de datos. Si hay copia guardada, mostrarla.
-        const cached = readCache();
-        if (cached && cached.items.length) {
-          allItems = cached.items;
-          buildMotorOptions();
-          applyFilters();
-          feedMatrix();
-          const when = cached.ts ? fmtDate(new Date(cached.ts).toISOString()) : '';
-          status.textContent = `// sin conexión con el servidor · mostrando copia guardada${when ? ' (' + when + ')' : ''} · pulsa ↻ para reintentar`;
-        } else {
-          empty.hidden = true; // error de carga, NO "vacío"
-          status.textContent = '// no se pudo cargar el stock (error de red, no se ha borrado nada) · pulsa ↻ para reintentar';
-        }
+        status.textContent = `// ERROR red: ${e}`;
+        empty.hidden = false;
       }
     }
     typeFilter.addEventListener('change', () => { filters.type = typeFilter.value; applyFilters(true); });

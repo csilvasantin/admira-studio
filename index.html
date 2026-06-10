@@ -3,10 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
-  <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
-  <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Digital Twin XpaceOS powered by ADmira | ADmiraNeXT Studio</title>
+  <title>PixerIA x Admira.xp | Contenidos IA</title>
   <meta name="description" content="Menu operativo para crear contenidos de Audio, Musica, Imagenes y Video desde PixerIA conectados con Admira.xp.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
   <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/tokens.css">
@@ -24,24 +21,20 @@
     </a>
     <div class="admira-nav-items">
       <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">PixerIA</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Consejo Live</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
       <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
     </div>
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">PixerIA × Admira.xp</span><span class="brand-version">v.2026.05.02-r72</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">PixerIA × Admira.xp</span><span class="brand-version">v.2026.05.02-r69</span></a></div>
     <nav class="primary-nav">      <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
       <a href="imagenes.html" data-nav="imagenes">Imágenes</a>
       <a href="video.html" data-nav="video">Video</a>
-      <a href="publicidad.html" data-nav="publicidad">Publicidad</a>
+      <button type="button" class="nav-import" id="openImport" title="Importa un video/audio (YouTube/Vimeo/X/TikTok/IG) vía yt-dlp local">📥 YouTube</button>
       <a href="stock.html" data-nav="stock">Stock</a>
-      <button type="button" class="nav-import" id="openImport" title="Importa un video/audio (YouTube/Vimeo/X/TikTok/IG) vía yt-dlp local">📥 Importar</button>
-      <a href="director.html" data-nav="director">Director</a>
     </nav>
     <div class="topnav-actions">
       <span id="xtoreStatus" class="xtore-badge" title="Estado de la pantalla Xtore (signage.html)">🔴 XTORE</span>
@@ -53,7 +46,7 @@
     <h1>Cuatro motores de contenido para crear experiencias completas.</h1>
     <p class="lead">El trabajo se ordena en Audio, Música, Imágenes y Video. Cada tipo tiene su página operativa con formulario de brief; la Plataforma consolida los cuatro y Admira.xp orquesta la salida.</p>
     <div class="topbar">
-      <span class="pill">Versión v.2026.05.02-r72</span>
+      <span class="pill">Versión v.2026.05.02-r69</span>
       <span class="pill">Brief estructurado en JSON / Markdown</span>
       <span class="pill">Salida: GitHub Pages + Telegram</span>
     </div>
@@ -95,14 +88,6 @@
             <small>guion · planos · montaje</small>
           </div>
         </a>
-        <a class="home-card" href="publicidad.html">
-          <span class="badge ad">AD</span>
-          <div>
-            <h3>Publicidad segmentada</h3>
-            <p>Creatividades que cambian en tiempo real según la señal de audiencia enviada por el gemelo digital XpaceOS.</p>
-            <small>LiveCam · segmento · pantalla</small>
-          </div>
-        </a>
       </div>
     </section>
 
@@ -125,14 +110,6 @@
             <small>entrada · generación · orquestación · salida</small>
           </div>
         </a>
-        <a class="home-card" href="director.html">
-          <span class="badge platform">D</span>
-          <div>
-            <h3>Director</h3>
-            <p>Stage, Cast y Score para montar experiencias completas con los motores IA como asistentes de producción.</p>
-            <small>timeline · markers · render</small>
-          </div>
-        </a>
       </div>
     </section>
 
@@ -147,7 +124,7 @@
     </section>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · PixerIA × Admira.xp · v.2026.05.02-r72</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · PixerIA × Admira.xp · v.2026.05.02-r69</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
