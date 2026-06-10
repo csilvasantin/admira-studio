@@ -15,23 +15,9 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="publicidad">
-  <nav class="admira-nav admira-nav-static" aria-label="Admira · Xperience">
-    <a class="admira-nav-brand" href="https://www.admira.app">
-      <span class="admira-nav-brand-name">Admira</span>
-      <span class="admira-nav-brand-tag">Xperience</span>
-    </a>
-    <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">Pixer.IA</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Consejo Live</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
-      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
-    </div>
-  </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixer.ia × Admira.xp</span><span class="brand-version">v.2026.05.02-r71</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Pixeria</span><span class="brand-version">v.2026.06.04-r73</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
@@ -42,8 +28,7 @@
       <button type="button" class="nav-import" id="openImport" title="Importa un video/audio (YouTube/Vimeo/X/TikTok/IG) vía yt-dlp local">📥 Importar</button>
     </nav>
     <div class="topnav-actions">
-      <span id="xtoreStatus" class="xtore-badge" title="Estado de la pantalla Xtore (signage.html)">🔴 XTORE</span>
-      <button type="button" class="btn-back" onclick="history.length>1?history.back():location.href='index.html'">← Volver</button>
+      <a class="btn" href="#contact" data-admira-contact>Contacto</a>
     </div>
   </header>
 
@@ -51,7 +36,7 @@
     <figure class="page-gif"><img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Matrix_Digital_rain_banner.gif" alt="Publicidad segmentada · Matrix" loading="lazy"><figcaption>// XpaceOS LiveCam · audience signal</figcaption></figure>
     <p class="eyebrow platform">XpaceOS · publicidad adaptativa</p>
     <h1>Publicidad que cambia cuando cambia la audiencia.</h1>
-    <p class="lead">El gemelo digital envia una senal agregada de audiencia y Pixer.ia construye una pieza lista para pantalla: headline, oferta, CTA, tono visual y asset de signage.</p>
+    <p class="lead">Subes una imagen base, defines una oferta para hombre y otra para mujer, y PixerIA te devuelve dos versiones del mismo contenido listas para pantalla.</p>
   </header>
 
   <main>
@@ -112,6 +97,18 @@
 
         <article class="module">
           <div class="module-head"><h3><span class="accent" style="background: var(--video);"></span>Brief creativo</h3><small>copy + oferta + CTA</small></div>
+          <div class="field">
+            <label>Imagen base del anuncio</label>
+            <div class="ad-upload">
+              <input id="ad-image-file" type="file" accept="image/*" hidden>
+              <button type="button" class="btn" id="ad-image-pick">🖼 Seleccionar imagen</button>
+              <button type="button" class="btn" id="ad-image-clear">Limpiar imagen</button>
+              <span class="ad-upload-meta" id="ad-image-meta">Sin imagen cargada</span>
+            </div>
+            <div class="ad-image-preview" id="ad-image-preview" hidden>
+              <img id="ad-image-preview-img" alt="Imagen base del anuncio">
+            </div>
+          </div>
           <div class="row2">
             <div class="field"><label for="ad-product">Producto / servicio</label><input id="ad-product" name="publicidad.product" type="text" placeholder="Zapatillas urbanas · pack premium"></div>
             <div class="field"><label for="ad-context">Contexto del espacio</label><input id="ad-context" name="publicidad.context" type="text" placeholder="Escaparate interactivo en tienda física"></div>
@@ -132,7 +129,7 @@
         <div class="brief-head">
           <h3>Brief de Publicidad Segmentada</h3>
           <div class="brief-actions">
-            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ GENERAR ANUNCIO</span></button>
+            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ GENERAR 2 VERSIONES</span></button>
             <button class="btn" type="button" id="adSimulatePass">Simular paso LiveCam</button>
             <button class="btn" type="button" id="genBrief">Generar brief</button>
             <button class="btn" type="button" id="copyBrief">Copiar JSON</button>
@@ -141,13 +138,13 @@
             <button class="btn" type="button" id="clearAll">Limpiar Publicidad</button>
           </div>
         </div>
-        <pre class="brief" id="briefOut">// Elige un segmento o simula una senal LiveCam. Pulsa "Generar anuncio".</pre>
+        <pre class="brief" id="briefOut">// Sube una imagen base, define la oferta para hombre y mujer, y pulsa "Generar 2 versiones".</pre>
       </section>
       <div id="player" class="player-area" hidden></div>
     </form>
   </main>
 
-  <footer><a href="https://www.xpaceos.com" target="_blank" rel="noopener" title="Abrir XpaceOS">AdmiraNext AI Workspace · Publicidad segmentada para XpaceOS · v.2026.05.02-r71</a></footer>
+  <footer><a href="https://www.xpaceos.com" target="_blank" rel="noopener" title="Abrir XpaceOS">AdmiraNext AI Workspace · Publicidad segmentada para XpaceOS · v.2026.06.04-r73</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">

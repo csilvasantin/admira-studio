@@ -121,10 +121,10 @@
   function applyDefaults() {
     const store = loadStore();
     let changed = false;
-    // Migracion: el default antiguo era 'Demo Pixer.ai'. Si nadie lo edito,
+    // Migracion: el default antiguo era 'Demo PixerIA'. Si nadie lo edito,
     // lo movemos al nuevo default de marca 'AdmiraNext' (el separador "//"
     // se aplica via deriveAssetTitle, no aqui).
-    if (!store.cliente || store.cliente === 'Demo Pixer.ai') { store.cliente = DEFAULTS.cliente; changed = true; }
+    if (!store.cliente || store.cliente === 'Demo PixerIA') { store.cliente = DEFAULTS.cliente; changed = true; }
     for (const key of ['audio', 'musica', 'imagenes', 'video', 'publicidad']) {
       if (!store[key] || Object.keys(store[key]).length === 0) {
         store[key] = JSON.parse(JSON.stringify(DEFAULTS[key]));
@@ -372,7 +372,7 @@
 
   function toMarkdown(d) {
     const lines = [];
-    lines.push('# Brief Pixer.ia x Admira.xp');
+    lines.push('# Brief PixerIA x Admira.xp');
     if (d.cliente) lines.push(`**Cliente / proyecto:** ${d.cliente}`);
     lines.push(`**Version:** ${d.meta.version}  ·  **Generado:** ${d.meta.generado}`);
     const sections = [
@@ -428,10 +428,16 @@
         const store = loadStore();
         if (scopeKeys && scopeKeys.length === 1 && scopeKeys[0] !== 'all') {
           delete store[scopeKeys[0]];
+          if (scopeKeys[0] === 'publicidad') {
+            adBaseImage = null;
+            updateAdImagePreview();
+          }
         } else {
           for (const k of (scopeKeys || ['audio', 'musica', 'imagenes', 'video', 'cliente'])) {
             delete store[k];
           }
+          adBaseImage = null;
+          updateAdImagePreview();
         }
         saveStore(store);
         document.querySelectorAll('input[type=text], select, textarea').forEach(el => { if (el.name) el.value = ''; });
@@ -1562,6 +1568,7 @@
     female: 'Segmento mujer',
     neutral: 'Segmento neutral',
   };
+  let adBaseImage = null;
 
   function normalizeAudienceSegment(value) {
     const v = String(value || '').trim().toLowerCase();
@@ -1606,16 +1613,27 @@
     const source = ad.source || DEFAULTS.publicidad.source;
     const confidence = Math.round(Math.max(0, Math.min(1, parseFloat(ad.confidence || '0.64'))) * 100);
     const brand = (store.cliente || 'ADmiraNeXT · XpaceOS').slice(0, 42);
+    const baseImage = adBaseImage && adBaseImage.dataUrl
+      ? `<image href="${escAttr(adBaseImage.dataUrl)}" x="960" y="150" width="500" height="500" preserveAspectRatio="xMidYMid slice" opacity=".95"/>`
+      : '';
+    const baseImageFrame = adBaseImage && adBaseImage.dataUrl
+      ? `<rect x="960" y="150" width="500" height="500" fill="url(#imageWash)" opacity=".38"/><rect x="960" y="150" width="500" height="500" fill="none" stroke="${theme.b}" stroke-width="3"/>`
+      : `<path d="M1120 238h200l76 76v264l-94 76h-208l-76-76V314z" fill="${theme.a}" opacity=".10" stroke="${theme.b}" stroke-width="3"/>`;
+    const baseImageCaption = adBaseImage && adBaseImage.name
+      ? `BASE IMAGE · ${esc(adBaseImage.name.slice(0, 36))}`
+      : 'NO BASE IMAGE · CREATIVE SHELL';
     return `<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
       <defs>
         <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="${theme.c}"/><stop offset=".52" stop-color="#020602"/><stop offset="1" stop-color="#001406"/></linearGradient>
+        <linearGradient id="imageWash" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${theme.c}" stop-opacity=".00"/><stop offset="1" stop-color="${theme.c}" stop-opacity=".90"/></linearGradient>
         <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse"><path d="M64 0H0V64" fill="none" stroke="${theme.a}" stroke-opacity=".18" stroke-width="1"/></pattern>
       </defs>
       <rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#grid)"/>
       <circle cx="1260" cy="180" r="260" fill="${theme.b}" opacity=".12"/><circle cx="1220" cy="660" r="330" fill="${theme.a}" opacity=".10"/>
       <path d="M1040 150h330l120 120v390l-150 120h-330L900 650V260z" fill="none" stroke="${theme.a}" stroke-width="5" opacity=".78" filter="url(#glow)"/>
-      <path d="M1120 238h200l76 76v264l-94 76h-208l-76-76V314z" fill="${theme.a}" opacity=".10" stroke="${theme.b}" stroke-width="3"/>
+      ${baseImage}
+      ${baseImageFrame}
       <text x="80" y="96" fill="${theme.a}" font-family="JetBrains Mono, Menlo, monospace" font-size="34" font-weight="800" letter-spacing="4">${esc(brand)}</text>
       <text x="80" y="152" fill="#c8ffd0" opacity=".72" font-family="JetBrains Mono, Menlo, monospace" font-size="22" letter-spacing="3">XPACEOS LIVE AD ROUTER · ${theme.label} · ${confidence}%</text>
       <foreignObject x="80" y="245" width="860" height="310"><div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Inter,Arial,sans-serif;color:#f5fff6;font-weight:900;font-size:76px;line-height:.95;letter-spacing:-1px;text-transform:uppercase">${esc(headline)}</div></foreignObject>
@@ -1624,7 +1642,82 @@
       <text x="930" y="820" fill="${theme.b}" font-family="JetBrains Mono, Menlo, monospace" font-size="21" letter-spacing="2">SEÑAL: ${esc(source)} · no image stored · ephemeral segment</text>
       <text x="1190" y="478" fill="${theme.a}" font-family="JetBrains Mono, Menlo, monospace" font-size="118" font-weight="900" text-anchor="middle" filter="url(#glow)">AD</text>
       <text x="1190" y="532" fill="#c8ffd0" font-family="JetBrains Mono, Menlo, monospace" font-size="26" text-anchor="middle" letter-spacing="4">DIGITAL TWIN</text>
+      <text x="1190" y="620" fill="${theme.b}" font-family="JetBrains Mono, Menlo, monospace" font-size="18" text-anchor="middle" letter-spacing="2">${baseImageCaption}</text>
     </svg>`;
+  }
+
+  function updateAdImagePreview() {
+    const wrap = document.getElementById('ad-image-preview');
+    const img = document.getElementById('ad-image-preview-img');
+    const meta = document.getElementById('ad-image-meta');
+    if (!wrap || !img || !meta) return;
+    if (adBaseImage && adBaseImage.dataUrl) {
+      wrap.hidden = false;
+      img.src = adBaseImage.dataUrl;
+      meta.textContent = `${adBaseImage.name || 'imagen'} · lista para segmentar`;
+    } else {
+      wrap.hidden = true;
+      img.removeAttribute('src');
+      meta.textContent = 'Sin imagen cargada';
+    }
+  }
+
+  function bindPublicidadImageUpload() {
+    if (document.body.dataset.page !== 'publicidad') return;
+    const input = document.getElementById('ad-image-file');
+    const pick = document.getElementById('ad-image-pick');
+    const clear = document.getElementById('ad-image-clear');
+    if (!input || !pick || !clear) return;
+    pick.addEventListener('click', () => input.click());
+    clear.addEventListener('click', () => {
+      adBaseImage = null;
+      input.value = '';
+      updateAdImagePreview();
+    });
+    input.addEventListener('change', async () => {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      try {
+        const dataUrl = await new Promise((resolve, reject) => {
+          const fr = new FileReader();
+          fr.onload = () => resolve(fr.result);
+          fr.onerror = () => reject(fr.error || new Error('No se pudo leer la imagen'));
+          fr.readAsDataURL(file);
+        });
+        adBaseImage = {
+          name: file.name,
+          type: file.type || 'image/*',
+          dataUrl: String(dataUrl),
+        };
+        updateAdImagePreview();
+        showToast('Imagen base cargada');
+      } catch (err) {
+        showToast((err && err.message) || 'No se pudo cargar la imagen');
+      } finally {
+        input.value = '';
+      }
+    });
+    updateAdImagePreview();
+  }
+
+  function segmentedVariantData(store, baseAd, segment) {
+    const ad = { ...baseAd, segment };
+    const svg = segmentedAdSvg(ad, store);
+    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    const title = `${store.cliente || 'XpaceOS'} // ${AUDIENCE_LABELS[segment] || 'Segmento'} // ${ad.product || 'Publicidad'}`;
+    return {
+      segment,
+      label: AUDIENCE_LABELS[segment] || 'Segmento',
+      url,
+      title,
+      headline: segmentedHeadline(ad),
+      offer: segmentedOffer(ad),
+      cta: ad.cta || DEFAULTS.publicidad.cta,
+      source: ad.source || DEFAULTS.publicidad.source,
+      confidence: ad.confidence,
+      hasBaseImage: !!(adBaseImage && adBaseImage.dataUrl),
+      baseImageName: adBaseImage && adBaseImage.name ? adBaseImage.name : '',
+    };
   }
 
   function setAudienceSegment(segment, opts = {}) {
@@ -1657,32 +1750,53 @@
 
   function playPublicidad() {
     const { store, ad } = currentAdData();
-    const svg = segmentedAdSvg(ad, store);
-    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-    const title = `${store.cliente || 'XpaceOS'} // ${AUDIENCE_LABELS[ad.segment] || 'Segmento'} // ${ad.product || 'Publicidad'}`;
+    const variants = ['male', 'female'].map((segment) => segmentedVariantData(store, ad, segment));
+    const selectedSegment = normalizeAudienceSegment(ad.segment === 'neutral' ? 'female' : ad.segment);
     const plan = {
-      segment: ad.segment,
-      confidence: ad.confidence,
+      baseImage: adBaseImage ? { name: adBaseImage.name, type: adBaseImage.type } : null,
       source: ad.source,
       screen: ad.screen,
-      headline: segmentedHeadline(ad),
-      offer: segmentedOffer(ad),
-      cta: ad.cta,
       privacy: ad.privacy,
+      variants: variants.map((variant) => ({
+        segment: variant.segment,
+        headline: variant.headline,
+        offer: variant.offer,
+        cta: variant.cta,
+        confidence: variant.confidence,
+      })),
     };
     showPlayer(`
       <div class="player-card segmented-player">
-        <div class="player-head">▶ PUBLICIDAD SEGMENTADA · ${AUDIENCE_LABELS[ad.segment] || 'Segmento neutral'} · ${ad.source || 'señal local'}</div>
-        <div class="player-img-wrap segmented-preview">
-          <img class="player-img" src="${url}" alt="Creatividad segmentada" data-pixer-title="${escAttr(title)}">
+        <div class="player-head">▶ PUBLICIDAD SEGMENTADA · 2 versiones · ${ad.source || 'señal local'}</div>
+        <div class="segmented-variants">
+          ${variants.map((variant) => `
+            <article class="segmented-variant${variant.segment === selectedSegment ? ' selected' : ''}" data-segmented-variant="${variant.segment}">
+              <div class="segmented-variant-head">
+                <strong>${variant.label}</strong>
+                <span>${variant.hasBaseImage ? 'base image' : 'creative shell'}</span>
+              </div>
+              <div class="player-img-wrap segmented-preview">
+                <img class="player-img" src="${variant.url}" alt="Creatividad ${variant.label}" data-pixer-title="${escAttr(variant.title)}">
+              </div>
+              <div class="segmented-variant-meta">${`${variant.headline} · ${variant.offer}`.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+            </article>
+          `).join('')}
         </div>
         <pre class="player-body">${JSON.stringify(plan, null, 2).replace(/</g,'&lt;')}</pre>
-        <small class="player-foot">// Asset SVG generado localmente · listo para enviar a Admira XP / XpaceOS Signage</small>
+        <small class="player-foot">// Dos assets SVG generados localmente a partir de la misma imagen base · haz clic en una variante para enviarla a Admira XP</small>
       </div>`);
+    document.querySelectorAll('[data-segmented-variant]').forEach((card) => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('[data-segmented-variant]').forEach((node) => node.classList.remove('selected'));
+        card.classList.add('selected');
+        setAudienceSegment(card.dataset.segmentedVariant, { source: ad.source || 'Manual operator' });
+      });
+    });
   }
 
   function bindSegmentedAds() {
     if (document.body.dataset.page !== 'publicidad') return;
+    bindPublicidadImageUpload();
     const params = new URLSearchParams(location.search);
     const incoming = params.get('segment') || params.get('audience');
     if (incoming) {
@@ -1936,6 +2050,15 @@
   function detectLatestAsset() {
     const player = document.getElementById('player');
     if (!player || player.hidden) return null;
+    const selectedVariantImg = player.querySelector('.segmented-variant.selected img[src]');
+    if (selectedVariantImg) {
+      return {
+        kind: 'image',
+        src: selectedVariantImg.getAttribute('src') || selectedVariantImg.src,
+        title: (selectedVariantImg.dataset && selectedVariantImg.dataset.pixerTitle) || '',
+        cover: (selectedVariantImg.dataset && selectedVariantImg.dataset.pixerCover) || '',
+      };
+    }
     // Compare grid: si el usuario marcó una celda como seleccionada
     // (.compare-cell.selected), la imagen de esa celda gana sobre el resto.
     // Por defecto auto-selecciona la primera tras la generacion (compareSelectedImages).

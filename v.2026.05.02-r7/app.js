@@ -101,7 +101,7 @@
 
   function toMarkdown(d) {
     const lines = [];
-    lines.push('# Brief Pixer.ai x Admira.xp');
+    lines.push('# Brief PixerIA x Admira.xp');
     if (d.cliente) lines.push(`**Cliente / proyecto:** ${d.cliente}`);
     lines.push(`**Version:** ${d.meta.version}  ·  **Generado:** ${d.meta.generado}`);
     const sections = [

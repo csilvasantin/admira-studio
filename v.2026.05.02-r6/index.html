@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pixer.ai x Admira.xp | Contenidos IA</title>
-  <meta name="description" content="Plataforma operativa para crear briefs de Audio, Musica, Imagenes y Video desde Pixer.ai conectados con Admira.xp.">
+  <title>PixerIA x Admira.xp | Contenidos IA</title>
+  <meta name="description" content="Plataforma operativa para crear briefs de Audio, Musica, Imagenes y Video desde PixerIA conectados con Admira.xp.">
   <style>
     :root {
       color-scheme: dark;
@@ -217,7 +217,7 @@
 </head>
 <body>
   <header>
-    <p class="eyebrow">Pixer.ai conectado con Admira.xp</p>
+    <p class="eyebrow">PixerIA conectado con Admira.xp</p>
     <h1>Cuatro motores de contenido para crear experiencias completas.</h1>
     <p class="lead">El trabajo se ordena en Audio, Musica, Imagenes y Video. Cada tipo tiene su menu operativo, su conexion con Admira.xp y una zona de plataforma donde se rellenan briefs reales que generan el output estructurado para produccion.</p>
     <div class="topbar">
@@ -297,10 +297,10 @@
 
       <aside class="xp-panel" aria-label="Conexion con Admira.xp">
         <h2>Admira.xp</h2>
-        <p>Admira.xp funciona como capa de experiencia: recibe contenidos generados en Pixer.ai, los organiza por escena, canal o interaccion y los convierte en experiencias navegables, medibles y reutilizables.</p>
+        <p>Admira.xp funciona como capa de experiencia: recibe contenidos generados en PixerIA, los organiza por escena, canal o interaccion y los convierte en experiencias navegables, medibles y reutilizables.</p>
         <div class="xp-flow">
           <div class="xp-step"><strong>Entrada</strong><span>Brief, cliente, objetivo y tipo de contenido.</span></div>
-          <div class="xp-step"><strong>Generacion</strong><span>Pixer.ai produce audio, musica, imagenes o video.</span></div>
+          <div class="xp-step"><strong>Generacion</strong><span>PixerIA produce audio, musica, imagenes o video.</span></div>
           <div class="xp-step"><strong>Orquestacion</strong><span>Admira.xp conecta piezas, estados, escenas y triggers.</span></div>
           <div class="xp-step"><strong>Salida</strong><span>Publicacion web, experiencia, demo, campana o presentacion.</span></div>
         </div>
@@ -311,7 +311,7 @@
       <div class="platform-head">
         <div>
           <h2>Plataforma</h2>
-          <p class="meta">Rellena los modulos relevantes y genera un brief estructurado en JSON, listo para Pixer.ai y Admira.xp.</p>
+          <p class="meta">Rellena los modulos relevantes y genera un brief estructurado en JSON, listo para PixerIA y Admira.xp.</p>
         </div>
         <div class="brief-actions">
           <button class="btn" type="button" id="loadDemo">Cargar demo</button>
@@ -472,7 +472,7 @@
   </main>
 
   <footer>
-    <p>AdmiraNext AI Workspace · Pixer.ai x Admira.xp · v.2026.05.02-r6</p>
+    <p>AdmiraNext AI Workspace · PixerIA x Admira.xp · v.2026.05.02-r6</p>
   </footer>
 
   <div class="toast" id="toast">Copiado</div>
@@ -532,7 +532,7 @@
 
       function toMarkdown(d) {
         const lines = [];
-        lines.push('# Brief Pixer.ai x Admira.xp');
+        lines.push('# Brief PixerIA x Admira.xp');
         if (d.cliente) lines.push(`**Cliente / proyecto:** ${d.cliente}`);
         lines.push(`**Version:** ${d.meta.version}  ·  **Generado:** ${d.meta.generado}`);
         const sections = [

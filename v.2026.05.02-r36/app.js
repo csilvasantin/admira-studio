@@ -63,7 +63,7 @@
 
   // Defaults por sección. Se aplican solo si la sección está vacía en localStorage.
   const DEFAULTS = {
-    cliente: 'Demo Pixer.ai',
+    cliente: 'Demo PixerIA',
     audio: {
       personaje: 'Voz adulta cálida',
       idioma: 'Espanol (ES)',
@@ -314,7 +314,7 @@
 
   function toMarkdown(d) {
     const lines = [];
-    lines.push('# Brief Pixer.ai x Admira.xp');
+    lines.push('# Brief PixerIA x Admira.xp');
     if (d.cliente) lines.push(`**Cliente / proyecto:** ${d.cliente}`);
     lines.push(`**Version:** ${d.meta.version}  ·  **Generado:** ${d.meta.generado}`);
     const sections = [
@@ -1706,7 +1706,7 @@
       stat.style.display = 'block';
       const ep = pickImportEndpoint();
       if (fmt === 'audio' && !ep.supportsAudio) {
-        stat.textContent = `// AUDIO no disponible vía URL pública.\n// Para mp3 abre Pixer.ai en local (suno-local en :3777).\n// Para video mp4 elige la opción "Video (mp4)" — esa sí funciona desde aquí.`;
+        stat.textContent = `// AUDIO no disponible vía URL pública.\n// Para mp3 abre PixerIA en local (suno-local en :3777).\n// Para video mp4 elige la opción "Video (mp4)" — esa sí funciona desde aquí.`;
         return;
       }
       stat.textContent = `// llamando a ${ep.kind} (${fmt})...\n// puede tardar 10-60s según video`;
