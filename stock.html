@@ -67,7 +67,7 @@
             <option value="music">Música</option>
             <option value="image">Imágenes</option>
             <option value="video">Video</option>
-            <option value="animation">Animaciones</option>
+            <option value="link">Enlaces</option>
           </select>
           <select id="stockMotorFilter" title="Filtrar por motor" aria-label="Filtrar por motor">
             <option value="">Todos los motores</option>
@@ -196,7 +196,7 @@
     const lightboxMeta = document.getElementById('stockLightboxMeta');
     const STOCK_BASE = 'https://pixer-eleven.csilvasantin.workers.dev';
     const STOCK_LIST_URL = STOCK_BASE + '/stock/list';
-    const TYPE_ORDER = { audio: 0, music: 1, image: 2, video: 3, animation: 4 };
+    const TYPE_ORDER = { audio: 0, music: 1, image: 2, video: 3, link: 4 };
     let allItems = [];
     let filters = { type: '', motor: '', q: '', tag: '', dateQuick: '', dateFrom: '', dateTo: '' };
     let sortMode = 'date-desc';
@@ -213,8 +213,14 @@
       if (it.type === 'image') {
         return `<img src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
       }
-      if (it.type === 'video' || it.type === 'animation') {
+      if (it.type === 'video') {
         return `<video src="${it.url}" ${it.thumbnail ? `poster="${it.thumbnail}"` : ''} preload="metadata" controls></video>`;
+      }
+      if (it.type === 'link') {
+        const thumb = it.thumbnail || '';
+        return `<a class="stock-link-preview" href="${escAttr(it.url || it.prompt || '')}" target="_blank" rel="noopener" title="Abrir enlace">
+          ${thumb ? `<img src="${escAttr(thumb)}" alt="" loading="lazy">` : '<div class="stock-cover-empty">↗</div>'}
+        </a>`;
       }
       if (it.type === 'audio' || it.type === 'music') {
         const cover = it.thumbnail || '';
@@ -344,16 +350,8 @@
         applyFilters(true);
       });
     }
-    // "animation" es un tipo virtual: ainimation.studio publica como type=video
-    // con motor=ainimation, así que lo distinguimos por el motor (el worker no
-    // admite un type 'animation' real sin redeploy).
     function matchesType(it, t) {
       if (!t) return true;
-      // Animación = tipo real 'animation' o (compat) lo publicado por ainimation
-      // como video con motor=ainimation antes de existir el tipo real.
-      const isAnim = it.type === 'animation' || String(it.motor || '').toLowerCase() === 'ainimation';
-      if (t === 'animation') return isAnim;
-      if (t === 'video') return it.type === 'video' && !isAnim;
       return it.type === t;
     }
     function applyFilters(resetPage) {
@@ -415,8 +413,15 @@
       let media = '';
       if (it.type === 'image') {
         media = `<img src="${it.thumbnail || it.url}" alt="">`;
-      } else if (it.type === 'video' || it.type === 'animation') {
+      } else if (it.type === 'video') {
         media = `<video src="${it.url}" ${it.thumbnail ? `poster="${it.thumbnail}"` : ''} controls autoplay></video>`;
+      } else if (it.type === 'link') {
+        const href = escAttr(it.url || it.prompt || '');
+        const thumb = it.thumbnail || '';
+        media = `<a class="stock-link-preview stock-link-preview-large" href="${href}" target="_blank" rel="noopener">
+          ${thumb ? `<img src="${escAttr(thumb)}" alt="">` : '<div class="stock-cover-empty">↗</div>'}
+          <span>Abrir enlace original</span>
+        </a>`;
       } else if (it.type === 'audio' || it.type === 'music') {
         const cover = it.thumbnail || '';
         media = `${cover ? `<img class="stock-cover" src="${cover}" alt="">` : '<div class="stock-cover-empty">▶</div>'}
