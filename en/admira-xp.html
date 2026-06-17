@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio · Audio</title>
-  <meta name="description" content="Brief operativo de Audio: voces, locuciones y paisajes sonoros para Admira.xp.">
+  <title>Admira Studio · Admira XP</title>
+  <meta name="description" content="Capa de experiencia que orquesta los outputs de Admira Studio en escenas, triggers y publicaciones.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
   <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/tokens.css">
   <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/nav.css">
   <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
   <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=20260611-bar">
+  <link rel="stylesheet" href="../workspace.css?v=20260608-video-fit">
   <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
 </head>
-<body data-page="audio">
+<body data-page="admira-xp">
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
@@ -27,12 +27,12 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">Admira Studio</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Consejo Live</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/en/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Live Council</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
-      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
+      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contact</a>
     </div>
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
@@ -40,92 +40,70 @@
     <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">A</span><span class="brand-name">Admira Studio</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
-      <a href="musica.html" data-nav="musica">Música</a>
-      <a href="imagenes.html" data-nav="imagenes">Imágenes</a>
+      <a href="musica.html" data-nav="musica">Music</a>
+      <a href="imagenes.html" data-nav="imagenes">Images</a>
       <a href="video.html" data-nav="video">Video</a>
-      <a href="publicidad.html" data-nav="publicidad">Publicidad</a>
+      <a href="publicidad.html" data-nav="publicidad">Advertising</a>
       <a href="avatar.html" data-nav="avatar">Avatar 3D</a>
-      <a href="/crear/" data-nav="crear">Assets</a>
+      <a href="/crear/" data-nav="create">Assets</a>
       <a href="stock.html" data-nav="stock">Stock</a>
     </nav>
     <div class="topnav-actions">
-      <div class="language-switcher" aria-label="Seleccion de idioma">
-        <a class="lang-toggle" href="/en/audio.html" aria-label="Cambiar a ingles">ENG</a>
+      <div class="language-switcher" aria-label="Language selection">
+        <a class="lang-toggle" href="/admira-xp.html" aria-label="Switch to Spanish">ESP</a>
       </div>
-      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
+      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
     </div>
   </header>
 
-  <header class="page-head has-gif"><figure class="page-gif"><img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Digital_rain_animation_medium_letters_clear.gif" alt="Audio · letras Matrix" loading="lazy"><figcaption>// Audio · letras Matrix</figcaption></figure>
-    <p class="eyebrow audio">Tipo de contenido · Audio</p>
-    <h1>Voces, locuciones y paisajes sonoros.</h1>
-    <p class="lead">Piezas habladas para asistentes, narrativas, guías, anuncios, experiencias interactivas y respuestas de producto. Define personaje, idioma, tono y guion; el brief se exporta listo para Admira Studio y Admira.xp.</p>
+  <header class="page-head has-gif"><figure class="page-gif"><img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Matrixcode.gif" alt="Admira.xp · Matrixcode" loading="lazy"><figcaption>// Admira.xp · Matrixcode</figcaption></figure>
+    <p class="eyebrow xp">Experience layer · Admira XP</p>
+    <h1>From Admira Studio outputs to a navigable experience.</h1>
+    <p class="lead">Admira XP receives Admira Studio outputs (audio, music, images, video) and organizes them by scene, channel or interaction. The result is a measurable reusable experience, not isolated assets.</p>
   </header>
 
   <main>
-    <form id="briefForm">
-      <div class="field" style="margin-bottom: 16px; display:grid; grid-template-columns: minmax(220px, 1fr) auto auto; gap:10px; align-items:end;">
-        <div>
-          <label for="proj-cliente">Cliente / proyecto</label>
-          <input id="proj-cliente" name="cliente" type="text" placeholder="Ej. Aena Mallorca - Campaña primavera">
-        </div>
-        <button type="button" class="btn" id="sendToAdmiraXP" title="Envía el último contenido generado al feed de Admira XP">📺 ENVIAR A ADMIRA XP</button>
-        <a class="btn" href="signage.html" target="_blank" rel="noopener" title="Abre la pantalla de signage para ver lo enviado">↗ VER PANTALLA</a>
+    <section>
+      <h2>Flujo Admira Studio → Admira.xp</h2>
+      <div class="xp-flow">
+        <div class="xp-step"><strong>1 · Entrada</strong><p>Brief de cliente, objetivo, tipo de contenido y restricciones de marca. Llega desde la página de cada tipo o desde Plataforma.</p></div>
+        <div class="xp-step"><strong>2 · Generación</strong><p>Admira Studio produce las piezas: voces y guiones, loops y stingers, assets visuales, video editado por canal.</p></div>
+        <div class="xp-step"><strong>3 · Orquestación</strong><p>Admira.xp conecta piezas, define escenas, estados y triggers; añade reglas de reutilización por momento o canal.</p></div>
+        <div class="xp-step"><strong>4 · Salida</strong><p>Publicación: web, demo, presentación, pantalla en evento, campaña multicanal o experiencia interactiva.</p></div>
       </div>
+    </section>
 
-      <article class="module">
-        <div class="module-head"><h3><span class="accent" style="background: var(--audio);"></span>Audio</h3><small>voz + guion + escena</small></div>
-        <div data-motor-section="audio"></div>
-        <div class="row2">
-          <div class="field"><label for="a-personaje">Personaje / locutor</label><input id="a-personaje" name="audio.personaje" type="text" placeholder="Voz adulta cálida"></div>
-          <div class="field"><label for="a-idioma">Idioma</label>
-            <select id="a-idioma" name="audio.idioma">
-              <option value="">—</option>
-              <option>Espanol (ES)</option>
-              <option>Espanol (LATAM)</option>
-              <option>Catalan</option>
-              <option>Ingles (UK)</option>
-              <option>Ingles (US)</option>
-              <option>Frances</option>
-              <option>Aleman</option>
-              <option>Portugues</option>
-            </select>
-          </div>
-        </div>
-        <div class="row2">
-          <div class="field"><label for="a-tono">Tono</label>
-            <select id="a-tono" name="audio.tono">
-              <option value="">—</option>
-              <option>Cercano</option>
-              <option>Institucional</option>
-              <option>Energico</option>
-              <option>Misterioso</option>
-              <option>Documental</option>
-              <option>Comercial</option>
-            </select>
-          </div>
-          <div class="field"><label for="a-ritmo">Ritmo / duración</label><input id="a-ritmo" name="audio.ritmo" type="text" placeholder="20s, ritmo medio"></div>
-        </div>
-        <div class="field"><label for="a-guion">Guion / texto a locutar</label><textarea id="a-guion" name="audio.guion" placeholder="Bienvenido a..."></textarea></div>
-        <div class="field"><label for="a-cta">CTA / final</label><input id="a-cta" name="audio.cta" type="text" placeholder="Reserva ahora en admira.xp"></div>
-      </article>
-
-      <div class="brief-area">
-        <div class="brief-head">
-          <h3>Brief de Audio</h3>
-          <div class="brief-actions">
-            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ CREAR</span></button>
-            <button class="btn" type="button" id="genBrief">Generar brief</button>
-            <button class="btn" type="button" id="copyBrief">Copiar JSON</button>
-            <button class="btn" type="button" id="copyMd">Copiar Markdown</button>
-            <button class="btn" type="button" id="dlBrief">Descargar .json</button>
-            <button class="btn" type="button" id="clearAll">Limpiar Audio</button>
-          </div>
-        </div>
-        <pre class="brief" id="briefOut">// Rellena los campos y pulsa "Generar brief".</pre>
+    <section>
+      <h2>Roles que cubre Admira.xp</h2>
+      <div class="xp-roles">
+        <div class="xp-role"><h4>Director de experiencia</h4><p>Decide qué pieza aparece en qué momento, según escena, canal o interacción del usuario.</p></div>
+        <div class="xp-role"><h4>Bibliotecario</h4><p>Indexa los outputs por cliente, campaña, idioma y estado (borrador, aprobado, publicado).</p></div>
+        <div class="xp-role"><h4>Orquestador</h4><p>Conecta audio + música + imagen + video como un único paquete reutilizable por canal.</p></div>
+        <div class="xp-role"><h4>Publicador</h4><p>Empaqueta la salida para web, evento o presentación, con las versiones por formato y duración.</p></div>
       </div>
-      <div id="player" class="player-area" hidden></div>
-    </form>
+    </section>
+
+    <section>
+      <h2>Cómo se usa desde aquí</h2>
+      <div class="home-grid">
+        <a class="home-card" href="plataforma.html">
+          <span class="badge platform">P</span>
+          <div>
+            <h3>Ir a Plataforma</h3>
+            <p>Rellena el brief consolidado y descarga el JSON. Es la entrada estándar para Admira.xp.</p>
+            <small>brief unificado → entrada Admira.xp</small>
+          </div>
+        </a>
+        <a class="home-card" href="index.html">
+          <span class="badge xp">XP</span>
+          <div>
+            <h3>Volver al inicio</h3>
+            <p>Vista general de los cuatro tipos de contenido y de las dos capas operativas.</p>
+            <small>mapa del workspace</small>
+          </div>
+        </a>
+      </div>
+    </section>
   </main>
 
   <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
@@ -182,6 +160,6 @@
     </form>
   </dialog>
   <script src="/matrix-rain.js?v=20260608-sides"></script>
-  <script src="app.js?v=20260611-camp2"></script>
+  <script src="../app.js"></script>
 </body>
 </html>

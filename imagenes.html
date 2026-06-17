@@ -3,16 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Imágenes · PixerIA x Admira.xp</title>
+  <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
+  <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
+  <title>Admira Studio · Imagenes</title>
   <meta name="description" content="Brief operativo de Imágenes: visuales, assets y mundos de marca para Admira.xp.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
   <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/tokens.css">
   <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/nav.css">
   <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
   <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="workspace.css?v=20260611-bar">
+  <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
 </head>
 <body data-page="imagenes">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
   <!-- Banda superior del grupo Admira · Xperience -->
   <nav class="admira-nav admira-nav-static" aria-label="Admira · Xperience">
     <a class="admira-nav-brand" href="https://www.admira.app">
@@ -20,31 +27,38 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">PixerIA</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Consejo Live</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
       <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
     </div>
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">PixerIA × Admira.xp</span><span class="brand-version">v.2026.05.02-r69</span></a></div>
-    <nav class="primary-nav">      <a href="audio.html" data-nav="audio">Audio</a>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">A</span><span class="brand-name">Admira Studio</span></a></div>
+    <nav class="primary-nav">
+      <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Música</a>
       <a href="imagenes.html" data-nav="imagenes">Imágenes</a>
       <a href="video.html" data-nav="video">Video</a>
-      <button type="button" class="nav-import" id="openImport" title="Importa un video/audio (YouTube/Vimeo/X/TikTok/IG) vía yt-dlp local">📥 YouTube</button>
+      <a href="publicidad.html" data-nav="publicidad">Publicidad</a>
+      <a href="avatar.html" data-nav="avatar">Avatar 3D</a>
+      <a href="/crear/" data-nav="crear">Assets</a>
       <a href="stock.html" data-nav="stock">Stock</a>
     </nav>
     <div class="topnav-actions">
-      <span id="xtoreStatus" class="xtore-badge" title="Estado de la pantalla Xtore (signage.html)">🔴 XTORE</span>
-      <button type="button" class="btn-back" onclick="history.length>1?history.back():location.href='index.html'">← Volver</button>
+      <div class="language-switcher" aria-label="Seleccion de idioma">
+        <a class="lang-toggle" href="/en/imagenes.html" aria-label="Cambiar a ingles">ENG</a>
+      </div>
+      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
     </div>
   </header>
 
   <header class="page-head has-gif"><figure class="page-gif"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Digital_rain_animation_big_letters_green_and_white.gif" alt="Imágenes · letras grandes verdes" loading="lazy"><figcaption>// Imágenes · letras grandes verdes</figcaption></figure>
     <p class="eyebrow image">Tipo de contenido · Imágenes</p>
-    <h1>Creación de contenido Multimedia.</h1>
+    <h1>Creación de Imágenes.</h1>
     <p class="lead">Imágenes para campañas, producto, personajes, fondos, miniaturas y banners. Define paleta, encuadre, luz y prompt para series coherentes listas para publicar o animar.</p>
   </header>
 
@@ -56,19 +70,8 @@
           <input id="proj-cliente" name="cliente" type="text" placeholder="Ej. Aena Mallorca - Campaña primavera">
         </div>
         <button type="button" class="btn" id="sendToAdmiraXP" title="Envía el último contenido generado al feed de Admira XP">📺 ENVIAR A ADMIRA XP</button>
-        <a class="btn" href="../signage.html" target="_blank" rel="noopener" title="Abre la pantalla de signage para ver lo enviado">↗ VER PANTALLA</a>
+        <a class="btn" href="signage.html" target="_blank" rel="noopener" title="Abre la pantalla de signage para ver lo enviado">↗ VER PANTALLA</a>
       </div>
-      <div id="signageStatus" class="signage-status" hidden style="margin-bottom:16px;">
-        <img class="signage-thumb" alt="">
-        <div class="signage-info">
-          <div class="signage-info-row">
-            <span class="signage-stage">📤 Iniciando...</span>
-            <span class="signage-id"></span>
-          </div>
-          <div class="signage-bar"><div class="signage-bar-fill"></div></div>
-          <div class="signage-log"></div>
-        </div>
-      </div
 
       <article class="module">
         <div class="module-head"><h3><span class="accent" style="background: var(--image);"></span>Imágenes</h3><small>assets + estilo + consistencia</small></div>
@@ -121,7 +124,7 @@
     </form>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">AdmiraNext AI Workspace · PixerIA × Admira.xp · v.2026.05.02-r69</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -167,14 +170,14 @@
   <dialog id="keysModal" class="keys-modal">
     <form method="dialog" class="keys-form">
       <h3>⚙ API KEYS</h3>
-      <p class="keys-warn">Las claves se guardan solo en este navegador (localStorage). No se envían a ningún servidor de PixerIA.</p>      <div class="field"><label for="key-elevenlabs-voice">ElevenLabs Voice ID</label><input id="key-elevenlabs-voice" type="text" autocomplete="off" placeholder="EXAVITQu4vr4xnSDxMaL (Bella · default)"></div>      <div class="keys-actions">
+      <p class="keys-warn">Las claves se guardan solo en este navegador (localStorage). No se envían a ningún servidor de Admira Studio.</p>      <div class="field"><label for="key-elevenlabs-voice">ElevenLabs Voice ID</label><input id="key-elevenlabs-voice" type="text" autocomplete="off" placeholder="EXAVITQu4vr4xnSDxMaL (Bella · default)"></div>      <div class="keys-actions">
         <button type="button" class="btn primary" id="saveKeys">Guardar</button>
         <button type="button" class="btn" id="clearKeys">Borrar todas</button>
         <button type="button" class="btn" id="closeKeys">Cerrar</button>
       </div>
     </form>
   </dialog>
-  <script src="matrix-rain.js"></script>
-  <script src="app.js"></script>
+  <script src="/matrix-rain.js?v=20260608-sides"></script>
+  <script src="app.js?v=20260611-camp2"></script>
 </body>
 </html>

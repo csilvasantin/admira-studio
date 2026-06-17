@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calendario de emisión · Admira Studio</title>
+  <meta name="description" content="Parrilla diaria del circuito de pantallas: qué se emite hoy y qué huecos quedan disponibles para campañas creadas en Admira Studio.">
+  <meta name="theme-color" content="#0b1117">
+  <link rel="canonical" href="https://www.admira.studio/calendario/">
+  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
+  <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="../assets/styles.css?v=20260608-sides">
+  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/emission-calendar.css">
+  <style>
+    .calendar-hero {
+      min-height: 54vh;
+      display: grid;
+      align-items: end;
+      padding: 132px clamp(20px, 6vw, 76px) 54px;
+      background:
+        linear-gradient(90deg, rgba(8, 13, 19, 0.96), rgba(8, 13, 19, 0.68) 46%, rgba(8, 13, 19, 0.2)),
+        url("../assets/hero-pixeria.jpg") center/cover;
+      border-bottom: 1px solid var(--line);
+    }
+    .calendar-hero h1 {
+      max-width: 980px;
+      font-size: clamp(54px, 9vw, 128px);
+    }
+    .calendar-hero p {
+      max-width: 720px;
+      color: rgba(244, 240, 232, 0.84);
+      font-size: clamp(18px, 2.4vw, 28px);
+      line-height: 1.2;
+    }
+    .calendar-shell {
+      padding: clamp(42px, 7vw, 86px) clamp(20px, 5vw, 64px);
+    }
+    .calendar-controls,
+    .calendar-summary,
+    .calendar-panel,
+    .calendar-cta {
+      width: min(100%, 1440px);
+      max-width: none;
+    }
+    .calendar-controls {
+      margin: 0 auto 18px;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 14px;
+      align-items: end;
+    }
+    .calendar-controls label {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 760;
+      text-transform: uppercase;
+    }
+    .calendar-field-circuit,
+    .calendar-field-locality,
+    .calendar-field-date {
+      grid-column: span 2;
+    }
+    .calendar-field-point,
+    .calendar-field-screen {
+      grid-column: span 3;
+    }
+    .calendar-controls select,
+    .calendar-controls input {
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      background: rgba(244, 240, 232, 0.06);
+      color: var(--ink);
+      padding: 0 12px;
+      border-radius: 8px;
+      font: inherit;
+      text-transform: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .calendar-summary {
+      margin: 0 auto 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      border: 1px solid var(--line);
+      background: rgba(244, 240, 232, 0.045);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .calendar-summary strong {
+      color: var(--ink);
+      font-weight: 760;
+    }
+    .calendar-panel {
+      margin: 0 auto;
+      border: 1px solid var(--line);
+      background: #02080d;
+      border-radius: 8px;
+      padding: clamp(14px, 3vw, 28px);
+      min-height: 360px;
+    }
+    .calendar-cta {
+      margin: 24px auto 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding-top: 22px;
+    }
+    @media (max-width: 1180px) {
+      .calendar-controls {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+      .calendar-field-circuit,
+      .calendar-field-locality,
+      .calendar-field-date {
+        grid-column: span 2;
+      }
+      .calendar-field-point,
+      .calendar-field-screen {
+        grid-column: span 3;
+      }
+    }
+    @media (max-width: 820px) {
+      .calendar-cta,
+      .calendar-summary {
+        display: grid;
+      }
+      .calendar-controls {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .calendar-controls label {
+        grid-column: span 2;
+      }
+      .calendar-cta .button {
+        width: 100%;
+      }
+    }
+  </style>
+  <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <canvas id="matrix-rain" aria-hidden="true"></canvas>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Admira Studio inicio">
+      <span class="brand-mark">A</span>
+      <span>Admira Studio</span>
+    </a>
+    <nav class="nav" aria-label="Navegacion principal">
+      <a href="/audio.html">Audio</a>
+      <a href="/musica.html">Musica</a>
+      <a href="/imagenes.html">Imagenes</a>
+      <a href="/video.html">Video</a>
+      <a href="/publicidad.html">Publicidad</a>
+      <a href="/avatar.html">Avatar 3D</a>
+      <a href="/crear/">Assets</a>
+      <a href="/stock.html">Stock</a>
+    </nav>
+    <div class="header-actions">
+      <div class="language-switcher" aria-label="Seleccion de idioma">
+        <a class="lang-toggle" href="/en/" aria-label="Cambiar a ingles">ENG</a>
+      </div>
+      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
+      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Navegacion movil">
+    <a href="/audio.html">Audio</a>
+    <a href="/musica.html">Musica</a>
+    <a href="/imagenes.html">Imagenes</a>
+    <a href="/video.html">Video</a>
+    <a href="/publicidad.html">Publicidad</a>
+    <a href="/avatar.html">Avatar 3D</a>
+    <a href="/crear/">Assets</a>
+    <a href="/stock.html">Stock</a>
+    <div class="mobile-language-switcher" aria-label="Seleccion de idioma">
+      <a class="lang-toggle" href="/en/" aria-label="Cambiar a ingles">ENG</a>
+    </div>
+    <a class="mobile-cta" href="#contact" data-admira-contact>Contacto</a>
+  </nav>
+
+  <main>
+    <section class="calendar-hero">
+      <div>
+        <p class="eyebrow">Calendario de emisión</p>
+        <h1>Qué se emite hoy</h1>
+        <p>Consulta la parrilla del día por pantalla y reserva los huecos disponibles desde Admira.</p>
+      </div>
+    </section>
+
+    <section class="calendar-shell">
+      <div class="calendar-controls">
+        <label class="calendar-field-circuit">
+          Circuito
+          <select id="circuitSel"></select>
+        </label>
+        <label class="calendar-field-locality">
+          Localidad
+          <select id="localitySel"></select>
+        </label>
+        <label class="calendar-field-point">
+          Punto
+          <select id="pointSel"></select>
+        </label>
+        <label class="calendar-field-screen">
+          Pantalla
+          <select id="screenSel"></select>
+        </label>
+        <label class="calendar-field-date">
+          Dia
+          <input id="dateInp" type="date">
+        </label>
+      </div>
+      <div class="calendar-summary" id="calendarSummary">
+        <span>Selecciona circuito, localidad y punto para ver sus pantallas disponibles.</span>
+      </div>
+      <div class="calendar-panel">
+        <div id="cal"></div>
+      </div>
+      <div class="calendar-cta">
+        <p>Elige el punto y abre Crear campaña para preparar el contenido con preview antes de comprar en Admira.</p>
+        <a class="button primary" id="calendarCampaignLink" href="/crear-campana/">Crear campaña para esta pantalla</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Admira Studio</span>
+    <p>Calendario compartido con Admira y XpaceOS.</p>
+    <a href="/crear-campana/">Crear campaña</a>
+  </footer>
+
+  <script src="https://www.admira.app/locations.js"></script>
+  <script src="https://csilvasantin.github.io/admira-design/emission-calendar.js"></script>
+  <script>
+    (function () {
+      const toggle = document.querySelector('.nav-toggle');
+      const mobileNav = document.getElementById('mobileNav');
+      if (!toggle || !mobileNav) return;
+      function setOpen(open) {
+        mobileNav.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', () => setOpen(!mobileNav.classList.contains('open')));
+      mobileNav.addEventListener('click', (e) => { if (e.target.tagName === 'A') setOpen(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    })();
+
+    (function () {
+      var WORKER = 'https://pixer-eleven.csilvasantin.workers.dev';
+      var $ = function (s) { return document.querySelector(s); };
+      var state = { allStores: [], stores: [], store: null, screens: [], screen: null, date: '', cal: null, filters: { circuit: 'all', locality: 'all' } };
+
+      function slug(s) {
+        return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      }
+
+      function todayMadrid() {
+        var p = {};
+        new Intl.DateTimeFormat('es-ES', { timeZone: 'Europe/Madrid', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+        return p.year + '-' + p.month + '-' + p.day;
+      }
+
+      function isScreen(sf) {
+        return ['pantalla', 'escaparate', 'vending', 'mostrador'].indexOf(sf.surface) >= 0;
+      }
+
+      function screensOf(store) {
+        return store.surfaces.filter(isScreen).map(function (sf) {
+          var surface = String(sf.surface || 'pantalla');
+          return { id: slug(store.id) + '-' + slug(sf.name), name: sf.name + ' · ' + surface, rawName: sf.name, surface: surface, pixerScreens: Array.isArray(sf.pixerScreens) ? sf.pixerScreens : [] };
+        });
+      }
+
+      function cityOf(store) {
+        var explicit = store && (store.city || store.locality || store.municipality || store.town || (store.external && (store.external.city || store.external.locality)));
+        if (explicit) return String(explicit).trim();
+        var parts = String(store && store.addr || '').split('·').map(function (p) { return p.trim(); }).filter(Boolean);
+        for (var i = 1; i < parts.length; i++) {
+          var part = parts[i].replace(/\b\d{4,5}\b/g, '').replace(/\s+/g, ' ').trim();
+          if (part && !/^(spain|espana|españa)$/i.test(part)) return part;
+        }
+        return 'Sin localidad';
+      }
+
+      function circuitOf(store) {
+        var explicit = store && (store.circuit || store.network || store.brand || (store.external && store.external.brand));
+        if (explicit) return String(explicit).trim();
+        var name = String(store && store.name || '');
+        if (/desigual/i.test(name)) return 'Desigual';
+        if (/xtanco/i.test(name)) return 'Xtanco';
+        if (/admira/i.test(name)) return 'Admira';
+        if (/super|súper/i.test(name)) return 'Supermercados';
+        var kind = String(store && store.kind || '').split('·')[0].trim();
+        return kind || 'Otros';
+      }
+
+      function uniqueSorted(values) {
+        return Array.from(new Set(values.filter(Boolean))).sort(function (a, b) { return a.localeCompare(b, 'es'); });
+      }
+
+      function filteredStores() {
+        return state.allStores.filter(function (store) {
+          return (state.filters.circuit === 'all' || circuitOf(store) === state.filters.circuit)
+            && (state.filters.locality === 'all' || cityOf(store) === state.filters.locality);
+        });
+      }
+
+      function setOptions(sel, options, preferred) {
+        sel.innerHTML = '';
+        options.forEach(function (item) {
+          var o = document.createElement('option');
+          o.value = item.value;
+          o.textContent = item.label;
+          sel.appendChild(o);
+        });
+        if (options.some(function (item) { return item.value === preferred; })) sel.value = preferred;
+        else if (options.length) sel.value = options[0].value;
+      }
+
+      function renderCircuitOptions() {
+        var circuits = uniqueSorted(state.allStores.map(circuitOf));
+        var options = [{ value: 'all', label: 'Todos los circuitos' }].concat(circuits.map(function (name) {
+          var count = state.allStores.filter(function (store) { return circuitOf(store) === name; }).length;
+          return { value: name, label: name + ' · ' + count + ' puntos' };
+        }));
+        setOptions($('#circuitSel'), options, state.filters.circuit);
+        state.filters.circuit = $('#circuitSel').value || 'all';
+      }
+
+      function renderLocalityOptions() {
+        var base = state.allStores.filter(function (store) {
+          return state.filters.circuit === 'all' || circuitOf(store) === state.filters.circuit;
+        });
+        var localities = uniqueSorted(base.map(cityOf));
+        var options = [{ value: 'all', label: 'Todas las localidades' }].concat(localities.map(function (name) {
+          var count = base.filter(function (store) { return cityOf(store) === name; }).length;
+          return { value: name, label: name + ' · ' + count + ' puntos' };
+        }));
+        setOptions($('#localitySel'), options, state.filters.locality);
+        state.filters.locality = $('#localitySel').value || 'all';
+      }
+
+      function renderPointOptions(preferredStoreId) {
+        state.stores = filteredStores();
+        var options = state.stores.map(function (store) {
+          return { value: store.id, label: store.name + ' · ' + cityOf(store) };
+        });
+        var fallback = state.stores.find(function (store) { return store.id === 'xtanco'; });
+        setOptions($('#pointSel'), options, preferredStoreId || (fallback && fallback.id) || (state.stores[0] && state.stores[0].id));
+        $('#pointSel').disabled = !options.length;
+        return $('#pointSel').value;
+      }
+
+      async function loadCachedLocations() {
+        try {
+          var r = await fetch('/calendario/locations-cache.json', { cache: 'no-store' });
+          if (!r.ok) return [];
+          var data = await r.json();
+          return Array.isArray(data) ? data : (data && data.locations) || [];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      async function loadStores() {
+        var list = await loadCachedLocations();
+        try {
+          if (!list.length && window.loadOmnipLocationsAsync) {
+            var r = await window.loadOmnipLocationsAsync();
+            list = Array.isArray(r) ? r : (r && r.locations) || [];
+          }
+        } catch (e) {}
+        if (!list.length && window.loadOmnipLocations) {
+          try { list = window.loadOmnipLocations(); } catch (e) {}
+        }
+        if (!list.length) list = window.OMNIP_LOCATIONS_DEFAULT || [];
+        state.allStores = list.filter(function (s) { return Array.isArray(s.surfaces) && s.surfaces.some(isScreen); });
+      }
+
+      function selectStore(id, preferredScreenId) {
+        state.store = state.stores.find(function (s) { return s.id === id; }) || state.stores[0];
+        state.screens = state.store ? screensOf(state.store) : [];
+        var sel = $('#screenSel');
+        sel.innerHTML = '';
+        state.screens.forEach(function (sc) {
+          var o = document.createElement('option');
+          o.value = sc.id;
+          o.textContent = sc.name;
+          sel.appendChild(o);
+        });
+        sel.disabled = !state.screens.length;
+        if (state.screens.some(function (s) { return s.id === preferredScreenId; })) sel.value = preferredScreenId;
+        selectScreen(sel.value || (state.screens[0] && state.screens[0].id));
+        updateSummary();
+      }
+
+      function selectScreen(id) {
+        state.screen = state.screens.find(function (s) { return s.id === id; }) || state.screens[0];
+        if (!state.screen) {
+          $('#cal').innerHTML = '<div style="color:#75aab9;text-align:center;padding:40px">Este circuito no tiene pantallas.</div>';
+          return;
+        }
+        var opts = { workerBase: WORKER, role: 'public', screen: state.screen.id, date: state.date, screenName: state.screen.name, storeName: state.store.name, circuit: circuitOf(state.store), locality: cityOf(state.store) };
+        if (!state.cal) state.cal = window.EmissionCalendar.mount($('#cal'), opts);
+        else state.cal.setContext({ screen: state.screen.id, date: state.date, screenName: state.screen.name, storeName: state.store.name });
+        updateSummary();
+        updateCampaignLink();
+      }
+
+      function updateFromFilters(preferredStoreId, preferredScreenId) {
+        renderCircuitOptions();
+        renderLocalityOptions();
+        var storeId = renderPointOptions(preferredStoreId);
+        selectStore(storeId, preferredScreenId);
+      }
+
+      function updateSummary() {
+        var el = $('#calendarSummary');
+        if (!el || !state.store) return;
+        var pointCount = state.stores.length;
+        var screenCount = state.screens.length;
+        el.innerHTML = '<span><strong>' + state.store.name + '</strong> · ' + cityOf(state.store) + ' · ' + circuitOf(state.store) + '</span>'
+          + '<span>' + pointCount + ' puntos filtrados · ' + screenCount + ' pantallas/superficies en este punto</span>';
+      }
+
+      function campaignUrl() {
+        var url = new URL('/crear-campana/', window.location.origin);
+        if (state.store) {
+          url.searchParams.set('locationId', state.store.id);
+        }
+        if (state.screen) {
+          url.searchParams.set('screenId', state.screen.id);
+        }
+        url.searchParams.set('date', state.date || todayMadrid());
+        return url.pathname + url.search;
+      }
+
+      function updateCampaignLink() {
+        var link = $('#calendarCampaignLink');
+        if (!link) return;
+        link.href = campaignUrl();
+      }
+
+      function init() {
+        if (!window.EmissionCalendar) {
+          setTimeout(init, 150);
+          return;
+        }
+        state.date = todayMadrid();
+        $('#dateInp').value = state.date;
+        loadStores().then(function () {
+          updateFromFilters('xtanco');
+          $('#circuitSel').onchange = function (e) {
+            state.filters.circuit = e.target.value || 'all';
+            state.filters.locality = 'all';
+            updateFromFilters();
+          };
+          $('#localitySel').onchange = function (e) {
+            state.filters.locality = e.target.value || 'all';
+            updateFromFilters();
+          };
+          $('#pointSel').onchange = function (e) { selectStore(e.target.value); };
+          $('#screenSel').onchange = function (e) { selectScreen(e.target.value); };
+          $('#dateInp').onchange = function (e) {
+            state.date = e.target.value || todayMadrid();
+            if (state.cal) state.cal.setContext({ date: state.date });
+            updateCampaignLink();
+          };
+          updateCampaignLink();
+        });
+      }
+
+      if (document.readyState !== 'loading') init();
+      else document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+  <script src="/assets/matrix-rain.js?v=20260608-sides"></script>
+</body>
+</html>

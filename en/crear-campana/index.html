@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campaigns · Protected access · Admira Studio</title>
+  <meta name="description" content="Admira Studio Campaigns is a protected area that requires Google Single Sign-On.">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#0b1117">
+  <link rel="canonical" href="https://www.admira.studio/en/crear-campana/">
+  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
+  <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="../../assets/styles.css?v=20260608-sides">
+  <style>
+    .access-hero {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding: 132px clamp(20px, 6vw, 76px) 72px;
+      background:
+        linear-gradient(90deg, rgba(8, 13, 19, 0.98), rgba(8, 13, 19, 0.74) 48%, rgba(8, 13, 19, 0.34)),
+        url("../../assets/hero-pixeria.jpg") center/cover;
+    }
+    .access-panel {
+      width: min(100%, 760px);
+      display: grid;
+      gap: 18px;
+    }
+    .access-panel h1 {
+      font-size: clamp(50px, 8vw, 108px);
+      line-height: 0.92;
+    }
+    .access-panel p {
+      max-width: 680px;
+      color: rgba(244, 240, 232, 0.82);
+      font-size: clamp(18px, 2.2vw, 26px);
+      line-height: 1.22;
+    }
+    .access-card {
+      max-width: 640px;
+      border: 1px solid var(--line);
+      background: rgba(244, 240, 232, 0.07);
+      border-radius: 8px;
+      padding: clamp(18px, 3vw, 28px);
+      display: grid;
+      gap: 14px;
+    }
+    .access-card h2 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+    .access-card p,
+    .access-card li {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+    .access-card ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .access-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .access-actions .button {
+      min-width: min(100%, 210px);
+    }
+    .access-note {
+      color: rgba(244, 240, 232, 0.55);
+      font-size: 12px;
+    }
+    @media (max-width: 620px) {
+      .access-actions .button {
+        width: 100%;
+      }
+    }
+  </style>
+  <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <canvas id="matrix-rain" aria-hidden="true"></canvas>
+  <header class="site-header">
+    <a class="brand" href="/en/" aria-label="Admira Studio home">
+      <span class="brand-mark">A</span>
+      <span>Admira Studio</span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="/en/audio.html">Audio</a>
+      <a href="/en/musica.html">Music</a>
+      <a href="/en/imagenes.html">Images</a>
+      <a href="/en/video.html">Video</a>
+      <a href="/en/publicidad.html">Advertising</a>
+      <a href="/en/avatar.html">Avatar 3D</a>
+      <a href="/crear/">Assets</a>
+      <a href="/en/stock.html">Stock</a>
+    </nav>
+    <div class="header-actions">
+      <div class="language-switcher" aria-label="Language selection">
+        <a class="lang-toggle" href="/crear-campana/" aria-label="Switch to Spanish">ESP</a>
+      </div>
+      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <a href="/en/audio.html">Audio</a>
+    <a href="/en/musica.html">Music</a>
+    <a href="/en/imagenes.html">Images</a>
+    <a href="/en/video.html">Video</a>
+    <a href="/en/publicidad.html">Advertising</a>
+    <a href="/en/avatar.html">Avatar 3D</a>
+    <a href="/crear/">Assets</a>
+    <a href="/en/stock.html">Stock</a>
+    <div class="mobile-language-switcher" aria-label="Language selection">
+      <a class="lang-toggle" href="/crear-campana/" aria-label="Switch to Spanish">ESP</a>
+    </div>
+    <a class="mobile-cta" href="#contact" data-admira-contact>Contact</a>
+  </nav>
+
+  <main>
+    <section class="access-hero">
+      <div class="access-panel">
+        <p class="eyebrow">Campaigns</p>
+        <h1>Protected access</h1>
+        <p>Campaign creation and buying remain closed until the user authenticates with Google Single Sign-On.</p>
+        <div class="access-card" data-sso-required="google">
+          <h2>Google SSO required</h2>
+          <p>This page does not load point data, screen data, previews or buying flows in public mode.</p>
+          <ul>
+            <li>Authentication: Google SSO.</li>
+            <li>Recommended control: Cloudflare Access in front of <code>/crear-campana/</code>.</li>
+            <li>Policy: allow only authorized team accounts.</li>
+          </ul>
+          <div class="access-actions">
+            <a class="button primary" href="mailto:csilvasantin@gmail.com?subject=Admira Studio%20Campaigns%20Access">Request access</a>
+            <a class="button secondary" href="/calendario/">Back to calendar</a>
+          </div>
+          <div class="access-note">If you already have a corporate session, the SSO provider will redirect here once the route is protected at the edge.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const toggle = document.querySelector('.nav-toggle');
+      const mobileNav = document.getElementById('mobileNav');
+      if (!toggle || !mobileNav) return;
+      function setOpen(open) {
+        mobileNav.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', () => setOpen(!mobileNav.classList.contains('open')));
+      mobileNav.addEventListener('click', (e) => { if (e.target.tagName === 'A') setOpen(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    })();
+  </script>
+  <script src="/assets/matrix-rain.js?v=20260608-sides"></script>
+</body>
+</html>

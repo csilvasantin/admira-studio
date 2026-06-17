@@ -20,15 +20,17 @@
     if (motorId === 'elevenlabs-flash-v2-5') return true; // proxied vía worker pixer-eleven
     if (motorId === 'elevenlabs-v3') return true; // proxied vía worker pixer-eleven
     if (motorId === 'grok-imagine-image-pro') return true; // proxied vía worker
+    if (motorId === 'grok-imagine-video') return true; // xAI vídeo · proxied vía worker (/xai/video)
     if (motorId === 'imagen-4.0-ultra-generate-001') return true; // Gemini API key
     if (motorId === 'nano-banana') return true; // Gemini 2.5 Flash Image via worker
-    if (motorId === 'veo-3.0-generate-001') return true; // Gemini API key
+    if (motorId === 'nano-banana-pro') return true; // Gemini 3 Pro Image via worker
+    if (motorId.startsWith('veo-3.0-')) return true; // Gemini API key (worker pixer-eleven) · incl. @1080p
     if (motorId === 'veo-3.1-fast-generate-preview') return true; // Gemini API key
     if (motorId === 'gemini-omni-flash') return false; // API aún no pública (Google I/O 2026) — sin endpoint todavía
     if (motorId === 'suno-local-v45') return true; // depende del proxy local, se chequea aparte
     if (motorId === 'suno-local-v5') return true; // depende del proxy local, se chequea aparte
     if (motorId === 'lyria-3-pro-preview') return true; // proxied vía worker
-    if (motorId === 'runway-gen3' || motorId === 'openai-tts-hd') return false;
+    if (motorId === 'runway-gen3' || motorId === 'openai-tts-hd' || motorId === 'openai-sora') return false;
     return true;
   }
   function bindSettingsModal() {
@@ -68,7 +70,7 @@
 
   // Defaults por sección. Se aplican solo si la sección está vacía en localStorage.
   const DEFAULTS = {
-    cliente: 'AdmiraNext',
+    cliente: 'Admira Studio',
     audio: {
       personaje: 'Voz adulta cálida',
       idioma: 'Espanol (ES)',
@@ -102,16 +104,33 @@
       duracion: '15s',
       reusa: ['audio', 'musica'],
     },
+    publicidad: {
+      source: 'Simulador local',
+      screen: 'escaparate',
+      privacy: 'No guardar imagen, no identificar personas, usar solo señal efímera agregada',
+      product: 'Colección XpaceOS Retail',
+      context: 'Escaparate interactivo en tienda física',
+      offerMale: 'Rendimiento, tecnología y estilo urbano',
+      offerFemale: 'Diseño, comodidad y expresión personal',
+      offerNeutral: 'Nueva colección disponible hoy',
+      cta: 'Toca la pantalla y pruébalo en el gemelo',
+      style: 'Matrix retail, neón verde, producto hero, texto alto contraste',
+      segment: 'neutral',
+      confidence: '0.64',
+      // Nuevo modelo Target (creación con Target completo)
+      mode: 'batch', // 'batch' | 'live'
+      targets: [],   // array de {id, gender, ageBand, persona, label, headline?, offer?, visual?, tone?}
+    },
   };
 
   function applyDefaults() {
     const store = loadStore();
     let changed = false;
-    // Migracion: el default antiguo era 'Demo PixerIA'. Si nadie lo edito,
-    // lo movemos al nuevo default de marca 'AdmiraNext' (el separador "//"
+    // Migracion: el default antiguo era 'Demo Admira Studio'. Si nadie lo edito,
+    // lo movemos al nuevo default de marca 'Admira Studio' (el separador "//"
     // se aplica via deriveAssetTitle, no aqui).
-    if (!store.cliente || store.cliente === 'Demo PixerIA') { store.cliente = DEFAULTS.cliente; changed = true; }
-    for (const key of ['audio', 'musica', 'imagenes', 'video']) {
+    if (!store.cliente || store.cliente === 'Demo Admira Studio') { store.cliente = DEFAULTS.cliente; changed = true; }
+    for (const key of ['audio', 'musica', 'imagenes', 'video', 'publicidad']) {
       if (!store[key] || Object.keys(store[key]).length === 0) {
         store[key] = JSON.parse(JSON.stringify(DEFAULTS[key]));
         changed = true;
@@ -124,33 +143,24 @@
   // Default = primer elemento (siempre el gratuito).
   const MOTORES = {
     audio: [
-      { id: 'web-speech',             nombre: 'Web Speech API',        tipo: 'free', badge: 'Good',   coste: 'gratis · navegador',     desc: 'TTS del sistema operativo' },
-      { id: 'elevenlabs-flash-v2-5',  nombre: 'ElevenLabs Flash v2.5', tipo: 'pro',  badge: 'Better', coste: '$150 / 1M caracteres',   desc: '~75ms latencia · 50% más barato' },
-      { id: 'elevenlabs-v2',          nombre: 'ElevenLabs v2',         tipo: 'pro',  coste: '$300 / 1M caracteres',   desc: 'voces ultrarrealistas, multilingüe' },
-      { id: 'elevenlabs-v3',          nombre: 'ElevenLabs v3 (alpha)', tipo: 'pro',  badge: 'Best',   coste: '$300 / 1M caracteres',   desc: 'máxima expresividad · tags emocionales' },
-      { id: 'openai-tts-hd',          nombre: 'OpenAI TTS HD',         tipo: 'pro',  coste: '$30 / 1M caracteres',    desc: 'multi-idioma, baja latencia' },
+      { id: 'web-speech',    nombre: 'Web Speech API', tipo: 'free', badge: 'Good',   coste: 'gratis · navegador',     desc: 'TTS del sistema operativo' },
+      { id: 'grok-voice',    nombre: 'Grok (xAI)',     tipo: 'pro',  badge: 'Better', coste: 'vía worker',             desc: 'voz expresiva de xAI' },
+      { id: 'elevenlabs-v3', nombre: 'ElevenLabs v3',  tipo: 'pro',  badge: 'Best',   coste: '$300 / 1M caracteres',   desc: 'máxima expresividad · tags emocionales' },
     ],
     musica: [
-      { id: 'pixer-loop',           nombre: 'Pixer Loop (Web Audio)', tipo: 'free', coste: 'gratis · navegador',  desc: 'pentatónica Cm in-browser' },
-      { id: 'lyria-3-pro-preview',  nombre: 'Lyria 3 Pro (Google)',   tipo: 'pro',  badge: 'Better', coste: 'paid tier Gemini',    desc: '~2min con voz cantando la letra' },
-      { id: 'suno-local-v45',       nombre: 'Suno v4.5 (local)',      tipo: 'pro',  coste: '~10 créditos / canción · cuenta loguead.', desc: 'chirp-v4-5 · vía proxy suno-local' },
+      { id: 'pixer-loop',           nombre: 'Pixer Loop (Web Audio)', tipo: 'free', badge: 'Good',   coste: 'gratis · navegador',  desc: 'pentatónica Cm in-browser' },
+      { id: 'lyria-3-pro-preview',  nombre: 'Gemini (Google)',        tipo: 'pro',  badge: 'Better', coste: 'paid tier Gemini',    desc: '~2min con voz cantando la letra' },
       { id: 'suno-local-v5',        nombre: 'Suno v5 (local)',        tipo: 'pro',  badge: 'Best',   coste: '~10 créditos / canción · cuenta loguead.', desc: 'chirp-v5 · máxima calidad · vía proxy suno-local' },
     ],
     imagenes: [
-      { id: 'flux-schnell',                  nombre: 'FLUX.1 [schnell]',        tipo: 'free', badge: 'Good',   coste: 'gratis · Pollinations', desc: 'open weights, rápido' },
-      { id: 'nano-banana',                   nombre: 'Nano Banana (Gemini 2.5)', tipo: 'pro', badge: 'Better', coste: '~$0.04 / imagen',      desc: 'generación + edición consistente' },
-      { id: 'imagen-4.0-ultra-generate-001', nombre: 'Imagen 4 Ultra (Google)', tipo: 'pro',  coste: '$0.06 / imagen 2K',     desc: 'máxima calidad · hasta 2K' },
-      { id: 'grok-imagine-image-pro',        nombre: 'Grok Imagine Pro (xAI)',  tipo: 'pro',  badge: 'Best',   coste: '$0.07 / imagen',        desc: 'mayor calidad · vía worker' },
+      { id: 'nano-banana',                   nombre: 'Nano Banana (Gemini 2.5)', tipo: 'free', badge: 'Good',   coste: 'gratis (free tier)',   desc: 'generación + edición · Gemini 2.5 Flash Image' },
+      { id: 'nano-banana-pro',               nombre: 'Nano Banana Pro (Gemini 3)', tipo: 'pro', badge: 'Best', coste: 'premium · Gemini 3 Pro Image', desc: 'máxima calidad y seguimiento de prompt' },
+      { id: 'grok-imagine-image-pro',        nombre: 'Grok Imagine Pro (xAI)',  tipo: 'pro',  badge: 'Better', coste: '$0.07 / imagen',       desc: 'mayor calidad · vía worker' },
     ],
     video: [
-      { id: 'pixer-storyboard',                nombre: 'Pixer Storyboard',      tipo: 'free', badge: 'Good',   coste: 'gratis · navegador',  desc: '3 escenas + crossfade + voz' },
-      { id: 'runway-gen3',                     nombre: 'Runway Gen-3 Alpha',    tipo: 'pro',  coste: '$0.05 / segundo',     desc: 'video 1080p · requiere backend (sin CORS)' },
-      { id: 'veo-3.0-generate-001',            nombre: 'Veo 3 (Google)',        tipo: 'pro',  badge: 'Better', coste: '~$0.40 / segundo',    desc: '720p/1080p · audio + diálogos' },
-      { id: 'veo-3.1-fast-generate-preview',   nombre: 'Veo 3.1 Fast (Google)', tipo: 'pro',  badge: 'Best',   coste: '~$0.15 / segundo',    desc: 'audio nativo · imagen→video · más rápido' },
-      // Provisional: 'gemini-omni-flash' es un id placeholder. Gemini Omni se anunció en Google I/O 2026
-      // pero su API pública aún no existe — al publicarse, actualizar el id al model ID oficial y activar
-      // (quitar soon, ajustar hasKeyFor + branch en playVideo + endpoint en el worker pixer-eleven).
-      { id: 'gemini-omni-flash',               nombre: 'Gemini Omni Flash (Google)', tipo: 'pro', coste: 'API en preview · próximamente', desc: 'multimodal any-to-any · edición iterativa · anunciado en Google I/O 2026', soon: true },
+      { id: 'pollinations-wan-fast',         nombre: 'Pollinations · Wan (gratis)', tipo: 'free', badge: 'Good',   coste: 'gratis · vía worker', desc: 'texto→vídeo gratis · Wan-Fast · 720p' },
+      { id: 'veo-3.0-generate-001',          nombre: 'Veo 3 (Google)',       tipo: 'pro', badge: 'Better', coste: '~$0.40 / segundo', desc: 'audio nativo · 720p' },
+      { id: 'grok-imagine-video',            nombre: 'Grok Imagine Video (xAI)', tipo: 'pro', badge: 'Best', coste: 'premium · vía worker xAI', desc: 'Grok Imagine · vídeo cinemático · 720p' },
     ],
   };
 
@@ -220,9 +230,9 @@
       const opciones = MOTORES[seccion];
       if (!opciones) return;
       const store = loadStore();
-      // imagenes admite multi-select: click cada motor para añadir/quitar.
+      // imagenes y video admiten multi-select: click cada motor para añadir/quitar.
       // Para comparar 2-3 motores en paralelo basta con marcar varias.
-      const isMulti = (seccion === 'imagenes');
+      const isMulti = (seccion === 'imagenes' || seccion === 'video');
       const inputType = isMulti ? 'checkbox' : 'radio';
       let selected;
       if (isMulti) {
@@ -271,11 +281,12 @@
         const ok = hasKeyFor(motor.id);
         const keyLabel = motor.id.startsWith('elevenlabs-') ? 'WORKER pixer-eleven'
                        : motor.id === 'grok-imagine-image-pro' ? 'WORKER pixer-eleven'
+                       : motor.id === 'grok-imagine-video' ? 'WORKER pixer-eleven (xAI)'
                        : motor.id.startsWith('suno-local-') ? 'PROXY suno-local:3777'
                        : motor.id === 'lyria-3-pro-preview' ? 'WORKER pixer-eleven (GCP)'
                        : motor.id === 'nano-banana' ? 'WORKER pixer-eleven (Gemini)'
                        : (motor.id.startsWith('imagen-') || motor.id.startsWith('veo-')) ? 'WORKER pixer-eleven (Gemini)'
-                       : (motor.id === 'runway-gen3' || motor.id === 'openai-tts-hd') ? 'BACKEND_REQUERIDO'
+                       : (motor.id === 'runway-gen3' || motor.id === 'openai-tts-hd' || motor.id === 'openai-sora') ? 'BACKEND_REQUERIDO'
                        : 'API_KEY';
         wrap.hidden = false;
         wrap.innerHTML = `
@@ -358,7 +369,7 @@
 
   function toMarkdown(d) {
     const lines = [];
-    lines.push('# Brief PixerIA x Admira.xp');
+    lines.push('# Brief Admira Studio x Admira.xp');
     if (d.cliente) lines.push(`**Cliente / proyecto:** ${d.cliente}`);
     lines.push(`**Version:** ${d.meta.version}  ·  **Generado:** ${d.meta.generado}`);
     const sections = [
@@ -366,6 +377,7 @@
       ['musica', 'Musica'],
       ['imagenes', 'Imagenes'],
       ['video', 'Video'],
+      ['publicidad', 'Publicidad segmentada'],
     ];
     for (const [key, title] of sections) {
       if (!d[key]) continue;
@@ -413,10 +425,16 @@
         const store = loadStore();
         if (scopeKeys && scopeKeys.length === 1 && scopeKeys[0] !== 'all') {
           delete store[scopeKeys[0]];
+          if (scopeKeys[0] === 'publicidad') {
+            adBaseImage = null;
+            updateAdImagePreview();
+          }
         } else {
           for (const k of (scopeKeys || ['audio', 'musica', 'imagenes', 'video', 'cliente'])) {
             delete store[k];
           }
+          adBaseImage = null;
+          updateAdImagePreview();
         }
         saveStore(store);
         document.querySelectorAll('input[type=text], select, textarea').forEach(el => { if (el.name) el.value = ''; });
@@ -564,6 +582,7 @@
     const h = await _sha256(pw);
     if (h === PRO_PASSWORD_HASH) {
       setProUnlocked(true);
+      try { localStorage.setItem('pixer_pro_pw', pw); } catch (e) {} // token para el proxy suno-local
       return true;
     }
     alert('Password incorrecto. Modelos PRO siguen bloqueados.');
@@ -572,6 +591,21 @@
   async function ensureProUnlocked() {
     if (isProUnlocked()) return true;
     return await unlockPro();
+  }
+  // Devuelve el password PRO guardado (token para el proxy suno-local). Si PRO se
+  // desbloqueó en una versión antigua que no lo guardaba, lo pide una vez y lo guarda.
+  async function ensureProToken() {
+    let pw = '';
+    try { pw = localStorage.getItem('pixer_pro_pw') || ''; } catch (e) {}
+    if (pw) return pw;
+    const entered = prompt('🔒 Password PRO (necesario para generar con Suno):');
+    if (entered == null) return '';
+    if ((await _sha256(entered)) === PRO_PASSWORD_HASH) {
+      try { localStorage.setItem('pixer_pro_pw', entered); localStorage.setItem(PRO_LOCK_KEY, '1'); } catch (e) {}
+      return entered;
+    }
+    alert('Password PRO incorrecto.');
+    return '';
   }
   // Badge insertado en .topnav-actions (al lado del estado XTORE) para no
   // solaparse con la banda superior Admira·Xperience. Cae a position:fixed
@@ -631,9 +665,12 @@
       'elevenlabs-v2':         { label: 'ElevenLabs v2',         model_id: 'eleven_multilingual_v2', pricePer1k: 0.30 },
       'elevenlabs-flash-v2-5': { label: 'ElevenLabs Flash v2.5', model_id: 'eleven_flash_v2_5',      pricePer1k: 0.15 },
       'elevenlabs-v3':         { label: 'ElevenLabs v3',         model_id: 'eleven_v3',              pricePer1k: 0.30 },
+      // TEMP: "Grok" usa por ahora ElevenLabs Flash bajo la etiqueta Grok (xAI no tiene TTS aun). Cambiar cuando exista endpoint de voz Grok.
+      'grok-voice':            { label: 'Grok (xAI)',            model_id: 'eleven_flash_v2_5',      pricePer1k: 0.15 },
     };
     if (ELEVEN_MODELS[motor]) {
       const { label, model_id, pricePer1k } = ELEVEN_MODELS[motor];
+      const shownModel = (motor === 'grok-voice') ? 'grok-voice' : model_id; // mantener la etiqueta Grok en la salida
       if (!(await confirmPro(label, `$${(pricePer1k * 1000).toFixed(0)} / 1M caracteres · vía worker pixer-eleven`))) return;
       const voiceId = keys.elevenlabs_voice || 'EXAVITQu4vr4xnSDxMaL';
       showPlayer(`
@@ -674,7 +711,7 @@
             ${audioCover ? `<img src="${escAttr(audioCover)}" style="width:100%;max-height:240px;object-fit:cover;border:1px solid var(--matrix);box-shadow:0 0 12px rgba(0,255,65,.3);">` : ''}
             <audio controls autoplay src="${url}" data-pixer-title="${escAttr(audioTitle)}"${audioCover ? ` data-pixer-cover="${escAttr(audioCover)}"` : ''} style="width:100%;"></audio>
             ${publishBtnHTML(pubMeta)}
-            <small class="player-foot">// ${text.length} caracteres · ~$${est} · model_id ${model_id} · vía worker</small>
+            <small class="player-foot">// ${text.length} caracteres · ~$${est} · model_id ${shownModel} · vía worker</small>
           </div>`);
       } catch (e) {
         stopElevenProg(false);
@@ -734,16 +771,16 @@
   }
 
   async function playSunoLocal(s, model) {
-    const guion = [
-      s.uso, s.tonalidad && `tonalidad ${s.tonalidad}`, s.bpm && `${s.bpm}bpm`,
-      ...(Array.isArray(s.emocion) ? s.emocion : []),
-      ...(Array.isArray(s.capas) ? s.capas : []),
-    ].filter(Boolean).join(', ');
-    const prompt = guion || 'matrix synthwave, ambient, electronic';
+    // El campo "Styles" (s.uso) va a la caja Styles de Suno. La Letra va a Lyrics.
+    // "Versiones a entregar" define tipo (canción/loop/stinger) + pista de duración.
     const lyrics = (s.letra || '').trim();
-    // Si hay letra escrita la enviamos en custom mode (Suno usa el campo prompt
-    // como letra y tags como estilo). Sin letra, instrumental segun "versiones".
-    const isInstrumental = lyrics ? false : (!s.versiones || /instrumental|loop|bed/i.test(s.versiones));
+    const ver = (s.versiones || '').trim();
+    const isInstrumental = /loop|stinger|instrumental|bed/i.test(ver) || (!lyrics && !/canci/i.test(ver));
+    let durHint = '';
+    const mMin = ver.match(/(\d+)\s*min/i), mSec = ver.match(/(\d+)\s*s\b/i);
+    if (mMin) durHint = `duración aproximada ${mMin[1]} min`;
+    else if (mSec) durHint = `duración aproximada ${mSec[1]} segundos`;
+    const prompt = [(s.uso || '').trim() || 'soft ambient, gentle', durHint].filter(Boolean).join(', ');
     const titleHint = (s.cliente || s.uso || '').slice(0, 60);
 
     const health = await sunoLocalAlive();
@@ -752,6 +789,9 @@
       return;
     }
     if (!(await confirmPro('Suno (local)', `~2 canciones · créditos restantes: ${health.total_credits_left}`))) return;
+
+    const proToken = await ensureProToken();
+    if (!proToken) { showPlayer('<div class="player-card"><div class="player-head">▶ MÚSICA · Suno · falta password PRO</div></div>'); return; }
 
     showPlayer(`
       <div class="player-card">
@@ -763,7 +803,7 @@
       const r = await fetch(SUNO_LOCAL_URL + '/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, lyrics, title: titleHint, instrumental: isInstrumental, model }),
+        body: JSON.stringify({ prompt, lyrics, title: titleHint, instrumental: isInstrumental, model, token: proToken }),
       });
       if (!r.ok) {
         stop(false);
@@ -800,7 +840,7 @@
                 const dur = (c.metadata && (c.metadata.duration_formatted || c.metadata.duration)) || '';
                 const pickedUrl = c.video_url || c.audio_url;
                 const pickedMime = c.video_url ? 'video/mp4' : 'audio/mpeg';
-                const pubMeta = { type: 'music', motor: `suno-local-${model.replace('chirp-v','v')}`, prompt: `${cTitle} · ${prompt}`.slice(0,200), costEst: '~10 cred', url: pickedUrl, mime: pickedMime, thumbnail: cover || null };
+                const pubMeta = { type: 'music', motor: `suno-local-${model.replace('chirp-v','v')}`, prompt: `${cTitle} · ${prompt}`.slice(0,200), costEst: '~10 cred', url: pickedUrl, mime: pickedMime, thumbnail: cover || null, clipId: c.id };
                 // Suno devuelve video_url (mp4 con cover estatico + audio embebido):
                 // lo preferimos porque al enviarlo a Pixer Feed lleva caratula sin
                 // depender del worker. Si solo hay audio_url, fallback a audio + img.
@@ -820,6 +860,7 @@
                   ${publishBtnHTML(pubMeta)}
                 </div>`;
               }).join('')}
+              ${lyrics ? `<details open style="margin-top:8px;"><summary style="cursor:pointer;color:var(--matrix);text-shadow:var(--glow);">📝 LETRA</summary><pre class="brief" style="white-space:pre-wrap;max-height:320px;overflow:auto;font-size:12px;margin-top:6px;">${escAttr(lyrics)}</pre><button type="button" class="btn" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent);this.textContent='✓ copiada'" style="margin-top:4px;font-size:10px;padding:4px 8px;">COPIAR LETRA</button></details>` : ''}
               <small class="player-foot">// Suno · ${prompt.slice(0,80)}</small>
             </div>`);
           return;
@@ -925,9 +966,14 @@
   function playMusica() {
     const s = loadStore().musica || {};
     const motor = s.motor || 'pixer-loop';
+    // Carlos 2026-06-12 (cuenta Pro csilva@admira.com, sin cambiar los textos de las tarjetas):
+    //   Good (Pixer Loop)  → Suno v4.5
+    //   Better (Gemini)    → Suno v5.0
+    //   Best (Suno local)  → Suno v5.5
+    if (motor === 'pixer-loop')           return playSunoLocal(s, 'chirp-v4-5');
+    if (motor === 'lyria-3-pro-preview')  return playSunoLocal(s, 'chirp-v5');
+    if (motor === 'suno-local-v5')        return playSunoLocal(s, 'chirp-v5-5');
     if (motor === 'suno-local-v45')       return playSunoLocal(s, 'chirp-v4-5');
-    if (motor === 'suno-local-v5')        return playSunoLocal(s, 'chirp-v5');
-    if (motor === 'lyria-3-pro-preview')  return playLyria3(s);
     // default: Pixer Loop (Web Audio)
     const bpm = parseInt(s.bpm, 10) || 92;
     stopMusic();
@@ -1039,66 +1085,37 @@
     }
   }
 
-  async function playNanoBanana(s, fullPrompt) {
-    const model = 'gemini-2.5-flash-image-preview';
-    const label = 'Nano Banana';
-    const cost = '~$0.04 / imagen';
-    if (!(await confirmPro(label + ' (Gemini 2.5 Flash Image)', cost + ' · vía worker pixer-eleven'))) return;
+  async function playNanoBanana(s, fullPrompt, opts) {
+    const o = opts || {};
+    const label = o.label || 'Nano Banana';
+    const model = o.model || 'gemini-2.5-flash-image';
+    const motorId = o.motorId || 'nano-banana';
+    const headModel = o.headModel || 'Gemini 2.5 Flash Image';
+    const cost = o.cost || 'gratis (free tier)';
     const aspectRatio = ASPECT_IMAGEN[s.encuadre] || '1:1';
+    const url = nanoBananaUrl(fullPrompt, aspectRatio, model);
+    const imgTitle = deriveAssetTitle('imagenes', loadStore());
+    const pubMeta = { type: 'image', motor: motorId, prompt: fullPrompt, costEst: cost, url, mime: 'image/png' };
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ IMAGEN · ${label} (Gemini 2.5) · ${aspectRatio}</div>
-        ${progressHtml(`Generando con ${label}...`, 'nanobanana', 10000)}
+        <div class="player-head">▶ IMAGEN · ${label} (${headModel}) · ${aspectRatio}</div>
+        <div class="player-img-wrap">
+          <div class="player-loading">// generando imagen con ${label}...</div>
+          <img class="player-img" crossorigin="anonymous" src="${url}" alt="generada" data-pixer-title="${escAttr(imgTitle)}" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none';var l=this.previousElementSibling;l.innerHTML='⚠ ${label} no devolvió imagen.&lt;br&gt;Suele ser: el modelo RECHAZÓ el prompt (personajes con copyright o marcas) o cuota agotada.&lt;br&gt;Prueba sin marcas/personajes, o reintenta.';l.style.color='#ff8a5c';l.style.lineHeight='1.5';">
+        </div>
+        <pre class="player-body">${fullPrompt.replace(/</g,'&lt;')}</pre>
+        ${publishBtnHTML(pubMeta)}
+        <small class="player-foot">// ${label} · ${headModel} · ${cost}</small>
       </div>`);
-    const stop = startProgress('nanobanana');
-    try {
-      const r = await fetch(ELEVEN_WORKER_URL + '/nano-banana/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: fullPrompt, aspectRatio, numberOfImages: 1, model }),
-      });
-      if (!r.ok) {
-        stop(false);
-        const err = await r.text();
-        showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGEN · ${label} · ERROR ${r.status}</div><pre class="player-body">${err.replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
-        return;
-      }
-      const data = await r.json();
-      const b64 = data?.predictions?.[0]?.bytesBase64Encoded
-               || data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
-      const mime = data?.predictions?.[0]?.mimeType
-               || data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.mimeType
-               || 'image/png';
-      if (!b64) {
-        stop(false);
-        showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGEN · ${label} · sin imagen</div><pre class="player-body">${JSON.stringify(data).slice(0,400)}</pre></div>`);
-        return;
-      }
-      stop(true);
-      const url = `data:${mime};base64,${b64}`;
-      const imgTitle = deriveAssetTitle('imagenes', loadStore());
-      const pubMeta = { type: 'image', motor: 'nano-banana', prompt: fullPrompt, costEst: cost, url, mime };
-      showPlayer(`
-        <div class="player-card">
-          <div class="player-head">▶ IMAGEN · ${label} (Gemini 2.5) · ${aspectRatio}</div>
-          <div class="player-img-wrap">
-            <img class="player-img" src="${url}" alt="generada" data-pixer-title="${escAttr(imgTitle)}">
-          </div>
-          <pre class="player-body">${fullPrompt.replace(/</g,'&lt;')}</pre>
-          ${publishBtnHTML(pubMeta)}
-          <small class="player-foot">// Gemini ${model} · ${cost}</small>
-        </div>`);
-    } catch (e) {
-      stop(false);
-      showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGEN · ${label} · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
-    }
   }
 
   // ─── Generadores atómicos para "comparar todas" ─────────────────
   // Cada uno devuelve {ok, url?, error?} sin renderizar UI.
+  // Nano Banana (Gemini 2.5 Flash Image) vía worker aislado admira-imagen.
+  // Devuelve los bytes de la imagen directamente → usable en <img src>.
   function genFluxUrl(fullPrompt, w, h) {
-    const seed = Math.floor(Math.random() * 1e9);
-    return `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
+    const ar = (w && h) ? (w / h >= 1.25 ? '16:9' : (h / w >= 1.25 ? '9:16' : '1:1')) : '16:9';
+    return `https://admira-imagen.csilvasantin.workers.dev/img?prompt=${encodeURIComponent(fullPrompt)}&ar=${ar}&model=gemini-2.5-flash-image`;
   }
   async function genGrokRaw(fullPrompt, model) {
     try {
@@ -1126,22 +1143,14 @@
       return { ok: true, url: `data:${data.predictions[0].mimeType || 'image/png'};base64,${b64}` };
     } catch (e) { return { ok: false, error: String(e) }; }
   }
+  // Nano Banana vía worker aislado admira-imagen (GET /img devuelve la imagen).
+  function nanoBananaUrl(fullPrompt, aspectRatio, model) {
+    const ar = aspectRatio || '1:1';
+    const m = model || 'gemini-2.5-flash-image';
+    return `https://admira-imagen.csilvasantin.workers.dev/img?prompt=${encodeURIComponent(fullPrompt)}&ar=${ar}&model=${m}`;
+  }
   async function genNanoBananaRaw(fullPrompt, aspectRatio) {
-    try {
-      const r = await fetch(ELEVEN_WORKER_URL + '/nano-banana/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: fullPrompt, aspectRatio, numberOfImages: 1, model: 'gemini-2.5-flash-image-preview' }),
-      });
-      const data = await r.json();
-      const b64 = data?.predictions?.[0]?.bytesBase64Encoded
-               || data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
-      const mime = data?.predictions?.[0]?.mimeType
-               || data?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.mimeType
-               || 'image/png';
-      if (!r.ok || !b64) return { ok: false, error: JSON.stringify(data).slice(0, 200) };
-      return { ok: true, url: `data:${mime};base64,${b64}` };
-    } catch (e) { return { ok: false, error: String(e) }; }
+    return { ok: true, url: nanoBananaUrl(fullPrompt, aspectRatio) };
   }
 
   // Compara N motores en paralelo, side-by-side. Recibe la lista de IDs
@@ -1150,8 +1159,8 @@
     const aspectRatio = ASPECT_IMAGEN[s.encuadre] || '1:1';
     // Tabla de fabricacion por motor → {label, cost, promise}
     const factory = {
-      'flux-schnell':                  () => ({ label: 'FLUX schnell',     cost: 'gratis',  promise: Promise.resolve({ ok: true, url: genFluxUrl(fullPrompt, w, h) }) }),
-      'nano-banana':                   () => ({ label: 'Nano Banana',      cost: '~$0.04',  promise: genNanoBananaRaw(fullPrompt, aspectRatio) }),
+      'nano-banana':                   () => ({ label: 'Nano Banana',      cost: 'gratis',  promise: genNanoBananaRaw(fullPrompt, aspectRatio) }),
+      'nano-banana-pro':               () => ({ label: 'Nano Banana Pro',  cost: 'premium', promise: Promise.resolve({ ok: true, url: nanoBananaUrl(fullPrompt, aspectRatio, 'gemini-3-pro-image-preview') }) }),
       'imagen-4.0-ultra-generate-001': () => ({ label: 'Imagen 4 Ultra',   cost: '$0.06',   promise: genImagenRaw(fullPrompt, aspectRatio) }),
       'grok-imagine-image-pro':        () => ({ label: 'Grok Imagine Pro', cost: '$0.07',   promise: genGrokRaw(fullPrompt, 'grok-imagine-image-pro') }),
     };
@@ -1199,7 +1208,12 @@
       if (res && res.ok && res.url) {
         const cTitle = (typeof deriveAssetTitle==='function') ? deriveAssetTitle('imagenes', loadStore()) : (m.label);
         const safeTitle = (typeof escAttr==='function') ? escAttr(cTitle) : String(cTitle).replace(/"/g,'&quot;');
-        cell.innerHTML = `<img src="${res.url}" alt="${m.label}" data-pixer-title="${safeTitle}" onload="this.parentElement.querySelector('.compare-time')?.remove()"><span class="compare-time">${(ms/1000).toFixed(1)}s</span>`;
+        const cellMeta = JSON.stringify({ type: 'image', motor: m.id, prompt: fullPrompt, costEst: m.cost, url: res.url, mime: 'image/png' }).replace(/'/g, '&#39;');
+        // crossorigin solo en imágenes con CORS (admira-imagen) → si no, el navegador
+        // bloquea la carga (p.ej. imgen.x.ai de Grok no manda cabeceras CORS).
+        const cors = /admira-imagen\.|^data:/.test(res.url || '') ? ' crossorigin="anonymous"' : '';
+        cell.innerHTML = `<img${cors} src="${res.url}" alt="${m.label}" data-pixer-title="${safeTitle}" onload="this.parentElement.querySelector('.compare-time')?.remove()" onerror="this.parentElement.innerHTML='<div style=&quot;color:#ff8a5c;font-size:11px;padding:10px;line-height:1.4&quot;>⚠ ${m.label}: sin imagen — el modelo rechazó el prompt (personajes con copyright o marcas) o cuota.</div>'"><span class="compare-time">${(ms/1000).toFixed(1)}s</span>`
+          + `<button type="button" class="btn publish-btn compare-pub" data-publish-meta='${cellMeta}' title="Publicar esta imagen en Stock" style="display:block;width:100%;margin-top:6px;font-size:11px;padding:6px 8px">📌 PUBLICAR EN STOCK</button>`;
         // Auto-selecciona la primera imagen que carga (default seleccionada).
         if (!firstSelected && motors.length > 1) {
           cellWrap.classList.add('selected');
@@ -1214,7 +1228,10 @@
   async function playImagenes() {
     const s = loadStore().imagenes || {};
     // Multi-select: leer s.motors (array) y caer a [s.motor] solo si no existe.
-    const motorsList = Array.isArray(s.motors) && s.motors.length ? s.motors : [s.motor || 'flux-schnell'];
+    // flux-schnell ya no existe (Pollinations murió) → migra a nano-banana y dedup,
+    // así no se comparan dos motores idénticos.
+    let motorsList = Array.isArray(s.motors) && s.motors.length ? s.motors : [s.motor || 'nano-banana'];
+    motorsList = [...new Set(motorsList.map(m => m === 'flux-schnell' ? 'nano-banana' : m))];
     const motor = motorsList[0]; // primario para single-render path
     const prompt = (s.prompt || 'Matrix terminal screen with green falling code').trim();
     const sizeMap = {
@@ -1240,6 +1257,10 @@
 
     if (motor === 'nano-banana') {
       return playNanoBanana(s, fullPrompt);
+    }
+
+    if (motor === 'nano-banana-pro') {
+      return playNanoBanana(s, fullPrompt, { label: 'Nano Banana Pro', model: 'gemini-3-pro-image-preview', motorId: 'nano-banana-pro', headModel: 'Gemini 3 Pro Image', cost: 'premium · Gemini 3' });
     }
 
     if (motor === 'grok-imagine-image-pro') {
@@ -1292,21 +1313,20 @@
       return;
     }
 
-    // Default: Pollinations (free)
-    const seed = Math.floor(Math.random() * 1e9);
-    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(fullPrompt)}?width=${w}&height=${h}&seed=${seed}&nologo=true`;
+    // Nano Banana (Gemini 2.5 Flash Image) vía worker aislado admira-imagen.
+    const url = genFluxUrl(fullPrompt, w, h);
     const fluxTitle = deriveAssetTitle('imagenes', loadStore());
-    const pubMeta = { type: 'image', motor: 'flux-schnell', prompt: fullPrompt, costEst: 'gratis', url, mime: 'image/jpeg' };
+    const pubMeta = { type: 'image', motor: 'nano-banana', prompt: fullPrompt, costEst: 'gratis', url, mime: 'image/png' };
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ IMAGEN · Pollinations · ${w}×${h} · seed ${seed}</div>
+        <div class="player-head">▶ IMAGEN · Nano Banana (Gemini 2.5 Flash Image) · ${w}×${h}</div>
         <div class="player-img-wrap">
-          <div class="player-loading">// generando imagen...</div>
-          <img class="player-img" src="${url}" alt="generada" data-pixer-title="${escAttr(fluxTitle)}" onload="this.previousElementSibling.style.display='none'">
+          <div class="player-loading">// generando imagen con Nano Banana...</div>
+          <img class="player-img" crossorigin="anonymous" src="${url}" alt="generada" data-pixer-title="${escAttr(fluxTitle)}" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none';var l=this.previousElementSibling;l.innerHTML='⚠ Nano Banana no devolvió imagen — cuota gratis agotada o error.&lt;br&gt;Reintenta en un rato o usa Grok Imagine.';l.style.color='#ff8a5c';l.style.lineHeight='1.5';">
         </div>
         <pre class="player-body">${fullPrompt.replace(/</g,'&lt;')}</pre>
         ${publishBtnHTML(pubMeta)}
-        <small class="player-foot">// Pollinations.ai · gratis · sin API key</small>
+        <small class="player-foot">// Nano Banana · Gemini 2.5 Flash Image · gratis (free tier)</small>
       </div>`);
   }
 
@@ -1324,127 +1344,329 @@
   };
 
   const VEO_MODELS = {
-    'veo-3.0-generate-001':          { label: 'Veo 3',        costPerSec: 0.40 },
-    'veo-3.1-fast-generate-preview': { label: 'Veo 3.1 Fast',  costPerSec: 0.15 },
+    'veo-3.0-fast-generate-001': { label: 'Veo 3 Fast', costPerSec: 0.15 },
+    'veo-3.0-generate-001':      { label: 'Veo 3',      costPerSec: 0.40 },
   };
 
-  async function playVeo(s, modelOverride) {
-    const model = modelOverride || 'veo-3.0-generate-001';
-    const meta = VEO_MODELS[model] || VEO_MODELS['veo-3.0-generate-001'];
-    const label = meta.label;
-    const costPerSec = meta.costPerSec;
-    const aspect = ASPECT_VEO[s.canal] || '16:9';
-    const dur = Math.max(4, Math.min(8, parseSeconds(s.duracion)));
-    const dur4or6or8 = dur <= 4 ? 4 : dur <= 6 ? 6 : 8;
+  // Parsea el id de motor "veo-3.0-generate-001@1080p" → { model, resolution, label }.
+  function parseVeoMotor(raw) {
+    const [model, resTag] = String(raw || 'veo-3.0-fast-generate-001').split('@');
+    const resolution = resTag || '720p';
+    const meta = VEO_MODELS[model] || VEO_MODELS['veo-3.0-fast-generate-001'];
+    return { model, resolution, costPerSec: meta.costPerSec, label: meta.label + (resTag ? ` · ${resTag}` : '') };
+  }
+  function buildVeoPrompt(s) {
     const guion = [s.hook, s.desarrollo, s.cierre, s.cta && `CTA: ${s.cta}`].filter(Boolean).join(' · ');
     const palette = (loadStore().imagenes && loadStore().imagenes.paleta) || 'cinematic';
-    const prompt = `${guion}, ${palette}, cinematic, with appropriate ambient sound and music`;
-    const cost = `~$${(dur4or6or8 * costPerSec).toFixed(2)} (${dur4or6or8}s × $${costPerSec})`;
-    if (!(await confirmPro(label + ' (Google)', cost + ' · paid tier Gemini · audio nativo'))) return;
+    return `${guion}, ${palette}, cinematic, with appropriate ambient sound and music`;
+  }
+  function veoDuration(s) {
+    const dur = Math.max(4, Math.min(8, parseSeconds(s.duracion)));
+    return dur <= 4 ? 4 : dur <= 6 ? 6 : 8;
+  }
 
-    showPlayer(`
-      <div class="player-card">
-        <div class="player-head">▶ VIDEO · ${label} (Google) · ${aspect} · ${dur4or6or8}s · 720p</div>
-        ${progressHtml('Enviando a Veo...', 'veo', 180000)}
-      </div>`);
-    const stop = startProgress('veo');
+  // Genera UN vídeo Veo (arranca operación + polling hasta done). No pinta UI:
+  // devuelve { ok, url, elapsed } | { ok:false, error }. onTick(elapsed, attempt)
+  // para refrescar etiquetas (barra de progreso o celda del comparador).
+  async function genVeoRaw(prompt, aspect, durationSeconds, resolution, model, onTick) {
     try {
       const r = await fetch(ELEVEN_WORKER_URL + '/veo/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt, aspectRatio: aspect, durationSeconds: dur4or6or8, resolution: '720p', model }),
+        body: JSON.stringify({ prompt, aspectRatio: aspect, durationSeconds, resolution, model }),
       });
-      if (!r.ok) {
-        stop(false);
-        const err = await r.text();
-        showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · ${label} · ERROR ${r.status}</div><pre class="player-body">${err.replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
-        return;
-      }
+      if (!r.ok) return { ok: false, error: `gen ${r.status}: ${(await r.text()).slice(0, 200)}` };
       const startData = await r.json();
       const opName = startData.name;
-      if (!opName) {
-        stop(false);
-        showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · ${label} · sin operation</div><pre class="player-body">${JSON.stringify(startData).slice(0,400)}</pre></div>`);
-        return;
-      }
-      setProgressLabel('veo', `Generando · ${opName.slice(-12)}`);
+      if (!opName) return { ok: false, error: 'sin operation: ' + JSON.stringify(startData).slice(0, 200) };
       const t0 = Date.now();
       let attempt = 0;
       while (true) {
         await new Promise(res => setTimeout(res, 5000));
         attempt++;
         const elapsed = ((Date.now() - t0) / 1000).toFixed(0);
-        setProgressLabel('veo', `Generando · ${elapsed}s · intento ${attempt}`);
+        if (onTick) onTick(elapsed, attempt);
         const pollR = await fetch(`${ELEVEN_WORKER_URL}/veo/status/${opName}`);
-        if (!pollR.ok) {
-          stop(false);
-          showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · ${label} · POLL ERROR ${pollR.status}</div><pre class="player-body">${(await pollR.text()).slice(0,400)}</pre></div>`);
-          return;
-        }
+        if (!pollR.ok) return { ok: false, error: `poll ${pollR.status}` };
         const poll = await pollR.json();
         if (poll.done) {
           const uri = poll?.response?.generateVideoResponse?.generatedSamples?.[0]?.video?.uri;
-          if (!uri) {
-            stop(false);
-            showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · ${label} · sin URI</div><pre class="player-body">${JSON.stringify(poll).slice(0,400)}</pre></div>`);
-            return;
-          }
-          stop(true);
-          const proxyUrl = `${ELEVEN_WORKER_URL}/veo/download?uri=${encodeURIComponent(uri)}`;
-          const veoTitle = deriveAssetTitle('video', loadStore());
-          const pubMeta = { type: 'video', motor: model, prompt, costEst: cost, url: proxyUrl, mime: 'video/mp4' };
-          showPlayer(`
-            <div class="player-card">
-              <div class="player-head">▶ VIDEO · ${label} (Google) · ${aspect} · ${dur4or6or8}s · 720p · audio nativo</div>
-              <video controls autoplay src="${proxyUrl}" data-pixer-title="${escAttr(veoTitle)}" style="width:100%; max-height:55vh; border:1px solid var(--matrix); box-shadow:0 0 24px rgba(0,255,65,.30);"></video>
-              <pre class="player-body">${prompt.replace(/</g,'&lt;')}</pre>
-              <a class="btn" download="veo-${Date.now()}.mp4" href="${proxyUrl}">⬇ Descargar MP4</a>
-              ${publishBtnHTML(pubMeta)}
-              <small class="player-foot">// Gemini Veo · ${cost} · ${elapsed}s de procesado</small>
-            </div>`);
-          return;
+          if (!uri) return { ok: false, error: 'sin URI: ' + JSON.stringify(poll).slice(0, 200) };
+          return { ok: true, url: `${ELEVEN_WORKER_URL}/veo/download?uri=${encodeURIComponent(uri)}`, elapsed };
         }
-        if (attempt > 60) {
-          stop(false);
-          showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · ${label} · TIMEOUT</div><pre class="player-body">operation: ${opName}</pre></div>`);
-          return;
+        if (attempt > 60) return { ok: false, error: 'timeout (>5min)' };
+      }
+    } catch (e) {
+      return { ok: false, error: String(e) };
+    }
+  }
+
+  async function playVeo(s, modelOverride) {
+    const { model, resolution, costPerSec, label } = parseVeoMotor(modelOverride || 'veo-3.0-fast-generate-001');
+    const aspect = ASPECT_VEO[s.canal] || '16:9';
+    const dur4or6or8 = veoDuration(s);
+    const prompt = buildVeoPrompt(s);
+    const cost = `~$${(dur4or6or8 * costPerSec).toFixed(2)} (${dur4or6or8}s × $${costPerSec})`;
+    if (!(await confirmPro(label + ' (Google)', cost + ' · paid tier Gemini · audio nativo'))) return;
+
+    showPlayer(`
+      <div class="player-card">
+        <div class="player-head">▶ VIDEO · ${label} (Google) · ${aspect} · ${dur4or6or8}s · ${resolution}</div>
+        ${progressHtml('Enviando a Veo...', 'veo', 180000)}
+      </div>`);
+    const stop = startProgress('veo');
+    const res = await genVeoRaw(prompt, aspect, dur4or6or8, resolution, model,
+      (elapsed, attempt) => setProgressLabel('veo', `Generando · ${elapsed}s · intento ${attempt}`));
+    if (!res.ok) {
+      stop(false);
+      showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · ${label} · ERROR</div><pre class="player-body">${String(res.error).replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
+      return;
+    }
+    stop(true);
+    const veoTitle = deriveAssetTitle('video', loadStore());
+    const pubMeta = { type: 'video', motor: model, prompt, costEst: cost, url: res.url, mime: 'video/mp4' };
+    showPlayer(`
+      <div class="player-card">
+        <div class="player-head">▶ VIDEO · ${label} (Google) · ${aspect} · ${dur4or6or8}s · ${resolution} · audio nativo</div>
+        <video controls autoplay src="${res.url}" data-pixer-title="${escAttr(veoTitle)}" style="width:100%; max-height:55vh; border:1px solid var(--matrix); box-shadow:0 0 24px rgba(0,255,65,.30);"></video>
+        <pre class="player-body">${prompt.replace(/</g,'&lt;')}</pre>
+        <a class="btn" download="veo-${Date.now()}.mp4" href="${res.url}">⬇ Descargar MP4</a>
+        ${publishBtnHTML(pubMeta)}
+        <small class="player-foot">// Gemini Veo · ${cost} · ${res.elapsed}s de procesado</small>
+      </div>`);
+  }
+
+  // ─── Grok Imagine Video (xAI) ───────────────────────────────────
+  // Flujo 2 pasos vía worker: POST /xai/video → { request_id }; luego polling
+  // GET /xai/video/{id} hasta status "done" → video.url (https://vidgen.x.ai/…).
+  async function genGrokVideoRaw(prompt, aspect, durationSeconds, resolution, onTick) {
+    try {
+      const r = await fetch(ELEVEN_WORKER_URL + '/xai/video', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt, duration: durationSeconds, aspect_ratio: aspect, resolution }),
+      });
+      if (!r.ok) return { ok: false, error: `gen ${r.status}: ${(await r.text()).slice(0, 200)}` };
+      const startData = await r.json();
+      const reqId = startData.request_id || startData.id;
+      if (!reqId) return { ok: false, error: 'sin request_id: ' + JSON.stringify(startData).slice(0, 200) };
+      const t0 = Date.now();
+      let attempt = 0;
+      while (true) {
+        await new Promise(res => setTimeout(res, 5000));
+        attempt++;
+        const elapsed = ((Date.now() - t0) / 1000).toFixed(0);
+        if (onTick) onTick(elapsed, attempt);
+        const pollR = await fetch(`${ELEVEN_WORKER_URL}/xai/video/${encodeURIComponent(reqId)}`);
+        if (!pollR.ok) return { ok: false, error: `poll ${pollR.status}` };
+        const poll = await pollR.json();
+        const status = poll.status || poll.state;
+        if (status === 'done' || status === 'completed' || status === 'succeeded') {
+          const url = poll?.video?.url || poll?.url;
+          if (!url) return { ok: false, error: 'sin URL: ' + JSON.stringify(poll).slice(0, 200) };
+          return { ok: true, url, elapsed };
+        }
+        if (status === 'failed' || status === 'expired' || status === 'error') {
+          return { ok: false, error: `xAI ${status}: ${JSON.stringify(poll).slice(0, 200)}` };
+        }
+        if (attempt > 60) return { ok: false, error: 'timeout (>5min)' };
+      }
+    } catch (e) {
+      return { ok: false, error: String(e) };
+    }
+  }
+
+  async function playGrokVideo(s) {
+    const aspect = ASPECT_VEO[s.canal] || '16:9';
+    const dur = veoDuration(s);
+    const resolution = '720p'; // el tier xAI de la cuenta no tiene 1080p (gen 400 "not available for your team")
+    const prompt = buildVeoPrompt(s);
+    if (!(await confirmPro('Grok Imagine Video (xAI)', `${dur}s · ${resolution} · vía worker xAI`))) return;
+
+    showPlayer(`
+      <div class="player-card">
+        <div class="player-head">▶ VIDEO · Grok Imagine (xAI) · ${aspect} · ${dur}s · ${resolution}</div>
+        ${progressHtml('Enviando a Grok Imagine...', 'grokvid', 180000)}
+      </div>`);
+    const stop = startProgress('grokvid');
+    const res = await genGrokVideoRaw(prompt, aspect, dur, resolution,
+      (elapsed, attempt) => setProgressLabel('grokvid', `Generando · ${elapsed}s · intento ${attempt}`));
+    if (!res.ok) {
+      stop(false);
+      showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · Grok Imagine · ERROR</div><pre class="player-body">${String(res.error).replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
+      return;
+    }
+    stop(true);
+    const gTitle = deriveAssetTitle('video', loadStore());
+    const pubMeta = { type: 'video', motor: 'grok-imagine-video', prompt, costEst: 'xAI · vía worker', url: res.url, mime: 'video/mp4' };
+    showPlayer(`
+      <div class="player-card">
+        <div class="player-head">▶ VIDEO · Grok Imagine (xAI) · ${aspect} · ${dur}s · ${resolution}</div>
+        <video controls autoplay src="${res.url}" data-pixer-title="${escAttr(gTitle)}" style="width:100%; max-height:55vh; border:1px solid var(--matrix); box-shadow:0 0 24px rgba(0,255,65,.30);"></video>
+        <pre class="player-body">${prompt.replace(/</g,'&lt;')}</pre>
+        <a class="btn" download="grok-${Date.now()}.mp4" href="${res.url}">⬇ Descargar MP4</a>
+        ${publishBtnHTML(pubMeta)}
+        <small class="player-foot">// xAI Grok Imagine · ${res.elapsed}s de procesado</small>
+      </div>`);
+  }
+
+  // ─── Pollinations Video (gratis) ────────────────────────────────
+  // Síncrono: el worker hace proxy a gen.pollinations.ai/video y devuelve el
+  // mp4 directo (un solo GET, ~30-90s). No hay polling. Se descarga como blob
+  // y se reproduce/publica localmente.
+  async function playPollinationsVideo(s) {
+    const aspect = ASPECT_VEO[s.canal] || '16:9';
+    const dur = veoDuration(s);
+    const prompt = buildVeoPrompt(s);
+    const qs = new URLSearchParams({ prompt, model: 'wan-fast', duration: String(dur), aspect, audio: 'true' });
+
+    showPlayer(`
+      <div class="player-card">
+        <div class="player-head">▶ VIDEO · Pollinations · Wan (gratis) · ${aspect} · ${dur}s · 720p</div>
+        ${progressHtml('Generando con Pollinations (gratis, puede tardar ~1 min)...', 'pvid', 180000)}
+      </div>`);
+    const stop = startProgress('pvid');
+
+    const ctrl = new AbortController();
+    const to = setTimeout(() => ctrl.abort(), 150000);
+    let blobUrl, errMsg;
+    try {
+      const r = await fetch(`${ELEVEN_WORKER_URL}/pvideo?${qs.toString()}`, { signal: ctrl.signal });
+      clearTimeout(to);
+      if (!r.ok) {
+        const raw = (await r.text()).slice(0, 300);
+        if (r.status === 402 || /insufficient balance|payment_required|pollen/i.test(raw)) {
+          errMsg = 'Sin saldo Pollen en la cuenta de Pollinations. El vídeo gratuito usa "Pollen": consigue el grant diario subiendo de tier (p.ej. estrellando su repo de GitHub) en enter.pollinations.ai, o usa Veo 3 / Grok mientras tanto.';
+        } else {
+          errMsg = `gen ${r.status}: ${raw}`;
+        }
+      } else {
+        const blob = await r.blob();
+        if (!blob || blob.size < 1000 || !/video\//.test(blob.type)) {
+          errMsg = 'respuesta no es vídeo (' + (blob && blob.type) + ', ' + (blob && blob.size) + 'b)';
+        } else {
+          blobUrl = URL.createObjectURL(blob);
         }
       }
     } catch (e) {
-      stop(false);
-      showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · ${label} · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
+      clearTimeout(to);
+      errMsg = (e && e.name === 'AbortError') ? 'timeout (>150s)' : String(e);
     }
+
+    if (!blobUrl) {
+      stop(false);
+      showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · Pollinations · ERROR</div><pre class="player-body">${String(errMsg).replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
+      return;
+    }
+    stop(true);
+    const pTitle = deriveAssetTitle('video', loadStore());
+    const pubMeta = { type: 'video', motor: 'pollinations-wan-fast', prompt, costEst: 'gratis', url: blobUrl, mime: 'video/mp4' };
+    showPlayer(`
+      <div class="player-card">
+        <div class="player-head">▶ VIDEO · Pollinations · Wan (gratis) · ${aspect} · ${dur}s · 720p</div>
+        <video controls autoplay src="${blobUrl}" data-pixer-title="${escAttr(pTitle)}" style="width:100%; max-height:55vh; border:1px solid var(--matrix); box-shadow:0 0 24px rgba(0,255,65,.30);"></video>
+        <pre class="player-body">${prompt.replace(/</g,'&lt;')}</pre>
+        <a class="btn" download="pollinations-${Date.now()}.mp4" href="${blobUrl}">⬇ Descargar MP4</a>
+        ${publishBtnHTML(pubMeta)}
+        <small class="player-foot">// Pollinations · Wan-Fast · gratis</small>
+      </div>`);
+  }
+
+  // Compara N motores de vídeo (Veo) en paralelo, side-by-side. Cada celda
+  // arranca su propia generación y muestra el <video> + publicar en Stock cuando
+  // llega. Espejo de compareSelectedImages pero asíncrono (operaciones largas).
+  async function compareSelectedVideos(motorIds, s) {
+    const aspect = ASPECT_VEO[s.canal] || '16:9';
+    const dur4or6or8 = veoDuration(s);
+    const prompt = buildVeoPrompt(s);
+    const motors = [...new Set(motorIds)].map(id => Object.assign({ id }, parseVeoMotor(id)));
+    if (!motors.length) return;
+    const total = motors.reduce((a, m) => a + dur4or6or8 * m.costPerSec, 0);
+    if (!(await confirmPro('COMPARAR vídeo', motors.map(m => m.label).join(' + ') + ` · ${dur4or6or8}s c/u (~$${total.toFixed(2)} total · paid tier Gemini)`))) return;
+
+    showPlayer(`
+      <div class="player-card">
+        <div class="player-head">▶ COMPARAR VÍDEO · ${motors.length} motores · ${aspect} · ${dur4or6or8}s${motors.length > 1 ? ' · click el vídeo para elegir cuál enviar' : ''}</div>
+        <div class="compare-grid">
+          ${motors.map(m => `
+            <div class="compare-cell" data-cell="${m.id}" data-motor-label="${escAttr(m.label)}">
+              <div class="compare-cell-head"><strong>${m.label}</strong> <span style="opacity:.7">~$${(dur4or6or8 * m.costPerSec).toFixed(2)}</span></div>
+              <div class="compare-cell-img"><span class="compare-loading">// generando... 0s</span></div>
+            </div>`).join('')}
+        </div>
+        <pre class="player-body">${prompt.replace(/</g,'&lt;')}</pre>
+        <small class="player-foot">// ${motors.length} motores Veo en paralelo · cada uno tarda ~30–90s · resultados conforme lleguen</small>
+      </div>`);
+
+    // Click en una celda con vídeo → la marca como seleccionada (única) para
+    // que ENVIAR A ADMIRA XP recoja ese vídeo via detectLatestAsset.
+    document.querySelectorAll('.compare-cell[data-cell]').forEach(cellEl => {
+      cellEl.addEventListener('click', () => {
+        if (!cellEl.querySelector('.compare-cell-img video[src]')) return;
+        document.querySelectorAll('.compare-cell.selected').forEach(c => c.classList.remove('selected'));
+        cellEl.classList.add('selected');
+      });
+    });
+
+    let firstSelected = false;
+    motors.forEach(async m => {
+      const cellWrap = document.querySelector(`[data-cell="${m.id}"]`);
+      const cell = cellWrap && cellWrap.querySelector('.compare-cell-img');
+      const res = await genVeoRaw(prompt, aspect, dur4or6or8, m.resolution, m.model, (elapsed) => {
+        const loading = cell && cell.querySelector('.compare-loading');
+        if (loading) loading.textContent = `// generando... ${elapsed}s`;
+      });
+      if (!cell) return;
+      if (res && res.ok && res.url) {
+        const cTitle = deriveAssetTitle('video', loadStore());
+        const cellMeta = JSON.stringify({ type: 'video', motor: m.model, prompt, costEst: `~$${(dur4or6or8 * m.costPerSec).toFixed(2)}`, url: res.url, mime: 'video/mp4' }).replace(/'/g, '&#39;');
+        cell.innerHTML = `<video controls src="${res.url}" data-pixer-title="${escAttr(cTitle)}" style="width:100%;border:1px solid var(--matrix);box-shadow:0 0 12px rgba(0,255,65,.3)"></video><span class="compare-time">${res.elapsed}s</span>`
+          + `<button type="button" class="btn publish-btn compare-pub" data-publish-meta='${cellMeta}' title="Publicar este vídeo en Stock" style="display:block;width:100%;margin-top:6px;font-size:11px;padding:6px 8px">📌 PUBLICAR EN STOCK</button>`;
+        if (!firstSelected && motors.length > 1) {
+          cellWrap.classList.add('selected');
+          firstSelected = true;
+        }
+      } else {
+        cell.innerHTML = `<div class="compare-error">⚠ ${(res && res.error || 'error').slice(0, 140).replace(/</g,'&lt;')}</div>`;
+      }
+    });
   }
 
   function playVideo() {
     const s = loadStore().video || {};
-    const motor = s.motor || 'pixer-storyboard';
+    // Multi-select: leer s.motors (array) y caer a [s.motor] solo si no existe.
+    let motorsList = Array.isArray(s.motors) && s.motors.length ? s.motors : [s.motor || 'veo-3.0-generate-001'];
+    // Migra ids muertos/retirados (runway/sora/veo-3.1 + los Veo eliminados de
+    // la UI: fast y @1080p) al Veo 3 720p que sí funciona, y dedup.
+    motorsList = [...new Set(motorsList.map(m =>
+      (m === 'runway-gen3' || m === 'openai-sora' || m === 'veo-3.1-fast-generate-preview'
+       || m === 'veo-3.0-fast-generate-001' || m === 'veo-3.0-generate-001@1080p') ? 'veo-3.0-generate-001' : m))];
+    const motor = motorsList[0]; // primario para single-render path
 
-    if (motor === 'veo-3.0-generate-001' || motor === 'veo-3.1-fast-generate-preview') {
+    // 2+ motores Veo seleccionados → grid comparativa.
+    if (motorsList.length > 1 && motorsList.every(m => m.startsWith('veo-3.0-'))) {
+      return compareSelectedVideos(motorsList, s);
+    }
+
+    if (motor === 'pollinations-wan-fast') {
+      return playPollinationsVideo(s);
+    }
+
+    if (motor === 'grok-imagine-video') {
+      return playGrokVideo(s);
+    }
+
+    if (motor.startsWith('veo-3.0-')) {
       return playVeo(s, motor);
     }
 
     // Gemini Omni — scaffolding (anunciado en Google I/O 2026; API pública aún no disponible).
-    // Selector deshabilitado (soon:true); al publicarse el endpoint, sustituir por la llamada real (patrón playVeo).
     if (motor === 'gemini-omni-flash') {
       showPlayer(`
         <div class="player-card">
           <div class="player-head">▶ VIDEO · Gemini Omni Flash (Google)</div>
           <pre class="player-body">Gemini Omni se anunció en Google I/O 2026. La API pública aún no está disponible (llega "en las próximas semanas").\n\nEl motor ya está cableado y se activará en cuanto Google publique el model ID y el endpoint.</pre>
           <small class="player-foot">// scaffolding · pendiente de API oficial</small>
-        </div>`);
-      return;
-    }
-
-    // PRO: Runway — sin CORS público, abrir tab
-    if (motor === 'runway-gen3') {
-      const guion = [s.hook, s.desarrollo, s.cierre, s.cta && `CTA: ${s.cta}`].filter(Boolean).join('\n\n');
-      showPlayer(`
-        <div class="player-card">
-          <div class="player-head">▶ VIDEO · runway-gen3</div>
-          <pre class="player-body">${guion.replace(/</g,'&lt;') || '// (sin guion)'}</pre>
-          <a class="btn primary" href="https://app.runwayml.com/" target="_blank" rel="noopener">Abrir Runway</a>
-          <small class="player-foot">// Runway no permite CORS desde navegador. Cambia a "Pixer Storyboard" para ver la previsualización.</small>
         </div>`);
       return;
     }
@@ -1468,7 +1690,7 @@
     const sceneSec = totalSec / scenes.length;
     const baseSeed = Math.floor(Math.random() * 1e9);
     const urls = scenes.map((sc, i) =>
-      `https://image.pollinations.ai/prompt/${encodeURIComponent(sc.text + ', ' + stylePalette + ', cinematic still, 35mm')}?width=${w}&height=${h}&seed=${baseSeed + i}&nologo=true`
+      genFluxUrl(sc.text + ', ' + stylePalette + ', cinematic still, 35mm', w, h)
     );
 
     showPlayer(`
@@ -1542,6 +1764,653 @@
     setTimeout(playVideo, 900);
   }
 
+  const AUDIENCE_LABELS = {
+    male: 'Segmento hombre',
+    female: 'Segmento mujer',
+    neutral: 'Segmento neutral / todos',
+    todos: 'Todos los públicos',
+  };
+
+  const AGE_BANDS = ['18-24', '25-34', '35-44', '45-54', '55+', 'todos'];
+  const GENDERS = ['hombre', 'mujer', 'todos'];
+  const PERSONA_TAGS = ['tech', 'urbano', 'fitness', 'profesional', 'familia', 'eco', 'luxury', 'joven', 'padres', 'creativo'];
+
+  const TARGET_PRESETS = [
+    { gender: 'hombre', ageBand: '25-34', persona: 'tech-urbano', label: 'Hombres 25-34 Tech' },
+    { gender: 'mujer', ageBand: '25-34', persona: 'profesional', label: 'Mujeres 25-34 Profesional' },
+    { gender: 'hombre', ageBand: '18-24', persona: 'urbano', label: 'Hombres 18-24 Urbano' },
+    { gender: 'mujer', ageBand: '35-44', persona: 'familia', label: 'Mujeres 35-44 Familia' },
+    { gender: 'todos', ageBand: '18-24', persona: 'joven', label: 'Jóvenes 18-24 Unisex' },
+    { gender: 'todos', ageBand: 'todos', persona: '', label: 'Público general' },
+  ];
+
+  let adBaseImage = null;
+
+  function normalizeAudienceSegment(value) {
+    const v = String(value || '').trim().toLowerCase();
+    if (['male', 'man', 'hombre', 'masculino', 'm'].includes(v)) return 'male';
+    if (['female', 'woman', 'mujer', 'femenino', 'f'].includes(v)) return 'female';
+    return 'neutral';
+  }
+
+  function currentAdData() {
+    const store = loadStore();
+    const ad = { ...DEFAULTS.publicidad, ...(store.publicidad || {}) };
+    ad.segment = normalizeAudienceSegment(ad.segment);
+    ad.confidence = String(ad.confidence || DEFAULTS.publicidad.confidence);
+    return { store, ad };
+  }
+
+  // === NUEVO: Soporte completo para Targets (género + edad + persona) ===
+  function makeTarget(partial = {}) {
+    const id = partial.id || ('t' + Date.now().toString(36).slice(-6));
+    return {
+      id,
+      gender: partial.gender || 'todos',
+      ageBand: partial.ageBand || 'todos',
+      persona: partial.persona || '',
+      label: partial.label || (partial.gender && partial.ageBand ? `${partial.gender} ${partial.ageBand}` : 'Target'),
+      headline: partial.headline || '',
+      offer: partial.offer || '',
+      visual: partial.visual || '',
+      tone: partial.tone || '',
+    };
+  }
+
+  function getTargetLabel(t) {
+    if (t.label) return t.label;
+    const g = t.gender === 'todos' ? '' : (t.gender || '');
+    const a = t.ageBand === 'todos' ? '' : (t.ageBand || '');
+    const p = t.persona ? ` · ${t.persona}` : '';
+    return [g, a].filter(Boolean).join(' ') + p || 'Target';
+  }
+
+  function getTargetedOffer(ad, t) {
+    if (t && t.offer) return t.offer;
+    if (t && t.gender === 'hombre') return ad.offerMale || DEFAULTS.publicidad.offerMale;
+    if (t && t.gender === 'mujer') return ad.offerFemale || DEFAULTS.publicidad.offerFemale;
+    return ad.offerNeutral || DEFAULTS.publicidad.offerNeutral;
+  }
+
+  function getTargetedHeadline(ad, t) {
+    const product = (ad.product || DEFAULTS.publicidad.product).replace(/\s+/g, ' ').trim();
+    if (t && t.headline) return t.headline;
+    const g = t ? t.gender : ad.segment;
+    if (g === 'hombre') return `${product}: potencia tu siguiente movimiento`;
+    if (g === 'mujer') return `${product}: diseñado para moverte a tu manera`;
+    return `${product}: entra en la experiencia`;
+  }
+
+  function getTargetTheme(t) {
+    const g = t ? t.gender : 'neutral';
+    const age = t ? t.ageBand : 'todos';
+    if (g === 'hombre') return { a: '#00ff41', b: '#50c8ff', c: '#07140d', label: 'HOMBRE' + (age !== 'todos' ? ' ' + age : '') };
+    if (g === 'mujer') return { a: '#d4ff5a', b: '#ff5cc8', c: '#140716', label: 'MUJER' + (age !== 'todos' ? ' ' + age : '') };
+    return { a: '#c8ffd0', b: '#00ff41', c: '#020602', label: 'TODOS' + (age !== 'todos' ? ' ' + age : '') };
+  }
+
+  function getEffectiveTargets(ad) {
+    const storeTargets = (ad.targets && ad.targets.length) ? ad.targets : [];
+    if (storeTargets.length > 0) return storeTargets;
+    // Fallback a modelo antiguo (3 segmentos)
+    return [
+      makeTarget({ gender: 'hombre', ageBand: 'todos', label: 'Hombre' }),
+      makeTarget({ gender: 'mujer', ageBand: 'todos', label: 'Mujer' }),
+      makeTarget({ gender: 'todos', ageBand: 'todos', label: 'Neutral' }),
+    ];
+  }
+
+  function segmentedOffer(ad) {
+    // Compatibilidad con modelo antiguo + nuevo
+    const t = { gender: ad.segment === 'male' ? 'hombre' : ad.segment === 'female' ? 'mujer' : 'todos', ageBand: 'todos' };
+    return getTargetedOffer(ad, t);
+  }
+
+  function segmentedHeadline(ad) {
+    const t = { gender: ad.segment === 'male' ? 'hombre' : ad.segment === 'female' ? 'mujer' : 'todos', ageBand: 'todos' };
+    return getTargetedHeadline(ad, t);
+  }
+
+  function segmentedTheme(ad) {
+    const t = { gender: ad.segment === 'male' ? 'hombre' : ad.segment === 'female' ? 'mujer' : 'todos', ageBand: 'todos' };
+    return getTargetTheme(t);
+  }
+
+  function segmentedAdSvg(ad, store) {
+    // Delega al nuevo generador con un target derivado del segment actual
+    const t = { gender: ad.segment === 'male' ? 'hombre' : ad.segment === 'female' ? 'mujer' : 'todos', ageBand: 'todos' };
+    return targetedAdSvg(ad, store, t);
+  }
+
+  function targetedAdSvg(ad, store, target) {
+    const t = target || { gender: 'todos', ageBand: 'todos' };
+    const theme = getTargetTheme(t);
+    const esc = (v) => String(v || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const headline = getTargetedHeadline(ad, t);
+    const offer = getTargetedOffer(ad, t);
+    const cta = ad.cta || DEFAULTS.publicidad.cta;
+    const source = ad.source || DEFAULTS.publicidad.source;
+    const confidence = Math.round(Math.max(0, Math.min(1, parseFloat(ad.confidence || '0.64'))) * 100);
+    const brand = (store.cliente || 'Admira Studio · XpaceOS').slice(0, 42);
+    const label = getTargetLabel(t);
+    const baseImage = adBaseImage && adBaseImage.dataUrl
+      ? `<image href="${escAttr(adBaseImage.dataUrl)}" x="960" y="150" width="500" height="500" preserveAspectRatio="xMidYMid slice" opacity=".95"/>`
+      : '';
+    const baseImageFrame = adBaseImage && adBaseImage.dataUrl
+      ? `<rect x="960" y="150" width="500" height="500" fill="url(#imageWash)" opacity=".38"/><rect x="960" y="150" width="500" height="500" fill="none" stroke="${theme.b}" stroke-width="3"/>`
+      : `<path d="M1120 238h200l76 76v264l-94 76h-208l-76-76V314z" fill="${theme.a}" opacity=".10" stroke="${theme.b}" stroke-width="3"/>`;
+    const baseImageCaption = adBaseImage && adBaseImage.name
+      ? `BASE IMAGE · ${esc(adBaseImage.name.slice(0, 36))}`
+      : 'NO BASE IMAGE · CREATIVE SHELL';
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+      <defs>
+        <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="${theme.c}"/><stop offset=".52" stop-color="#020602"/><stop offset="1" stop-color="#001406"/></linearGradient>
+        <linearGradient id="imageWash" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${theme.c}" stop-opacity=".00"/><stop offset="1" stop-color="${theme.c}" stop-opacity=".90"/></linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse"><path d="M64 0H0V64" fill="none" stroke="${theme.a}" stroke-opacity=".18" stroke-width="1"/></pattern>
+      </defs>
+      <rect width="1600" height="900" fill="url(#bg)"/><rect width="1600" height="900" fill="url(#grid)"/>
+      <circle cx="1260" cy="180" r="260" fill="${theme.b}" opacity=".12"/><circle cx="1220" cy="660" r="330" fill="${theme.a}" opacity=".10"/>
+      <path d="M1040 150h330l120 120v390l-150 120h-330L900 650V260z" fill="none" stroke="${theme.a}" stroke-width="5" opacity=".78" filter="url(#glow)"/>
+      ${baseImage}
+      ${baseImageFrame}
+      <text x="80" y="96" fill="${theme.a}" font-family="JetBrains Mono, Menlo, monospace" font-size="34" font-weight="800" letter-spacing="4">${esc(brand)}</text>
+      <text x="80" y="152" fill="#c8ffd0" opacity=".72" font-family="JetBrains Mono, Menlo, monospace" font-size="22" letter-spacing="3">XPACEOS TARGET AD · ${esc(label)} · ${confidence}%</text>
+      <foreignObject x="80" y="245" width="860" height="310"><div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Inter,Arial,sans-serif;color:#f5fff6;font-weight:900;font-size:72px;line-height:.95;letter-spacing:-1px;text-transform:uppercase">${esc(headline)}</div></foreignObject>
+      <foreignObject x="84" y="560" width="720" height="120"><div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Inter,Arial,sans-serif;color:#c8ffd0;font-size:32px;line-height:1.15">${esc(offer)}</div></foreignObject>
+      <rect x="84" y="720" width="640" height="86" fill="${theme.a}" filter="url(#glow)"/><text x="124" y="774" fill="#020602" font-family="JetBrains Mono, Menlo, monospace" font-size="28" font-weight="900" letter-spacing="2">${esc(cta).slice(0, 42)}</text>
+      <text x="930" y="820" fill="${theme.b}" font-family="JetBrains Mono, Menlo, monospace" font-size="21" letter-spacing="2">TARGET: ${esc(label)} · señal: ${esc(source)} · ephemeral</text>
+      <text x="1190" y="478" fill="${theme.a}" font-family="JetBrains Mono, Menlo, monospace" font-size="118" font-weight="900" text-anchor="middle" filter="url(#glow)">AD</text>
+      <text x="1190" y="532" fill="#c8ffd0" font-family="JetBrains Mono, Menlo, monospace" font-size="26" text-anchor="middle" letter-spacing="4">DIGITAL TWIN</text>
+      <text x="1190" y="620" fill="${theme.b}" font-family="JetBrains Mono, Menlo, monospace" font-size="18" text-anchor="middle" letter-spacing="2">${baseImageCaption}</text>
+    </svg>`;
+  }
+
+  function updateAdImagePreview() {
+    const wrap = document.getElementById('ad-image-preview');
+    const img = document.getElementById('ad-image-preview-img');
+    const meta = document.getElementById('ad-image-meta');
+    if (!wrap || !img || !meta) return;
+    if (adBaseImage && adBaseImage.dataUrl) {
+      wrap.hidden = false;
+      img.src = adBaseImage.dataUrl;
+      meta.textContent = `${adBaseImage.name || 'imagen'} · lista para segmentar`;
+    } else {
+      wrap.hidden = true;
+      img.removeAttribute('src');
+      meta.textContent = 'Sin imagen cargada';
+    }
+  }
+
+  function bindPublicidadImageUpload() {
+    if (document.body.dataset.page !== 'publicidad') return;
+    const input = document.getElementById('ad-image-file');
+    const pick = document.getElementById('ad-image-pick');
+    const clear = document.getElementById('ad-image-clear');
+    if (!input || !pick || !clear) return;
+    pick.addEventListener('click', () => input.click());
+    clear.addEventListener('click', () => {
+      adBaseImage = null;
+      input.value = '';
+      updateAdImagePreview();
+    });
+    input.addEventListener('change', async () => {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      try {
+        const dataUrl = await new Promise((resolve, reject) => {
+          const fr = new FileReader();
+          fr.onload = () => resolve(fr.result);
+          fr.onerror = () => reject(fr.error || new Error('No se pudo leer la imagen'));
+          fr.readAsDataURL(file);
+        });
+        adBaseImage = {
+          name: file.name,
+          type: file.type || 'image/*',
+          dataUrl: String(dataUrl),
+        };
+        updateAdImagePreview();
+        showToast('Imagen base cargada');
+      } catch (err) {
+        showToast((err && err.message) || 'No se pudo cargar la imagen');
+      } finally {
+        input.value = '';
+      }
+    });
+    updateAdImagePreview();
+  }
+
+  function segmentedVariantData(store, baseAd, segment) {
+    // Compat legacy
+    const ad = { ...baseAd, segment };
+    const t = { gender: segment === 'male' ? 'hombre' : segment === 'female' ? 'mujer' : 'todos', ageBand: 'todos' };
+    const svg = targetedAdSvg(ad, store, t);
+    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    const title = `${store.cliente || 'XpaceOS'} // ${getTargetLabel(t)} // ${ad.product || 'Publicidad'}`;
+    return {
+      segment,
+      target: t,
+      label: getTargetLabel(t),
+      url,
+      title,
+      headline: getTargetedHeadline(ad, t),
+      offer: getTargetedOffer(ad, t),
+      cta: ad.cta || DEFAULTS.publicidad.cta,
+      source: ad.source || DEFAULTS.publicidad.source,
+      confidence: ad.confidence,
+      hasBaseImage: !!(adBaseImage && adBaseImage.dataUrl),
+      baseImageName: adBaseImage && adBaseImage.name ? adBaseImage.name : '',
+    };
+  }
+
+  function targetVariantData(store, baseAd, t) {
+    const ad = { ...baseAd };
+    const svg = targetedAdSvg(ad, store, t);
+    const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    const label = getTargetLabel(t);
+    const title = `${store.cliente || 'XpaceOS'} // ${label} // ${ad.product || 'Publicidad'}`;
+    return {
+      target: t,
+      label,
+      url,
+      title,
+      headline: getTargetedHeadline(ad, t) || segmentedHeadline(ad),
+      offer: getTargetedOffer(ad, t) || segmentedOffer(ad),
+      cta: ad.cta || DEFAULTS.publicidad.cta,
+      source: ad.source || DEFAULTS.publicidad.source,
+      hasBaseImage: !!(adBaseImage && adBaseImage.dataUrl),
+      baseImageName: adBaseImage && adBaseImage.name ? adBaseImage.name : '',
+      // Prompt listo para IA (para usar en /crear/ Marketing o modelos externos)
+      promptForAI: `Publicidad para ${label}. Producto: ${ad.product}. ${ad.context || ''}. Oferta: ${getTargetedOffer(ad, t)}. Estilo: ${ad.style || ''}. ${t.visual || ''} ${t.tone ? 'Tono: ' + t.tone : ''}. Alta calidad, cinematográfico, matrix retail neon, texto legible alto contraste, composición hero del producto.`,
+    };
+  }
+
+  function setAudienceSegment(segment, opts = {}) {
+    const normalized = normalizeAudienceSegment(segment);
+    const store = loadStore();
+    store.publicidad = { ...DEFAULTS.publicidad, ...(store.publicidad || {}), segment: normalized };
+    if (opts.confidence !== undefined) store.publicidad.confidence = String(opts.confidence);
+    if (opts.source) store.publicidad.source = String(opts.source);
+    saveStore(store);
+    updateSegmentedAdUi();
+    if (opts.autoplay) playPublicidad();
+  }
+
+  function updateSegmentedAdUi() {
+    const { ad } = currentAdData();
+    document.querySelectorAll('[data-ad-segment]').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.adSegment === ad.segment));
+    });
+    const dot = document.getElementById('adSignalDot');
+    if (dot) dot.dataset.segment = ad.segment;
+    const label = document.getElementById('adSignalLabel');
+    if (label) label.textContent = AUDIENCE_LABELS[ad.segment] || AUDIENCE_LABELS.neutral;
+    const meta = document.getElementById('adSignalMeta');
+    if (meta) meta.textContent = `fuente: ${ad.source || 'Simulador local'} · confianza ${ad.confidence || '0.64'}`;
+    const sourceSelect = document.getElementById('ad-source');
+    if (sourceSelect && [...sourceSelect.options].some((option) => option.value === ad.source)) {
+      sourceSelect.value = ad.source;
+    }
+  }
+
+  function playPublicidad() {
+    const { store, ad } = currentAdData();
+    const targets = getEffectiveTargets(ad);
+    const variants = targets.map((t) => targetVariantData(store, ad, t));
+    const selectedLabel = getTargetLabel({ gender: ad.segment === 'male' ? 'hombre' : ad.segment === 'female' ? 'mujer' : 'todos', ageBand: 'todos' });
+
+    const plan = {
+      baseImage: adBaseImage ? { name: adBaseImage.name, type: adBaseImage.type } : null,
+      source: ad.source,
+      screen: ad.screen,
+      privacy: ad.privacy,
+      mode: ad.mode || 'batch',
+      targets: targets.map(t => ({ id: t.id, label: getTargetLabel(t), gender: t.gender, ageBand: t.ageBand, persona: t.persona })),
+      variants: variants.map((v) => ({
+        label: v.label,
+        headline: v.headline,
+        offer: v.offer,
+        cta: v.cta,
+        promptForAI: v.promptForAI,
+      })),
+    };
+
+    const count = variants.length;
+    showPlayer(`
+      <div class="player-card segmented-player">
+        <div class="player-head">▶ PUBLICIDAD CON TARGET · ${count} variante${count === 1 ? '' : 's'} · ${ad.source || 'batch'}</div>
+        <div class="segmented-variants">
+          ${variants.map((variant) => `
+            <article class="segmented-variant${variant.label === selectedLabel ? ' selected' : ''}" data-target-id="${variant.target.id || ''}">
+              <div class="segmented-variant-head">
+                <strong>${variant.label}</strong>
+                <span>${variant.hasBaseImage ? 'base image' : 'creative shell'}</span>
+              </div>
+              <div class="player-img-wrap segmented-preview">
+                <img class="player-img" src="${variant.url}" alt="Creatividad ${variant.label}" data-pixer-title="${escAttr(variant.title)}">
+              </div>
+              <div class="segmented-variant-meta">${(variant.headline + ' · ' + variant.offer).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+              <div class="target-prompt-hint" title="Prompt optimizado para modelos de imagen/video">📋 Prompt IA listo</div>
+            </article>
+          `).join('')}
+        </div>
+        <pre class="player-body">${JSON.stringify(plan, null, 2).replace(/</g,'&lt;')}</pre>
+        <small class="player-foot">// Variantes generadas para targets definidos (género + edad + persona). Haz clic en una para activar. Copia los prompts para usar en /crear/ (formato Marketing) o modelos externos.</small>
+      </div>`);
+
+    document.querySelectorAll('[data-target-id]').forEach((card) => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('[data-target-id]').forEach((node) => node.classList.remove('selected'));
+        card.classList.add('selected');
+        // Activar señal simulada correspondiente (para live mode)
+        const id = card.dataset.targetId;
+        // Buscar el target y simular segment aproximado
+        const t = targets.find(x => x.id === id) || {};
+        const seg = t.gender === 'hombre' ? 'male' : t.gender === 'mujer' ? 'female' : 'neutral';
+        setAudienceSegment(seg, { source: ad.source || 'Target batch', autoplay: false });
+      });
+    });
+  }
+
+  function bindSegmentedAds() {
+    if (document.body.dataset.page !== 'publicidad') return;
+    bindPublicidadImageUpload();
+    bindPublicidadTargets();
+    const params = new URLSearchParams(location.search);
+    const incoming = params.get('segment') || params.get('audience');
+    if (incoming) {
+      setAudienceSegment(incoming, {
+        confidence: params.get('confidence') || undefined,
+        source: params.get('source') || 'XpaceOS URL signal',
+      });
+    }
+    document.querySelectorAll('[data-ad-segment]').forEach((button) => {
+      button.addEventListener('click', () => setAudienceSegment(button.dataset.adSegment, { source: 'Manual operator' }));
+    });
+    document.getElementById('adSimulatePass')?.addEventListener('click', () => {
+      const seq = ['male', 'female', 'neutral'];
+      const current = currentAdData().ad.segment;
+      const next = seq[(seq.indexOf(current) + 1) % seq.length] || 'neutral';
+      setAudienceSegment(next, { confidence: (0.68 + Math.random() * 0.24).toFixed(2), source: 'Simulador local', autoplay: true });
+    });
+    window.ADMIRA_SEGMENTED_AD = {
+      setAudience: ({ segment, confidence, source, autoplay } = {}) => setAudienceSegment(segment, { confidence, source: source || 'XpaceOS LiveCam', autoplay: autoplay !== false }),
+      render: playPublicidad,
+    };
+    window.addEventListener('message', (event) => {
+      const data = event.data || {};
+      if (data.type === 'xpaceos:audience-segment') {
+        setAudienceSegment(data.segment, { confidence: data.confidence, source: data.source || 'XpaceOS LiveCam', autoplay: data.autoplay !== false });
+      }
+    });
+    try {
+      const bc = new BroadcastChannel('xpaceos-audience');
+      bc.addEventListener('message', (event) => {
+        const data = event.data || {};
+        if (data.segment) setAudienceSegment(data.segment, { confidence: data.confidence, source: data.source || 'XpaceOS LiveCam', autoplay: data.autoplay !== false });
+      });
+    } catch {}
+    bindAdmiraCampaign();
+    updateSegmentedAdUi();
+  }
+
+  // === CREAR CAMPAÑA · handoff desde admira.app (fase 2) ===
+  // admira.app abre publicidad.html?from=admira&product=&segmentation=&combos=
+  // → construimos UN target por cada combinación de los criterios del circuito
+  // y, al generar, sacamos UNA versión IA por target, publicada al Stock
+  // etiquetada por su segmento (audience/edad/franja/emplazamiento).
+  const ADM_AGE_TO_BAND = { nino:'18-24', joven:'18-24', adulto:'35-44', senior:'55+', vejez:'55+' };
+  // Dimensiones que generan versiones (mismo orden que admira.app): género × edad × franja × contexto.
+  const ADM_DIM_ORDER = ['genders','ages','temporales','contextuales','timeSlots','placements'];
+  const ADM_LABELS = {
+    genders:{hombre:'Hombre',mujer:'Mujer'}, ages:{nino:'Niño',joven:'Joven',adulto:'Adulto',senior:'Senior',vejez:'Vejez'},
+    temporales:{manana:'Mañana',tarde:'Tarde',noche:'Noche'}, contextuales:{exterior:'Exterior',interior:'Interior'},
+    timeSlots:{manana:'Mañana',mediodia:'Mediodía',tarde:'Tarde',noche:'Noche'}, placements:{exterior:'Exterior',interior:'Interior'},
+  };
+  // Tipología + Data-Driven = CONTEXTO compartido (no multiplica): enriquece prompt y tags.
+  const ADM_CTX_LABELS = {
+    tipologia:{supermercados:'supermercados',estancos:'estancos',bancos:'bancos',gimnasios:'gimnasios',mupi:'MUPI',correos:'Correos',transporte:'transporte',retail:'retail',moda:'moda'},
+    datadriven:{clima:'clima',trafico:'tráfico',moviles:'móviles',inventario:'inventario de tienda'},
+  };
+  function admCombos(seg) {
+    const dims = ADM_DIM_ORDER.map(k => [k, Array.isArray(seg && seg[k]) ? seg[k] : []]).filter(([, v]) => v.length);
+    let combos = [{}];
+    dims.forEach(([k, vals]) => { const n = []; combos.forEach(c => vals.forEach(v => n.push({ ...c, [k]: v }))); combos = n; });
+    return combos;
+  }
+  function admComboLabel(c) {
+    return ADM_DIM_ORDER.filter(k => c[k]).map(k => (ADM_LABELS[k] && ADM_LABELS[k][c[k]]) || c[k]).join(' · ');
+  }
+  // Extrae el contexto (tipología/data-driven/hora/pases) del parámetro ?content=.
+  function admContext(content) {
+    const arr = k => Array.isArray(content && content[k]) ? content[k] : [];
+    const tipologia = arr('tipologia').map(v => ADM_CTX_LABELS.tipologia[v] || v);
+    const datadriven = arr('datadriven').map(v => ADM_CTX_LABELS.datadriven[v] || v);
+    const phrases = [];
+    if (tipologia.length) phrases.push(`pensado para puntos de ${tipologia.join(', ')}`);
+    if (datadriven.length) phrases.push(`con creatividad sensible a ${datadriven.join(', ')}`);
+    return { tipologia, datadriven, hora: (content && content.hora) || '', pases: (content && content.pases) || '', promptSuffix: phrases.join('; '), tags: [...tipologia, ...datadriven] };
+  }
+  function bindAdmiraCampaign() {
+    const params = new URLSearchParams(location.search);
+    if (params.get('from') !== 'admira') return;
+    let seg = {}; try { seg = JSON.parse(params.get('segmentation') || '{}'); } catch {}
+    let content = {}; try { content = JSON.parse(params.get('content') || '{}'); } catch {}
+    const ctx = admContext(content);
+    const product = (params.get('product') || '').trim();
+    const combos = admCombos(seg);
+    if (!product || !combos.length) return;
+    // Construir targets desde los combos y persistirlos. La franja sale de
+    // `temporales` (nuevo panel) o `timeSlots` (legado); el contexto, de `contextuales`/`placements`.
+    const targets = combos.map((c, i) => {
+      const timeSlot = c.temporales || c.timeSlots || '';
+      const placement = c.contextuales || c.placements || '';
+      return {
+        id: 'adm-' + i,
+        gender: c.genders || 'todos',
+        ageBand: ADM_AGE_TO_BAND[c.ages] || 'todos',
+        persona: [timeSlot && (ADM_LABELS.temporales[timeSlot] || ADM_LABELS.timeSlots[timeSlot]), placement && (ADM_LABELS.contextuales[placement] || ADM_LABELS.placements[placement])].filter(Boolean).join(' · '),
+        label: admComboLabel(c),
+        offer: product,
+        _seg: { audience: c.genders === 'hombre' ? 'm' : c.genders === 'mujer' ? 'f' : 'all', age: c.ages || '', timeSlot, placement },
+        _ctx: ctx,
+      };
+    });
+    const store = loadStore();
+    store.publicidad = { ...(store.publicidad || {}), targets, campaign: params.get('campaign') || product, product, mode: 'campaign', context: ctx };
+    saveStore(store);
+    const ctxLine = [ctx.tipologia.join(', '), ctx.datadriven.join(', '), ctx.hora && ('hora ' + ctx.hora), ctx.pases && (ctx.pases + ' pases')].filter(Boolean).join(' · ');
+    if (typeof renderTargetsList === 'function') renderTargetsList();
+    // Banner + botón de generación batch
+    const host = document.querySelector('.segmented-layout') || document.querySelector('main') || document.body;
+    let banner = document.getElementById('admCampaignBanner');
+    if (!banner) { banner = document.createElement('div'); banner.id = 'admCampaignBanner'; host.insertBefore(banner, host.firstChild); }
+    banner.style.cssText = 'background:linear-gradient(90deg,rgba(120,243,255,.1),rgba(255,216,102,.08));border:1px solid rgba(120,243,255,.35);border-radius:10px;padding:12px 14px;margin:0 0 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap';
+    banner.innerHTML = `<div><b style="color:#ffd866">Campaña desde Admira:</b> ${product} · <b>${combos.length}</b> versiones (una por segmento del circuito)${ctxLine ? `<div style="font-size:11.5px;color:#9ad8ff;margin-top:3px">Contexto en todas: <span style="color:#ffd866">${ctxLine}</span></div>` : ''}</div>
+      <button type="button" id="admGenBtn" class="btn play" style="white-space:nowrap">✨ GENERAR ${combos.length} VERSIONES → STOCK</button>
+      <div id="admGenProgress" style="flex-basis:100%;font-size:12px;color:#9effa0"></div>`;
+    document.getElementById('admGenBtn').addEventListener('click', () => generateAdmiraCampaign(targets, store.publicidad.campaign));
+  }
+  async function generateAdmiraCampaign(targets, campaign) {
+    const btn = document.getElementById('admGenBtn');
+    const prog = document.getElementById('admGenProgress');
+    if (btn) { btn.disabled = true; }
+    let ok = 0, fail = 0, lastErr = '';
+    for (let i = 0; i < targets.length; i++) {
+      const t = targets[i];
+      if (prog) prog.textContent = `Generando ${i + 1}/${targets.length} · ${t.label}…  (✓${ok} ✗${fail})`;
+      const ctxSuffix = (t._ctx && t._ctx.promptSuffix) ? ' ' + t._ctx.promptSuffix.charAt(0).toUpperCase() + t._ctx.promptSuffix.slice(1) + '.' : '';
+      const prompt = `Anuncio publicitario de ${t.offer} dirigido a: ${t.label}.${ctxSuffix} Estilo retail premium, composición limpia, llamada a la acción clara, alta calidad fotográfica, sin texto ilegible.`;
+      try {
+        const r = await fetch(XAI_WORKER_URL + '/xai/image', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt, model: 'grok-imagine-image', b64: true }),
+        });
+        const d = await r.json().catch(() => ({}));
+        // /xai/image (grok-imagine) responde { data:[{ b64_json, mime }] }
+        const first = d && d.data && d.data[0];
+        const b64 = first && first.b64_json;
+        if (!r.ok || !b64) throw new Error((d && d.error && (d.error.message || JSON.stringify(d.error))) || 'sin imagen');
+        const imgMime = (first && first.mime) || 'image/jpeg';
+        const pr = await fetch(STOCK_PUBLISH_URL, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'image', motor: 'Admira Studio · Campaña segmentada', prompt,
+            title: `${t.offer} · ${t.label}`, mime: imgMime, base64: b64,
+            tags: ['campaña', t.offer, t._seg.audience, t._seg.age, t._seg.timeSlot, t._seg.placement, ...((t._ctx && t._ctx.tags) || [])].filter(Boolean),
+            audience: t._seg.audience,
+            segmentation: { audiences: [t._seg.audience], ageBuckets: [t._seg.age].filter(Boolean), timeSlots: [t._seg.timeSlot].filter(Boolean), typologies: [t._seg.placement, ...((t._ctx && t._ctx.tipologia) || [])].filter(Boolean), dataSignals: ((t._ctx && t._ctx.datadriven) || []) },
+            campaign,
+          }),
+        });
+        const pj = await pr.json().catch(() => ({}));
+        if (pj.ok) ok++; else { fail++; if (!lastErr) lastErr = 'publish: ' + (pj.error || pr.status); }
+      } catch (e) { fail++; if (!lastErr) lastErr = String(e.message || e); }
+    }
+    if (prog) prog.textContent = (ok ? '✅' : '⚠️') + ` Campaña: ${ok} versiones en el Stock` + (fail ? ` · ${fail} fallidas` : '') + (fail && lastErr ? ` (${lastErr.slice(0, 90)})` : '') + (ok ? '. Vuelve a admira.app para venderlas por segmento.' : '');
+    if (btn) btn.disabled = false;
+    if (typeof showToast === 'function') showToast(`${ok} versiones publicadas al Stock`);
+  }
+
+  // === UI para Targets (nuevo modelo de Publicidad con Target) ===
+  function renderTargetsList() {
+    const container = document.getElementById('targetsList');
+    if (!container) return;
+    const { ad } = currentAdData();
+    const targets = ad.targets || [];
+
+    if (targets.length === 0) {
+      container.innerHTML = `<div style="opacity:.6;font-size:12px;padding:6px 8px;border:1px dashed var(--line);">Sin targets definidos. Usa los presets rápidos o "+ Añadir target". Se generarán variantes para cada uno.</div>`;
+      return;
+    }
+
+    container.innerHTML = targets.map((t, idx) => `
+      <div class="target-card" data-tid="${t.id}">
+        <header>
+          <span>${t.label || getTargetLabel(t)}</span>
+          <button type="button" class="btn-mini danger" data-del="${t.id}">✕</button>
+        </header>
+        <div class="t-meta">
+          <select data-tid="${t.id}" data-field="gender">
+            ${GENDERS.map(g => `<option value="${g}" ${t.gender===g?'selected':''}>${g}</option>`).join('')}
+          </select>
+          <select data-tid="${t.id}" data-field="ageBand">
+            ${AGE_BANDS.map(a => `<option value="${a}" ${t.ageBand===a?'selected':''}>${a}</option>`).join('')}
+          </select>
+        </div>
+        <div class="t-row">
+          <input data-tid="${t.id}" data-field="persona" placeholder="persona / interés" value="${t.persona || ''}" />
+          <input data-tid="${t.id}" data-field="label" placeholder="etiqueta" value="${t.label || ''}" />
+        </div>
+        <div class="t-row">
+          <input data-tid="${t.id}" data-field="offer" placeholder="oferta específica" value="${t.offer || ''}" style="grid-column:1/-1" />
+        </div>
+        <div class="t-actions">
+          <button type="button" class="btn-mini" data-apply="${t.id}">Aplicar señal</button>
+        </div>
+      </div>
+    `).join('');
+
+    // Wire events for this render
+    container.querySelectorAll('select, input').forEach(el => {
+      el.addEventListener('change', (e) => {
+        const tid = el.dataset.tid;
+        const field = el.dataset.field;
+        const { store, ad: curAd } = currentAdData();
+        const ts = (curAd.targets || []).map(tt => tt.id === tid ? { ...tt, [field]: el.value } : tt);
+        store.publicidad = { ...(store.publicidad || {}), targets: ts };
+        saveStore(store);
+        // re-render to keep in sync
+        renderTargetsList();
+      });
+    });
+
+    container.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tid = btn.dataset.del;
+        const { store, ad: curAd } = currentAdData();
+        const ts = (curAd.targets || []).filter(tt => tt.id !== tid);
+        store.publicidad = { ...(store.publicidad || {}), targets: ts };
+        saveStore(store);
+        renderTargetsList();
+      });
+    });
+
+    container.querySelectorAll('[data-apply]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tid = btn.dataset.apply;
+        const { ad: curAd } = currentAdData();
+        const t = (curAd.targets || []).find(tt => tt.id === tid);
+        if (!t) return;
+        const seg = t.gender === 'hombre' ? 'male' : t.gender === 'mujer' ? 'female' : 'neutral';
+        setAudienceSegment(seg, { source: 'Target selector', autoplay: false });
+      });
+    });
+  }
+
+  function addTargetFromPreset(preset) {
+    const { store, ad: curAd } = currentAdData();
+    const t = makeTarget(preset);
+    const existing = curAd.targets || [];
+    store.publicidad = { ...(store.publicidad || {}), targets: [...existing, t] };
+    saveStore(store);
+    renderTargetsList();
+  }
+
+  function addEmptyTarget() {
+    const { store, ad: curAd } = currentAdData();
+    const t = makeTarget({ gender: 'todos', ageBand: 'todos', persona: '', label: 'Nuevo target' });
+    const existing = curAd.targets || [];
+    store.publicidad = { ...(store.publicidad || {}), targets: [...existing, t] };
+    saveStore(store);
+    renderTargetsList();
+  }
+
+  function bindPublicidadTargets() {
+    if (document.body.dataset.page !== 'publicidad') return;
+
+    // Seed demo targets on first visit to the publicidad page (great onboarding for "creación con Target")
+    const store = loadStore();
+    if (!store.publicidad || !Array.isArray(store.publicidad.targets) || store.publicidad.targets.length === 0) {
+      store.publicidad = {
+        ...(store.publicidad || DEFAULTS.publicidad),
+        targets: [
+          makeTarget({ gender: 'hombre', ageBand: '25-34', persona: 'tech-urbano', label: 'Hombres 25-34 Tech' }),
+          makeTarget({ gender: 'mujer', ageBand: '25-34', persona: 'profesional', label: 'Mujeres 25-34 Profesional' }),
+          makeTarget({ gender: 'todos', ageBand: '18-24', persona: 'joven', label: 'Jóvenes 18-24 Unisex' }),
+        ],
+        mode: 'batch',
+      };
+      saveStore(store);
+    }
+
+    // Render presets
+    const presetsWrap = document.getElementById('targetPresets');
+    if (presetsWrap) {
+      presetsWrap.innerHTML = TARGET_PRESETS.map((p, i) => `
+        <button type="button" class="btn" data-preset="${i}" style="padding:3px 8px;font-size:11px">${p.label}</button>
+      `).join('');
+      presetsWrap.querySelectorAll('[data-preset]').forEach(b => {
+        b.addEventListener('click', () => {
+          const idx = parseInt(b.dataset.preset, 10);
+          addTargetFromPreset(TARGET_PRESETS[idx]);
+        });
+      });
+    }
+
+    // Main add button (there may be two)
+    const addBtns = [document.getElementById('addTargetBtn'), document.getElementById('addTargetBtn2')].filter(Boolean);
+    addBtns.forEach(btn => btn.addEventListener('click', addEmptyTarget));
+
+    // Initial render
+    renderTargetsList();
+
+    // Re-render when store changes from other parts
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) renderTargetsList();
+    });
+  }
+
   function bindPlay(page) {
     const btn = document.getElementById('playOutput');
     if (!btn) return;
@@ -1551,6 +2420,7 @@
       imagenes: playImagenes,
       video: playVideo,
       plataforma: playPlataforma,
+      publicidad: playPublicidad,
     };
     const fn = map[page];
     if (!fn) { btn.hidden = true; return; }
@@ -1560,6 +2430,7 @@
       imagenes: '✨ GENERAR OTRA',
       video: '▶ REPRODUCIR DE NUEVO',
       plataforma: '▶ REPRODUCIR TODO DE NUEVO',
+      publicidad: '✨ REGENERAR ANUNCIO',
     };
     btn.addEventListener('click', () => {
       fn();
@@ -1625,6 +2496,38 @@
   async function publishToStock(meta, btn) {
     if (btn) { btn.disabled = true; btn.dataset.origLabel = btn.textContent; btn.textContent = '⏳ subiendo...'; }
     try {
+      // Imágenes con URL externa (Nano Banana): captura el <img> ya mostrado a
+      // base64 (CORS-safe) → evita el re-fetch servidor (referer) y la
+      // re-generación no determinista. Publica EXACTAMENTE lo que se ve.
+      if (btn && (meta.type === 'image' || meta.type === 'imagen') && meta.url
+          && !meta.url.startsWith('data:') && !meta.url.startsWith('blob:')) {
+        const card = btn.closest('.player-card, .compare-cell');
+        const imgEl = card && card.querySelector('img.player-img, .compare-cell-img img, img');
+        if (imgEl && imgEl.naturalWidth) {
+          try {
+            const cv = document.createElement('canvas');
+            cv.width = imgEl.naturalWidth; cv.height = imgEl.naturalHeight;
+            cv.getContext('2d').drawImage(imgEl, 0, 0);
+            meta = Object.assign({}, meta, { url: cv.toDataURL('image/png'), mime: 'image/png' });
+          } catch (_) { /* canvas tainted → seguirá por sourceUrl */ }
+        }
+      }
+      // Música Suno: la URL del botón puede ser la de streaming (audiopipe, NO
+      // descargable por el worker). Re-resolvemos a la URL final (cdn) por el id
+      // del clip, esperando a que esté "complete" si hace falta.
+      if (meta.type === 'music' && meta.clipId && (!meta.url || /audiopipe\.suno/.test(meta.url) || /streaming/.test(meta.url))) {
+        for (let i = 0; i < 12; i++) {
+          try {
+            const sr = await fetch(SUNO_LOCAL_URL + '/status?ids=' + encodeURIComponent(meta.clipId));
+            const arr = await sr.json();
+            const c = Array.isArray(arr) ? arr.find(x => x.id === meta.clipId) : null;
+            const fin = c && (c.video_url || (c.audio_url && /cdn\d?\.suno|\.mp3/.test(c.audio_url)));
+            if (fin) { meta = Object.assign({}, meta, { url: c.video_url || c.audio_url, mime: c.video_url ? 'video/mp4' : 'audio/mpeg' }); break; }
+          } catch (_) {}
+          if (btn) btn.textContent = '⏳ esperando render… ' + (i + 1);
+          await new Promise(r => setTimeout(r, 4000));
+        }
+      }
       const payload = {
         type: meta.type,
         motor: meta.motor,
@@ -1726,7 +2629,7 @@
     }
     core = String(core).replace(/\s+/g, ' ').trim().slice(0, 60);
     // Separador "//" (mismo que el header del overlay Pixer Feed) en lugar de "·"
-    // para que el item se lea como marca + descripcion: "AdmiraNext // una moto Top Gun"
+    // para que el item se lea como marca + descripcion: "Admira Studio // una moto Top Gun"
     if (cliente && core) return `${cliente} // ${core}`;
     return core || cliente || section;
   }
@@ -1750,12 +2653,21 @@
     const seedSrc = String((s.uso || '') + (s.tonalidad || '') + ((store && store.cliente) || '') || 'pixer');
     let seed = 0;
     for (let i = 0; i < seedSrc.length; i++) seed = (seed * 31 + seedSrc.charCodeAt(i)) >>> 0;
-    return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=512&height=512&seed=${seed % 100000}&nologo=true`;
+    return genFluxUrl(prompt, 512, 512);
   }
 
   function detectLatestAsset() {
     const player = document.getElementById('player');
     if (!player || player.hidden) return null;
+    const selectedVariantImg = player.querySelector('.segmented-variant.selected img[src]');
+    if (selectedVariantImg) {
+      return {
+        kind: 'image',
+        src: selectedVariantImg.getAttribute('src') || selectedVariantImg.src,
+        title: (selectedVariantImg.dataset && selectedVariantImg.dataset.pixerTitle) || '',
+        cover: (selectedVariantImg.dataset && selectedVariantImg.dataset.pixerCover) || '',
+      };
+    }
     // Compare grid: si el usuario marcó una celda como seleccionada
     // (.compare-cell.selected), la imagen de esa celda gana sobre el resto.
     // Por defecto auto-selecciona la primera tras la generacion (compareSelectedImages).
@@ -1963,7 +2875,7 @@
     if (!el) return;
     el.style.cursor = 'pointer';
     el.addEventListener('click', () => {
-      window.open('../signage.html', '_blank');
+      window.open('signage.html', '_blank');
     });
     refreshXtoreStatus();
     setInterval(refreshXtoreStatus, 10000);
@@ -1996,14 +2908,24 @@
       jobBase: 'https://macmini.tail48b61c.ts.net/admira/tube',
       bodyFor: (u, fmt) => ({ url: u, format: fmt }),
     };
-    return isLocalOrigin ? [sunoLocal, admiraTube] : [admiraTube];
+    // Backup/failover: si el Mac Mini no responde al health-check, pickHealthyEndpoint()
+    // cae automáticamente a este nodo (MacBook Pro 16) expuesto por su propio Funnel.
+    const admiraTubeBackup = {
+      kind: 'admira-tube-backup',
+      url: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube/download',
+      healthUrl: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube/health',
+      jobBase: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube',
+      bodyFor: (u, fmt) => ({ url: u, format: fmt }),
+    };
+    return isLocalOrigin ? [sunoLocal, admiraTube, admiraTubeBackup] : [admiraTube, admiraTubeBackup];
   }
 
   function bindImportModal() {
     const dlg = document.getElementById('importModal');
-    const open = document.getElementById('openImport');
-    if (!dlg || !open) return;
-    open.addEventListener('click', () => {
+    if (!dlg) return;
+    // Abridor del modal: cualquier botón #openImport o .js-open-import (hay uno
+    // en el paginado de arriba y otro en el de abajo del Stock).
+    const openFn = () => {
       const stat = document.getElementById('importStatus');
       if (stat) { stat.style.display = 'none'; stat.textContent = ''; }
       const progressWrap = document.getElementById('importProgress');
@@ -2015,7 +2937,10 @@
       const rb = document.getElementById('retryImport');
       if (rb) rb.hidden = true;
       dlg.showModal();
-    });
+    };
+    const openers = [document.getElementById('openImport'), ...document.querySelectorAll('.js-open-import')]
+      .filter((el, i, a) => el && a.indexOf(el) === i);
+    openers.forEach(o => o.addEventListener('click', openFn));
     document.getElementById('closeImport')?.addEventListener('click', () => dlg.close());
     // Helpers para la barra de progreso del modal
     function importProgressStart(fmt) {
@@ -2108,6 +3033,80 @@
     retryBtn.textContent = '↻ Reintentar';
     retryBtn.hidden = true;
     document.querySelector('#importModal .keys-actions')?.appendChild(retryBtn);
+
+    // Plan B (fallback degradado): subir un archivo local directo al Stock.
+    // El Stock (worker pixer-eleven en Cloudflare) está siempre encendido, así que
+    // esto funciona aunque el Mac Mini (importador yt-dlp) esté dormido o apagado.
+    const localInput = document.createElement('input');
+    localInput.type = 'file';
+    localInput.accept = 'audio/*,video/*,image/*';
+    localInput.hidden = true;
+    localInput.id = 'importLocalFile';
+    dlg.appendChild(localInput);
+    const localBtn = document.createElement('button');
+    localBtn.type = 'button';
+    localBtn.className = 'btn';
+    localBtn.id = 'importLocalBtn';
+    localBtn.textContent = '📂 Archivo local → Stock';
+    localBtn.title = 'Sube un archivo desde este dispositivo directo al Stock (no depende del Mac Mini)';
+    document.querySelector('#importModal .keys-actions')?.appendChild(localBtn);
+    localBtn.addEventListener('click', () => localInput.click());
+    localInput.addEventListener('change', () => {
+      const file = localInput.files && localInput.files[0];
+      if (file) publishLocalFile(file);
+      localInput.value = '';
+    });
+
+    // Publica un archivo del dispositivo directo al Stock, sin pasar por el Mac.
+    async function publishLocalFile(file) {
+      if (importInFlight) return;
+      const stat = document.getElementById('importStatus');
+      stat.style.display = 'block';
+      retryBtn.hidden = true;
+      importInFlight = true;
+      const mt = file.type || '';
+      const type = mt.startsWith('video') ? 'video' : mt.startsWith('image') ? 'image' : 'audio';
+      const progress = importProgressStart(type === 'video' ? 'video' : 'audio');
+      try {
+        const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+        stat.textContent = `// archivo local: ${file.name} · ${sizeMB} MB · subiendo al Stock…`;
+        const dataUrl = await new Promise((res, rej) => {
+          const fr = new FileReader();
+          fr.onload = () => res(fr.result);
+          fr.onerror = () => rej(fr.error || new Error('no se pudo leer el archivo'));
+          fr.readAsDataURL(file);
+        });
+        const comment = (document.getElementById('import-comment')?.value || '').trim();
+        const meta = {
+          type, motor: 'local',
+          prompt: file.name,
+          title: file.name.replace(/\.[^.]+$/, ''),
+          comment: comment || null,
+          costEst: `local · ${sizeMB}MB`,
+          url: dataUrl,
+          mime: mt || null,
+        };
+        const result = await publishToStock(meta, null);
+        if (result && result.ok) {
+          progress?.done(file.size, 0);
+          stat.textContent = `✓ ${file.name} · ✅ en Stock · saltando…`;
+          const newId = result.id || '';
+          setTimeout(() => {
+            try { dlg.close(); } catch {}
+            location.href = 'https://www.admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
+          }, 900);
+        } else {
+          progress?.error('fallo al publicar');
+          stat.textContent = `❌ Stock: ${(result && result.error || 'fallo').slice(0, 140)}`;
+        }
+      } catch (e) {
+        const msg = String(e && e.message || e);
+        progress?.error(msg.slice(0, 80));
+        stat.textContent = `// ERROR archivo local: ${msg}`;
+      } finally {
+        importInFlight = false;
+      }
+    }
 
     // Pre-chequeo de salud del backend (rápido, abortable). true = responde.
     async function importHealthOk(ep, ms = 4500) {
@@ -2202,12 +3201,12 @@
         // 1) Pre-chequeo: ¿hay backend vivo? Evita esperar a un timeout largo.
         const ep = await pickHealthyEndpoint(stat);
         if (!ep) {
-          stat.textContent = `// El proxy de importación no responde (ningún backend sano).\n`
-            + `// admira-tube (Funnel) caído. En el Mac Mini:\n`
-            + `//   cd ~/GitHub/01.-AdmiraXperience-Game && ./start-admira-tube.sh\n`
-            + `// suno-local (solo en local):\n`
-            + `//   cd ~/Documents/New\\ project/csilvasantin-repos/suno-local && node server.js`;
+          stat.textContent = `// El importador (Mac Mini) está dormido o apagado ahora mismo.\n`
+            + `// PLAN B: pulsa «📂 Archivo local → Stock» para subir un archivo\n`
+            + `//   desde este dispositivo directo al Stock (funciona sin el Mac).\n`
+            + `// O reintenta (↻) en unos segundos por si el Mac despierta.`;
           retryBtn.hidden = false;
+          try { localBtn.focus(); } catch {}
           return;
         }
 
@@ -2264,7 +3263,7 @@
             const newId = result.id || '';
             setTimeout(() => {
               try { dlg.close(); } catch {}
-              const target = 'https://admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
+              const target = 'https://www.admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
               location.href = target;
             }, 900);
           } else {
@@ -2322,12 +3321,14 @@
         musica: ['musica'],
         imagenes: ['imagenes'],
         video: ['video'],
+        publicidad: ['publicidad'],
         plataforma: ['audio', 'musica', 'imagenes', 'video'],
       };
       const scope = scopeMap[page] || null;
       if (out) bindBriefActions(out, scope);
       bindPlay(page);
       bindGenLyrics();
+      bindSegmentedAds();
       bindSendToAdmiraXP();
 
       const demoBtn = document.getElementById('loadDemo');
