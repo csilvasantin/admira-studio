@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admira Studio · MCP — la capa Crear</title>
+<meta name="description" content="Hub MCP de admira.studio, la capa Crear del ecosistema AdmiraNeXT (gemelo de pixeria): generación de contenido con IA — ideas, imágenes, audio, vídeo, avatares y campañas. Para silicio y carbono.">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<style>
+  :root{ --bg:#0a0712; --panel:#160e22; --line:#2a1d3a; --txt:#f1e9f7; --mut:#9a8ca8; --acc:#c084fc; --pur:#34d0c0; --good:#3ddc84; }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:radial-gradient(1100px 560px at 50% -10%,#1c1030,var(--bg));color:var(--txt);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;min-height:100%}
+  .wrap{max-width:820px;margin:0 auto;padding:48px 22px 80px}
+  .kick{font:600 12px/1 ui-monospace,Menlo,monospace;letter-spacing:3px;text-transform:uppercase;color:var(--mut)}
+  h1{font-size:34px;margin:10px 0 6px;font-weight:680;letter-spacing:-.02em}
+  h1 b{background:linear-gradient(90deg,var(--acc),var(--pur));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lead{color:var(--mut);font-size:16px;margin:0 0 28px;max-width:62ch}
+  .status{display:inline-flex;align-items:center;gap:8px;font:600 12px/1 ui-monospace,Menlo,monospace;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:7px 13px;margin-bottom:30px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 10px var(--good)}
+  h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc);margin:36px 0 14px;font-family:ui-monospace,Menlo,monospace}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px}
+  code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  pre{background:#120a1c;border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow:auto;font-size:13px;color:#e6cffa;margin:0}
+  .tool{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .tool:last-child{border-bottom:0}
+  .tool b{font-family:ui-monospace,Menlo,monospace;color:var(--acc);font-size:14px;align-self:start}
+  .tool span{color:var(--mut);font-size:14px}
+  .tool a{color:var(--txt);text-decoration:none}
+  .tool a:hover{color:var(--acc)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:620px){.two{grid-template-columns:1fr}}
+  .pill{display:inline-block;font:600 11px ui-monospace,Menlo,monospace;color:var(--pur);border:1px solid rgba(52,208,192,.4);border-radius:6px;padding:2px 8px;margin-right:6px}
+  a{color:var(--acc)}
+  footer{color:var(--mut);font-size:13px;margin-top:40px;border-top:1px solid var(--line);padding-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kick">admira.studio · Model Context Protocol</div>
+  <h1>La capa <b>Crear</b> de la red</h1>
+  <p class="lead">admira.studio es la fábrica de contenido del ecosistema AdmiraNeXT (gemelo de <a href="https://www.pixeria.com">pixeria.com</a>): de una idea a piezas listas para emitir — imagen, vídeo, audio, avatar — y a campañas distribuibles por circuitos. Para <b>agentes (silicio)</b> y <b>personas (carbono)</b>.</p>
+
+  <div class="status"><span class="dot"></span><span>capa Crear · hub MCP &amp; federación</span></div>
+
+  <h2>Tres verbos, una red</h2>
+  <div class="card">
+    <div class="tool"><b>Crear</b><span><a href="https://www.admira.studio">admira.studio</a> — generar contenido con IA y montar campañas (esta pata).</span></div>
+    <div class="tool"><b>Operar</b><span><a href="https://www.xpaceos.com">xpaceos.com</a> — el OS de la flota: pantallas, robots, emisión y audiencia.</span></div>
+    <div class="tool"><b>Emitir</b><span><a href="https://admira.tv">admira.tv</a> — el canal que reproduce en las pantallas.</span></div>
+  </div>
+
+  <h2>Superficies de creación</h2>
+  <div class="card">
+    <div class="tool"><b>idea</b><span><a href="https://www.admira.studio/idea.html">idea.html</a> — de brief a concepto creativo.</span></div>
+    <div class="tool"><b>imágenes</b><span><a href="https://www.admira.studio/imagenes.html">imagenes.html</a> — generación de imágenes para pantalla.</span></div>
+    <div class="tool"><b>audio</b><span><a href="https://www.admira.studio/audio.html">audio.html</a> — locución y pistas de audio.</span></div>
+    <div class="tool"><b>avatar</b><span><a href="https://www.admira.studio/avatar.html">avatar.html</a> — avatares que hablan (facecap + visemas).</span></div>
+    <div class="tool"><b>campaña</b><span><a href="https://www.admira.studio/crear-campana/">crear-campana/</a> — monta una campaña y la asigna a circuitos.</span></div>
+  </div>
+
+  <h2>Operar la red (servidor MCP real)</h2>
+  <p style="color:var(--mut);font-size:13.5px;margin:0 0 12px;max-width:64ch">La capa Crear no expone aún servidor MCP propio (se crea por la web). Para operar la red — flota, emisión, audiencia — el ecosistema expone un servidor MCP real bajo <span class="pill">mcp.admira.store</span>:</p>
+  <div class="two">
+    <div>
+      <p style="color:var(--mut);font-size:13.5px;margin:0 0 8px">Config de cliente:</p>
+      <pre>{
+  "mcpServers": {
+    "xpaceos": {
+      "url": "https://mcp.admira.store/mcp"
+    }
+  }
+}</pre>
+    </div>
+    <div>
+      <p style="color:var(--mut);font-size:13.5px;margin:0 0 8px">Prueba rápida (tools/list):</p>
+      <pre>curl -s https://mcp.admira.store/mcp \
+ -H "Content-Type: application/json" \
+ -d '{"jsonrpc":"2.0","id":1,
+      "method":"tools/list"}'</pre>
+    </div>
+  </div>
+
+  <footer>
+    admira.studio · capa Crear de AdmiraNeXT · gemelo de <a href="https://www.pixeria.com">pixeria.com</a>.<br>
+    Federación /mcp/: <a href="https://www.admira.store/mcp/">store</a> · <a href="https://www.xpaceos.com/mcp/">xpaceos</a> · <a href="https://www.admira.app/mcp/">admira.app</a> · <a href="https://www.clearchannel.tv/mcp/">clearchannel.tv</a> · <a href="https://www.admira.live/mcp/">consejo</a>.
+  </footer>
+</div>
+</body>
+</html>
