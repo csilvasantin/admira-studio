@@ -1,61 +1,91 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script src="/gate.js"></script>
+  <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
+       Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
+       login con Google + misma whitelist de usuarios (worker admira-whitelist). Verja ACTIVA
+       por defecto. ?gate=off es un escape SOLO para esa carga (no persiste), por si el login
+       falla. Mientras esté cerrado: meta noindex + robots.txt Disallow.
+       PARA REABRIR EL SITIO EL DÍA DEL LANZAMIENTO: borrar TODO este bloque (marcadores
+       GATE-INICIO … GATE-FIN) de cada .html, restaurar robots.public.txt → robots.txt y
+       borrar /auth-gate.js. Ver checklist en el PR de la verja. -->
+  <!-- GATE-INICIO -->
+  <meta name="robots" content="noindex, nofollow">
+  <script>
+  (function(){
+    var GATE_DEFAULT = 'on';                       // verja activa — sitio cerrado
+    var on = GATE_DEFAULT;
+    try{
+      var q = new URLSearchParams(location.search).get('gate');
+      if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
+    }catch(e){}
+    if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
+    var s=document.createElement('script'); s.src='/auth-gate.js';
+    (document.head||document.documentElement).appendChild(s);
+    // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
+    // origen aún no esté autorizado en Google → mensaje claro en pantalla.
+    setTimeout(function(){
+      if(!document.documentElement.classList.contains('gate-locked')) return;
+      var el=document.getElementById('admira-err');
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+    }, 10000);
+  })();
+  </script>
+  <!-- GATE-FIN -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://www.admira.studio/imagenes.html">
+  <link rel="alternate" hreflang="es" href="https://www.admira.studio/imagenes.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/imagenes.html">
+  <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/imagenes.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio · Imagenes</title>
+  <title>Admira Studio Studio · Imágenes</title>
   <meta name="description" content="Brief operativo de Imágenes: visuales, assets y mundos de marca para Admira.xp.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/tokens.css">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/nav.css">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
-  <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=20260611-bar">
-  <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
+  <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
+  <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="workspace.css?v=20260611-bar-contact-dmz">
+  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
+  <script defer src="/assets/consent.js?v=20260617"></script>
+  <script defer src="/assets/site-nav.js?v=20260715-nav-scroll"></script>
 </head>
-<body data-page="imagenes">
+<body data-page="imagenes" class="quad-ui">
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <!-- Banda superior del grupo Admira · Xperience -->
-  <nav class="admira-nav admira-nav-static" aria-label="Admira · Xperience">
-    <a class="admira-nav-brand" href="https://www.admira.app">
-      <span class="admira-nav-brand-name">Admira</span>
-      <span class="admira-nav-brand-tag">Xperience</span>
-    </a>
-    <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">Admira Studio</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Consejo Live</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
-      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
-    </div>
-  </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
-  <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">A</span><span class="brand-name">Admira Studio</span></a></div>
-    <nav class="primary-nav">
-      <a href="audio.html" data-nav="audio">Audio</a>
-      <a href="musica.html" data-nav="musica">Música</a>
-      <a href="imagenes.html" data-nav="imagenes">Imágenes</a>
-      <a href="video.html" data-nav="video">Video</a>
-      <a href="publicidad.html" data-nav="publicidad">Publicidad</a>
-      <a href="avatar.html" data-nav="avatar">Avatar 3D</a>
-      <a href="/crear/" data-nav="crear">Assets</a>
-      <a href="stock.html" data-nav="stock">Stock</a>
-    </nav>
-    <div class="topnav-actions">
-      <div class="language-switcher" aria-label="Seleccion de idioma">
-        <a class="lang-toggle" href="/en/imagenes.html" aria-label="Cambiar a ingles">ENG</a>
-      </div>
-      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
+  <!-- Marco cuadrático (quad-ui): navegación en los 4 bordes, estilo Admira.tv -->
+  <nav class="quad-menu quad-top" aria-label="Navegación superior Admira Studio">
+    <button type="button" class="quad-icon" data-quad-toggle="left" aria-label="Desplegar flujo de producción" title="Flujo de producción">☰</button>
+    <a class="quad-brand" href="index.html"><span>P</span><b>Admira Studio</b><small>Image Ops</small></a>
+    <div class="quad-links">
+      <a href="audio.html">Megafonía</a>
+      <a href="musica.html">Música</a>
+      <a class="active" href="imagenes.html">Imágenes</a>
+      <a href="video.html">Video</a>
+      <a href="stock.html">Stock</a>
     </div>
-  </header>
+    <a class="quad-cta" href="https://admira.tv" target="_blank" rel="noopener">Admira.tv</a>
+    <button type="button" class="quad-icon" data-quad-toggle="bottom" aria-label="Desplegar acciones rápidas" title="Acciones rápidas">⌘</button>
+  </nav>
+  <nav class="quad-menu quad-bottom is-collapsed" aria-label="Acciones de producción">
+    <button type="button" data-quad-click="playOutput">🖼️ Crear imagen</button>
+    <button type="button" data-quad-click="sendToAdmiraXP">📺 Admira XP</button>
+    <button type="button" data-quad-click="sendToStock">📌 Enviar a Stock</button>
+    <a href="stock.html">🗂 Ver Stock</a>
+  </nav>
+  <nav class="quad-menu quad-left is-collapsed" aria-label="Flujo de producción">
+    <a href="#briefForm" data-quad-scroll="#briefForm"><span>01</span>Brief</a>
+    <a href="#briefForm" data-quad-scroll="[data-motor-section]"><span>02</span>Motor</a>
+    <a href="#playOutput" data-quad-scroll="#playOutput"><span>03</span>Generar</a>
+    <a href="#briefOut" data-quad-scroll="#briefOut"><span>04</span>Revisar</a>
+    <a href="#sendToStock" data-quad-scroll="#sendToStock"><span>05</span>Publicar</a>
+  </nav>
 
   <header class="page-head has-gif"><figure class="page-gif"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Digital_rain_animation_big_letters_green_and_white.gif" alt="Imágenes · letras grandes verdes" loading="lazy"><figcaption>// Imágenes · letras grandes verdes</figcaption></figure>
     <p class="eyebrow image">Tipo de contenido · Imágenes</p>
@@ -109,17 +139,13 @@
 
       <div class="brief-area">
         <div class="brief-head">
-          <h3>Brief de Imágenes</h3>
           <div class="brief-actions">
-            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ CREAR</span></button>
-            <button class="btn" type="button" id="genBrief">Generar brief</button>
-            <button class="btn" type="button" id="copyBrief">Copiar JSON</button>
-            <button class="btn" type="button" id="copyMd">Copiar Markdown</button>
-            <button class="btn" type="button" id="dlBrief">Descargar .json</button>
+            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ CREAR IMAGEN</span></button>
             <button class="btn" type="button" id="clearAll">Limpiar Imágenes</button>
+            <button class="btn" type="button" id="sendToStock" title="Publica en Stock la imagen creada">📌 Enviar a Stock</button>
           </div>
         </div>
-        <pre class="brief" id="briefOut">// Rellena los campos y pulsa "Generar brief".</pre>
+        <pre class="brief" id="briefOut" hidden></pre>
       </div>
       <div id="player" class="player-area" hidden></div>
     </form>
@@ -178,7 +204,7 @@
       </div>
     </form>
   </dialog>
-  <script src="/matrix-rain.js?v=20260608-sides"></script>
-  <script src="app.js?v=20260611-camp2"></script>
+  <script defer src="/matrix-rain.js?v=20260608-sides"></script>
+  <script src="app.js?v=20260614-barclean"></script>
 </body>
 </html>

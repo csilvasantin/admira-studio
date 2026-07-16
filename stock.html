@@ -1,21 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script src="/gate.js"></script>
+  <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
+       Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
+       login con Google + misma whitelist de usuarios (worker admira-whitelist). Verja ACTIVA
+       por defecto. ?gate=off es un escape SOLO para esa carga (no persiste), por si el login
+       falla. Mientras esté cerrado: meta noindex + robots.txt Disallow.
+       PARA REABRIR EL SITIO EL DÍA DEL LANZAMIENTO: borrar TODO este bloque (marcadores
+       GATE-INICIO … GATE-FIN) de cada .html, restaurar robots.public.txt → robots.txt y
+       borrar /auth-gate.js. Ver checklist en el PR de la verja. -->
+  <!-- GATE-INICIO -->
+  <meta name="robots" content="noindex, nofollow">
+  <script>
+  (function(){
+    var GATE_DEFAULT = 'on';                       // verja activa — sitio cerrado
+    var on = GATE_DEFAULT;
+    try{
+      var q = new URLSearchParams(location.search).get('gate');
+      if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
+    }catch(e){}
+    if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
+    var s=document.createElement('script'); s.src='/auth-gate.js';
+    (document.head||document.documentElement).appendChild(s);
+    // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
+    // origen aún no esté autorizado en Google → mensaje claro en pantalla.
+    setTimeout(function(){
+      if(!document.documentElement.classList.contains('gate-locked')) return;
+      var el=document.getElementById('admira-err');
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+    }, 10000);
+  })();
+  </script>
+  <!-- GATE-FIN -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="admiranext-version" content="Admira Studio v.26.07.13.r2">
+  <link rel="canonical" href="https://www.admira.studio/stock.html">
+  <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
+  <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/stock.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio · Stock</title>
+  <title>Admira Studio Studio · Stock</title>
   <meta name="description" content="Galería pública de assets generados por los motores IA — audio, música, imágenes y video — desplegados a Stock.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/tokens.css">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/nav.css">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
-  <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=20260611-bar">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
+  <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
+  <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="workspace.css?v=20260713-orientation-contact-dmz">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=20260714-nav-unified">
   <style>
+    /* Contador de elementos en stock (en el título), con flash al crecer */
+    .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
+    /* ID único del asset (= /playN en admira.tv) */
+    .stock-num{ font-family:ui-monospace,monospace; font-size:11px; font-weight:700; color:#9bff6a; border:1px solid rgba(118,185,0,.45); border-radius:6px; padding:1px 6px; background:rgba(40,70,10,.4); letter-spacing:.04em; }
+    .stock-count.bump{ animation:stockBump .65s ease; }
+    @keyframes stockBump{ 0%{ transform:scale(1) } 30%{ transform:scale(1.22); text-shadow:0 0 22px currentColor } 100%{ transform:scale(1) } }
     /* Flechas anterior/siguiente del lightbox del Stock */
     .stock-lightbox-nav{position:fixed;top:50%;transform:translateY(-50%);z-index:30;width:54px;height:84px;display:flex;align-items:center;justify-content:center;
       border:1px solid rgba(118,185,0,.4);border-radius:12px;background:rgba(8,16,8,.72);color:#b8e577;font-size:34px;line-height:1;cursor:pointer;
@@ -87,6 +130,11 @@
     .dist-items-note{ font-size:11px; color:var(--muted); }
     .dist-actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:4px; }
     .dist-empty{ color:var(--muted); font-size:12px; text-align:center; padding:14px; }
+    /* Aviso reforzado cuando la programación cae a la pestaña local (scheduler caído) */
+    .stock-status.sched-local-warn{ color:#ffcc00; font-weight:700;
+      background:rgba(255,140,0,.12); border:1px solid rgba(255,180,0,.5);
+      border-radius:6px; padding:8px 10px; animation:schedWarnBlink 1s ease-in-out 3; }
+    @keyframes schedWarnBlink{ 0%,100%{ opacity:1; } 50%{ opacity:.55; } }
 
     /* Cabecera de grupo/circuito en la lista de pantallas */
     .dist-group-head{ display:flex; align-items:center; gap:8px; padding:6px 10px; margin-top:4px;
@@ -120,6 +168,42 @@
     .pl-saved-row .pl-meta{ color:var(--muted); font-size:11px; }
     .pl-mini{ border:1px solid var(--line-bright); background:transparent; color:var(--matrix); border-radius:6px; padding:5px 9px; font-size:11px; cursor:pointer; font-family:inherit; }
     .pl-mini.danger{ color:#ff8866; border-color:#7a3a2a; }
+    .pl-smart-note{ font-size:11px; color:#c8b4ff; background:rgba(170,136,255,.10); border:1px solid #aa88ff; border-radius:6px; padding:6px 9px; }
+    .pl-smart-note b{ color:#fff; }
+    .pl-smart-clear{ border:1px solid var(--line-bright); background:transparent; color:var(--muted); border-radius:5px; padding:2px 7px; font-size:10px; cursor:pointer; font-family:inherit; margin-left:4px; }
+    .pl-smart-clear:hover{ border-color:#ff8866; color:#ff8866; }
+    .pl-smart-badge{ color:#c8b4ff; border:1px solid #aa88ff; background:rgba(170,136,255,.12); border-radius:999px; padding:1px 6px; font-size:10px; }
+    /* Reproductor de playlist (overlay) */
+    .pl-player{ position:fixed; inset:0; width:100vw; max-width:100vw; height:100vh; max-height:100vh; margin:0; border:none; z-index:60; background:rgba(0,0,0,.86); display:flex; align-items:center; justify-content:center; padding:20px; }
+    .pl-player::backdrop{ background:rgba(0,0,0,.5); }
+    .pl-player-box{ width:min(760px,94vw); background:#050a05; border:1px solid var(--matrix); border-radius:10px; box-shadow:0 0 40px rgba(0,255,65,.25); display:flex; flex-direction:column; gap:10px; padding:14px; }
+    .pl-player-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; color:var(--matrix); font-size:13px; }
+    .pl-player-media{ background:#000; border:1px solid var(--line); border-radius:8px; min-height:200px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:8px; }
+    .pl-player-media video, .pl-player-media img{ max-width:100%; max-height:62vh; object-fit:contain; }
+    .pl-player-cover{ font-size:64px; }
+    .pl-player-foot{ display:flex; align-items:center; gap:8px; }
+    /* Botón Prioridad 0 (envío que interrumpe) */
+    .prio0-btn{ border-color:#ff6644 !important; color:#ffd6cc !important; background:rgba(255,70,40,.10) !important; }
+    .prio0-btn:hover{ background:rgba(255,70,40,.26) !important; color:#fff !important; }
+    #distModal.dist-prio0{ border:1px solid #ff6644; box-shadow:0 0 30px rgba(255,70,40,.3); }
+    /* Banner multi-etiqueta */
+    .stock-tagf-wrap{ flex:1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; }
+    .stock-tagf{ border:1px solid #aa88ff; background:rgba(170,136,255,.18); color:#fff; border-radius:999px; padding:2px 8px; font-size:11px; cursor:pointer; font-family:inherit; }
+    .stock-tagf:hover{ background:rgba(255,136,102,.25); border-color:#ff8866; }
+    .stock-tagf-join{ color:var(--muted); font-size:10px; }
+    .stock-tagmode{ border:1px solid var(--line-bright); background:transparent; color:var(--matrix); border-radius:5px; padding:2px 8px; font-size:10px; cursor:pointer; font-family:inherit; }
+    .stock-tagmode:hover{ border-color:var(--matrix); }
+    /* Gestor de etiquetas */
+    .tm-suggest{ margin-bottom:8px; }
+    .tm-sub{ font-size:11px; color:var(--muted); margin:4px 0; }
+    .tm-clu{ display:flex; align-items:center; gap:10px; padding:6px 8px; border:1px solid #aa88ff; background:rgba(170,136,255,.08); border-radius:6px; font-size:11px; margin-bottom:4px; }
+    .tm-clu-info{ flex:1; color:#c8b4ff; }
+    .tm-clu-info b{ color:#fff; }
+    .tm-list{ max-height:46vh; overflow:auto; display:flex; flex-direction:column; gap:4px; }
+    .tm-row{ display:flex; align-items:center; gap:8px; padding:5px 8px; border:1px solid var(--line); border-radius:6px; font-size:12px; }
+    .tm-name{ flex:1; text-align:left; border:none; background:transparent; color:var(--matrix); font-family:inherit; font-size:12px; cursor:pointer; padding:0; }
+    .tm-name:hover{ text-decoration:underline; }
+    .tm-count{ color:var(--muted); font-size:11px; min-width:24px; text-align:right; }
     .dist-source{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted); }
     .dist-source select{ flex:1; background:var(--bg); border:1px solid var(--line-bright); color:var(--matrix); border-radius:6px; padding:6px 8px; font-family:inherit; font-size:12px; }
 
@@ -161,10 +245,23 @@
     .distq-mini.danger:hover{ border-color:#ff8866; }
     .distq-empty{ color:var(--muted); font-size:12px; text-align:center; padding:24px; }
     .distq-hist .ok{ color:var(--matrix); } .distq-hist .fail{ color:#ff8866; }
+
+    /* Etiquetas arrastrables entre assets. */
+    .stock-tag[draggable="true"],.stock-tags-drag{cursor:grab}.stock-tag[draggable="true"]:active,.stock-tags-drag:active{cursor:grabbing}
+    .stock-tags-drag{border:1px dashed var(--matrix);background:rgba(0,255,65,.06);color:var(--matrix);border-radius:999px;padding:2px 8px;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:.04em}
+    .stock-card.tag-drop-target{outline:2px dashed var(--matrix);outline-offset:3px;background:rgba(0,255,65,.08)}
+    body.tag-dragging .stock-card:not(.tag-drop-target){transition:opacity .15s,outline .15s}.stock-tag.tag-drag-source,.stock-tags-drag.tag-drag-source{opacity:.45}
   </style>
-  <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
+  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
+  <script defer src="/assets/consent.js?v=20260617"></script>
+  <script defer src="/assets/site-nav.js?v=20260715-nav-scroll"></script>
 </head>
 <body data-page="stock">
+  <!-- Cuadratura: ocultar los raíles al abrir <body> (sin parpadeo) según localStorage -->
+  <script>
+  (function(){var b=document.body,m={pixeria_pf_left:'pf-left-off',pixeria_pf_right:'pf-right-off',pixeria_pf_bottom:'pf-bottom-off'};
+  try{for(var k in m){if(localStorage.getItem(k)!=='1')b.classList.add(m[k]);}}catch(e){for(var j in m){b.classList.add(m[j]);}}})();
+  </script>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
@@ -178,6 +275,7 @@
       <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Consejo Live</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
       <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
@@ -185,20 +283,21 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">A</span><span class="brand-name">Admira Studio</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">P</span><span class="brand-name">Admira Studio</span></a></div>
     <nav class="primary-nav">
-      <a href="audio.html" data-nav="audio">Audio</a>
+      <a href="audio.html" data-nav="audio">Megafonía</a>
       <a href="musica.html" data-nav="musica">Música</a>
       <a href="imagenes.html" data-nav="imagenes">Imágenes</a>
       <a href="video.html" data-nav="video">Video</a>
       <a href="publicidad.html" data-nav="publicidad">Publicidad</a>
-      <a href="avatar.html" data-nav="avatar">Avatar 3D</a>
+      <a href="anonimizador.html" data-nav="anonimizador">Anonimizador</a>
       <a href="/crear/" data-nav="crear">Assets</a>
       <a href="stock.html" data-nav="stock">Stock</a>
+      <a href="/campanas/" data-nav="campanas">Campañas</a>
     </nav>
     <div class="topnav-actions">
-      <div class="language-switcher" aria-label="Seleccion de idioma">
-        <a class="lang-toggle" href="/en/stock.html" aria-label="Cambiar a ingles">ENG</a>
+      <div class="language-switcher" aria-label="Selección de idioma">
+        <a class="lang-toggle" href="/en/stock.html" aria-label="Cambiar a inglés">ENG</a>
       </div>
       <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
     </div>
@@ -206,7 +305,7 @@
 
   <header class="page-head">
     <p class="eyebrow stock">Galería pública</p>
-    <h1>Stock · assets desplegados desde los 4 motores.</h1>
+    <h1>Stock · <span id="stockCount" class="stock-count" data-n="0">…</span> assets desplegados desde los 4 motores.</h1>
     <p class="lead">Todo lo que se publica desde el botón <strong>📌 Publicar en Stock</strong> en audio, música, imágenes o video aparece aquí. Filtros por tipo y motor; búsqueda por prompt.</p>
   </header>
 
@@ -224,13 +323,16 @@
         <div class="stock-pager-filters">
           <select id="stockTypeFilter" title="Filtrar por tipo" aria-label="Filtrar por tipo">
             <option value="">Todos los tipos</option>
-            <option value="audio">Audio</option>
+            <option value="locucion">Megafonía</option>
             <option value="music">Música</option>
-            <option value="image">Imágenes</option>
+            <option value="image">Imagen</option>
+            <option value="twin-npc">Twin NPCs</option>
+            <option value="digital-twin">Digital Twins</option>
             <option value="video" selected>Video</option>
             <option value="animation">Animaciones</option>
             <option value="furni">Mobiliario</option>
           </select>
+          <button type="button" class="stock-pager-btn" id="tagMgrBtn" title="Gestor de etiquetas: renombrar, fusionar variaciones y borrar en todo el Stock">🏷️ Etiquetas</button>
         </div>
         <div class="stock-pager-sort" id="stockSortBar" role="group" aria-label="Ordenar por">
           <span class="stock-sortbar-label">Ordenar:</span>
@@ -253,7 +355,7 @@
       <div id="stockGrid" class="stock-grid"></div>
       <div id="stockEmpty" class="stock-empty" hidden>
         <p>// Stock vacío.</p>
-        <p>Genera un asset en Audio/Música/Imágenes/Video y pulsa <strong>📌 PUBLICAR EN STOCK</strong>.</p>
+        <p>Genera un asset en Audio/Música/Imágenes/Video — o un gemelo en el <a href="anonimizador.html">Anonimizador</a> (Twin NPCs · Digital Twins) — y pulsa <strong>📌 PUBLICAR EN STOCK</strong>.</p>
       </div>
 
       <nav class="stock-pager stock-pager-bottom" hidden aria-label="Paginación (abajo)">
@@ -276,7 +378,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.2026.07.04-stockfix</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -406,14 +508,15 @@
         <div class="pl-row">
           <div class="pl-field" style="grid-column:1/-1;"><label>Nombre de la playlist</label><input id="plName" class="model-select" placeholder="Ej: Spot estanco mañana" style="width:100%;background:var(--bg);border:1px solid var(--line-bright);color:var(--matrix);border-radius:6px;padding:7px 9px;font-family:inherit;"></div>
         </div>
+        <div id="plSmartNote" class="pl-smart-note" hidden></div>
 
         <div>
           <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:5px;">Elementos a añadir — elige tipo:</label>
           <div class="pl-types" id="plTypes">
             <button type="button" class="pl-type active" data-t="">Todos</button>
-            <button type="button" class="pl-type" data-t="audio">Audio</button>
+            <button type="button" class="pl-type" data-t="locucion">Megafonía</button>
             <button type="button" class="pl-type" data-t="music">Música</button>
-            <button type="button" class="pl-type" data-t="image">Imágenes</button>
+            <button type="button" class="pl-type" data-t="image">Imagen</button>
             <button type="button" class="pl-type" data-t="video">Video</button>
             <button type="button" class="pl-type" data-t="publicidad">Publicidad</button>
             <button type="button" class="pl-type" data-t="avatar">Avatar</button>
@@ -435,6 +538,7 @@
         <div id="plCircuitInfo" style="font-size:11px;color:var(--muted);"></div>
       </div>
       <div class="dist-actions">
+        <button type="button" class="btn" id="plPlay">▶ Reproducir playlist</button>
         <button type="button" class="btn primary" id="plSave">💾 Guardar playlist</button>
         <button type="button" class="btn" id="plSaveDist">💾 + 📡 Guardar y distribuir</button>
         <button type="button" class="btn" id="plCancel">Cerrar</button>
@@ -442,8 +546,22 @@
     </form>
   </dialog>
 
-  <script src="/matrix-rain.js?v=20260608-sides"></script>
-  <script src="app.js?v=20260611-camp2"></script>
+  <!-- Gestor de etiquetas -->
+  <dialog id="tagMgrModal" class="keys-modal">
+    <form method="dialog" class="keys-form" style="max-width:580px;">
+      <h3>🏷️ ETIQUETAS</h3>
+      <p class="keys-warn">Renombra, <b>fusiona variaciones</b> (robots/robot/robotics) y borra etiquetas en TODO el Stock. Los cambios se guardan en el servidor.</p>
+      <input id="tmSearch" type="text" placeholder="🔍 filtrar etiquetas…" autocomplete="off" style="width:100%;background:var(--bg);border:1px solid var(--line-bright);color:var(--matrix);border-radius:6px;padding:7px 9px;font-family:inherit;margin-bottom:8px;">
+      <div id="tmSuggest" class="tm-suggest"></div>
+      <div id="tmList" class="tm-list"></div>
+      <div class="keys-actions">
+        <button type="button" class="btn" id="tmClose">Cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script defer src="/matrix-rain.js?v=20260608-sides"></script>
+  <script src="app.js?v=20260614-barclean"></script>
   <script>
   (function () {
     const grid = document.getElementById('stockGrid');
@@ -458,7 +576,7 @@
     const lightboxMeta = document.getElementById('stockLightboxMeta');
     const lightboxPrev = document.getElementById('stockLightboxPrev');
     const lightboxNext = document.getElementById('stockLightboxNext');
-    const STOCK_BASE = 'https://pixer-eleven.csilvasantin.workers.dev';
+    const STOCK_BASE = 'https://api.admira.store';
     // Los ISP españoles bloquean el rango de IPs de *.workers.dev (caso
     // LaLiga, jun 2026) y la galería se quedaba en blanco. El bucket público
     // r2.dev NO está bloqueado, así que el listado se lee del índice estático
@@ -468,10 +586,13 @@
     const STOCK_PUBLIC_R2 = 'https://pub-bf043a4daa3b43b7a0b769617729d074.r2.dev';
     const STOCK_LIST_URL = STOCK_PUBLIC_R2 + '/stock/index.json';
     const STOCK_LIST_FALLBACK = STOCK_BASE + '/stock/list?limit=200';
-    const TYPE_ORDER = { audio: 0, music: 1, image: 2, furni: 3, video: 4, animation: 5 };
+    const TYPE_ORDER = { audio: 0, music: 1, image: 2, 'twin-npc': 3, 'digital-twin': 4, furni: 5, video: 6, animation: 7 };
+    // Etiquetas legibles para el badge de tipo (las demás se muestran tal cual).
+    const TYPE_LABELS = { 'twin-npc': 'Twin NPC', 'digital-twin': 'Digital Twin' };
+    const typeText = (t) => TYPE_LABELS[t] || t;
     let allItems = [];
     let currentView = []; // lista filtrada+ordenada actual (para navegar el lightbox)
-    let filters = { type: 'video', motor: '', q: '', tag: '', dateQuick: '', dateFrom: '', dateTo: '' };
+    let filters = { type: 'video', motor: '', q: '', tags: [], tagMode: 'or', dateQuick: '', dateFrom: '', dateTo: '' };
     let sortMode = 'date-desc';
     let pageSize = 10; // 0 = mostrar todos
     let currentPage = 1;
@@ -495,6 +616,25 @@
     function displayType(it) {
       return isFurni(it) ? 'furni' : it.type;
     }
+    function mediaOrientation(it) {
+      const width = Number(it && (it.width || it._mediaWidth)) || 0;
+      const height = Number(it && (it.height || it._mediaHeight)) || 0;
+      let ratio = width > 0 && height > 0 ? width / height : 0;
+      if (!ratio && it && typeof it.aspectRatio === 'string') {
+        const bits = it.aspectRatio.split(':').map(Number);
+        if (bits.length === 2 && bits[0] > 0 && bits[1] > 0) ratio = bits[0] / bits[1];
+      }
+      // Los Shorts se identifican de inmediato mientras llega loadedmetadata.
+      if (!ratio && /(?:youtube\.com\/shorts\/|youtu\.be\/shorts\/)/i.test(String((it && it.prompt) || ''))) ratio = 9 / 16;
+      if (!ratio) return { key: 'unknown', icon: '◇', label: 'detectando formato…' };
+      if (ratio < 0.9) return { key: 'portrait', icon: '↕', label: 'vertical' };
+      if (ratio > 1.1) return { key: 'landscape', icon: '↔', label: 'horizontal' };
+      return { key: 'square', icon: '□', label: 'cuadrado' };
+    }
+    function orientationBadgeHtml(it) {
+      const o = mediaOrientation(it);
+      return `<span class="stock-orientation ${o.key}" data-role="orientation" title="Formato del contenido">${o.icon} ${o.label}</span>`;
+    }
     // Estilo de UN frame de un sprite-sheet horizontal (frames>1) en una caja.
     function frameStyle(url, frames, idx) {
       const n = Math.max(1, frames | 0);
@@ -517,16 +657,23 @@
         // Mobiliario del gemelo: sprite pixelado → render nítido.
         return `<img src="${it.url}" alt="" loading="lazy" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
       }
-      if (it.type === 'image') {
-        return `<img src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
+      if (it.type === 'twin-npc') {
+        // NPC pixel-art del gemelo → render nítido (pixelado).
+        return `<img src="${it.url}" alt="" loading="lazy" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
+      }
+      if (it.type === 'image' || it.type === 'digital-twin') {
+        return `${orientationBadgeHtml(it)}<img data-orientation-media src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
       }
       if (it.type === 'video' || it.type === 'animation') {
-        // Lazy: el src se asigna solo cuando la tarjeta entra en viewport
-        // (IntersectionObserver de abajo) → la rejilla pinta al instante y
-        // solo se piden los metadatos de los vídeos visibles.
-        return `<video class="stock-video-preview" data-src="${it.url}" ${it.thumbnail ? `poster="${it.thumbnail}"` : ''} preload="metadata" muted playsinline></video>`;
+        // PREVIEW = fotograma real del propio vídeo (buscado a ~1s), NO el póster
+        // guardado: ese se generaba del frame 0 y salía en NEGRO (fundido de
+        // entrada). Carga PEREZOSA (IntersectionObserver, margen 600px) para no
+        // penalizar la rejilla; al pulsar ▶ se reproduce aquí. Clic en el vídeo
+        // abre el detalle.
+        return `${orientationBadgeHtml(it)}<video class="stock-cover stock-video-preview" data-orientation-media data-src="${escAttr(it.url)}" preload="metadata" muted playsinline disablepictureinpicture style="background:#0a0f14;"></video>
+                <button type="button" class="stock-media-play" data-act="playmini" data-url="${escAttr(it.url)}" title="Reproducir aquí (pequeño)" aria-label="Reproducir aquí">▶</button>`;
       }
-      if (it.type === 'audio' || it.type === 'music') {
+      if (it.type === 'audio' || it.type === 'locucion' || it.type === 'music') {
         const cover = it.thumbnail || '';
         return `${cover ? `<img class="stock-cover" src="${cover}" alt="" loading="lazy">` : '<div class="stock-cover-empty">▶</div>'}
                 <audio src="${it.url}" preload="none" controls></audio>`;
@@ -535,23 +682,76 @@
     }
     function escAttr(s){ return String(s||'').replace(/"/g,'&quot;'); }
 
+    function setMediaOrientation(media, width, height) {
+      if (!media || !(width > 0) || !(height > 0)) return;
+      const card = media.closest('.stock-card');
+      if (!card) return;
+      const it = allItems.find(x => String(x.id) === card.dataset.id);
+      if (it) { it._mediaWidth = width; it._mediaHeight = height; }
+      const o = mediaOrientation({ width, height });
+      card.dataset.orientation = o.key;
+      const badge = card.querySelector('[data-role="orientation"]');
+      if (badge) {
+        badge.className = `stock-orientation ${o.key}`;
+        badge.textContent = `${o.icon} ${o.label}`;
+        badge.title = `${o.label} · ${Math.round(width)}×${Math.round(height)} px`;
+      }
+    }
+    function hydrateMediaOrientations() {
+      grid.querySelectorAll('[data-orientation-media]').forEach(media => {
+        const read = () => {
+          const isVideo = media.tagName === 'VIDEO';
+          setMediaOrientation(media,
+            isVideo ? media.videoWidth : media.naturalWidth,
+            isVideo ? media.videoHeight : media.naturalHeight);
+        };
+        if (media.tagName === 'VIDEO') media.addEventListener('loadedmetadata', read, { once: true });
+        else if (media.complete) read();
+        else media.addEventListener('load', read, { once: true });
+        const card = media.closest('.stock-card');
+        const it = card && allItems.find(x => String(x.id) === card.dataset.id);
+        if (card && it) card.dataset.orientation = mediaOrientation(it).key;
+      });
+    }
+
     // Lazy-load de previews de vídeo: el src (data-src) se asigna cuando la
     // tarjeta se acerca al viewport (margen 600px). Pintado de rejilla
     // instantáneo aunque haya cientos de vídeos.
+    // Busca en el preview un fotograma CON contenido (~1s o el 12% de la duración),
+    // para que la card no muestre el frame 0 (negro/fundido de entrada). No
+    // reproduce: solo hace seek (vídeo muteado, preload=metadata).
+    function seekToPreviewFrame(v) {
+      let done = false;
+      const go = () => {
+        if (done || !v) return; done = true;
+        try {
+          const d = (isFinite(v.duration) && v.duration > 0) ? v.duration : 0;
+          v.currentTime = d ? Math.min(1.2, d * 0.12) : 1.0;
+        } catch (_) {}
+      };
+      v.addEventListener('loadeddata', go, { once: true });
+      v.addEventListener('loadedmetadata', go, { once: true });
+    }
     const lazyVideoIO = ('IntersectionObserver' in window)
       ? new IntersectionObserver((entries) => {
           for (const e of entries) {
             if (!e.isIntersecting) continue;
             const v = e.target;
-            if (v.dataset.src && !v.src) v.src = v.dataset.src;
+            if (v.dataset.src && !v.src) { seekToPreviewFrame(v); v.src = v.dataset.src; }
             lazyVideoIO.unobserve(v);
           }
         }, { rootMargin: '600px' })
       : null;
     function observeLazyVideos() {
+      const vh = window.innerHeight || document.documentElement.clientHeight || 800;
       document.querySelectorAll('video.stock-video-preview[data-src]').forEach(v => {
+        if (v.src) return;
+        // Si ya está cerca del viewport, carga YA (no esperar al IO: en algunos
+        // entornos no dispara para los elementos visibles al pintar).
+        const r = v.getBoundingClientRect();
+        if (r.top < vh + 600 && r.bottom > -600) { seekToPreviewFrame(v); v.src = v.dataset.src; return; }
         if (lazyVideoIO) lazyVideoIO.observe(v);
-        else if (!v.src) v.src = v.dataset.src; // fallback sin IO: carga directa
+        else { seekToPreviewFrame(v); v.src = v.dataset.src; } // fallback sin IO
       });
     }
     function ainimationImportHref(it) {
@@ -575,12 +775,17 @@
       }
       return `<span title="${escAttr(raw)}">${trunc}</span>`;
     }
-    function renderTagsHtml(tags) {
-      if (!Array.isArray(tags) || tags.length === 0) return '';
-      return `<div class="stock-tags">${tags.map(t => {
+    function renderTagsHtml(tags, id) {
+      const safeId = String(id || '').replace(/[^A-Za-z0-9-]/g, '');
+      const chips = (Array.isArray(tags) ? tags : []).map(t => {
         const safe = String(t).replace(/</g, '&lt;');
-        return `<button type="button" class="stock-tag" data-tag="${escAttr(t)}" title="Filtrar por #${escAttr(t)}">#${safe}</button>`;
-      }).join('')}</div>`;
+        return `<button type="button" class="stock-tag" draggable="true" data-drag-tag="${escAttr(t)}" data-tag="${escAttr(t)}" title="Arrastra para copiar #${escAttr(t)} a otro contenido · Clic: filtrar · Doble-clic: renombrar">#${safe}</button>`;
+      }).join('');
+      const dragAll = chips ? `<button type="button" class="stock-tags-drag" draggable="true" data-act="drag-tags" data-id="${safeId}" title="Arrastra para copiar todas las etiquetas a otro contenido">⇄ tags</button>` : '';
+      // "+ más": añade metatags propias para agrupar (a la derecha de las auto-tags).
+      // Se muestra SIEMPRE, incluso sin etiquetas, para poder agrupar cualquier asset.
+      const more = `<button type="button" class="stock-tag-more" data-act="add-tag-list" data-id="${safeId}" title="Añadir etiquetas propias para agrupar (varias separadas por comas)">+ más</button>`;
+      return `<div class="stock-tags">${chips}${dragAll}${more}</div>`;
     }
     function renderTagsEditorHtml(id, tags) {
       const safeId = String(id || '').replace(/[^A-Za-z0-9-]/g, '');
@@ -593,7 +798,7 @@
         <button type="button" class="stock-tag-add" data-act="add-tag" title="Añadir etiqueta">+ etiqueta</button>
       </div>`;
     }
-    async function saveTags(id, tags) {
+    async function saveTags(id, tags, opts) {
       try {
         const r = await fetch(`${STOCK_BASE}/stock/${encodeURIComponent(id)}/tags`, {
           method: 'POST',
@@ -607,13 +812,118 @@
         if (it) it.tags = d.tags || [];
         return d.tags || [];
       } catch (e) {
-        alert('Error guardando etiquetas: ' + e.message);
+        if (!(opts && opts.silent)) alert('Error guardando etiquetas: ' + e.message);
         return null;
       }
+    }
+    // Motor de guardado en LOTE: aplica buildNext(item)→tags[] a varios assets en
+    // paralelo (concurrencia limitada), con progreso en la barra de estado y SIN
+    // cortarse al primer error (cuenta fallos). Lo usan el renombrado masivo y el
+    // gestor de etiquetas. Devuelve {ok, fail}.
+    async function runTagSaves(targets, buildNext, label) {
+      const total = targets.length;
+      if (!total) return { ok: 0, fail: 0 };
+      let ok = 0, fail = 0;
+      const queue = targets.slice();
+      const set = () => { if (status) status.textContent = `🏷️ ${label}: ${ok + fail}/${total}` + (fail ? ` · ${fail} fallo(s)` : '') + '…'; };
+      set();
+      const CONC = Math.min(6, total);
+      const worker = async () => {
+        while (queue.length) {
+          const it = queue.shift();
+          const r = await saveTags(it.id, buildNext(it), { silent: true });
+          if (r) ok++; else fail++;
+          set();
+        }
+      };
+      await Promise.all(Array.from({ length: CONC }, worker));
+      if (status) status.textContent = `🏷️ ${label}: ${ok} ok` + (fail ? ` · ${fail} fallo(s)` : '') + ' ✓';
+      return { ok, fail };
     }
     function currentItemInLightbox() {
       const id = window.__lightboxItemId;
       return id ? allItems.find(i => i.id === id) : null;
+    }
+    // Doble-clic en un chip de la lista → editar/renombrar la etiqueta inline.
+    // Sirve para normalizar variaciones (robots/robot/robotics) y tener una base
+    // de metadata limpia para filtrar y armar playlists. Al guardar, si la
+    // etiqueta vieja está en varios assets, ofrece normalizar en TODOS.
+    function startTagRename(tagBtn) {
+      if (!tagBtn || tagBtn.dataset.editing === '1') return;
+      const card = tagBtn.closest('.stock-card');
+      const id = card && card.dataset.id;
+      if (!id) return;
+      const oldTag = tagBtn.dataset.tag || '';
+      tagBtn.dataset.editing = '1';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'stock-tag-rename';
+      input.value = oldTag;
+      input.size = Math.max(4, oldTag.length + 1);
+      input.setAttribute('aria-label', 'Renombrar etiqueta ' + oldTag);
+      tagBtn.replaceWith(input);
+      input.focus(); input.select();
+      let done = false;
+      const restore = () => { if (done) return; done = true; input.replaceWith(tagBtn); tagBtn.dataset.editing = ''; };
+      const commit = async () => {
+        if (done) return;
+        const next = input.value.trim().toLowerCase().replace(/^#+/, '');
+        if (!next || next === oldTag.toLowerCase()) { restore(); return; }
+        done = true;
+        input.disabled = true;
+        await renameTag(id, oldTag, next);
+      };
+      input.addEventListener('keydown', ev => {
+        if (ev.key === 'Enter') { ev.preventDefault(); commit(); }
+        else if (ev.key === 'Escape') { ev.preventDefault(); restore(); }
+      });
+      input.addEventListener('blur', commit);
+    }
+    // Renombra oldTag→newTag en un asset (o en todos los que la tienen, si el
+    // usuario lo confirma). Reusa saveTags(/stock/{id}/tags); deduplica.
+    // Construye el array de tags de un item con oldTag→newTag (dedup, case-insens).
+    function tagReplacer(oldL, newTag) {
+      return it => {
+        const next = [];
+        for (const t of (it.tags || [])) {
+          const tl = String(t).toLowerCase();
+          if (tl === oldL) { if (!next.some(n => n.toLowerCase() === newTag.toLowerCase())) next.push(newTag); }
+          else if (!next.some(n => n.toLowerCase() === tl)) next.push(t);
+        }
+        return next;
+      };
+    }
+    async function renameTag(id, oldTag, newTag) {
+      const oldL = String(oldTag).toLowerCase();
+      const has = it => Array.isArray(it.tags) && it.tags.some(t => String(t).toLowerCase() === oldL);
+      const affected = allItems.filter(has);
+      let targets = affected.filter(it => it.id === id);
+      if (affected.length > 1) {
+        const all = confirm(`Renombrar #${oldTag} → #${newTag}\n\nEsta etiqueta está en ${affected.length} assets.\n\nAceptar = normalizar en los ${affected.length}\nCancelar = solo en este`);
+        if (all) targets = affected;
+      }
+      await runTagSaves(targets, tagReplacer(oldL, newTag), `renombrar #${oldTag}→#${newTag}`);
+      const i = filters.tags.indexOf(oldL);
+      if (i >= 0) { filters.tags.splice(i, 1); if (!filters.tags.includes(newTag.toLowerCase())) filters.tags.push(newTag.toLowerCase()); renderActiveTagBanner(); }
+      applyFilters(false);
+    }
+    // Renombrar/borrar una etiqueta en TODO el Stock (para el gestor de etiquetas).
+    async function renameTagGlobal(oldTag, newTag) {
+      const oldL = String(oldTag).toLowerCase(); const nn = String(newTag).trim().replace(/^#+/, '');
+      if (!nn || nn.toLowerCase() === oldL) return { ok: 0, fail: 0 };
+      const targets = allItems.filter(it => Array.isArray(it.tags) && it.tags.some(t => String(t).toLowerCase() === oldL));
+      const r = await runTagSaves(targets, tagReplacer(oldL, nn), `#${oldTag}→#${nn}`);
+      const i = filters.tags.indexOf(oldL); if (i >= 0) { filters.tags.splice(i, 1); if (!filters.tags.includes(nn.toLowerCase())) filters.tags.push(nn.toLowerCase()); }
+      renderActiveTagBanner(); applyFilters(false);
+      return r;
+    }
+    async function deleteTagGlobal(tag) {
+      const tl = String(tag).toLowerCase();
+      const targets = allItems.filter(it => Array.isArray(it.tags) && it.tags.some(t => String(t).toLowerCase() === tl));
+      const r = await runTagSaves(targets, it => (it.tags || []).filter(t => String(t).toLowerCase() !== tl), `borrar #${tag}`);
+      const i = filters.tags.indexOf(tl); if (i >= 0) filters.tags.splice(i, 1);
+      renderActiveTagBanner(); applyFilters(false);
+      return r;
     }
     function renderCard(it) {
       const idAttr = String(it.id || '').replace(/[^A-Za-z0-9-]/g, '');
@@ -631,7 +941,7 @@
       const commentBlock = commentRaw
         ? `<p class="stock-comment" title="${escAttr(commentRaw)}">💬 ${commentSafe.slice(0, 200)}${commentRaw.length > 200 ? '…' : ''}</p>`
         : '';
-      const tagsBlock = renderTagsHtml(it.tags);
+      const tagsBlock = renderTagsHtml(it.tags, it.id);
       const selected = DIST.isSelected(it.id) ? ' is-selected' : '';
       return `<article class="stock-card${selected}" data-type="${typeLabel}" data-motor="${it.motor}" data-id="${idAttr}" tabindex="0" role="button" aria-label="Maximizar ${typeLabel}">
         <button type="button" class="stock-select" data-act="select" title="Seleccionar para distribuir en lote" aria-label="Seleccionar asset" aria-pressed="${DIST.isSelected(it.id) ? 'true' : 'false'}"><span aria-hidden="true">${DIST.isSelected(it.id) ? '✓' : '+'}</span></button>
@@ -640,7 +950,8 @@
         </div>
         <div class="stock-card-body">
           <header>
-            <span class="stock-type ${typeLabel}">${typeLabel}</span>
+            <span class="stock-type ${typeLabel}">${typeText(typeLabel)}</span>
+            ${it.num ? `<span class="stock-num" title="ID único del asset · llámalo con /play${it.num} en admira.tv">#${it.num}</span>` : ''}
             <div class="stock-card-actions">
               <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Abrir en AINimation" aria-label="Abrir en AINimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>
               <button type="button" class="stock-card-btn" data-act="playlist" title="Añadir a una playlist" aria-label="Añadir a playlist"><span aria-hidden="true">🎵</span></button>
@@ -676,20 +987,38 @@
       return sorted;
     }
 
+    // Assets que cumplen un criterio de etiquetas (array + modo and/or).
+    function matchItemsByTags(tags, mode) {
+      const ls = (tags || []).map(t => String(t).toLowerCase()).filter(Boolean);
+      if (!ls.length) return [];
+      return (typeof allItems !== 'undefined' ? allItems : []).filter(it => {
+        const its = Array.isArray(it.tags) ? it.tags.map(t => String(t).toLowerCase()) : [];
+        return mode === 'and' ? ls.every(x => its.includes(x)) : ls.some(x => its.includes(x));
+      });
+    }
     function renderActiveTagBanner() {
       let banner = document.getElementById('stockTagBanner');
-      if (!filters.tag) { if (banner) banner.remove(); return; }
+      if (!filters.tags || !filters.tags.length) { if (banner) banner.remove(); return; }
       if (!banner) {
         banner = document.createElement('div');
         banner.id = 'stockTagBanner';
         banner.className = 'stock-tag-banner';
         document.querySelector('.stock-toolbar').appendChild(banner);
       }
-      banner.innerHTML = `Filtrando por <b>#${filters.tag.replace(/</g,'&lt;')}</b> <button type="button" class="stock-tag-clear">✕ limpiar</button>`;
-      banner.querySelector('.stock-tag-clear').addEventListener('click', () => {
-        filters.tag = '';
-        renderActiveTagBanner();
-        applyFilters(true);
+      const matching = matchItemsByTags(filters.tags, filters.tagMode);
+      const joiner = filters.tagMode === 'and' ? ' Y ' : ' O ';
+      const chips = filters.tags.map(t => `<button type="button" class="stock-tagf" data-tagf="${escAttr(t)}" title="Quitar #${escAttr(t)}">#${String(t).replace(/</g, '&lt;')} ✕</button>`).join(`<span class="stock-tagf-join">${joiner}</span>`);
+      const modeBtn = filters.tags.length >= 2 ? `<button type="button" class="stock-tagmode" title="Alternar Y (todas) / O (cualquiera)">${filters.tagMode === 'and' ? 'Y · todas' : 'O · cualquiera'}</button>` : '';
+      const critName = filters.tags.join(filters.tagMode === 'and' ? ' + ' : ' / ');
+      banner.innerHTML = `<span class="stock-tagf-wrap">Filtrando: ${chips} ${modeBtn}</span><button type="button" class="stock-tag-playlist" title="Crear playlist con los ${matching.length} assets del criterio">🎵 Playlist (${matching.length})</button><button type="button" class="stock-tag-clear">✕ limpiar</button>`;
+      banner.querySelectorAll('.stock-tagf').forEach(b => b.addEventListener('click', () => { const i = filters.tags.indexOf(b.dataset.tagf); if (i >= 0) filters.tags.splice(i, 1); renderActiveTagBanner(); applyFilters(true); }));
+      const mb = banner.querySelector('.stock-tagmode');
+      if (mb) mb.addEventListener('click', () => { filters.tagMode = filters.tagMode === 'and' ? 'or' : 'and'; renderActiveTagBanner(); applyFilters(true); });
+      banner.querySelector('.stock-tag-clear').addEventListener('click', () => { filters.tags = []; renderActiveTagBanner(); applyFilters(true); });
+      const plBtn = banner.querySelector('.stock-tag-playlist');
+      if (plBtn) plBtn.addEventListener('click', () => {
+        if (!matching.length) { alert('No hay assets para ese criterio'); return; }
+        if (window.PL) PL.open(matching, { name: critName, tags: filters.tags.slice(), tagMode: filters.tagMode });
       });
     }
     // "animation" es un tipo virtual: ainimation.studio publica como type=video
@@ -700,19 +1029,48 @@
       // Animación = tipo real 'animation' o (compat) lo publicado por ainimation
       // como video con motor=ainimation antes de existir el tipo real.
       const isAnim = it.type === 'animation' || String(it.motor || '').toLowerCase() === 'ainimation';
+      const tagsLc = Array.isArray(it.tags) ? it.tags.map(x => String(x).toLowerCase()) : [];
+      // Gemelos del Anonimizador: NPC pixel-art (twin-npc) y persona sintética (digital-twin).
+      const isTwinNpc = it.type === 'twin-npc' || tagsLc.includes('twin-npc');
+      const isDigitalTwin = it.type === 'digital-twin' || tagsLc.includes('digital-twin');
+      if (t === 'twin-npc') return isTwinNpc;
+      if (t === 'digital-twin') return isDigitalTwin;
       if (t === 'animation') return isAnim;
       if (t === 'furni') return isFurni(it);
       if (t === 'video') return it.type === 'video' && !isAnim;
-      if (t === 'image') return it.type === 'image' && !isFurni(it);
+      if (t === 'image') return it.type === 'image' && !isFurni(it) && !isTwinNpc && !isDigitalTwin;
+      // «Megafonía» (slug interno estable: locucion) = solo type locucion (las que creamos en la página Audio).
+      // No se fusiona con el viejo bucket 'audio' porque ahí cayó también música
+      // importada (canciones), que no son megafonía.
       return displayType(it) === t;
     }
+    // Contador "X de Y" en el título (en vivo): X = reproducibles (misma definición
+    // que admira.tv → coincide), Y = TODO lo que hay en stock (incl. enlaces que no
+    // se pudieron descargar). Mismo set MEDIA + url que canal.html de admira.tv.
+    const ADMIRATV_MEDIA = new Set(['video', 'animation', 'image', 'digital-twin', 'audio', 'music', 'locucion']);
+    function updateStockCount() {
+      const el = document.getElementById('stockCount');
+      if (!el) return;
+      const total = allItems.length;
+      const playable = allItems.filter(i => i && ADMIRATV_MEDIA.has(i.type) && i.url).length;
+      const prev = parseInt(el.dataset.p || '0', 10);
+      el.textContent = playable + ' de ' + total;
+      el.dataset.p = playable;
+      el.title = playable + ' reproducibles (= los que ves en admira.tv) · ' + total +
+        ' en stock' + (total > playable ? ' (incluye ' + (total - playable) + ' no reproducibles: mobiliario, NPCs y enlaces pendientes)' : '');
+      if (playable > prev && prev > 0) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+    }
+
     function applyFilters(resetPage) {
       const items = allItems.filter(it => {
         if (!matchesType(it, filters.type)) return false;
         if (filters.motor && it.motor !== filters.motor) return false;
-        if (filters.tag) {
+        if (filters.tags && filters.tags.length) {
           const tags = Array.isArray(it.tags) ? it.tags.map(t => String(t).toLowerCase()) : [];
-          if (!tags.includes(filters.tag.toLowerCase())) return false;
+          const ok = filters.tagMode === 'and'
+            ? filters.tags.every(ft => tags.includes(ft))
+            : filters.tags.some(ft => tags.includes(ft));
+          if (!ok) return false;
         }
         if (filters.q) {
           const hay = (
@@ -738,8 +1096,10 @@
 
       grid.classList.remove('stock-grid-grouped');
       grid.innerHTML = pageItems.map(renderCard).join('');
+      hydrateMediaOrientations();
       observeLazyVideos();
       empty.hidden = items.length > 0;
+      updateStockCount();
 
       // Pager UI. El superior lleva el orden integrado, así que no se oculta del
       // todo: solo escondemos sus flechas cuando hay una única página. El inferior
@@ -754,12 +1114,19 @@
         } else {
           p.hidden = hidePagers;
         }
-        if (hidePagers) return;
-        p.querySelector('.stock-pager-info').textContent = `${currentPage}/${totalPages}`;
-        p.querySelector('[data-page="first"]').disabled = currentPage <= 1;
-        p.querySelector('[data-page="prev"]').disabled = currentPage <= 1;
-        p.querySelector('[data-page="next"]').disabled = currentPage >= totalPages;
-        p.querySelector('[data-page="last"]').disabled = currentPage >= totalPages;
+        // Mantener SIEMPRE el contador y las flechas en sync con el set filtrado,
+        // incluso cuando se ocultan (una sola página): así no queda un "1/9" rancio
+        // de una búsqueda anterior si el pager se vuelve a mostrar.
+        const info = p.querySelector('.stock-pager-info');
+        if (info) info.textContent = `${currentPage}/${totalPages}`;
+        const first = p.querySelector('[data-page="first"]');
+        const prev = p.querySelector('[data-page="prev"]');
+        const next = p.querySelector('[data-page="next"]');
+        const last = p.querySelector('[data-page="last"]');
+        if (first) first.disabled = currentPage <= 1;
+        if (prev) prev.disabled = currentPage <= 1;
+        if (next) next.disabled = currentPage >= totalPages;
+        if (last) last.disabled = currentPage >= totalPages;
       });
     }
 
@@ -767,11 +1134,13 @@
       let media = '';
       if (isFurni(it)) {
         media = `<img src="${it.url}" alt="" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
-      } else if (it.type === 'image') {
+      } else if (it.type === 'twin-npc') {
+        media = `<img src="${it.url}" alt="" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
+      } else if (it.type === 'image' || it.type === 'digital-twin') {
         media = `<img src="${it.thumbnail || it.url}" alt="">`;
       } else if (it.type === 'video' || it.type === 'animation') {
         media = `<video src="${it.url}" ${it.thumbnail ? `poster="${it.thumbnail}"` : ''} controls autoplay></video>`;
-      } else if (it.type === 'audio' || it.type === 'music') {
+      } else if (it.type === 'audio' || it.type === 'locucion' || it.type === 'music') {
         const cover = it.thumbnail || '';
         media = `${cover ? `<img class="stock-cover" src="${cover}" alt="">` : '<div class="stock-cover-empty">▶</div>'}
                  <audio src="${it.url}" controls autoplay></audio>`;
@@ -789,7 +1158,7 @@
       const tagsEditor = renderTagsEditorHtml(it.id, it.tags);
       const typeLabel = displayType(it);
       lightboxMeta.innerHTML = `
-        <div><span class="stock-type ${typeLabel}">${typeLabel}</span> <span class="stock-motor">${it.motor || ''}</span> <span class="stock-date">${fmtDate(it.createdAt)}</span></div>
+        <div><span class="stock-type ${typeLabel}">${typeText(typeLabel)}</span> <span class="stock-motor">${it.motor || ''}</span> <span class="stock-date">${fmtDate(it.createdAt)}</span></div>
         ${titleBlock}
         ${tagsEditor}
         <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
@@ -797,7 +1166,7 @@
         <div class="stock-lightbox-actions">
           <a class="btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener">AI Abrir en AINimation</a>
           <a class="btn" href="${it.url}" target="_blank" rel="noopener" download>⬇ Descargar archivo</a>
-          <a class="btn" href="${it.url}" target="_blank" rel="noopener">↗ Abrir asset</a>
+          <button type="button" class="btn prio0-btn" data-act="prio0" title="Envía este asset AHORA al destino que elijas e interrumpe lo que se esté emitiendo">⚠ Prioridad 0 · interrumpir</button>
         </div>`;
       window.__lightboxItemId = it.id || null;
       lightbox.hidden = false;
@@ -843,6 +1212,17 @@
 
     // Edición de tags dentro del lightbox (quitar / añadir)
     lightboxMeta.addEventListener('click', async e => {
+      // ⚠ Prioridad 0: enviar AHORA al destino que se elija, interrumpiendo lo
+      // que se esté emitiendo. Abre el distribuidor en modo prioridad-0.
+      const prio0Btn = e.target.closest('[data-act="prio0"]');
+      if (prio0Btn) {
+        e.preventDefault(); e.stopPropagation();
+        const it = currentItemInLightbox();
+        if (!it) return;
+        closeLightbox();
+        DIST.open([it], { priority0: true });
+        return;
+      }
       const removeBtn = e.target.closest('[data-act="remove-tag"]');
       const addBtn = e.target.closest('[data-act="add-tag"]');
       if (!removeBtn && !addBtn) return;
@@ -858,7 +1238,7 @@
         const fresh = (prompt('Añadir etiqueta (1-2 palabras):') || '').trim().toLowerCase();
         if (!fresh) return;
         if (nextTags.includes(fresh)) { return; }
-        if (nextTags.length >= 8) { alert('Máximo 8 etiquetas por asset.'); return; }
+        if (nextTags.length >= 12) { alert('Máximo 12 etiquetas por asset.'); return; }
         nextTags.push(fresh);
       }
       const saved = await saveTags(it.id, nextTags);
@@ -896,7 +1276,28 @@
     // (El antiguo "broadcast ciego" sendToPixerFeed quedó sustituido por DIST,
     //  el distribuidor con destino por pantalla, lote y programación — más abajo.)
 
-    grid.addEventListener('click', e => {
+    grid.addEventListener('click', async e => {
+      const dragTagsBtn = e.target.closest('[data-act="drag-tags"]');
+      if (dragTagsBtn) { e.preventDefault(); e.stopPropagation(); return; }
+      // "+ más": añadir metatags propias a este asset desde la lista (agrupar sin abrir
+      // el detalle). Acepta varias etiquetas separadas por comas. Reusa saveTags.
+      const moreBtn = e.target.closest('[data-act="add-tag-list"]');
+      if (moreBtn) {
+        e.preventDefault(); e.stopPropagation();
+        const sid = moreBtn.dataset.id;
+        const it = allItems.find(x => String(x.id || '').replace(/[^A-Za-z0-9-]/g, '') === sid);
+        if (!it) return;
+        const raw = prompt('Añadir etiquetas para agrupar (varias separadas por comas):');
+        if (raw == null) return;
+        const fresh = raw.split(',').map(s => s.trim().toLowerCase().replace(/^#+/, '')).filter(Boolean);
+        if (!fresh.length) return;
+        const next = Array.isArray(it.tags) ? it.tags.slice() : [];
+        for (const t of fresh) if (!next.includes(t)) next.push(t);
+        if (next.length > 12) { alert('Máximo 12 etiquetas por asset (auto + propias). Quita alguna antes.'); }
+        const saved = await saveTags(it.id, next);
+        if (saved) { it.tags = saved; applyFilters(); }
+        return;
+      }
       // Flechas del visor de mueble girable → cambia de cara (no abre lightbox)
       const arrow = e.target.closest('[data-act="furni-prev"], [data-act="furni-next"]');
       if (arrow) {
@@ -910,15 +1311,47 @@
         const badge = box.querySelector('.furni-rot-badge'); if (badge) badge.textContent = (idx + 1) + '/' + fr + ' 🔄';
         return;
       }
-      // Click en chip de tag → activa filtro por ese tag (no abre lightbox)
+      // Click en chip de tag → filtra por ese tag (no abre lightbox). Se aplaza
+      // ~220ms: si llega un doble-clic se cancela y se edita en su lugar (evita
+      // que applyFilters re-pinte el chip antes de poder editarlo).
       const tagBtn = e.target.closest('.stock-tag');
       if (tagBtn) {
         e.preventDefault();
         e.stopPropagation();
-        const t = tagBtn.dataset.tag || '';
-        filters.tag = (filters.tag === t) ? '' : t; // toggle
-        renderActiveTagBanner();
-        applyFilters(true);
+        if (tagBtn.dataset.editing === '1') return;
+        const t = (tagBtn.dataset.tag || '').toLowerCase();
+        clearTimeout(window.__tagClickTimer);
+        window.__tagClickTimer = setTimeout(() => {
+          const i = filters.tags.indexOf(t);   // toggle dentro del conjunto activo
+          if (i >= 0) filters.tags.splice(i, 1); else filters.tags.push(t);
+          renderActiveTagBanner();
+          applyFilters(true);
+        }, 220);
+        return;
+      }
+      // ▶ verde → reproducir AQUÍ (inline, pequeño), NO abrir el detalle.
+      const playMini = e.target.closest('[data-act="playmini"]');
+      if (playMini) {
+        e.preventDefault(); e.stopPropagation();
+        const media = playMini.closest('.stock-card-media');
+        if (media) {
+          let v = media.querySelector('video');
+          if (!v) {
+            // La card solo tenía el póster → creamos el <video> al vuelo.
+            v = document.createElement('video');
+            v.src = playMini.dataset.url || '';
+            v.controls = true; v.autoplay = true; v.playsInline = true;
+            v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;';
+            media.appendChild(v);
+          } else {
+            if (v.dataset.src && !v.src) v.src = v.dataset.src;
+            v.controls = true; v.style.pointerEvents = 'auto';
+            try { v.currentTime = 0; } catch (_) {}   // el preview estaba en ~1s; reproducir desde el inicio
+          }
+          v.muted = false;
+          v.play().catch(() => {});
+        }
+        playMini.remove();
         return;
       }
       // Casilla de selección en lote (no es .stock-card-btn) → togglear, sin lightbox
@@ -956,6 +1389,71 @@
       const item = allItems.find(i => i.id === card.dataset.id);
       if (item) openLightbox(item);
     });
+    // Doble-clic en un chip → renombrar inline (cancela el filtro aplazado).
+    grid.addEventListener('dblclick', e => {
+      const tagBtn = e.target.closest('.stock-tag');
+      if (!tagBtn) return;
+      e.preventDefault();
+      e.stopPropagation();
+      clearTimeout(window.__tagClickTimer);
+      startTagRename(tagBtn);
+    });
+    // Arrastra una etiqueta, o el tirador «⇄ tags», y suéltalo sobre otra
+    // tarjeta. El destino conserva sus etiquetas y recibe solo las que le faltan.
+    let draggedTags = [];
+    let draggedFromId = '';
+    function clearTagDropState() {
+      document.body.classList.remove('tag-dragging');
+      grid.querySelectorAll('.tag-drop-target,.tag-drag-source').forEach(el => el.classList.remove('tag-drop-target','tag-drag-source'));
+    }
+    grid.addEventListener('dragstart', e => {
+      const one = e.target.closest('[data-drag-tag]');
+      const all = e.target.closest('[data-act="drag-tags"]');
+      if (!one && !all) return;
+      const card = e.target.closest('.stock-card');
+      const source = card && allItems.find(it => String(it.id) === card.dataset.id);
+      if (!source) { e.preventDefault(); return; }
+      draggedTags = one ? [one.dataset.dragTag] : (source.tags || []).slice();
+      draggedTags = draggedTags.map(t => String(t).trim().replace(/^#+/, '')).filter(Boolean);
+      draggedFromId = String(source.id);
+      if (!draggedTags.length) { e.preventDefault(); return; }
+      e.target.classList.add('tag-drag-source');
+      document.body.classList.add('tag-dragging');
+      e.dataTransfer.effectAllowed = 'copy';
+      e.dataTransfer.setData('application/x-pixeria-tags', JSON.stringify({ tags: draggedTags, from: draggedFromId }));
+      e.dataTransfer.setData('text/plain', draggedTags.map(t => '#'+t).join(', '));
+    });
+    grid.addEventListener('dragover', e => {
+      if (!draggedTags.length) return;
+      const card = e.target.closest('.stock-card');
+      if (!card || card.dataset.id === draggedFromId) return;
+      e.preventDefault(); e.dataTransfer.dropEffect = 'copy';
+      grid.querySelectorAll('.tag-drop-target').forEach(el => { if (el !== card) el.classList.remove('tag-drop-target'); });
+      card.classList.add('tag-drop-target');
+    });
+    grid.addEventListener('dragleave', e => {
+      const card = e.target.closest('.stock-card');
+      if (card && !card.contains(e.relatedTarget)) card.classList.remove('tag-drop-target');
+    });
+    grid.addEventListener('drop', async e => {
+      const card = e.target.closest('.stock-card');
+      if (!card || !draggedTags.length || card.dataset.id === draggedFromId) { clearTagDropState(); return; }
+      e.preventDefault(); e.stopPropagation();
+      const target = allItems.find(it => String(it.id) === card.dataset.id);
+      const incoming = draggedTags.slice();
+      clearTagDropState();
+      if (!target) return;
+      const next = Array.isArray(target.tags) ? target.tags.slice() : [];
+      const seen = new Set(next.map(t => String(t).toLowerCase()));
+      const added = [];
+      for (const tag of incoming) if (!seen.has(tag.toLowerCase())) { seen.add(tag.toLowerCase()); next.push(tag); added.push(tag); }
+      if (!added.length) { status.textContent = `🏷️ ${target.title || target.prompt || target.id} ya tenía esas etiquetas`; return; }
+      if (next.length > 12) { status.textContent = '// máximo 12 etiquetas por asset'; alert('Máximo 12 etiquetas por asset.'); return; }
+      status.textContent = `🏷️ copiando ${added.map(t=>'#'+t).join(', ')}…`;
+      const saved = await saveTags(target.id, next);
+      if (saved) { target.tags = saved; status.textContent = `✓ ${added.map(t=>'#'+t).join(', ')} copiadas a ${target.title || target.prompt || target.id}`; applyFilters(false); }
+    });
+    grid.addEventListener('dragend', clearTagDropState);
     grid.addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
       const card = e.target.closest('.stock-card');
@@ -1024,9 +1522,22 @@
         .filter(Boolean);
     }
     async function load() {
-      status.textContent = '// cargando stock...';
       empty.hidden = true;
-      grid.innerHTML = '';
+      // 1) STALE-WHILE-REVALIDATE: pinta la copia guardada AL INSTANTE (sin esperar
+      //    a la red) → la galería aparece ya; luego refresca en segundo plano.
+      const cached = readCache();
+      const hadCache = !!(cached && cached.items.length);
+      if (hadCache) {
+        allItems = cached.items;
+        buildMotorOptions();
+        applyFilters();
+        feedMatrix();
+        status.textContent = '// actualizando…';
+      } else {
+        status.textContent = '// cargando stock...';
+        grid.innerHTML = '';
+      }
+      // 2) Refresco real en segundo plano.
       try {
         allItems = await fetchList();
         writeCache(allItems);
@@ -1035,13 +1546,8 @@
         status.textContent = '';
         feedMatrix();
       } catch (e) {
-        // Fallo de red/worker: NO es pérdida de datos. Si hay copia guardada, mostrarla.
-        const cached = readCache();
-        if (cached && cached.items.length) {
-          allItems = cached.items;
-          buildMotorOptions();
-          applyFilters();
-          feedMatrix();
+        // Fallo de red/worker: NO es pérdida de datos. Mantén la copia ya pintada.
+        if (hadCache) {
           const when = cached.ts ? fmtDate(new Date(cached.ts).toISOString()) : '';
           status.textContent = `// sin conexión con el servidor · mostrando copia guardada${when ? ' (' + when + ')' : ''} · pulsa ↻ para reintentar`;
         } else {
@@ -1191,15 +1697,32 @@
       const tsel = new Set();      // ids de pantallas destino elegidas
       let screens = [];            // [{screen, role, online, age_seconds, now}]
       let screensAt = 0;
+      let screensLoading = false;  // descubriendo pantallas: bloquea Distribuir
       let modalItems = [];         // assets a distribuir en la apertura actual
+      let priorityZero = false;    // envío Prioridad 0: AHORA + interrumpe lo emitido
       let queue = [];              // tareas en fallback local (scheduler caído)
       let serverTasks = [];        // tareas en el scheduler (fuente de verdad)
 
       const $ = id => document.getElementById(id);
       const kindOf = it => (it.type === 'video' || it.type === 'animation') ? 'video'
-                         : (it.type === 'audio' || it.type === 'music') ? 'audio' : 'image';
+                         : (it.type === 'audio' || it.type === 'locucion' || it.type === 'music') ? 'audio' : 'image';
       const labelOf = it => (it.title || it.prompt || it.id || 'asset').toString().slice(0, 60);
-      const snap = it => ({ kind: kindOf(it), src: it.url, title: it.title || it.prompt || '', mime: it.mime || null, label: labelOf(it) });
+      const pageUrl = () => `${location.origin}${location.pathname}`;
+      const sourceMeta = (s, extra) => Object.assign({
+        source: 'pixeria-stock',
+        page: document.title || 'Admira Studio Studio · Stock',
+        page_url: pageUrl(),
+        asset_id: s.assetId || '',
+        asset_label: s.label || s.title || '',
+      }, extra || {});
+      const snap = it => ({
+        kind: kindOf(it),
+        src: it.url,
+        title: it.title || it.prompt || '',
+        mime: it.mime || null,
+        label: labelOf(it),
+        assetId: it.id || '',
+      });
 
       // ── Selección en lote ──
       function isSelected(id) { return sel.has(id); }
@@ -1229,26 +1752,46 @@
       function selectedItems() { return allItems.filter(i => sel.has(i.id)); }
 
       // ── Pantallas ──
+      // fetch con timeout: si la red se cuelga, aborta en vez de dejar el modal
+      // eternamente en "cargando pantallas…".
+      function fetchTO(url, ms) {
+        const ac = new AbortController();
+        const t = setTimeout(() => ac.abort(), ms || 8000);
+        return fetch(url, { cache: 'no-store', signal: ac.signal }).finally(() => clearTimeout(t));
+      }
+      // Bloquea/reactiva el botón Distribuir mientras se descubren pantallas, para
+      // que no se pueda lanzar un envío sin destino resuelto.
+      function setScreensLoading(on) {
+        screensLoading = on;
+        const btn = $('distGo');
+        if (btn) btn.disabled = on;
+      }
       async function loadScreens(force) {
         const fresh = (Date.now() - screensAt) < 15000;
         if (!force && fresh && screens.length) { renderScreens(); return; }
+        setScreensLoading(true);
         $('distScreensSummary').textContent = 'cargando pantallas…';
         try {
-          const r = await fetch(`${STOCK_BASE}/signage/screens`, { cache: 'no-store' });
+          const r = await fetchTO(`${STOCK_BASE}/signage/screens`, 8000);
           const d = await r.json();
           screens = Array.isArray(d.screens) ? d.screens : [];
           screensAt = Date.now();
           // "ahora reproduciendo" por pantalla (solo online, para ahorrar)
           await Promise.all(screens.filter(s => s.online).map(async s => {
             try {
-              const rr = await fetch(`${STOCK_BASE}/signage/now?screen=${encodeURIComponent(s.screen)}`, { cache: 'no-store' });
+              const rr = await fetchTO(`${STOCK_BASE}/signage/now?screen=${encodeURIComponent(s.screen)}`, 6000);
               const dd = await rr.json();
               s.now = dd && dd.item ? (dd.item.title || dd.item.kind || '—') : null;
             } catch { s.now = null; }
           }));
         } catch (e) {
           screens = [];
-          $('distScreensSummary').textContent = 'error al cargar pantallas';
+          const aborted = e && e.name === 'AbortError';
+          $('distScreensSummary').textContent = aborted
+            ? 'sin respuesta al cargar pantallas · pulsa ↻ para reintentar'
+            : 'error al cargar pantallas · pulsa ↻ para reintentar';
+        } finally {
+          setScreensLoading(false);
         }
         renderScreens();
       }
@@ -1296,9 +1839,17 @@
       }
 
       // ── Envío ──
-      async function pushOne(s, target) {
-        const body = { kind: s.kind, src: s.src, title: s.title, mime: s.mime };
+      async function pushOne(s, target, origin, batchSize) {
+        const body = {
+          kind: s.kind, src: s.src, title: s.title, mime: s.mime,
+          meta: sourceMeta(s, {
+            dispatch_mode: origin || 'now',
+            selected_count: batchSize || 1,
+          }),
+        };
         if (target && target !== ALL) body.target = target;
+        // Prioridad 0 → la pantalla interrumpe lo que esté emitiendo y muestra esto ya.
+        if (priorityZero) { body.priority = 0; body.interrupt = true; }
         const r = await fetch(`${STOCK_BASE}/signage/push`, {
           method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
         });
@@ -1311,7 +1862,7 @@
         for (const s of snaps) {
           for (const t of targets) {
             let good = false;
-            try { await pushOne(s, t); ok++; good = true; } catch { fail++; }
+            try { await pushOne(s, t, origin, snaps.length); ok++; good = true; } catch { fail++; }
             logHistory({ ts: Date.now(), label: s.label, target: t, ok: good, via: origin || 'now' });
           }
         }
@@ -1459,12 +2010,14 @@
       }
       function open(items, opts) {
         opts = opts || {};
+        priorityZero = !!opts.priority0;
         modalItems = (items && items.length) ? items : selectedItems();
         if (!modalItems.length) { status.textContent = '// nada que distribuir: selecciona o usa 📡 en una tarjeta'; return; }
         applyTargets(opts.targetScreens);
-        setItemsNote(opts.label);
+        setItemsNote(priorityZero ? ('⚠ PRIORIDAD 0 (interrumpe lo que se emite) · ' + (opts.label || (modalItems.length + ' asset(s)'))) : opts.label);
         populateSource(opts.label);
         const nowRadio = document.querySelector('input[name="dist-mode"][value="now"]'); if (nowRadio) nowRadio.checked = true;
+        const modal = $('distModal'); if (modal) modal.classList.toggle('dist-prio0', priorityZero);
         $('distSched').classList.remove('show');
         document.querySelectorAll('.dist-franja').forEach(f => f.classList.remove('active'));
         renderScreens();
@@ -1486,6 +2039,7 @@
       function close() { const d = $('distModal'); if (d && d.open) d.close(); }
 
       async function go() {
+        if (screensLoading) { status.textContent = '// espera: aún descubriendo pantallas…'; return; }
         const mode = (document.querySelector('input[name="dist-mode"]:checked') || {}).value || 'now';
         const targets = tsel.has(ALL) ? [ALL] : Array.from(tsel);
         if (!targets.length) { status.textContent = '// elige al menos una pantalla (o TODAS)'; return; }
@@ -1495,8 +2049,10 @@
         try {
           if (mode === 'now') {
             status.textContent = `// distribuyendo ${snaps.length} asset(s) a ${targets.includes(ALL) ? 'todas' : targets.length + ' pantalla(s)'}…`;
-            const r = await distributeNow(snaps, targets);
-            status.textContent = `📡 distribuido: ${r.ok} envío(s) OK${r.fail ? ` · ${r.fail} fallo(s)` : ''} ${targets.includes(ALL) ? '(broadcast)' : ''}`;
+            const r = await distributeNow(snaps, targets, priorityZero ? 'prio0' : 'now');
+            status.textContent = priorityZero
+              ? `⚠ PRIORIDAD 0 enviada · interrumpido en ${targets.includes(ALL) ? 'TODAS las pantallas' : targets.length + ' pantalla(s)'} (${r.ok} OK${r.fail ? ` · ${r.fail} fallo(s)` : ''})`
+              : `📡 distribuido: ${r.ok} envío(s) OK${r.fail ? ` · ${r.fail} fallo(s)` : ''} ${targets.includes(ALL) ? '(broadcast)' : ''}`;
           } else {
             const whenVal = $('distWhen').value;
             if (!whenVal) { status.textContent = '// elige fecha/hora o una franja'; if (goBtn) goBtn.disabled = false; return; }
@@ -1506,8 +2062,17 @@
             const everyMin = Math.max(1, Math.min(240, parseInt($('distEvery').value, 10) || 5));
             const res = await enqueue(snaps, targets, fireAt, passes, everyMin);
             const d = new Date(fireAt);
-            const where = res.server ? 'en el servidor (saldrá aunque cierres)' : '📍 local (requiere esta pestaña abierta)';
-            status.textContent = `⏰ programado ${where} para ${d.toLocaleString('es')} · ${passes} pase(s) cada ${everyMin}m`;
+            const when = d.toLocaleString('es');
+            if (res.server) {
+              status.textContent = `⏰ programado en el servidor (saldrá aunque cierres) para ${when} · ${passes} pase(s) cada ${everyMin}m`;
+            } else {
+              // Fallback local: el scheduler de servidor no respondió, así que el
+              // envío SOLO saldrá si esta pestaña sigue abierta a esa hora. Aviso
+              // reforzado (no es un simple "programado") para que no pase inadvertido.
+              status.textContent = `⚠️ SCHEDULER OFFLINE — programado SOLO en local para ${when}. NO cierres ni recargues esta pestaña o el envío (${passes} pase/s cada ${everyMin}m) NO saldrá. Reintenta más tarde para subirlo al servidor.`;
+              status.classList.add('sched-local-warn');
+              setTimeout(() => status.classList.remove('sched-local-warn'), 12000);
+            }
           }
           close();
           clearSelection();
@@ -1599,7 +2164,14 @@
       const SRC = 'https://admira.app/circuits.json';
       const $ = id => document.getElementById(id);
       let playlists = [];
-      let draft = { id: null, name: '', items: [], scope: '', circuitId: '', locId: '' };
+      let draft = { id: null, name: '', items: [], scope: '', circuitId: '', locId: '', criterionTags: [], criterionMode: 'or' };
+      // Criterio normalizado de una playlist/draft (soporta el legacy criterionTag).
+      const critTags = p => {
+        if (p && Array.isArray(p.criterionTags) && p.criterionTags.length) return { tags: p.criterionTags, mode: p.criterionMode || 'or' };
+        if (p && p.criterionTag) return { tags: [p.criterionTag], mode: 'or' };
+        return null;
+      };
+      const critLabel = c => c.tags.map(t => '#' + t).join(c.mode === 'and' ? ' Y ' : ' O ');
       let circuits = [], scopes = null;
       const lang = () => ((document.documentElement.lang || 'es').slice(0, 2) === 'en') ? 'en' : 'es';
       const clabel = c => (c.label && (c.label[lang()] || c.label.es || c.label.en)) || c.id;
@@ -1624,7 +2196,7 @@
       function fillScopes() { const s = $('plScope'); if (!s || !scopes) return; const ord = scopes.order || Object.keys(scopes.labels || {}); s.innerHTML = ord.map(x => '<option value="' + x + '">' + ((scopes.labels && scopes.labels[x] && (scopes.labels[x][lang()] || scopes.labels[x].es)) || x) + '</option>').join(''); if (!draft.scope) draft.scope = (scopes.order && scopes.order[0]) || ''; s.value = draft.scope; }
       function fillCircuits() { const s = $('plCircuit'); if (!s) return; const ls = circuitsForScope(); s.innerHTML = '<option value="">— circuito —</option>' + ls.map(c => '<option value="' + c.id + '">' + clabel(c) + ' · ' + c.pointCount + ' pts</option>').join(''); s.value = draft.circuitId; }
       function fillLocations() { const s = $('plLocation'); if (!s) return; const c = byId(draft.circuitId); if (!c) { s.innerHTML = '<option value="">— todo el circuito —</option>'; return; } const pts = c.points || []; s.innerHTML = '<option value="">— todo el circuito (' + c.pointCount + ') —</option>' + pts.map(p => '<option value="' + p.id + '">' + (p.name || p.id) + (p.addr ? ' · ' + p.addr : '') + '</option>').join(''); s.value = draft.locId; }
-      function renderCircuitInfo() { const box = $('plCircuitInfo'); if (!box) return; const c = byId(draft.circuitId); if (!c) { box.textContent = ''; return; } const loc = draft.locId && (c.points || []).find(p => p.id === draft.locId); const scr = (c.screens || []).length; box.innerHTML = 'cliente <code>' + c.client + '</code> · ' + (loc ? '📍 ' + (loc.name || loc.id) : c.pointCount + ' Xpacios') + ' · ' + scr + ' pantalla(s) real(es)'; }
+      function renderCircuitInfo() { const box = $('plCircuitInfo'); if (!box) return; const c = byId(draft.circuitId); if (!c) { box.textContent = ''; return; } const loc = draft.locId && (c.points || []).find(p => p.id === draft.locId); const scr = (c.screens || []).length; const repLoc = encodeURIComponent(c.client || c.id); box.innerHTML = 'cliente <code>' + c.client + '</code> · ' + (loc ? '📍 ' + (loc.name || loc.id) : c.pointCount + ' Xpacios') + ' · ' + scr + ' pantalla(s) real(es)' + '<br><a href="https://www.clearchannel.tv/detail.html?loc=' + repLoc + '" target="_blank" rel="noopener" style="color:var(--matrix);font-weight:600;text-decoration:none;">📡 Informe de audiencia verificada (clearchannel.tv) →</a>'; }
 
       // Lista de assets del stock filtrada por tipo (para añadir a la playlist).
       let pickType = '';
@@ -1644,39 +2216,137 @@
       function renderSaved() {
         const box = $('plSaved'); if (!box) return;
         if (!playlists.length) { box.innerHTML = ''; return; }
-        box.innerHTML = '<div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Tus playlists:</div>' + playlists.map(p =>
-          '<div class="pl-saved-row" data-id="' + escAttr(p.id) + '"><span class="pl-nm">🎵 ' + escAttr(p.name || 'playlist') + '</span><span class="pl-meta">' + (p.items || []).length + ' items' + (p.circuit ? ' · ' + escAttr((p.circuit.label && (p.circuit.label[lang()] || p.circuit.label.es)) || p.circuit.id) : '') + '</span>'
-          + '<button type="button" class="pl-mini" data-act="edit">editar</button><button type="button" class="pl-mini" data-act="dist">📡 distribuir</button><button type="button" class="pl-mini danger" data-act="del">✕</button></div>').join('');
+        box.innerHTML = '<div style="font-size:11px;color:var(--muted);margin-bottom:2px;">Tus playlists:</div>' + playlists.map(p => {
+          const c = critTags(p);
+          const live = c ? liveItemsForCriterion(c.tags, c.mode).length : (p.items || []).length;
+          const smart = c ? '<span class="pl-smart-badge" title="Playlist inteligente: se actualiza sola con ' + escAttr(critLabel(c)) + '">🏷️ ' + c.tags.map(t => '#' + escAttr(t)).join(c.mode === 'and' ? ' Y ' : ' O ') + '</span> ' : '';
+          return '<div class="pl-saved-row" data-id="' + escAttr(p.id) + '"><span class="pl-nm">🎵 ' + escAttr(p.name || 'playlist') + '</span><span class="pl-meta">' + smart + live + ' items' + (c ? ' · auto' : '') + (p.circuit ? ' · ' + escAttr((p.circuit.label && (p.circuit.label[lang()] || p.circuit.label.es)) || p.circuit.id) : '') + '</span>'
+          + '<button type="button" class="pl-mini" data-act="play">▶</button><button type="button" class="pl-mini" data-act="edit">editar</button><button type="button" class="pl-mini" data-act="dist">📡 distribuir</button><button type="button" class="pl-mini danger" data-act="del">✕</button></div>';
+        }).join('');
       }
 
       function addItem(it) { if (it && !draft.items.some(x => x.id === it.id)) { draft.items.push({ id: it.id, type: displayType(it), url: it.url, title: it.title || it.prompt || it.id, mime: it.mime || null }); renderItems(); renderPick(); } }
       function removeItem(id) { draft.items = draft.items.filter(x => x.id !== id); renderItems(); renderPick(); }
 
+      // Assets vivos que cumplen un criterio de etiquetas (para playlists
+      // inteligentes). Se recalcula desde allItems → recoge lo recién publicado.
+      function liveItemsForCriterion(tags, mode) {
+        return matchItemsByTags(tags, mode).map(it => ({ id: it.id, type: displayType(it), url: it.url, title: it.title || it.prompt || it.id, mime: it.mime || null }));
+      }
+      // Aviso "playlist inteligente" en el builder + botón para convertirla en fija.
+      function renderSmartNote() {
+        const box = $('plSmartNote'); if (!box) return;
+        const c = critTags(draft);
+        if (!c) { box.hidden = true; box.innerHTML = ''; return; }
+        box.hidden = false;
+        const txt = c.tags.map(t => '#' + String(t).replace(/</g, '&lt;')).join(c.mode === 'and' ? ' Y ' : ' O ');
+        box.innerHTML = '🏷️ <b>Playlist inteligente</b> — se actualiza sola con <b>' + txt + '</b> (' + draft.items.length + ' assets ahora). '
+          + '<button type="button" class="pl-smart-clear" title="Convertir en lista fija (deja de auto-actualizarse)">hacer fija ✕</button>';
+        const clr = box.querySelector('.pl-smart-clear');
+        if (clr) clr.addEventListener('click', () => { draft.criterionTags = []; draft.criterionMode = 'or'; renderSmartNote(); });
+      }
+
       function currentCircuitObj() { const c = byId(draft.circuitId); if (!c) return null; const loc = draft.locId && (c.points || []).find(p => p.id === draft.locId); return { circuit: { id: c.id, client: c.client, scope: c.scope, label: c.label, screens: c.screens || [] }, location: loc ? { id: loc.id, name: loc.name, addr: loc.addr } : null }; }
       function persistDraft() {
+        // Inteligente: refresca los items desde el criterio antes de guardar.
+        const dc = critTags(draft);
+        if (dc) draft.items = liveItemsForCriterion(dc.tags, dc.mode);
         if (!draft.items.length) { status.textContent = '// la playlist no tiene elementos'; return null; }
         const cc = currentCircuitObj();
-        const p = { id: draft.id || ('pl-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6)), name: (draft.name || $('plName').value || 'Playlist').trim().slice(0, 60), items: draft.items.slice(), circuit: cc ? cc.circuit : null, location: cc ? cc.location : null, updatedAt: Date.now() };
+        const p = { id: draft.id || ('pl-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6)), name: (draft.name || $('plName').value || 'Playlist').trim().slice(0, 60), items: draft.items.slice(), criterionTags: dc ? dc.tags.slice() : null, criterionMode: dc ? dc.mode : null, circuit: cc ? cc.circuit : null, location: cc ? cc.location : null, updatedAt: Date.now() };
         const i = playlists.findIndex(x => x.id === p.id);
         if (i >= 0) playlists[i] = p; else playlists.unshift(p);
         save(); renderSaved();
         return p;
       }
 
-      function open(seedItems) {
+      function open(seedItems, opts) {
         load();
-        draft = { id: null, name: '', items: [], scope: '', circuitId: '', locId: '' };
+        draft = { id: null, name: '', items: [], scope: '', circuitId: '', locId: '', criterionTags: [], criterionMode: 'or' };
+        // Criterio de etiqueta(s) → playlist INTELIGENTE (se auto-actualiza). Si
+        // viene criterio, los items se derivan en vivo (ignora seedItems sueltos).
+        let crit = null;
+        if (opts && Array.isArray(opts.tags) && opts.tags.length) crit = { tags: opts.tags.slice(), mode: opts.tagMode || 'or' };
+        else if (opts && opts.tag) crit = { tags: [String(opts.tag)], mode: 'or' };
+        if (crit) { draft.criterionTags = crit.tags; draft.criterionMode = crit.mode; seedItems = liveItemsForCriterion(crit.tags, crit.mode); }
         if (seedItems && seedItems.length) seedItems.forEach(it => { if (!draft.items.some(x => x.id === it.id)) draft.items.push({ id: it.id, type: displayType(it), url: it.url, title: it.title || it.prompt || it.id, mime: it.mime || null }); });
         $('plName').value = '';
-        renderSaved(); renderItems(); pickType = ''; document.querySelectorAll('.pl-type').forEach(b => b.classList.toggle('active', b.dataset.t === '')); renderPick();
+        // Nombre sugerido (p.ej. al crear la playlist desde un filtro de etiqueta).
+        if (opts && opts.name) { draft.name = String(opts.name); $('plName').value = draft.name; }
+        renderSaved(); renderItems(); renderSmartNote(); pickType = ''; document.querySelectorAll('.pl-type').forEach(b => b.classList.toggle('active', b.dataset.t === '')); renderPick();
         const dlg = $('plModal'); if (dlg && !dlg.open) dlg.showModal();
         loadCircuits().then(() => { fillScopes(); fillCircuits(); fillLocations(); renderCircuitInfo(); });
       }
-      function editPlaylist(id) { const p = get(id); if (!p) return; draft = { id: p.id, name: p.name, items: (p.items || []).slice(), scope: (p.circuit && p.circuit.scope) || '', circuitId: (p.circuit && p.circuit.id) || '', locId: (p.location && p.location.id) || '' }; $('plName').value = p.name || ''; renderItems(); renderPick(); fillScopes(); fillCircuits(); fillLocations(); renderCircuitInfo(); }
+      function editPlaylist(id) { const p = get(id); if (!p) return; const ec = critTags(p); draft = { id: p.id, name: p.name, items: (p.items || []).slice(), scope: (p.circuit && p.circuit.scope) || '', circuitId: (p.circuit && p.circuit.id) || '', locId: (p.location && p.location.id) || '', criterionTags: ec ? ec.tags.slice() : [], criterionMode: ec ? ec.mode : 'or' }; if (ec) draft.items = liveItemsForCriterion(ec.tags, ec.mode); $('plName').value = p.name || ''; renderItems(); renderSmartNote(); renderPick(); fillScopes(); fillCircuits(); fillLocations(); renderCircuitInfo(); }
       function distributePlaylist(id) {
         const p = get(id); if (!p) return;
+        // Inteligente: recoge los assets actuales del criterio (incluye lo recién
+        // publicado) y guarda el refresco antes de distribuir.
+        const pc = critTags(p);
+        if (pc) { p.items = liveItemsForCriterion(pc.tags, pc.mode); p.updatedAt = Date.now(); save(); renderSaved(); }
+        const items = (p.items || []).slice();
+        if (!items.length) { status.textContent = '// la playlist «' + (p.name || '') + '» no tiene assets' + (pc ? ' con el criterio ' + critLabel(pc) : ''); return; }
         const dlg = $('plModal'); if (dlg && dlg.open) dlg.close();
-        DIST.open((p.items || []).slice(), { label: '🎵 ' + (p.name || 'playlist') + ' · ' + (p.items || []).length + ' items' + (p.location ? ' → ' + p.location.name : (p.circuit ? ' → ' + ((p.circuit.label && (p.circuit.label[lang()] || p.circuit.label.es)) || p.circuit.id) : '')), targetScreens: resolveScreens(p) });
+        DIST.open(items, { label: '🎵 ' + (p.name || 'playlist') + ' · ' + items.length + ' items' + (p.location ? ' → ' + p.location.name : (p.circuit ? ' → ' + ((p.circuit.label && (p.circuit.label[lang()] || p.circuit.label.es)) || p.circuit.id) : '')), targetScreens: resolveScreens(p) });
+      }
+
+      // Reproduce una playlist en un overlay (vista previa secuencial, como se
+      // verá en pantalla): vídeo/audio avanzan al terminar, las imágenes 5s. Con
+      // botón "Distribuir" para, si está OK, empujarla a la red/punto (DIST →
+      // circuitos de admira.app/xpaceos.com).
+      function playPreview(items, onDistribute) {
+        items = (items || []).filter(it => it && it.url);
+        if (!items.length) { status.textContent = '// la playlist no tiene assets que reproducir'; return; }
+        const old = document.getElementById('plPlayer'); if (old) { try { old.close(); } catch (_) {} old.remove(); }
+        // <dialog> + showModal → top layer, ENCIMA del modal builder (un z-index
+        // normal quedaría por debajo de otro dialog abierto).
+        const ov = document.createElement('dialog'); ov.id = 'plPlayer'; ov.className = 'pl-player'; document.body.appendChild(ov);
+        try { ov.showModal(); } catch (_) {}
+        let idx = 0, timer = null;
+        // Silencio GLOBAL de la playlist: un solo botón muta todos los vídeos/audios
+        // del previo (antes había que mutearlos uno a uno). Recuerda la preferencia.
+        let muted = false; try { muted = localStorage.getItem('pl_player_muted') === '1'; } catch (_) {}
+        const clear = () => { if (timer) { clearTimeout(timer); timer = null; } };
+        const close = () => { clear(); try { ov.close(); } catch (_) {} ov.remove(); };
+        ov.addEventListener('close', () => { clear(); if (ov.isConnected) ov.remove(); });   // Escape
+        const next = () => { clear(); if (idx + 1 < items.length) { idx++; render(); } };
+        const prev = () => { clear(); if (idx > 0) { idx--; render(); } };
+        function render() {
+          const it = items[idx];
+          const isVid = it.type === 'video' || it.type === 'animation';
+          const isAud = it.type === 'audio' || it.type === 'locucion' || it.type === 'music';
+          const media = isVid ? `<video src="${escAttr(it.url)}" autoplay controls playsinline></video>`
+            : isAud ? `<div class="pl-player-cover">🎵</div><audio src="${escAttr(it.url)}" autoplay controls style="width:90%"></audio>`
+            : `<img src="${escAttr(it.url)}" alt="">`;
+          const last = idx + 1 >= items.length;
+          ov.innerHTML = `<div class="pl-player-box">
+            <div class="pl-player-head"><span>▶ ${idx + 1}/${items.length} · ${escAttr(String(it.title || 'asset').slice(0, 60))}</span><span style="flex:1"></span><button type="button" class="pl-mini" data-plp="mute" title="Silencia toda la playlist">${muted ? '🔇 Silenciado' : '🔊 Sonido'}</button><button type="button" class="pl-mini" data-plp="close">✕ cerrar</button></div>
+            <div class="pl-player-media">${media}</div>
+            <div class="pl-player-foot">
+              <button type="button" class="pl-mini" data-plp="prev" ${idx === 0 ? 'disabled' : ''}>‹ anterior</button>
+              <button type="button" class="pl-mini" data-plp="next" ${last ? 'disabled' : ''}>siguiente ›</button>
+              <span style="flex:1"></span>
+              ${onDistribute ? '<button type="button" class="btn primary" data-plp="dist">✓ Distribuir a pantallas</button>' : ''}
+            </div></div>`;
+          const m = ov.querySelector('video, audio');
+          if (m) { m.muted = muted; m.addEventListener('ended', next); m.play && m.play().catch(() => {}); }
+          else { timer = setTimeout(next, 5000); }   // imagen → 5s
+        }
+        ov.addEventListener('click', e => {
+          const b = e.target.closest('[data-plp]');
+          if (!b) { if (e.target === ov) close(); return; }
+          const a = b.dataset.plp;
+          if (a === 'close') close();
+          else if (a === 'next') next();
+          else if (a === 'prev') prev();
+          else if (a === 'mute') {   // silencio global, en vivo (sin reiniciar el vídeo)
+            muted = !muted; try { localStorage.setItem('pl_player_muted', muted ? '1' : '0'); } catch (_) {}
+            const m = ov.querySelector('video, audio'); if (m) m.muted = muted;
+            b.textContent = muted ? '🔇 Silenciado' : '🔊 Sonido';
+          }
+          else if (a === 'dist') { close(); if (onDistribute) onDistribute(); }
+        });
+        render();
       }
 
       function init() {
@@ -1687,7 +2357,8 @@
         $('plScope').addEventListener('change', () => { draft.scope = $('plScope').value; draft.circuitId = ''; draft.locId = ''; fillCircuits(); fillLocations(); renderCircuitInfo(); });
         $('plCircuit').addEventListener('change', () => { draft.circuitId = $('plCircuit').value; draft.locId = ''; fillLocations(); renderCircuitInfo(); });
         $('plLocation').addEventListener('change', () => { draft.locId = $('plLocation').value; renderCircuitInfo(); });
-        $('plSaved').addEventListener('click', e => { const row = e.target.closest('.pl-saved-row'); const act = e.target.closest('[data-act]'); if (!row || !act) return; const id = row.dataset.id; if (act.dataset.act === 'edit') editPlaylist(id); else if (act.dataset.act === 'dist') distributePlaylist(id); else if (act.dataset.act === 'del') { playlists = playlists.filter(x => x.id !== id); save(); renderSaved(); } });
+        $('plSaved').addEventListener('click', e => { const row = e.target.closest('.pl-saved-row'); const act = e.target.closest('[data-act]'); if (!row || !act) return; const id = row.dataset.id; if (act.dataset.act === 'edit') editPlaylist(id); else if (act.dataset.act === 'dist') distributePlaylist(id); else if (act.dataset.act === 'play') { const p = get(id); if (p) { const pc = critTags(p); const items = pc ? liveItemsForCriterion(pc.tags, pc.mode) : (p.items || []); playPreview(items, () => distributePlaylist(id)); } } else if (act.dataset.act === 'del') { playlists = playlists.filter(x => x.id !== id); save(); renderSaved(); } });
+        const plPlay = $('plPlay'); if (plPlay) plPlay.addEventListener('click', () => { const dc = critTags(draft); const items = dc ? liveItemsForCriterion(dc.tags, dc.mode) : draft.items; playPreview(items, () => { const p = persistDraft(); if (p) distributePlaylist(p.id); }); });
         $('plSave').addEventListener('click', () => { const p = persistDraft(); if (p) { status.textContent = '🎵 playlist «' + p.name + '» guardada (' + p.items.length + ' items)'; const d = $('plModal'); if (d && d.open) d.close(); } });
         $('plSaveDist').addEventListener('click', () => { const p = persistDraft(); if (p) distributePlaylist(p.id); });
         $('plCancel').addEventListener('click', () => { const d = $('plModal'); if (d && d.open) d.close(); });
@@ -1696,13 +2367,145 @@
     })();
     window.PL = PL;
 
+    // ── GESTOR DE ETIQUETAS ───────────────────────────────────────────────────
+    // Vista global de todas las etiquetas con recuento, detección de casi-
+    // duplicados (deburr + distancia de edición) para fusionarlos, y renombrar/
+    // borrar en todo el Stock. Base limpia para filtros y playlists por metadata.
+    const TM = (function () {
+      const $ = id => document.getElementById(id);
+      let q = '';
+      const deburr = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      function lev(a, b) {
+        const m = a.length, n = b.length; if (!m) return n; if (!n) return m;
+        let prev = Array.from({ length: n + 1 }, (_, j) => j), cur = new Array(n + 1);
+        for (let i = 1; i <= m; i++) { cur[0] = i; for (let j = 1; j <= n; j++) { const c = a[i - 1] === b[j - 1] ? 0 : 1; cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + c); } [prev, cur] = [cur, prev]; }
+        return prev[n];
+      }
+      function aggregate() {
+        const m = new Map();
+        (typeof allItems !== 'undefined' ? allItems : []).forEach(it => { if (!Array.isArray(it.tags)) return; it.tags.forEach(t => { const key = String(t).toLowerCase(); const e = m.get(key) || { tag: String(t), count: 0 }; e.count++; m.set(key, e); }); });
+        return [...m.values()].sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+      }
+      function similar(a, b) {
+        const da = deburr(a), db = deburr(b); if (da === db) return true;
+        const mn = Math.min(da.length, db.length); if (mn < 3) return false;
+        if (mn >= 4 && (da.startsWith(db) || db.startsWith(da))) return true;
+        // Distancia de edición solo para tags de ≥5 letras (los cortos como
+        // gpu/cpu, sol/sal dan falsos positivos con distancia 1).
+        if (mn >= 5) return lev(da, db) <= (mn <= 6 ? 1 : 2);
+        return false;
+      }
+      function clusters(list) {
+        const n = list.length, parent = list.map((_, i) => i);
+        const find = x => { while (parent[x] !== x) { parent[x] = parent[parent[x]]; x = parent[x]; } return x; };
+        for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) if (similar(list[i].tag, list[j].tag)) { const ri = find(i), rj = find(j); if (ri !== rj) parent[ri] = rj; }
+        const groups = new Map();
+        for (let i = 0; i < n; i++) { const r = find(i); if (!groups.has(r)) groups.set(r, []); groups.get(r).push(list[i]); }
+        return [...groups.values()].filter(g => g.length > 1).map(g => ({ canon: g.slice().sort((a, b) => b.count - a.count || a.tag.length - b.tag.length || a.tag.localeCompare(b.tag))[0], members: g }));
+      }
+      function render() {
+        const list = aggregate();
+        const sug = $('tmSuggest'), lst = $('tmList');
+        if (sug) {
+          const cls = clusters(list);
+          sug.innerHTML = cls.length ? ('<div class="tm-sub">Posibles duplicados — fusiona en uno:</div>' + cls.map(c => {
+            const members = c.members.map(m => '#' + escAttr(m.tag) + ' (' + m.count + ')').join(', ');
+            return '<div class="tm-clu"><span class="tm-clu-info">' + members + ' → <b>#' + escAttr(c.canon.tag) + '</b></span><button type="button" class="pl-mini" data-tm="merge" data-canon="' + escAttr(c.canon.tag) + '" data-members="' + escAttr(c.members.map(m => m.tag).join('|')) + '">fusionar</button></div>';
+          }).join('')) : '';
+        }
+        const ql = q.toLowerCase(), rows = list.filter(e => !ql || e.tag.toLowerCase().includes(ql));
+        if (lst) lst.innerHTML = rows.length ? rows.map(e =>
+          '<div class="tm-row"><button type="button" class="tm-name" data-tm="filter" data-tag="' + escAttr(e.tag) + '" title="Filtrar por #' + escAttr(e.tag) + '">#' + escAttr(e.tag) + '</button><span class="tm-count">' + e.count + '</span><button type="button" class="pl-mini" data-tm="rename" data-tag="' + escAttr(e.tag) + '">renombrar</button><button type="button" class="pl-mini danger" data-tm="del" data-tag="' + escAttr(e.tag) + '">borrar</button></div>'
+        ).join('') : '<div class="pl-empty">Sin etiquetas que coincidan.</div>';
+      }
+      async function merge(canon, members) {
+        const others = members.filter(t => t.toLowerCase() !== canon.toLowerCase());
+        if (!others.length) return;
+        if (!confirm('Fusionar ' + others.map(t => '#' + t).join(', ') + ' en #' + canon + '?\n\nSe renombran en todo el Stock.')) return;
+        for (const t of others) await renameTagGlobal(t, canon);
+        render();
+      }
+      function open() { q = ''; if ($('tmSearch')) $('tmSearch').value = ''; render(); const d = $('tagMgrModal'); if (d && !d.open) d.showModal(); }
+      function init() {
+        const btn = $('tagMgrBtn'); if (btn) btn.addEventListener('click', open);
+        const close = $('tmClose'); if (close) close.addEventListener('click', () => { const d = $('tagMgrModal'); if (d && d.open) d.close(); });
+        const s = $('tmSearch'); if (s) s.addEventListener('input', () => { q = s.value.trim(); render(); });
+        const sug = $('tmSuggest'); if (sug) sug.addEventListener('click', e => { const b = e.target.closest('[data-tm="merge"]'); if (b) merge(b.dataset.canon, (b.dataset.members || '').split('|').filter(Boolean)); });
+        const lst = $('tmList'); if (lst) lst.addEventListener('click', async e => {
+          const b = e.target.closest('[data-tm]'); if (!b) return; const tag = b.dataset.tag;
+          if (b.dataset.tm === 'filter') { const tl = tag.toLowerCase(); if (!filters.tags.includes(tl)) filters.tags.push(tl); renderActiveTagBanner(); applyFilters(true); const d = $('tagMgrModal'); if (d && d.open) d.close(); }
+          else if (b.dataset.tm === 'rename') { const nv = prompt('Renombrar #' + tag + ' en todo el Stock a:', tag); if (nv && nv.trim() && nv.trim().toLowerCase() !== tag.toLowerCase()) { await renameTagGlobal(tag, nv.trim()); render(); } }
+          else if (b.dataset.tm === 'del') { if (confirm('Borrar #' + tag + ' de TODOS los assets que la tienen?')) { await deleteTagGlobal(tag); render(); } }
+        });
+      }
+      return { open, init, render };
+    })();
+    window.TM = TM;
+
     (async () => {
       DIST.init();
       PL.init();
+      TM.init();
       await load();
       setTimeout(highlightFromQuery, 80);
     })();
   })();
   </script>
+  <script>
+  // ── CAMPAÑAS: pinta las series empaquetadas (p.ej. #sabiasqueXtanco) ──────
+  // Manifiesto: /campanas/index.json (ids) → /campanas/<id>/feed.json (detalle).
+  // Autocontenido: si el manifiesto no existe o falla, la sección queda oculta.
+  (function(){
+    const sec = document.getElementById('campSection');
+    const grid = document.getElementById('campGrid');
+    if(!sec || !grid) return;
+    const esc = s => String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const segText = s => s ? Object.entries(s).map(([k,v])=>`${k}: ${v}`).join(' · ') : '';
+    fetch('/campanas/index.json', {cache:'no-store'})
+      .then(r => r.ok ? r.json() : null)
+      .then(async idx => {
+        const ids = (idx && Array.isArray(idx.campaigns)) ? idx.campaigns : [];
+        if(!ids.length) return;
+        const feeds = (await Promise.allSettled(ids.map(id =>
+          fetch(`/campanas/${encodeURIComponent(id)}/feed.json`, {cache:'no-store'})
+            .then(r => r.ok ? r.json() : null)
+            .then(f => f && { id, ...f })
+        ))).map(r => r.status==='fulfilled' ? r.value : null).filter(Boolean);
+        if(!feeds.length) return;
+        const cnt = document.getElementById('campCount');
+        if(cnt) cnt.textContent = feeds.length;
+        grid.innerHTML = feeds.map(c => {
+          const base = `/campanas/${encodeURIComponent(c.id)}/`;
+          const player = base + (c.player || 'bucle.html');
+          const items = (c.items||[]).map(it =>
+            `<li><a href="${esc(base + it.url)}" target="_blank" rel="noopener">${esc(it.title||it.id)}</a>${it.segment ? ` <span class="camp-seg">${esc(segText(it.segment))}</span>` : ''}</li>`
+          ).join('');
+          const tags = (c.tags||[]).map(t => `<span class="camp-tag">#${esc(t)}</span>`).join('');
+          const meta = [
+            `${(c.items||[]).length} piezas`,
+            c.dwell_ms ? Math.round(c.dwell_ms/1000)+' s/pieza' : '',
+            c.updatedAt ? esc(c.updatedAt) : ''
+          ].filter(Boolean).join(' · ');
+          return `<article class="camp-card">
+            <a class="camp-prevlink" href="${esc(player)}" target="_blank" rel="noopener" title="Abrir el bucle a pantalla completa">
+              <iframe class="camp-prev" src="${esc(player)}" loading="lazy" tabindex="-1" title="Preview ${esc(c.title||c.id)}"></iframe>
+            </a>
+            <div class="camp-body">
+              <h3>${esc(c.title||c.id)}</h3>
+              <div class="camp-tags">${tags}${c.target ? `<span class="camp-target">→ ${esc(c.target)}</span>` : ''}</div>
+              <ul class="camp-items">${items}</ul>
+              <div class="camp-actions">
+                <a class="btn primary" href="${esc(player)}" target="_blank" rel="noopener">▶ Ver bucle</a>
+                <span class="camp-meta">${meta}</span>
+              </div>
+            </div>
+          </article>`;
+        }).join('');
+        sec.hidden = false;
+      })
+      .catch(()=>{});
+  })();
+  </script>
+  <script defer src="/assets/cuadratura.js?v=20260714-nav-rails3"></script>
 </body>
 </html>

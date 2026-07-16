@@ -1,25 +1,198 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://www.admira.studio/</loc><lastmod>2026-06-09</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://www.admira.studio/concepto.html</loc><lastmod>2026-06-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.admira.studio/plataforma.html</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.admira.studio/crear/</loc><lastmod>2026-06-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.admira.studio/crear-campana/</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.admira.studio/labs/</loc><lastmod>2026-06-09</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.admira.studio/stock.html</loc><lastmod>2026-06-09</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.admira.studio/video.html</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.admira.studio/imagenes.html</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.admira.studio/audio.html</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.admira.studio/musica.html</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.admira.studio/publicidad.html</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.admira.studio/avatar.html</loc><lastmod>2026-06-10</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.admira.studio/signage.html</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.admira.studio/admira-xp.html</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.admira.studio/xtore.html</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.admira.studio/documentacion/</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.admira.studio/calendario/</loc><lastmod>2026-06-09</lastmod><changefreq>weekly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.admira.studio/en/</loc><lastmod>2026-06-09</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.admira.studio/en/concepto.html</loc><lastmod>2026-06-09</lastmod><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.admira.studio/en/avatar.html</loc><lastmod>2026-06-10</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.admira.studio/en/crear-campana/</loc><lastmod>2026-06-09</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://www.admira.studio/</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/"/>
+  </url>
+  <url><loc>https://www.admira.studio/concepto.html</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/concepto.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/concepto.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/concepto.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/concepto.html</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/concepto.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/concepto.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/concepto.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/plataforma.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/plataforma.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/plataforma.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/plataforma.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/plataforma.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/plataforma.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/plataforma.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/plataforma.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/radar/</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/radar/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/radar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/radar/"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/radar/</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/radar/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/radar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/radar/"/>
+  </url>
+  <url><loc>https://www.admira.studio/crear/</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/crear/"/>
+  </url>
+  <url><loc>https://www.admira.studio/crear-campana/</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/crear-campana/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/crear-campana/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/crear-campana/"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/crear-campana/</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/crear-campana/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/crear-campana/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/crear-campana/"/>
+  </url>
+  <url><loc>https://www.admira.studio/labs/</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/labs/"/>
+  </url>
+  <url><loc>https://www.admira.studio/stock.html</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/stock.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/stock.html</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/stock.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/director.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/director.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/director.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/director.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/director.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/director.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/director.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/director.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/video.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/video.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/video.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/video.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/video.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/video.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/video.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/video.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/imagenes.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/imagenes.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/imagenes.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/imagenes.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/imagenes.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/imagenes.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/imagenes.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/imagenes.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/audio.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/audio.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/audio.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/audio.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/audio.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/audio.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/audio.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/audio.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/musica.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/musica.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/musica.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/musica.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/musica.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/musica.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/musica.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/musica.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/publicidad.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/publicidad.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/publicidad.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/publicidad.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/publicidad.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/publicidad.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/publicidad.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/publicidad.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/avatar.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/avatar.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/avatar.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/avatar.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/avatar.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/avatar.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/avatar.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/avatar.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/signage.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/signage.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/signage.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/signage.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/signage.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/signage.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/signage.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/signage.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/admira-xp.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/admira-xp.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/admira-xp.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/admira-xp.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/admira-xp.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/admira-xp.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/admira-xp.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/admira-xp.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/anonimizador.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/anonimizador.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/anonimizador.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/anonimizador.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/anonimizador.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/anonimizador.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/anonimizador.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/anonimizador.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/xtore.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/xtore.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/xtore.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/xtore.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/xtore.html</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.4</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/xtore.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/xtore.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/xtore.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/mcp/</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/mcp/"/>
+  </url>
+  <url><loc>https://www.admira.studio/documentacion/</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/documentacion/"/>
+  </url>
+  <url><loc>https://www.admira.studio/calendario/</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/calendario/"/>
+  </url>
+  <url><loc>https://www.admira.studio/privacidad.html</loc><lastmod>2026-06-25</lastmod><changefreq>yearly</changefreq><priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/privacidad.html"/>
+  </url>
+  <url><loc>https://www.admira.studio/en/privacy.html</loc><lastmod>2026-06-25</lastmod><changefreq>yearly</changefreq><priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/privacidad.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/privacidad.html"/>
+  </url>
 </urlset>

@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
+       Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
+       login con Google + misma whitelist de usuarios (worker admira-whitelist). Verja ACTIVA
+       por defecto. ?gate=off es un escape SOLO para esa carga (no persiste), por si el login
+       falla. Mientras esté cerrado: meta noindex + robots.txt Disallow.
+       PARA REABRIR EL SITIO EL DÍA DEL LANZAMIENTO: borrar TODO este bloque (marcadores
+       GATE-INICIO … GATE-FIN) de cada .html, restaurar robots.public.txt → robots.txt y
+       borrar /auth-gate.js. Ver checklist en el PR de la verja. -->
+  <!-- GATE-INICIO -->
+  <meta name="robots" content="noindex, nofollow">
+  <script>
+  (function(){
+    var GATE_DEFAULT = 'on';                       // verja activa — sitio cerrado
+    var on = GATE_DEFAULT;
+    try{
+      var q = new URLSearchParams(location.search).get('gate');
+      if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
+    }catch(e){}
+    if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
+    var s=document.createElement('script'); s.src='/auth-gate.js';
+    (document.head||document.documentElement).appendChild(s);
+    // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
+    // origen aún no esté autorizado en Google → mensaje claro en pantalla.
+    setTimeout(function(){
+      if(!document.documentElement.classList.contains('gate-locked')) return;
+      var el=document.getElementById('admira-err');
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+    }, 10000);
+  })();
+  </script>
+  <!-- GATE-FIN -->
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://www.admira.studio/en/anonimizador.html">
+  <link rel="alternate" hreflang="es" href="https://www.admira.studio/anonimizador.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/anonimizador.html">
+  <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/anonimizador.html">
+  <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
+  <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
+  <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
+  <title>Admira Studio Studio · Anonymizer</title>
+  <meta name="description" content="Admira Studio Anonymizer: turn a real photo into a digital-twin NPC and bring it back as a different realistic person. Privacy by design for signage and Pixer Feed.">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
+  <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
+  <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="../workspace.css?v=20260618-anon-contact-dmz">
+  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
+  <script defer src="/assets/consent.js?v=20260617"></script>
+  <style>
+    .anon-main{max-width:1080px;margin:0 auto;padding:0 20px 64px;display:flex;flex-direction:column;gap:22px}
+    .anon-stage-wrap{display:flex;flex-direction:column;gap:16px}
+    .anon-source{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:16px;align-items:stretch}
+    @media (max-width:760px){.anon-source{grid-template-columns:1fr}}
+    /* The upper space is a PERMANENT FIXED background (the Architect). The user's
+       photo and its derivatives appear in the 4 cards below, not here. */
+    .anon-cam{position:relative;border:1px solid var(--line,#1c3a22);border-radius:14px;overflow:hidden;background:radial-gradient(ellipse at center,transparent 48%,rgba(0,0,0,.55) 100%),#020602 url('/assets/architect.jpg') center/cover no-repeat;min-height:280px;display:flex;align-items:center;justify-content:center}
+    /* FIXED-size preview (takes its height from the grid, like the controls): the
+       image is absolute so it never stretches the box. Vertical → side bands. */
+    .anon-cam video,.anon-cam img{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .anon-cam video{object-fit:cover;background:#020602;z-index:1}  /* live camera viewfinder, above the fixed background */
+    /* The user's photo NO LONGER fills the big preview (it shows in the ORIGINAL card). */
+    .anon-cam #camStill,.anon-cam #camStillBg{display:none!important}
+    .anon-cam video[hidden],.anon-cam img[hidden]{display:none}
+    .anon-cam .anon-cam-hint{display:none}
+    .anon-cam .anon-cam-hint b{color:var(--fg,#dffbe6);font-size:34px;line-height:1}
+    .anon-controls{display:flex;flex-direction:column;gap:10px;justify-content:center}
+    .anon-controls .btn{width:100%;justify-content:center}
+    .anon-controls .anon-opts{margin-top:6px;display:flex;flex-direction:column;gap:8px}
+    .anon-triptych{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    @media (max-width:900px){.anon-triptych{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:520px){.anon-triptych{grid-template-columns:1fr}}
+    .anon-prog{display:none;max-width:440px;margin:0 auto}
+    .anon-prog.on{display:block}
+    .anon-prog-track{height:8px;border:1px solid var(--line,#1c3a22);border-radius:999px;overflow:hidden;background:rgba(2,12,5,.6)}
+    .anon-prog-fill{height:100%;width:0;background:var(--accent,#39d353);transition:width .3s ease}
+    .anon-prog-label{font-family:var(--mono,ui-monospace,monospace);font-size:11px;color:var(--muted,#7fae8c);text-align:center;margin-top:5px}
+    .anon-card{border:1px solid var(--line,#1c3a22);border-radius:14px;background:rgba(2,12,5,.55);overflow:hidden;display:flex;flex-direction:column}
+    .anon-card.is-active{border-color:var(--accent,#39d353);box-shadow:0 0 0 1px var(--accent,#39d353)}
+    .anon-card-head{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-bottom:1px solid var(--line,#1c3a22);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+    .anon-card-head .step{color:var(--muted,#7fae8c)}
+    .anon-frame{position:relative;aspect-ratio:3/4;background:#030803;display:flex;align-items:center;justify-content:center}
+    .anon-frame img{width:100%;height:100%;object-fit:contain;display:block}
+    .anon-frame.is-pixel img{image-rendering:pixelated}
+    .anon-frame .ph{color:var(--muted,#5e8a6c);font-size:12px;text-align:center;padding:18px;line-height:1.5}
+    /* Vertical progress fill: the rectangle fills bottom-to-top with %. */
+    .anon-frame .vfill{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(to top,rgba(57,211,83,.45),rgba(57,211,83,.12));border-top:2px solid var(--accent,#39d353);box-shadow:0 0 18px rgba(57,211,83,.55);transition:height .35s ease;z-index:1;pointer-events:none}
+    .anon-frame .vpct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--accent,#39d353);font:800 24px var(--mono,ui-monospace,monospace);letter-spacing:.04em;text-shadow:0 0 10px rgba(0,0,0,.85),0 0 18px rgba(57,211,83,.4);z-index:2;pointer-events:none}
+    .anon-frame .spin{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,2,.7);color:var(--accent,#39d353);font-size:12px;letter-spacing:.1em;text-transform:uppercase;gap:10px}
+    .anon-frame .spin::before{content:"";width:16px;height:16px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:anonspin .8s linear infinite}
+    @keyframes anonspin{to{transform:rotate(360deg)}}
+    .anon-go{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;padding:6px 0}
+    .anon-go .btn.play{font-size:15px;padding:13px 26px}
+    .anon-status{font-family:var(--mono,ui-monospace,monospace);font-size:12px;color:var(--muted,#7fae8c);min-height:18px;text-align:center}
+    .anon-status.err{color:#ff6b6b}
+    .anon-result-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+    .anon-privacy{display:flex;gap:10px;align-items:flex-start;border:1px dashed var(--line,#1c3a22);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--muted,#9fc7ab);line-height:1.5}
+    .anon-privacy b{color:var(--fg,#dffbe6)}
+    .anon-pipeline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,#7fae8c)}
+    .anon-pipeline span{border:1px solid var(--line,#1c3a22);border-radius:999px;padding:5px 12px}
+    .anon-pipeline i{opacity:.6;font-style:normal}
+    .anon-file{display:none}
+    .anon-drop{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(2,8,3,.82);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);pointer-events:none}
+    .anon-drop.is-active{display:flex}
+    .anon-drop-box{border:2px dashed var(--accent,#39d353);border-radius:18px;padding:36px 52px;color:var(--fg,#dffbe6);font-size:18px;text-align:center;background:rgba(2,12,5,.65)}
+    .anon-drop-box b{display:block;font-size:42px;margin-bottom:10px}
+    .btn.ok{background:var(--accent,#39d353)!important;color:#022!important;border-color:var(--accent,#39d353)!important}
+    .anon-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(18px);z-index:9998;background:rgba(2,18,6,.96);border:1px solid var(--accent,#39d353);border-radius:12px;padding:12px 18px;color:var(--fg,#dffbe6);font-size:14px;box-shadow:0 10px 34px rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;max-width:92vw;text-align:center}
+    .anon-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+    .anon-toast a{color:var(--accent,#39d353);font-weight:700;text-decoration:underline}
+  </style>
+  <script defer src="/assets/site-nav.js?v=20260715-nav-scroll"></script>
+</head>
+<body data-page="anonimizador">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <nav class="admira-nav admira-nav-static" aria-label="Admira · Xperience">
+    <a class="admira-nav-brand" href="https://www.admira.app">
+      <span class="admira-nav-brand-name">Admira</span>
+      <span class="admira-nav-brand-tag">Xperience</span>
+    </a>
+    <div class="admira-nav-items">
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Council Live</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
+      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contact</a>
+    </div>
+  </nav>
+  <canvas id="matrix-rain" aria-hidden="true"></canvas>
+  <div class="anon-drop" id="anonDrop" aria-hidden="true"><div class="anon-drop-box"><b>📥</b>Drop the image to anonymize it</div></div>
+  <div class="anon-toast" id="anonToast" role="status" aria-live="polite"></div>
+  <header class="topnav">
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">P</span><span class="brand-name">Admira Studio</span></a></div>
+    <nav class="primary-nav">
+      <a href="audio.html" data-nav="audio">Audio</a>
+      <a href="musica.html" data-nav="musica">Music</a>
+      <a href="imagenes.html" data-nav="imagenes">Images</a>
+      <a href="video.html" data-nav="video">Video</a>
+      <a href="publicidad.html" data-nav="publicidad">Advertising</a>
+      <a href="anonimizador.html" data-nav="anonimizador">Anonymizer</a>
+      <a href="/crear/" data-nav="create">Assets</a>
+      <a href="stock.html" data-nav="stock">Stock</a>
+    </nav>
+    <div class="topnav-actions">
+      <div class="language-switcher" aria-label="Language selection">
+        <a class="lang-toggle" href="/anonimizador.html" aria-label="Switch to Spanish">ESP</a>
+      </div>
+      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
+    </div>
+  </header>
+
+  <header class="page-head">
+    <p class="eyebrow image">Privacy by design · Anonymizer</p>
+    <h1>From a real person to someone who doesn't exist.</h1>
+    <p class="lead">Take a photo, watch it turn into an NPC like the ones strolling through the digital twin, then watch it come back as a realistic person who is <strong>similar but different</strong>. The pixel pass wipes the real face: what you keep is no longer anyone. Built to use audiences and passers-by in signage and Pixer Feed without exposing identities.</p>
+  </header>
+
+  <main class="anon-main">
+    <section class="anon-stage-wrap">
+      <div class="anon-source">
+        <div class="anon-cam" id="camWrap">
+          <div class="anon-cam-hint" id="camHint">
+            <b>📷</b>
+            <span>Turn on the camera, upload a photo, <strong>drag one here</strong> or <strong>create an audience</strong> if you have no camera.<br>The image is only used to transform it; nothing is stored.</span>
+          </div>
+          <video id="cam" autoplay playsinline muted hidden></video>
+          <img id="camStillBg" alt="" aria-hidden="true" hidden>
+          <img id="camStill" alt="Captured photo" hidden>
+        </div>
+        <div class="anon-controls">
+          <button type="button" class="btn primary" id="btnCam">📷 Turn on camera</button>
+          <button type="button" class="btn" id="btnUpload">📁 Upload photo</button>
+          <input type="file" id="fileInput" class="anon-file" accept="image/*">
+          <div class="anon-opts">
+            <div class="field" style="margin:0">
+              <label for="optStrength">How similar the result is</label>
+              <select id="optStrength">
+                <option value="aire" selected>Same vibe (similar but another person)</option>
+                <option value="medio">Quite different</option>
+                <option value="full">Completely new person</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0">
+              <label for="optSex">Segment when inventing · sex</label>
+              <select id="optSex">
+                <option value="hombre" selected>Male</option>
+                <option value="mujer">Female</option>
+                <option value="any">Any</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0">
+              <label for="optAge">Segment when inventing · age</label>
+              <select id="optAge">
+                <option value="joven">Young (18-25)</option>
+                <option value="adulto">Adult (26-40)</option>
+                <option value="maduro" selected>Mature (41-60)</option>
+                <option value="senior">Senior (60+)</option>
+                <option value="any">Any</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0">
+              <label for="optDesc">Optional description (something special)</label>
+              <input type="text" id="optDesc" maxlength="160" autocomplete="off"
+                     placeholder="e.g. with a cap and backpack, work uniform, holding an umbrella…">
+            </div>
+          </div>
+          <button type="button" class="btn" id="btnInvent">👥 Create audience</button>
+        </div>
+      </div>
+
+      <div class="anon-triptych">
+        <article class="anon-card" id="card1">
+          <div class="anon-card-head"><span>Original</span><span class="step">01 · real</span></div>
+          <div class="anon-frame" id="frame1"><div class="ph">Your photo shows up here</div></div>
+        </article>
+        <article class="anon-card" id="card2">
+          <div class="anon-card-head"><span>8-bit NPC</span><span class="step">02 · pixel</span></div>
+          <div class="anon-frame is-pixel" id="frame2"><div class="ph">8-bit NPC<br>(NES)</div></div>
+        </article>
+        <article class="anon-card" id="card3">
+          <div class="anon-card-head"><span>16-bit NPC</span><span class="step">03 · pixel</span></div>
+          <div class="anon-frame is-pixel" id="frame3"><div class="ph">16-bit NPC<br>(detailed)</div></div>
+        </article>
+        <article class="anon-card" id="card4">
+          <div class="anon-card-head"><span>Anonymous</span><span class="step">04 · new</span></div>
+          <div class="anon-frame" id="frame4"><div class="ph">Different realistic person</div></div>
+        </article>
+      </div>
+
+      <div class="anon-pipeline" aria-label="Anonymizer pipeline">
+        <span>Real photo</span><i>→</i><span>8-bit / 16-bit NPC</span><i>→</i><span>New person</span>
+      </div>
+
+      <div class="anon-go">
+        <button type="button" class="btn play" id="btnGo" disabled><span class="play-label">✨ ANONYMIZE</span></button>
+      </div>
+      <p class="anon-status" id="status" aria-live="polite">Capture, upload or drag a photo and I start anonymizing automatically.</p>
+
+      <div class="anon-result-actions">
+        <button type="button" class="btn" id="btnDownload" disabled>⬇ Download anonymous</button>
+        <button type="button" class="btn" id="btnPublish" disabled>📤 Publish to Stock</button>
+        <button type="button" class="btn primary" id="btnSendStore" disabled>🏪 Send to store</button>
+      </div>
+      <div class="anon-prog" id="anonProg"><div class="anon-prog-track"><div class="anon-prog-fill" id="anonProgFill"></div></div><div class="anon-prog-label" id="anonProgLabel"></div></div>
+
+      <div class="anon-privacy">
+        <span aria-hidden="true">🔒</span>
+        <div><b>Privacy by design.</b> The original photo travels to the image engine only to be transformed and is not stored in Admira Studio. What you keep is a synthetic person matching no real individual: use it on screens, campaigns and Pixer Feed without processing biometric data of identifiable people.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Open Admira XP — the digital twin">Admira Studio AI Workspace · Anonymizer · v.2026.06.19h-anon</a></footer>
+
+  <script defer src="/matrix-rain.js?v=20260608-sides"></script>
+  <script>
+  (function () {
+    const $ = (s) => document.querySelector(s);
+    const WORKER = 'https://pixer-eleven.csilvasantin.workers.dev';
+
+    const NPC8_SYS = 'You are an 8-bit pixel-art artist, NES / management-sim style (à la Kairosoft). From the given photo, generate a TINY, stubby character SPRITE: chibi proportions, big head, only 2 to 2.5 heads tall, full body facing front. VERY low resolution (like a ~32×40 px sprite), large clearly-visible square pixels, a palette of ONLY 4-5 flat colors, hard outline, no gradients, shadows or antialiasing. A SINGLE flat uniform background color (pure white) so it can be cut out. KEEP the apparent SEX/gender of the person (if female, female; if male, male), the clothing and hair color and the approximate build. Do NOT keep recognizable facial features: it is a tiny anonymous NPC, not a portrait. It must look clearly SIMPLER, SMALLER and stubbier than a 16-bit sprite.';
+    const NPC8_PROMPT = 'Turn it into a TINY, stubby 8-bit NPC sprite (chibi, big head, ~2 heads tall), very low resolution, large pixels and only 4-5 flat colors, like the tiny passers-by of the Admira XP digital twin.';
+    const NPC16_SYS = 'You are a 16-bit pixel-art artist (SNES / advanced Kairosoft style). FULLY REDRAW the person as a FULL-BODY 16-bit character SPRITE, facing front — do NOT apply a filter or texture over the photo, redraw it from scratch. Reduced resolution (like a ~64×112 px sprite) with LARGE, CLEARLY visible square pixels, hard black outline, block shading (cel-shading) and a LIMITED palette of ~16-24 flat colors. NO soft gradients, NO photographic skin, NO antialiasing, NO blur or depth of field. More detail and more colors than the 8-bit sprite, but UNMISTAKABLY videogame pixel-art, NEVER a photograph. Town/street background also in pixel-art with tiny passers-by. KEEP the apparent SEX/gender (if female, female; if male, male), the clothing and hair color, the build and apparent age. Do NOT keep recognizable facial features: it is an anonymous NPC.';
+    const NPC16_PROMPT = 'REDRAW IT FROM SCRATCH as a FULL-BODY 16-bit pixel-art sprite (SNES style): large, clearly visible square pixels, hard black outline, block shading and a ~16-24 flat-color palette. It is NOT a filter or texture over the photo — it is a REDRAWN videogame character, with no realistic skin, no gradients and no blur. Pixel-art town street in the background, like the Admira XP twin NPCs.';
+
+    const HUMAN_SYS = 'You are a street photographer. From the given pixel-art sprite/figure, generate a REALISTIC PHOTO of a DIFFERENT REAL person: new face and new identity, NOT the same person as the sprite, BUT OF THE SAME SEX/gender (if the sprite is female, a woman; if male, a man — never change the sex). Keep a similar VIBE (same sex, approximate age, same clothing style and color, same hair color and type, similar build). No pixel, drawing or game 3D: realistic skin, fabric and light. Full body, vertical, neutral background or blurred street. Anonymous person, no text or logos.';
+    const HUMAN_PROMPT = {
+      aire:  'A different person who could walk past the store: similar in style and age and OF THE SAME SEX, but clearly someone else with a different face.',
+      medio: 'A clearly different person (different face and features), keeping the SAME SEX, the clothing style and color and the hair type.',
+      full:  'A completely new person (different face, age and build) but of the SAME SEX, keeping only the garment type and color.'
+    };
+
+    let stream = null, original = null, npc8 = null, npc16 = null, anon = null, busy = false;
+    let segment = null; // {sex, age} chosen when inventing → travels to the ad (Stock tags)
+    let enginesUsed = new Set();   // models that generated the NPCs/person (for the "Done" tooltip)
+    let originalSource = 'photo';   // where the original came from (camera / upload / Grok)
+
+    const els = {
+      camWrap: $('#camWrap'), cam: $('#cam'), still: $('#camStill'), stillBg: $('#camStillBg'), hint: $('#camHint'),
+      btnCam: $('#btnCam'), btnUpload: $('#btnUpload'), invent: $('#btnInvent'), file: $('#fileInput'),
+      go: $('#btnGo'), status: $('#status'), strength: $('#optStrength'), sex: $('#optSex'), age: $('#optAge'), desc: $('#optDesc'),
+      download: $('#btnDownload'), publish: $('#btnPublish'), sendStore: $('#btnSendStore'),
+      frame1: $('#frame1'), frame2: $('#frame2'), frame3: $('#frame3'), frame4: $('#frame4'),
+      card1: $('#card1'), card2: $('#card2'), card3: $('#card3'), card4: $('#card4'),
+      prog: $('#anonProg'), progFill: $('#anonProgFill'), progLabel: $('#anonProgLabel')
+    };
+    // Vertical preview → fill the side bands with the ENVIRONMENT (a blurred, cover-scaled
+    // copy of the same photo behind), never black. Mirror the still's src/hidden to the bg.
+    try {
+      const __syncBg = () => {
+        const s = els.still.getAttribute('src');
+        if (s && !els.still.hidden) { if (els.stillBg.getAttribute('src') !== s) els.stillBg.src = s; els.stillBg.hidden = false; }
+        else { els.stillBg.hidden = true; els.stillBg.removeAttribute('src'); }
+      };
+      new MutationObserver(__syncBg).observe(els.still, { attributes: true, attributeFilter: ['src', 'hidden'] });
+    } catch (_) {}
+
+    const setStatus = (t, err) => { els.status.textContent = t; els.status.classList.toggle('err', !!err); };
+    // Human-readable messages by engine refusal reason.
+    const ERR_MAP = {
+      'image-declined': '🚫 The engine could not generate the image. This usually happens with recognizable people, celebrities or copyrighted characters. Try a photo of an anonymous person.',
+      'safety': '🚫 The engine rejected the image for sensitive content. Try another photo.',
+      'copyright': '🚫 Blocked for possible copyright. Try another photo.',
+      'empty': 'The engine returned no image. Retry or try another photo.',
+      'timeout': '⏱️ The engine took too long. Generation was stopped; press Anonymize to try again.',
+      'network': 'No connection to the engine. (Works from admira.studio.)'
+    };
+    const errMsg = (e) => (e && ERR_MAP[e.reason]) || ('Error: ' + ((e && e.message) || 'unknown'));
+    function progShow(on) { els.prog.classList.toggle('on', !!on); if (!on) els.progFill.style.width = '0'; }
+    function progSet(done, total, label) { els.progFill.style.width = Math.round(done / total * 100) + '%'; els.progLabel.textContent = label || (done + '/' + total); }
+    // "Indeterminate" bar: for single-await steps (inventing) with no real
+    // progress, it creeps toward ~90% to show that work is happening.
+    let __creepT = null;
+    function progCreep(label) {
+      progShow(true); els.progFill.style.width = '0'; els.progLabel.textContent = label || 'Working…';
+      let p = 0; clearInterval(__creepT);
+      __creepT = setInterval(() => { p += (92 - p) * 0.07; els.progFill.style.width = Math.min(92, p).toFixed(1) + '%'; }, 280);
+    }
+    function progStop() { clearInterval(__creepT); __creepT = null; }
+
+    // mime='image/png' preserves transparency (for the twin sprite).
+    function downscale(dataURL, max, mime) {
+      return new Promise((res) => {
+        const im = new Image();
+        im.onload = () => {
+          let { width: w, height: h } = im;
+          const sc = Math.min(1, max / Math.max(w, h));
+          w = Math.round(w * sc); h = Math.round(h * sc);
+          const c = document.createElement('canvas'); c.width = w; c.height = h;
+          c.getContext('2d').drawImage(im, 0, 0, w, h);
+          res(mime === 'image/png' ? c.toDataURL('image/png') : c.toDataURL('image/jpeg', 0.86));
+        };
+        im.onerror = () => res(dataURL);
+        im.src = dataURL;
+      });
+    }
+    // Cut out the flat background (flood-fill from the edges) → transparent PNG.
+    // Only removes edge-connected background, never interior colors of the figure.
+    function makeTransparentBg(dataURL, tol) {
+      return new Promise((res) => {
+        const im = new Image();
+        im.onload = () => {
+          const w = im.naturalWidth, h = im.naturalHeight;
+          const c = document.createElement('canvas'); c.width = w; c.height = h;
+          const x = c.getContext('2d'); x.drawImage(im, 0, 0);
+          let d; try { d = x.getImageData(0, 0, w, h); } catch (e) { res(dataURL); return; }
+          const px = d.data;
+          const corners = [0, (w - 1) * 4, (h - 1) * w * 4, ((h - 1) * w + (w - 1)) * 4];
+          let br = 0, bgc = 0, bb = 0; corners.forEach(i => { br += px[i]; bgc += px[i + 1]; bb += px[i + 2]; });
+          br /= 4; bgc /= 4; bb /= 4;
+          const T = tol || 50, T2 = T * T;
+          const match = (i) => { const dr = px[i] - br, dg = px[i + 1] - bgc, db = px[i + 2] - bb; return dr * dr + dg * dg + db * db <= T2; };
+          const seen = new Uint8Array(w * h), stack = [];
+          const push = (xx, yy) => { if (xx < 0 || yy < 0 || xx >= w || yy >= h) return; const p = yy * w + xx; if (seen[p]) return; seen[p] = 1; if (match(p * 4)) stack.push(p); };
+          for (let xx = 0; xx < w; xx++) { push(xx, 0); push(xx, h - 1); }
+          for (let yy = 0; yy < h; yy++) { push(0, yy); push(w - 1, yy); }
+          while (stack.length) { const p = stack.pop(); px[p * 4 + 3] = 0; const xx = p % w, yy = (p / w) | 0; push(xx + 1, yy); push(xx - 1, yy); push(xx, yy + 1); push(xx, yy - 1); }
+          x.putImageData(d, 0, 0);
+          res(c.toDataURL('image/png'));
+        };
+        im.onerror = () => res(dataURL);
+        im.src = dataURL;
+      });
+    }
+
+    function showOriginal(dataURL) {
+      original = dataURL; npc8 = null; npc16 = null; anon = null;
+      frameFillFinish(els.frame1, dataURL);
+      els.frame2.innerHTML = '<div class="ph">8-bit NPC<br>(NES)</div>';
+      els.frame3.innerHTML = '<div class="ph">16-bit NPC<br>(detailed)</div>';
+      els.frame4.innerHTML = '<div class="ph">Different realistic person</div>';
+      els.go.disabled = false; els.download.disabled = true; els.publish.disabled = true; els.sendStore.disabled = true;
+      run(); // auto-start as soon as there's a photo (no need to press the button)
+    }
+
+    function frameImg(frame, dataURL) { frameFillStop(frame); frame.innerHTML = '<img src="' + dataURL + '" alt="">'; }
+    // ── Per-rectangle progress: vertical fill (bottom→top) with % ────────────────
+    function frameFill(frame, pct) {
+      let fill = frame.querySelector('.vfill'), txt = frame.querySelector('.vpct');
+      if (!fill) { fill = document.createElement('div'); fill.className = 'vfill'; frame.appendChild(fill); }
+      if (!txt) { txt = document.createElement('div'); txt.className = 'vpct'; frame.appendChild(txt); }
+      const p = Math.max(0, Math.min(100, pct));
+      fill.style.height = p.toFixed(1) + '%';
+      txt.textContent = Math.round(p) + '%';
+    }
+    // "Indeterminate" fill: eases toward ~92% (no real progress per await).
+    function frameFillCreep(frame, cap) {
+      frameFill(frame, 3); let p = 3; const top = cap || 92;
+      frameFillStop(frame);
+      frame.__fillT = setInterval(() => { p += (top - p) * 0.06; frameFill(frame, p); }, 260);
+    }
+    function frameFillStop(frame) { if (frame.__fillT) { clearInterval(frame.__fillT); frame.__fillT = null; } }
+    function frameFillFail(frame, message) {
+      if (!frame) return;
+      frameFillStop(frame);
+      frame.querySelectorAll('.vfill,.vpct,.spin').forEach(el => el.remove());
+      const error = document.createElement('div');
+      error.className = 'ph';
+      error.textContent = '⚠️ ' + String(message || 'Generation stopped. Try again.').slice(0, 180);
+      error.title = String(message || '');
+      frame.replaceChildren(error);
+    }
+    // Finishes the fill at 100% and, after a beat, shows the image (if a fill was active).
+    function frameFillFinish(frame, dataURL) {
+      if (frame.__fillT || frame.querySelector('.vfill')) {
+        frameFillStop(frame); frameFill(frame, 100);
+        setTimeout(() => frameImg(frame, dataURL), 340);
+      } else { frameImg(frame, dataURL); }
+    }
+    function frameSpin(frame, label) {
+      if (!frame.querySelector('.spin')) {
+        const d = document.createElement('div'); d.className = 'spin'; d.textContent = label;
+        frame.appendChild(d);
+      }
+    }
+    const activeCard = (card) => {
+      [els.card1, els.card2, els.card3, els.card4].forEach(c => c.classList.remove('is-active'));
+      if (card) card.classList.add('is-active');
+    };
+
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    // Transient engine errors (overload, not content refusal): "high demand",
+    // "try again later", 429/500/502/503, overloaded… → retry.
+    function isTransient(e) {
+      if (!e) return false;
+      const s = e.status;
+      if (s === 429 || s === 500 || s === 502 || s === 503 || s === 504) return true;
+      const m = ((e.message || '') + ' ' + (e.reason || '')).toLowerCase();
+      return /high demand|overload|try again|temporar|unavailable|resource_exhausted|rate.?limit|busy|503|429/.test(m);
+    }
+    async function imageEditOnce(image, sys, prompt) {
+      let r;
+      const ctrl = new AbortController();
+      const timeout = setTimeout(() => ctrl.abort(), 90000);
+      try {
+        r = await fetch(WORKER + '/image/edit', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image, sys, prompt }), signal: ctrl.signal
+        });
+      } catch (netErr) {
+        const e = new Error(ctrl.signal.aborted ? 'request timed out (90 s)' : 'no connection to the engine');
+        e.reason = ctrl.signal.aborted ? 'timeout' : 'network';
+        e.status = ctrl.signal.aborted ? 408 : 0;
+        throw e;
+      } finally { clearTimeout(timeout); }
+      const d = await r.json().catch(() => ({}));
+      if (r.ok && d && d.ok && d.image) return d.image;
+      const e = new Error((d && (d.detail || d.error)) || ('HTTP ' + r.status));
+      e.reason = (d && d.reason) || null;
+      e.finishReason = d && d.finishReason;
+      e.status = r.status;
+      throw e;
+    }
+    // Retries transient errors with backoff (2s, 4s, 8s). Content refusals
+    // (image-declined, safety…) are NOT retried: they fail instantly.
+    async function imageEdit(image, sys, prompt, onRetry) {
+      const MAX = 4;
+      let lastErr;
+      for (let attempt = 1; attempt <= MAX; attempt++) {
+        try { return await imageEditOnce(image, sys, prompt); }
+        catch (e) {
+          lastErr = e;
+          if (!isTransient(e) || attempt === MAX) throw e;
+          if (onRetry) onRetry(attempt, MAX);
+          await sleep(2000 * Math.pow(2, attempt - 1));
+        }
+      }
+      throw lastErr;
+    }
+
+    // ── Fallback to Grok when Gemini REFUSES on content ───────────────────────
+    // Gemini/nano-banana sometimes refuses (reason image-declined/safety/copyright)
+    // SYNTHETIC people that AI itself generated, treating them as "recognizable".
+    // It makes no sense: the person doesn't exist. In that case, instead of
+    // failing, we REGENERATE the requested result with Grok (text→image) from the
+    // chosen segment. (Carlos's rule, 2026-06-19.)
+    const REFUSAL = new Set(['image-declined', 'safety', 'copyright']);
+    async function grokImage(prompt) {
+      const r = await fetch(WORKER + '/xai/image', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt, b64: true, model: 'grok-imagine-image' })
+      });
+      const d = await r.json().catch(() => ({}));
+      const item = d && Array.isArray(d.data) && d.data[0];
+      if (!r.ok || !item || !item.b64_json) { const e = new Error((d && (d.detail || d.error)) || ('HTTP ' + r.status)); e.reason = (d && d.reason) || null; throw e; }
+      return 'data:' + (item.mime || 'image/jpeg') + ';base64,' + item.b64_json;
+    }
+    // Person description for the Grok prompts (uses the segment when available).
+    function segPersonDesc() {
+      const s = segment;
+      if (!s) return 'an ordinary adult';
+      const sex = s.sex === 'hombre' ? 'a man' : s.sex === 'mujer' ? 'a woman' : 'a person';
+      const age = (s.age && s.age !== 'any' && AGE_TXT[s.age]) ? AGE_TXT[s.age] : 'adult-aged';
+      return sex + ' ' + age + (s.desc ? ', ' + s.desc : '');
+    }
+    const grok8Prompt  = () => '8-bit NES pixel-art character sprite, tiny and stubby (chibi, big head, ~2 heads tall), full body facing front, 4-5 flat colors, large pixels and hard outline, NO gradients, on a flat uniform WHITE background for cutout. Character: ' + segPersonDesc() + '. Anonymous, no text or logos.';
+    const grok16Prompt = () => 'FULL-BODY 16-bit SNES pixel-art sprite, facing front, large clearly visible square pixels, hard black outline, block shading and a ~16-24 flat-color palette (NOT a realistic photo, gradients or blur), on a pixel-art street background. Character: ' + segPersonDesc() + '. Anonymous, no text or logos.';
+    const grokHumanPrompt = () => 'Realistic full-body photo, vertical, of ' + segPersonDesc() + ', a NEW anonymous person (not famous or recognizable), blurred street background, natural light, no text or logos.';
+    // Try editing with Gemini; if it REFUSES on content, regenerate with Grok.
+    async function editOrGrok(image, sys, editPrompt, grokPrompt, onRetry, tag) {
+      try {
+        const img = await imageEdit(image, sys, editPrompt, onRetry);
+        enginesUsed.add('nano-banana (Gemini)');
+        return img;
+      } catch (e) {
+        // Only fall back to Grok for INVENTED people (segment): there the synthetic
+        // is defined by the segment. With a REAL uploaded photo, Grok can't know
+        // what that person looks like and would output a different one (wrong sex).
+        if (segment && grokPrompt && REFUSAL.has(e.reason)) {
+          setStatus('⚠️ The engine refused the synthetic image; generating the ' + (tag || 'result') + ' with Grok…');
+          const img = await grokImage(grokPrompt);
+          enginesUsed.add('Grok (grok-imagine-image)');
+          return img;
+        }
+        throw e;
+      }
+    }
+
+    async function startCam() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user', width: 1280 }, audio: false });
+        els.cam.srcObject = stream; els.cam.hidden = false; els.still.hidden = true; els.hint.style.display = 'none';
+        els.btnCam.textContent = '📸 Capture'; // the same button now captures
+        setStatus('Camera on. Frame yourself and hit Capture.');
+      } catch (e) {
+        setStatus('Could not open the camera (' + (e.name || e.message) + '). Upload a photo.', true);
+      }
+    }
+    function stopCam() {
+      if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+      els.cam.hidden = true; els.btnCam.textContent = '📷 Turn on camera';
+    }
+    function shoot() {
+      if (!stream) return;
+      const v = els.cam, c = document.createElement('canvas');
+      c.width = v.videoWidth; c.height = v.videoHeight;
+      c.getContext('2d').drawImage(v, 0, 0);
+      const url = c.toDataURL('image/jpeg', 0.92);
+      els.still.src = url; els.still.hidden = false; els.cam.hidden = true;
+      stopCam();
+      segment = null; // real camera photo: no chosen segment
+      originalSource = 'photo from your camera';
+      downscale(url, 768).then(showOriginal);
+    }
+
+    // ---- No camera: invent a realistic person (text → image) ----
+    // Generates the "original" with AI when there is no webcam: an anonymous
+    // passer-by, full body. The rest of the pipeline (NPC → new person) runs
+    // exactly as with a real photo. Identity doesn't matter: it's erased on
+    // pixelation, just like a street photo.
+    // Hair and clothing BY SEX: if you ask for "male" it must not come out in a dress or long hair.
+    const INV = {
+      build:  ['slim build', 'average build', 'sturdy build', 'athletic', 'petite'],
+      hair: {
+        hombre: ['short brown hair', 'bald', 'short grey hair', 'shaved head', 'short dark hair', 'short blond hair', 'receding hair and short beard'],
+        mujer:  ['long blonde hair', 'curly black hair', 'shoulder-length dark hair', 'grey hair in a bun', 'red hair in a ponytail', 'short brown hair', 'a bun']
+      },
+      outfit: {
+        hombre: ['a winter coat', 'a t-shirt and jeans', 'a formal suit', 'a hoodie', 'a denim jacket', 'sportswear', 'a jumper and wool coat', 'a shirt and chinos'],
+        mujer:  ['a winter coat', 'a t-shirt and jeans', 'a casual dress', 'a hoodie', 'a denim jacket', 'sportswear', 'a jumper and wool coat', 'a blouse and skirt']
+      },
+      vibe:   ['walking down the street', 'standing on the pavement', 'looking at a shop window', 'carrying shopping bags', 'checking their phone', 'waiting at a crossing']
+    };
+    const pick = (a) => a[Math.floor(Math.random() * a.length)];
+    // Chosen segment → prompt text
+    const AGE_TXT = { joven: 'around 22', adulto: 'around 33', maduro: 'around 50', senior: 'around 68' };
+    const AGE_ANY = ['in their early 20s', 'around 30', 'middle-aged, about 45', 'older, around 60'];
+    const SEG_LBL = { hombre: 'male', mujer: 'female', joven: 'young', adulto: 'adult', maduro: 'mature', senior: 'senior' };
+    function currentSegment() { return { sex: els.sex.value, age: els.age.value, desc: (els.desc.value || '').trim() }; }
+    function inventPrompt(seg) {
+      const sex = seg.sex === 'any' ? pick(['hombre', 'mujer']) : seg.sex;   // effective sex
+      const who = sex === 'hombre' ? 'a MAN (clearly male)' : 'a WOMAN (clearly female)';
+      const age = (seg.age !== 'any' && AGE_TXT[seg.age]) ? AGE_TXT[seg.age] : pick(AGE_ANY);
+      // Wide shot at a distance with a low-detail face: the edit engine (Gemini)
+      // declines close-ups of realistic people as recognizable individuals.
+      // From a distance it pixelates just as well and gets through.
+      let p = 'Candid street photograph, vertical, wide full-body shot from some distance, of ' +
+        who + ' ' + age + ', ' + pick(INV.build) + ', ' + pick(INV.hair[sex]) +
+        ', with ' + pick(INV.outfit[sex]) + ', ' + pick(INV.vibe) +
+        '. It IS ' + (sex === 'hombre' ? 'A MAN' : 'A WOMAN') + ', respect the given sex. ' +
+        'An anonymous passer-by seen from afar; NOT a portrait or close-up, the face appears small and not sharp. ' +
+        'Natural light, blurred street background, candid phone-camera photo, no text or logos, not any famous or recognizable person.';
+      if (seg.desc) p += ' Extra detail requested (respect it): ' + seg.desc + '.';
+      return p;
+    }
+    async function inventPerson() {
+      if (busy) return;
+      busy = true;
+      const btn = els.invent, label = btn.textContent;
+      btn.disabled = true; stopCam();
+      els.hint.style.display = 'none';
+      const seg = currentSegment();
+      const parts = [];
+      if (seg.sex !== 'any') parts.push(SEG_LBL[seg.sex]);
+      if (seg.age !== 'any') parts.push(SEG_LBL[seg.age]);
+      const segTxt = parts.join(' · ');
+      const audTxt = '👥 Building audience' + (segTxt ? ': ' + segTxt : '') + '…';
+      setStatus(audTxt);
+      // Clear the previous result (big preview + triptych) BEFORE generating, so the
+      // progress isn't painted over the already-created NPC. Then fill the ORIGINAL card.
+      els.still.hidden = true; els.still.removeAttribute('src');
+      els.frame1.innerHTML = '<div class="ph">Your photo shows up here</div>';
+      els.frame2.innerHTML = '<div class="ph">8-bit NPC<br>(NES)</div>';
+      els.frame3.innerHTML = '<div class="ph">16-bit NPC<br>(detailed)</div>';
+      els.frame4.innerHTML = '<div class="ph">Different realistic person</div>';
+      activeCard(els.card1); frameFillCreep(els.frame1);
+      try {
+        const r = await fetch(WORKER + '/xai/image', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: inventPrompt(seg), b64: true, model: 'grok-imagine-image' })
+        });
+        const d = await r.json().catch(() => ({}));
+        const item = d && Array.isArray(d.data) && d.data[0];
+        if (!r.ok || !item || !item.b64_json) {
+          const reason = (d && (d.detail || d.error)) || ('HTTP ' + r.status);
+          throw new Error(reason);
+        }
+        segment = seg; // the chosen segment travels to the ad (Stock tags)
+        originalSource = 'Grok (grok-imagine-image)';
+        const url = 'data:' + (item.mime || 'image/jpeg') + ';base64,' + item.b64_json;
+        els.still.src = url; els.still.hidden = false; els.cam.hidden = true;
+        progStop(); progShow(false); busy = false;
+        btn.disabled = false; btn.textContent = label; // re-arm the button: lets you build another audience
+        downscale(url, 768).then(showOriginal); // shows the original and auto-starts the pipeline
+      } catch (e) {
+        progStop(); progShow(false); busy = false;
+        setStatus('Could not create the audience (' + e.message + '). Try again or upload a photo.', true);
+        btn.disabled = false; btn.textContent = label;
+      }
+    }
+
+    async function run() {
+      if (busy || !original) return;
+      busy = true;
+      enginesUsed = new Set();           // reset the model registry for this pass
+      els.status.removeAttribute('title');
+      els.go.disabled = true; els.download.disabled = true; els.publish.disabled = true; els.sendStore.disabled = true;
+      progShow(true); progSet(0, 3, 'Generating NPCs…');
+      let workingFrame = null;
+      try {
+        // Step 1 — photo → 8-bit and THEN 16-bit NPC, SEQUENTIAL (not at once): avoids
+        // hitting the engine with 2 concurrent requests and the progress cascade shows
+        // one card after another (the 8-bit finishes before the 16-bit starts).
+        let done = 0; const bump = () => progSet(++done, 3, 'NPCs ' + done + '/2…');
+        // onRetry: the image engine sometimes returns "high demand" (transient).
+        const retryMsg = (frame, tag) => (a, m) => {
+          const s = frame.querySelector('.spin'); if (s) s.textContent = tag + ' · retry ' + a + '/' + (m - 1) + '…';
+          setStatus('The engine is busy, retrying the ' + tag + ' (' + a + '/' + (m - 1) + ')…');
+        };
+        // 1a) 8-bit NPC
+        workingFrame = els.frame2; activeCard(els.card2); frameFillCreep(els.frame2);
+        setStatus('Generating the 8-bit twin NPC…');
+        const img8 = await editOrGrok(original, NPC8_SYS, NPC8_PROMPT, grok8Prompt(), retryMsg(els.frame2, '8-bit'), '8-bit');
+        npc8 = await makeTransparentBg(img8, 52); frameFillFinish(els.frame2, npc8); bump();
+        // 1b) 16-bit NPC (only once the 8-bit has finished)
+        workingFrame = els.frame3; activeCard(els.card3); frameFillCreep(els.frame3);
+        setStatus('Generating the 16-bit twin NPC…');
+        const img16 = await editOrGrok(original, NPC16_SYS, NPC16_PROMPT, grok16Prompt(), retryMsg(els.frame3, '16-bit'), '16-bit');
+        npc16 = img16; frameFillFinish(els.frame3, img16); bump();
+
+        // Step 2 — 16-bit NPC → different realistic person
+        workingFrame = els.frame4; activeCard(els.card4); frameFillCreep(els.frame4);
+        setStatus('Generating a new person…');
+        const prompt = HUMAN_PROMPT[els.strength.value] || HUMAN_PROMPT.aire;
+        anon = await editOrGrok(npc16, HUMAN_SYS, prompt, grokHumanPrompt(), retryMsg(els.frame4, 'portrait'), 'portrait');
+        frameFillFinish(els.frame4, anon); progSet(3, 3, 'Done');
+
+        activeCard(els.card4);
+        setStatus('✓ Done: 2 NPCs (8/16-bit) + a person who does not exist.');
+        // Tooltip on hover over "Done": which models made the images.
+        const models = Array.from(enginesUsed).join(' + ') || 'nano-banana (Gemini)';
+        els.status.title = 'Images generated with — Original: ' + originalSource + ' · NPCs and person: ' + models + '.';
+        els.status.style.cursor = 'help';
+        els.download.disabled = false; els.publish.disabled = false; els.sendStore.disabled = false;
+        workingFrame = null;
+      } catch (e) {
+        const message = errMsg(e);
+        frameFillFail(workingFrame, message);
+        setStatus(message, true);
+        activeCard(null);
+      } finally {
+        [els.frame2, els.frame3, els.frame4].forEach(frameFillStop);
+        progShow(false); els.go.disabled = false; busy = false;
+      }
+    }
+
+    const STORE_URL = 'https://www.xpaceos.com/admira-xp/';
+    let __toastT = null;
+    function storeToast(html, sticky) {
+      const t = document.getElementById('anonToast'); if (!t) return;
+      t.innerHTML = html; t.classList.add('show');
+      clearTimeout(__toastT); __toastT = setTimeout(() => t.classList.remove('show'), sticky ? 15000 : 7000);
+    }
+    // Send the 8-bit NPC to the twin (queue /twin/spawn) and WAIT for the twin's
+    // REAL ack (when it spawns it walking) before saying "in the store".
+    async function sendStore() {
+      if (!npc8) return;
+      const btn = els.sendStore, label = btn.dataset.label || btn.textContent;
+      btn.dataset.label = label;
+      btn.disabled = true; btn.classList.remove('ok'); els.status.classList.remove('err');
+      progShow(true); progSet(8, 100, 'Sending the NPC to the store…');
+      setStatus('Sending the 8-bit NPC to the store…');
+      try {
+        const sprite = await downscale(npc8, 256, 'image/png'); // light, transparent sprite for the twin
+        // The audience (sex/age/description) travels to the twin PACKED in `name`
+        // (the worker only forwards img+name). The twin splits it by "||" for the
+        // customer card. Only when created via "Create audience".
+        const seg = segment ? { sex: segment.sex, age: segment.age, desc: (segment.desc || '').slice(0, 120) } : null;
+        const hasSeg = seg && (seg.sex !== 'any' || seg.age !== 'any' || seg.desc);
+        const npcName = 'Anonymous' + (hasSeg ? '||' + JSON.stringify(seg) : '');
+        const r = await fetch(WORKER + '/twin/spawn', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ image: sprite, name: npcName })
+        });
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok || !d.ok) throw new Error((d && (d.error || d.detail)) || ('HTTP ' + r.status));
+        // Queued OK. Wait for the twin's REAL ack (when it spawns it walking) — we
+        // don't claim "in the store" on a timer, but on actual confirmation.
+        progSet(22, 100, 'Queued at the twin…');
+        setStatus('🏪 Queued at the twin — waiting for it to walk in…');
+        const inStore = await waitForStore(d.id);
+        if (inStore) {
+          progSet(100, 100, '✓ In the store');
+          btn.textContent = '✓ In the store'; btn.classList.add('ok');
+          els.status.innerHTML = '🏪 <b>Already in the store.</b> Your 8-bit NPC is walking around the twin — <a href="' + STORE_URL + '" target="_blank" rel="noopener" style="color:var(--accent,#39d353);font-weight:700;text-decoration:underline">open the store to see it ↗</a>';
+          storeToast('✅ NPC already in the store! <a href="' + STORE_URL + '" target="_blank" rel="noopener">Open the store ↗</a>', true);
+          setTimeout(() => progShow(false), 900);
+        } else {
+          // No ack in 30s: no open store is picking up the queue. Honest.
+          progSet(90, 100, '🕓 Queued — enters when a store opens');
+          btn.textContent = '🕓 Queued';
+          els.status.innerHTML = '🕓 <b>Queued.</b> The NPC will enter as soon as a store is open — <a href="' + STORE_URL + '" target="_blank" rel="noopener" style="color:var(--accent,#39d353);font-weight:700;text-decoration:underline">open the store ↗</a>';
+          storeToast('🕓 NPC queued — <a href="' + STORE_URL + '" target="_blank" rel="noopener">open the store so it can enter ↗</a>', true);
+          setTimeout(() => progShow(false), 1200);
+        }
+        setTimeout(() => { btn.textContent = label; btn.classList.remove('ok'); btn.disabled = false; }, 3600);
+      } catch (e) { progShow(false); setStatus('Could not send to the store: ' + e.message, true); btn.disabled = false; }
+    }
+    // Poll /twin/spawn/status?id= until the twin confirms the spawn (ACK) or it
+    // times out. The bar eases asymptotically toward ~88% while waiting.
+    function waitForStore(id) {
+      return new Promise((resolve) => {
+        if (!id) return resolve(false);
+        const t0 = Date.now(), TIMEOUT = 45000;
+        const tick = async () => {
+          const elapsed = Date.now() - t0;
+          const pct = Math.min(88, 22 + (88 - 22) * (1 - Math.exp(-elapsed / 9000)));
+          progSet(Math.round(pct), 100, 'Queued at the twin… ' + Math.round(elapsed / 1000) + 's');
+          try {
+            const r = await fetch(WORKER + '/twin/spawn/status?id=' + encodeURIComponent(id) + '&ts=' + Date.now(), { cache: 'no-store' });
+            const d = await r.json().catch(() => ({}));
+            if (d && d.consumed) return resolve(true);
+          } catch (_) {}
+          if (elapsed >= TIMEOUT) return resolve(false);
+          setTimeout(tick, 1200);
+        };
+        tick();
+      });
+    }
+
+    function download() {
+      if (!anon) return;
+      const a = document.createElement('a');
+      a.href = anon; a.download = 'anonymous-pixeria-' + Date.now() + '.png'; a.click();
+    }
+
+    function pubStock(dataURL, type, title, prompt, tags, comment) {
+      const m = /^data:([^;]+);base64,(.*)$/s.exec(dataURL || '');
+      if (!m) return Promise.reject(new Error('invalid image'));
+      return fetch(WORKER + '/stock/publish', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, motor: 'nano-banana', mime: m[1], base64: m[2], title, prompt, tags, quality: 'good', comment })
+      }).then(r => r.json().catch(() => ({})).then(d => {
+        if (r.ok && (d.ok || d.id)) return d;
+        throw new Error((d && (d.error || d.detail)) || ('HTTP ' + r.status));
+      }));
+    }
+    async function publish() {
+      if (!anon) return;
+      els.publish.disabled = true;
+      // Chosen segment when inventing → tags for the ad (targeting).
+      const segTags = segment ? [segment.sex, segment.age].filter(v => v && v !== 'any').map(v => 'seg:' + v) : [];
+      let segNote = segTags.length ? ' Segment: ' + segTags.map(t => t.slice(4)).join(' · ') + '.' : '';
+      if (segment && segment.desc) segNote += ' Brief: ' + segment.desc + '.';
+      // The pixel-art NPCs go to "Twin NPCs"; the final person to "Digital Twins".
+      const jobs = [];
+      if (npc8) jobs.push(() => pubStock(npc8, 'twin-npc', 'Twin NPC 8-bit · Admira Studio',
+        '8-bit pixel-art NPC of the Admira XP twin (Anonymizer step)',
+        ['twin-npc', '8bit', 'anonymizer'].concat(segTags), 'Anonymizer 8-bit NPC: facial identity wiped.' + segNote));
+      if (npc16) jobs.push(() => pubStock(npc16, 'twin-npc', 'Twin NPC 16-bit · Admira Studio',
+        '16-bit pixel-art NPC of the Admira XP twin (Anonymizer step)',
+        ['twin-npc', '16bit', 'anonymizer'].concat(segTags), 'Anonymizer 16-bit NPC: facial identity wiped.' + segNote));
+      jobs.push(() => pubStock(anon, 'digital-twin', 'Digital Twin · Admira Studio',
+        'Anonymized synthetic person (real photo → twin NPC → new person)',
+        ['digital-twin', 'anonymizer'].concat(segTags), 'Anonymizer digital twin: new identity, matches no real person.' + segNote));
+      progShow(true); progSet(0, jobs.length, 'Uploading to Stock…');
+      setStatus('Publishing to Stock…');
+      try {
+        for (let i = 0; i < jobs.length; i++) { await jobs[i](); progSet(i + 1, jobs.length, 'Uploading to Stock ' + (i + 1) + '/' + jobs.length + '…'); }
+        setStatus('✓ Published to Stock: ' + (jobs.length - 1) + ' Twin NPC + Digital Twin.');
+        setTimeout(() => progShow(false), 700);
+      } catch (e) {
+        progShow(false); setStatus('Could not publish: ' + e.message, true); els.publish.disabled = false;
+      }
+    }
+
+    els.btnCam.addEventListener('click', () => stream ? shoot() : startCam());
+    els.btnUpload.addEventListener('click', () => els.file.click());
+    els.invent.addEventListener('click', inventPerson);
+
+    // If the device has no camera (PC with no webcam, blocked phone…), promote
+    // "Invent a person" as the main path.
+    (async function detectCam() {
+      let hasCam = true;
+      try {
+        const md = navigator.mediaDevices;
+        if (!md || !md.getUserMedia) { hasCam = false; }
+        else if (md.enumerateDevices) {
+          const devs = await md.enumerateDevices();
+          hasCam = devs.some(d => d.kind === 'videoinput');
+        }
+      } catch (e) { /* when unsure, keep the camera available */ }
+      if (!hasCam) {
+        els.btnCam.disabled = true; els.btnCam.classList.remove('primary');
+        els.btnCam.textContent = '📷 No camera';
+        els.invent.classList.add('primary');
+        setStatus('No camera detected: tap “Create audience”, upload a photo or drag one in.');
+      }
+    })();
+    function loadDataURL(url) {
+      stopCam();
+      els.still.src = url; els.still.hidden = false; els.cam.hidden = true; els.hint.style.display = 'none';
+      segment = null; // uploaded/dropped photo: no chosen segment
+      originalSource = 'uploaded/dropped photo';
+      downscale(url, 768).then(showOriginal);
+    }
+    function loadImageFile(f) {
+      if (!f || !/^image\//.test(f.type)) { setStatus('That is not an image.', true); return; }
+      const rd = new FileReader(); rd.onload = () => loadDataURL(rd.result); rd.readAsDataURL(f);
+    }
+    els.file.addEventListener('change', (e) => {
+      const f = e.target.files && e.target.files[0]; if (f) loadImageFile(f);
+      e.target.value = '';
+    });
+
+    // ── Drag and drop images (same as in the digital twin) ──
+    (function () {
+      const ov = document.getElementById('anonDrop');
+      let depth = 0;
+      const wants = (e) => {
+        const t = e.dataTransfer; if (!t || !t.types) return false;
+        for (let i = 0; i < t.types.length; i++) { if (t.types[i] === 'Files' || t.types[i] === 'text/uri-list') return true; }
+        return false;
+      };
+      window.addEventListener('dragenter', (e) => { if (!wants(e)) return; e.preventDefault(); depth++; ov.classList.add('is-active'); });
+      window.addEventListener('dragover', (e) => { if (!wants(e)) return; e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy'; });
+      window.addEventListener('dragleave', (e) => { if (!wants(e)) return; depth = Math.max(0, depth - 1); if (!depth) ov.classList.remove('is-active'); });
+      window.addEventListener('drop', async (e) => {
+        if (!wants(e)) return; e.preventDefault(); depth = 0; ov.classList.remove('is-active');
+        const dt = e.dataTransfer; if (!dt) return;
+        const f = dt.files && dt.files[0];
+        if (f) { loadImageFile(f); return; }
+        // Image dragged from another site (URL) → fetch via the worker proxy (avoids CORS tainting)
+        const url = (dt.getData('text/uri-list') || dt.getData('text/plain') || '').trim().split('\n')[0];
+        if (!url) return;
+        try {
+          setStatus('Downloading dragged image…');
+          const r = await fetch(WORKER + '/image/proxy?url=' + encodeURIComponent(url));
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          const blob = await r.blob();
+          if (!/^image\//.test(blob.type)) throw new Error('not an image');
+          const rd = new FileReader(); rd.onload = () => loadDataURL(rd.result); rd.readAsDataURL(blob);
+        } catch (err) { setStatus('Could not fetch that image (' + err.message + '). Download and upload it.', true); }
+      });
+    })();
+    els.go.addEventListener('click', run);
+    els.download.addEventListener('click', download);
+    els.publish.addEventListener('click', publish);
+    els.sendStore.addEventListener('click', sendStore);
+    window.addEventListener('beforeunload', stopCam);
+  })();
+  </script>
+</body>
+</html>

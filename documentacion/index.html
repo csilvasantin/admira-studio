@@ -1,11 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script src="/gate.js"></script>
+  <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
+       Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
+       login con Google + misma whitelist de usuarios (worker admira-whitelist). Verja ACTIVA
+       por defecto. ?gate=off es un escape SOLO para esa carga (no persiste), por si el login
+       falla. Mientras esté cerrado: meta noindex + robots.txt Disallow.
+       PARA REABRIR EL SITIO EL DÍA DEL LANZAMIENTO: borrar TODO este bloque (marcadores
+       GATE-INICIO … GATE-FIN) de cada .html, restaurar robots.public.txt → robots.txt y
+       borrar /auth-gate.js. Ver checklist en el PR de la verja. -->
+  <!-- GATE-INICIO -->
+  <meta name="robots" content="noindex, nofollow">
+  <script>
+  (function(){
+    var GATE_DEFAULT = 'on';                       // verja activa — sitio cerrado
+    var on = GATE_DEFAULT;
+    try{
+      var q = new URLSearchParams(location.search).get('gate');
+      if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
+    }catch(e){}
+    if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
+    var s=document.createElement('script'); s.src='/auth-gate.js';
+    (document.head||document.documentElement).appendChild(s);
+    // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
+    // origen aún no esté autorizado en Google → mensaje claro en pantalla.
+    setTimeout(function(){
+      if(!document.documentElement.classList.contains('gate-locked')) return;
+      var el=document.getElementById('admira-err');
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+    }, 10000);
+  })();
+  </script>
+  <!-- GATE-FIN -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Documentación · Admira Studio</title>
-  <meta name="description" content="Guía de uso de Admira Studio: cómo crear contenido con IA en Admira Studio, publicarlo en Pixer Feed, usar los Labs y aplicar el Método Admira Studio de principio a fin.">
+  <meta name="description" content="Guía de uso de Admira Studio: cómo crear contenido con IA en Admira Studio Studio, publicarlo en Pixer Feed, usar los Labs y aplicar el Método Admira Studio de principio a fin.">
   <meta name="theme-color" content="#0b1117">
   <meta property="og:title" content="Documentación · Admira Studio">
   <meta property="og:description" content="Cómo usar Admira Studio paso a paso: el Creador (Studio), Pixer Feed, Labs, el Método y la integración con Admira.">
@@ -13,9 +44,9 @@
   <meta property="og:url" content="https://www.admira.studio/documentacion/">
   <meta property="og:image" content="https://www.admira.studio/assets/hero-pixeria.jpg">
   <link rel="canonical" href="https://www.admira.studio/documentacion/">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
-  <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="../assets/styles.css?v=20260608-sides">
+  <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
+  <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="../assets/styles.css?v=20260617-legal-contact-dmz">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -24,7 +55,7 @@
       {
         "@type": "Question",
         "name": "¿Necesito conocimientos técnicos para usar Admira Studio?",
-        "acceptedAnswer": { "@type": "Answer", "text": "No. Admira Studio funciona escribiendo en lenguaje natural lo que necesitas. El método y los modelos recomendados hacen el trabajo técnico por ti." }
+        "acceptedAnswer": { "@type": "Answer", "text": "No. Admira Studio Studio funciona escribiendo en lenguaje natural lo que necesitas. El método y los modelos recomendados hacen el trabajo técnico por ti." }
       },
       {
         "@type": "Question",
@@ -34,7 +65,7 @@
       {
         "@type": "Question",
         "name": "¿Cómo se conecta Admira Studio con Admira?",
-        "acceptedAnswer": { "@type": "Answer", "text": "El contenido generado en Admira Studio se publica directamente al pipeline de Pixer Feed, que lo distribuye a las pantallas de cartelería digital gestionadas con Admira, sin exportaciones manuales." }
+        "acceptedAnswer": { "@type": "Answer", "text": "El contenido generado en Admira Studio Studio se publica directamente al pipeline de Pixer Feed, que lo distribuye a las pantallas de cartelería digital gestionadas con Admira, sin exportaciones manuales." }
       }
     ]
   }
@@ -229,7 +260,9 @@
       .doc-toc a.active { border-color: var(--cyan); }
     }
   </style>
-  <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
+  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
+  <script defer src="/assets/consent.js?v=20260617"></script>
+  <script defer src="/assets/site-nav.js?v=20260715-nav-scroll"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -238,41 +271,40 @@
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="site-header">
     <a class="brand" href="/" aria-label="Admira Studio inicio">
-      <span class="brand-mark">A</span>
+      <span class="brand-mark">P</span>
       <span>Admira Studio</span>
     </a>
-    <nav class="nav" aria-label="Navegacion principal">
+    <nav class="nav" aria-label="Navegación principal">
       <a href="/audio.html">Audio</a>
-      <a href="/musica.html">Musica</a>
-      <a href="/imagenes.html">Imagenes</a>
+      <a href="/musica.html">Música</a>
+      <a href="/imagenes.html">Imágenes</a>
       <a href="/video.html">Video</a>
       <a href="/publicidad.html">Publicidad</a>
-      <a href="/avatar.html">Avatar 3D</a>
       <a href="/crear/">Assets</a>
       <a href="/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
-      <div class="language-switcher" aria-label="Seleccion de idioma">
-        <a class="lang-toggle" href="/en/" aria-label="Cambiar a ingles">ENG</a>
+      <div class="language-switcher" aria-label="Selección de idioma">
+        <a class="lang-toggle" href="/en/" aria-label="Cambiar a inglés">ENG</a>
       </div>
       <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
-      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
-  <nav class="mobile-nav" id="mobileNav" aria-label="Navegacion movil">
+  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil">
     <a href="/audio.html">Audio</a>
-    <a href="/musica.html">Musica</a>
-    <a href="/imagenes.html">Imagenes</a>
+    <a href="/musica.html">Música</a>
+    <a href="/imagenes.html">Imágenes</a>
     <a href="/video.html">Video</a>
     <a href="/publicidad.html">Publicidad</a>
     <a href="/avatar.html">Avatar 3D</a>
     <a href="/crear/">Assets</a>
     <a href="/stock.html">Stock</a>
-    <div class="mobile-language-switcher" aria-label="Seleccion de idioma">
-      <a class="lang-toggle" href="/en/" aria-label="Cambiar a ingles">ENG</a>
+    <div class="mobile-language-switcher" aria-label="Selección de idioma">
+      <a class="lang-toggle" href="/en/" aria-label="Cambiar a inglés">ENG</a>
     </div>
     <a class="mobile-cta" href="#contact" data-admira-contact>Contacto</a>
   </nav>
@@ -285,7 +317,7 @@
         <p class="hero-copy" style="max-width: 640px;">Cómo crear contenido con IA en Admira Studio y llevarlo a pantalla, paso a paso. Del primer prompt al directo en un evento.</p>
         <div class="hero-actions">
           <a class="button primary" href="#creador">Empezar a crear</a>
-          <a class="button secondary" href="/crear/">Abrir Admira Studio</a>
+          <a class="button secondary" href="/crear/">Abrir Admira Studio Studio</a>
         </div>
       </div>
     </section>
@@ -333,7 +365,7 @@
           <section id="acceso">
             <p class="eyebrow">Primeros pasos</p>
             <h2>Acceso y configuración</h2>
-            <p>El Creador, <strong>Admira Studio</strong>, es de acceso protegido. Necesitas las credenciales del equipo para entrar.</p>
+            <p>El Creador, <strong>Admira Studio Studio</strong>, es de acceso protegido. Necesitas las credenciales del equipo para entrar.</p>
             <ol class="doc-steps">
               <li>
                 <strong>Abre el Estudio</strong>
@@ -349,13 +381,13 @@
               </li>
             </ol>
             <div class="doc-note">
-              <p><strong>Sin credenciales:</strong> si todavía no tienes acceso, escríbenos a <a href="mailto:csilvasantin@gmail.com?subject=Acceso%20Admira Studio%20Studio" style="color:var(--cyan)">csilvasantin@gmail.com</a> y te damos de alta en el equipo.</p>
+              <p><strong>Sin credenciales:</strong> si todavía no tienes acceso, escríbenos a <a href="mailto:hola@admiranext.com?subject=Acceso%20Admira Studio%20Studio" style="color:var(--cyan)">hola@admiranext.com</a> y te damos de alta en el equipo.</p>
             </div>
           </section>
 
           <section id="creador">
             <p class="eyebrow">El Creador</p>
-            <h2>Crear con Admira Studio</h2>
+            <h2>Crear con Admira Studio Studio</h2>
             <p>El Studio convierte un brief en lenguaje natural en una pieza publicable. El flujo es siempre el mismo, sea cual sea el formato.</p>
             <ol class="doc-steps">
               <li>
@@ -475,7 +507,7 @@
             </details>
             <details>
               <summary>¿Qué pasa si no tengo acceso al Studio?</summary>
-              <p>Escríbenos a <a href="mailto:csilvasantin@gmail.com?subject=Acceso%20Admira Studio" style="color:var(--cyan)">csilvasantin@gmail.com</a> y te damos de alta en el equipo con tus credenciales.</p>
+              <p>Escríbenos a <a href="mailto:hola@admiranext.com?subject=Acceso%20Admira Studio" style="color:var(--cyan)">hola@admiranext.com</a> y te damos de alta en el equipo con tus credenciales.</p>
             </details>
             <details>
               <summary>¿Tengo que pagar por los modelos de IA?</summary>
@@ -495,6 +527,7 @@
     <span>Admira Studio</span>
     <p>Documentación de uso · creación de contenidos con IA dirigida con criterio humano. <span class="footer-updated">Actualizado junio 2026</span></p>
     <a href="/">Volver a admira.studio</a>
+    <a href="/privacidad.html">Privacidad y cookies</a>
   </footer>
 
   <script>
@@ -535,6 +568,6 @@
       map.forEach((_, el) => io.observe(el));
     })();
   </script>
-  <script src="/assets/matrix-rain.js?v=20260608-sides"></script>
+  <script defer src="/assets/matrix-rain.js?v=20260608-sides"></script>
 </body>
 </html>

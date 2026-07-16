@@ -1,20 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="/gate.js"></script>
+  <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
+       Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
+       login con Google + misma whitelist de usuarios (worker admira-whitelist). Verja ACTIVA
+       por defecto. ?gate=off es un escape SOLO para esa carga (no persiste), por si el login
+       falla. Mientras esté cerrado: meta noindex + robots.txt Disallow.
+       PARA REABRIR EL SITIO EL DÍA DEL LANZAMIENTO: borrar TODO este bloque (marcadores
+       GATE-INICIO … GATE-FIN) de cada .html, restaurar robots.public.txt → robots.txt y
+       borrar /auth-gate.js. Ver checklist en el PR de la verja. -->
+  <!-- GATE-INICIO -->
+  <meta name="robots" content="noindex, nofollow">
+  <script>
+  (function(){
+    var GATE_DEFAULT = 'on';                       // verja activa — sitio cerrado
+    var on = GATE_DEFAULT;
+    try{
+      var q = new URLSearchParams(location.search).get('gate');
+      if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
+    }catch(e){}
+    if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
+    var s=document.createElement('script'); s.src='/auth-gate.js';
+    (document.head||document.documentElement).appendChild(s);
+    // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
+    // origen aún no esté autorizado en Google → mensaje claro en pantalla.
+    setTimeout(function(){
+      if(!document.documentElement.classList.contains('gate-locked')) return;
+      var el=document.getElementById('admira-err');
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+    }, 10000);
+  })();
+  </script>
+  <!-- GATE-FIN -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://www.admira.studio/en/stock.html">
+  <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
+  <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/stock.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio · Stock</title>
+  <title>Admira Studio Studio · Stock</title>
   <meta name="description" content="Public gallery de assets generados por los motores IA — audio, música, imágenes y video — desplegados a Stock.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/tokens.css">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/nav.css">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
-  <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="../workspace.css?v=20260608-video-fit">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
+  <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
+  <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="../workspace.css?v=20260608-video-fit-contact-dmz">
   <style>
     .stock-lightbox-nav{position:fixed;top:50%;transform:translateY(-50%);z-index:30;width:54px;height:84px;display:flex;align-items:center;justify-content:center;
       border:1px solid rgba(118,185,0,.4);border-radius:12px;background:rgba(8,16,8,.72);color:#b8e577;font-size:34px;line-height:1;cursor:pointer;
@@ -25,8 +60,38 @@
     .stock-lightbox-nav[disabled]{opacity:0;pointer-events:none}
     .stock-lightbox[hidden] .stock-lightbox-nav{display:none}
     @media (max-width:640px){ .stock-lightbox-nav{width:42px;height:64px;font-size:26px} .stock-lightbox-nav.prev{left:8px} .stock-lightbox-nav.next{right:8px} }
+
+    /* ── CAMPAIGNS section (metatag-packaged series, e.g. #sabiasqueXtanco) ── */
+    .camp-section{ margin:0 0 28px; }
+    .camp-head{ display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+    .camp-head h2{ font-size:20px; color:var(--matrix); letter-spacing:.03em; margin:0; }
+    .camp-head .camp-lead{ font-size:12px; color:var(--muted); margin:0; }
+    .camp-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; }
+    .camp-card{ display:flex; flex-direction:column; border:1px solid var(--line-bright); border-radius:12px;
+      background:var(--panel-2); overflow:hidden; transition:border-color .15s, box-shadow .15s; }
+    .camp-card:hover{ border-color:var(--matrix); box-shadow:var(--glow); }
+    .camp-prevlink{ display:block; position:relative; aspect-ratio:16/9; background:#0a0f14; }
+    .camp-prev{ position:absolute; inset:0; width:100%; height:100%; border:0; pointer-events:none; }
+    .camp-prevlink::after{ content:'▶ PLAY LOOP'; position:absolute; right:10px; bottom:10px; font-size:10px;
+      letter-spacing:.1em; color:var(--matrix); background:rgba(0,0,0,.7); border:1px solid var(--line-bright);
+      border-radius:6px; padding:3px 8px; opacity:0; transition:opacity .15s; }
+    .camp-prevlink:hover::after{ opacity:1; }
+    .camp-body{ display:flex; flex-direction:column; gap:8px; padding:12px 14px 14px; }
+    .camp-body h3{ font-size:14px; color:var(--matrix); margin:0; }
+    .camp-tags{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+    .camp-tag{ border:1px solid #aa88ff; background:rgba(170,136,255,.14); color:#e6dcff; border-radius:999px;
+      padding:2px 8px; font-size:11px; }
+    .camp-target{ font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+    .camp-items{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:3px; font-size:12px; }
+    .camp-items a{ color:var(--matrix); text-decoration:none; }
+    .camp-items a:hover{ text-decoration:underline; }
+    .camp-seg{ font-size:10px; color:var(--muted); border:1px solid var(--line); border-radius:4px; padding:0 5px; margin-left:4px; }
+    .camp-actions{ display:flex; align-items:center; gap:10px; margin-top:4px; }
+    .camp-meta{ font-size:11px; color:var(--muted); }
   </style>
-  <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
+  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
+  <script defer src="/assets/consent.js?v=20260617"></script>
+  <script defer src="/assets/site-nav.js?v=20260715-nav-scroll"></script>
 </head>
 <body data-page="stock">
   <!-- Google Tag Manager (noscript) -->
@@ -42,6 +107,7 @@
       <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/en/">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Live Council</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
       <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contact</a>
@@ -49,14 +115,14 @@
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">A</span><span class="brand-name">Admira Studio</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">P</span><span class="brand-name">Admira Studio</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Music</a>
       <a href="imagenes.html" data-nav="imagenes">Images</a>
       <a href="video.html" data-nav="video">Video</a>
       <a href="publicidad.html" data-nav="publicidad">Advertising</a>
-      <a href="avatar.html" data-nav="avatar">Avatar 3D</a>
+      <a href="anonimizador.html" data-nav="anonimizador">Anonymizer</a>
       <a href="/crear/" data-nav="create">Assets</a>
       <a href="stock.html" data-nav="stock">Stock</a>
     </nav>
@@ -75,6 +141,16 @@
   </header>
 
   <main>
+    <!-- CAMPAIGNS: metatag-packaged content series (e.g. #sabiasqueXtanco),
+         listed from /campanas/index.json + each campaign's feed.json. -->
+    <section class="camp-section" id="campSection" hidden aria-label="Campaigns">
+      <div class="camp-head">
+        <h2>📣 Campaigns · <span id="campCount">0</span></h2>
+        <p class="camp-lead">Metatag-packaged series, ready to be distributed to the network's screens (Xtanco and circuits).</p>
+      </div>
+      <div id="campGrid" class="camp-grid"></div>
+    </section>
+
     <section class="stock-toolbar">
       <nav class="stock-pager stock-pager-top" aria-label="Vista, filtros, búsqueda, orden y paginación">
         <div class="stock-view" role="group" aria-label="View">
@@ -184,7 +260,7 @@
     </form>
   </dialog>
 
-  <script src="/matrix-rain.js?v=20260608-sides"></script>
+  <script defer src="/matrix-rain.js?v=20260608-sides"></script>
   <script src="../app.js"></script>
   <script>
   (function () {
@@ -243,7 +319,9 @@
         return `<img src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
       }
       if (it.type === 'video' || it.type === 'animation') {
-        return `<video class="stock-video-preview" data-src="${it.url}" ${it.thumbnail ? `poster="${it.thumbnail}"` : ''} preload="metadata" muted playsinline></video>`;
+        // Preview = a real frame from the video (seeked to ~1s), NOT the stored
+        // poster (frame 0 came out BLACK on fade-ins). Lazy-loaded.
+        return `<video class="stock-cover stock-video-preview" data-src="${escAttr(it.url)}" preload="metadata" muted playsinline disablepictureinpicture style="background:#0a0f14;object-fit:cover;"></video>`;
       }
       if (it.type === 'audio' || it.type === 'music') {
         const cover = it.thumbnail || '';
@@ -256,20 +334,32 @@
 
     // Lazy-load video previews: src is assigned when the card nears the
     // viewport (600px margin). Grid paints instantly regardless of item count.
+    // Seek the preview to a frame WITH content (~1s or 12% of duration) so the
+    // card never shows frame 0 (black/fade-in). Just seeks, never plays.
+    function seekToPreviewFrame(v) {
+      let done = false;
+      const go = () => { if (done || !v) return; done = true; try { const d = (isFinite(v.duration) && v.duration > 0) ? v.duration : 0; v.currentTime = d ? Math.min(1.2, d * 0.12) : 1.0; } catch (_) {} };
+      v.addEventListener('loadeddata', go, { once: true });
+      v.addEventListener('loadedmetadata', go, { once: true });
+    }
     const lazyVideoIO = ('IntersectionObserver' in window)
       ? new IntersectionObserver((entries) => {
           for (const e of entries) {
             if (!e.isIntersecting) continue;
             const v = e.target;
-            if (v.dataset.src && !v.src) v.src = v.dataset.src;
+            if (v.dataset.src && !v.src) { seekToPreviewFrame(v); v.src = v.dataset.src; }
             lazyVideoIO.unobserve(v);
           }
         }, { rootMargin: '600px' })
       : null;
     function observeLazyVideos() {
+      const vh = window.innerHeight || document.documentElement.clientHeight || 800;
       document.querySelectorAll('video.stock-video-preview[data-src]').forEach(v => {
+        if (v.src) return;
+        const r = v.getBoundingClientRect();
+        if (r.top < vh + 600 && r.bottom > -600) { seekToPreviewFrame(v); v.src = v.dataset.src; return; }
         if (lazyVideoIO) lazyVideoIO.observe(v);
-        else if (!v.src) v.src = v.dataset.src;
+        else { seekToPreviewFrame(v); v.src = v.dataset.src; }
       });
     }
     function ainimationImportHref(it) {
@@ -612,7 +702,21 @@
         const r = await fetch(`${STOCK_BASE}/signage/push`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ kind, src: it.url, title: it.title || it.prompt || '', mime: it.mime || null }),
+          body: JSON.stringify({
+            kind,
+            src: it.url,
+            title: it.title || it.prompt || '',
+            mime: it.mime || null,
+            meta: {
+              source: 'pixeria-stock-en',
+              page: document.title || 'Admira Studio Studio · Stock',
+              page_url: `${location.origin}${location.pathname}`,
+              asset_id: it.id || '',
+              asset_label: label,
+              dispatch_mode: 'feed-button',
+              selected_count: 1,
+            },
+          }),
         });
         const data = await r.json().catch(() => ({}));
         if (r.ok && data.ok) {
@@ -867,6 +971,61 @@
       await load();
       setTimeout(highlightFromQuery, 80);
     })();
+  })();
+  </script>
+  <script>
+  // ── CAMPAIGNS: renders metatag-packaged series (e.g. #sabiasqueXtanco) ────
+  // Manifest: /campanas/index.json (ids) → /campanas/<id>/feed.json (detail).
+  // Self-contained: if the manifest is missing or fails, the section stays hidden.
+  (function(){
+    const sec = document.getElementById('campSection');
+    const grid = document.getElementById('campGrid');
+    if(!sec || !grid) return;
+    const esc = s => String(s||'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const segText = s => s ? Object.entries(s).map(([k,v])=>`${k}: ${v}`).join(' · ') : '';
+    fetch('/campanas/index.json', {cache:'no-store'})
+      .then(r => r.ok ? r.json() : null)
+      .then(async idx => {
+        const ids = (idx && Array.isArray(idx.campaigns)) ? idx.campaigns : [];
+        if(!ids.length) return;
+        const feeds = (await Promise.allSettled(ids.map(id =>
+          fetch(`/campanas/${encodeURIComponent(id)}/feed.json`, {cache:'no-store'})
+            .then(r => r.ok ? r.json() : null)
+            .then(f => f && { id, ...f })
+        ))).map(r => r.status==='fulfilled' ? r.value : null).filter(Boolean);
+        if(!feeds.length) return;
+        const cnt = document.getElementById('campCount');
+        if(cnt) cnt.textContent = feeds.length;
+        grid.innerHTML = feeds.map(c => {
+          const base = `/campanas/${encodeURIComponent(c.id)}/`;
+          const player = base + (c.player || 'bucle.html');
+          const items = (c.items||[]).map(it =>
+            `<li><a href="${esc(base + it.url)}" target="_blank" rel="noopener">${esc(it.title||it.id)}</a>${it.segment ? ` <span class="camp-seg">${esc(segText(it.segment))}</span>` : ''}</li>`
+          ).join('');
+          const tags = (c.tags||[]).map(t => `<span class="camp-tag">#${esc(t)}</span>`).join('');
+          const meta = [
+            `${(c.items||[]).length} pieces`,
+            c.dwell_ms ? Math.round(c.dwell_ms/1000)+' s/piece' : '',
+            c.updatedAt ? esc(c.updatedAt) : ''
+          ].filter(Boolean).join(' · ');
+          return `<article class="camp-card">
+            <a class="camp-prevlink" href="${esc(player)}" target="_blank" rel="noopener" title="Open the loop full screen">
+              <iframe class="camp-prev" src="${esc(player)}" loading="lazy" tabindex="-1" title="Preview ${esc(c.title||c.id)}"></iframe>
+            </a>
+            <div class="camp-body">
+              <h3>${esc(c.title||c.id)}</h3>
+              <div class="camp-tags">${tags}${c.target ? `<span class="camp-target">→ ${esc(c.target)}</span>` : ''}</div>
+              <ul class="camp-items">${items}</ul>
+              <div class="camp-actions">
+                <a class="btn primary" href="${esc(player)}" target="_blank" rel="noopener">▶ Play loop</a>
+                <span class="camp-meta">${meta}</span>
+              </div>
+            </div>
+          </article>`;
+        }).join('');
+        sec.hidden = false;
+      })
+      .catch(()=>{});
   })();
   </script>
 </body>

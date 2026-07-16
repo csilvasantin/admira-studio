@@ -1,5 +1,6 @@
+# Admira Studio CERRADO hasta lanzamiento (verja de acceso activa).
+# Para reabrir: restaurar robots.public.txt -> robots.txt (ver PR de la verja).
 User-agent: *
-Allow: /
-Disallow: /god/
+Disallow: /
 
 Sitemap: https://www.admira.studio/sitemap.xml

@@ -1,7 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="/gate.js"></script>
+  <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
+       Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
+       login con Google + misma whitelist de usuarios (worker admira-whitelist). Verja ACTIVA
+       por defecto. ?gate=off es un escape SOLO para esa carga (no persiste), por si el login
+       falla. Mientras esté cerrado: meta noindex + robots.txt Disallow.
+       PARA REABRIR EL SITIO EL DÍA DEL LANZAMIENTO: borrar TODO este bloque (marcadores
+       GATE-INICIO … GATE-FIN) de cada .html, restaurar robots.public.txt → robots.txt y
+       borrar /auth-gate.js. Ver checklist en el PR de la verja. -->
+  <!-- GATE-INICIO -->
+  <meta name="robots" content="noindex, nofollow">
+  <script>
+  (function(){
+    var GATE_DEFAULT = 'on';                       // verja activa — sitio cerrado
+    var on = GATE_DEFAULT;
+    try{
+      var q = new URLSearchParams(location.search).get('gate');
+      if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
+    }catch(e){}
+    if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
+    var s=document.createElement('script'); s.src='/auth-gate.js';
+    (document.head||document.documentElement).appendChild(s);
+    // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
+    // origen aún no esté autorizado en Google → mensaje claro en pantalla.
+    setTimeout(function(){
+      if(!document.documentElement.classList.contains('gate-locked')) return;
+      var el=document.getElementById('admira-err');
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+    }, 10000);
+  })();
+  </script>
+  <!-- GATE-FIN -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Campaigns · Protected access · Admira Studio</title>
@@ -9,9 +40,12 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#0b1117">
   <link rel="canonical" href="https://www.admira.studio/en/crear-campana/">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
-  <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="../../assets/styles.css?v=20260608-sides">
+  <link rel="alternate" hreflang="es" href="https://www.admira.studio/crear-campana/">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/crear-campana/">
+  <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/crear-campana/">
+  <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
+  <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="../../assets/styles.css?v=20260617-legal-contact-dmz">
   <style>
     .access-hero {
       min-height: 100vh;
@@ -80,7 +114,9 @@
       }
     }
   </style>
-  <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
+  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
+  <script defer src="/assets/consent.js?v=20260617"></script>
+  <script defer src="/assets/site-nav.js?v=20260715-nav-scroll"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -89,7 +125,7 @@
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="site-header">
     <a class="brand" href="/en/" aria-label="Admira Studio home">
-      <span class="brand-mark">A</span>
+      <span class="brand-mark">P</span>
       <span>Admira Studio</span>
     </a>
     <nav class="nav" aria-label="Main navigation">
@@ -98,7 +134,6 @@
       <a href="/en/imagenes.html">Images</a>
       <a href="/en/video.html">Video</a>
       <a href="/en/publicidad.html">Advertising</a>
-      <a href="/en/avatar.html">Avatar 3D</a>
       <a href="/crear/">Assets</a>
       <a href="/en/stock.html">Stock</a>
     </nav>
@@ -143,7 +178,7 @@
             <li>Policy: allow only authorized team accounts.</li>
           </ul>
           <div class="access-actions">
-            <a class="button primary" href="mailto:csilvasantin@gmail.com?subject=Admira Studio%20Campaigns%20Access">Request access</a>
+            <a class="button primary" href="mailto:hola@admiranext.com?subject=Admira Studio%20Campaigns%20Access">Request access</a>
             <a class="button secondary" href="/calendario/">Back to calendar</a>
           </div>
           <div class="access-note">If you already have a corporate session, the SSO provider will redirect here once the route is protected at the edge.</div>
@@ -167,6 +202,6 @@
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
     })();
   </script>
-  <script src="/assets/matrix-rain.js?v=20260608-sides"></script>
+  <script defer src="/assets/matrix-rain.js?v=20260608-sides"></script>
 </body>
 </html>

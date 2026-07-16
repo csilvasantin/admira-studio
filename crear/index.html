@@ -1,16 +1,47 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<script src="/gate.js"></script>
+  <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
+       Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
+       login con Google + misma whitelist de usuarios (worker admira-whitelist). Verja ACTIVA
+       por defecto. ?gate=off es un escape SOLO para esa carga (no persiste), por si el login
+       falla. Mientras esté cerrado: meta noindex + robots.txt Disallow.
+       PARA REABRIR EL SITIO EL DÍA DEL LANZAMIENTO: borrar TODO este bloque (marcadores
+       GATE-INICIO … GATE-FIN) de cada .html, restaurar robots.public.txt → robots.txt y
+       borrar /auth-gate.js. Ver checklist en el PR de la verja. -->
+  <!-- GATE-INICIO -->
+  <meta name="robots" content="noindex, nofollow">
+  <script>
+  (function(){
+    var GATE_DEFAULT = 'on';                       // verja activa — sitio cerrado
+    var on = GATE_DEFAULT;
+    try{
+      var q = new URLSearchParams(location.search).get('gate');
+      if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
+    }catch(e){}
+    if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
+    var s=document.createElement('script'); s.src='/auth-gate.js';
+    (document.head||document.documentElement).appendChild(s);
+    // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
+    // origen aún no esté autorizado en Google → mensaje claro en pantalla.
+    setTimeout(function(){
+      if(!document.documentElement.classList.contains('gate-locked')) return;
+      var el=document.getElementById('admira-err');
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+    }, 10000);
+  })();
+  </script>
+  <!-- GATE-FIN -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admira Studio Assets</title>
+  <title>Admira Studio Studio Assets</title>
   <meta name="description" content="Assets de Admira Studio para crear mobiliario y elementos listos para gemelos digitales XpaceOS.">
   <meta name="theme-color" content="#0b1117">
   <link rel="canonical" href="https://www.admira.studio/crear/">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
-  <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="../assets/styles.css?v=20260608-sides">
+  <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
+  <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="../assets/styles.css?v=20260617-legal-contact-dmz">
   <style>
     .login-gate {
       min-height: 70vh;
@@ -323,51 +354,52 @@
     .furni-progress-indet { position:absolute; inset:0; background:linear-gradient(90deg, transparent 0%, var(--cyan) 50%, transparent 100%); background-size:40% 100%; background-repeat:no-repeat; opacity:.55; animation:furniIndet 1.5s ease-in-out infinite; }
     @keyframes furniIndet { 0%{ background-position:-40% 0; } 100%{ background-position:140% 0; } }
   </style>
-  <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
+  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
+  <script defer src="/assets/consent.js?v=20260617"></script>
+  <script defer src="/assets/site-nav.js?v=20260715-nav-scroll"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <h1 class="sr-only">Admira Studio Assets</h1>
+  <h1 class="sr-only">Admira Studio Studio Assets</h1>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="site-header">
     <a class="brand" href="/" aria-label="Admira Studio inicio">
-      <span class="brand-mark">A</span>
+      <span class="brand-mark">P</span>
       <span>Admira Studio</span>
     </a>
-    <nav class="nav" aria-label="Navegacion principal">
+    <nav class="nav" aria-label="Navegación principal">
       <a href="/audio.html">Audio</a>
-      <a href="/musica.html">Musica</a>
-      <a href="/imagenes.html">Imagenes</a>
+      <a href="/musica.html">Música</a>
+      <a href="/imagenes.html">Imágenes</a>
       <a href="/video.html">Video</a>
       <a href="/publicidad.html">Publicidad</a>
-      <a href="/avatar.html">Avatar 3D</a>
       <a href="/crear/" class="active">Assets</a>
       <a href="/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
-      <div class="language-switcher" aria-label="Seleccion de idioma">
-        <a class="lang-toggle" href="/en/" aria-label="Cambiar a ingles">ENG</a>
+      <div class="language-switcher" aria-label="Selección de idioma">
+        <a class="lang-toggle" href="/en/" aria-label="Cambiar a inglés">ENG</a>
       </div>
       <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
-      <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
-  <nav class="mobile-nav" id="mobileNav" aria-label="Navegacion movil">
+  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil">
     <a href="/audio.html">Audio</a>
-    <a href="/musica.html">Musica</a>
-    <a href="/imagenes.html">Imagenes</a>
+    <a href="/musica.html">Música</a>
+    <a href="/imagenes.html">Imágenes</a>
     <a href="/video.html">Video</a>
     <a href="/publicidad.html">Publicidad</a>
     <a href="/avatar.html">Avatar 3D</a>
     <a href="/crear/" class="active">Assets</a>
     <a href="/stock.html">Stock</a>
-    <div class="mobile-language-switcher" aria-label="Seleccion de idioma">
-      <a class="lang-toggle" href="/en/" aria-label="Cambiar a ingles">ENG</a>
+    <div class="mobile-language-switcher" aria-label="Selección de idioma">
+      <a class="lang-toggle" href="/en/" aria-label="Cambiar a inglés">ENG</a>
     </div>
     <a class="mobile-cta" href="#contact" data-admira-contact>Contacto</a>
   </nav>
@@ -378,11 +410,12 @@
       <div style="max-width:1180px; margin:0 auto; padding: 0 20px;">
         <div class="studio-header">
           <div>
-            <strong style="font-size:22px;">Admira Studio Assets</strong>
+            <strong style="font-size:22px;">Admira Studio Studio Assets</strong>
           </div>
           <div style="display:flex;gap:12px;align-items:center;">
             <button type="button" class="assets-tab" id="tab-creacion">Creación</button>
-            <button type="button" class="assets-tab" id="tab-distribucion">Distribución</button>
+            <button type="button" class="assets-tab" id="tab-edicion">Edición</button>
+            <button type="button" class="assets-tab" id="tab-distribucion">Redistribución</button>
             <button type="button" class="assets-tab" id="tab-marketplace">Marketplace</button>
             <span id="user-badge" class="user"></span>
           </div>
@@ -504,6 +537,16 @@
           <h4>Distribución estándar · sala entera ⇄ gemelos</h4>
           <p style="font-size:12px;color:var(--muted);margin:4px 0 12px;">Diseña una <b>distribución</b> (tamaño de sala + mobiliario colocado) y publícala a la librería compartida. Los gemelos la aplican con <code>/distribucion aplicar &lt;id&gt;</code>; las que publican los gemelos también aparecen aquí. Canal: worker <code>/layout/*</code>.</p>
 
+          <!-- Ciclo Admira Studio → Xpacio (banner) + glosario -->
+          <div style="margin:0 0 12px;padding:9px 12px;border:1px solid rgba(120,243,255,.22);border-radius:8px;background:rgba(120,243,255,.04);font-size:11px;color:#bfe;line-height:1.6;">
+            🔗 <b>Admira Studio → Xpacio:</b> Admira Studio <b>crea</b> (muebles · distribución · creatividades) → se <b>publica/mude</b> al <b>Xpacio</b> (el gemelo de un punto) → se <b>ve</b> en sus pantallas.
+            <details style="margin-top:5px;"><summary style="cursor:pointer;color:#7ee0ff;user-select:none;">📖 ¿Qué es cada cosa?</summary>
+              <div style="margin-top:5px;color:var(--muted);">
+                <b>Xpacio</b> = el gemelo digital de un punto (una tienda) · <b>Pantalla</b> = una superficie del Xpacio (LED/TFT/escaparate) · <b>Circuito</b> = grupo de Xpacios (de admira.app) · <b>Distribución</b> = el layout (sala + muebles) de un Xpacio · <b>Mudanza</b> = enviar esta distribución al Xpacio.
+              </div>
+            </details>
+          </div>
+
           <!-- Nombre -->
           <div style="margin-bottom:10px;"><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Nombre de la distribución</label><input id="distro-name" class="model-select" placeholder="Ej: Estanco estándar v1" style="width:100%;"></div>
           <!-- Cascada igual que admira.app: Alcance → Circuito → Ubicación -->
@@ -524,28 +567,68 @@
           </div>
           <!-- Resumen de segmentación + destino del circuito/ubicación elegido (sincronizado con admira.app) -->
           <div id="distro-circuit-info" style="display:none;margin:-2px 0 12px;padding:9px 11px;border:1px solid rgba(120,243,255,.22);border-radius:8px;background:rgba(120,243,255,.05);font-size:11px;color:var(--muted);line-height:1.5;"></div>
+          <!-- Xpacio activo: sobre qué Xpacio actúan Estado actual / Mudanza / En vivo -->
+          <div id="distro-xpacio" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 10px;padding:8px 11px;border:1px solid rgba(46,224,106,.35);border-radius:8px;background:rgba(46,224,106,.06);font-size:12px;color:#cfe;">
+            <span style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;">🎯 Xpacio activo</span>
+            <b id="distro-xpacio-name" style="color:#9effa0;">🪪 Xtanco inicial</b>
+            <span id="distro-xpacio-sub" style="color:var(--muted);font-size:11px;"></span>
+          </div>
           <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-bottom:10px;">
             <div><label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;">Ancho (cols)</label><input id="distro-cols" class="model-select" type="number" min="6" max="24" value="14" style="width:80px;"></div>
             <div><label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;">Fondo (rows)</label><input id="distro-rows" class="model-select" type="number" min="4" max="16" value="8" style="width:80px;"></div>
             <div><label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;">Pared</label><input id="distro-wallcol" type="color" value="#e0d4b8" style="width:42px;height:34px;padding:2px;background:#0b1117;border:1px solid #28323a;border-radius:6px;"></div>
             <div><label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;">Suelo</label><input id="distro-floorcol" type="color" value="#b8bcc0" style="width:42px;height:34px;padding:2px;background:#0b1117;border:1px solid #28323a;border-radius:6px;"></div>
             <button class="button secondary" id="distro-apply-size" style="height:34px;">Aplicar tamaño</button>
+            <button class="button secondary" id="distro-current" style="height:34px;" title="Carga en la rejilla la distribución que el Xpacio elegido tiene AHORA mismo (estado vivo del gemelo)">📥 Estado actual</button>
+            <button class="button primary" id="distro-mudanza" style="height:34px;" title="Envía esta distribución a los gemelos del circuito/ubicación elegidos para que la apliquen (re-colocan la sala)">🚚 Mudanza</button>
+            <button class="button secondary" id="distro-live" style="height:34px;" title="EN VIVO (BIDIRECCIONAL): lo que muevas en el plano se aplica al gemelo (XpaceOS) en vivo, y lo que muevas en el gemelo se refleja aquí. 🚚 Mudanza sigue siendo el envío explícito a varios gemelos. Carga antes un Xpacio con 📥 Estado actual.">⚪ En vivo</button>
           </div>
 
-          <!-- Paleta de mobiliario -->
-          <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px;">Mobiliario — elige una pieza y haz clic en la rejilla para colocarla (clic en una colocada para quitarla)</label>
-          <div id="distro-palette" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;"></div>
+          <!-- Paleta de mobiliario (plegable) -->
+          <details class="distro-fold">
+            <summary style="cursor:pointer;font-size:12px;color:var(--muted);margin-bottom:6px;user-select:none;">🪑 <b style="color:var(--cyan);">Mobiliario</b> — elige una pieza y haz clic en la rejilla para colocarla (clic en una colocada para quitarla)</summary>
+            <div id="distro-palette" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px;"></div>
+          </details>
 
-          <!-- Rejilla editor -->
-          <div style="overflow:auto;background:#0b1117;border:1px solid #28323a;border-radius:8px;padding:10px;">
-            <div id="distro-grid" style="display:grid;gap:2px;width:max-content;margin:0 auto;"></div>
+          <!-- Equipo (plegable; colapsado por defecto) -->
+          <details class="distro-fold">
+            <summary style="cursor:pointer;font-size:12px;color:var(--muted);margin-bottom:6px;user-select:none;">👥 <b style="color:var(--cyan);">Equipo</b> — añade un rol y colócalo; clic en su círculo del plano para ajustar <b>zona de influencia</b> y <b>acción</b></summary>
+            <div id="distro-team" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px;"></div>
+          </details>
+
+          <!-- Rejilla editor + ficha del mueble (hover) -->
+          <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;">
+            <div style="overflow:auto;background:#0b1117;border:1px solid #28323a;border-radius:8px;padding:10px;flex:1;min-width:0;">
+              <div id="distro-grid" style="display:grid;gap:2px;width:max-content;margin:0 auto;"></div>
+            </div>
+            <aside id="distro-hoverinfo" style="flex:0 0 230px;background:#0b1117;border:1px solid #28323a;border-radius:8px;padding:12px;font-size:12px;color:#cfe;min-height:170px;align-self:stretch;">
+              <div style="font-size:11px;color:var(--muted);opacity:.7;line-height:1.5;">🛈 Pasa el ratón por un mueble del plano para ver su ficha.</div>
+            </aside>
           </div>
           <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
             <button class="button primary" id="distro-save" style="flex:1;">💾 Guardar y publicar</button>
             <button class="button secondary" id="distro-iso" style="flex:1;" title="Ver la distribución en isométrico, con el motor real del gemelo (XpaceOS.com)">📐 Perspectiva isométrica</button>
+            <button class="button secondary" id="distro-alzado" style="flex:1;" title="Alzado/sección: vista lateral local para analizar las ALTURAS de los muebles y los elementos de la pared">📏 Alzado</button>
+            <button class="button secondary" id="distro-iso25" style="flex:1;" title="Vista 2.5D isométrica LOCAL: muebles a su altura real + pantallas en las paredes, sin abrir el gemelo">🧊 Vista 2.5D</button>
             <button class="button secondary" id="distro-clear" style="flex:1;">🧹 Vaciar rejilla</button>
           </div>
           <div id="distro-status" style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center;min-height:16px;"></div>
+
+          <!-- CLI del Xtanco (plegable) -->
+          <details class="distro-fold" id="distro-cli-fold" style="margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;">
+            <summary style="cursor:pointer;font-size:12px;color:var(--muted);user-select:none;">⌨ <b style="color:var(--cyan);">CLI Xtanco</b> — teclea comandos como en la consola del gemelo (<code>/render real</code>, <code>/music on</code>, <code>/ladron</code>, <code>/help</code>); se ejecutan en el preview 📐 si está abierto y/o en el Xpacio LIVE con 🔑</summary>
+            <div id="distro-cli-chips-p" style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;"></div>
+            <div style="display:flex;gap:8px;align-items:center;margin:8px 0 0;">
+              <button id="distro-cli-kpi-btn" class="button secondary" style="padding:4px 9px;font-size:12px;white-space:nowrap;" title="Estado del Xpacio EN VIVO (caja · satisfacción · clientes · hora). Pide /status cada 8s mientras estés En vivo; pausa si cambias de pestaña.">▶ estado en vivo</button>
+              <div id="distro-cli-kpi" style="flex:1;font-family:monospace;font-size:12px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"></div>
+            </div>
+            <div id="distro-cli-out-p" style="max-height:120px;overflow:auto;margin:8px 0 0;color:var(--muted);font-family:monospace;font-size:12px;white-space:pre-wrap;line-height:1.5;"></div>
+            <div style="display:flex;gap:8px;align-items:center;margin-top:8px;">
+              <input id="distro-cli-in-p" autocomplete="off" spellcheck="false" placeholder="/velocidad 8 · /music on · /ladron · /help (lista todo)" style="flex:1;background:rgba(2,8,13,.6);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--ink);font-family:monospace;font-size:13px;outline:none;">
+              <button class="button secondary" id="distro-cli-key-p" style="padding:6px 10px;font-size:12px;white-space:nowrap;" title="Pega la REMOTE_KEY del stand para enviar TAMBIÉN al Xpacio LIVE del punto. Vacío = solo preview embebido.">🔑 live</button>
+              <button class="button primary" id="distro-cli-send-p" style="padding:6px 12px;font-size:12px;white-space:nowrap;">enviar ⏎</button>
+            </div>
+          </details>
 
           <!-- Librería -->
           <div style="display:flex;justify-content:space-between;align-items:center;margin:16px 0 8px;">
@@ -554,6 +637,68 @@
           </div>
           <div id="distro-lib" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;">
             <div style="grid-column:1/-1;color:var(--muted);font-size:12px;text-align:center;padding:10px;">Pulsa «Refrescar» para cargar la librería compartida.</div>
+          </div>
+        </div>
+
+        <!-- EDICIÓN — editor pixel-art de los muebles (Mis muebles): pintar + proporción/recorte -->
+        <div class="studio-panel xpace-focus" id="edit-panel" data-view="edicion" style="display:none;margin-top:0;">
+          <h4>🎨 Edición de muebles · pixel art</h4>
+          <p style="font-size:12px;color:var(--muted);margin:4px 0 12px;">Retoca tus muebles: pinta píxel a píxel, <b>recorta el margen transparente</b> (arregla el efecto «flotando») y ajusta <b>altura</b> y <b>footprint</b> (tamaño en la sala). Guarda y se actualiza en la paleta, el plano y el gemelo.</p>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;">
+            <div style="flex:0 0 200px;">
+              <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;">🪑 Muebles <span style="opacity:.6;">· últimos 3</span></label>
+              <div id="edit-list" style="display:flex;flex-direction:column;gap:5px;"></div>
+              <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🖼️ Imágenes <span style="opacity:.6;">· últimas 3</span></label>
+              <div id="edit-list-image" style="display:flex;flex-direction:column;gap:5px;"></div>
+              <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🎬 Vídeos <span style="opacity:.6;">· últimos 3</span></label>
+              <div id="edit-list-video" style="display:flex;flex-direction:column;gap:5px;"></div>
+              <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🎵 Música <span style="opacity:.6;">· últimas 3</span></label>
+              <div id="edit-list-music" style="display:flex;flex-direction:column;gap:5px;"></div>
+              <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🔊 Audio <span style="opacity:.6;">· últimos 3</span></label>
+              <div id="edit-list-audio" style="display:flex;flex-direction:column;gap:5px;"></div>
+              <div style="margin-top:12px;border-top:1px solid #28323a;padding-top:10px;">
+                <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">📥 Importar imagen</label>
+                <input id="edit-import-url" type="text" placeholder="pega una URL de imagen…" class="model-select" style="width:100%;font-size:11px;margin-bottom:6px;">
+                <div style="display:flex;gap:6px;">
+                  <button type="button" class="button secondary" id="edit-import-url-btn" style="flex:1;font-size:12px;padding:5px 8px;">🌐 Traer URL</button>
+                  <button type="button" class="button secondary" id="edit-import-file-btn" style="flex:1;font-size:12px;padding:5px 8px;">📁 Subir archivo</button>
+                </div>
+                <input id="edit-import-file" type="file" accept="image/*" style="display:none;">
+                <p style="font-size:10px;color:var(--muted);margin:6px 0 0;line-height:1.4;">Trae una imagen de otra web para retocarla aquí y guardarla en Stock.</p>
+              </div>
+            </div>
+            <div style="flex:1;min-width:340px;">
+              <div id="edit-toolbar" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px;">
+                <button type="button" class="button secondary edit-tool" data-tool="paint" style="font-size:12px;padding:5px 10px;">✏️ Pincel</button>
+                <button type="button" class="button secondary edit-tool" data-tool="erase" style="font-size:12px;padding:5px 10px;">🩹 Borrar</button>
+                <button type="button" class="button secondary edit-tool" data-tool="pick" style="font-size:12px;padding:5px 10px;">💧 Cuentagotas</button>
+                <input type="color" id="edit-color" value="#39d0ff" style="width:36px;height:30px;padding:2px;background:#0b1117;border:1px solid #28323a;border-radius:6px;">
+                <span style="width:1px;height:24px;background:#28323a;"></span>
+                <button type="button" class="button secondary" id="edit-zoom-out" style="font-size:12px;padding:5px 9px;">➖</button>
+                <span id="edit-zoom-lbl" style="font-size:11px;color:var(--muted);">×8</span>
+                <button type="button" class="button secondary" id="edit-zoom-in" style="font-size:12px;padding:5px 9px;">➕</button>
+                <button type="button" class="button secondary" id="edit-trim" style="font-size:12px;padding:5px 10px;" title="Recorta el margen transparente alrededor del dibujo (arregla el flotando)">✂️ Recortar transparencia</button>
+                <span style="width:1px;height:24px;background:#28323a;"></span>
+                <button type="button" class="button secondary" id="edit-undo" style="font-size:12px;padding:5px 10px;" disabled title="Deshacer (⌘Z)">↶ Deshacer</button>
+                <button type="button" class="button secondary" id="edit-redo" style="font-size:12px;padding:5px 10px;" disabled title="Rehacer (⌘⇧Z)">↷ Rehacer</button>
+              </div>
+              <div style="overflow:auto;background:repeating-conic-gradient(#11161c 0% 25%, #0b0f14 0% 50%) 50% / 16px 16px;border:1px solid #28323a;border-radius:8px;padding:8px;max-height:52vh;">
+                <canvas id="edit-canvas" style="image-rendering:pixelated;display:block;cursor:crosshair;"></canvas>
+              </div>
+              <div style="display:flex;gap:6px;align-items:center;margin-top:10px;">
+                <span style="font-size:13px;white-space:nowrap;" title="Edición con IA mediante Gemini 2.5 Flash Image">✨ IA <span style="font-size:10px;color:var(--muted);">(Gemini 2.5 Flash)</span>:</span>
+                <input id="edit-ai-prompt" type="text" placeholder="ej. la moto ahora rosa · quítale el fondo · hazla de noche" class="model-select" style="flex:1;min-width:220px;">
+                <button type="button" class="button primary" id="edit-ai-go" style="font-size:12px;padding:6px 14px;white-space:nowrap;">Aplicar</button>
+              </div>
+              <div style="display:flex;gap:14px;align-items:end;flex-wrap:wrap;margin-top:10px;">
+                <div><label style="display:block;font-size:11px;color:var(--muted);">Altura (px)</label><input id="edit-ph" type="number" min="8" max="400" value="46" class="model-select" style="width:80px;"></div>
+                <div><label style="display:block;font-size:11px;color:var(--muted);">Ancho (tiles)</label><input id="edit-fpw" type="number" min="1" max="6" value="1" class="model-select" style="width:70px;"></div>
+                <div><label style="display:block;font-size:11px;color:var(--muted);">Fondo (tiles)</label><input id="edit-fpd" type="number" min="1" max="6" value="1" class="model-select" style="width:70px;"></div>
+                <button type="button" class="button primary" id="edit-save" style="height:34px;">💾 Guardar cambios</button>
+                <button type="button" class="button secondary" id="edit-save-stock" style="height:34px;" title="Publica el lienzo actual como un asset nuevo en Stock (Biblioteca/Marketplace)">📦 Guardar en Stock</button>
+              </div>
+              <div id="edit-status" style="font-size:12px;color:var(--muted);margin-top:8px;min-height:16px;">Elige un mueble de «Mis muebles» para editarlo.</div>
+            </div>
           </div>
         </div>
 
@@ -593,9 +738,10 @@
   </main>
 
   <footer class="site-footer">
-    <span>Admira Studio Assets</span>
+    <span>Admira Studio Studio Assets</span>
     <p>Herramienta de creación interna. Contenido generado se puede publicar a Pixer Feed.</p>
     <a href="/">Volver a admira.studio</a>
+    <a href="/privacidad.html">Privacidad y cookies</a>
   </footer>
 
   <script>
@@ -969,7 +1115,7 @@
       ctx.fillText((modelName || '').substring(0, 42), 24, c.height - 28);
 
       ctx.fillStyle = '#68dce9';
-      ctx.fillText('PIXERIA STUDIO', c.width - 170, c.height - 28);
+      ctx.fillText('ADMIRA STUDIO STUDIO', c.width - 170, c.height - 28);
 
       return c.toDataURL('image/png');
     }
@@ -1017,7 +1163,7 @@
       // Subtle Admira Studio watermark (very faint, for provenance)
       ctx.fillStyle = 'rgba(104,220,233,0.25)';
       ctx.font = '500 14px JetBrains Mono, monospace';
-      ctx.fillText('PIXERIA', 380, 480);
+      ctx.fillText('ADMIRA STUDIO', 380, 480);
 
       return c.toDataURL('image/png');
     }
@@ -1268,7 +1414,7 @@
       try {
         const payload = {
           type: campaignAssetType(meta),
-          motor: meta.motor || 'Admira Studio Assets',
+          motor: meta.motor || 'Admira Studio Studio Assets',
           prompt: meta.prompt || '',
           title: 'Admira Studio · ' + campaignNameFromPrompt(meta.prompt),
           comment: 'Asset preparado para comprar emisión en Admira',
@@ -1334,10 +1480,10 @@
       try {
         const payload = {
           type: meta.type,
-          motor: meta.motor || 'Admira Studio Assets',
+          motor: meta.motor || 'Admira Studio Studio Assets',
           prompt: meta.prompt || '',
-          title: `Admira Studio Assets • ${meta.prompt.substring(0, 50)}`,
-          comment: `Generado con ${meta.motor} en Admira Studio Assets`,
+          title: `Admira Studio Studio Assets • ${meta.prompt.substring(0, 50)}`,
+          comment: `Generado con ${meta.motor} en Admira Studio Studio Assets`,
           tags: ['pixeria', 'studio', meta.type],
           costEst: 0.02,
           thumbnail: meta.thumbnail || null,
@@ -1701,7 +1847,7 @@
         stockType: 'furni',
         kind: 'furni',
         category: 'furni',
-        motor: 'Admira Studio Assets',
+        motor: 'Admira Studio Studio Assets',
         title: title,
         tags: frames > 1 ? ['furni', 'mobiliario', 'pixeria', 'rot4', 'girable'] : ['furni', 'mobiliario', 'pixeria'],
         prompt: (document.getElementById('furni-prompt').value || '').slice(0, 300),
@@ -1782,8 +1928,12 @@
     // Keyboard support for demo
     document.addEventListener('keydown', function(e) {
       if (e.key === '/' && document.getElementById('studio').classList.contains('active')) {
+        // Si ya estás escribiendo en un campo (CLI Xtanco, nombre, etc.), el "/" se
+        // teclea normal — NO secuestrar el foco al prompt (bug: rompía el CLI).
+        const ae = document.activeElement;
+        if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.isContentEditable)) return;
         const ta = document.getElementById('prompt');
-        if (document.activeElement !== ta) {
+        if (ta && document.activeElement !== ta) {
           e.preventDefault();
           ta.focus();
         }
@@ -1819,7 +1969,7 @@
       try { applyFurniPreset(currentFurniPreset); } catch (e) {}
       const oa = document.getElementById('output-actions'); if (oa) oa.style.display = 'none';
     })();
-    console.log('%c[Admira Studio Assets] Acceso libre · creation tool ready.', 'color:#555');
+    console.log('%c[Admira Studio Studio Assets] Acceso libre · creation tool ready.', 'color:#555');
 
     // ── DISTRIBUCIONES — editor de sala + librería compartida (worker /layout/*) ──
     (function distroModule(){
@@ -1838,10 +1988,169 @@
       const FMAP={}; FURNI.forEach(f=>FMAP[f.type]=f);
       const iconFor=t=>(FMAP[t]&&FMAP[t].icon)||'▪️';
       const CELL=30;
-      const st={ cols:14, rows:8, sel:'counter', selFurni:null, items:[], _n:1, wall:'#e0d4b8', floor:'#b8bcc0' };
+      // Xtanco inicial: screenId fijo del gemelo digital por defecto (standalone, sin ?loc).
+      // Si no se pega ningún id, las acciones (Estado actual / Mudanza / En vivo) lo atacan a él.
+      const XTANCO_INICIAL='xtore-inicial';
+      const st={ cols:14, rows:8, sel:'counter', selFurni:null, items:[], staff:[], _n:1, wall:'#e0d4b8', floor:'#b8bcc0' };
       const $=id=>document.getElementById(id);
       function status(msg,col){ const s=$('distro-status'); if(s){ s.textContent=msg||''; s.style.color=col||'var(--muted)'; } }
-      function distroItemOut(i){ const o={ id:i.id, type:i.type, col:i.col, row:i.row, sx:1, sy:1, label:i.label }; if(i.type==='custom'){ o.custom=true; if(i.img)o.img=i.img; if(i.fp)o.fp=i.fp; if(i.ph)o.ph=i.ph; if(i.frames>1){ o.frames=i.frames; o.orientation=i.orientation||0; } } return o; }
+      function distroItemOut(i){ const o={ id:i.id, type:i.type, col:i.col, row:i.row, sx:i.sx||1, sy:i.sy||1, label:i.label }; if(i.rot) o.rot=i.rot; if(i.plv&&i.plv!=='auto') o.plv=i.plv; if(i.type==='custom'){ o.custom=true; if(i.img)o.img=i.img; if(i.fp)o.fp=i.fp; if(i.ph)o.ph=i.ph; if(i.frames>1){ o.frames=i.frames; o.orientation=i.orientation||0; } } return o; }
+      // PLV: creatividades fijables por pantalla (LED/TFT). 'auto' = targeting reactivo.
+      const PLV_OPTS=[['auto','Auto (reactivo al aforo)'],['chuches','🍬 Chuches'],['vapeo','💨 Vapeo'],['prensa','📰 Prensa · Lotería'],['perfume_m','🧴 Perfume hombre'],['perfume_f','💄 Perfume mujer']];
+      function isScreenType(t){ return t==='led'||t==='tft'; }
+
+      // ── EQUIPO (roles, acciones, zonas de influencia) ──────────────────────
+      // shopStaffPos del gemelo es tile-based {col,row,label,color} y shopStaffZones
+      // {col,row,radius} → /crear los edita directos. 'action' es campo extra que
+      // viaja en el round-trip (el gemelo lo conserva). Iconos/colores espejo del gemelo.
+      const STAFF_ROLES=[
+        {role:0,label:'Cajera',    color:'#ff88aa',icon:'💳',acts:['Atender caja','Cobro rápido','Upselling']},
+        {role:1,label:'Repositor', color:'#88aaff',icon:'📦',acts:['Reponer','Revisar stock','Frente de lineal']},
+        {role:2,label:'Azafata',   color:'#ffcc44',icon:'🎀',acts:['Recibir clientes','Promocionar','Degustación']},
+        {role:3,label:'Manager',   color:'#aaffaa',icon:'🧑‍💼',acts:['Supervisar','Flash promo','Formar equipo']},
+        {role:4,label:'DJ',        color:'#ff88ff',icon:'🎧',acts:['Ambiente','Subir energía']},
+      ];
+      const STAFF_ZONE_DEF=[1,2,2,2,1];
+      function roleDef(r){ return STAFF_ROLES[r]||STAFF_ROLES[0]; }
+      let selStaff=null;   // miembro del equipo seleccionado para editar
+      // Construye el array `staff` (= shopStaffPos) y `zones` (= shopStaffZones) que
+      // entiende el gemelo, a partir de st.staff.
+      function staffOut(){ return (st.staff||[]).map(s=>({ col:s.col, row:s.row, label:s.label, color:s.color, role:s.role, name:s.name||s.label, action:s.action||'' })); }
+      function zonesOut(){ return (st.staff||[]).map(s=>({ col:s.col, row:s.row, radius:(s.zoneRadius>=99?99:Math.max(0,Math.min(6,s.zoneRadius==null?2:s.zoneRadius))) })); }
+      function hexA(hex,a){ try{ const h=hex.replace('#',''); const n=parseInt(h.length===3?h.replace(/(.)/g,'$1$1'):h,16); return 'rgba('+((n>>16)&255)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }catch(_){ return 'rgba(120,243,255,'+a+')'; } }
+
+      // ── ALZADO (sección lateral para analizar ALTURAS) ────────────────────
+      // Mapa de alturas LOCAL (px), espejo de las funciones de dibujo del gemelo
+      // (5º arg de drawIsoBlock). /crear no tiene las alturas → se replican aquí.
+      // Pared ISO = 165. Custom usa su ph. Mantener en sync si cambian en el gemelo.
+      const WALL_H=165;
+      const FURNI_H={ counter:16, shelves:55, wineRack:48, lottery:22, vending:44, magazines:42,
+        manager:20, plant:38, floorLamp:52, metahuman:72, tablet:22, turnKiosk:40, djBooth:26,
+        rug:1, door:0 };
+      // Wall-mounted: {alto del elemento, base = altura desde el suelo a su borde inferior}
+      const WALL_ITEMS={ tft:{h:46,base:95}, led:{h:16,base:120}, aroma:{h:18,base:70} };
+      function itemHeight(it){ if(it.type==='custom') return Math.max(8,it.ph||46); return FURNI_H[it.type]!=null?FURNI_H[it.type]:24; }
+      function renderAlzado(){
+        let ov=document.getElementById('alzado-modal');
+        if(!ov){ ov=document.createElement('div'); ov.id='alzado-modal';
+          ov.style.cssText='position:fixed;inset:0;z-index:99998;display:flex;align-items:center;justify-content:center;background:rgba(2,6,9,.92);padding:20px;';
+          ov.onclick=(e)=>{ if(e.target===ov) ov.style.display='none'; };
+          document.body.appendChild(ov);
+        }
+        ov.style.display='flex';
+        const PADL=44, PADR=16, PADT=24, PADB=40, colW=Math.max(26,Math.min(54,Math.round(760/st.cols)));
+        const Wd=PADL+st.cols*colW+PADR, scale=150/WALL_H, wallPx=WALL_H*scale, Hd=PADT+wallPx+PADB;
+        const baseY=PADT+wallPx;   // línea de suelo
+        function yTop(hpx){ return baseY-hpx*scale; }
+        let svg='';
+        // Pared (fondo) + regla de alturas
+        svg+='<rect x="'+PADL+'" y="'+PADT+'" width="'+(st.cols*colW)+'" height="'+wallPx+'" fill="'+hexA(st.wall||'#e0d4b8',0.18)+'" stroke="#2a3a44"/>';
+        [0,50,100,150].forEach(h=>{ const y=yTop(h); svg+='<line x1="'+(PADL-4)+'" y1="'+y+'" x2="'+(PADL+st.cols*colW)+'" y2="'+y+'" stroke="#1f3a44" stroke-dasharray="3,4"/><text x="'+(PADL-7)+'" y="'+(y+3)+'" fill="#6d8a96" font-size="9" text-anchor="end">'+h+'</text>'; });
+        // Suelo
+        svg+='<line x1="'+PADL+'" y1="'+baseY+'" x2="'+(PADL+st.cols*colW)+'" y2="'+baseY+'" stroke="#7da0b0" stroke-width="2"/>';
+        // Elementos de PARED (proyectados por columna)
+        for(const it of st.items){ const w=WALL_ITEMS[it.type]; if(!w) continue;
+          const x=PADL+it.col*colW+2, ww=colW-4, y=yTop(w.base+w.h), hh=w.h*scale;
+          svg+='<rect x="'+x+'" y="'+y+'" width="'+ww+'" height="'+hh+'" rx="2" fill="'+hexA('#78f3ff',0.35)+'" stroke="#78f3ff"/>';
+          svg+='<text x="'+(x+ww/2)+'" y="'+(y-3)+'" fill="#9fe7ff" font-size="8" text-anchor="middle">'+iconFor(it.type)+'</text>';
+        }
+        // Muebles de SUELO (barra por columna a su altura real)
+        const floor=st.items.filter(it=>!WALL_ITEMS[it.type]&&it.type!=='rug'&&it.type!=='door').sort((a,b)=>a.col-b.col);
+        for(const it of floor){ const fp=fpFor(it); const hpx=itemHeight(it);
+          const x=PADL+it.col*colW+2, ww=Math.max(10,Math.min(st.cols-it.col,fp.w)*colW-4), y=yTop(hpx), hh=hpx*scale;
+          svg+='<rect x="'+x+'" y="'+y+'" width="'+ww+'" height="'+hh+'" rx="2" fill="'+hexA('#2ee06a',0.30)+'" stroke="#2ee06a"/>';
+          svg+='<text x="'+(x+ww/2)+'" y="'+(y-3)+'" fill="#bfe9c9" font-size="8" text-anchor="middle">'+iconFor(it.type)+' '+hpx+'</text>';
+        }
+        // Etiquetas de columna
+        for(let c=0;c<st.cols;c++) svg+='<text x="'+(PADL+c*colW+colW/2)+'" y="'+(baseY+13)+'" fill="#5a6a72" font-size="8" text-anchor="middle">'+c+'</text>';
+        ov.innerHTML='<div style="background:#04101a;border:2px solid #2f8d8d;border-radius:14px;padding:16px 18px;max-width:94vw;max-height:90vh;overflow:auto;box-shadow:0 0 40px rgba(47,141,141,.3);">'
+          +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:#7dffd0;font-weight:700;">📏 Alzado · alturas (px) — verde: suelo · cian: pared'
+          +'<button id="alzado-close" style="cursor:pointer;background:#0e2a22;border:1px solid #2f8d8d;color:#7dffd0;border-radius:8px;padding:5px 12px;font:700 12px monospace;">Cerrar ✕</button></div>'
+          +'<svg viewBox="0 0 '+Wd+' '+Hd+'" style="width:'+Math.min(Wd,860)+'px;max-width:88vw;height:auto;display:block;background:#071019;border-radius:8px;">'+svg+'</svg>'
+          +'<div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5;">Proyección lateral por columna: cada pieza a su altura real (revistero 42 · estantería 55 · mostrador 16…). Los elementos de pared (LED/TFT/aroma) van sobre el fondo a su altura de montaje.</div>'
+          +'</div>';
+        const cb=document.getElementById('alzado-close'); if(cb) cb.onclick=()=>{ ov.style.display='none'; };
+      }
+      // ── VISTA 2.5D ISOMÉTRICA LOCAL (alturas reales + pantallas de pared) ──
+      // Render SVG de la distribución actual en isométrico, usando el mapa de alturas
+      // local (FURNI_H/itemHeight). No abre el gemelo (eso es 📐 Perspectiva isométrica).
+      function renderIso25(){
+        let ov=document.getElementById('iso25-modal');
+        if(!ov){ ov=document.createElement('div'); ov.id='iso25-modal';
+          ov.style.cssText='position:fixed;inset:0;z-index:99998;display:flex;align-items:center;justify-content:center;background:rgba(2,6,9,.93);padding:18px';
+          ov.onclick=e=>{ if(e.target===ov) ov.style.display='none'; };
+          document.body.appendChild(ov);
+        }
+        ov.style.display='flex';
+        const cols=st.cols, rows=st.rows, pad=26;
+        const hw=Math.max(10,Math.min(34,Math.round(680/(cols+rows)))), hh=Math.round(hw/2), hS=hw/40;
+        const WALL=165, wallPx=Math.round(WALL*hS), ox=rows*hw+pad, oy=wallPx+pad;
+        const Wd=(cols+rows)*hw+pad*2, Hd=(cols+rows)*hh+wallPx+pad*2;
+        const P=(c,r)=>({x:ox+(c-r)*hw, y:oy+(c+r)*hh}), up=(p,z)=>({x:p.x,y:p.y-z});
+        const shade=(hex,p)=>{ try{ const n=parseInt(hex.slice(1),16); let R=Math.max(0,Math.min(255,(n>>16)+p)),G=Math.max(0,Math.min(255,((n>>8)&255)+p)),B=Math.max(0,Math.min(255,(n&255)+p)); return '#'+((1<<24)+(R<<16)+(G<<8)+B).toString(16).slice(1); }catch(_){ return hex; } };
+        const poly=(pts,fill,stroke)=>'<polygon points="'+pts.map(p=>p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ')+'" fill="'+fill+'" stroke="'+(stroke||'rgba(0,0,0,.4)')+'" stroke-width="0.6"/>';
+        const COL={counter:'#8a5a2e',shelves:'#9a7a44',wineRack:'#7a2e3a',lottery:'#b89a3a',vending:'#2a9d8f',magazines:'#b8a060',manager:'#5a7a5a',plant:'#3a8a4a',floorLamp:'#c9a23a',djBooth:'#2a2a3a',tablet:'#3a5a6a',turnKiosk:'#6a6a7a',metahuman:'#6a3a7a',custom:'#a05ac0',door:'#5a3a18'};
+        const floorCol=st.floor||'#b8bcc0', wallCol=st.wall||'#e0d4b8';
+        let svg='';
+        svg+=poly([P(0,0),P(cols,0),P(cols,rows),P(0,rows)], shade(floorCol,-6), 'rgba(0,0,0,.35)');
+        for(let c=1;c<cols;c++) svg+='<line x1="'+P(c,0).x.toFixed(1)+'" y1="'+P(c,0).y.toFixed(1)+'" x2="'+P(c,rows).x.toFixed(1)+'" y2="'+P(c,rows).y.toFixed(1)+'" stroke="rgba(0,0,0,.18)" stroke-width="0.5"/>';
+        for(let r=1;r<rows;r++) svg+='<line x1="'+P(0,r).x.toFixed(1)+'" y1="'+P(0,r).y.toFixed(1)+'" x2="'+P(cols,r).x.toFixed(1)+'" y2="'+P(cols,r).y.toFixed(1)+'" stroke="rgba(0,0,0,.18)" stroke-width="0.5"/>';
+        svg+=poly([P(0,0),P(cols,0),up(P(cols,0),wallPx),up(P(0,0),wallPx)], shade(wallCol,-20), 'rgba(0,0,0,.35)');   // pared larga (row=0)
+        svg+=poly([P(0,0),P(0,rows),up(P(0,rows),wallPx),up(P(0,0),wallPx)], shade(wallCol,-4), 'rgba(0,0,0,.35)');     // pared lateral (col=0)
+        // Pantallas de pared (LED/TFT/aroma) sobre la pared larga, por columna y altura de montaje
+        for(const it of st.items){ const w=WALL_ITEMS[it.type]; if(!w) continue; const fp=fpFor(it);
+          const c0=it.col, c1=Math.min(cols,it.col+(fp.w||1)), zb=w.base*hS, zt=(w.base+w.h)*hS;
+          svg+=poly([up(P(c0,0),zb),up(P(c1,0),zb),up(P(c1,0),zt),up(P(c0,0),zt)], 'rgba(120,243,255,.55)', '#78f3ff');
+          const m=up(P((c0+c1)/2,0),(zb+zt)/2); svg+='<text x="'+m.x.toFixed(1)+'" y="'+m.y.toFixed(1)+'" font-size="9" text-anchor="middle" dominant-baseline="middle">'+iconFor(it.type)+'</text>';
+        }
+        // Muebles de suelo: cajas iso a su altura, ordenados por profundidad (col+row)
+        const floor=st.items.filter(it=>!WALL_ITEMS[it.type]&&it.type!=='rug'&&it.type!=='door').sort((a,b)=>(a.col+a.row)-(b.col+b.row));
+        for(const it of floor){ const fp=fpFor(it); const fw=Math.max(1,Math.min(cols-it.col,fp.w||1)), fd=Math.max(1,Math.min(rows-it.row,fp.d||1));
+          const bh=itemHeight(it)*hS, p=P(it.col,it.row), w=fw*hw, d=fd*hw, wh=fw*hh, dh=fd*hh, base=COL[it.type]||'#6e6a60';
+          svg+=poly([{x:p.x-d,y:p.y+dh-bh},{x:p.x+w-d,y:p.y+wh+dh-bh},{x:p.x+w-d,y:p.y+wh+dh},{x:p.x-d,y:p.y+dh}], shade(base,-26));        // izq
+          svg+=poly([{x:p.x+w-d,y:p.y+wh+dh-bh},{x:p.x+w,y:p.y+wh-bh},{x:p.x+w,y:p.y+wh},{x:p.x+w-d,y:p.y+wh+dh}], shade(base,-44));        // der
+          svg+=poly([{x:p.x,y:p.y-bh},{x:p.x+w,y:p.y+wh-bh},{x:p.x+w-d,y:p.y+wh+dh-bh},{x:p.x-d,y:p.y+dh-bh}], shade(base,16));            // top
+          const tx=(p.x+(w-d)/2).toFixed(1), ty=(p.y+(wh+dh)/2-bh).toFixed(1);
+          svg+='<text x="'+tx+'" y="'+ty+'" font-size="'+Math.max(8,Math.round(hw*0.5))+'" text-anchor="middle" dominant-baseline="middle">'+iconFor(it.type)+'</text>';
+        }
+        ov.innerHTML='<div style="background:#04101a;border:2px solid #2f8d8d;border-radius:14px;padding:16px 18px;max-width:96vw;max-height:92vh;overflow:auto;box-shadow:0 0 40px rgba(47,141,141,.3)">'
+          +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:#7dffd0;font-weight:700">🧊 Vista 2.5D · alturas + pantallas de pared <button id="iso25-close" style="cursor:pointer;background:#0e2a22;border:1px solid #2f8d8d;color:#7dffd0;border-radius:8px;padding:5px 12px;font:700 12px monospace">Cerrar ✕</button></div>'
+          +'<svg viewBox="0 0 '+Wd+' '+Hd+'" style="width:'+Math.min(Wd,900)+'px;max-width:90vw;height:auto;display:block;background:#071019;border-radius:8px">'+svg+'</svg>'
+          +'<div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5">Render local de la distribución actual en isométrico: cada mueble a su altura real (mapa local, el mismo que el gemelo) y las pantallas LED/TFT/aroma sobre la pared. Para el motor real del gemelo usa 📐 Perspectiva isométrica.</div>'
+          +'</div>';
+        const cb=document.getElementById('iso25-close'); if(cb) cb.onclick=()=>{ ov.style.display='none'; };
+      }
+      function freeTile(){ // primer tile sin mueble ni miembro (centro hacia fuera)
+        const taken=new Set(); for(const it of st.items) taken.add(it.col+','+it.row); for(const s of st.staff) taken.add(s.col+','+s.row);
+        const c0=st.cols>>1, r0=st.rows>>1;
+        for(let rad=0;rad<Math.max(st.cols,st.rows);rad++) for(let dr=-rad;dr<=rad;dr++) for(let dc=-rad;dc<=rad;dc++){
+          const c=c0+dc, r=r0+dr; if(c<0||r<0||c>=st.cols||r>=st.rows) continue; if(!taken.has(c+','+r)) return {col:c,row:r};
+        }
+        return {col:c0,row:r0};
+      }
+      function addStaffMember(role){
+        const rd=roleDef(role), t=freeTile();
+        const s={ role, col:t.col, row:t.row, label:rd.label, color:rd.color, name:rd.label, action:rd.acts[0], zoneRadius:STAFF_ZONE_DEF[role]||2 };
+        st.staff.push(s); selStaff=s; renderGrid(); staffEditPanel(); pushLiveDebounced(); status('👤 '+rd.label+' añadido · equipo '+st.staff.length);
+      }
+      // Panel de edición del miembro seleccionado (en el aside #distro-hoverinfo).
+      function staffEditPanel(){
+        const b=$('distro-hoverinfo'); if(!b) return; const s=selStaff;
+        if(!s){ return; }
+        const rd=roleDef(s.role);
+        const actOpts=rd.acts.map(a=>'<option'+(a===s.action?' selected':'')+'>'+a+'</option>').join('');
+        b.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><span style="font-size:20px;">'+rd.icon+'</span>'+
+          '<div><div style="font-weight:700;color:'+s.color+';">'+(s.name||s.label)+'</div><div style="font-size:10px;color:var(--muted);">'+rd.label+' · ('+s.col+','+s.row+')</div></div></div>'+
+          '<label style="display:block;font-size:11px;color:var(--muted);margin:8px 0 3px;">Zona de influencia: <b id="staff-zr-val" style="color:#cfe;">'+(s.zoneRadius>=99?'Toda la tienda':((s.zoneRadius==null?2:s.zoneRadius)+' tiles'))+'</b></label>'+
+          '<input id="staff-zr" type="range" min="0" max="5" step="1" value="'+(s.zoneRadius>=99?5:(s.zoneRadius==null?2:s.zoneRadius))+'" style="width:100%;accent-color:'+s.color+';" title="5 = toda la tienda (sin confinar, p.ej. Manager)">'+
+          '<label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 3px;">Acción</label>'+
+          '<select id="staff-act" style="width:100%;background:#0b1117;border:1px solid #28323a;border-radius:6px;color:#cfe;padding:6px;font-size:12px;">'+actOpts+'</select>'+
+          '<div style="font-size:10px;color:var(--muted);margin-top:8px;line-height:1.5;">Arrastra el círculo en el plano para recolocarlo · doble-clic lo quita.</div>'+
+          '<button class="button secondary" id="staff-remove" style="width:100%;margin-top:8px;height:30px;">Quitar del equipo</button>';
+        const zr=$('staff-zr'); if(zr) zr.oninput=()=>{ const val=parseInt(zr.value,10)||0; s.zoneRadius=(val>=5?99:val); const v=$('staff-zr-val'); if(v) v.textContent=(s.zoneRadius>=99?'Toda la tienda':(s.zoneRadius+' tiles')); renderGrid(); pushLiveDebounced(); };
+        const ac=$('staff-act'); if(ac) ac.onchange=()=>{ s.action=ac.value; pushLiveDebounced(); status('Acción de '+(s.name||s.label)+': '+s.action,'#7ee0a0'); };
+        const rm=$('staff-remove'); if(rm) rm.onclick=()=>{ st.staff=st.staff.filter(x=>x!==s); selStaff=null; renderGrid(); pushLiveDebounced(); furniInfoClear(); status('Miembro quitado · equipo '+st.staff.length); };
+      }
 
       // ── Monedero del Xpacio + Mis muebles (KV en el worker /xpacio/*) ──
       function xpacioId(){ let id=localStorage.getItem('xpace_xpacio_id'); if(!id){ id='xp-'+Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4); try{ localStorage.setItem('xpace_xpacio_id',id); }catch(_){} } return id; }
@@ -1899,14 +2208,27 @@
       function setView(name){
         currentView=name;
         document.querySelectorAll('[data-view]').forEach(el=>{ el.style.display=(el.getAttribute('data-view')===name)?'':'none'; });
-        const tc=$('tab-creacion'), td=$('tab-distribucion'), tm=$('tab-marketplace');
+        const tc=$('tab-creacion'), te=$('tab-edicion'), td=$('tab-distribucion'), tm=$('tab-marketplace');
         if(tc) tc.classList.toggle('active',name==='creacion');
+        if(te) te.classList.toggle('active',name==='edicion');
         if(td) td.classList.toggle('active',name==='distribucion');
         if(tm) tm.classList.toggle('active',name==='marketplace');
         if(name==='marketplace') loadMarket();
-        if(name==='distribucion'){ renderPalette(); renderGrid(); loadWallet().then(()=>renderPalette()); }
+        if(name==='edicion'){ loadWallet().then(loadEditList); loadRecentLists(); }
+        if(name==='distribucion'){ renderPalette(); renderTeamPalette(); renderGrid(); loadWallet().then(()=>renderPalette()); }
       }
 
+      function renderTeamPalette(){
+        const p=$('distro-team'); if(!p) return; p.innerHTML='';
+        STAFF_ROLES.forEach(rd=>{
+          const b=document.createElement('button'); b.type='button';
+          b.textContent=rd.icon+' '+rd.label;
+          b.title='Añadir '+rd.label+' al plano';
+          b.style.cssText='font-size:12px;padding:4px 8px;border-radius:6px;cursor:pointer;border:1px solid '+rd.color+'66;background:'+hexA(rd.color,0.10)+';color:#cfe;';
+          b.onclick=()=>addStaffMember(rd.role);
+          p.appendChild(b);
+        });
+      }
       function renderPalette(){
         const p=$('distro-palette'); if(!p) return; p.innerHTML='';
         FURNI.forEach(f=>{
@@ -1924,46 +2246,229 @@
           owned.forEach(o=>{
             const active=(st.sel==='custom'&&st.selFurni&&st.selFurni.url===o.url);
             const b=document.createElement('button'); b.type='button'; b.title=o.title||'mueble comprado';
-            b.innerHTML='<span style="display:inline-block;width:15px;height:15px;vertical-align:middle;margin-right:3px;'+window.furniFrameStyle(o.url,o.frames||1,0)+'"></span>'+String(o.title||'mueble').slice(0,12)+((o.frames>1)?' 🔄':'');
+            b.innerHTML='<span style="display:inline-block;width:15px;height:15px;vertical-align:middle;margin-right:3px;'+window.furniFrameStyle(o.img||o.url,o.frames||1,0)+'"></span>'+String(o.title||'mueble').slice(0,12)+((o.frames>1)?' 🔄':'');
             b.style.cssText='font-size:12px;padding:4px 8px;border-radius:6px;cursor:pointer;border:1px solid '+(active?'var(--cyan)':'#3a5a3a')+';background:'+(active?'rgba(0,200,255,.12)':'rgba(20,40,25,.4)')+';color:#cfe;';
             b.onclick=()=>{ st.sel='custom'; st.selFurni=o; renderPalette(); };
             p.appendChild(b);
           });
         }
       }
+      // Footprint real por tipo (tiles [ancho,fondo]) — MISMO mapa que el gemelo
+      // (FURNITURE_SIZE en game.html) para que la proporción cuadre y no se solapen.
+      const FURNITURE_SIZE={ counter:[1,2], shelves:[1,2], wineRack:[2,1], lottery:[2,1], vending:[1,1], magazines:[2,1], manager:[2,1], plant:[1,1], floorLamp:[1,1], rug:[2,2], djBooth:[2,1], tablet:[1,1], turnKiosk:[1,1], aroma:[1,1], metahuman:[1,1], led:[1,1], tft:[1,1], door:[1,1] };
+      function fpFor(it){
+        const base=(it.type==='custom'&&Array.isArray(it.fp)&&it.fp.length===2)?it.fp:(FURNITURE_SIZE[it.type]||[1,1]);
+        let w=Math.max(1,Math.ceil(base[0]*Math.max(0.2,it.sx||1)));
+        let d=Math.max(1,Math.ceil(base[1]*Math.max(0.2,it.sy||1)));
+        if(((it.rot||0)%2)===1){ const t=w; w=d; d=t; }   // girado 90° → intercambia ancho/fondo
+        return {w,d};
+      }
       function itemAt(col,row){ return st.items.find(i=>i.col===col&&i.row===row); }
+      // ¿libre el rectángulo (col,row,w,d) salvo `except`? (footprints reales)
+      function footprintFree(col,row,w,d,except){
+        for(const it of st.items){ if(it===except) continue; const f=fpFor(it); const iw=Math.min(f.w,st.cols-it.col), id=Math.min(f.d,st.rows-it.row); if(col<it.col+iw && col+w>it.col && row<it.row+id && row+d>it.row) return false; }
+        return true;
+      }
+      function placeAt(col,row){
+        let item;
+        if(st.sel==='custom'&&st.selFurni){ item={ id:'custom-'+(st._n++), type:'custom', col, row, sx:1, sy:1, rot:0, label:st.selFurni.title||'mueble', img:(st.selFurni.img||st.selFurni.url), fp:st.selFurni.fp||[1,1], ph:st.selFurni.ph||46, frames:st.selFurni.frames||1, orientation:0, custom:true }; }
+        else if(st.sel){ item={ id:st.sel+'-'+(st._n++), type:st.sel, col, row, sx:1, sy:1, rot:0, label:(FMAP[st.sel]&&FMAP[st.sel].label)||st.sel }; }
+        else { status('Elige una pieza de la paleta para colocar.','#e0a14a'); return; }
+        const fp=fpFor(item);
+        if(col+fp.w>st.cols||row+fp.d>st.rows){ status('No cabe ahí (ocupa '+fp.w+'×'+fp.d+').','#e0a14a'); return; }
+        if(!footprintFree(col,row,fp.w,fp.d,null)){ status('Ese hueco está ocupado.','#e0a14a'); return; }
+        st.items.push(item); renderGrid(); pushLiveDebounced(); status(st.items.length+' muebles colocados');
+      }
+      function handleDrop(e,col,row){
+        let src=''; try{ src=e.dataTransfer.getData('text/plain'); }catch(_){ }
+        // Mover un miembro del equipo (payload 'staff:idx').
+        if(src.indexOf('staff:')===0){
+          const idx=parseInt(src.slice(6),10); const s=st.staff[idx]; if(!s) return;
+          s.col=col; s.row=row; selStaff=s; renderGrid(); staffEditPanel(); pushLiveDebounced(); status('👤 '+(s.name||s.label)+' → ('+col+','+row+')'); return;
+        }
+        const p=src.split(','), sc=parseInt(p[0],10), sr=parseInt(p[1],10);
+        if(isNaN(sc)||isNaN(sr)||(sc===col&&sr===row)) return;
+        const moving=st.items.find(i=>i.col===sc&&i.row===sr); if(!moving) return;
+        const fp=fpFor(moving);
+        if(col+fp.w>st.cols||row+fp.d>st.rows){ status('No cabe ahí.','#e0a14a'); return; }
+        if(!footprintFree(col,row,fp.w,fp.d,moving)){ status('Destino ocupado.','#e0a14a'); return; }
+        moving.col=col; moving.row=row; renderGrid(); pushLiveDebounced(); status('🔀 Movido');
+      }
+      // ── Ficha del mueble (hover) + incidencias IoT (clic = fija y editable) ──
+      const FURNI_LABEL={}; try{ FURNI.forEach(f=>{ FURNI_LABEL[f.type]=f.label; }); }catch(_){}
+      const IOT_TYPES={led:1,tft:1,tablet:1,turnKiosk:1,vending:1,metahuman:1,aroma:1,djBooth:1};
+      const DEFAULT_SUPPORT='Soporte Admira · soporte@admira.com';
+      let distroPinned=null;
+      function furniName(it){ return (it&&(it.label||FURNI_LABEL[it.type]||it.type))||'mueble'; }
+      function fiEsc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+      function furniInfoClear(){
+        if(distroPinned){ furniInfoFill(distroPinned,true); return; }
+        if(selStaff){ staffEditPanel(); return; }   // mantén el panel del miembro seleccionado
+        const b=$('distro-hoverinfo'); if(b) b.innerHTML='<div style="font-size:11px;color:var(--muted);opacity:.7;line-height:1.5;">🛈 Pasa el ratón por un mueble del plano para ver su ficha.<br>Haz <b>clic</b> en un mueble para fijar su ficha y gestionar incidencias.</div>';
+      }
+      function furniInfoPin(it){ if(distroPinned===it){ distroPinned=null; furniInfoClear(); } else { distroPinned=it; furniInfoFill(it,true); } }
+      // Limita la ficha a la altura de la rejilla con scroll interno → la caja de
+      // detalle (y los botones de abajo) no se mueven aunque la incidencia sea larga.
+      function syncHoverHeight(){
+        const b=$('distro-hoverinfo'); if(!b) return;
+        try{ const gw=$('distro-grid'); const box=gw&&gw.parentElement; if(box&&box.offsetHeight>0){ b.style.maxHeight=box.offsetHeight+'px'; b.style.overflowY='auto'; } }catch(_){}
+      }
+      function furniInfoFill(it, pinned){
+        const b=$('distro-hoverinfo'); if(!b||!it) return;
+        syncHoverHeight();
+        const fp=fpFor(it);
+        const w=Math.max(1,Math.min(fp.w,st.cols-it.col)), d=Math.max(1,Math.min(fp.d,st.rows-it.row));
+        const price=(it.price!=null&&isFinite(+it.price))?+it.price:(50+30*Math.max(1,(fp.w||1)*(fp.d||1)));
+        const fecha=it.ts?new Date(it.ts).toLocaleDateString('es-ES'):'—';
+        const garantia=it.warranty||(it.type==='door'?'—':'2 años');
+        const alto=it.ph?(' · '+it.ph+'px alto'):'';
+        const iot=!!IOT_TYPES[it.type];
+        const inc=it.incident||null;
+        const row=(k,v)=>'<div style="display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px solid #1b2530;"><span style="color:var(--muted);">'+k+'</span><span style="text-align:right;color:#dfe;font-weight:600;">'+v+'</span></div>';
+        const lbl=t=>'<label style="display:block;font-size:10px;color:var(--muted);margin:7px 0 2px;">'+t+'</label>';
+        const fmtDate=ts=>ts?new Date(ts).toLocaleString('es-ES',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+        const estado=inc?(inc.status==='resolved'?'✅ Resuelta':'🔴 Abierta'):(iot?'🟢 Operativo':'—');
+        let html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:11px;letter-spacing:.06em;color:var(--muted);">'+iconFor(it.type)+' FICHA DEL MUEBLE</span>'+(pinned?'<span style="font-size:10px;color:#7ee0a0;cursor:pointer;" id="fi-unpin" title="Soltar">📌 fijada ✕</span>':'')+'</div>'
+          +row('Denominación',furniName(it))
+          +row('Tamaño',w+'×'+d+' casillas'+alto)
+          +row('Coste',price+' cr.')
+          +row('Fecha de compra',fecha)
+          +row('Garantía',garantia)
+          +'<div style="margin-top:10px;font-size:10px;letter-spacing:.06em;color:var(--muted);">🔧 INCIDENCIAS</div>'
+          +row('IoT', iot?'<span style="color:#7ee0a0;">🟢 Sí (conectado)</span>':'<span style="color:var(--muted);">⚪ No</span>')
+          +row('Estado', estado);
+        if(!pinned){
+          html+=row('Contacto', fiEsc((inc&&inc.contact)||DEFAULT_SUPPORT))
+            +row('Inicio', inc?fmtDate(inc.start):'—')
+            +row('Notas', fiEsc((inc&&inc.notes)||'—'))
+            +row('Resolución', fiEsc((inc&&inc.resolution)||'—'))
+            +'<div style="font-size:10px;color:var(--muted);opacity:.6;margin-top:6px;">Clic en el mueble para fijar y gestionar la incidencia.</div>';
+          b.innerHTML=html; return;
+        }
+        // Fijada → incidencia editable
+        const open=inc&&inc.status==='open', resolved=inc&&inc.status==='resolved';
+        const inStyle='width:100%;font-size:11px;background:#0a0f14;border:1px solid #28323a;border-radius:5px;color:#dfe;padding:4px 6px;box-sizing:border-box;';
+        // PLV: fija qué creatividad muestra esta pantalla (idea #3). 'auto' = reactivo.
+        if(isScreenType(it.type)){
+          const cur=it.plv||'auto';
+          html+=lbl('📡 Contenido PLV de esta pantalla')+'<select id="fi-plv" style="'+inStyle+'">'+PLV_OPTS.map(o=>'<option value="'+o[0]+'"'+(o[0]===cur?' selected':'')+'>'+o[1]+'</option>').join('')+'</select>';
+        }
+        html+=lbl('Contacto en caso de incidencia')+'<input id="fi-contact" value="'+fiEsc((inc&&inc.contact)||DEFAULT_SUPPORT)+'" style="'+inStyle+'">';
+        if(inc&&inc.start) html+=row('Empezó', fmtDate(inc.start));
+        if(resolved&&inc.resolvedAt) html+=row('Resuelta', fmtDate(inc.resolvedAt));
+        html+=lbl('Notas / seguimiento')+'<textarea id="fi-notes" rows="2" style="'+inStyle+'resize:vertical;">'+fiEsc((inc&&inc.notes)||'')+'</textarea>';
+        html+=lbl('Resolución')+'<textarea id="fi-res" rows="2" style="'+inStyle+'resize:vertical;">'+fiEsc((inc&&inc.resolution)||'')+'</textarea>';
+        html+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">';
+        if(!open&&!resolved) html+='<button type="button" class="button secondary" id="fi-open" style="flex:1;font-size:11px;padding:5px;">🔧 Abrir incidencia</button>';
+        if(open) html+='<button type="button" class="button primary" id="fi-resolve" style="flex:1;font-size:11px;padding:5px;">✅ Marcar resuelta</button>';
+        if(inc) html+='<button type="button" class="button secondary" id="fi-clearinc" style="font-size:11px;padding:5px 8px;">🗑</button>';
+        html+='</div>';
+        b.innerHTML=html;
+        const save=()=>{ try{ pushLiveDebounced(); }catch(_){} };
+        const ensureInc=()=>{ if(!it.incident) it.incident={contact:DEFAULT_SUPPORT,status:null,notes:'',resolution:''}; return it.incident; };
+        const plvSel=b.querySelector('#fi-plv'); if(plvSel) plvSel.onchange=()=>{ it.plv=plvSel.value; pushLiveDebounced(); status('📡 PLV '+furniName(it)+': '+plvSel.value,'#7ee0a0'); };
+        const up=b.querySelector('#fi-unpin'); if(up) up.onclick=()=>{ distroPinned=null; furniInfoClear(); };
+        const ci=b.querySelector('#fi-contact'); if(ci) ci.oninput=()=>{ ensureInc().contact=ci.value; save(); };
+        const nt=b.querySelector('#fi-notes'); if(nt) nt.oninput=()=>{ ensureInc().notes=nt.value; save(); };
+        const rs=b.querySelector('#fi-res'); if(rs) rs.oninput=()=>{ ensureInc().resolution=rs.value; save(); };
+        const ob=b.querySelector('#fi-open'); if(ob) ob.onclick=()=>{ const i=ensureInc(); i.status='open'; i.start=Date.now(); save(); furniInfoFill(it,true); };
+        const rb=b.querySelector('#fi-resolve'); if(rb) rb.onclick=()=>{ const i=ensureInc(); i.status='resolved'; i.resolvedAt=Date.now(); save(); furniInfoFill(it,true); };
+        const cb=b.querySelector('#fi-clearinc'); if(cb) cb.onclick=()=>{ delete it.incident; save(); furniInfoFill(it,true); };
+      }
       function renderGrid(){
         const g=$('distro-grid'); if(!g) return;
+        if(distroPinned && st.items.indexOf(distroPinned)<0){ distroPinned=null; try{ furniInfoClear(); }catch(_){} }
+        g.style.display='grid';
         g.style.gridTemplateColumns='repeat('+st.cols+','+CELL+'px)';
+        g.style.gridAutoRows=CELL+'px';
+        g.style.gap='2px';
         g.innerHTML='';
+        // ── Capa 1: celdas de fondo (colocar en hueco vacío + soltar) ──
         for(let row=0; row<st.rows; row++){
           for(let col=0; col<st.cols; col++){
             const cell=document.createElement('div');
-            const it=itemAt(col,row);
-            cell.style.cssText='width:'+CELL+'px;height:'+CELL+'px;display:flex;align-items:center;justify-content:center;font-size:16px;border:1px solid #1b2530;border-radius:3px;cursor:pointer;background:'+(it?'rgba(0,200,255,.10)':'#0e1620')+';';
-            if(it){
-              if(it.type==='custom'&&it.img){
-                const fr=it.frames||1;
-                cell.innerHTML='<div style="width:'+(CELL-6)+'px;height:'+(CELL-6)+'px;'+window.furniFrameStyle(it.img,fr,it.orientation||0)+'"></div>';
-              }
-              else { cell.textContent=iconFor(it.type); }
-              const rotMsg=(it.frames>1)?' · clic-derecho gira':'';
-              cell.title=(it.label||it.type)+' ('+col+','+row+') — clic para quitar'+rotMsg;
-            } else { cell.title=col+','+row; }
-            cell.onclick=()=>{
-              const ex=itemAt(col,row);
-              if(ex){ st.items=st.items.filter(i=>i!==ex); }
-              else if(st.sel==='custom'&&st.selFurni){ st.items.push({ id:'custom-'+(st._n++), type:'custom', col, row, sx:1, sy:1, label:st.selFurni.title||'mueble', img:st.selFurni.url, fp:st.selFurni.fp||[1,1], ph:st.selFurni.ph||46, frames:st.selFurni.frames||1, orientation:0, custom:true }); }
-              else { st.items.push({ id:st.sel+'-'+(st._n++), type:st.sel, col, row, sx:1, sy:1, label:(FMAP[st.sel]&&FMAP[st.sel].label)||st.sel }); }
-              renderGrid();
-              status(st.items.length+' muebles colocados');
-            };
-            // Clic derecho: girar el mueble si tiene varias caras (sin quitarlo).
-            cell.oncontextmenu=(e)=>{ const ex=itemAt(col,row); if(ex&&ex.frames>1){ e.preventDefault(); ex.orientation=((ex.orientation||0)+1)%ex.frames; renderGrid(); status('Girado: cara '+((ex.orientation)+1)+'/'+ex.frames); } };
+            cell.style.cssText='grid-column:'+(col+1)+';grid-row:'+(row+1)+';border:1px solid #1b2530;border-radius:3px;background:#0e1620;cursor:pointer;';
+            cell.title=col+','+row;
+            cell.ondragover=(e)=>{ e.preventDefault(); try{ e.dataTransfer.dropEffect='move'; }catch(_){ } };
+            cell.ondrop=(e)=>{ e.preventDefault(); handleDrop(e,col,row); };
+            cell.onclick=()=>placeAt(col,row);
             g.appendChild(cell);
           }
         }
+        // ── Capa 2: muebles ocupando su FOOTPRINT real (encima) ──
+        for(const it of st.items){
+          const fp=fpFor(it);
+          const w=Math.max(1,Math.min(fp.w, st.cols-it.col)), d=Math.max(1,Math.min(fp.d, st.rows-it.row));
+          const el=document.createElement('div');
+          el.style.cssText='grid-column:'+(it.col+1)+' / span '+w+';grid-row:'+(it.row+1)+' / span '+d+';z-index:2;display:flex;align-items:center;justify-content:center;border-radius:3px;cursor:grab;overflow:hidden;background:rgba(0,200,255,.12);border:1px solid #2a6a7a;font-size:16px;';
+          if(it.type==='door'){
+            const dir=(it.col===0)?'→':(it.col===st.cols-1)?'←':(it.row===0)?'↓':(it.row===st.rows-1)?'↑':'↘';
+            const dirTxt={'→':'a la derecha','←':'a la izquierda','↓':'hacia abajo','↑':'hacia arriba','↘':'al interior'}[dir];
+            el.style.background='rgba(46,224,106,.28)'; el.style.borderColor='#2ee06a'; el.style.boxShadow='inset 0 0 8px rgba(46,224,106,.55)';
+            el.innerHTML='<span style="display:flex;flex-direction:column;align-items:center;line-height:1;"><span style="font-size:'+Math.round(CELL*0.6)+'px;color:#2ee06a;font-weight:700;">'+dir+'</span><span style="font-size:9px;">🚪</span></span>';
+            el.title='Puerta · entrada/salida — la gente entra '+dirTxt+' · arrastra para mover · doble-clic para borrar';
+          } else if(it.type==='custom'&&it.img){
+            el.innerHTML='<div style="width:92%;height:92%;'+window.furniFrameStyle(it.img,it.frames||1,it.orientation||0)+'"></div>';
+            el.title=(it.label||'mueble')+' ('+it.col+','+it.row+') '+w+'×'+d+' — arrastra para mover · doble-clic para borrar';
+          } else {
+            el.textContent=iconFor(it.type);
+            el.title=(it.label||it.type)+' ('+it.col+','+it.row+') '+w+'×'+d+' — arrastra para mover · doble-clic para borrar · clic-derecho gira';
+          }
+          el.onmouseenter=()=>{ if(!distroPinned) furniInfoFill(it); };
+          el.onmouseleave=furniInfoClear;
+          el.onclick=(e)=>{ e.stopPropagation(); furniInfoPin(it); };
+          el.draggable=true;
+          el.ondragstart=(e)=>{ try{ e.dataTransfer.setData('text/plain',it.col+','+it.row); e.dataTransfer.effectAllowed='move'; }catch(_){ } el.style.opacity='.5'; };
+          el.ondragend=()=>{ el.style.opacity=''; };
+          el.ondblclick=()=>{ if(confirm('¿Eliminar '+(it.label||it.type)+'?')){ st.items=st.items.filter(i=>i!==it); renderGrid(); pushLiveDebounced(); status('🗑 Eliminado · '+st.items.length+' muebles'); } };
+          el.oncontextmenu=(e)=>{ e.preventDefault(); it.rot=((it.rot||0)+1)%4; if(it.frames>1) it.orientation=((it.orientation||0)+1)%it.frames; renderGrid(); pushLiveDebounced(); status('Girado'); };
+          el.ondragover=(e)=>{ e.preventDefault(); };
+          el.ondrop=(e)=>{ e.preventDefault(); handleDrop(e,it.col,it.row); };
+          g.appendChild(el);
+        }
+        // ── Capa 3: ZONAS de influencia del equipo (overlay translúcido) ──
+        for(const s of (st.staff||[])){
+          const r=(s.zoneRadius>=99?Math.max(st.cols,st.rows):Math.max(0,Math.min(6,s.zoneRadius==null?2:s.zoneRadius))), sel=(s===selStaff);
+          for(let rr=Math.max(0,s.row-r); rr<=Math.min(st.rows-1,s.row+r); rr++)
+            for(let cc=Math.max(0,s.col-r); cc<=Math.min(st.cols-1,s.col+r); cc++){
+              const z=document.createElement('div');
+              z.style.cssText='grid-column:'+(cc+1)+';grid-row:'+(rr+1)+';z-index:3;pointer-events:none;border-radius:3px;background:'+hexA(s.color,sel?0.22:0.10)+';'+(sel?'box-shadow:inset 0 0 0 1px '+s.color+';':'');
+              g.appendChild(z);
+            }
+        }
+        // ── Capa 4: MIEMBROS del equipo (marcador redondo, clic = editar) ──
+        for(const s of (st.staff||[])){
+          const sel=(s===selStaff), el=document.createElement('div');
+          el.style.cssText='grid-column:'+(s.col+1)+';grid-row:'+(s.row+1)+';z-index:4;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;background:'+s.color+';border:2px solid '+(sel?'#fff':'#0b1117')+';box-shadow:0 0 '+(sel?'10px':'4px')+' '+s.color+';font-size:15px;';
+          el.textContent=roleDef(s.role).icon;
+          el.title=(s.name||s.label)+' · '+(s.action||'')+' · zona '+(s.zoneRadius>=99?'toda la tienda':((s.zoneRadius==null?2:s.zoneRadius)+' tiles'))+' — clic: editar · doble-clic: quitar · arrastra para mover';
+          el.onclick=(e)=>{ e.stopPropagation(); selStaff=s; renderGrid(); staffEditPanel(); };
+          el.ondblclick=(e)=>{ e.stopPropagation(); st.staff=st.staff.filter(x=>x!==s); if(selStaff===s) selStaff=null; renderGrid(); pushLiveDebounced(); status('Miembro quitado · equipo '+st.staff.length); };
+          el.draggable=true;
+          el.ondragstart=(e)=>{ try{ e.dataTransfer.setData('text/plain','staff:'+st.staff.indexOf(s)); e.dataTransfer.effectAllowed='move'; }catch(_){ } };
+          g.appendChild(el);
+        }
+        updateXpacioChip();
       }
+      // Chip "Xpacio activo" + etiquetas de dirección en los botones (asociación Admira Studio↔Xpacio).
+      function updateXpacioChip(){
+        try{
+          const cc=window.CircuitSync&&window.CircuitSync.selected();
+          let name,sub,short;
+          if(cc&&cc.location){ name='📍 '+(cc.location.name||cc.location.id); sub='circuito '+(cc.client||cc.id)+(st.loadedScreen?(' · pantalla '+st.loadedScreen):''); short=(cc.location.name||cc.location.id); }
+          else if(cc){ name='🔗 Circuito '+(cc.client||cc.id); sub=(cc.pointCount||'?')+' Xpacios'+(st.loadedScreen?(' · pantalla '+st.loadedScreen):''); short='circuito '+(cc.client||cc.id); }
+          else if(st.loadedScreen){ name='🪪 '+st.loadedScreen; sub='pantalla cargada del gemelo'; short=st.loadedScreen; }
+          else { name='🪪 Xtanco inicial'; sub='gemelo por defecto · '+XTANCO_INICIAL; short='Xtanco inicial'; }
+          const nEl=$('distro-xpacio-name'), sEl=$('distro-xpacio-sub');
+          if(nEl) nEl.textContent=name; if(sEl) sEl.textContent=sub?('· '+sub):'';
+          const sh=(short||'').length>20?(short.slice(0,19)+'…'):short;
+          const b1=$('distro-current'), b2=$('distro-mudanza'), b3=$('distro-live');
+          if(b1) b1.textContent='📥 Estado actual ← '+sh;
+          if(b2) b2.textContent='🚚 Mudanza → '+sh;
+          if(b3 && (b3.textContent||'').indexOf('🔴')<0) b3.textContent='⚪ En vivo ⇄ '+sh;   // no pisar el "🔴 EN VIVO" activo
+        }catch(_){}
+      }
+      window.updateXpacioChip=updateXpacioChip;
       function applySize(){
         st.cols=Math.max(6,Math.min(24,parseInt($('distro-cols').value,10)||14));
         st.rows=Math.max(4,Math.min(16,parseInt($('distro-rows').value,10)||8));
@@ -1972,22 +2477,68 @@
         st.items=st.items.filter(i=>i.col<st.cols&&i.row<st.rows);
         renderGrid();
       }
+      // "Layout NN" → número (00..04); null si no casa. Los Xpacios tienen como
+      // mucho 5 layouts: Layout 00 (por defecto) … Layout 04.
+      function layoutNum(name){ const m=/^layout\s+(\d{1,2})$/i.exec(String(name||'').trim()); return m?parseInt(m[1],10):null; }
+      function xpacioKey(){ const cc=window.CircuitSync&&window.CircuitSync.selected(); return (cc&&cc.client)||($('distro-client').value||'').trim()||'generic'; }
+      async function layoutsOf(client){
+        try{ const r=await fetch(dBase()+'/layout/list?client='+encodeURIComponent(client)+'&ts='+Date.now(),{cache:'no-store'}); const d=await r.json();
+          return (Array.isArray(d.items)?d.items:[]).filter(x=>!String(x.id||'').startsWith('preview-')).filter(x=>(x.client||'generic')===client); }
+        catch(_){ return []; }
+      }
       async function saveDistro(){
-        const name=($('distro-name').value||'').trim()||'Distribución sin nombre';
-        const client=($('distro-client').value||'').trim()||null;
         if(!st.items.length){ status('Coloca al menos un mueble antes de guardar.','#e0a14a'); return; }
         const cc=window.CircuitSync&&window.CircuitSync.selected();
+        const client=xpacioKey();
+        // Numeración por Xpacio: siguiente Layout libre 00..04; tope 5.
+        const mine=await layoutsOf(client);
+        const used=new Set(mine.map(x=>layoutNum(x.name)).filter(n=>n!=null));
+        let nn=null; for(let i=0;i<5;i++){ if(!used.has(i)){ nn=i; break; } }
+        if(nn===null){ status('Máx 5 layouts por Xpacio «'+client+'». Borra uno (✕) antes de guardar.','#e0a14a'); return; }
+        const name='Layout '+String(nn).padStart(2,'0');
         const body={ name, client, source:'pixeria',
           circuit: cc ? { id:cc.id, scope:cc.scope, label:cc.label, segmentation:cc.segmentation,
             targetScreens: (cc.location && cc.location.id) ? [] : (cc.screens||[]), pointCount:cc.pointCount,
             location: cc.location ? { id:cc.location.id, name:cc.location.name, addr:cc.location.addr } : null } : null,
           config:{ cols:st.cols, rows:st.rows, wallHeightTiles:6, longWallColor:st.wall, floorColor:st.floor },
-          furniture: st.items.map(distroItemOut) };
-        status('⏳ publicando…');
+          furniture: st.items.map(distroItemOut), staff: staffOut(), zones: zonesOut() };
+        status('⏳ guardando '+name+'…');
         try{
           const r=await fetch(dBase()+'/layout/publish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
           const d=await r.json(); if(!r.ok||!d.ok) throw new Error(d.error||('HTTP '+r.status));
-          status('✅ «'+d.name+'» publicada (id '+d.id+'). Aplícala en un gemelo con /distribucion aplicar '+d.id,'#7ee0a0');
+          status('✅ «'+name+'» guardado para «'+client+'» ('+(nn===0?'por defecto':'extra')+').','#7ee0a0');
+          loadLib();
+        }catch(e){ status('❌ '+e.message,'#e06a6a'); }
+      }
+      // MUDANZA: publica la distribución actual y la ENVÍA a los gemelos del
+      // circuito/ubicación elegidos para que la apliquen solos (vía /layout/assign;
+      // el gemelo sondea /layout/pending). "Mudanza" = la sala se recoloca sola.
+      async function mudanza(){
+        if(!st.items.length){ status('Coloca al menos un mueble antes de la mudanza.','#e0a14a'); return; }
+        const cc=window.CircuitSync&&window.CircuitSync.selected();
+        let targets=(cc&&Array.isArray(cc.screens))?cc.screens.slice():[];
+        // Sin circuito: devuelve al Xtanco que cargaste con 📥 Estado actual; si
+        // tampoco, pide el id de pantalla (el que da /xpacio en el gemelo).
+        if(!targets.length && st.loadedScreen) targets=[st.loadedScreen];
+        if(!targets.length){
+          const scr=(prompt('¿A qué pantalla envío la mudanza?\nPega el id (en el gemelo: /xpacio), ej. xtore-mny4b7.\n\nDéjalo VACÍO para enviarla al Xtanco inicial (gemelo por defecto).','')||'').trim().toLowerCase() || XTANCO_INICIAL;
+          targets=[scr];
+        }
+        const name=($('distro-name').value||'').trim()||'Distribución sin nombre';
+        const client=($('distro-client').value||'').trim()||null;
+        const body={ name, client, source:'pixeria',
+          circuit: cc?{ id:cc.id, scope:cc.scope, label:cc.label, segmentation:cc.segmentation, pointCount:cc.pointCount,
+            location: cc.location?{ id:cc.location.id, name:cc.location.name, addr:cc.location.addr }:null }:null,
+          config:{ cols:st.cols, rows:st.rows, wallHeightTiles:6, longWallColor:st.wall, floorColor:st.floor },
+          furniture: st.items.map(distroItemOut), staff: staffOut(), zones: zonesOut() };
+        status('⏳ mudanza: publicando…');
+        try{
+          const r=await fetch(dBase()+'/layout/publish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+          const d=await r.json(); if(!r.ok||!d.ok) throw new Error(d.error||('HTTP '+r.status));
+          status('⏳ mudanza: enviando a '+targets.length+' gemelo(s)…');
+          const ra=await fetch(dBase()+'/layout/assign',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:d.id,name:d.name,targets})});
+          const da=await ra.json(); if(!ra.ok||!da.ok) throw new Error(da.error||('HTTP '+ra.status));
+          status('🚚 Mudanza enviada a '+targets.length+' gemelo(s) ('+targets.join(', ')+'). La aplican en segundos.','#7ee0a0');
           loadLib();
         }catch(e){ status('❌ '+e.message,'#e06a6a'); }
       }
@@ -1995,12 +2546,157 @@
       // actual del editor a un id de preview y embebemos el GEMELO real (su motor)
       // con ?distro=<id>&preview=1. Cero reimplementación → fidelidad total.
       function twinUrl(){ return window.DISTRO_TWIN_URL || 'https://www.xpaceos.com/admira-xp/'; }
+      // Envía un comando del Xtanco: al gemelo EMBEBIDO (preview, si la vista 📐 está
+      // abierta → postMessage 'xtcmd' a su iframe) y/o al Xpacio LIVE del punto (cola del
+      // worker bridge /remote/cmd, si hay REMOTE_KEY guardada). logLine(html) pinta el log.
+      const BRIDGE_URL='https://admira-telegram-bridge.csilvasantin.workers.dev';
+      function liveOnNow(){ try{ return !!(typeof __liveTimer!=='undefined' && __liveTimer && st && st.loadedScreen); }catch(_){ return false; } }
+      // Pinta los botones 🔑 del CLI: 🔴 si estás EN VIVO (el live se auto-enciende),
+      // ✓ si guardaste la REMOTE_KEY, o plano si nada. Llamado al conectar/parar En vivo.
+      function refreshCliKeyBtns(){
+        const live=liveOnNow(); let hasKey=false; try{ hasKey=!!localStorage.getItem('xpace_remote_key'); }catch(_){}
+        ['distro-cli-key-p','distro-cli-key'].forEach(id=>{ const b=document.getElementById(id); if(!b) return;
+          if(live){ b.textContent='🔴 live'; b.style.color='#7ee0a0'; b.title='EN VIVO: los comandos del CLI van al Xpacio '+st.loadedScreen+' por el canal KEYLESS (sin clave).'; }
+          else { b.textContent=hasKey?'🔑 live ✓':'🔑 live'; b.style.color=hasKey?'#7ee0a0':''; b.title='REMOTE_KEY = mandar a un punto SIN estar En vivo (canal bridge). En vivo NO necesita clave.'; }
+        });
+      }
+      // Sondea (~12s) la respuesta del gemelo a un comando remoto y la pinta como feedback.
+      function pollLiveResult(commandId, logLine, esc){
+        let tries=0;
+        const iv=setInterval(()=>{
+          tries++;
+          fetch(BRIDGE_URL+'/remote/result?id='+encodeURIComponent(commandId),{cache:'no-store'})
+            .then(r=>r.json()).then(d=>{
+              if(d&&d.result&&d.result.text){ clearInterval(iv); logLine('<span style="color:#7ee0a0;">←</span> '+esc(d.result.text)); }
+              else if(tries>=8){ clearInterval(iv); logLine('<span style="color:#8aa;">·</span> (sin respuesta aún · ¿el gemelo del punto está abierto y con el bridge Telegram ON?)'); }
+            }).catch(()=>{ if(tries>=8) clearInterval(iv); });
+        },1500);
+      }
+      // Feedback del canal KEYLESS (EN VIVO): sondea /twin/result?screen=&id= en pixer-eleven.
+      function pollTwinResult(screen, id, logLine, esc){
+        let tries=0;
+        const iv=setInterval(()=>{
+          tries++;
+          fetch(dBase()+'/twin/result?screen='+encodeURIComponent(screen)+'&id='+encodeURIComponent(id)+'&ts='+Date.now(),{cache:'no-store'})
+            .then(r=>r.json()).then(d=>{
+              if(d&&d.result&&d.result.text){ clearInterval(iv); logLine('<span style="color:#7ee0a0;">←</span> '+esc(d.result.text)); }
+              else if(tries>=10){ clearInterval(iv); logLine('<span style="color:#8aa;">·</span> (sin respuesta · ¿el gemelo del punto «'+esc(screen)+'» está abierto?)'); }
+            }).catch(()=>{ if(tries>=10) clearInterval(iv); });
+        },1500);
+      }
+      // Ejecuta un comando keyless EN VIVO en SILENCIO (sin pintar el log) y resuelve con
+      // la respuesta del gemelo. Lo usa la tira de KPIs en vivo (no ensucia la consola).
+      function xtancoCliExecLive(cmd){
+        return new Promise(res=>{
+          if(!liveOnNow()){ res(null); return; }
+          const scr=st.loadedScreen;
+          fetch(dBase()+'/twin/cmd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({screen:scr,text:cmd})})
+            .then(r=>r.json()).then(d=>{
+              if(!d||!d.ok||!d.id){ res(null); return; }
+              let tries=0; const iv=setInterval(()=>{ tries++;
+                fetch(dBase()+'/twin/result?screen='+encodeURIComponent(scr)+'&id='+encodeURIComponent(d.id)+'&ts='+Date.now(),{cache:'no-store'})
+                  .then(r=>r.json()).then(rr=>{ if(rr&&rr.result&&rr.result.text){ clearInterval(iv); res(rr.result.text); } else if(tries>=5){ clearInterval(iv); res(null); } })
+                  .catch(()=>{ if(tries>=5){ clearInterval(iv); res(null); } });
+              },1200);
+            }).catch(()=>res(null));
+        });
+      }
+      // Parse del texto de /status (formatStatus del gemelo) → KPIs para la tira.
+      function parseStatusKpis(txt){
+        const get=re=>{ const m=String(txt||'').match(re); return m?m[1].trim():null; };
+        return { caja:get(/Caja:\s*([^\n]+)/i), sat:get(/Satisfacci[oó]n:\s*([^\n]+)/i), fama:get(/Fama:\s*([^\n]+)/i),
+                 clientes:get(/Entran en tienda:\s*([^\n]+)/i), hora:get(/Hora tienda:\s*([^\n]+)/i) };
+      }
+      function renderKpiStrip(el, k, note){
+        if(!el) return;
+        if(note!=null){ el.innerHTML='<span style="color:var(--muted)">'+note+'</span>'; return; }
+        const cell=(lbl,val,col)=> val?('<span style="display:inline-flex;gap:4px;align-items:baseline;"><b style="color:'+(col||'var(--cyan)')+'">'+val+'</b><span style="color:var(--muted);font-size:11px">'+lbl+'</span></span>'):'';
+        el.innerHTML=[cell('caja',k.caja,'#ffd866'),cell('sat',k.sat,'#7ee0a0'),cell('fama',k.fama,'#c9a0ff'),cell('clientes',k.clientes,'#5fd0ff'),cell('hora',k.hora,'#cfe')].filter(Boolean).join('<span style="color:#2a3a33;margin:0 5px">·</span>')||'<span style="color:var(--muted)">sin datos</span>';
+      }
+      let __kpiTimer=null;
+      function stopLiveStatus(){ if(__kpiTimer){ clearInterval(__kpiTimer); __kpiTimer=null; } }
+      function startLiveStatus(el){
+        stopLiveStatus();
+        const tick=()=>{
+          if(document.hidden) return;                 // pausa si la pestaña no está visible (ahorra cuota KV)
+          if(!liveOnNow()){ renderKpiStrip(el,null,'conéctate ⚪ En vivo para ver el estado del Xpacio'); return; }
+          xtancoCliExecLive('/status').then(txt=>{ if(txt) renderKpiStrip(el, parseStatusKpis(txt)); });
+        };
+        tick(); __kpiTimer=setInterval(tick, 8000);
+      }
+      function xtancoCliSend(cmd, logLine){
+        cmd=String(cmd||'').trim(); if(!cmd) return;
+        const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+        logLine('<span style="color:#39d0ff;">→</span> '+esc(cmd));
+        let did=false;
+        // Preview embebido (si la vista 📐 está abierta) → feedback inmediato por postMessage.
+        const f=document.getElementById('distro-iso-frame');
+        const isoOpen=f&&f.contentWindow&&f.src&&f.src.indexOf('about:blank')<0;
+        if(isoOpen){
+          did=true;
+          const id='c'+Date.now()+Math.floor(Math.random()*1e4);
+          const h=ev=>{ const r=ev&&ev.data; if(!r||r.type!=='xtcmd-result'||r.id!==id) return; window.removeEventListener('message',h); if(r.ok) logLine('<span style="color:#7ee0a0;">←</span> '+esc(r.out||'ok')); else logLine('<span style="color:#e06a6a;">✕</span> '+esc(r.err||'error')); };
+          window.addEventListener('message',h); setTimeout(()=>window.removeEventListener('message',h),4000);
+          try{ let to='*'; try{ to=new URL(twinUrl()).origin; }catch(_){ } f.contentWindow.postMessage({type:'xtcmd',cmd:cmd,id:id}, to); }catch(e){}
+        }
+        // Xpacio LIVE. EN VIVO → canal KEYLESS por pantalla (mismo worker pixer-eleven
+        // que el espejo; SIN clave). Fuera de En vivo, si guardaste REMOTE_KEY → canal
+        // bridge (a cualquier punto que sondee Telegram). Nunca abre popup en el envío.
+        const live=liveOnNow();
+        if(live){
+          did=true;
+          const scr=st.loadedScreen;
+          fetch(dBase()+'/twin/cmd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({screen:scr,text:cmd})})
+            .then(r=>r.json()).then(d=>{
+              if(d&&d.ok&&d.id){ logLine('<span style="color:#7ee0a0;">live ⇡</span> → '+esc(scr)+' (#'+esc(String(d.id))+') · esperando respuesta…'); pollTwinResult(scr,d.id,logLine,esc); }
+              else logLine('<span style="color:#e0a14a;">live</span> '+esc((d&&d.error)||'no enviado'));
+            })
+            .catch(e=>logLine('<span style="color:#e0a14a;">live</span> '+esc(String(e&&e.message||e))));
+        } else {
+          let rkey=''; try{ rkey=localStorage.getItem('xpace_remote_key')||''; }catch(_){}
+          if(rkey){
+            did=true;
+            fetch(BRIDGE_URL+'/remote/cmd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:rkey,text:cmd})})
+              .then(r=>r.json()).then(d=>{
+                if(d&&d.ok&&d.commandId){ logLine('<span style="color:#7ee0a0;">live ⇡</span> enviado (#'+esc(String(d.commandId))+') · esperando respuesta…'); pollLiveResult(d.commandId, logLine, esc); }
+                else logLine('<span style="color:#e0a14a;">live</span> '+esc((d&&d.error)||'no encolado'));
+              })
+              .catch(e=>logLine('<span style="color:#e0a14a;">live</span> '+esc(String(e&&e.message||e))+' · ¿worker bridge con CORS de pixeria desplegado?'));
+          }
+        }
+        if(!did) logLine('<span style="color:#e0a14a;">·</span> abre 📐 Perspectiva isométrica (preview) o conéctate ⚪ En vivo / 🔑 live (Xpacio real)');
+      }
+      // Chips de comandos rápidos del CLI (un clic = enviar). Prioridad: ⏩ /velocidad
+      // para acelerar la simulación. Todo el vocabulario sigue disponible tecleando (/help).
+      const CLI_CHIPS=[
+        {l:'⏩ x1',c:'/velocidad 1'},{l:'⏩ x2',c:'/velocidad 2'},{l:'⏩ x4',c:'/velocidad 4'},{l:'⏩ x8',c:'/velocidad 8'},
+        {l:'🎵 on',c:'/music on'},{l:'🎵 off',c:'/music off'},{l:'🎵 ▶',c:'/music next'},{l:'🎵 ◀',c:'/music previous'},
+        {l:'🎟️ on',c:'/turno on'},{l:'🎟️ off',c:'/turno off'},{l:'🎟️ ▶',c:'/turno next'},{l:'🎟️ ◀',c:'/turno previous'},
+        {l:'📺 on',c:'/ds on'},{l:'📺 off',c:'/ds off'},{l:'📺 ▶',c:'/ds next'},{l:'📺 ◀',c:'/ds previous'},{l:'📺🔊',c:'/ds audio on'},{l:'📺🔇',c:'/ds audio off'},
+        {l:'🦹 ladrón',c:'/ladron'},{l:'🎨 real',c:'/render real'},{l:'🧊 8bit',c:'/render 8bit'},
+        {l:'📊 status',c:'/status'},{l:'❓ help',c:'/help'}
+      ];
+      function buildCliChips(container, logLine){
+        if(!container) return; container.innerHTML='';
+        CLI_CHIPS.forEach(ch=>{
+          const b=document.createElement('button'); b.type='button'; b.textContent=ch.l; b.title='Enviar '+ch.c;
+          b.style.cssText='cursor:pointer;background:rgba(2,8,13,.6);border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:4px 9px;font:600 12px monospace;white-space:nowrap;';
+          b.onmouseenter=()=>{ b.style.borderColor='var(--cyan)'; }; b.onmouseleave=()=>{ b.style.borderColor='var(--line)'; };
+          b.onclick=()=>{ try{ xtancoCliSend(ch.c, logLine); }catch(_){} };
+          container.appendChild(b);
+        });
+        // Enlace a la referencia COMPLETA (todos los comandos del CLI).
+        const a=document.createElement('a'); a.href='https://www.xpaceos.com/help'; a.target='_blank'; a.rel='noopener';
+        a.textContent='📖 todos los comandos'; a.title='Referencia completa de comandos del CLI (xpaceos.com/help)';
+        a.style.cssText='cursor:pointer;background:rgba(2,8,13,.6);border:1px solid var(--cyan);color:var(--cyan);border-radius:7px;padding:4px 9px;font:600 12px monospace;white-space:nowrap;text-decoration:none;';
+        container.appendChild(a);
+      }
       function frameSrc(id){ const b=twinUrl(); const sep=b.includes('?')?'&':'?'; return b+sep+'distro='+encodeURIComponent(id)+'&preview=1&ts='+Date.now(); }
       async function openIso(){
         if(!st.items.length){ status('Coloca al menos un mueble para ver el isométrico.','#e0a14a'); return; }
         const body={ id:'preview-pixeria', name:'(vista previa)', client:($('distro-client').value||'').trim()||null, source:'pixeria',
           config:{ cols:st.cols, rows:st.rows, wallHeightTiles:6, longWallColor:st.wall, floorColor:st.floor },
-          furniture: st.items.map(distroItemOut) };
+          furniture: st.items.map(distroItemOut), staff: staffOut(), zones: zonesOut() };
         status('⏳ preparando vista isométrica…');
         try{
           const r=await fetch(dBase()+'/layout/publish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
@@ -2017,10 +2713,62 @@
           m.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 14px;color:#cfe;font-family:monospace;font-size:13px;border-bottom:1px solid #28323a;background:#0b1117;">'+
             '<span>📐 Perspectiva isométrica · motor real del gemelo (XpaceOS)</span>'+
             '<span style="display:flex;gap:8px;align-items:center;"><button id="distro-iso-reload" class="button secondary" style="padding:4px 10px;font-size:12px;">↻ recargar</button><button id="distro-iso-close" class="button secondary" style="padding:4px 12px;font-size:12px;">✕ cerrar</button></span></div>'+
-            '<iframe id="distro-iso-frame" title="Vista isométrica del gemelo" style="flex:1;width:100%;border:0;background:#0a0e12;" allow="autoplay; fullscreen"></iframe>';
+            '<iframe id="distro-iso-frame" title="Vista isométrica del gemelo" style="flex:1;width:100%;border:0;background:#0a0e12;" allow="autoplay; fullscreen"></iframe>'+
+            '<div id="distro-cli-chips" style="display:flex;flex-wrap:wrap;gap:6px;padding:6px 14px 0;"></div>'+
+            '<div id="distro-cli-out" style="max-height:96px;overflow:auto;padding:6px 14px 0;background:#0b1117;color:#9fb0bd;font-family:monospace;font-size:12px;white-space:pre-wrap;line-height:1.5;"></div>'+
+            '<div style="display:flex;gap:8px;align-items:center;padding:8px 14px;border-top:1px solid #28323a;background:#0b1117;font-family:monospace;">'+
+            '<span style="color:#7ee0a0;font-size:13px;white-space:nowrap;" title="Escribe comandos como en la consola del Xtanco (xtAPI). Se ejecutan EN VIVO en el gemelo embebido. /help lista los comandos.">⌨ Xtanco CLI</span>'+
+            '<input id="distro-cli-in" placeholder="/render real · /music on · /ladron · /help" autocomplete="off" spellcheck="false" style="flex:1;background:#0e1620;border:1px solid #28323a;color:#cfe;border-radius:6px;padding:6px 10px;font-family:monospace;font-size:13px;outline:none;">'+
+            '<button id="distro-cli-key" class="button secondary" style="padding:5px 10px;font-size:12px;white-space:nowrap;" title="Pega la REMOTE_KEY del stand para enviar TAMBIÉN al Xpacio LIVE del punto (cola del worker bridge). Vacío = solo preview embebido.">🔑 live</button>'+
+            '<button id="distro-cli-send" class="button primary" style="padding:5px 12px;font-size:12px;white-space:nowrap;">enviar ⏎</button></div>';
           document.body.appendChild(m);
           m.querySelector('#distro-iso-close').onclick=()=>{ m.style.display='none'; const f=document.getElementById('distro-iso-frame'); if(f) f.src='about:blank'; };
           m.querySelector('#distro-iso-reload').onclick=()=>{ const f=document.getElementById('distro-iso-frame'); if(f) f.src=frameSrc(id); };
+          // ── CLI del Xtanco: teclea comandos como en la consola del gemelo; se ejecutan
+          //    EN VIVO en el gemelo embebido (postMessage → su xtAPI.command) y se muestra
+          //    el resultado. Historial con ↑/↓. (El envío al Xpacio LIVE del punto, vía la
+          //    cola del worker, queda pendiente del endpoint del bridge — ver nota.) ──
+          (function(){
+            let cliId=0; const hist=[]; let hi=-1;
+            const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+            const out=m.querySelector('#distro-cli-out'), inp=m.querySelector('#distro-cli-in');
+            const logLine=h=>{ if(!out) return; const p=document.createElement('div'); p.innerHTML=h; out.appendChild(p); out.scrollTop=out.scrollHeight; };
+            try{ buildCliChips(m.querySelector('#distro-cli-chips'), logLine); }catch(_){}   // chips de comandos rápidos
+            window.addEventListener('message',function(ev){
+              const r=ev&&ev.data; if(!r||r.type!=='xtcmd-result') return;
+              if(r.ok) logLine('<span style="color:#7ee0a0;">←</span> '+esc(r.out||'ok'));
+              else logLine('<span style="color:#e06a6a;">✕</span> '+esc(r.err||'error'));
+            });
+            const cliSend=()=>{
+              const cmd=(inp.value||'').trim(); if(!cmd) return;
+              hist.push(cmd); hi=hist.length;
+              logLine('<span style="color:#39d0ff;">→</span> '+esc(cmd));
+              const f=document.getElementById('distro-iso-frame'); let posted=false;
+              try{ if(f&&f.contentWindow){ let to='*'; try{ to=new URL(twinUrl()).origin; }catch(_){ } f.contentWindow.postMessage({type:'xtcmd',cmd:cmd,id:++cliId}, to); posted=true; } }catch(e){}
+              if(!posted) logLine('<span style="color:#e0a14a;">·</span> abre la vista para ejecutar en el preview');
+              // Envío al Xpacio LIVE del punto (cola del worker bridge /remote/cmd) si hay
+              // REMOTE_KEY guardada. La clave va en el BODY (no en cabecera: el CORS del
+              // worker no permite X-Remote-Key). Lo pollea el gemelo desplegado del punto.
+              const rkey=(function(){ try{ return localStorage.getItem('xpace_remote_key')||''; }catch(_){ return ''; } })();
+              if(rkey){
+                fetch('https://admira-telegram-bridge.csilvasantin.workers.dev/remote/cmd',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:rkey,text:cmd})})
+                  .then(r=>r.json()).then(d=>{ if(d&&d.ok) logLine('<span style="color:#7ee0a0;">live ⇡</span> encolado al punto (#'+esc(String(d.commandId||'?'))+')'); else logLine('<span style="color:#e0a14a;">live</span> '+esc((d&&d.error)||'no encolado')); })
+                  .catch(e=>logLine('<span style="color:#e0a14a;">live</span> '+esc(String(e&&e.message||e))+' · ¿worker con CORS de pixeria desplegado?'));
+              }
+              inp.value='';
+            };
+            m.querySelector('#distro-cli-send').onclick=cliSend;
+            (function(){
+              const kb=m.querySelector('#distro-cli-key'); if(!kb) return;
+              kb.onclick=()=>{ let cur=''; try{ cur=localStorage.getItem('xpace_remote_key')||''; }catch(_){} const v=prompt('REMOTE_KEY del stand → envía TAMBIÉN al Xpacio LIVE del punto (se guarda en este navegador). Vacío = solo preview:', cur); if(v===null) return; try{ if(v.trim()) localStorage.setItem('xpace_remote_key',v.trim()); else localStorage.removeItem('xpace_remote_key'); }catch(_){} try{ refreshCliKeyBtns(); }catch(_){} };
+              try{ refreshCliKeyBtns(); }catch(_){}
+            })();
+            inp.addEventListener('keydown',e=>{
+              if(e.key==='Enter'){ e.preventDefault(); cliSend(); }
+              else if(e.key==='ArrowUp'){ if(hi>0){ hi--; inp.value=hist[hi]||''; e.preventDefault(); } }
+              else if(e.key==='ArrowDown'){ if(hi<hist.length-1){ hi++; inp.value=hist[hi]||''; } else { hi=hist.length; inp.value=''; } e.preventDefault(); }
+            });
+          })();
         }
         m.style.display='flex';
         document.getElementById('distro-iso-frame').src=frameSrc(id);
@@ -2030,25 +2778,150 @@
         return '<div style="display:grid;grid-template-columns:repeat('+c+',4px);grid-auto-rows:4px;gap:1px;justify-content:center;padding:6px;background:#0e1620;border-radius:4px;">'+
           Array.from({length:c*r}).map((_,k)=>'<div style="width:4px;height:4px;border-radius:1px;background:'+(k<(counts||0)?'#39d0ff':'#1b2530')+'"></div>').join('')+'</div>';
       }
+      // Vuelca una distribución a la rejilla. quiet=true (modo EN VIVO) no toca
+      // nombre/cliente ni hace scroll: solo repinta la sala (mirror del gemelo).
+      function setEditorFromLayout(d,quiet){
+        const cfg=d.config||{};
+        st.cols=Math.max(6,Math.min(24,cfg.cols||14)); st.rows=Math.max(4,Math.min(16,cfg.rows||8));
+        st.wall=cfg.longWallColor&&cfg.longWallColor!=='transparent'?cfg.longWallColor:'#e0d4b8';
+        st.floor=cfg.floorColor&&cfg.floorColor!=='transparent'?cfg.floorColor:'#b8bcc0';
+        st.items=(d.furniture||[]).filter(i=>i&&i.type&&i.col<st.cols&&i.row<st.rows).map(i=>{ const o={ id:i.id||(i.type+'-'+(st._n++)), type:i.type, col:i.col|0, row:i.row|0, sx:i.sx||1, sy:i.sy||1, rot:i.rot||0, label:i.label||i.type }; if(i.plv) o.plv=i.plv; if(i.type==='custom'){ o.custom=true; if(i.img)o.img=i.img; if(i.fp)o.fp=i.fp; if(i.ph)o.ph=i.ph; if(i.frames>1){ o.frames=i.frames; o.orientation=i.orientation||0; } } return o; });
+        // Todo Xpacio tiene entrada/salida: si la distribución no trae puerta, la
+        // ponemos por defecto en el borde izquierdo (se ve marcada con su flecha).
+        if(!st.items.some(i=>i.type==='door')) st.items.push({ id:'door-'+(st._n++), type:'door', col:0, row:Math.max(0,st.rows-2), sx:1, sy:1, label:'Puerta' });
+        // Equipo: staff[i] (col,row,label,color,role,action) + zones[i] (col,row,radius).
+        const _sf=Array.isArray(d.staff)?d.staff:[], _zn=Array.isArray(d.zones)?d.zones:[];
+        st.staff=_sf.filter(s=>s&&Number.isFinite(s.col)&&Number.isFinite(s.row)&&s.col<st.cols&&s.row<st.rows).map((s,i)=>{
+          const role=Number.isInteger(s.role)?s.role:(i<STAFF_ROLES.length?i:0); const rd=roleDef(role);
+          const z=_zn[i]||{}; return { role, col:s.col|0, row:s.row|0, label:s.label||rd.label, color:s.color||rd.color,
+            name:s.name||rd.label, action:s.action||rd.acts[0], zoneRadius:Number.isFinite(z.radius)?z.radius:(STAFF_ZONE_DEF[role]||2) };
+        });
+        selStaff=null;
+        $('distro-cols').value=st.cols; $('distro-rows').value=st.rows; $('distro-wallcol').value=st.wall; $('distro-floorcol').value=st.floor;
+        if(!quiet){
+          $('distro-name').value=d.name||''; $('distro-client').value=d.client||'';
+          window.CircuitSync && window.CircuitSync.syncFromClient(d.client||'');
+        }
+        renderGrid();
+        if(!quiet) $('distro-panel').scrollIntoView({behavior:'smooth',block:'start'});
+      }
+      // ── EN VIVO: refleja en el plano cenital lo que se edita en el gemelo ──
+      // Hay que ASOCIARLO a una pantalla (Xpacio): se sigue st.loadedScreen, y si
+      // no hay, se pide el id (/xpace en el gemelo). El gemelo debe estar en build
+      // ≥0004 (recárgalo) para que reporte al mover mobiliario.
+      let __liveTimer=null, __liveTs=0;
+      async function liveTick(){
+        const scr=st.loadedScreen; if(!scr){ stopLive(); return; }
+        try{
+          const cur=await fetchCurrentLayout(scr,'');
+          if(cur && cur.ts && cur.ts>__liveTs && cur.origin!=='pixeria'){
+            __liveTs=cur.ts; setEditorFromLayout(cur,true);
+            status('🔴 EN VIVO · '+scr+' · '+(cur.furniture.length)+' muebles · ←XpaceOS '+new Date().toLocaleTimeString('es'),'#7ee0a0');
+          }
+        }catch(_){}
+      }
+      function startLive(){
+        let scr=st.loadedScreen;
+        if(!scr){
+          scr=(prompt('EN VIVO — ¿qué Xpacio sigo?\nPega el id de pantalla del gemelo (en XpaceOS escribe /xpace), ej. xtore-mny4b7.\n\nDéjalo VACÍO para seguir el Xtanco inicial (gemelo por defecto).','')||'').trim().toLowerCase() || XTANCO_INICIAL;
+          st.loadedScreen=scr;
+        }
+        __liveTs=0;
+        const b=$('distro-live'); if(b){ b.textContent='🔴 EN VIVO'; b.style.background='#ff3b3b'; b.style.color='#fff'; b.style.borderColor='#ff3b3b'; }
+        status('🔴 EN VIVO ⇄ '+st.loadedScreen+' · bidireccional: lo que muevas aquí se aplica al gemelo y lo que muevas en XpaceOS se refleja aquí','#7ee0a0');
+        liveTick(); __liveTimer=setInterval(liveTick,2000);
+        try{ refreshCliKeyBtns(); }catch(_){}   // EN VIVO → auto-enciende el live del CLI
+      }
+      function stopLive(){ if(__liveTimer){ clearInterval(__liveTimer); __liveTimer=null; } const b=$('distro-live'); if(b){ b.textContent='⚪ En vivo'; b.style.background=''; b.style.color=''; b.style.borderColor=''; } try{ refreshCliKeyBtns(); }catch(_){} }
+      // EN VIVO = BIDIRECCIONAL (Carlos, 2026-06-17): además de reflejar el gemelo en
+      // el plano (liveTick, lectura), lo que muevas en el plano se EMPUJA al gemelo en
+      // vivo. Anti-bucle: cada lado ignora sus propios cambios por `origin`, y el gemelo
+      // marca __applyingRemoteLayout 2.5s al aplicar para no re-reportar. Canal:
+      // POST /layout/report {origin:'pixeria'} → el gemelo sondea /layout/current cada
+      // 3s (pollLayoutLive) y aplica. 🚚 Mudanza sigue siendo el push explícito/pesado.
+      let __livePushT=null;
+      function pushLiveDebounced(){
+        if(!liveOnNow()) return;                         // solo cuando estás EN VIVO con un Xpacio
+        if(__livePushT) clearTimeout(__livePushT);
+        __livePushT=setTimeout(async()=>{
+          const scr=st.loadedScreen; if(!scr) return;
+          const snapshot={
+            config:{ cols:st.cols, rows:st.rows, wallHeightTiles:6, longWallColor:st.wall, floorColor:st.floor },
+            furniture: st.items.map(distroItemOut), staff: staffOut(), zones: zonesOut()
+          };
+          const body={ screen:scr, client:(($('distro-client').value||'').trim()||null), origin:'pixeria', snapshot };
+          try{
+            const r=await fetch(dBase()+'/layout/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+            if(r.ok) status('🔴 EN VIVO ⇄ '+scr+' · '+st.items.length+' muebles enviados al gemelo','#7ee0a0');
+            else status('EN VIVO: el gemelo no aceptó el cambio (HTTP '+r.status+')','#e0a14a');
+          }catch(e){ status('EN VIVO: no se pudo enviar al gemelo (red)','#e0a14a'); }
+        }, 800);
+      }
+      function toggleLive(){ if(__liveTimer) stopLive(); else startLive(); }
       async function loadDistroIntoEditor(id){
         status('⏳ cargando…');
         try{
           const r=await fetch(dBase()+'/layout/get?id='+encodeURIComponent(id)+'&ts='+Date.now(),{cache:'no-store'});
           const d=await r.json(); if(!r.ok) throw new Error(d.error||('HTTP '+r.status));
-          const cfg=d.config||{};
-          st.cols=Math.max(6,Math.min(24,cfg.cols||14)); st.rows=Math.max(4,Math.min(16,cfg.rows||8));
-          st.wall=cfg.longWallColor&&cfg.longWallColor!=='transparent'?cfg.longWallColor:'#e0d4b8';
-          st.floor=cfg.floorColor&&cfg.floorColor!=='transparent'?cfg.floorColor:'#b8bcc0';
-          st.items=(d.furniture||[]).filter(i=>i&&i.type&&i.col<st.cols&&i.row<st.rows).map(i=>{ const o={ id:i.id||(i.type+'-'+(st._n++)), type:i.type, col:i.col|0, row:i.row|0, sx:1, sy:1, label:i.label||i.type }; if(i.type==='custom'){ o.custom=true; if(i.img)o.img=i.img; if(i.fp)o.fp=i.fp; if(i.ph)o.ph=i.ph; if(i.frames>1){ o.frames=i.frames; o.orientation=i.orientation||0; } } return o; });
-          $('distro-name').value=d.name||''; $('distro-client').value=d.client||'';
-          window.CircuitSync && window.CircuitSync.syncFromClient(d.client||'');
-          $('distro-cols').value=st.cols; $('distro-rows').value=st.rows; $('distro-wallcol').value=st.wall; $('distro-floorcol').value=st.floor;
-          renderGrid(); status('Cargada «'+(d.name||id)+'» — '+st.items.length+' muebles. Edítala y vuelve a guardar.','#7ee0a0');
-          $('distro-panel').scrollIntoView({behavior:'smooth',block:'start'});
+          setEditorFromLayout(d);
+          status('Cargada «'+(d.name||id)+'» — '+st.items.length+' muebles. Edítala y vuelve a guardar.','#7ee0a0');
         }catch(e){ status('❌ '+e.message,'#e06a6a'); }
       }
-      async function delDistro(id){
-        if(!confirm('¿Borrar la distribución '+id+' de la librería?')) return;
+      // REPRESENTAR ESTADO ACTUAL: carga en la rejilla la distribución VIVA del
+      // Xpacio elegido (la que el gemelo está usando ahora mismo y reportó).
+      async function fetchCurrentLayout(screen,client){
+        const q=screen?('screen='+encodeURIComponent(screen)):('client='+encodeURIComponent(client));
+        const r=await fetch(dBase()+'/layout/current?'+q+'&ts='+Date.now(),{cache:'no-store'});
+        const d=await r.json(); const cur=d&&d.current;
+        return (cur&&Array.isArray(cur.furniture)&&cur.furniture.length)?cur:null;
+      }
+      async function loadCurrent(){
+        const cc=window.CircuitSync&&window.CircuitSync.selected();
+        const screen=(cc&&Array.isArray(cc.screens)&&cc.screens[0])||'';
+        const client=(cc&&cc.client)||'';
+        status('⏳ cargando distribución actual del Xpacio…');
+        try{
+          let cur=null;
+          if(screen) cur=await fetchCurrentLayout(screen,'');
+          if(!cur && client) cur=await fetchCurrentLayout('',client);
+          // No casa por circuito → pedir el id de pantalla. Si lo dejas VACÍO,
+          // atacamos por defecto el gemelo digital: el «Xtanco inicial» (xtore-inicial).
+          if(!cur){
+            const scr=(prompt('Pega el ID de pantalla del Xpacio (en el gemelo escribe /xpacio a la IA y te lo dice, ej. xtore-mny4b7).\n\nDéjalo VACÍO para atacar el Xtanco inicial (gemelo por defecto).','')||'').trim().toLowerCase() || XTANCO_INICIAL;
+            cur=await fetchCurrentLayout(scr,'');
+            if(!cur){
+              const esInicial = scr===XTANCO_INICIAL;
+              status('La pantalla «'+scr+'» aún no ha reportado su distribución ('+(esInicial?'abre/recarga el gemelo por defecto (sin ?loc) para que publique el Xtanco inicial':'abre/recarga el gemelo del Xtanco')+' y reintenta).','#e0a14a'); return;
+            }
+          }
+          setEditorFromLayout(cur);
+          st.loadedScreen=cur.screen||'';   // recuerda el Xtanco de origen → Mudanza lo devuelve a ESA pantalla
+          status('📥 Estado actual cargado · '+cur.furniture.length+' muebles'+(cur.ts?' · '+new Date(cur.ts).toLocaleString('es'):'')+(st.loadedScreen?' · pantalla '+st.loadedScreen:'')+'. Edítalo y pulsa 🚚 Mudanza para devolverlo al Xtanco.','#7ee0a0');
+        }catch(e){ status('❌ '+e.message,'#e06a6a'); }
+      }
+      // Renombra una distribución de la librería: la baja, le cambia el nombre y
+      // la re-publica con el MISMO id (el worker lo conserva → sobrescribe).
+      async function renameDistro(id,curName){
+        const nm=(prompt('Nuevo nombre de la distribución:',curName||'')||'').trim();
+        if(!nm||nm===curName) return;
+        status('⏳ renombrando…');
+        try{
+          const d=await (await fetch(dBase()+'/layout/get?id='+encodeURIComponent(id)+'&ts='+Date.now(),{cache:'no-store'})).json();
+          if(d.error) throw new Error(d.error);
+          const body={ id, name:nm, client:d.client||null, source:d.source||'pixeria', config:d.config||null, furniture:Array.isArray(d.furniture)?d.furniture:[], staff:Array.isArray(d.staff)?d.staff:[] };
+          const r=await fetch(dBase()+'/layout/publish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+          const rd=await r.json(); if(!r.ok||!rd.ok) throw new Error(rd.error||('HTTP '+r.status));
+          status('✏️ Renombrada a «'+nm+'»','#7ee0a0'); loadLib();
+        }catch(e){ status('❌ '+e.message,'#e06a6a'); }
+      }
+      async function delDistro(id,name,client){
+        if(layoutNum(name)===0){ status('El Layout 00 es el por defecto y no se puede borrar.','#e0a14a'); return; }
+        // SIEMPRE debe quedar al menos un layout (el Default) por Xpacio: no se
+        // puede borrar el último.
+        const cl=(client||'generic');
+        const mine=await layoutsOf(cl);
+        if(mine.length<=1){ status('No puedes borrar el último layout de «'+cl+'» — siempre debe quedar el Layout Default. Guarda otro antes.','#e0a14a'); return; }
+        if(!confirm('¿Borrar «'+(name||id)+'» de la librería?')) return;
         try{ await fetch(dBase()+'/layout/delete?id='+encodeURIComponent(id),{method:'POST'}); loadLib(); }catch(e){}
       }
       // Snapshot a repo (versionado): descarga el JSON canónico para commitear en
@@ -2075,17 +2948,28 @@
           items.forEach(it=>{
             const fc=(it.counts&&it.counts.furniture)||0;
             const card=document.createElement('div');
-            card.style.cssText='background:#0b1117;border:1px solid #28323a;border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:6px;';
+            card.style.cssText='position:relative;background:#0b1117;border:1px solid #28323a;border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:6px;';
+            const num=layoutNum(it.name); const isDefault=(num===0);
             const srcBadge=it.source==='gemelo'?'<span style="font-size:9px;background:rgba(0,200,255,.15);color:#7ee0ff;border-radius:4px;padding:1px 5px;">gemelo</span>':'<span style="font-size:9px;background:rgba(150,255,160,.12);color:#9effa0;border-radius:4px;padding:1px 5px;">pixeria</span>';
+            const defBadge=isDefault?'<span style="font-size:9px;background:rgba(46,224,106,.20);color:#9effa0;border-radius:4px;padding:1px 5px;margin-right:4px;">por defecto</span>':'';
             card.innerHTML=miniPreview(fc,14,8)+
-              '<div style="font-size:12px;font-weight:600;color:var(--text,#dfe);line-height:1.2;">'+(it.name||'(sin nombre)')+'</div>'+
+              '<div style="font-size:12px;font-weight:600;color:var(--text,#dfe);line-height:1.2;">'+defBadge+(it.name||'(sin nombre)')+'</div>'+
               '<div style="font-size:10px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;">'+srcBadge+'<span>'+fc+' muebles'+(it.client?' · '+it.client:'')+'</span></div>'+
               '<div style="font-size:9px;color:#56636d;word-break:break-all;">'+it.id+'</div>';
+            // ✕ en la esquina = borrar. El Layout 00 (por defecto) está protegido (🔒).
+            if(isDefault){
+              const lock=document.createElement('span'); lock.textContent='🔒'; lock.title='Layout 00 · por defecto (no se puede borrar)';
+              lock.style.cssText='position:absolute;top:5px;right:7px;font-size:11px;opacity:.7;'; card.appendChild(lock);
+            } else {
+              const x=document.createElement('button'); x.textContent='✕'; x.title='Eliminar este layout';
+              x.style.cssText='position:absolute;top:4px;right:4px;width:20px;height:20px;line-height:1;border:1px solid #7a3a2a;background:rgba(40,12,8,.9);color:#ff8866;border-radius:50%;cursor:pointer;font-size:11px;padding:0;z-index:2;';
+              x.onclick=()=>delDistro(it.id,it.name,it.client); card.appendChild(x);
+            }
             const row=document.createElement('div'); row.style.cssText='display:flex;gap:5px;';
             const bL=document.createElement('button'); bL.className='button secondary'; bL.textContent='Cargar'; bL.style.cssText='flex:1;padding:4px;font-size:11px;'; bL.onclick=()=>loadDistroIntoEditor(it.id);
+            const bR=document.createElement('button'); bR.className='button secondary'; bR.textContent='✏️'; bR.title='Renombrar'; bR.style.cssText='padding:4px 8px;font-size:11px;'; bR.onclick=()=>renameDistro(it.id,it.name);
             const bJ=document.createElement('button'); bJ.className='button secondary'; bJ.textContent='⬇'; bJ.title='Descargar JSON para versionar en el repo (layouts/distribuciones/)'; bJ.style.cssText='padding:4px 8px;font-size:11px;'; bJ.onclick=()=>downloadDistro(it.id);
-            const bD=document.createElement('button'); bD.className='button secondary'; bD.textContent='🗑'; bD.style.cssText='padding:4px 8px;font-size:11px;'; bD.onclick=()=>delDistro(it.id);
-            row.appendChild(bL); row.appendChild(bJ); row.appendChild(bD); card.appendChild(row);
+            row.appendChild(bL); row.appendChild(bR); row.appendChild(bJ); card.appendChild(row);
             lib.appendChild(card);
           });
         }catch(e){ lib.innerHTML='<div style="grid-column:1/-1;color:#e06a6a;font-size:12px;text-align:center;padding:10px;">❌ '+e.message+'</div>'; }
@@ -2111,8 +2995,9 @@
         function fillScopes(){ const sel=$('distro-scope'); if(!sel||!scopes) return; const ord=scopes.order||Object.keys(scopes.labels||{}); sel.innerHTML=ord.map(s=>{ const l=(scopes.labels&&scopes.labels[s]&&(scopes.labels[s][lang()]||scopes.labels[s].es))||s; return '<option value="'+s+'">'+l+'</option>'; }).join(''); }
         function fillCircuits(){ const sel=$('distro-circuit'); if(!sel) return; const list=circuitsForScope(); sel.innerHTML='<option value="">— elige circuito —</option>'+list.map(c=>'<option value="'+c.id+'">'+label(c)+' · '+c.pointCount+' pts</option>').join(''); }
         function fillLocations(){ const sel=$('distro-location'); if(!sel) return; const c=byId(selectedId); if(!c){ sel.innerHTML='<option value="">— todo el circuito —</option>'; return; } const pts=c.points||[]; const trunc=c.pointsTruncated?' (primeras '+pts.length+' de '+c.pointCount+')':''; sel.innerHTML='<option value="">— todo el circuito ('+c.pointCount+' Xpacios)'+trunc+' —</option>'+pts.map(p=>'<option value="'+p.id+'">'+(p.name||p.id)+(p.addr?' · '+p.addr:'')+(p.screens?' · '+p.screens+'📺':'')+'</option>').join(''); }
-        function renderInfo(){ const box=$('distro-circuit-info'); if(!box) return; const c=byId(selectedId); if(!c){ box.style.display='none'; return; } const s=c.segmentation||{}; const loc=locId&&(c.points||[]).find(p=>p.id===locId); const scr=(c.screens||[]).length; box.style.display='block';
-          box.innerHTML='<b style="color:#7ee0ff;">'+label(c)+'</b> · cliente <code>'+c.client+'</code> · '+(loc?('📍 '+(loc.name||loc.id)+(loc.addr?' ('+loc.addr+')':'')):(c.pointCount+' Xpacios · '+scr+' pantalla(s) real(es)'+(scr?' ('+(c.screens||[]).join(', ')+')':'')))+'<br>🎯 Segmentación (admira.app): emplazamiento <b>'+chip(s.typologies)+'</b> · género <b>'+chip(s.genders)+'</b> · edad <b>'+chip(s.ages)+'</b> · franja <b>'+chip(s.timeSlots)+'</b>'+(s.schedule?' · horario '+s.schedule.start+'–'+s.schedule.end:''); }
+        function renderInfo(){ try{ if(window.updateXpacioChip) window.updateXpacioChip(); }catch(_){ } const box=$('distro-circuit-info'); if(!box) return; const c=byId(selectedId); if(!c){ box.style.display='none'; return; } const s=c.segmentation||{}; const loc=locId&&(c.points||[]).find(p=>p.id===locId); const scr=(c.screens||[]).length; box.style.display='block';
+          const repLoc=encodeURIComponent(c.client||c.id);
+          box.innerHTML='<b style="color:#7ee0ff;">'+label(c)+'</b> · cliente <code>'+c.client+'</code> · '+(loc?('📍 '+(loc.name||loc.id)+(loc.addr?' ('+loc.addr+')':'')):(c.pointCount+' Xpacios · '+scr+' pantalla(s) real(es)'+(scr?' ('+(c.screens||[]).join(', ')+')':'')))+'<br>🎯 Segmentación (admira.app): emplazamiento <b>'+chip(s.typologies)+'</b> · género <b>'+chip(s.genders)+'</b> · edad <b>'+chip(s.ages)+'</b> · franja <b>'+chip(s.timeSlots)+'</b>'+(s.schedule?' · horario '+s.schedule.start+'–'+s.schedule.end:'')+'<br><a href="https://www.clearchannel.tv/detail.html?loc='+repLoc+'" target="_blank" rel="noopener" style="color:#7ee0ff;text-decoration:none;font-weight:600;">📡 Informe de audiencia verificada (clearchannel.tv) →</a> <span style="opacity:.6;">qué se emitió × quién lo vio</span>'; }
         function selectCircuit(id){ selectedId=id||''; locId=''; const hid=$('distro-client'); if(hid) hid.value=byId(selectedId)?byId(selectedId).client:''; fillLocations(); renderInfo(); }
         function selectScope(s){ scopeId=s||''; selectedId=''; locId=''; fillCircuits(); fillLocations(); const hid=$('distro-client'); if(hid) hid.value=''; renderInfo(); }
         function selectLocation(id){ locId=id||''; renderInfo(); }
@@ -2125,20 +3010,314 @@
         return { init, selected, selectScope, selectCircuit, selectLocation, syncFromClient };
       })();
 
+      // ── EDICIÓN · editor pixel-art de Mis muebles ─────────────────────────
+      const EDIT={ item:null, sc:document.createElement('canvas'), zoom:8, tool:'paint', drawing:false, tainted:false, undo:[], redo:[] };
+      function editStatus(m,c){ const e=$('edit-status'); if(e){ e.textContent=m||''; e.style.color=c||'var(--muted)'; } }
+      // ── Historial UNDO/REDO del lienzo (snapshots de píxeles) ──────────────
+      const EDIT_HIST_MAX=30;
+      function editSnapshot(){
+        if(!EDIT.sc.width) return null;
+        try{ return { w:EDIT.sc.width, h:EDIT.sc.height, img:EDIT.sc.getContext('2d').getImageData(0,0,EDIT.sc.width,EDIT.sc.height) }; }
+        catch(e){ return null; }  // tainted (CORS) → no se puede snapshotear
+      }
+      function editRestore(s){
+        if(!s) return;
+        EDIT.sc.width=s.w; EDIT.sc.height=s.h;
+        EDIT.sc.getContext('2d').putImageData(s.img,0,0); EDIT.tainted=false;
+        editFitZoom(); renderEdit();
+      }
+      function editUpdateUndoButtons(){
+        const u=$('edit-undo'), r=$('edit-redo');
+        if(u) u.disabled=!EDIT.undo.length;
+        if(r) r.disabled=!EDIT.redo.length;
+      }
+      // Llamar ANTES de cada cambio destructivo (trazo, IA, recorte…).
+      function editPushUndo(){
+        const s=editSnapshot(); if(!s) return;
+        EDIT.undo.push(s); if(EDIT.undo.length>EDIT_HIST_MAX) EDIT.undo.shift();
+        EDIT.redo.length=0; editUpdateUndoButtons();
+      }
+      // Reset del historial al abrir/importar un asset nuevo (su estado = base).
+      function editResetHistory(){ EDIT.undo.length=0; EDIT.redo.length=0; editUpdateUndoButtons(); }
+      function editUndo(){
+        if(!EDIT.undo.length){ editStatus('Nada que deshacer.','#e0a14a'); return; }
+        const cur=editSnapshot(); if(cur) EDIT.redo.push(cur);
+        editRestore(EDIT.undo.pop()); editUpdateUndoButtons();
+        editStatus('↶ Deshecho.','#7ee0a0');
+      }
+      function editRedo(){
+        if(!EDIT.redo.length){ editStatus('Nada que rehacer.','#e0a14a'); return; }
+        const cur=editSnapshot(); if(cur) EDIT.undo.push(cur);
+        editRestore(EDIT.redo.pop()); editUpdateUndoButtons();
+        editStatus('↷ Rehecho.','#7ee0a0');
+      }
+      // Botón de item para las listas «últimos 3» (thumb + título + acción).
+      function editRecentBtn(thumbStyle, title, sel, onclick){
+        const b=document.createElement('button'); b.type='button';
+        b.style.cssText='display:flex;align-items:center;gap:8px;padding:4px 7px;border:1px solid '+(sel?'var(--cyan)':'#28323a')+';background:#0b1117;border-radius:6px;cursor:pointer;color:#cfe;text-align:left;';
+        b.innerHTML='<span style="width:24px;height:24px;flex:none;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:13px;background-color:#0a0f14;'+(thumbStyle||'')+'"></span><span style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+String(title||'asset').slice(0,18)+'</span>';
+        b.onclick=onclick; return b;
+      }
+      // Muebles propios (del wallet): solo los 3 más recientes → al editor.
+      function loadEditList(){
+        const box=$('edit-list'); if(!box) return;
+        const owned=ownedFurni().slice().sort((a,b)=>(b.ts||0)-(a.ts||0)).slice(0,3);
+        if(!owned.length){ box.innerHTML='<div style="font-size:11px;color:var(--muted);">Sin muebles. Crea o compra.</div>'; return; }
+        box.innerHTML='';
+        owned.forEach(o=>{
+          const sel=EDIT.item&&EDIT.item.url===o.url;
+          box.appendChild(editRecentBtn(window.furniFrameStyle(o.img||o.url,o.frames||1,0), o.title||'mueble', sel, ()=>openEdit(o)));
+        });
+      }
+      // Últimos 3 de un tipo del Stock. image → al editor; video/música/audio → abrir/previsualizar.
+      async function loadRecentType(type, boxId){
+        const box=$(boxId); if(!box) return;
+        box.innerHTML='<div style="font-size:10px;color:var(--muted);">cargando…</div>';
+        try{
+          const r=await fetch(ELEVEN_WORKER_URL+'/stock/list?type='+type+'&limit=30');
+          const d=await r.json().catch(()=>({})); let items=Array.isArray(d)?d:(d.items||d.assets||[]);
+          items=items.filter(x=>x&&x.type===type&&(type!=='image'||!((x.tags||[]).includes('furni')))&&(x.url||x.thumbnail));
+          items.sort((a,b)=>new Date(b.createdAt||b.ts||0)-new Date(a.createdAt||a.ts||0));
+          items=items.slice(0,3);
+          if(!items.length){ box.innerHTML='<div style="font-size:10px;color:var(--muted);opacity:.6;">— sin assets —</div>'; return; }
+          box.innerHTML='';
+          const emoji={ image:'🖼️', video:'🎬', music:'🎵', audio:'🔊' }[type]||'📦';
+          items.forEach(it=>{
+            // el campo thumbnail del Stock viene recortado (500 chars) → inservible.
+            // Para imágenes usamos la URL real del asset; el resto, emoji.
+            const hasThumb=type==='image'&&it.url;
+            const thumbStyle=hasThumb?('background:#0a0f14 center/cover no-repeat;background-image:url(\''+it.url+'\');'):'';
+            const b=editRecentBtn(thumbStyle, it.title||type, false, ()=>{
+              if(type==='image') editLoadInto(it.url,{ title:it.title||'imagen' });
+              else window.open(it.url,'_blank');
+            });
+            if(!hasThumb) b.querySelector('span').textContent=emoji;
+            box.appendChild(b);
+          });
+        }catch(e){ box.innerHTML='<div style="font-size:10px;color:#e06a6a;">error</div>'; }
+      }
+      function loadRecentLists(){ ['image','video','music','audio'].forEach(t=>loadRecentType(t,'edit-list-'+t)); }
+      function editFitZoom(){ const maxPx=420, m=Math.max(EDIT.sc.width||1,EDIT.sc.height||1); EDIT.zoom=Math.max(1,Math.min(20,Math.floor(maxPx/m)||1)); }
+      function openEdit(o){
+        EDIT.item=o; loadEditList();
+        $('edit-ph').value=o.ph||46; const fp=Array.isArray(o.fp)?o.fp:[1,1]; $('edit-fpw').value=fp[0]||1; $('edit-fpd').value=fp[1]||1;
+        editStatus('⏳ cargando imagen…');
+        const img=new Image(); img.crossOrigin='anonymous';
+        img.onload=()=>{
+          const w=img.naturalWidth||64, h=img.naturalHeight||64;
+          EDIT.sc.width=w; EDIT.sc.height=h;
+          const g=EDIT.sc.getContext('2d'); g.clearRect(0,0,w,h); g.imageSmoothingEnabled=false; g.drawImage(img,0,0);
+          try{ g.getImageData(0,0,1,1); EDIT.tainted=false; }catch(e){ EDIT.tainted=true; }
+          editResetHistory(); editFitZoom(); renderEdit();
+          editStatus(EDIT.tainted?'⚠ Sin permiso de píxeles (CORS): puedes ajustar altura/footprint, pero no pintar/recortar esta imagen.':('Editando «'+(o.title||'mueble')+'» · '+w+'×'+h+' px'), EDIT.tainted?'#e0a14a':'#7ee0a0');
+        };
+        img.onerror=()=>editStatus('❌ no se pudo cargar la imagen','#e06a6a');
+        img.src=o.img||o.url;
+      }
+      function renderEdit(){
+        const cv=$('edit-canvas'); if(!cv||!EDIT.sc.width) return;
+        const z=EDIT.zoom; cv.width=EDIT.sc.width*z; cv.height=EDIT.sc.height*z;
+        const x=cv.getContext('2d'); x.imageSmoothingEnabled=false; x.clearRect(0,0,cv.width,cv.height);
+        x.drawImage(EDIT.sc,0,0,cv.width,cv.height);
+        x.strokeStyle='rgba(120,180,200,.14)'; x.lineWidth=1;
+        for(let i=0;i<=EDIT.sc.width;i++){ x.beginPath(); x.moveTo(i*z+.5,0); x.lineTo(i*z+.5,cv.height); x.stroke(); }
+        for(let j=0;j<=EDIT.sc.height;j++){ x.beginPath(); x.moveTo(0,j*z+.5); x.lineTo(cv.width,j*z+.5); x.stroke(); }
+        const zl=$('edit-zoom-lbl'); if(zl) zl.textContent='×'+z;
+      }
+      function editPixelAt(ev){
+        const cv=$('edit-canvas'); if(!cv||!EDIT.sc.width) return; const r=cv.getBoundingClientRect();
+        const px=Math.floor((ev.clientX-r.left)/EDIT.zoom), py=Math.floor((ev.clientY-r.top)/EDIT.zoom);
+        if(px<0||py<0||px>=EDIT.sc.width||py>=EDIT.sc.height) return;
+        if(EDIT.tainted){ editStatus('No puedo pintar esta imagen (CORS).','#e0a14a'); return; }
+        const g=EDIT.sc.getContext('2d');
+        if(EDIT.tool==='pick'){ try{ const d=g.getImageData(px,py,1,1).data; if(d[3]>0) $('edit-color').value='#'+[d[0],d[1],d[2]].map(n=>n.toString(16).padStart(2,'0')).join(''); }catch(e){} return; }
+        if(EDIT.tool==='erase'){ g.clearRect(px,py,1,1); }
+        else { g.fillStyle=$('edit-color').value; g.fillRect(px,py,1,1); }
+        renderEdit();
+      }
+      function trimEdit(){
+        if(EDIT.tainted||!EDIT.sc.width){ editStatus('No puedo recortar (sin acceso a píxeles).','#e0a14a'); return; }
+        const w=EDIT.sc.width,h=EDIT.sc.height,g=EDIT.sc.getContext('2d');
+        let data; try{ data=g.getImageData(0,0,w,h).data; }catch(e){ editStatus('No puedo recortar (CORS).','#e0a14a'); return; }
+        editPushUndo();
+        let minx=w,miny=h,maxx=-1,maxy=-1;
+        for(let y=0;y<h;y++)for(let x2=0;x2<w;x2++){ if(data[(y*w+x2)*4+3]>8){ if(x2<minx)minx=x2; if(x2>maxx)maxx=x2; if(y<miny)miny=y; if(y>maxy)maxy=y; } }
+        if(maxx<0){ editStatus('La imagen está vacía.','#e0a14a'); return; }
+        const nw=maxx-minx+1, nh=maxy-miny+1, tmp=document.createElement('canvas'); tmp.width=nw; tmp.height=nh;
+        tmp.getContext('2d').drawImage(EDIT.sc,minx,miny,nw,nh,0,0,nw,nh);
+        EDIT.sc.width=nw; EDIT.sc.height=nh; EDIT.sc.getContext('2d').drawImage(tmp,0,0);
+        editFitZoom(); renderEdit(); editStatus('✂️ Recortado a '+nw+'×'+nh+' px (ya no flotará). Pulsa Guardar.','#7ee0a0');
+      }
+      async function saveEdit(){
+        if(!EDIT.item){ editStatus('Elige un mueble primero.','#e0a14a'); return; }
+        let dataUrl=null; if(!EDIT.tainted){ try{ dataUrl=EDIT.sc.toDataURL('image/png'); }catch(e){ dataUrl=null; } }
+        const ph=Math.max(8,Math.min(400,+$('edit-ph').value||46));
+        const fp=[Math.max(1,Math.min(6,+$('edit-fpw').value||1)), Math.max(1,Math.min(6,+$('edit-fpd').value||1))];
+        editStatus('⏳ guardando…');
+        try{
+          const patch={ ph, fp }; if(dataUrl && dataUrl.length<700000) patch.img=dataUrl;
+          const r=await fetch(dBase()+'/xpacio/update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ id:xpacioId(), url:EDIT.item.url, patch })});
+          const d=await r.json(); if(!r.ok||!d.ok) throw new Error(d.error||('HTTP '+r.status));
+          wallet=d.wallet||wallet; EDIT.item=ownedFurni().find(o=>o.url===EDIT.item.url)||EDIT.item;
+          loadEditList(); try{ renderPalette(); }catch(_){}
+          editStatus('✅ Guardado'+(patch.img?' (imagen + ':' (')+'altura '+ph+' · footprint '+fp[0]+'×'+fp[1]+'). Actualizado en paleta/plano/gemelo.','#7ee0a0');
+        }catch(e){ editStatus('❌ '+e.message,'#e06a6a'); }
+      }
+      // Quita el fondo (flood-fill desde las 4 esquinas, color ~uniforme → alfa 0).
+      // La IA suele devolver fondo opaco; esto deja el mueble recortado.
+      function removeBgFlood(canvas,tol){
+        const w=canvas.width,h=canvas.height,g=canvas.getContext('2d'); let im;
+        try{ im=g.getImageData(0,0,w,h); }catch(e){ return false; }
+        const d=im.data; const corners=[0,(w-1)*4,(h-1)*w*4,((h*w)-1)*4];
+        let br=0,bg=0,bb=0,n=0; corners.forEach(i=>{ if(d[i+3]>0){ br+=d[i];bg+=d[i+1];bb+=d[i+2];n++; } });
+        if(!n) return false; br/=n;bg/=n;bb/=n;
+        const T=tol||42, seen=new Uint8Array(w*h), stack=[];
+        const push=(x,y)=>{ if(x<0||y<0||x>=w||y>=h) return; const id=y*w+x; if(seen[id]) return; seen[id]=1; const i=id*4; if(Math.abs(d[i]-br)<=T&&Math.abs(d[i+1]-bg)<=T&&Math.abs(d[i+2]-bb)<=T){ d[i+3]=0; stack.push(x,y); } };
+        push(0,0);push(w-1,0);push(0,h-1);push(w-1,h-1);
+        while(stack.length){ const y=stack.pop(),x=stack.pop(); push(x+1,y);push(x-1,y);push(x,y+1);push(x,y-1); }
+        g.putImageData(im,0,0); return true;
+      }
+      async function aiEdit(){
+        if(EDIT.aiBusy){ editStatus('⏳ La IA ya está procesando, espera a que termine…','#e0a14a'); return; }
+        if(!EDIT.item||!EDIT.sc.width){ editStatus('Abre un mueble primero.','#e0a14a'); return; }
+        if(EDIT.tainted){ editStatus('Imagen sin acceso a píxeles (CORS): no puedo enviarla a la IA.','#e0a14a'); return; }
+        const prompt=($('edit-ai-prompt').value||'').trim(); if(!prompt){ editStatus('Escribe qué cambiar (ej. «la moto ahora rosa»).','#e0a14a'); return; }
+        let dataUrl; try{ dataUrl=EDIT.sc.toDataURL('image/png'); }catch(e){ editStatus('No puedo leer la imagen (CORS).','#e0a14a'); return; }
+        EDIT.aiBusy=true;
+        const btn=$('edit-ai-go'), inp=$('edit-ai-prompt'); const btnTxt=btn?btn.textContent:'';
+        if(btn){ btn.disabled=true; btn.textContent='⏳ Procesando…'; }
+        if(inp) inp.disabled=true;
+        let dots=0; const tick=setInterval(()=>{ dots=(dots+1)%4; editStatus('✨ Gemini pintando «'+prompt+'»'+'·'.repeat(dots)+' (~10-20s)'); },500);
+        try{
+          const r=await fetch(dBase()+'/image/edit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ image:dataUrl, prompt })});
+          const d=await r.json(); if(!r.ok||!d.ok||!d.image) throw new Error(d.error||d.detail||('HTTP '+r.status));
+          const preMax=Math.max(EDIT.sc.width||0,EDIT.sc.height||0)||256;  // conserva el tamaño con el que se trabajaba (no encoger a 256)
+          editPushUndo();  // permite deshacer el cambio de la IA
+          await new Promise((res,rej)=>{ const im=new Image(); im.onload=()=>{
+            const MAX=Math.min(1024,preMax); let w=im.naturalWidth||64,h=im.naturalHeight||64; const s=Math.min(1,MAX/Math.max(w,h)); w=Math.max(1,Math.round(w*s)); h=Math.max(1,Math.round(h*s));
+            EDIT.sc.width=w; EDIT.sc.height=h; const g=EDIT.sc.getContext('2d'); g.clearRect(0,0,w,h); g.imageSmoothingEnabled=true; g.drawImage(im,0,0,w,h); EDIT.tainted=false;
+            try{ removeBgFlood(EDIT.sc); }catch(_){}   // quita el fondo opaco que mete la IA
+            editFitZoom(); renderEdit(); res();
+          }; im.onerror=()=>rej(new Error('no se pudo cargar la imagen IA')); im.src=d.image; });
+          editStatus('✨ IA aplicada (fondo recortado). Retoca y pulsa Guardar.','#7ee0a0');
+        }catch(e){ editStatus('❌ IA: '+e.message,'#e06a6a'); }
+        finally{ clearInterval(tick); EDIT.aiBusy=false; if(btn){ btn.disabled=false; btn.textContent=btnTxt||'Aplicar'; } if(inp) inp.disabled=false; }
+      }
+      // ── Importar imagen externa (URL via proxy del worker, o archivo local) ──
+      function editLoadInto(src, meta){
+        meta=meta||{};
+        editStatus('⏳ cargando imagen…');
+        const img=new Image(); if(/^https?:/i.test(src)) img.crossOrigin='anonymous';
+        img.onload=()=>{
+          const MAX=1024; let w=img.naturalWidth||64,h=img.naturalHeight||64;
+          const s=Math.min(1,MAX/Math.max(w,h)); w=Math.max(1,Math.round(w*s)); h=Math.max(1,Math.round(h*s));
+          EDIT.sc.width=w; EDIT.sc.height=h;
+          const g=EDIT.sc.getContext('2d'); g.clearRect(0,0,w,h); g.imageSmoothingEnabled=true; g.drawImage(img,0,0,w,h);
+          try{ g.getImageData(0,0,1,1); EDIT.tainted=false; }catch(e){ EDIT.tainted=true; }
+          EDIT.item={ url:null, img:null, title:meta.title||'importada', ph:46, fp:[1,1], imported:true };
+          $('edit-ph').value=46; $('edit-fpw').value=1; $('edit-fpd').value=1;
+          loadEditList(); editResetHistory(); editFitZoom(); renderEdit();
+          if(EDIT.tainted) editStatus('⚠ Imagen sin permiso de píxeles (CORS): no puedo retocarla ni guardarla. Prueba con «Traer URL» (usa el proxy).','#e0a14a');
+          else editStatus('📥 Importada «'+(meta.title||'imagen')+'» · '+w+'×'+h+' px'+(s<1?' (reescalada)':'')+'. Retoca, recorta y pulsa «Guardar en Stock».','#7ee0a0');
+        };
+        img.onerror=()=>editStatus('❌ no se pudo cargar la imagen'+(meta.viaProxy?' (¿la URL es una imagen directa?)':'')+'.','#e06a6a');
+        img.src=src;
+      }
+      function importFromUrl(){
+        const raw=($('edit-import-url').value||'').trim(); if(!raw){ editStatus('Pega una URL de imagen.','#e0a14a'); return; }
+        let u; try{ u=new URL(raw); }catch(e){ editStatus('URL no válida.','#e0a14a'); return; }
+        if(u.protocol!=='http:'&&u.protocol!=='https:'){ editStatus('Solo URLs http(s).','#e0a14a'); return; }
+        editLoadInto(dBase()+'/image/proxy?url='+encodeURIComponent(u.toString()), { title:((u.pathname.split('/').pop()||'importada').replace(/\.[^.]+$/,''))||'importada', viaProxy:true });
+      }
+      function importFromFile(){
+        const inp=$('edit-import-file'); const f=inp&&inp.files&&inp.files[0]; if(!f) return;
+        const r=new FileReader(); r.onload=()=>editLoadInto(r.result,{ title:(f.name||'importada').replace(/\.[^.]+$/,'') }); r.onerror=()=>editStatus('❌ no se pudo leer el archivo','#e06a6a'); r.readAsDataURL(f);
+        inp.value='';
+      }
+      async function saveEditToStock(){
+        if(!EDIT.sc.width){ editStatus('Importa o abre una imagen primero.','#e0a14a'); return; }
+        if(EDIT.tainted){ editStatus('Imagen sin acceso a píxeles (CORS): no puedo publicarla.','#e0a14a'); return; }
+        let dataUrl; try{ dataUrl=EDIT.sc.toDataURL('image/png'); }catch(e){ editStatus('No puedo leer la imagen (CORS).','#e0a14a'); return; }
+        const title=(EDIT.item&&EDIT.item.title)||'Asset Admira Studio';
+        const ph=Math.max(8,Math.min(400,+$('edit-ph').value||46));
+        const fp=[Math.max(1,Math.min(6,+$('edit-fpw').value||1)), Math.max(1,Math.min(6,+$('edit-fpd').value||1))];
+        const btn=$('edit-save-stock'); if(btn) btn.disabled=true;
+        editStatus('📦 publicando en Stock…');
+        try{
+          const payload={ type:'image', motor:'Admira Studio Import', title, tags:['pixeria','import'], prompt:'importado/retocado en el editor de Assets', fp, ph, base64:dataUrl.split(',')[1], mime:'image/png' };
+          const r=await fetch(ELEVEN_WORKER_URL+'/stock/publish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+          const d=await r.json().catch(()=>({})); if(!r.ok||!(d.ok||d.id)) throw new Error(d.error||('HTTP '+r.status));
+          editStatus('✅ Guardado en Stock · id '+d.id+' (Biblioteca/Marketplace).','#7ee0a0');
+          try{ loadRecentLists(); }catch(_){}
+        }catch(e){ editStatus('❌ Stock: '+e.message,'#e06a6a'); }
+        finally{ if(btn) btn.disabled=false; }
+      }
+      function initEdit(){
+        document.querySelectorAll('.edit-tool').forEach(b=>b.addEventListener('click',()=>{ EDIT.tool=b.dataset.tool; document.querySelectorAll('.edit-tool').forEach(x=>x.style.background=''); b.style.background='rgba(0,200,255,.18)'; }));
+        const cv=$('edit-canvas');
+        if(cv){ cv.addEventListener('mousedown',e=>{ if(EDIT.tool!=='pick'&&!EDIT.tainted) editPushUndo(); EDIT.drawing=true; editPixelAt(e); }); cv.addEventListener('mousemove',e=>{ if(EDIT.drawing&&EDIT.tool!=='pick') editPixelAt(e); }); window.addEventListener('mouseup',()=>{ EDIT.drawing=false; }); }
+        const zi=$('edit-zoom-in'); if(zi) zi.onclick=()=>{ EDIT.zoom=Math.min(24,EDIT.zoom+1); renderEdit(); };
+        const zo=$('edit-zoom-out'); if(zo) zo.onclick=()=>{ EDIT.zoom=Math.max(1,EDIT.zoom-1); renderEdit(); };
+        const tr=$('edit-trim'); if(tr) tr.onclick=trimEdit;
+        const sv=$('edit-save'); if(sv) sv.onclick=saveEdit;
+        const svs=$('edit-save-stock'); if(svs) svs.onclick=saveEditToStock;
+        const ai=$('edit-ai-go'); if(ai) ai.onclick=aiEdit;
+        const aip=$('edit-ai-prompt'); if(aip) aip.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); aiEdit(); } });
+        const iu=$('edit-import-url-btn'); if(iu) iu.onclick=importFromUrl;
+        const iuf=$('edit-import-url'); if(iuf) iuf.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); importFromUrl(); } });
+        const ifb=$('edit-import-file-btn'); if(ifb) ifb.onclick=()=>$('edit-import-file').click();
+        const iff=$('edit-import-file'); if(iff) iff.onchange=importFromFile;
+        const un=$('edit-undo'); if(un) un.onclick=editUndo;
+        const re=$('edit-redo'); if(re) re.onclick=editRedo;
+        // Atajos ⌘Z / ⌘⇧Z (o Ctrl) solo cuando la pestaña Edición está visible.
+        document.addEventListener('keydown',e=>{
+          const panel=$('edit-panel'); if(!panel||panel.style.display==='none') return;
+          const t=e.target, typing=t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'); if(typing) return;
+          if((e.metaKey||e.ctrlKey)&&(e.key==='z'||e.key==='Z')){ e.preventDefault(); if(e.shiftKey) editRedo(); else editUndo(); }
+          else if((e.metaKey||e.ctrlKey)&&(e.key==='y'||e.key==='Y')){ e.preventDefault(); editRedo(); }
+        });
+      }
       function init(){
         if(!$('distro-grid')) return;
         renderPalette(); renderGrid();
         window.CircuitSync && window.CircuitSync.init();
         const wire=(id,fn)=>{ const e=$(id); if(e) e.onclick=fn; };
         wire('distro-apply-size',applySize);
+        wire('distro-current',loadCurrent);
+        wire('distro-mudanza',mudanza);
+        wire('distro-live',toggleLive);
         wire('distro-save',saveDistro);
         wire('distro-iso',openIso);
-        wire('distro-clear',()=>{ st.items=[]; renderGrid(); status('Rejilla vaciada'); });
+        wire('distro-iso25',renderIso25);
+        wire('distro-alzado',renderAlzado);
+        wire('distro-clear',()=>{ st.items=[]; st.staff=[]; selStaff=null; renderGrid(); status('Rejilla vaciada'); });
         wire('distro-refresh',loadLib);
+        // CLI Xtanco del panel (plegable) — usa el helper compartido xtancoCliSend.
+        (function(){
+          const inp=$('distro-cli-in-p'), out=$('distro-cli-out-p'), kb=$('distro-cli-key-p'), sb=$('distro-cli-send-p');
+          if(!inp||!sb) return;
+          const logLine=h=>{ if(!out) return; const p=document.createElement('div'); p.innerHTML=h; out.appendChild(p); out.scrollTop=out.scrollHeight; };
+          try{ buildCliChips($('distro-cli-chips-p'), logLine); }catch(_){}   // chips de comandos rápidos
+          // Tira de KPIs en vivo (toggle): caja/sat/clientes/hora del Xpacio, vía /status keyless.
+          (function(){
+            const kb=$('distro-cli-kpi-btn'), kel=$('distro-cli-kpi'); if(!kb||!kel) return; let on=false;
+            kb.onclick=()=>{ on=!on;
+              if(on){ kb.textContent='⏸ estado en vivo'; kb.style.color='#7ee0a0'; renderKpiStrip(kel,null,'⏳ pidiendo estado…'); startLiveStatus(kel); }
+              else { kb.textContent='▶ estado en vivo'; kb.style.color=''; stopLiveStatus(); renderKpiStrip(kel,null,''); }
+            };
+          })();
+          const hist=[]; let hi=-1;
+          const send=()=>{ const c=(inp.value||'').trim(); if(!c) return; hist.push(c); hi=hist.length; xtancoCliSend(c, logLine); inp.value=''; };
+          sb.onclick=send;
+          inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); send(); } else if(e.key==='ArrowUp'){ if(hi>0){ hi--; inp.value=hist[hi]||''; e.preventDefault(); } } else if(e.key==='ArrowDown'){ if(hi<hist.length-1){ hi++; inp.value=hist[hi]||''; } else { hi=hist.length; inp.value=''; } e.preventDefault(); } });
+          if(kb){ kb.onclick=()=>{ let cur=''; try{ cur=localStorage.getItem('xpace_remote_key')||''; }catch(_){} const v=prompt('REMOTE_KEY del stand → envía también al Xpacio LIVE del punto (se guarda en este navegador). Vacío = solo preview:', cur); if(v===null) return; try{ if(v.trim()) localStorage.setItem('xpace_remote_key',v.trim()); else localStorage.removeItem('xpace_remote_key'); }catch(_){} try{ refreshCliKeyBtns(); }catch(_){} }; try{ refreshCliKeyBtns(); }catch(_){} }
+        })();
         // Submenús: Distribución / Marketplace (clic en el activo → vuelve a Creación)
         wire('tab-creacion',()=>setView('creacion'));
+        wire('tab-edicion',()=>setView('edicion'));
         wire('tab-distribucion',()=>setView('distribucion'));
         wire('tab-marketplace',()=>setView('marketplace'));
+        initEdit();
         wire('market-recargar',recargarCreditos);
         wire('market-reprocesar',async()=>{
           const st=$('market-reproc-status'); const set=m=>{ if(st) st.textContent=m; };
@@ -2153,6 +3332,6 @@
       if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
     })();
   </script>
-  <script src="/assets/matrix-rain.js?v=20260608-sides"></script>
+  <script defer src="/assets/matrix-rain.js?v=20260608-sides"></script>
 </body>
 </html>

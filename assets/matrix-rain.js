@@ -3,7 +3,7 @@
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d', { alpha: true });
-  const glyphs = 'PIXERIA0123456789AIｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
+  const glyphs = 'ADMIRA STUDIO0123456789AIｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ';
   const fontSize = 16;
   let width = 0;
   let height = 0;

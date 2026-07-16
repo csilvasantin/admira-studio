@@ -3,8 +3,8 @@
   const KEYS_STORE = 'pixer-keys';
   const VERSION = 'v.2026.05.02-r35';
   const COSTES_FECHA = '2026-05-15';
-  const ELEVEN_WORKER_URL = 'https://pixer-eleven.csilvasantin.workers.dev';
-  const XAI_WORKER_URL    = 'https://pixer-eleven.csilvasantin.workers.dev';
+  const ELEVEN_WORKER_URL = 'https://api.admira.store';
+  const XAI_WORKER_URL    = 'https://api.admira.store';
 
   // ─── API keys (localStorage) ───────────────────────────────────────
   function loadKeys() {
@@ -148,9 +148,9 @@
       { id: 'elevenlabs-v3', nombre: 'ElevenLabs v3',  tipo: 'pro',  badge: 'Best',   coste: '$300 / 1M caracteres',   desc: 'máxima expresividad · tags emocionales' },
     ],
     musica: [
-      { id: 'pixer-loop',           nombre: 'Pixer Loop (Web Audio)', tipo: 'free', badge: 'Good',   coste: 'gratis · navegador',  desc: 'pentatónica Cm in-browser' },
-      { id: 'lyria-3-pro-preview',  nombre: 'Gemini (Google)',        tipo: 'pro',  badge: 'Better', coste: 'paid tier Gemini',    desc: '~2min con voz cantando la letra' },
-      { id: 'suno-local-v5',        nombre: 'Suno v5 (local)',        tipo: 'pro',  badge: 'Best',   coste: '~10 créditos / canción · cuenta loguead.', desc: 'chirp-v5 · máxima calidad · vía proxy suno-local' },
+      { id: 'pixer-loop',           nombre: 'Pixer Loop (Web Audio)', tipo: 'free', badge: 'Good',   coste: 'gratis · navegador',  desc: 'preview rápido para probar intención', use: 'Borrador' },
+      { id: 'lyria-3-pro-preview',  nombre: 'Gemini (Google)',        tipo: 'pro',  badge: 'Better', coste: 'paid tier Gemini',    desc: '~2min con voz cantando la letra', use: 'Alternativa' },
+      { id: 'suno-local-v5',        nombre: 'Suno v5 (local)',        tipo: 'pro',  badge: 'Best',   coste: '~10 créditos / canción · cuenta loguead.', desc: 'calidad final vía proxy suno-local', use: 'Master' },
     ],
     imagenes: [
       { id: 'nano-banana',                   nombre: 'Nano Banana (Gemini 2.5)', tipo: 'free', badge: 'Good',   coste: 'gratis (free tier)',   desc: 'generación + edición · Gemini 2.5 Flash Image' },
@@ -256,6 +256,7 @@
           <input type="${inputType}" id="${groupName}-${o.id}" name="${groupName}" value="${o.id}" ${selected.includes(o.id) ? 'checked' : ''}${o.soon ? ' disabled' : ''}>
           <label for="${groupName}-${o.id}">
             <span class="motor-name">${o.nombre}<span class="motor-tag ${o.tipo} ${badgeCls}">${badgeText}</span></span>
+            ${o.use ? `<span class="motor-use">${o.use}</span>` : ''}
             <span class="motor-cost">${o.coste}</span>
             <span class="motor-desc">${o.desc}</span>
           </label>
@@ -317,6 +318,10 @@
           }
           saveStore(s);
           renderWarning();
+          if (seccion === 'musica') {
+            updateMusicStage('engine');
+            refreshMusicHealth(false);
+          }
         });
       });
       renderWarning();
@@ -406,6 +411,13 @@
   function bindBriefActions(out, scopeKeys) {
     function current() { return buildBrief(scopeKeys); }
     const map = {
+      // Publica en Stock la música ya creada: dispara el botón «publicar» del
+      // primer clip del reproductor (reusa todo el flujo de publishToStock).
+      sendToStock: () => {
+        const pb = document.querySelector('#player .publish-btn:not(.done)');
+        if (!pb) { showToast('Crea el contenido primero (o ya está en Stock)'); return; }
+        pb.click();
+      },
       genBrief: () => { out.textContent = JSON.stringify(current(), null, 2); },
       copyBrief: async () => { await navigator.clipboard.writeText(JSON.stringify(current(), null, 2)); showToast('JSON copiado'); },
       copyMd: async () => { await navigator.clipboard.writeText(toMarkdown(current())); showToast('Markdown copiado'); },
@@ -440,6 +452,7 @@
         document.querySelectorAll('input[type=text], select, textarea').forEach(el => { if (el.name) el.value = ''; });
         document.querySelectorAll('.chip input').forEach(i => { i.checked = false; i.closest('.chip')?.classList.remove('active'); });
         if (out) out.textContent = '// Rellena los campos y pulsa "Generar brief".';
+        try { setMusicCover(''); } catch (_) {}
         showToast('Limpiado');
       },
     };
@@ -703,7 +716,7 @@
         const audioTitle = deriveAssetTitle('audio', loadStore());
         const audioCover = pollinationsCoverFor('audio', loadStore());
         const est = (text.length * pricePer1k / 1000).toFixed(4);
-        const pubMeta = { type: 'audio', motor, prompt: text, costEst: `~$${est}`, url, mime: 'audio/mpeg', thumbnail: audioCover || null };
+        const pubMeta = { type: 'locucion', motor, prompt: text, costEst: `~$${est}`, url, mime: 'audio/mpeg', thumbnail: audioCover || null };
         showPlayer(`
           <div class="player-card">
             <div class="player-head">▶ AUDIO · ${label} · voice ${voiceId}</div>
@@ -725,25 +738,60 @@
       return;
     }
 
-    // Default: web-speech (gratis)
-    if (!('speechSynthesis' in window)) {
-      showPlayer('<p class="player-msg">⚠ Tu navegador no soporta speechSynthesis.</p>');
-      return;
-    }
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = LANG_MAP[s.idioma] || 'es-ES';
-    u.rate = 1.0; u.pitch = 1.0; u.volume = 1.0;
-    const voices = speechSynthesis.getVoices();
-    const v = voices.find(v => v.lang === u.lang) || voices.find(v => v.lang.startsWith(u.lang.split('-')[0]));
-    if (v) u.voice = v;
+    // Default: web-speech (gratis). speechSynthesis NO genera fichero, así que
+    // para poder GUARDAR en Stock generamos un MP3 real con la TTS libre del
+    // worker (Google TTS). Si esa falla, caemos al speak local (sin fichero).
+    const lang = (LANG_MAP[s.idioma] || 'es-ES').slice(0, 2);
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ AUDIO · Web Speech · ${u.lang}${v ? ' · ' + v.name : ''}</div>
-        <pre class="player-body">"${text.replace(/</g,'&lt;')}"</pre>
-        <small class="player-foot">// Reproducción local con Web Speech API · gratis · sin red</small>
+        <div class="player-head">▶ MEGAFONÍA · gratis (Google TTS) · ${lang}</div>
+        ${progressHtml('Generando megafonía gratis...', 'gtts', 8000)}
       </div>`);
-    speechSynthesis.speak(u);
+    const stopGtts = startProgress('gtts');
+    try {
+      const r = await fetch(ELEVEN_WORKER_URL + '/tts/free', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, lang }),
+      });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const blob = await r.blob();
+      const url = URL.createObjectURL(blob);
+      stopGtts(true);
+      const audioTitle = deriveAssetTitle('audio', loadStore());
+      const audioCover = pollinationsCoverFor('audio', loadStore());
+      const pubMeta = { type: 'locucion', motor: 'web-speech-free', prompt: text, costEst: 'gratis', url, mime: 'audio/mpeg', thumbnail: audioCover || null };
+      showPlayer(`
+        <div class="player-card">
+          <div class="player-head">▶ MEGAFONÍA · gratis (Google TTS) · ${lang}</div>
+          <pre class="player-body">"${text.replace(/</g,'&lt;')}"</pre>
+          <audio controls autoplay src="${url}" data-pixer-title="${escAttr(audioTitle)}" style="width:100%;"></audio>
+          ${publishBtnHTML(pubMeta)}
+          <small class="player-foot">// TTS libre · gratis · se puede guardar en Stock</small>
+        </div>`);
+      return;
+    } catch (e) {
+      stopGtts(false);
+      // Respaldo: speechSynthesis local (suena pero NO genera fichero).
+      if (!('speechSynthesis' in window)) {
+        showPlayer('<p class="player-msg">⚠ No se pudo generar la megafonía gratis (' + String(e).slice(0,60) + ') y tu navegador no soporta speechSynthesis.</p>');
+        return;
+      }
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = LANG_MAP[s.idioma] || 'es-ES';
+      u.rate = 1.0; u.pitch = 1.0; u.volume = 1.0;
+      const voices = speechSynthesis.getVoices();
+      const v = voices.find(v => v.lang === u.lang) || voices.find(v => v.lang.startsWith(u.lang.split('-')[0]));
+      if (v) u.voice = v;
+      showPlayer(`
+        <div class="player-card">
+          <div class="player-head">▶ MEGAFONÍA · Web Speech (local) · ${u.lang}${v ? ' · ' + v.name : ''}</div>
+          <pre class="player-body">"${text.replace(/</g,'&lt;')}"</pre>
+          <small class="player-foot">⚠ TTS libre no disponible — reproducción local; NO se puede guardar en Stock. Usa ElevenLabs para un fichero.</small>
+        </div>`);
+      speechSynthesis.speak(u);
+      return;
+    }
   }
 
   let _musicCtx = null, _musicNodes = [];
@@ -770,21 +818,181 @@
     }
   }
 
+  function updateMusicStage(stage) {
+    const order = ['brief', 'engine', 'produce', 'review', 'publish'];
+    const idx = Math.max(0, order.indexOf(stage));
+    document.querySelectorAll('#musicFlow .music-flow-step').forEach(el => {
+      const n = order.indexOf(el.dataset.stage);
+      el.classList.toggle('is-active', n === idx);
+      el.classList.toggle('is-done', n >= 0 && n < idx);
+    });
+  }
+
+  async function refreshMusicHealth(showOkToast) {
+    const panel = document.getElementById('musicHealth');
+    const state = document.getElementById('musicHealthState');
+    const credits = document.getElementById('musicHealthCredits');
+    if (!panel || !state || !credits) return null;
+    panel.classList.remove('is-ok', 'is-warn', 'is-checking');
+    panel.classList.add('is-checking');
+    state.textContent = 'Comprobando...';
+    credits.textContent = '--';
+    const health = await sunoLocalAlive();
+    panel.classList.remove('is-checking');
+    if (health && health.ok) {
+      panel.classList.add('is-ok');
+      state.textContent = 'Conectado';
+      const left = health.total_credits_left ?? health.credits_left ?? health.monthly_limit ?? '--';
+      credits.textContent = String(left);
+      if (showOkToast) showToast('Suno conectado');
+    } else {
+      panel.classList.add('is-warn');
+      state.textContent = 'No responde';
+      credits.textContent = 'offline';
+    }
+    return health;
+  }
+
+  // Marco cuadrático (quad-ui): cableado GENÉRICO para cualquier página de medios.
+  // - Toggles left/right/bottom: despliegan/colapsan su panel y ajustan el padding
+  //   del body vía la clase quad-<lado>-open.
+  // - data-quad-click="idBoton": el botón del marco dispara el clic de un control
+  //   REAL de la página (Generar/Enviar/Publicar), sin duplicar lógica.
+  // - data-quad-scroll="#sección": lleva suave a un hito del flujo (pasos 01–05).
+  function bindQuadChrome() {
+    if (!document.body.classList.contains('quad-ui')) return;
+    document.querySelectorAll('[data-quad-toggle]').forEach(btn => {
+      const name = btn.dataset.quadToggle;
+      const panel = document.querySelector(`.quad-${name}`);
+      if (!panel) return;
+      const bodyClass = `quad-${name}-open`;
+      const sync = () => {
+        const open = !panel.classList.contains('is-collapsed');
+        document.body.classList.toggle(bodyClass, open);
+        btn.classList.toggle('is-active', open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+      btn.addEventListener('click', () => { panel.classList.toggle('is-collapsed'); sync(); });
+      sync();
+    });
+    document.querySelectorAll('[data-quad-click]').forEach(btn => {
+      btn.addEventListener('click', () => document.getElementById(btn.dataset.quadClick)?.click());
+    });
+    document.querySelectorAll('[data-quad-scroll]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        const el = document.querySelector(btn.dataset.quadScroll);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelectorAll('.quad-left a.is-step-active').forEach(a => a.classList.remove('is-step-active'));
+        btn.classList.add('is-step-active');
+      });
+    });
+  }
+
+  function bindMusicProductionUX() {
+    if (document.body.dataset.page !== 'musica') return;
+    updateMusicStage('brief');
+    document.getElementById('refreshMusicHealth')?.addEventListener('click', () => refreshMusicHealth(true));
+    const target = document.getElementById('xpacio-target');
+    const listen = document.getElementById('listenXpacio');
+    function syncListenHref() {
+      if (!target || !listen) return;
+      const [, href] = String(target.value || '').split('|');
+      if (href) listen.href = href;
+    }
+    target?.addEventListener('change', () => {
+      const s = loadStore();
+      setNested(s, 'musica.xpacioTarget', target.value);
+      saveStore(s);
+      syncListenHref();
+      document.querySelectorAll('[data-xpacio-target]').forEach(btn => {
+        btn.classList.toggle('is-active', btn.dataset.xpacioTarget === target.value);
+      });
+    });
+    syncListenHref();
+    document.querySelectorAll('[data-xpacio-target]').forEach(btn => {
+      btn.classList.toggle('is-active', btn.dataset.xpacioTarget === (target?.value || ''));
+      btn.addEventListener('click', () => {
+        if (!target) return;
+        target.value = btn.dataset.xpacioTarget || target.value;
+        target.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+    });
+    document.querySelectorAll('[data-quad-action]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const act = btn.dataset.quadAction;
+        if (act === 'create') document.getElementById('playOutput')?.click();
+        if (act === 'send') document.getElementById('sendToAdmiraXP')?.click();
+        if (act === 'listen') document.getElementById('listenXpacio')?.click();
+      });
+    });
+    // Los toggles del marco cuadrático los cablea bindQuadChrome() (genérico para
+    // todas las páginas con quad-ui); aquí solo queda lo específico de Música.
+    const form = document.getElementById('briefForm');
+    form?.addEventListener('input', e => {
+      if (e.target && e.target.name && e.target.name.startsWith('musica.')) updateMusicStage('brief');
+    });
+    document.addEventListener('click', e => {
+      const feedBtn = e.target.closest('[data-act="feed-latest"]');
+      if (!feedBtn) return;
+      const card = feedBtn.closest('.music-result-item');
+      document.querySelectorAll('.music-result-item.is-selected').forEach(el => el.classList.remove('is-selected'));
+      if (card) card.classList.add('is-selected');
+      updateMusicStage('publish');
+      document.getElementById('sendToAdmiraXP')?.click();
+    });
+    refreshMusicHealth(false);
+  }
+
+  // Portada (#m-cover, a la derecha de la Letra). Por defecto una imagen Matrix
+  // aleatoria; cuando Suno termina, su carátula la sustituye.
+  // Pool de imágenes Matrix (digital rain) fiables de Wikimedia Commons.
+  const MATRIX_COVERS = [
+    'https://upload.wikimedia.org/wikipedia/commons/c/c3/Digital_rain_animation_medium_letters_2_clear.gif',
+    'https://upload.wikimedia.org/wikipedia/commons/0/0a/Digital_rain_animation_medium_letters_clear.gif',
+  ];
+  function randomMatrixCover() { return MATRIX_COVERS[Math.floor(Math.random() * MATRIX_COVERS.length)]; }
+  function setCoverCaption(txt) { const f = document.getElementById('m-cover'); const c = f && f.querySelector('figcaption'); if (c) c.textContent = txt; }
+  function setDefaultMatrixCover() {
+    const fig = document.getElementById('m-cover'); if (!fig) return;
+    const img = fig.querySelector('img'); if (!img) return;
+    // si la elegida fallara, prueba la otra del pool
+    img.onerror = () => { img.onerror = null; img.src = MATRIX_COVERS[0]; };
+    img.src = randomMatrixCover();
+    fig.hidden = false; setCoverCaption('Portada · Matrix');
+  }
+  function setMusicCover(url) {
+    const fig = document.getElementById('m-cover'); if (!fig) return;
+    const img = fig.querySelector('img');
+    if (url && img) { img.onerror = null; img.src = url; fig.hidden = false; setCoverCaption('Portada · Suno'); }
+    else setDefaultMatrixCover();   // sin carátula real → vuelve al Matrix por defecto
+  }
+
   async function playSunoLocal(s, model) {
+    setMusicCover('');  // limpia la portada anterior al empezar
+    updateMusicStage('produce');
     // El campo "Styles" (s.uso) va a la caja Styles de Suno. La Letra va a Lyrics.
     // "Versiones a entregar" define tipo (canción/loop/stinger) + pista de duración.
     const lyrics = (s.letra || '').trim();
     const ver = (s.versiones || '').trim();
-    const isInstrumental = /loop|stinger|instrumental|bed/i.test(ver) || (!lyrics && !/canci/i.test(ver));
+    // Si hay letra escrita, es una CANCIÓN (nunca instrumental), aunque la versión
+    // elegida diga "loop/instrumental" → evita el conflicto letra+instrumental.
+    const isInstrumental = !lyrics && (/loop|stinger|instrumental|bed/i.test(ver) || !/canci/i.test(ver));
     let durHint = '';
     const mMin = ver.match(/(\d+)\s*min/i), mSec = ver.match(/(\d+)\s*s\b/i);
     if (mMin) durHint = `duración aproximada ${mMin[1]} min`;
     else if (mSec) durHint = `duración aproximada ${mSec[1]} segundos`;
-    const prompt = [(s.uso || '').trim() || 'soft ambient, gentle', durHint].filter(Boolean).join(', ');
-    const titleHint = (s.cliente || s.uso || '').slice(0, 60);
+    // Estilo = preset (s.style, def. blues). La voz/cantante (s.singer) se
+    // antepone para que Suno la cante como toca. El título lo fija s.titulo.
+    const voice = (s.singer || '').trim();
+    const styleText = (s.style || '').trim() || 'blues';
+    const prompt = [voice, styleText, durHint].filter(Boolean).join(', ');
+    const titleHint = (s.titulo || s.cliente || styleText || '').slice(0, 60);
 
-    const health = await sunoLocalAlive();
+    const health = await refreshMusicHealth(false) || await sunoLocalAlive();
     if (!health.ok) {
+      updateMusicStage('engine');
       showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · Suno · proxy NO responde (${SUNO_LOCAL_URL})</div><pre class="player-body">${health.error}\n\nArranca en el Mac Mini:\n  cd ~/GitHub/01.-AdmiraXperience-Game/suno-local\n  ./start-suno-local.sh</pre></div>`);
       return;
     }
@@ -826,53 +1034,80 @@
         attempt++;
         const pollR = await fetch(`${SUNO_LOCAL_URL}/status?ids=${clipIds.join(',')}`);
         const clips = await pollR.json();
-        const ready = clips.filter(c => c.audio_url && c.status === 'streaming' || c.status === 'complete');
+        const ready = clips.filter(c => (c.audio_url || c.video_url) && (c.status === 'streaming' || c.status === 'complete'));
         setProgressLabel('suno', `Suno · intento ${attempt} · ${ready.length}/${clips.length} listos`);
         if (ready.length >= 1) {
           stop(true);
+          updateMusicStage('review');
+          // Portada que devuelve Suno → a la derecha de la Letra cuando termina.
+          setMusicCover(ready.map(c => c.image_large_url || c.image_url).find(Boolean) || '');
           const briefTitle = deriveAssetTitle('musica', loadStore());
+          const modelLabel = model.replace('chirp-', '');
           showPlayer(`
-            <div class="player-card">
-              <div class="player-head">▶ MÚSICA · Suno (${model.replace('chirp-','')}) · ${ready.length}/${clips.length} clips</div>
+            <div class="player-card music-result-card">
+              <div class="player-head music-result-head">
+                <span>▶ HILO MUSICAL · Suno ${modelLabel}</span>
+                <span>${ready.length}/${clips.length} versiones listas</span>
+              </div>
+              <div class="music-result-grid">
               ${ready.map((c, i) => {
                 const cTitle = (c.title && c.title.trim()) || briefTitle || `Suno ${i + 1}`;
                 const cover = c.image_large_url || c.image_url || '';
                 const dur = (c.metadata && (c.metadata.duration_formatted || c.metadata.duration)) || '';
                 const pickedUrl = c.video_url || c.audio_url;
                 const pickedMime = c.video_url ? 'video/mp4' : 'audio/mpeg';
-                const pubMeta = { type: 'music', motor: `suno-local-${model.replace('chirp-v','v')}`, prompt: `${cTitle} · ${prompt}`.slice(0,200), costEst: '~10 cred', url: pickedUrl, mime: pickedMime, thumbnail: cover || null, clipId: c.id };
+                const pubMeta = {
+                  type: 'music',
+                  motor: `suno-local-${model.replace('chirp-v','v')}`,
+                  prompt: `${cTitle} · ${prompt}`.slice(0,200),
+                  title: cTitle,
+                  comment: `Hilo musical Admira TV · ${ver || 'pieza musical'} · ${voice || 'voz no especificada'}`,
+                  tags: ['admira-tv', 'hilo-musical', 'suno'],
+                  costEst: '~10 cred',
+                  url: pickedUrl,
+                  mime: pickedMime,
+                  thumbnail: cover || null,
+                  clipId: c.id,
+                  quality: 'best',
+                };
                 // Suno devuelve video_url (mp4 con cover estatico + audio embebido):
                 // lo preferimos porque al enviarlo a Pixer Feed lleva caratula sin
                 // depender del worker. Si solo hay audio_url, fallback a audio + img.
-                if (c.video_url) {
-                  return `
-                <div style="display:grid;gap:6px;margin-bottom:10px;">
-                  <strong style="color:var(--matrix);text-shadow:var(--glow);">[${i + 1}] ${escAttr(cTitle)} · ${dur}</strong>
-                  <video controls src="${c.video_url}"${cover ? ` poster="${escAttr(cover)}"` : ''} data-pixer-title="${escAttr(cTitle)}"${cover ? ` data-pixer-cover="${escAttr(cover)}"` : ''} style="width:100%;max-height:55vh;border:1px solid var(--matrix);box-shadow:0 0 12px rgba(0,255,65,.3);"></video>
-                  ${publishBtnHTML(pubMeta)}
-                </div>`;
-                }
+                const media = c.video_url
+                  ? `<video controls src="${c.video_url}"${cover ? ` poster="${escAttr(cover)}"` : ''} data-pixer-title="${escAttr(cTitle)}"${cover ? ` data-pixer-cover="${escAttr(cover)}"` : ''}${c.audio_url ? ` data-pixer-audio="${escAttr(c.audio_url)}"` : ''}></video>`
+                  : `${cover ? `<img src="${escAttr(cover)}" alt="" class="music-result-cover">` : ''}
+                     <audio controls src="${c.audio_url}" data-pixer-title="${escAttr(cTitle)}"${cover ? ` data-pixer-cover="${escAttr(cover)}"` : ''}></audio>`;
                 return `
-                <div style="display:grid;gap:6px;margin-bottom:10px;">
-                  <strong style="color:var(--matrix);text-shadow:var(--glow);">[${i + 1}] ${escAttr(cTitle)} · ${dur}</strong>
-                  ${cover ? `<img src="${escAttr(cover)}" style="width:100%;max-height:240px;object-fit:cover;border:1px solid var(--matrix);box-shadow:0 0 12px rgba(0,255,65,.3);">` : ''}
-                  <audio controls src="${c.audio_url}" data-pixer-title="${escAttr(cTitle)}"${cover ? ` data-pixer-cover="${escAttr(cover)}"` : ''} style="width:100%;"></audio>
-                  ${publishBtnHTML(pubMeta)}
-                </div>`;
+                <article class="music-result-item">
+                  <header>
+                    <span class="music-result-index">Versión ${i + 1}</span>
+                    <strong>${escAttr(cTitle)}</strong>
+                    ${dur ? `<small>${escAttr(String(dur))}</small>` : ''}
+                  </header>
+                  <div class="music-result-media">${media}</div>
+                  <div class="music-result-actions">
+                    ${publishBtnHTML(pubMeta)}
+                    <a class="btn" href="${escAttr(pickedUrl)}" target="_blank" rel="noopener" download>⬇ Descargar</a>
+                    <button type="button" class="btn" data-act="feed-latest" title="Usa esta versión para enviarla al Xpacio elegido">🎧 Preparar escucha</button>
+                  </div>
+                </article>`;
               }).join('')}
-              ${lyrics ? `<details open style="margin-top:8px;"><summary style="cursor:pointer;color:var(--matrix);text-shadow:var(--glow);">📝 LETRA</summary><pre class="brief" style="white-space:pre-wrap;max-height:320px;overflow:auto;font-size:12px;margin-top:6px;">${escAttr(lyrics)}</pre><button type="button" class="btn" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent);this.textContent='✓ copiada'" style="margin-top:4px;font-size:10px;padding:4px 8px;">COPIAR LETRA</button></details>` : ''}
-              <small class="player-foot">// Suno · ${prompt.slice(0,80)}</small>
+              </div>
+              ${lyrics ? `<details open class="music-result-lyrics"><summary>Letra de producción</summary><pre class="brief">${escAttr(lyrics)}</pre></details>` : ''}
+              <small class="player-foot">// Admira TV · ${prompt.slice(0,80)} · revisa una versión y publícala en Stock</small>
             </div>`);
           return;
         }
         if (attempt > 60) { // 5 min cap
           stop(false);
+          updateMusicStage('engine');
           showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · Suno · TIMEOUT</div><pre class="player-body">clips: ${clipIds.join(', ')}</pre></div>`);
           return;
         }
       }
     } catch (e) {
       stop(false);
+      updateMusicStage('engine');
       showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · Suno · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
     }
   }
@@ -894,8 +1129,11 @@
   async function playLyria3(s) {
     const moods = (Array.isArray(s.emocion) ? s.emocion.map(e => EMO_EN[e] || e.toLowerCase()) : []);
     const layers = (Array.isArray(s.capas) ? s.capas.map(c => CAPA_EN[c] || c.toLowerCase()) : []);
+    const voice = (s.singer || '').trim();
+    const styleText = (s.style || '').trim();
     const styleParts = [
-      'electronic music with vocals',
+      styleText || 'electronic music with vocals',
+      voice,
       tempoLabel(s.bpm),
       ...moods,
       layers.length ? `featuring ${layers.join(' and ')}` : '',
@@ -2425,10 +2663,10 @@
     const fn = map[page];
     if (!fn) { btn.hidden = true; return; }
     const labels = {
-      audio: '▶ REPRODUCIR DE NUEVO',
-      musica: '▶ REPRODUCIR DE NUEVO',
-      imagenes: '✨ GENERAR OTRA',
-      video: '▶ REPRODUCIR DE NUEVO',
+      audio: '🎙️ CREAR MEGAFONÍA',
+      musica: '🎵 CREAR MÚSICA',
+      imagenes: '✨ CREAR IMAGEN',
+      video: '✨ CREAR VÍDEO',
       plataforma: '▶ REPRODUCIR TODO DE NUEVO',
       publicidad: '✨ REGENERAR ANUNCIO',
     };
@@ -2493,6 +2731,20 @@
     return `<button type="button" class="btn publish-btn" data-publish-meta='${json}' title="Sube este asset al stock público (R2)">📌 PUBLICAR EN STOCK</button>`;
   }
 
+  // Calidad (good/better/best) del asset según el badge del motor que lo creó.
+  // Si no se reconoce el motor → 'good' por defecto.
+  function motorQuality(motorStr) {
+    const m = String(motorStr || '').toLowerCase();
+    if (!m) return 'good';
+    const entries = [];
+    for (const sec of Object.values(MOTORES)) for (const o of sec) entries.push([String(o.id).toLowerCase(), String(o.badge || 'Good').toLowerCase()]);
+    entries.sort((a, b) => b[0].length - a[0].length); // ids más específicos primero (nano-banana-pro antes que nano-banana)
+    for (const [id, badge] of entries) {
+      if (m === id || m.startsWith(id) || m.includes(id)) return ['good', 'better', 'best'].includes(badge) ? badge : 'good';
+    }
+    return 'good';
+  }
+
   async function publishToStock(meta, btn) {
     if (btn) { btn.disabled = true; btn.dataset.origLabel = btn.textContent; btn.textContent = '⏳ subiendo...'; }
     try {
@@ -2537,6 +2789,7 @@
         tags: Array.isArray(meta.tags) ? meta.tags : null,
         costEst: meta.costEst || null,
         thumbnail: meta.thumbnail || null,
+        quality: meta.quality || motorQuality(meta.motor),  // good/better/best (default good)
       };
       if (meta.url && (meta.url.startsWith('data:') || meta.url.startsWith('blob:'))) {
         const { mime, base64 } = await urlToBase64(meta.url);
@@ -2561,6 +2814,7 @@
       }
       const data = await r.json();
       showToast('✅ Publicado · ' + (data.id || data.url || 'ok'));
+      if (meta.type === 'music') updateMusicStage('publish');
       if (btn) { btn.textContent = '✅ EN STOCK'; btn.classList.add('done'); }
       return { ok: true, id: data.id, url: data.url };
     } catch (e) {
@@ -2582,6 +2836,18 @@
 
   // ─── Enviar al feed de Admira XP (KV vía worker) ────────────────
   const SIGNAGE_URL = ELEVEN_WORKER_URL + '/signage';
+
+  function selectedXpacioTarget() {
+    const sel = document.getElementById('xpacio-target');
+    const raw = sel ? String(sel.value || '') : '';
+    const [screen, href] = raw.split('|');
+    const label = sel && sel.selectedOptions && sel.selectedOptions[0] ? sel.selectedOptions[0].textContent.trim() : 'Xpacio';
+    return {
+      screen: screen || 'xtanco-valencia-a',
+      href: href || 'https://www.xpaceos.com/xpacios/grok/?pantalla=A&listen=1',
+      label,
+    };
+  }
 
   async function urlToBase64(url) {
     if (url.startsWith('data:')) {
@@ -2680,6 +2946,16 @@
         cover: (selectedCellImg.dataset && selectedCellImg.dataset.pixerCover) || '',
       };
     }
+    const selectedMusicMedia = player.querySelector('.music-result-item.is-selected video[src], .music-result-item.is-selected audio[src]');
+    if (selectedMusicMedia) {
+      const audioSrc = selectedMusicMedia.dataset && selectedMusicMedia.dataset.pixerAudio;
+      return {
+        kind: audioSrc ? 'audio' : (selectedMusicMedia.tagName === 'VIDEO' ? 'video' : 'audio'),
+        src: audioSrc || selectedMusicMedia.getAttribute('src') || selectedMusicMedia.src,
+        title: (selectedMusicMedia.dataset && selectedMusicMedia.dataset.pixerTitle) || '',
+        cover: (selectedMusicMedia.dataset && selectedMusicMedia.dataset.pixerCover) || '',
+      };
+    }
     const pick = (sel, kind) => {
       const el = player.querySelector(sel);
       if (!el) return null;
@@ -2729,13 +3005,17 @@
       }
       const cliente = (loadStore().cliente || 'sin cliente').slice(0, 80);
       const page = document.body.dataset.page || 'pixer';
+      const xpacio = selectedXpacioTarget();
       // El titulo viene del propio asset cuando los renders dejan data-pixer-title;
       // si no, fallback al generico "<page> · <cliente>".
       const title = (asset.title && asset.title.trim()) || `${page} · ${cliente}`;
       const cover = (asset.cover && asset.cover.trim()) || '';
       const oldText = btn.textContent;
       btn.disabled = true;
-      btn.textContent = '📤 enviando...';
+      btn.textContent = page === 'musica' ? '🎧 enviando...' : '📤 enviando...';
+      const listenWindow = (page === 'musica' && (asset.kind === 'audio' || asset.kind === 'video'))
+        ? window.open(xpacio.href, '_blank', 'noopener')
+        : null;
 
       // Stage 0 — preview en el panel
       const thumbUrl = asset.kind === 'image' ? asset.src : (cover || '');
@@ -2750,7 +3030,60 @@
       });
 
       try {
-        let payload = { kind: asset.kind, title };
+        if (page === 'musica' && (asset.kind === 'audio' || asset.kind === 'video')) {
+          const item = {
+            id: 'music-' + Date.now().toString(36),
+            title,
+            type: 'audio',
+            kind: 'audio',
+            url: asset.src,
+            cover_url: cover || '',
+            duration: 180,
+            ts: Date.now(),
+            source: 'pixeria-musica',
+          };
+          setSignageStatus({
+            stage: '🎧 Enviando audio al Xpacio',
+            log: `${xpacio.label} · screen ${xpacio.screen}`,
+            pct: 35,
+            indeterminate: false,
+          });
+          const nowR = await fetch(SIGNAGE_URL + '/now', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ screen: xpacio.screen, item }),
+          });
+          const nowData = await nowR.json().catch(() => ({}));
+          if (!nowR.ok || nowData.ok === false) {
+            setSignageStatus({ stage: '❌ Error enviando al Xpacio', log: (nowData.error || ('HTTP ' + nowR.status)).slice(0, 200), pct: 100, mode: 'error' });
+            return;
+          }
+          setSignageStatus({
+            stage: '▶ Audio asignado al Xpacio',
+            log: `${title.slice(0, 80)} · abre "${xpacio.label}" para escuchar`,
+            pct: 100,
+            id: xpacio.screen,
+            mode: 'done',
+          });
+          updateMusicStage('publish');
+          if (!listenWindow) window.open(xpacio.href, '_blank', 'noopener');
+          return;
+        }
+
+        let payload = {
+          kind: asset.kind,
+          title,
+          meta: {
+            source: 'pixeria-studio',
+            page: page,
+            page_url: `${location.origin}${location.pathname}`,
+            asset_id: asset.id || '',
+            asset_label: title,
+            dispatch_mode: 'send-to-admiraxp',
+            selected_count: 1,
+            client: cliente,
+          },
+        };
         if (cover) payload.cover_url = cover; // worker quizas no lo persiste aun; harmless si lo descarta
         const isExternal = asset.src.startsWith('http://') || asset.src.startsWith('https://');
 
@@ -3301,6 +3634,34 @@
     });
   }
 
+  // Handoff desde el Consejo (admira.live): ?from=consejo&prompt=…&ar=…&motor=…&autoplay=1
+  function bindConsejoHandoff() {
+    const params = new URLSearchParams(location.search);
+    if (params.get('from') !== 'consejo') return;
+    const page = document.body.dataset.page;
+    const prompt = (params.get('prompt') || '').trim();
+    const ar = params.get('ar') || '';
+    const motor = params.get('motor') || '';
+    const encMap = { '1:1': 'Cuadrado 1:1', '16:9': 'Horizontal 16:9', '9:16': 'Vertical 9:16' };
+    const store = loadStore();
+    if (page === 'imagenes') {
+      store.imagenes = { ...(store.imagenes || {}) };
+      if (prompt) store.imagenes.prompt = prompt;
+      if (ar && encMap[ar]) store.imagenes.encuadre = encMap[ar];
+      if (motor) {
+        store.imagenes.motor = motor;
+        store.imagenes.motors = [motor];
+      }
+      saveStore(store);
+      const form = document.getElementById('briefForm');
+      if (form) hydrate(form);
+      showToast(prompt ? 'Brief recibido desde el Consejo' : 'Conexión desde el Consejo');
+      if (params.get('autoplay') === '1' && prompt) {
+        setTimeout(() => { try { playImagenes(); } catch (e) { console.warn('[Admira Studio] consejo autoplay', e); } }, 500);
+      }
+    }
+  }
+
   // Init por página
   document.addEventListener('DOMContentLoaded', () => {
     applyDefaults();
@@ -3312,6 +3673,8 @@
     const form = document.getElementById('briefForm');
     if (form) {
       hydrate(form);
+      bindQuadChrome();
+      bindMusicProductionUX();
       bindPersistence(form);
       bindCliente();
       const out = document.getElementById('briefOut');
@@ -3327,9 +3690,11 @@
       const scope = scopeMap[page] || null;
       if (out) bindBriefActions(out, scope);
       bindPlay(page);
+      if (page === 'musica') setDefaultMatrixCover();   // portada Matrix por defecto
       bindGenLyrics();
       bindSegmentedAds();
       bindSendToAdmiraXP();
+      bindConsejoHandoff();
 
       const demoBtn = document.getElementById('loadDemo');
       if (demoBtn && window.PIXER_DEMO) {

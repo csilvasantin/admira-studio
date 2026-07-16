@@ -1,12 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="/gate.js"></script>
+  <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
+       Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
+       login con Google + misma whitelist de usuarios (worker admira-whitelist). Verja ACTIVA
+       por defecto. ?gate=off es un escape SOLO para esa carga (no persiste), por si el login
+       falla. Mientras esté cerrado: meta noindex + robots.txt Disallow.
+       PARA REABRIR EL SITIO EL DÍA DEL LANZAMIENTO: borrar TODO este bloque (marcadores
+       GATE-INICIO … GATE-FIN) de cada .html, restaurar robots.public.txt → robots.txt y
+       borrar /auth-gate.js. Ver checklist en el PR de la verja. -->
+  <!-- GATE-INICIO -->
+  <meta name="robots" content="noindex, nofollow">
+  <script>
+  (function(){
+    var GATE_DEFAULT = 'on';                       // verja activa — sitio cerrado
+    var on = GATE_DEFAULT;
+    try{
+      var q = new URLSearchParams(location.search).get('gate');
+      if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
+    }catch(e){}
+    if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
+    var s=document.createElement('script'); s.src='/auth-gate.js';
+    (document.head||document.documentElement).appendChild(s);
+    // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
+    // origen aún no esté autorizado en Google → mensaje claro en pantalla.
+    setTimeout(function(){
+      if(!document.documentElement.classList.contains('gate-locked')) return;
+      var el=document.getElementById('admira-err');
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+    }, 10000);
+  })();
+  </script>
+  <!-- GATE-FIN -->
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admira Studio · AI content creation intelligence</title>
   <meta name="description" content="Admira Studio is the operating reference for creating, directing and publishing AI content: model radar, production method, campaign workflows and Pixer Feed for real-world screens.">
   <meta name="theme-color" content="#0b1117">
+  <meta name="admiranext-version" content="Admira Studio v.26.07.12.r3">
   <meta property="og:title" content="Admira Studio · AI content creation intelligence">
   <meta property="og:description" content="Model radar, production method and Pixer Feed: AI content pushed to screens and live event surfaces.">
   <meta property="og:type" content="website">
@@ -14,12 +46,16 @@
   <meta property="og:image" content="https://www.admira.studio/assets/hero-pixeria.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://www.admira.studio/en/">
-  <link rel="preload" href="../assets/hero-pixeria.jpg" as="image">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/tokens.css">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/nav.css">
-  <link rel="stylesheet" href="https://csilvasantin.github.io/admira-design/contact-panel.css">
-  <script defer src="https://csilvasantin.github.io/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="../assets/styles.css?v=20260610-center">
+  <link rel="alternate" hreflang="es" href="https://www.admira.studio/">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/">
+  <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/">
+  <link rel="preload" as="image" type="image/avif" imagesrcset="../assets/hero-pixeria-800.avif 800w, ../assets/hero-pixeria.avif 1408w" imagesizes="100vw" fetchpriority="high">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
+  <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
+  <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="../assets/styles.css?v=20260617-legal-contact-dmz">
+  <link rel="stylesheet" href="../assets/cuadratura.css?v=20260714-nav-unified">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -30,13 +66,37 @@
     "publisher": {
       "@type": "Organization",
       "name": "Admira Studio",
-      "email": "csilvasantin@gmail.com"
+      "url": "https://www.admira.studio/en/",
+      "email": "hola@admiranext.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.admira.studio/assets/favicon-256.png",
+        "width": 256,
+        "height": 256
+      },
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Admira",
+        "url": "https://www.admira.app"
+      },
+      "sameAs": [
+        "https://www.admira.app",
+        "https://www.xpaceos.com",
+        "https://www.admira.live"
+      ]
     }
   }
   </script>
-  <script defer src="/assets/analytics.js?v=20260611-gtm"></script>
+  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
+  <script defer src="/assets/consent.js?v=20260617"></script>
+  <script defer src="/assets/site-nav.js?v=20260715-nav-scroll"></script>
 </head>
 <body>
+  <!-- Cuadratura: hide rails on <body> open (no flash) from localStorage -->
+  <script>
+  (function(){var b=document.body,m={pixeria_pf_left:'pf-left-off',pixeria_pf_right:'pf-right-off',pixeria_pf_bottom:'pf-bottom-off'};
+  try{for(var k in m){if(localStorage.getItem(k)!=='1')b.classList.add(m[k]);}}catch(e){for(var j in m){b.classList.add(m[j]);}}})();
+  </script>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
@@ -57,7 +117,7 @@
 
   <header class="site-header">
     <a class="brand" href="/en/#top" aria-label="Admira Studio home">
-      <span class="brand-mark">A</span>
+      <span class="brand-mark">P</span>
       <span>Admira Studio</span>
     </a>
     <nav class="nav" aria-label="Main navigation">
@@ -66,8 +126,8 @@
       <a href="/en/imagenes.html">Images</a>
       <a href="/en/video.html">Video</a>
       <a href="/en/publicidad.html">Advertising</a>
-      <a href="/en/avatar.html">Avatar 3D</a>
-      <a href="/crear/">Assets</a>
+      <a href="/en/anonimizador.html">Anonymizer</a>
+      <a href="/en/crear/">Assets</a>
       <a href="/en/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
@@ -88,7 +148,8 @@
     <a href="/en/video.html">Video</a>
     <a href="/en/publicidad.html">Advertising</a>
     <a href="/en/avatar.html">Avatar 3D</a>
-    <a href="/crear/">Assets</a>
+      <a href="/en/anonimizador.html">Anonymizer</a>
+    <a href="/en/crear/">Assets</a>
     <a href="/en/stock.html">Stock</a>
     <div class="mobile-language-switcher" aria-label="Language selection">
       <a class="lang-toggle" href="/" aria-label="Switch to Spanish">ESP</a>
@@ -97,9 +158,32 @@
   </nav>
 
   <main id="top">
+  <div class="cuad">
+    <!-- ══ OPTIONS · Admira Studio section navigation ══ -->
+    <aside class="rail rail-left" aria-label="Options · Admira Studio sections">
+      <div class="rail-hd">🔍 Options</div>
+      <nav class="rail-nav" aria-label="Admira Studio sections">
+        <a href="/en/crear/"><b>Studio · Create</b><small>Generate assets: video, image, audio, text, furniture</small></a>
+        <a href="/en/musica.html"><b>Music</b><small>Soundtracks, jingles and sonic branding</small></a>
+        <a href="/en/audio.html"><b>Audio · PA</b><small>Voices, voice-over and brand public address</small></a>
+        <a href="/en/video.html"><b>Video</b><small>Storyboards, generation, editing and loops</small></a>
+        <a href="/en/imagenes.html"><b>Images</b><small>Art direction, product and style</small></a>
+        <a href="/en/avatar.html"><b>Avatar 3D</b><small>Generative presenters and avatars</small></a>
+        <a href="/en/anonimizador.html"><b>Anonymizer</b><small>Privacy for image and video</small></a>
+        <a href="/en/plataforma.html"><b>Platform</b><small>Map of layers, engines and XpaceOS output</small></a>
+        <a href="/en/stock.html"><b>Stock</b><small>Public gallery of deployed assets</small></a>
+        <a href="/en/crear-campana/"><b>Campaigns</b><small>Buy and activate across points and screens</small></a>
+        <a href="/en/publicidad.html"><b>Advertising</b><small>Formats and assets per channel</small></a>
+        <a href="/clearchannel/"><b>Clear Channel demo</b><small>Pixer Feed live on real screens</small></a>
+      </nav>
+    </aside>
+    <!-- ══ CENTER · what matters: hero + radar + formats ══ -->
+    <div class="cuad-center">
     <section class="hero">
       <picture class="hero-media">
-        <img src="../assets/hero-pixeria.jpg" alt="Admira Studio cinematic AI content studio with elegant holographic production interfaces">
+        <source type="image/avif" srcset="../assets/hero-pixeria-800.avif 800w, ../assets/hero-pixeria.avif 1408w" sizes="100vw">
+        <source type="image/webp" srcset="../assets/hero-pixeria-800.webp 800w, ../assets/hero-pixeria.webp 1408w" sizes="100vw">
+        <img src="../assets/hero-pixeria.jpg" width="1408" height="768" fetchpriority="high" decoding="async" alt="Admira Studio cinematic AI content studio with elegant holographic production interfaces">
       </picture>
       <div class="hero-shade" aria-hidden="true"></div>
       <div class="hero-content">
@@ -109,10 +193,10 @@
         <div class="hero-actions">
           <a class="button primary" href="#radar">Explore radar</a>
           <a class="button secondary" href="#method">See method</a>
-          <a class="button secondary" href="/crear/">Open Creator</a>
+          <a class="button secondary" href="/en/crear/">Open Creator</a>
         </div>
         <div class="topbar hero-terminal-bar" aria-label="Admira Studio status">
-          <span class="pill">June 2026 radar</span>
+          <span class="pill">July 2026 radar</span>
           <span class="pill">Pixer Feed live</span>
           <span class="pill">Output: screens + campaigns</span>
         </div>
@@ -153,7 +237,7 @@
             <strong>Platform</strong>
             <small>Layer map, engines and output to XpaceOS.</small>
           </a>
-          <a class="ops-card primary" href="/crear/">
+          <a class="ops-card primary" href="/en/crear/">
             <span>02</span>
             <strong>Assets</strong>
             <small>Internal generator for video, image, audio, text and furniture.</small>
@@ -183,6 +267,7 @@
       <div class="section-head">
         <p class="eyebrow">Radar</p>
         <h2>The operating map for AI content creation.</h2>
+        <p><a class="radar-link" href="/en/radar/">See the full model radar &rarr;</a></p>
       </div>
       <div class="radar-grid">
         <article class="radar-card featured">
@@ -207,17 +292,19 @@
         </article>
       </div>
 
-      <div class="radar-live">
-        <p class="eyebrow">Highlighted models · June 2026</p>
-        <div class="model-grid">
-          <div class="model"><span class="tag">Video</span><strong>Kling 2.1</strong><small>Motion quality and lipsync</small></div>
-          <div class="model"><span class="tag">Video</span><strong>Runway Gen-4</strong><small>Creative control and storyboards</small></div>
-          <div class="model"><span class="tag">Image</span><strong>Midjourney v7</strong><small>Brand consistency and detail</small></div>
-          <div class="model"><span class="tag">Image</span><strong>Flux Pro 1.1</strong><small>Speed and text fidelity</small></div>
-          <div class="model"><span class="tag">Voice</span><strong>ElevenLabs Multilingual v3</strong><small>Emotion and voice cloning</small></div>
-          <div class="model"><span class="tag">Music</span><strong>Suno v4</strong><small>Structure and usable production</small></div>
+      <div class="radar-live" id="radarLive" data-radar-src="/assets/radar.json">
+        <p class="eyebrow"><span id="radarTitle">Featured models</span> · <span id="radarUpdated">July 2026</span></p>
+        <div class="model-grid" id="radarModels">
+          <div class="model"><span class="tag">Video</span><strong>Veo 3.1</strong><small>Cinematic quality with native 4K audio</small></div>
+          <div class="model"><span class="tag">Video</span><strong>Kling 3.0</strong><small>Multi-shot storyboards, the cheapest premium</small></div>
+          <div class="model"><span class="tag">Video</span><strong>Runway Gen-4.5</strong><small>Camera control and consistent characters</small></div>
+          <div class="model"><span class="tag">Image</span><strong>Flux 2</strong><small>Leading photorealism at low cost per image</small></div>
+          <div class="model"><span class="tag">Image</span><strong>Midjourney v7</strong><small>King of aesthetics and brand consistency</small></div>
+          <div class="model"><span class="tag">Voice</span><strong>ElevenLabs v3</strong><small>Emotion and voice cloning</small></div>
+          <div class="model"><span class="tag">Music</span><strong>Suno v5</strong><small>Human-like vocals and usable structure</small></div>
+          <div class="model"><span class="tag">Music</span><strong>ElevenLabs Music v2</strong><small>Licensed audio, ready for commercial use</small></div>
         </div>
-        <p class="radar-note">Updated from real production tests. The radar prioritizes control, rights and final quality over viral demos. These models feed Pixer Feed for AI signage and live event screens.</p>
+        <p class="radar-note" id="radarNote">Updated from real production tests. The radar prioritizes control, rights and final quality over viral demos. On the radar: <strong>Seedance 2.5</strong>, with native 30-second clips and up to 50 multimodal references. These models feed Pixer Feed (AI signage on screens and live events).</p>
       </div>
     </section>
 
@@ -260,6 +347,10 @@
       </div>
     </section>
 
+    </div><!-- /cuad-center -->
+    <!-- ══ ADVANCED · method, programs and detail that clutters the main flow ══ -->
+    <aside class="rail rail-right" aria-label="Advanced · method and detail">
+      <div class="rail-hd">⚙️ Advanced</div>
     <section id="programs" class="programs band">
       <div class="section-head">
         <p class="eyebrow">Programs</p>
@@ -318,8 +409,39 @@
           <p>Prepare deliverables, adapt channels, preserve learnings and feed the next cycle.</p>
         </li>
       </ol>
+      <div class="section-head" style="margin-top:22px">
+        <p class="eyebrow">Principles that don't expire</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <span>Control</span>
+          <p>We pick the tool that delivers a reproducible result, not the one trending this week. The model changes; the judgment doesn't.</p>
+        </li>
+        <li>
+          <span>Rights</span>
+          <p>Every asset with a clear license and traceable provenance: no legal surprises downstream.</p>
+        </li>
+        <li>
+          <span>Judgment</span>
+          <p>AI speeds things up; the decision of what ships and what doesn't is always a person's.</p>
+        </li>
+        <li>
+          <span>Measurement</span>
+          <p>We document which model, prompt and cost gave the best result, so we can repeat it tomorrow.</p>
+        </li>
+      </ol>
     </section>
 
+      <div class="rail-extra">
+        <p class="rail-sub">Extended radar and documentation</p>
+        <a class="rail-doc" href="/en/radar/">Full model radar &rarr;</a>
+        <a class="rail-doc" href="/en/plataforma.html">Platform architecture &rarr;</a>
+        <a class="rail-doc" href="/en/concepto.html">Admira Studio concept &rarr;</a>
+      </div>
+    </aside><!-- /rail-right -->
+    <!-- ══ EXPERT · the meta: library/newsletter + status + version ══ -->
+    <div class="rows rail-bottom" aria-label="Expert · library and status">
+      <div class="rail-hd">🧪 Expert</div>
     <section id="library" class="library band">
       <div class="section-head">
         <p class="eyebrow">Library</p>
@@ -328,9 +450,17 @@
       <div class="library-layout">
         <div class="library-copy">
           <p>Admira Studio works as a living library: production guides, no-hype comparisons, templates, reference prompts, tool reviews and playbooks by sector and format.</p>
+          <form class="news-form" id="newsFormHome" data-source="home-en" novalidate>
+            <p class="eyebrow">Get the monthly radar</p>
+            <input type="text" class="news-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div class="news-row">
+              <input type="email" name="email" required autocomplete="email" inputmode="email" placeholder="you@email.com" aria-label="Your email">
+              <button type="submit" class="button primary">Subscribe</button>
+            </div>
+            <p class="news-msg" role="status" aria-live="polite"></p>
+          </form>
           <div class="library-actions">
-            <a class="button primary" href="mailto:csilvasantin@gmail.com?subject=Admira Studio%20library">Propose a topic or case</a>
-            <a class="button secondary" href="mailto:csilvasantin@gmail.com?subject=Admira Studio%20newsletter">Receive monthly radar</a>
+            <a class="button secondary" href="mailto:hola@admiranext.com?subject=Admira Studio%20library">Propose a topic or case</a>
           </div>
         </div>
         <div class="library-list" aria-label="Research lines">
@@ -343,12 +473,22 @@
         </div>
       </div>
     </section>
+      <div class="rail-meta">
+        <span class="rail-ver">Admira Studio v.26.07.11.r1</span>
+        <a href="https://www.admira.live">Team status · Live</a>
+        <a href="https://www.xpaceos.com">XpaceOS</a>
+        <a href="https://www.admira.app">Admira</a>
+      </div>
+    </div><!-- /rail-bottom -->
+  </div><!-- /cuad -->
   </main>
 
   <footer class="site-footer">
     <span>Admira Studio</span>
-    <p>AI content creation, directed with human taste. <span class="footer-updated">Updated June 2026</span></p>
-    <a href="mailto:csilvasantin@gmail.com">csilvasantin@gmail.com</a>
+    <p>AI content creation, directed with human taste. <span class="footer-updated">Updated July 2026</span></p>
+    <a href="mailto:hola@admiranext.com">hola@admiranext.com</a>
+    <a href="/en/concepto.html">Concept</a>
+    <a href="/en/privacy.html">Privacy &amp; cookies</a>
   </footer>
 
   <script>
@@ -406,6 +546,9 @@
       sections.forEach(s => io.observe(s));
     })();
   </script>
-  <script src="/assets/matrix-rain.js?v=20260608-sides"></script>
+  <script defer src="/assets/radar.js?v=20260617"></script>
+  <script defer src="/assets/matrix-rain.js?v=20260608-sides"></script>
+  <script defer src="/assets/newsletter.js?v=20260617"></script>
+  <script defer src="/assets/cuadratura.js?v=20260714-nav-rails3"></script>
 </body>
 </html>
