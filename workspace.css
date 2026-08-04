@@ -536,7 +536,7 @@ body[data-page="admira-xp"] .primary-nav a[data-nav="admira-xp"] {
   }
 }
 
-/* Pixeria override for the shared Admira contact panel. */
+/* Admira Studio override for the shared Admira contact panel. */
 .admira-contact-backdrop {
   background:
     linear-gradient(90deg, rgba(0, 18, 5, 0.76), rgba(0, 0, 0, 0.72)),
@@ -592,7 +592,7 @@ body[data-page="admira-xp"] .primary-nav a[data-nav="admira-xp"] {
 }
 
 .admira-contact-panel::before {
-  content: "010101 PIXERIA 110010 MATRIX 001011 CONTACT 101101";
+  content: "010101 ADMIRA STUDIO 110010 MATRIX 001011 CONTACT 101101";
   position: sticky;
   top: -28px;
   display: block;

@@ -4,3 +4,4 @@ User-agent: *
 Disallow: /
 
 Sitemap: https://www.admira.studio/sitemap.xml
+LLMs: https://www.admira.studio/llms.txt

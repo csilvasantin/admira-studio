@@ -12,7 +12,7 @@ set -euo pipefail
 WORKER="https://pixer-eleven.csilvasantin.workers.dev"
 CANAL="${1:-escaparate}"
 LOC="${2:-Barcelona}"
-BUCLE="https://www.pixeria.com/campanas/sabiasque-tabaco/bucle?loc=$(python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))" "$LOC")"
+BUCLE="https://www.admira.studio/campanas/sabiasque-tabaco/bucle?loc=$(python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))" "$LOC")"
 TS="$(date +%s)000"
 TITLE="[scr:${CANAL}] ¿Sabías que? · tabaco · #sabiasqueXtanco"
 
