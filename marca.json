@@ -37,8 +37,7 @@
     "version.json",
     "release-signature.json",
     "README.md",
-    "test/",
-    "functions/"
+    "test/"
   ],
   "_por_que_excluidos": [
     "Configuración de DESPLIEGUE. Copiarla del origen es exactamente el fallo que estuvo",
@@ -47,11 +46,11 @@
     "",
     "test/ no es un activo web.",
     "",
-    "functions/ son Cloudflare Pages Functions y admira.studio lo sirve GITHUB PAGES:",
-    "ahí no se ejecutan, solo quedarían públicas y legibles sin dar servicio. Consecuencia",
-    "a resolver aparte: /tiktok y /presentaciones dependen de esas functions, así que esas",
-    "rutas NO pueden funcionar en admira.studio mientras siga en GitHub Pages. No es un",
-    "problema de marca ni de sincronización: es de hosting."
+    "functions/ VUELVE a sincronizarse desde el 5-ago-2026. El 4-ago se excluyó porque el",
+    "sitio lo servía GitHub Pages, donde las Cloudflare Pages Functions no se ejecutan y solo",
+    "habrían quedado públicas y legibles sin dar servicio — con /tiktok y /presentaciones",
+    "muertas. Al pasar el sitio al proyecto de Cloudflare Pages `admira-studio`, esas",
+    "functions son justo lo que hace falta para que esas rutas respondan."
   ],
 
   "propios": [
