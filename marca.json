@@ -9,25 +9,36 @@
     "hasta la variable; las únicas 41 líneas distintas eran el bloque de una sección que",
     "faltaba. Por eso admira.studio es un ESPEJO, no una marca aparte."
   ],
-
   "origen": "../pixeria",
   "dominio": "www.admira.studio",
-
   "sustituciones": [
-    ["www.pixeria.com", "www.admira.studio"],
-    ["pixeria.com", "admira.studio"],
-    ["PIXERIA", "ADMIRA STUDIO"],
-    ["PixerIA", "Admira Studio"],
-    ["Pixeria", "Admira Studio"]
+    [
+      "www.pixeria.com",
+      "www.admira.studio"
+    ],
+    [
+      "pixeria.com",
+      "admira.studio"
+    ],
+    [
+      "PIXERIA",
+      "ADMIRA STUDIO"
+    ],
+    [
+      "PixerIA",
+      "Admira Studio"
+    ],
+    [
+      "Pixeria",
+      "Admira Studio"
+    ]
   ],
-
   "_no_se_sustituye": [
     "«Pixer Feed» es NOMBRE DE PRODUCTO, no la marca del sitio: se conserva tal cual",
     "(126 apariciones ya conservadas en el clon). Igual el «pixeria» en minúscula de",
     "nombres de fichero e identificadores (hero-pixeria.jpg, #pixerfeed): son rutas y",
     "anclas, no texto de cara al visitante. Renombrarlos rompería enlaces y CSS."
   ],
-
   "excluidos": [
     "CNAME",
     "deploy.sh",
@@ -50,9 +61,10 @@
     "sitio lo servía GitHub Pages, donde las Cloudflare Pages Functions no se ejecutan y solo",
     "habrían quedado públicas y legibles sin dar servicio — con /tiktok y /presentaciones",
     "muertas. Al pasar el sitio al proyecto de Cloudflare Pages `admira-studio`, esas",
-    "functions son justo lo que hace falta para que esas rutas respondan."
+    "functions son justo lo que hace falta para que esas rutas respondan.",
+    "",
+    "CNAME sigue excluido AUNQUE el sitio ya no use GitHub Pages, y por una razón nueva: Pixeria SÍ tiene un fichero CNAME (www.pixeria.com). Si se dejara sincronizar, el espejo se llevaría el dominio del origen. En Cloudflare Pages el dominio se declara en el proyecto, no en un fichero, así que aquí no debe existir ninguno."
   ],
-
   "propios": [
     "god/"
   ],
