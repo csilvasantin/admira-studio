@@ -31,6 +31,10 @@
     [
       "Pixeria",
       "Admira Studio"
+    ],
+    [
+      "<a href=\"/tiktok\"><b>TikTok · Vertical</b><small>Anuncios 9:16 de 25s, listos para el mupi vertical</small></a>",
+      "<a href=\"/tiktok\"><b>Guiones · Storyboard</b><small>Idea, guion, escenas, producción vertical y publicación trazable en Stock</small></a>"
     ]
   ],
   "_no_se_sustituye": [
@@ -47,6 +51,7 @@
     "sync.sh",
     "version.json",
     "release-signature.json",
+    "scripts/",
     "README.md",
     "test/"
   ],

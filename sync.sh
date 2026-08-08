@@ -99,11 +99,16 @@ else
   SELLO="v.${HOY}.r${R}.${AHORA}"
 
   # El sello viaja en el <meta> canónico y en el pie, igual que en admiranext.com.
+  GIT_SHORT="${FUENTE:0:7}"
+  FIRMA="$AGENTE · $MAQUINA"
   LC_ALL=C sed -i '' -E "s|(<meta name=\"admiranext-version\" content=\")[^\"]*(\")|\1Admira Studio ${SELLO}\2|" index.html
-  jq -n --arg v "$SELLO" --arg a "$AGENTE" --arg m "$MAQUINA" --arg g "$FUENTE" \
+  LC_ALL=C sed -i '' -E "s|<span class=\"rail-ver\"[^>]*>[^<]*</span>|<span class=\"rail-ver\" data-release-signature>Admira Studio ${SELLO} · ${AGENTE} · ${GIT_SHORT} · clean</span>|" index.html
+  jq -n --arg v "$SELLO" --arg a "$AGENTE" --arg m "$MAQUINA" --arg g "$FUENTE" --arg gs "$GIT_SHORT" \
         --arg t "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-        '{version:$v,deployedAt:$t,deployer:$a,machine:$m,signature:($a+" · "+$m),espejoDe:"pixeria",fuente:$g}' \
+        '{version:$v,deployedAt:$t,author:$a,agent:$a,deployer:$a,machine:$m,signature:($a+" · "+$m),git:$g,gitShort:$gs,gitFull:$g,dirty:false,espejoDe:"pixeria",fuente:$g}' \
         > version.json
+  jq '{version,author,agent,deployer,machine,signature,git,gitShort,gitFull,dirty}' version.json > release-signature.json
+  python3 scripts/check-release-contract.py version.json index.html
   # Aquí version.json SÍ se commitea, al revés que en admiranext.com: GitHub Pages
   # publica el push tal cual, no hay paso de CI donde generarlo. No se hereda firma
   # de nadie porque se reescribe entero en cada regeneración.

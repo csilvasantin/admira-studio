@@ -1,6 +1,5 @@
 {
   "version": "v.08.08.2026.r1.12:12",
-  "deployedAt": "2026-08-08T10:12:55Z",
   "author": "SubTrinityMBP14",
   "agent": "SubTrinityMBP14",
   "deployer": "SubTrinityMBP14",
@@ -9,7 +8,5 @@
   "git": "bed2037e5dcb9d83c207f4a69af528372c12d20c",
   "gitShort": "bed2037",
   "gitFull": "bed2037e5dcb9d83c207f4a69af528372c12d20c",
-  "dirty": false,
-  "espejoDe": "pixeria",
-  "fuente": "bed2037e5dcb9d83c207f4a69af528372c12d20c"
+  "dirty": false
 }
