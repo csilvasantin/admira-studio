@@ -1,9 +1,13 @@
 {
-  "version": "v.06.08.2026.r1.09:29",
-  "deployedAt": "2026-08-06T07:29:11Z",
-  "deployer": "MorfeoMBARosa",
-  "machine": "MacBookAirRosa",
-  "signature": "MorfeoMBARosa · MacBookAirRosa",
+  "version": "v.09.08.2026.r1.14:05",
+  "deployedAt": "2026-08-09T12:05:54Z",
+  "deployer": "MorfeoMBA16",
+  "machine": "MacBookAir16plata",
+  "signature": "MorfeoMBA16 · MacBookAir16plata",
+  "git": "4c084bb70eda3fef59cf4572aa4b2916e4cf02df",
+  "gitShort": "4c084bb",
+  "gitFull": "4c084bb70eda3fef59cf4572aa4b2916e4cf02df",
+  "dirty": false,
   "espejoDe": "pixeria",
   "fuente": "685c314d7f84f03fa25bfccaf9d447cf129ab54d"
 }

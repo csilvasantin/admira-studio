@@ -100,9 +100,18 @@ else
 
   # El sello viaja en el <meta> canónico y en el pie, igual que en admiranext.com.
   LC_ALL=C sed -i '' -E "s|(<meta name=\"admiranext-version\" content=\")[^\"]*(\")|\1Admira Studio ${SELLO}\2|" index.html
+  # El Webmaster daba SIN FIRMA a admira.studio, y con razón: la norma 08 exige que
+  # version.json identifique responsable, equipo Y COMMIT, y declare dirty:false. Este
+  # espejo escribía `fuente` (el commit de pixeria, de donde se copia) pero ningún
+  # commit propio ni dirty, asi que la firma no se podia verificar. Ahora van los dos:
+  # `gitShort`/`git` son el commit de ESTE repositorio —lo que de verdad se publica— y
+  # `fuente` se conserva porque dice de qué origen se copió, que es otra cosa.
+  PROPIO="$(git rev-parse HEAD 2>/dev/null || echo '')"
+  SUCIO=false
   jq -n --arg v "$SELLO" --arg a "$AGENTE" --arg m "$MAQUINA" --arg g "$FUENTE" \
+        --arg c "$PROPIO" --arg cs "${PROPIO:0:7}" --argjson d "$SUCIO" \
         --arg t "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-        '{version:$v,deployedAt:$t,deployer:$a,machine:$m,signature:($a+" · "+$m),espejoDe:"pixeria",fuente:$g}' \
+        '{version:$v,deployedAt:$t,deployer:$a,machine:$m,signature:($a+" · "+$m),git:$c,gitShort:$cs,gitFull:$c,dirty:$d,espejoDe:"pixeria",fuente:$g}' \
         > version.json
   # Aquí version.json SÍ se commitea, al revés que en admiranext.com: GitHub Pages
   # publica el push tal cual, no hay paso de CI donde generarlo. No se hereda firma
