@@ -1174,6 +1174,8 @@
     ,["fuente verificable", "verifiable source"]
     ,["ADMIRA STUDIO_SIGNING_KEY", "PIXERIA_SIGNING_KEY"]
     ,["PIXERIA_SIGNING_KEY no configurado", "PIXERIA_SIGNING_KEY is not configured"]
+    ,["data-text=\"continue_with\" data-size=\"large\"", "data-text=\"continue_with\" data-locale=\"en\" data-size=\"large\""]
+    ,["https://accounts.google.com/gsi/client\" async defer", "https://accounts.google.com/gsi/client?hl=en\" async defer"]
   ],
   "_no_se_sustituye": [
     "«Pixer Feed» es NOMBRE DE PRODUCTO, no la marca del sitio: se conserva tal cual",
