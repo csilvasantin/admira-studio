@@ -175,7 +175,10 @@ export async function verifyGoogleCredential(credential, fetchImpl = fetch) {
     const now = Math.floor(Date.now() / 1000);
     const issuerValid = payload.iss === 'accounts.google.com' || payload.iss === 'https://accounts.google.com';
     const emailVerified = payload.email_verified === true || payload.email_verified === 'true';
-    const googleAuthoritative = email.endsWith('@gmail.com') || (emailVerified && typeof payload.hd === 'string' && payload.hd.length > 0);
+    // `email_verified` is Google's authoritative assertion. The optional `hd`
+    // claim is not emitted for every valid corporate identity or alias, so it
+    // must not be required before the independent whitelist check.
+    const googleAuthoritative = emailVerified;
     if (!validSignature || payload.aud !== CLIENT_ID || !issuerValid || !emailVerified || !googleAuthoritative || Number(payload.exp) <= now) return null;
     return {email, sub:String(payload.sub), nonce:String(payload.nonce || '')};
   } catch (_) {

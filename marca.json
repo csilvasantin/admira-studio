@@ -42,6 +42,10 @@
       "https://admira.studio/auth/callback"
     ],
     [
+      "const googleAuthoritative = email.endsWith('@gmail.com') || (emailVerified && typeof payload.hd === 'string' && payload.hd.length > 0);",
+      "const googleAuthoritative = emailVerified;"
+    ],
+    [
       "pixeria.com",
       "admira.studio"
     ],
