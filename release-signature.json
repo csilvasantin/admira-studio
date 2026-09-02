@@ -1,12 +1,12 @@
 {
-  "version": "v.02.09.2026.r24.13:32",
-  "author": "Trinity",
-  "agent": "Trinity",
-  "deployer": "Trinity",
-  "machine": "MBP14",
-  "signature": "Trinity · MBP14",
-  "git": "7d3c69b4f7d38ae25d2fc81a4f4071d78014ab45",
-  "gitShort": "7d3c69b",
-  "gitFull": "7d3c69b4f7d38ae25d2fc81a4f4071d78014ab45",
+  "version": "v.02.09.2026.r26.15:50",
+  "author": "MorfeoMacMini",
+  "agent": "MorfeoMacMini",
+  "deployer": "MorfeoMacMini",
+  "machine": "MacMini",
+  "signature": "MorfeoMacMini · MacMini",
+  "git": "02a0ebe169eac41c3c25c494d1aec1e9a9cd88f3",
+  "gitShort": "02a0ebe",
+  "gitFull": "02a0ebe169eac41c3c25c494d1aec1e9a9cd88f3",
   "dirty": false
 }
