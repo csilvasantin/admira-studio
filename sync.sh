@@ -102,10 +102,19 @@ else
   GIT_SHORT="${FUENTE:0:7}"
   FIRMA="$AGENTE · $MAQUINA"
   LC_ALL=C sed -i '' -E "s|(<meta name=\"admiranext-version\" content=\")[^\"]*(\")|\1Admira Studio ${SELLO}\2|" index.html
-  LC_ALL=C sed -i '' -E "s|<span class=\"rail-ver\"[^>]*>[^<]*</span>|<span class=\"rail-ver\" data-release-signature>Admira Studio ${SELLO} · ${AGENTE} · ${GIT_SHORT} · clean</span>|" index.html
-  jq -n --arg v "$SELLO" --arg a "$AGENTE" --arg m "$MAQUINA" --arg g "$FUENTE" --arg gs "$GIT_SHORT" \
+  # El Webmaster daba SIN FIRMA a admira.studio, y con razón: la norma 08 exige que
+  # version.json identifique responsable, equipo Y COMMIT, y declare dirty:false. Este
+  # espejo escribía `fuente` (el commit de pixeria, de donde se copia) pero ningún
+  # commit propio ni dirty, asi que la firma no se podia verificar. Ahora van los dos:
+  # `gitShort`/`git` son el commit de ESTE repositorio —lo que de verdad se publica— y
+  # `fuente` se conserva porque dice de qué origen se copió, que es otra cosa.
+  PROPIO="$(git rev-parse HEAD 2>/dev/null || echo '')"
+  SUCIO=false
+  LC_ALL=C sed -i '' -E "s|<span class=\"rail-ver\"[^>]*>[^<]*</span>|<span class=\"rail-ver\" data-release-signature>Admira Studio ${SELLO} · ${AGENTE} · ${PROPIO:0:7} · clean</span>|" index.html
+  jq -n --arg v "$SELLO" --arg a "$AGENTE" --arg m "$MAQUINA" --arg g "$FUENTE" \
+        --arg c "$PROPIO" --arg cs "${PROPIO:0:7}" --argjson d "$SUCIO" \
         --arg t "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-        '{version:$v,deployedAt:$t,author:$a,agent:$a,deployer:$a,machine:$m,signature:($a+" · "+$m),git:$g,gitShort:$gs,gitFull:$g,dirty:false,espejoDe:"pixeria",fuente:$g}' \
+        '{version:$v,deployedAt:$t,author:$a,agent:$a,deployer:$a,machine:$m,signature:($a+" · "+$m),git:$c,gitShort:$cs,gitFull:$c,dirty:$d,espejoDe:"pixeria",fuente:$g}' \
         > version.json
   jq '{version,author,agent,deployer,machine,signature,git,gitShort,gitFull,dirty}' version.json > release-signature.json
   python3 scripts/check-release-contract.py version.json index.html
