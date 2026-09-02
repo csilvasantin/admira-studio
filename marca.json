@@ -1172,6 +1172,8 @@
     ,["CTA breve para pantalla y evento: pedir accion clara en menos de 4 seconds.", "Short CTA for screen and event: request one clear action in under 4 seconds."]
     ,["Whoosh digital + impact hit para cambio de marker.", "Digital whoosh + impact hit for marker changes."]
     ,["fuente verificable", "verifiable source"]
+    ,["ADMIRA STUDIO_SIGNING_KEY", "PIXERIA_SIGNING_KEY"]
+    ,["PIXERIA_SIGNING_KEY no configurado", "PIXERIA_SIGNING_KEY is not configured"]
   ],
   "_no_se_sustituye": [
     "«Pixer Feed» es NOMBRE DE PRODUCTO, no la marca del sitio: se conserva tal cual",

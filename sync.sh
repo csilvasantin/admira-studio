@@ -176,6 +176,7 @@ else
   jq '{version,author,agent,deployer,machine,signature,git,gitShort,gitFull,dirty}' version.json > release-signature.json
   python3 scripts/check-release-contract.py version.json index.html
   python3 scripts/check-english.py .
+  python3 scripts/check-javascript.py .
   # Aquí version.json SÍ se commitea, al revés que en admiranext.com: GitHub Pages
   # publica el push tal cual, no hay paso de CI donde generarlo. No se hereda firma
   # de nadie porque se reescribe entero en cada regeneración.

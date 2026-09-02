@@ -200,26 +200,26 @@ async function upsertUser(env, identity) {
 }
 
 async function createSessionToken(env, user) {
-  if (!env.ADMIRA STUDIO_SIGNING_KEY) throw new Error('ADMIRA STUDIO_SIGNING_KEY no configurado');
+  if (!env.PIXERIA_SIGNING_KEY) throw new Error('PIXERIA_SIGNING_KEY is not configured');
   const now = Math.floor(Date.now() / 1000);
   const payload = base64url(encoder.encode(JSON.stringify({
     v:1, aud:'admira.studio', email:user.email, sub:user.google_sub,
     sv:Number(user.session_version), iat:now, exp:now + SESSION_TTL_SECONDS,
     sid:randomId()
   })));
-  return `${payload}.${await hmac(env.ADMIRA STUDIO_SIGNING_KEY, `px:${payload}`)}`;
+  return `${payload}.${await hmac(env.PIXERIA_SIGNING_KEY, `px:${payload}`)}`;
 }
 
 async function readSession(request, env) {
   try {
-    if (!env.ADMIRA STUDIO_SIGNING_KEY) return null;
+    if (!env.PIXERIA_SIGNING_KEY) return null;
     const token = cookieJar(request)[SESSION_COOKIE];
     if (!token || token.length > 4096) return null;
     const separator = token.lastIndexOf('.');
     if (separator < 0) return null;
     const payloadPart = token.slice(0, separator);
     const signature = token.slice(separator + 1);
-    if (!sameValue(signature, await hmac(env.ADMIRA STUDIO_SIGNING_KEY, `px:${payloadPart}`))) return null;
+    if (!sameValue(signature, await hmac(env.PIXERIA_SIGNING_KEY, `px:${payloadPart}`))) return null;
     const payload = JSON.parse(new TextDecoder().decode(decodeBase64url(payloadPart)));
     const now = Math.floor(Date.now() / 1000);
     if (payload.aud !== 'admira.studio' || Number(payload.exp) <= now || Number(payload.iat) > now + 60) return null;
