@@ -51,22 +51,79 @@ git -C "$ORIGEN" archive origin/main | tar -x -C "$TMP"
 # Fuera lo que nunca se hereda (config de despliegue) y lo que es nuestro.
 while read -r x; do rm -rf "${TMP:?}/${x}"; done < <(jq -r '.excluidos[]' marca.json)
 
-# Las sustituciones, en el orden declarado: los dominios antes que la marca,
-# para que «www.pixeria.com» no quede a medias.
-# (nada de mapfile: el bash que trae macOS es el 3.2 y no lo tiene)
-PARES=()
-while IFS= read -r linea; do PARES+=("$linea"); done < <(jq -r '.sustituciones[] | @tsv' marca.json)
-# Los .sh también: campanas/…/distribuir.sh llevaba una URL de pixeria.com dentro y
-# se coló en el clon. (deploy.sh no está aquí: se excluye antes de la copia.)
-find "$TMP" -type f \( -name '*.html' -o -name '*.css' -o -name '*.js' -o -name '*.json' \
-     -o -name '*.txt' -o -name '*.xml' -o -name '*.md' -o -name '*.webmanifest' \
-     -o -name '*.sh' \) -print0 |
-while IFS= read -r -d '' f; do
-  for par in "${PARES[@]}"; do
-    de="${par%%$'\t'*}"; a="${par#*$'\t'}"
-    LC_ALL=C sed -i '' "s|$(printf '%s' "$de" | sed 's/[][\.*^$/]/\\&/g')|${a}|g" "$f"
-  done
-done
+# Las sustituciones se aplican en el orden declarado: dominios antes que marca
+# y frases largas antes que etiquetas. Se hace una sola lectura/escritura por
+# fichero; el bucle sed anterior multiplicaba cada archivo por cada traducción.
+# Los .sh también entran: alguna campaña contiene URLs públicas en scripts.
+python3 - "$TMP" marca.json <<'PY'
+import json
+import os
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+config = json.loads(Path(sys.argv[2]).read_text(encoding="utf-8"))
+pairs = config.get("sustituciones", [])
+invalid = [i for i, pair in enumerate(pairs) if not isinstance(pair, list) or len(pair) != 2]
+if invalid:
+    raise SystemExit(f"sustituciones inválidas (deben ser pares): {invalid}")
+extensions = {".html", ".css", ".js", ".mjs", ".json", ".txt", ".xml", ".md", ".webmanifest", ".sh"}
+for directory, _, names in os.walk(root):
+    for name in names:
+        path = Path(directory, name)
+        if path.suffix not in extensions:
+            continue
+        try:
+            original = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        updated = original
+        for source, target in pairs:
+            updated = updated.replace(source, target)
+        if updated != original:
+            path.write_text(updated, encoding="utf-8")
+PY
+
+# Admira Studio es el espejo internacional: la interfaz pública vive en inglés
+# directamente en la raíz, sin obligar al visitante a entrar por /en/. Se copian
+# únicamente las traducciones mantenidas por Pixeria; sus rutas históricas /en/
+# se conservan para que ningún enlace existente se rompa.
+if [ "$(jq -r '.idioma // ""' marca.json)" = "en" ]; then
+  while IFS=$'\t' read -r src dst; do
+    [ -f "$TMP/$src" ] || { echo "✖ falta traducción inglesa: $src"; exit 1; }
+    mkdir -p "$(dirname "$TMP/$dst")"
+    cp -p "$TMP/$src" "$TMP/$dst"
+
+    # Al subir un nivel, los ../ vuelven a ser rutas absolutas y /en/ deja de
+    # formar parte de la URL canónica. El selector de castellano desaparece:
+    # este dominio tiene un único idioma por contrato.
+    LC_ALL=C sed -i '' \
+      -e 's|/en/|/|g' \
+      -e 's|href="\.\./|href="/|g' \
+      -e 's|src="\.\./|src="/|g' \
+      -e 's|imagesrcset="\.\./|imagesrcset="/|g' \
+      -e 's|\.\./assets/|/assets/|g' \
+      -e 's|src="/app.js"|src="/app.js?v=20260902-en"|g' \
+      -e 's|src="/app.js?v=20260609-vid1"|src="/app.js?v=20260902-en"|g' \
+      -e 's|<a class="lang-toggle" href="/" aria-label="Switch to Spanish">ESP</a>|<span class="lang-toggle" aria-label="English">EN</span>|g' \
+      "$TMP/$dst"
+    LC_ALL=C sed -i '' '/hreflang="es"/d' "$TMP/$dst"
+  done < <(jq -r '.raiz_ingles[] | @tsv' marca.json)
+
+  # El dominio entero tiene un solo idioma. También se normalizan las rutas que
+  # todavía no tienen un equivalente mantenido en /en (Stock, campañas y tools):
+  # conservan exactamente su implementación actual, pero nunca anuncian ni
+  # enlazan una interfaz castellana.
+  while IFS= read -r -d '' page; do
+    LC_ALL=C sed -i '' \
+      -e 's|lang="es"|lang="en"|g' \
+      -e 's|/en/|/|g' \
+      -e 's|<a class="lang-toggle"[^>]*>ENG</a>|<span class="lang-toggle" aria-label="English">EN</span>|g' \
+      -e 's|<a class="lang-toggle"[^>]*>ESP</a>|<span class="lang-toggle" aria-label="English">EN</span>|g' \
+      "$page"
+    LC_ALL=C sed -i '' '/hreflang="es"/d' "$page"
+  done < <(find "$TMP" -type f -name '*.html' -print0)
+fi
 
 # Y ahora se vuelca sobre el repo, respetando lo propio.
 EXCL=(--exclude '.git/')
@@ -118,6 +175,7 @@ else
         > version.json
   jq '{version,author,agent,deployer,machine,signature,git,gitShort,gitFull,dirty}' version.json > release-signature.json
   python3 scripts/check-release-contract.py version.json index.html
+  python3 scripts/check-english.py .
   # Aquí version.json SÍ se commitea, al revés que en admiranext.com: GitHub Pages
   # publica el push tal cual, no hay paso de CI donde generarlo. No se hereda firma
   # de nadie porque se reescribe entero en cada regeneración.

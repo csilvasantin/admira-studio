@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,17 +35,16 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.08.2026.r4.12:59">
-  <title>Admira Studio · Concepto — conversa con Nemotron</title>
-  <meta name="description" content="Pásale cualquier duda a Nemotron y te responde. Un espacio de conversación para dar forma a tus ideas con IA, dentro de Admira Studio.">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
+  <title>Admira Studio · Concept — chat with Nemotron</title>
+  <meta name="description" content="Bring any question to Nemotron and get an answer. A conversation space to shape your ideas with AI, inside Admira Studio.">
   <meta name="theme-color" content="#020602">
-  <meta property="og:title" content="Admira Studio · Concepto">
-  <meta property="og:description" content="Conversa con Nemotron: pásale tus dudas y te responde.">
+  <meta property="og:title" content="Admira Studio · Concept">
+  <meta property="og:description" content="Chat with Nemotron: bring your questions and get answers.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.admira.studio/concepto.html">
   <link rel="canonical" href="https://www.admira.studio/concepto.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/concepto.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/concepto.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/concepto.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/concepto.html">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
@@ -56,8 +55,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="assets/styles.css?v=20260617-legal-contact-dmz">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=20260803-release">
+  <link rel="stylesheet" href="/assets/styles.css?v=20260617-legal-contact-dmz">
   <style>
     :root { --idea-max: 860px; }
     .idea-main {
@@ -183,14 +181,9 @@
   </style>
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body>
-  <!-- Cuadratura: ocultar los raíles al abrir <body> (sin parpadeo) según localStorage -->
-  <script>
-  (function(){var b=document.body,m={pixeria_pf_left:'pf-left-off',pixeria_pf_right:'pf-right-off',pixeria_pf_bottom:'pf-bottom-off'};
-  try{for(var k in m){if(localStorage.getItem(k)!=='1')b.classList.add(m[k]);}}catch(e){for(var j in m){b.classList.add(m[j]);}}})();
-  </script>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
@@ -200,88 +193,88 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.studio">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
-      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
+      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contact</a>
     </div>
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
 
   <header class="site-header">
-    <a class="brand" href="/" aria-label="Admira Studio inicio">
+    <a class="brand" href="/" aria-label="Admira Studio home">
       <span class="brand-mark">P</span>
       <span>Admira Studio</span>
     </a>
-    <nav class="nav" aria-label="Navegación principal">
+    <nav class="nav" aria-label="Main navigation">
       <a href="/audio.html">Audio</a>
-      <a href="/musica.html">Música</a>
-      <a href="/imagenes.html">Imágenes</a>
+      <a href="/musica.html">Music</a>
+      <a href="/imagenes.html">Images</a>
       <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/publicidad.html">Publicidad</a>
+      <a href="/publicidad.html">Advertising</a>
       <a href="/crear/">Assets</a>
       <a href="/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
-      <div class="language-switcher" aria-label="Selección de idioma">
-        <a class="lang-toggle" href="/en/concepto.html" aria-label="Cambiar a inglés">ENG</a>
+      <div class="language-switcher" aria-label="Language selection">
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
-      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
-  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil">
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
     <a href="/audio.html">Audio</a>
-    <a href="/musica.html">Música</a>
-    <a href="/imagenes.html">Imágenes</a>
+    <a href="/musica.html">Music</a>
+    <a href="/imagenes.html">Images</a>
     <a href="/video.html">Video</a>
     <a href="/tiktok">TikTok</a>
-    <a href="/publicidad.html">Publicidad</a>
+    <a href="/publicidad.html">Advertising</a>
     <a href="/avatar.html">Avatar 3D</a>
     <a href="/crear/">Assets</a>
     <a href="/stock.html">Stock</a>
-    <div class="mobile-language-switcher" aria-label="Selección de idioma">
-      <a class="lang-toggle" href="/en/concepto.html" aria-label="Cambiar a inglés">ENG</a>
+    <div class="mobile-language-switcher" aria-label="Language selection">
+      <span class="lang-toggle" aria-label="English">EN</span>
     </div>
-    <a class="mobile-cta" href="#contact" data-admira-contact>Contacto</a>
+    <a class="mobile-cta" href="#contact" data-admira-contact>Contact</a>
   </nav>
 
   <main class="idea-main">
     <div class="idea-head">
-      <p class="eyebrow">Concepto · conversación con IA</p>
-      <h1>Concepto</h1>
-      <p>Pásale cualquier duda a <strong>Nemotron</strong> y te responde. Un espacio para pensar en voz alta, validar conceptos y dar forma a lo que quieras crear con Admira Studio. <a href="/" style="color:var(--cyan)">← volver a Admira Studio</a></p>
+      <p class="eyebrow">Concept · AI conversation</p>
+      <h1>Concept</h1>
+      <p>Bring any question to <strong>Nemotron</strong> and get an answer. A space to think out loud, validate concepts and shape whatever you want to create with Admira Studio. <a href="/" style="color:var(--cyan)">← back to Admira Studio</a></p>
     </div>
 
-    <section class="idea-chat" aria-label="Conversación con Nemotron">
+    <section class="idea-chat" aria-label="Conversation with Nemotron">
       <div class="idea-log" id="log" aria-live="polite">
         <div class="idea-empty" id="empty">
-          <p>Escribe tu idea o tu pregunta abajo. Por ejemplo:</p>
+          <p>Write your idea or question below. For example:</p>
           <div class="idea-suggests">
-            <button type="button" data-q="Tengo una idea para una campaña con IA en pantallas de retail. ¿Por dónde empiezo?">Campaña en pantallas</button>
-            <button type="button" data-q="¿Qué modelo de vídeo IA me conviene para un anuncio de 15 segundos con buena calidad de movimiento?">Elegir modelo de vídeo</button>
-            <button type="button" data-q="Ayúdame a escribir un prompt para generar imagen de producto consistente con mi marca.">Prompt de imagen de producto</button>
+            <button type="button" data-q="I have an idea for an AI campaign on retail screens. Where do I start?">Campaign on screens</button>
+            <button type="button" data-q="Which AI video model should I use for a 15-second ad with good motion quality?">Pick a video model</button>
+            <button type="button" data-q="Help me write a prompt to generate product imagery consistent with my brand.">Product image prompt</button>
           </div>
         </div>
       </div>
 
       <form class="idea-form" id="form">
-        <textarea id="input" rows="1" placeholder="Escribe tu duda para Nemotron…" autocomplete="off"></textarea>
-        <button class="idea-send" id="send" type="submit">Enviar</button>
+        <textarea id="input" rows="1" placeholder="Type your question for Nemotron…" autocomplete="off"></textarea>
+        <button class="idea-send" id="send" type="submit">Send</button>
       </form>
     </section>
-    <p class="idea-foot">Nemotron (NVIDIA · vía OpenRouter) en Admira Studio. Las respuestas de IA pueden contener errores: contrasta lo importante.</p>
+    <p class="idea-foot">Nemotron (NVIDIA · via OpenRouter) on Admira Studio. AI answers can be wrong: double-check what matters.</p>
   </main>
 
   <script defer src="/matrix-rain.js?v=20260609-idea"></script>
   <script>
-    // Menu movil (hamburger) — navegacion siempre disponible
+    // Mobile menu (hamburger) — navigation always available
     (function () {
       const toggle = document.querySelector('.nav-toggle');
       const mobileNav = document.getElementById('mobileNav');
@@ -311,7 +304,7 @@
     })();
 
     (function () {
-      // Endpoint del proxy (worker pixer-eleven). Mantiene la API key del lado servidor.
+      // Proxy endpoint (pixer-eleven worker). Keeps the API key server-side.
       const ENDPOINT = "https://pixer-eleven.csilvasantin.workers.dev/idea";
 
       const log = document.getElementById("log");
@@ -322,19 +315,16 @@
       const history = []; // [{role:'user'|'assistant', content}]
       let busy = false;
 
-      // autosize textarea
       function autosize() {
         input.style.height = "auto";
         input.style.height = Math.min(input.scrollHeight, 160) + "px";
       }
       input.addEventListener("input", autosize);
 
-      // Enter envía, Shift+Enter salto de línea
       input.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
       });
 
-      // chips de sugerencia
       log.addEventListener("click", (e) => {
         const b = e.target.closest("[data-q]");
         if (!b) return;
@@ -354,7 +344,7 @@
         wrap.className = "msg " + (kind || (role === "user" ? "user" : "bot"));
         const who = document.createElement("div");
         who.className = "who";
-        who.textContent = role === "user" ? "TÚ" : "N";
+        who.textContent = role === "user" ? "YOU" : "N";
         const bubble = document.createElement("div");
         bubble.className = "bubble";
         bubble.innerHTML = escapeHtml(text);
@@ -397,8 +387,8 @@
         input.value = ""; autosize();
         const typing = addTyping();
 
-        // Timeout duro: sin esto, si el worker o el modelo se cuelgan el chat
-        // se queda "pensando" para siempre. Abortamos a los 75s y avisamos.
+        // Hard timeout: without it, a hung worker/model leaves the chat
+        // "thinking" forever. Abort at 75s and tell the user.
         const ctrl = new AbortController();
         const to = setTimeout(() => ctrl.abort(), 75000);
         try {
@@ -414,24 +404,24 @@
             let detail = "";
             try { const j = await res.json(); detail = j.error || j.detail || ""; } catch (_) {}
             if (res.status === 404 || res.status === 501) {
-              addMsg("bot", "Nemotron todavía no está conectado en el servidor. El chat está listo; falta activar el endpoint /idea en el worker.", "error");
+              addMsg("bot", "Nemotron isn't connected on the server yet. The chat is ready; the /idea endpoint still needs to be enabled in the worker.", "error");
             } else {
-              addMsg("bot", "No he podido responder ahora mismo (" + res.status + (detail ? " · " + detail : "") + "). Inténtalo de nuevo en un momento.", "error");
+              addMsg("bot", "I couldn't answer right now (" + res.status + (detail ? " · " + detail : "") + "). Please try again in a moment.", "error");
             }
             return;
           }
           const data = await res.json();
           const reply = pickReply(data);
-          if (!reply) { addMsg("bot", "Recibí una respuesta vacía del modelo. Reformula la pregunta, por favor.", "error"); return; }
+          if (!reply) { addMsg("bot", "I got an empty response from the model. Please rephrase your question.", "error"); return; }
           addMsg("bot", reply);
           history.push({ role: "assistant", content: reply });
         } catch (err) {
           clearTimeout(to);
           typing.remove();
           if (err && err.name === "AbortError") {
-            addMsg("bot", "El modelo ha tardado demasiado (más de 75s) y he cortado la espera. Suele ser cola del modelo gratuito: reinténtalo en un momento.", "error");
+            addMsg("bot", "The model took too long (over 75s) so I stopped waiting. This is usually the free model's queue: please try again in a moment.", "error");
           } else {
-            addMsg("bot", "Error de conexión con el servidor. Comprueba tu red e inténtalo de nuevo.", "error");
+            addMsg("bot", "Connection error with the server. Check your network and try again.", "error");
           }
         } finally {
           busy = false; send.disabled = false; input.focus();
@@ -442,7 +432,5 @@
       input.focus();
     })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=20260803-release"></script>
-  <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>

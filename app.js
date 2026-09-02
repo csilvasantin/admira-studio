@@ -16,11 +16,11 @@
   }
   function hasKeyFor(motorId) {
     const k = loadKeys();
-    if (motorId === 'elevenlabs-v2') return true; // proxied vía worker pixer-eleven
-    if (motorId === 'elevenlabs-flash-v2-5') return true; // proxied vía worker pixer-eleven
-    if (motorId === 'elevenlabs-v3') return true; // proxied vía worker pixer-eleven
-    if (motorId === 'grok-imagine-image-pro') return true; // proxied vía worker
-    if (motorId === 'grok-imagine-video') return true; // xAI vídeo · proxied vía worker (/xai/video)
+    if (motorId === 'elevenlabs-v2') return true; // proxied via worker pixer-eleven
+    if (motorId === 'elevenlabs-flash-v2-5') return true; // proxied via worker pixer-eleven
+    if (motorId === 'elevenlabs-v3') return true; // proxied via worker pixer-eleven
+    if (motorId === 'grok-imagine-image-pro') return true; // proxied via worker
+    if (motorId === 'grok-imagine-video') return true; // xAI vídeo · proxied via worker (/xai/video)
     if (motorId === 'imagen-4.0-ultra-generate-001') return true; // Gemini API key
     if (motorId === 'nano-banana') return true; // Gemini 2.5 Flash Image via worker
     if (motorId === 'nano-banana-pro') return true; // Gemini 3 Pro Image via worker
@@ -29,7 +29,7 @@
     if (motorId === 'gemini-omni-flash') return false; // API aún no pública (Google I/O 2026) — sin endpoint todavía
     if (motorId === 'suno-local-v45') return true; // depende del proxy local, se chequea aparte
     if (motorId === 'suno-local-v5') return true; // depende del proxy local, se chequea aparte
-    if (motorId === 'lyria-3-pro-preview') return true; // proxied vía worker
+    if (motorId === 'lyria-3-pro-preview') return true; // proxied via worker
     if (motorId === 'runway-gen3' || motorId === 'openai-tts-hd' || motorId === 'openai-sora') return false;
     return true;
   }
@@ -60,7 +60,7 @@
       renderMotorSelectors();
     });
     document.getElementById('clearKeys')?.addEventListener('click', () => {
-      if (!confirm('¿Borrar todas las API keys de este navegador?')) return;
+      if (!confirm('Delete all API keys from this browser?')) return;
       localStorage.removeItem(KEYS_STORE);
       refresh();
       showToast('Keys borradas');
@@ -72,32 +72,32 @@
   const DEFAULTS = {
     cliente: 'Admira Studio',
     audio: {
-      personaje: 'Voz adulta cálida',
-      idioma: 'Espanol (ES)',
-      tono: 'Cercano',
-      ritmo: '8s, ritmo medio',
-      guion: 'Esto es una prueba',
+      personaje: 'Warm adult voice',
+      idioma: 'Spanish (Spain)',
+      tono: 'Friendly',
+      ritmo: '8s, medium pace',
+      guion: 'This is a test',
       cta: 'Visita admira.xp',
     },
     musica: {
       bpm: '92',
-      tonalidad: 'C menor',
+      tonalidad: 'C minor',
       versiones: 'Loop 8s · Stinger 2s',
       uso: 'Bed de menú + stinger de cierre',
-      emocion: ['Calma', 'Marca'],
+      emocion: ['Calm', 'Brand'],
       capas: ['Base', 'Pad'],
     },
     imagenes: {
       paleta: 'Verde fósforo + negro profundo',
-      encuadre: 'Cuadrado 1:1',
+      encuadre: 'Square 1:1',
       luz: 'Atardecer suave, contraste medio',
-      realismo: 'Foto realista',
+      realismo: 'Photorealistic',
       prompt: 'Una pantalla de terminal vintage estilo Matrix con código verde cayendo, luz cinematográfica',
       assets: '1 imagen 1024x1024',
     },
     video: {
-      hook: 'Una pregunta directa al espectador en 3 segundos',
-      desarrollo: 'Mostrar producto con planos cortos y cierre con logo',
+      hook: 'Una pregunta directa al espectador en 3 seconds',
+      desarrollo: 'Show the product with close shots and finish on the logo',
       cierre: 'Logo + claim',
       cta: 'Visita admira.xp',
       canal: 'Reel vertical 9:16',
@@ -105,16 +105,16 @@
       reusa: ['audio', 'musica'],
     },
     publicidad: {
-      source: 'Simulador local',
+      source: 'Local simulator',
       screen: 'escaparate',
-      privacy: 'No guardar imagen, no identificar personas, usar solo señal efímera agregada',
+      privacy: 'Do not store images or identify people; use only an aggregated ephemeral signal',
       product: 'Colección XpaceOS Retail',
       context: 'Escaparate interactivo en tienda física',
       offerMale: 'Rendimiento, tecnología y estilo urbano',
       offerFemale: 'Diseño, comodidad y expresión personal',
       offerNeutral: 'Nueva colección disponible hoy',
       cta: 'Toca la pantalla y pruébalo en el gemelo',
-      style: 'Matrix retail, neón verde, producto hero, texto alto contraste',
+      style: 'Matrix retail, green neon, hero product, high-contrast text',
       segment: 'neutral',
       confidence: '0.64',
       // Nuevo modelo Target (creación con Target completo)
@@ -143,24 +143,24 @@
   // Default = primer elemento (siempre el gratuito).
   const MOTORES = {
     audio: [
-      { id: 'web-speech',    nombre: 'Web Speech API', tipo: 'free', badge: 'Good',   coste: 'gratis · navegador',     desc: 'TTS del sistema operativo' },
-      { id: 'grok-voice',    nombre: 'Grok (xAI)',     tipo: 'pro',  badge: 'Better', coste: 'vía worker',             desc: 'voz expresiva de xAI' },
-      { id: 'elevenlabs-v3', nombre: 'ElevenLabs v3',  tipo: 'pro',  badge: 'Best',   coste: '$300 / 1M caracteres',   desc: 'máxima expresividad · tags emocionales' },
+      { id: 'web-speech',    nombre: 'Web Speech API', tipo: 'free', badge: 'Good',   coste: 'free · browser',     desc: 'Operating-system TTS' },
+      { id: 'grok-voice',    nombre: 'Grok (xAI)',     tipo: 'pro',  badge: 'Better', coste: 'via worker',             desc: 'expressive xAI voice' },
+      { id: 'elevenlabs-v3', nombre: 'ElevenLabs v3',  tipo: 'pro',  badge: 'Best',   coste: '$300 / 1M characters',   desc: 'maximum expressiveness · emotional tags' },
     ],
     musica: [
-      { id: 'pixer-loop',           nombre: 'Pixer Loop (Web Audio)', tipo: 'free', badge: 'Good',   coste: 'gratis · navegador',  desc: 'preview rápido para probar intención', use: 'Borrador' },
-      { id: 'lyria-3-pro-preview',  nombre: 'Gemini (Google)',        tipo: 'pro',  badge: 'Better', coste: 'paid tier Gemini',    desc: '~2min con voz cantando la letra', use: 'Alternativa' },
-      { id: 'suno-local-v5',        nombre: 'Suno v5 (local)',        tipo: 'pro',  badge: 'Best',   coste: '~10 créditos / canción · cuenta loguead.', desc: 'calidad final vía proxy suno-local', use: 'Master' },
+      { id: 'pixer-loop',           nombre: 'Pixer Loop (Web Audio)', tipo: 'free', badge: 'Good',   coste: 'free · browser',  desc: 'quick preview to test intent', use: 'Draft' },
+      { id: 'lyria-3-pro-preview',  nombre: 'Gemini (Google)',        tipo: 'pro',  badge: 'Better', coste: 'paid tier Gemini',    desc: '~2min with vocals singing the lyrics', use: 'Alternative' },
+      { id: 'suno-local-v5',        nombre: 'Suno v5 (local)',        tipo: 'pro',  badge: 'Best',   coste: '~10 credits / song · signed-in account', desc: 'final quality via the suno-local proxy', use: 'Master' },
     ],
     imagenes: [
-      { id: 'nano-banana',                   nombre: 'Nano Banana (Gemini 2.5)', tipo: 'free', badge: 'Good',   coste: 'gratis (free tier)',   desc: 'generación + edición · Gemini 2.5 Flash Image' },
-      { id: 'nano-banana-pro',               nombre: 'Nano Banana Pro (Gemini 3)', tipo: 'pro', badge: 'Best', coste: 'premium · Gemini 3 Pro Image', desc: 'máxima calidad y seguimiento de prompt' },
-      { id: 'grok-imagine-image-pro',        nombre: 'Grok Imagine Pro (xAI)',  tipo: 'pro',  badge: 'Better', coste: '$0.07 / imagen',       desc: 'mayor calidad · vía worker' },
+      { id: 'nano-banana',                   nombre: 'Nano Banana (Gemini 2.5)', tipo: 'free', badge: 'Good',   coste: 'free (free tier)',   desc: 'generation + editing · Gemini 2.5 Flash Image' },
+      { id: 'nano-banana-pro',               nombre: 'Nano Banana Pro (Gemini 3)', tipo: 'pro', badge: 'Best', coste: 'premium · Gemini 3 Pro Image', desc: 'maximum quality and prompt adherence' },
+      { id: 'grok-imagine-image-pro',        nombre: 'Grok Imagine Pro (xAI)',  tipo: 'pro',  badge: 'Better', coste: '$0.07 / image',       desc: 'higher quality · via worker' },
     ],
     video: [
-      { id: 'pollinations-wan-fast',         nombre: 'Pollinations · Wan (gratis)', tipo: 'free', badge: 'Good',   coste: 'gratis · vía worker', desc: 'texto→vídeo gratis · Wan-Fast · 720p' },
-      { id: 'veo-3.0-generate-001',          nombre: 'Veo 3 (Google)',       tipo: 'pro', badge: 'Better', coste: '~$0.40 / segundo', desc: 'audio nativo · 720p' },
-      { id: 'grok-imagine-video',            nombre: 'Grok Imagine Video (xAI)', tipo: 'pro', badge: 'Best', coste: 'premium · vía worker xAI', desc: 'Grok Imagine · vídeo cinemático · 720p' },
+      { id: 'pollinations-wan-fast',         nombre: 'Pollinations · Wan (free)', tipo: 'free', badge: 'Good',   coste: 'free · via worker', desc: 'text→video free · Wan-Fast · 720p' },
+      { id: 'veo-3.0-generate-001',          nombre: 'Veo 3 (Google)',       tipo: 'pro', badge: 'Better', coste: '~$0.40 / second', desc: 'native audio · 720p' },
+      { id: 'grok-imagine-video',            nombre: 'Grok Imagine Video (xAI)', tipo: 'pro', badge: 'Best', coste: 'premium · via worker xAI', desc: 'Grok Imagine · cinematic video · 720p' },
     ],
   };
 
@@ -227,6 +227,7 @@
   function renderMotorSelectors() {
     document.querySelectorAll('[data-motor-section]').forEach(host => {
       const seccion = host.dataset.motorSection;
+      const sectionLabel = ({ audio: 'Audio', musica: 'Music', imagenes: 'Images', video: 'Video' })[seccion] || seccion;
       const opciones = MOTORES[seccion];
       if (!opciones) return;
       const store = loadStore();
@@ -249,7 +250,7 @@
       }
       const groupName = `motor-${seccion}-${Math.random().toString(36).slice(2, 8)}`;
       const opts = opciones.map(o => {
-        const badgeText = o.soon ? 'Próximamente' : (o.badge || o.tipo);
+        const badgeText = o.soon ? 'Coming soon' : (o.badge || o.tipo);
         const badgeCls = o.soon ? 'soon' : (o.badge ? o.badge : o.tipo).toLowerCase();
         return `
         <div class="motor-opt${o.soon ? ' soon' : ''}">
@@ -263,13 +264,13 @@
         </div>`;
       }).join('');
       const titleHint = isMulti
-        ? '<span style="color:#75aab9;font-weight:normal;font-size:11px;margin-left:8px">· multi-click para comparar</span>'
+        ? '<span style="color:#75aab9;font-weight:normal;font-size:11px;margin-left:8px">· multi-click to compare</span>'
         : '';
       host.innerHTML = `
         <div class="motor-section" data-section="${seccion}">
           <div class="motor-head">
-            <span class="motor-title">Motor IA · ${seccion}${titleHint}</span>
-            <span class="motor-disclaimer">Costes orientativos a ${COSTES_FECHA}</span>
+            <span class="motor-title">AI engine · ${sectionLabel}${titleHint}</span>
+            <span class="motor-disclaimer">Estimated costs as of ${COSTES_FECHA}</span>
           </div>
           <div class="motor-grid">${opts}</div>
           <div class="motor-warning" data-warning hidden></div>
@@ -375,14 +376,14 @@
   function toMarkdown(d) {
     const lines = [];
     lines.push('# Brief Admira Studio x Admira.xp');
-    if (d.cliente) lines.push(`**Cliente / proyecto:** ${d.cliente}`);
+    if (d.cliente) lines.push(`**Client / project:** ${d.cliente}`);
     lines.push(`**Version:** ${d.meta.version}  ·  **Generado:** ${d.meta.generado}`);
     const sections = [
       ['audio', 'Audio'],
-      ['musica', 'Musica'],
-      ['imagenes', 'Imagenes'],
+      ['musica', 'Music'],
+      ['imagenes', 'Images'],
       ['video', 'Video'],
-      ['publicidad', 'Publicidad segmentada'],
+      ['publicidad', 'Advertising segmentada'],
     ];
     for (const [key, title] of sections) {
       if (!d[key]) continue;
@@ -415,7 +416,7 @@
       // primer clip del reproductor (reusa todo el flujo de publishToStock).
       sendToStock: () => {
         const pb = document.querySelector('#player .publish-btn:not(.done)');
-        if (!pb) { showToast('Crea el contenido primero (o ya está en Stock)'); return; }
+        if (!pb) { showToast('Create the content first (or it is already in Stock)'); return; }
         pb.click();
       },
       genBrief: () => { out.textContent = JSON.stringify(current(), null, 2); },
@@ -451,7 +452,7 @@
         saveStore(store);
         document.querySelectorAll('input[type=text], select, textarea').forEach(el => { if (el.name) el.value = ''; });
         document.querySelectorAll('.chip input').forEach(i => { i.checked = false; i.closest('.chip')?.classList.remove('active'); });
-        if (out) out.textContent = '// Rellena los campos y pulsa "Generar brief".';
+        if (out) out.textContent = '// Complete the fields and select "Generate brief".';
         try { setMusicCover(''); } catch (_) {}
         showToast('Limpiado');
       },
@@ -486,7 +487,7 @@
   // Render del catálogo de motores en placeholder [data-motor-catalog]
   function renderMotorCatalog() {
     document.querySelectorAll('[data-motor-catalog]').forEach(host => {
-      const labels = { audio: 'Audio', musica: 'Música', imagenes: 'Imágenes', video: 'Video' };
+      const labels = { audio: 'Audio', musica: 'Music', imagenes: 'Images', video: 'Video' };
       const html = Object.entries(MOTORES).map(([sec, opts]) => `
         <article class="module" style="padding: 18px;">
           <div class="module-head"><h3 style="margin:0;">${labels[sec] || sec}</h3><small>3 opciones</small></div>
@@ -555,14 +556,14 @@
   }
 
   const LANG_MAP = {
-    'Espanol (ES)': 'es-ES',
-    'Espanol (LATAM)': 'es-MX',
+    'Spanish (Spain)': 'es-ES',
+    'Spanish (LATAM)': 'es-MX',
     'Catalan': 'ca-ES',
-    'Ingles (UK)': 'en-GB',
-    'Ingles (US)': 'en-US',
-    'Frances': 'fr-FR',
-    'Aleman': 'de-DE',
-    'Portugues': 'pt-PT',
+    'English (UK)': 'en-GB',
+    'English (US)': 'en-US',
+    'French': 'fr-FR',
+    'German': 'de-DE',
+    'Portuguese': 'pt-PT',
   };
 
   // ─── Pro models · password gate ───────────────────────────────────
@@ -590,7 +591,7 @@
     updateProLockBadge();
   }
   async function unlockPro() {
-    const pw = prompt('🔒 Modelos PRO bloqueados.\n\nIntroduce el password para desbloquear los modelos de pago (Better + Best · ElevenLabs · Suno · Lyria · Veo · Grok · Runway · Imagen Ultra). Se queda desbloqueado en este navegador hasta que pulses "Bloquear".');
+    const pw = prompt('🔒 PRO models are locked.\n\nEnter the password to unlock paid models (Better + Best · ElevenLabs · Suno · Lyria · Veo · Grok · Runway · Image Ultra). They remain unlocked in this browser until you select "Lock".');
     if (pw == null) return false;
     const h = await _sha256(pw);
     if (h === PRO_PASSWORD_HASH) {
@@ -598,7 +599,7 @@
       try { localStorage.setItem('pixer_pro_pw', pw); } catch (e) {} // token para el proxy suno-local
       return true;
     }
-    alert('Password incorrecto. Modelos PRO siguen bloqueados.');
+    alert('Incorrect password. PRO models remain locked.');
     return false;
   }
   async function ensureProUnlocked() {
@@ -611,7 +612,7 @@
     let pw = '';
     try { pw = localStorage.getItem('pixer_pro_pw') || ''; } catch (e) {}
     if (pw) return pw;
-    const entered = prompt('🔒 Password PRO (necesario para generar con Suno):');
+    const entered = prompt('🔒 PRO password (required to generate with Suno):');
     if (entered == null) return '';
     if ((await _sha256(entered)) === PRO_PASSWORD_HASH) {
       try { localStorage.setItem('pixer_pro_pw', entered); localStorage.setItem(PRO_LOCK_KEY, '1'); } catch (e) {}
@@ -633,7 +634,7 @@
       el.style.cssText = 'border:1px solid rgba(120,243,255,.35);background:rgba(5,19,28,.78);color:#cceef5;font:600 11px/1 ui-monospace,monospace;letter-spacing:.04em;padding:6px 9px;border-radius:8px;cursor:pointer';
       el.addEventListener('click', async () => {
         if (isProUnlocked()) {
-          if (confirm('¿Bloquear de nuevo los modelos PRO? Tendrás que reintroducir el password.')) {
+          if (confirm('Lock PRO models again? You will need to re-enter the password.')) {
             setProUnlocked(false);
           }
         } else {
@@ -664,13 +665,13 @@
     return (async () => {
       const ok = await ensureProUnlocked();
       if (!ok) return false;
-      return confirm(`⚠ ${motor} es DE PAGO y consumirá tokens (${coste}).\n\n¿Continuar con la reproducción real?`);
+      return confirm(`⚠ ${motor} is PAID and will consume tokens (${coste}).\n\nContinue with real generation?`);
     })();
   }
 
   async function playAudio() {
     const s = loadStore().audio || {};
-    const text = (s.guion || 'Esto es una prueba').trim();
+    const text = (s.guion || 'This is a test').trim();
     const motor = s.motor || 'web-speech';
     const keys = loadKeys();
 
@@ -684,12 +685,12 @@
     if (ELEVEN_MODELS[motor]) {
       const { label, model_id, pricePer1k } = ELEVEN_MODELS[motor];
       const shownModel = (motor === 'grok-voice') ? 'grok-voice' : model_id; // mantener la etiqueta Grok en la salida
-      if (!(await confirmPro(label, `$${(pricePer1k * 1000).toFixed(0)} / 1M caracteres · vía worker pixer-eleven`))) return;
+      if (!(await confirmPro(label, `$${(pricePer1k * 1000).toFixed(0)} / 1M characters · via worker pixer-eleven`))) return;
       const voiceId = keys.elevenlabs_voice || 'EXAVITQu4vr4xnSDxMaL';
       showPlayer(`
         <div class="player-card">
           <div class="player-head">▶ AUDIO · ${label} · voice ${voiceId}</div>
-          ${progressHtml(`Generando audio en ${label}...`, 'eleven', 8000)}
+          ${progressHtml(`Generating audio in ${label}...`, 'eleven', 8000)}
         </div>`);
       const stopElevenProg = startProgress('eleven');
       try {
@@ -723,8 +724,9 @@
             <pre class="player-body">"${text.replace(/</g,'&lt;')}"</pre>
             ${audioCover ? `<img src="${escAttr(audioCover)}" style="width:100%;max-height:240px;object-fit:cover;border:1px solid var(--matrix);box-shadow:0 0 12px rgba(0,255,65,.3);">` : ''}
             <audio controls autoplay src="${url}" data-pixer-title="${escAttr(audioTitle)}"${audioCover ? ` data-pixer-cover="${escAttr(audioCover)}"` : ''} style="width:100%;"></audio>
+            ${downloadBtnHTML({ ...pubMeta, title: audioTitle }, 'Download MP3')}
             ${publishBtnHTML(pubMeta)}
-            <small class="player-foot">// ${text.length} caracteres · ~$${est} · model_id ${shownModel} · vía worker</small>
+            <small class="player-foot">// ${text.length} characters · ~$${est} · model_id ${shownModel} · via worker</small>
           </div>`);
       } catch (e) {
         stopElevenProg(false);
@@ -734,18 +736,18 @@
     }
 
     if (motor === 'openai-tts-hd') {
-      showPlayer('<p class="player-msg">⚠ OpenAI TTS HD requiere backend (no permite CORS desde navegador). Usa ElevenLabs o el motor gratuito.</p>');
+      showPlayer('<p class="player-msg">⚠ OpenAI TTS HD requiere backend (no permite CORS desde browser). Usa ElevenLabs o el motor gratuito.</p>');
       return;
     }
 
-    // Default: web-speech (gratis). speechSynthesis NO genera fichero, así que
+    // Default: web-speech (free). speechSynthesis NO genera fichero, así que
     // para poder GUARDAR en Stock generamos un MP3 real con la TTS libre del
     // worker (Google TTS). Si esa falla, caemos al speak local (sin fichero).
     const lang = (LANG_MAP[s.idioma] || 'es-ES').slice(0, 2);
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ MEGAFONÍA · gratis (Google TTS) · ${lang}</div>
-        ${progressHtml('Generando megafonía gratis...', 'gtts', 8000)}
+        <div class="player-head">▶ PA · free (Google TTS) · ${lang}</div>
+        ${progressHtml('Generating free PA audio...', 'gtts', 8000)}
       </div>`);
     const stopGtts = startProgress('gtts');
     try {
@@ -759,21 +761,22 @@
       stopGtts(true);
       const audioTitle = deriveAssetTitle('audio', loadStore());
       const audioCover = pollinationsCoverFor('audio', loadStore());
-      const pubMeta = { type: 'locucion', motor: 'web-speech-free', prompt: text, costEst: 'gratis', url, mime: 'audio/mpeg', thumbnail: audioCover || null };
+      const pubMeta = { type: 'locucion', motor: 'web-speech-free', prompt: text, costEst: 'free', url, mime: 'audio/mpeg', thumbnail: audioCover || null };
       showPlayer(`
         <div class="player-card">
-          <div class="player-head">▶ MEGAFONÍA · gratis (Google TTS) · ${lang}</div>
+          <div class="player-head">▶ PA · free (Google TTS) · ${lang}</div>
           <pre class="player-body">"${text.replace(/</g,'&lt;')}"</pre>
           <audio controls autoplay src="${url}" data-pixer-title="${escAttr(audioTitle)}" style="width:100%;"></audio>
+          ${downloadBtnHTML({ ...pubMeta, title: audioTitle }, 'Download MP3')}
           ${publishBtnHTML(pubMeta)}
-          <small class="player-foot">// TTS libre · gratis · se puede guardar en Stock</small>
+          <small class="player-foot">// Open TTS · free · can be saved to Stock</small>
         </div>`);
       return;
     } catch (e) {
       stopGtts(false);
       // Respaldo: speechSynthesis local (suena pero NO genera fichero).
       if (!('speechSynthesis' in window)) {
-        showPlayer('<p class="player-msg">⚠ No se pudo generar la megafonía gratis (' + String(e).slice(0,60) + ') y tu navegador no soporta speechSynthesis.</p>');
+        showPlayer('<p class="player-msg">⚠ Could not generate the free PA audio (' + String(e).slice(0,60) + ') and your browser does not support speechSynthesis.</p>');
         return;
       }
       speechSynthesis.cancel();
@@ -785,9 +788,9 @@
       if (v) u.voice = v;
       showPlayer(`
         <div class="player-card">
-          <div class="player-head">▶ MEGAFONÍA · Web Speech (local) · ${u.lang}${v ? ' · ' + v.name : ''}</div>
+          <div class="player-head">▶ PA · Web Speech (local) · ${u.lang}${v ? ' · ' + v.name : ''}</div>
           <pre class="player-body">"${text.replace(/</g,'&lt;')}"</pre>
-          <small class="player-foot">⚠ TTS libre no disponible — reproducción local; NO se puede guardar en Stock. Usa ElevenLabs para un fichero.</small>
+          <small class="player-foot">⚠ Open TTS unavailable — local playback; cannot be saved to Stock. Use ElevenLabs to create a file.</small>
         </div>`);
       speechSynthesis.speak(u);
       return;
@@ -801,7 +804,7 @@
   }
   // suno-local: localhost cuando la pagina sirve por http://, o Funnel publica
   // (https://macmini.tail48b61c.ts.net/suno) cuando vivimos en GitHub Pages — el
-  // navegador bloquea fetch http://localhost desde paginas https:// por mixed-content.
+  // browser bloquea fetch http://localhost desde paginas https:// por mixed-content.
   const SUNO_LOCAL_URL = (location.protocol === 'http:'
       || location.hostname === 'localhost'
       || location.hostname === '127.0.0.1')
@@ -928,7 +931,7 @@
       });
     });
     // Los toggles del marco cuadrático los cablea bindQuadChrome() (genérico para
-    // todas las páginas con quad-ui); aquí solo queda lo específico de Música.
+    // todas las páginas con quad-ui); aquí solo queda lo específico de Music.
     const form = document.getElementById('briefForm');
     form?.addEventListener('input', e => {
       if (e.target && e.target.name && e.target.name.startsWith('musica.')) updateMusicStage('brief');
@@ -945,7 +948,7 @@
     refreshMusicHealth(false);
   }
 
-  // Portada (#m-cover, a la derecha de la Letra). Por defecto una imagen Matrix
+  // Portada (#m-cover, a la derecha de la Lyrics). Por defecto una imagen Matrix
   // aleatoria; cuando Suno termina, su carátula la sustituye.
   // Pool de imágenes Matrix (digital rain) fiables de Wikimedia Commons.
   const MATRIX_COVERS = [
@@ -970,10 +973,10 @@
   }
 
   async function playSunoLocal(s, model) {
-    setMusicCover('');  // limpia la portada anterior al empezar
+    setMusicCover('');  // limpia la portada previous al empezar
     updateMusicStage('produce');
-    // El campo "Styles" (s.uso) va a la caja Styles de Suno. La Letra va a Lyrics.
-    // "Versiones a entregar" define tipo (canción/loop/stinger) + pista de duración.
+    // El campo "Styles" (s.uso) va a la caja Styles de Suno. La Lyrics va a Lyrics.
+    // "Versions a entregar" define tipo (canción/loop/stinger) + pista de duración.
     const lyrics = (s.letra || '').trim();
     const ver = (s.versiones || '').trim();
     // Si hay letra escrita, es una CANCIÓN (nunca instrumental), aunque la versión
@@ -981,9 +984,9 @@
     const isInstrumental = !lyrics && (/loop|stinger|instrumental|bed/i.test(ver) || !/canci/i.test(ver));
     let durHint = '';
     const mMin = ver.match(/(\d+)\s*min/i), mSec = ver.match(/(\d+)\s*s\b/i);
-    if (mMin) durHint = `duración aproximada ${mMin[1]} min`;
-    else if (mSec) durHint = `duración aproximada ${mSec[1]} segundos`;
-    // Estilo = preset (s.style, def. blues). La voz/cantante (s.singer) se
+    if (mMin) durHint = `approximate duration ${mMin[1]} min`;
+    else if (mSec) durHint = `approximate duration ${mSec[1]} seconds`;
+    // Style = preset (s.style, def. blues). La voz/cantante (s.singer) se
     // antepone para que Suno la cante como toca. El título lo fija s.titulo.
     const voice = (s.singer || '').trim();
     const styleText = (s.style || '').trim() || 'blues';
@@ -993,17 +996,17 @@
     const health = await refreshMusicHealth(false) || await sunoLocalAlive();
     if (!health.ok) {
       updateMusicStage('engine');
-      showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · Suno · proxy NO responde (${SUNO_LOCAL_URL})</div><pre class="player-body">${health.error}\n\nArranca en el Mac Mini:\n  cd ~/GitHub/01.-AdmiraXperience-Game/suno-local\n  ./start-suno-local.sh</pre></div>`);
+      showPlayer(`<div class="player-card"><div class="player-head">▶ MUSIC · Suno · proxy IS NOT RESPONDING (${SUNO_LOCAL_URL})</div><pre class="player-body">${health.error}\n\nArranca en el Mac Mini:\n  cd ~/GitHub/01.-AdmiraXperience-Game/suno-local\n  ./start-suno-local.sh</pre></div>`);
       return;
     }
     if (!(await confirmPro('Suno (local)', `~2 canciones · créditos restantes: ${health.total_credits_left}`))) return;
 
     const proToken = await ensureProToken();
-    if (!proToken) { showPlayer('<div class="player-card"><div class="player-head">▶ MÚSICA · Suno · falta password PRO</div></div>'); return; }
+    if (!proToken) { showPlayer('<div class="player-card"><div class="player-head">▶ MUSIC · Suno · PRO password missing</div></div>'); return; }
 
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ MÚSICA · Suno ${model.replace('chirp-','')} · ${prompt.slice(0,60)}</div>
+        <div class="player-head">▶ MUSIC · Suno ${model.replace('chirp-','')} · ${prompt.slice(0,60)}</div>
         ${progressHtml('Enviando prompt a Suno...', 'suno', 60000)}
       </div>`);
     const stop = startProgress('suno');
@@ -1016,17 +1019,17 @@
       if (!r.ok) {
         stop(false);
         const err = await r.text();
-        showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · Suno · ERROR ${r.status}</div><pre class="player-body">${err.slice(0,500)}</pre></div>`);
+        showPlayer(`<div class="player-card"><div class="player-head">▶ MUSIC · Suno · ERROR ${r.status}</div><pre class="player-body">${err.slice(0,500)}</pre></div>`);
         return;
       }
       const data = await r.json();
       const clipIds = (data.clips || []).map(c => c.id).filter(Boolean);
       if (!clipIds.length) {
         stop(false);
-        showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · Suno · sin clips</div><pre class="player-body">${JSON.stringify(data).slice(0,400)}</pre></div>`);
+        showPlayer(`<div class="player-card"><div class="player-head">▶ MUSIC · Suno · no clips</div><pre class="player-body">${JSON.stringify(data).slice(0,400)}</pre></div>`);
         return;
       }
-      setProgressLabel('suno', `Generando · clips ${clipIds.map(id=>id.slice(0,6)).join(', ')}`);
+      setProgressLabel('suno', `Generating · clips ${clipIds.map(id=>id.slice(0,6)).join(', ')}`);
       // Polling
       let attempt = 0;
       while (true) {
@@ -1039,14 +1042,14 @@
         if (ready.length >= 1) {
           stop(true);
           updateMusicStage('review');
-          // Portada que devuelve Suno → a la derecha de la Letra cuando termina.
+          // Portada que devuelve Suno → a la derecha de la Lyrics cuando termina.
           setMusicCover(ready.map(c => c.image_large_url || c.image_url).find(Boolean) || '');
           const briefTitle = deriveAssetTitle('musica', loadStore());
           const modelLabel = model.replace('chirp-', '');
           showPlayer(`
             <div class="player-card music-result-card">
               <div class="player-head music-result-head">
-                <span>▶ HILO MUSICAL · Suno ${modelLabel}</span>
+                <span>▶ HILO MUSICL · Suno ${modelLabel}</span>
                 <span>${ready.length}/${clips.length} versiones listas</span>
               </div>
               <div class="music-result-grid">
@@ -1080,20 +1083,20 @@
                 return `
                 <article class="music-result-item">
                   <header>
-                    <span class="music-result-index">Versión ${i + 1}</span>
+                    <span class="music-result-index">Version ${i + 1}</span>
                     <strong>${escAttr(cTitle)}</strong>
                     ${dur ? `<small>${escAttr(String(dur))}</small>` : ''}
                   </header>
                   <div class="music-result-media">${media}</div>
                   <div class="music-result-actions">
                     ${publishBtnHTML(pubMeta)}
-                    <a class="btn" href="${escAttr(pickedUrl)}" target="_blank" rel="noopener" download>⬇ Descargar</a>
-                    <button type="button" class="btn" data-act="feed-latest" title="Usa esta versión para enviarla al Xpacio elegido">🎧 Preparar escucha</button>
+                    ${downloadBtnHTML({ ...pubMeta, url: pickedUrl }, 'Download')}
+                    <button type="button" class="btn" data-act="feed-latest" title="Use this version in the selected Xpacio">🎧 Prepare playback</button>
                   </div>
                 </article>`;
               }).join('')}
               </div>
-              ${lyrics ? `<details open class="music-result-lyrics"><summary>Letra de producción</summary><pre class="brief">${escAttr(lyrics)}</pre></details>` : ''}
+              ${lyrics ? `<details open class="music-result-lyrics"><summary>Production lyrics</summary><pre class="brief">${escAttr(lyrics)}</pre></details>` : ''}
               <small class="player-foot">// Admira TV · ${prompt.slice(0,80)} · revisa una versión y publícala en Stock</small>
             </div>`);
           return;
@@ -1101,19 +1104,19 @@
         if (attempt > 60) { // 5 min cap
           stop(false);
           updateMusicStage('engine');
-          showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · Suno · TIMEOUT</div><pre class="player-body">clips: ${clipIds.join(', ')}</pre></div>`);
+          showPlayer(`<div class="player-card"><div class="player-head">▶ MUSIC · Suno · TIMEOUT</div><pre class="player-body">clips: ${clipIds.join(', ')}</pre></div>`);
           return;
         }
       }
     } catch (e) {
       stop(false);
       updateMusicStage('engine');
-      showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · Suno · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
+      showPlayer(`<div class="player-card"><div class="player-head">▶ MUSIC · Suno · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
     }
   }
 
   // Traducciones ES→EN para Lyria (que solo acepta inglés)
-  const EMO_EN = { Calma:'calm', Tension:'tense', Descubrimiento:'discovery', Celebracion:'celebratory', Marca:'brand identity', Transicion:'transition' };
+  const EMO_EN = { Calm:'calm', Tension:'tense', Discovery:'discovery', Celebracion:'celebratory', Brand:'brand identity', Transicion:'transition' };
   const CAPA_EN = { Base:'bass', Percusion:'percussion', Melodia:'melody', Stinger:'stinger', Pad:'pad', Bed:'bed' };
 
   // Categorías de tempo abstractas (Lyria rechaza bpm exactos por recitation checks)
@@ -1144,15 +1147,15 @@
     const label = 'Lyria 3 Pro';
 
     if (!lyrics) {
-      const ok = confirm(`No has generado letra todavía. ${label} CON letra suena cantando; sin letra cantará improvisando.\n\n¿Continuar igual?`);
+      const ok = confirm(`You have not generated lyrics yet. ${label} WITH lyrics uses vocals; without lyrics it will improvise.\n\nContinue anyway?`);
       if (!ok) return;
     }
-    if (!(await confirmPro(label + ' (Google)', `paid tier Gemini · vía worker pixer-eleven`))) return;
+    if (!(await confirmPro(label + ' (Google)', `paid tier Gemini · via worker pixer-eleven`))) return;
 
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ MÚSICA · ${label} (Google) · ${prompt.slice(0, 60)}</div>
-        ${progressHtml('Generando música con voz...', 'lyria3', 60000)}
+        <div class="player-head">▶ MUSIC · ${label} (Google) · ${prompt.slice(0, 60)}</div>
+        ${progressHtml('Generating music with vocals...', 'lyria3', 60000)}
       </div>`);
     const stop = startProgress('lyria3');
     try {
@@ -1164,14 +1167,14 @@
       if (!r.ok) {
         stop(false);
         const err = await r.text();
-        showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · ${label} · ERROR ${r.status}</div><pre class="player-body">${err.replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
+        showPlayer(`<div class="player-card"><div class="player-head">▶ MUSIC · ${label} · ERROR ${r.status}</div><pre class="player-body">${err.replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
         return;
       }
       const data = await r.json();
       const b64 = data?.audio;
       if (!b64) {
         stop(false);
-        showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · ${label} · sin audio</div><pre class="player-body">${JSON.stringify(data).slice(0,400)}</pre></div>`);
+        showPlayer(`<div class="player-card"><div class="player-head">▶ MUSIC · ${label} · no audio</div><pre class="player-body">${JSON.stringify(data).slice(0,400)}</pre></div>`);
         return;
       }
       // base64 → Blob MP3
@@ -1187,21 +1190,21 @@
       const pubMeta = { type: 'music', motor: model, prompt: `${l3Title} · ${prompt}`.slice(0,200), costEst: 'paid Gemini', url, mime: data.mimeType || 'audio/mpeg', thumbnail: l3Cover || null };
       showPlayer(`
         <div class="player-card">
-          <div class="player-head">▶ MÚSICA · ${label} (Google) · MP3 ${(bytes.length / 1024 / 1024).toFixed(1)} MB</div>
+          <div class="player-head">▶ MUSIC · ${label} (Google) · MP3 ${(bytes.length / 1024 / 1024).toFixed(1)} MB</div>
           ${l3Cover ? `<img src="${escAttr(l3Cover)}" style="width:100%;max-height:240px;object-fit:cover;border:1px solid var(--matrix);box-shadow:0 0 12px rgba(0,255,65,.3);">` : ''}
           <audio controls autoplay src="${url}" data-pixer-title="${escAttr(l3Title)}"${l3Cover ? ` data-pixer-cover="${escAttr(l3Cover)}"` : ''} style="width:100%;"></audio>
           ${captionText ? `<pre class="player-body">${captionText}</pre>` : ''}
-          <a class="btn" download="lyria3-${Date.now()}.mp3" href="${url}">⬇ Descargar MP3</a>
+          <a class="btn" download="lyria3-${Date.now()}.mp3" href="${url}">⬇ Download MP3</a>
           ${publishBtnHTML(pubMeta)}
           <small class="player-foot">// Vertex Gemini · ${model} · ${bytes.length} bytes</small>
         </div>`);
     } catch (e) {
       stop(false);
-      showPlayer(`<div class="player-card"><div class="player-head">▶ MÚSICA · ${label} · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
+      showPlayer(`<div class="player-card"><div class="player-head">▶ MUSIC · ${label} · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
     }
   }
 
-  function playMusica() {
+  function playMusic() {
     const s = loadStore().musica || {};
     const motor = s.motor || 'pixer-loop';
     // Carlos 2026-06-12 (cuenta Pro csilva@admira.com, sin cambiar los textos de las tarjetas):
@@ -1239,7 +1242,7 @@
     pad.connect(padG).connect(master);
     pad.start(now); pad.stop(now + beat * totalBeats + 0.1);
     _musicNodes.push(pad, padG);
-    // Melodía
+    // Melody
     for (let i = 0; i < totalBeats; i++) {
       const o = ctx.createOscillator();
       o.type = 'triangle';
@@ -1255,33 +1258,33 @@
     }
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ MÚSICA · ${bpm} bpm · ${s.tonalidad || 'C menor'}</div>
-        <pre class="player-body">// Loop generado in-browser con Web Audio API
+        <div class="player-head">▶ MUSIC · ${bpm} bpm · ${s.tonalidad || 'C minor'}</div>
+        <pre class="player-body">// Loop generated in-browser with the Web Audio API
 // Pentatónica Cm · ${totalBeats} beats · ${(beat * totalBeats).toFixed(1)}s</pre>
         <button type="button" class="btn" id="stopMusic">■ Parar</button>
-        <small class="player-foot">// Preview gratis · motores PRO requieren API key</small>
+        <small class="player-foot">// Preview free · motores PRO requieren API key</small>
       </div>`);
     document.getElementById('stopMusic')?.addEventListener('click', stopMusic);
   }
 
-  const ASPECT_IMAGEN = {
+  const ASPECT_IMAGE = {
     'Vertical 9:16': '9:16',
-    'Cuadrado 1:1': '1:1',
+    'Square 1:1': '1:1',
     'Horizontal 16:9': '16:9',
     'Banner 3:1': '16:9',
-    'Mixto': '1:1',
+    'Mixed': '1:1',
   };
 
-  async function playImagen(s, fullPrompt) {
+  async function playImage(s, fullPrompt) {
     const model = 'imagen-4.0-ultra-generate-001';
-    const label = 'Imagen 4 Ultra';
+    const label = 'Image 4 Ultra';
     const cost = '$0.06 / imagen 2K';
     if (!(await confirmPro(label + ' (Google)', cost + ' · paid tier Gemini'))) return;
-    const aspectRatio = ASPECT_IMAGEN[s.encuadre] || '1:1';
+    const aspectRatio = ASPECT_IMAGE[s.encuadre] || '1:1';
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ IMAGEN · ${label} (Google) · ${aspectRatio}</div>
-        ${progressHtml(`Generando con ${label}...`, 'imagen', 12000)}
+        <div class="player-head">▶ IMAGE · ${label} (Google) · ${aspectRatio}</div>
+        ${progressHtml(`Generating with ${label}...`, 'imagen', 12000)}
       </div>`);
     const stop = startProgress('imagen');
     try {
@@ -1293,14 +1296,14 @@
       if (!r.ok) {
         stop(false);
         const err = await r.text();
-        showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGEN · ${label} · ERROR ${r.status}</div><pre class="player-body">${err.replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
+        showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGE · ${label} · ERROR ${r.status}</div><pre class="player-body">${err.replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
         return;
       }
       const data = await r.json();
       const b64 = data?.predictions?.[0]?.bytesBase64Encoded;
       if (!b64) {
         stop(false);
-        showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGEN · ${label} · sin imagen</div><pre class="player-body">${JSON.stringify(data).slice(0,400)}</pre></div>`);
+        showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGE · ${label} · no image</div><pre class="player-body">${JSON.stringify(data).slice(0,400)}</pre></div>`);
         return;
       }
       stop(true);
@@ -1309,17 +1312,18 @@
       const pubMeta = { type: 'image', motor: model, prompt: fullPrompt, costEst: cost, url, mime: data.predictions[0].mimeType || 'image/png' };
       showPlayer(`
         <div class="player-card">
-          <div class="player-head">▶ IMAGEN · ${label} (Google) · ${aspectRatio}</div>
+          <div class="player-head">▶ IMAGE · ${label} (Google) · ${aspectRatio}</div>
           <div class="player-img-wrap">
             <img class="player-img" src="${url}" alt="generada" data-pixer-title="${escAttr(imgTitle)}">
           </div>
           <pre class="player-body">${fullPrompt.replace(/</g,'&lt;')}</pre>
+          ${downloadBtnHTML({ ...pubMeta, title: imgTitle }, 'Download image')}
           ${publishBtnHTML(pubMeta)}
           <small class="player-foot">// Gemini API · ${cost}</small>
         </div>`);
     } catch (e) {
       stop(false);
-      showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGEN · ${label} · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
+      showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGE · ${label} · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
     }
   }
 
@@ -1329,19 +1333,20 @@
     const model = o.model || 'gemini-2.5-flash-image';
     const motorId = o.motorId || 'nano-banana';
     const headModel = o.headModel || 'Gemini 2.5 Flash Image';
-    const cost = o.cost || 'gratis (free tier)';
-    const aspectRatio = ASPECT_IMAGEN[s.encuadre] || '1:1';
+    const cost = o.cost || 'free (free tier)';
+    const aspectRatio = ASPECT_IMAGE[s.encuadre] || '1:1';
     const url = nanoBananaUrl(fullPrompt, aspectRatio, model);
     const imgTitle = deriveAssetTitle('imagenes', loadStore());
     const pubMeta = { type: 'image', motor: motorId, prompt: fullPrompt, costEst: cost, url, mime: 'image/png' };
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ IMAGEN · ${label} (${headModel}) · ${aspectRatio}</div>
+        <div class="player-head">▶ IMAGE · ${label} (${headModel}) · ${aspectRatio}</div>
         <div class="player-img-wrap">
-          <div class="player-loading">// generando imagen con ${label}...</div>
+          <div class="player-loading">// generating image with ${label}...</div>
           <img class="player-img" crossorigin="anonymous" src="${url}" alt="generada" data-pixer-title="${escAttr(imgTitle)}" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none';var l=this.previousElementSibling;l.innerHTML='⚠ ${label} no devolvió imagen.&lt;br&gt;Suele ser: el modelo RECHAZÓ el prompt (personajes con copyright o marcas) o cuota agotada.&lt;br&gt;Prueba sin marcas/personajes, o reintenta.';l.style.color='#ff8a5c';l.style.lineHeight='1.5';">
         </div>
         <pre class="player-body">${fullPrompt.replace(/</g,'&lt;')}</pre>
+        ${downloadBtnHTML({ ...pubMeta, title: imgTitle }, 'Download image')}
         ${publishBtnHTML(pubMeta)}
         <small class="player-foot">// ${label} · ${headModel} · ${cost}</small>
       </div>`);
@@ -1349,7 +1354,7 @@
 
   // ─── Generadores atómicos para "comparar todas" ─────────────────
   // Cada uno devuelve {ok, url?, error?} sin renderizar UI.
-  // Nano Banana (Gemini 2.5 Flash Image) vía worker aislado admira-imagen.
+  // Nano Banana (Gemini 2.5 Flash Image) via worker aislado admira-imagen.
   // Devuelve los bytes de la imagen directamente → usable en <img src>.
   function genFluxUrl(fullPrompt, w, h) {
     const ar = (w && h) ? (w / h >= 1.25 ? '16:9' : (h / w >= 1.25 ? '9:16' : '1:1')) : '16:9';
@@ -1368,7 +1373,7 @@
       return { ok: true, url };
     } catch (e) { return { ok: false, error: String(e) }; }
   }
-  async function genImagenRaw(fullPrompt, aspectRatio) {
+  async function genImageRaw(fullPrompt, aspectRatio) {
     try {
       const r = await fetch(ELEVEN_WORKER_URL + '/imagen/generate', {
         method: 'POST',
@@ -1381,7 +1386,7 @@
       return { ok: true, url: `data:${data.predictions[0].mimeType || 'image/png'};base64,${b64}` };
     } catch (e) { return { ok: false, error: String(e) }; }
   }
-  // Nano Banana vía worker aislado admira-imagen (GET /img devuelve la imagen).
+  // Nano Banana via worker aislado admira-imagen (GET /img devuelve la imagen).
   function nanoBananaUrl(fullPrompt, aspectRatio, model) {
     const ar = aspectRatio || '1:1';
     const m = model || 'gemini-2.5-flash-image';
@@ -1392,14 +1397,14 @@
   }
 
   // Compara N motores en paralelo, side-by-side. Recibe la lista de IDs
-  // (de MOTORES.imagenes) seleccionados por el usuario via checkbox multi-select.
+  // (de MOTORES.imagenes) selected por el usuario via checkbox multi-select.
   async function compareSelectedImages(motorIds, s, fullPrompt, w, h) {
-    const aspectRatio = ASPECT_IMAGEN[s.encuadre] || '1:1';
+    const aspectRatio = ASPECT_IMAGE[s.encuadre] || '1:1';
     // Tabla de fabricacion por motor → {label, cost, promise}
     const factory = {
-      'nano-banana':                   () => ({ label: 'Nano Banana',      cost: 'gratis',  promise: genNanoBananaRaw(fullPrompt, aspectRatio) }),
+      'nano-banana':                   () => ({ label: 'Nano Banana',      cost: 'free',  promise: genNanoBananaRaw(fullPrompt, aspectRatio) }),
       'nano-banana-pro':               () => ({ label: 'Nano Banana Pro',  cost: 'premium', promise: Promise.resolve({ ok: true, url: nanoBananaUrl(fullPrompt, aspectRatio, 'gemini-3-pro-image-preview') }) }),
-      'imagen-4.0-ultra-generate-001': () => ({ label: 'Imagen 4 Ultra',   cost: '$0.06',   promise: genImagenRaw(fullPrompt, aspectRatio) }),
+      'imagen-4.0-ultra-generate-001': () => ({ label: 'Image 4 Ultra',   cost: '$0.06',   promise: genImageRaw(fullPrompt, aspectRatio) }),
       'grok-imagine-image-pro':        () => ({ label: 'Grok Imagine Pro', cost: '$0.07',   promise: genGrokRaw(fullPrompt, 'grok-imagine-image-pro') }),
     };
     const motors = motorIds
@@ -1410,7 +1415,7 @@
       const total = motors.reduce((a,m)=>a + (parseFloat((m.cost||'').replace('$','').replace(',','.'))||0), 0);
       if (!(await confirmPro('COMPARAR motores', motors.map(m=>m.label).join(' + ') + (total>0?(' (~$'+total.toFixed(2)+' total)'):'')))) return;
     }
-    const headerHint = motors.length>1 ? ' · click la imagen para elegir cual enviar' : '';
+    const headerHint = motors.length>1 ? ' · select an image to choose which one to send' : '';
     showPlayer(`
       <div class="player-card">
         <div class="player-head">▶ COMPARAR · ${motors.length} motor${motors.length>1?'es':''} · ${aspectRatio}${headerHint}</div>
@@ -1418,11 +1423,11 @@
           ${motors.map(m => `
             <div class="compare-cell" data-cell="${m.id}" data-motor-label="${(typeof escAttr==='function')?escAttr(m.label):String(m.label).replace(/"/g,'&quot;')}">
               <div class="compare-cell-head"><strong>${m.label}</strong> <span style="opacity:.7">${m.cost}</span></div>
-              <div class="compare-cell-img"><span class="compare-loading">// generando...</span></div>
+              <div class="compare-cell-img"><span class="compare-loading">// generating...</span></div>
             </div>`).join('')}
         </div>
         <pre class="player-body">${fullPrompt.replace(/</g,'&lt;')}</pre>
-        <small class="player-foot">// ${motors.length} motor${motors.length>1?'es':''} en paralelo · resultados conforme lleguen</small>
+        <small class="player-foot">// ${motors.length} engine${motors.length>1?'s':''} in parallel · results appear as they arrive</small>
       </div>`);
 
     // Click en una celda → la marca como seleccionada (única) para que
@@ -1447,10 +1452,10 @@
         const cTitle = (typeof deriveAssetTitle==='function') ? deriveAssetTitle('imagenes', loadStore()) : (m.label);
         const safeTitle = (typeof escAttr==='function') ? escAttr(cTitle) : String(cTitle).replace(/"/g,'&quot;');
         const cellMeta = JSON.stringify({ type: 'image', motor: m.id, prompt: fullPrompt, costEst: m.cost, url: res.url, mime: 'image/png' }).replace(/'/g, '&#39;');
-        // crossorigin solo en imágenes con CORS (admira-imagen) → si no, el navegador
+        // crossorigin solo en imágenes con CORS (admira-imagen) → si no, el browser
         // bloquea la carga (p.ej. imgen.x.ai de Grok no manda cabeceras CORS).
         const cors = /admira-imagen\.|^data:/.test(res.url || '') ? ' crossorigin="anonymous"' : '';
-        cell.innerHTML = `<img${cors} src="${res.url}" alt="${m.label}" data-pixer-title="${safeTitle}" onload="this.parentElement.querySelector('.compare-time')?.remove()" onerror="this.parentElement.innerHTML='<div style=&quot;color:#ff8a5c;font-size:11px;padding:10px;line-height:1.4&quot;>⚠ ${m.label}: sin imagen — el modelo rechazó el prompt (personajes con copyright o marcas) o cuota.</div>'"><span class="compare-time">${(ms/1000).toFixed(1)}s</span>`
+        cell.innerHTML = `<img${cors} src="${res.url}" alt="${m.label}" data-pixer-title="${safeTitle}" onload="this.parentElement.querySelector('.compare-time')?.remove()" onerror="this.parentElement.innerHTML='<div style=&quot;color:#ff8a5c;font-size:11px;padding:10px;line-height:1.4&quot;>⚠ ${m.label}: no image — el modelo rechazó el prompt (personajes con copyright o marcas) o cuota.</div>'"><span class="compare-time">${(ms/1000).toFixed(1)}s</span>`
           + `<button type="button" class="btn publish-btn compare-pub" data-publish-meta='${cellMeta}' title="Publicar esta imagen en Stock" style="display:block;width:100%;margin-top:6px;font-size:11px;padding:6px 8px">📌 PUBLICAR EN STOCK</button>`;
         // Auto-selecciona la primera imagen que carga (default seleccionada).
         if (!firstSelected && motors.length > 1) {
@@ -1463,7 +1468,7 @@
     });
   }
 
-  async function playImagenes() {
+  async function playImages() {
     const s = loadStore().imagenes || {};
     // Multi-select: leer s.motors (array) y caer a [s.motor] solo si no existe.
     // flux-schnell ya no existe (Pollinations murió) → migra a nano-banana y dedup,
@@ -1474,23 +1479,23 @@
     const prompt = (s.prompt || 'Matrix terminal screen with green falling code').trim();
     const sizeMap = {
       'Vertical 9:16': [576, 1024],
-      'Cuadrado 1:1': [768, 768],
+      'Square 1:1': [768, 768],
       'Horizontal 16:9': [1024, 576],
       'Banner 3:1': [1200, 400],
-      'Mixto': [768, 768],
+      'Mixed': [768, 768],
     };
     const [w, h] = sizeMap[s.encuadre] || [768, 768];
     const styleHints = [s.realismo, s.luz, s.paleta].filter(Boolean).join(', ');
     const fullPrompt = styleHints ? `${prompt}, ${styleHints}` : prompt;
     const keys = loadKeys();
 
-    // 2+ motores seleccionados → grid comparativa.
+    // 2+ motores selected → grid comparativa.
     if (motorsList.length > 1) {
       return compareSelectedImages(motorsList, s, fullPrompt, w, h);
     }
 
     if (motor === 'imagen-4.0-ultra-generate-001') {
-      return playImagen(s, fullPrompt);
+      return playImage(s, fullPrompt);
     }
 
     if (motor === 'nano-banana') {
@@ -1503,12 +1508,12 @@
 
     if (motor === 'grok-imagine-image-pro') {
       const label = 'Grok Imagine Pro';
-      const cost = '$0.07 / imagen';
-      if (!(await confirmPro(label + ' (xAI)', cost + ' · vía worker pixer-eleven'))) return;
+      const cost = '$0.07 / image';
+      if (!(await confirmPro(label + ' (xAI)', cost + ' · via worker pixer-eleven'))) return;
       showPlayer(`
         <div class="player-card">
-          <div class="player-head">▶ IMAGEN · ${label} (xAI)</div>
-          ${progressHtml(`Generando imagen con ${label}...`, 'grokimg', 8000)}
+          <div class="player-head">▶ IMAGE · ${label} (xAI)</div>
+          ${progressHtml(`Generating image with ${label}...`, 'grokimg', 8000)}
         </div>`);
       const stopGrokImg = startProgress('grokimg');
       try {
@@ -1520,7 +1525,7 @@
         if (!r.ok) {
           stopGrokImg(false);
           const err = await r.text();
-          showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGEN · ${label} · ERROR ${r.status}</div><pre class="player-body">${err.replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
+          showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGE · ${label} · ERROR ${r.status}</div><pre class="player-body">${err.replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
           return;
         }
         const data = await r.json();
@@ -1528,7 +1533,7 @@
         const revised = data?.data?.[0]?.revised_prompt || fullPrompt;
         if (!url) {
           stopGrokImg(false);
-          showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGEN · ${label} · sin URL</div><pre class="player-body">${JSON.stringify(data).replace(/</g,'&lt;').slice(0,400)}</pre></div>`);
+          showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGE · ${label} · sin URL</div><pre class="player-body">${JSON.stringify(data).replace(/</g,'&lt;').slice(0,400)}</pre></div>`);
           return;
         }
         stopGrokImg(true);
@@ -1536,35 +1541,37 @@
         const pubMeta = { type: 'image', motor: 'grok-imagine-image-pro', prompt: revised, costEst: cost, url, mime: 'image/jpeg' };
         showPlayer(`
           <div class="player-card">
-            <div class="player-head">▶ IMAGEN · ${label} (xAI)</div>
+            <div class="player-head">▶ IMAGE · ${label} (xAI)</div>
             <div class="player-img-wrap">
               <img class="player-img" src="${url}" alt="generada" data-pixer-title="${escAttr(grokImgTitle)}">
             </div>
             <pre class="player-body">${revised.replace(/</g,'&lt;')}</pre>
+            ${downloadBtnHTML({ ...pubMeta, title: grokImgTitle }, 'Download image')}
             ${publishBtnHTML(pubMeta)}
             <small class="player-foot">// xAI ${label} · ${cost} · 1 imagen</small>
           </div>`);
       } catch (e) {
         stopGrokImg(false);
-        showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGEN · ERROR</div><pre class="player-body">${String(e).replace(/</g,'&lt;')}</pre></div>`);
+        showPlayer(`<div class="player-card"><div class="player-head">▶ IMAGE · ERROR</div><pre class="player-body">${String(e).replace(/</g,'&lt;')}</pre></div>`);
       }
       return;
     }
 
-    // Nano Banana (Gemini 2.5 Flash Image) vía worker aislado admira-imagen.
+    // Nano Banana (Gemini 2.5 Flash Image) via worker aislado admira-imagen.
     const url = genFluxUrl(fullPrompt, w, h);
     const fluxTitle = deriveAssetTitle('imagenes', loadStore());
-    const pubMeta = { type: 'image', motor: 'nano-banana', prompt: fullPrompt, costEst: 'gratis', url, mime: 'image/png' };
+    const pubMeta = { type: 'image', motor: 'nano-banana', prompt: fullPrompt, costEst: 'free', url, mime: 'image/png' };
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ IMAGEN · Nano Banana (Gemini 2.5 Flash Image) · ${w}×${h}</div>
+        <div class="player-head">▶ IMAGE · Nano Banana (Gemini 2.5 Flash Image) · ${w}×${h}</div>
         <div class="player-img-wrap">
-          <div class="player-loading">// generando imagen con Nano Banana...</div>
-          <img class="player-img" crossorigin="anonymous" src="${url}" alt="generada" data-pixer-title="${escAttr(fluxTitle)}" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none';var l=this.previousElementSibling;l.innerHTML='⚠ Nano Banana no devolvió imagen — cuota gratis agotada o error.&lt;br&gt;Reintenta en un rato o usa Grok Imagine.';l.style.color='#ff8a5c';l.style.lineHeight='1.5';">
+          <div class="player-loading">// generating image with Nano Banana...</div>
+          <img class="player-img" crossorigin="anonymous" src="${url}" alt="generada" data-pixer-title="${escAttr(fluxTitle)}" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none';var l=this.previousElementSibling;l.innerHTML='⚠ Nano Banana no devolvió imagen — cuota free agotada o error.&lt;br&gt;Reintenta en un rato o usa Grok Imagine.';l.style.color='#ff8a5c';l.style.lineHeight='1.5';">
         </div>
         <pre class="player-body">${fullPrompt.replace(/</g,'&lt;')}</pre>
+        ${downloadBtnHTML({ ...pubMeta, title: fluxTitle }, 'Download image')}
         ${publishBtnHTML(pubMeta)}
-        <small class="player-foot">// Nano Banana · Gemini 2.5 Flash Image · gratis (free tier)</small>
+        <small class="player-foot">// Nano Banana · Gemini 2.5 Flash Image · free (free tier)</small>
       </div>`);
   }
 
@@ -1576,9 +1583,9 @@
   const ASPECT_VEO = {
     'Reel vertical 9:16': '9:16',
     'YouTube 16:9': '16:9',
-    'Demo producto 16:9': '16:9',
-    'Pantalla evento 16:9': '16:9',
-    'Carrusel cuadrado 1:1': '16:9', // Veo 3 no soporta 1:1
+    'Product demo 16:9': '16:9',
+    'Event screen 16:9': '16:9',
+    'Square carousel 1:1': '16:9', // Veo 3 no soporta 1:1
   };
 
   const VEO_MODELS = {
@@ -1645,7 +1652,7 @@
     const dur4or6or8 = veoDuration(s);
     const prompt = buildVeoPrompt(s);
     const cost = `~$${(dur4or6or8 * costPerSec).toFixed(2)} (${dur4or6or8}s × $${costPerSec})`;
-    if (!(await confirmPro(label + ' (Google)', cost + ' · paid tier Gemini · audio nativo'))) return;
+    if (!(await confirmPro(label + ' (Google)', cost + ' · paid tier Gemini · native audio'))) return;
 
     showPlayer(`
       <div class="player-card">
@@ -1654,7 +1661,7 @@
       </div>`);
     const stop = startProgress('veo');
     const res = await genVeoRaw(prompt, aspect, dur4or6or8, resolution, model,
-      (elapsed, attempt) => setProgressLabel('veo', `Generando · ${elapsed}s · intento ${attempt}`));
+      (elapsed, attempt) => setProgressLabel('veo', `Generating · ${elapsed}s · intento ${attempt}`));
     if (!res.ok) {
       stop(false);
       showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · ${label} · ERROR</div><pre class="player-body">${String(res.error).replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
@@ -1665,17 +1672,17 @@
     const pubMeta = { type: 'video', motor: model, prompt, costEst: cost, url: res.url, mime: 'video/mp4' };
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ VIDEO · ${label} (Google) · ${aspect} · ${dur4or6or8}s · ${resolution} · audio nativo</div>
+        <div class="player-head">▶ VIDEO · ${label} (Google) · ${aspect} · ${dur4or6or8}s · ${resolution} · native audio</div>
         <video controls autoplay src="${res.url}" data-pixer-title="${escAttr(veoTitle)}" style="width:100%; max-height:55vh; border:1px solid var(--matrix); box-shadow:0 0 24px rgba(0,255,65,.30);"></video>
         <pre class="player-body">${prompt.replace(/</g,'&lt;')}</pre>
-        <a class="btn" download="veo-${Date.now()}.mp4" href="${res.url}">⬇ Descargar MP4</a>
+        ${downloadBtnHTML({ ...pubMeta, title: veoTitle }, 'Download MP4')}
         ${publishBtnHTML(pubMeta)}
         <small class="player-foot">// Gemini Veo · ${cost} · ${res.elapsed}s de procesado</small>
       </div>`);
   }
 
   // ─── Grok Imagine Video (xAI) ───────────────────────────────────
-  // Flujo 2 pasos vía worker: POST /xai/video → { request_id }; luego polling
+  // Flujo 2 pasos via worker: POST /xai/video → { request_id }; luego polling
   // GET /xai/video/{id} hasta status "done" → video.url (https://vidgen.x.ai/…).
   async function genGrokVideoRaw(prompt, aspect, durationSeconds, resolution, onTick) {
     try {
@@ -1719,7 +1726,7 @@
     const dur = veoDuration(s);
     const resolution = '720p'; // el tier xAI de la cuenta no tiene 1080p (gen 400 "not available for your team")
     const prompt = buildVeoPrompt(s);
-    if (!(await confirmPro('Grok Imagine Video (xAI)', `${dur}s · ${resolution} · vía worker xAI`))) return;
+    if (!(await confirmPro('Grok Imagine Video (xAI)', `${dur}s · ${resolution} · via worker xAI`))) return;
 
     showPlayer(`
       <div class="player-card">
@@ -1728,7 +1735,7 @@
       </div>`);
     const stop = startProgress('grokvid');
     const res = await genGrokVideoRaw(prompt, aspect, dur, resolution,
-      (elapsed, attempt) => setProgressLabel('grokvid', `Generando · ${elapsed}s · intento ${attempt}`));
+      (elapsed, attempt) => setProgressLabel('grokvid', `Generating · ${elapsed}s · intento ${attempt}`));
     if (!res.ok) {
       stop(false);
       showPlayer(`<div class="player-card"><div class="player-head">▶ VIDEO · Grok Imagine · ERROR</div><pre class="player-body">${String(res.error).replace(/</g,'&lt;').slice(0,500)}</pre></div>`);
@@ -1736,19 +1743,19 @@
     }
     stop(true);
     const gTitle = deriveAssetTitle('video', loadStore());
-    const pubMeta = { type: 'video', motor: 'grok-imagine-video', prompt, costEst: 'xAI · vía worker', url: res.url, mime: 'video/mp4' };
+    const pubMeta = { type: 'video', motor: 'grok-imagine-video', prompt, costEst: 'xAI · via worker', url: res.url, mime: 'video/mp4' };
     showPlayer(`
       <div class="player-card">
         <div class="player-head">▶ VIDEO · Grok Imagine (xAI) · ${aspect} · ${dur}s · ${resolution}</div>
         <video controls autoplay src="${res.url}" data-pixer-title="${escAttr(gTitle)}" style="width:100%; max-height:55vh; border:1px solid var(--matrix); box-shadow:0 0 24px rgba(0,255,65,.30);"></video>
         <pre class="player-body">${prompt.replace(/</g,'&lt;')}</pre>
-        <a class="btn" download="grok-${Date.now()}.mp4" href="${res.url}">⬇ Descargar MP4</a>
+        ${downloadBtnHTML({ ...pubMeta, title: gTitle }, 'Download MP4')}
         ${publishBtnHTML(pubMeta)}
         <small class="player-foot">// xAI Grok Imagine · ${res.elapsed}s de procesado</small>
       </div>`);
   }
 
-  // ─── Pollinations Video (gratis) ────────────────────────────────
+  // ─── Pollinations Video (free) ────────────────────────────────
   // Síncrono: el worker hace proxy a gen.pollinations.ai/video y devuelve el
   // mp4 directo (un solo GET, ~30-90s). No hay polling. Se descarga como blob
   // y se reproduce/publica localmente.
@@ -1760,8 +1767,8 @@
 
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ VIDEO · Pollinations · Wan (gratis) · ${aspect} · ${dur}s · 720p</div>
-        ${progressHtml('Generando con Pollinations (gratis, puede tardar ~1 min)...', 'pvid', 180000)}
+        <div class="player-head">▶ VIDEO · Pollinations · Wan (free) · ${aspect} · ${dur}s · 720p</div>
+        ${progressHtml('Generating with Pollinations (free, puede tardar ~1 min)...', 'pvid', 180000)}
       </div>`);
     const stop = startProgress('pvid');
 
@@ -1798,15 +1805,15 @@
     }
     stop(true);
     const pTitle = deriveAssetTitle('video', loadStore());
-    const pubMeta = { type: 'video', motor: 'pollinations-wan-fast', prompt, costEst: 'gratis', url: blobUrl, mime: 'video/mp4' };
+    const pubMeta = { type: 'video', motor: 'pollinations-wan-fast', prompt, costEst: 'free', url: blobUrl, mime: 'video/mp4' };
     showPlayer(`
       <div class="player-card">
-        <div class="player-head">▶ VIDEO · Pollinations · Wan (gratis) · ${aspect} · ${dur}s · 720p</div>
+        <div class="player-head">▶ VIDEO · Pollinations · Wan (free) · ${aspect} · ${dur}s · 720p</div>
         <video controls autoplay src="${blobUrl}" data-pixer-title="${escAttr(pTitle)}" style="width:100%; max-height:55vh; border:1px solid var(--matrix); box-shadow:0 0 24px rgba(0,255,65,.30);"></video>
         <pre class="player-body">${prompt.replace(/</g,'&lt;')}</pre>
-        <a class="btn" download="pollinations-${Date.now()}.mp4" href="${blobUrl}">⬇ Descargar MP4</a>
+        ${downloadBtnHTML({ ...pubMeta, title: pTitle }, 'Download MP4')}
         ${publishBtnHTML(pubMeta)}
-        <small class="player-foot">// Pollinations · Wan-Fast · gratis</small>
+        <small class="player-foot">// Pollinations · Wan-Fast · free</small>
       </div>`);
   }
 
@@ -1829,11 +1836,11 @@
           ${motors.map(m => `
             <div class="compare-cell" data-cell="${m.id}" data-motor-label="${escAttr(m.label)}">
               <div class="compare-cell-head"><strong>${m.label}</strong> <span style="opacity:.7">~$${(dur4or6or8 * m.costPerSec).toFixed(2)}</span></div>
-              <div class="compare-cell-img"><span class="compare-loading">// generando... 0s</span></div>
+              <div class="compare-cell-img"><span class="compare-loading">// generating... 0s</span></div>
             </div>`).join('')}
         </div>
         <pre class="player-body">${prompt.replace(/</g,'&lt;')}</pre>
-        <small class="player-foot">// ${motors.length} motores Veo en paralelo · cada uno tarda ~30–90s · resultados conforme lleguen</small>
+        <small class="player-foot">// ${motors.length} Veo engines in parallel · each takes ~30–90s · results appear as they arrive</small>
       </div>`);
 
     // Click en una celda con vídeo → la marca como seleccionada (única) para
@@ -1852,7 +1859,7 @@
       const cell = cellWrap && cellWrap.querySelector('.compare-cell-img');
       const res = await genVeoRaw(prompt, aspect, dur4or6or8, m.resolution, m.model, (elapsed) => {
         const loading = cell && cell.querySelector('.compare-loading');
-        if (loading) loading.textContent = `// generando... ${elapsed}s`;
+        if (loading) loading.textContent = `// generating... ${elapsed}s`;
       });
       if (!cell) return;
       if (res && res.ok && res.url) {
@@ -1881,7 +1888,7 @@
        || m === 'veo-3.0-fast-generate-001' || m === 'veo-3.0-generate-001@1080p') ? 'veo-3.0-generate-001' : m))];
     const motor = motorsList[0]; // primario para single-render path
 
-    // 2+ motores Veo seleccionados → grid comparativa.
+    // 2+ motores Veo selected → grid comparativa.
     if (motorsList.length > 1 && motorsList.every(m => m.startsWith('veo-3.0-'))) {
       return compareSelectedVideos(motorsList, s);
     }
@@ -1913,16 +1920,16 @@
     const sizeMap = {
       'Reel vertical 9:16': [432, 768],
       'YouTube 16:9': [768, 432],
-      'Demo producto 16:9': [768, 432],
-      'Pantalla evento 16:9': [768, 432],
-      'Carrusel cuadrado 1:1': [640, 640],
+      'Product demo 16:9': [768, 432],
+      'Event screen 16:9': [768, 432],
+      'Square carousel 1:1': [640, 640],
     };
     const [w, h] = sizeMap[s.canal] || [768, 432];
     const totalSec = parseSeconds(s.duracion);
     const scenes = [
-      { label: 'HOOK',       text: s.hook       || 'Una pregunta directa al espectador en 3 segundos' },
-      { label: 'DESARROLLO', text: s.desarrollo || 'Mostrar producto con planos cortos' },
-      { label: 'CIERRE',     text: [s.cierre, s.cta && `CTA: ${s.cta}`].filter(Boolean).join(' · ') || 'Logo + claim' },
+      { label: 'HOOK',       text: s.hook       || 'Una pregunta directa al espectador en 3 seconds' },
+      { label: 'DEVELOPMENT', text: s.desarrollo || 'Show the product with close shots' },
+      { label: 'CLOSING',     text: [s.cierre, s.cta && `CTA: ${s.cta}`].filter(Boolean).join(' · ') || 'Logo + claim' },
     ];
     const stylePalette = (loadStore().imagenes && loadStore().imagenes.paleta) || 'cinematic film grade, dramatic light';
     const sceneSec = totalSec / scenes.length;
@@ -1946,7 +1953,7 @@
           <button type="button" class="btn primary" id="sbStart">▶ Reproducir storyboard</button>
           <button type="button" class="btn" id="sbStop">■ Parar</button>
         </div>
-        <small class="player-foot">// 3 escenas Pollinations · ${sceneSec.toFixed(1)}s/escena · TTS como voz en off · gratis</small>
+        <small class="player-foot">// 3 escenas Pollinations · ${sceneSec.toFixed(1)}s/escena · TTS como voz en off · free</small>
       </div>`);
 
     const stage = getPlayer().querySelector('.sb-stage');
@@ -1964,7 +1971,7 @@
       stop();
       const startTs = performance.now();
       const totalMs = totalSec * 1000;
-      // Voz en off encadenando las 3 escenas
+      // Voice en off encadenando las 3 escenas
       if ('speechSynthesis' in window) {
         scenes.forEach((sc, i) => {
           const u = new SpeechSynthesisUtterance(sc.text);
@@ -1990,23 +1997,23 @@
     setTimeout(start, 250);
   }
 
-  function playPlataforma() {
+  function playPlatform() {
     showPlayer(`
       <div class="player-card">
         <div class="player-head">▶ PLATAFORMA · reproducir todo</div>
-        <pre class="player-body">// Lanzando Audio + Música + Imagen + Video en secuencia...</pre>
+        <pre class="player-body">// Lanzando Audio + Music + Image + Video en secuencia...</pre>
       </div>`);
     playAudio();
-    setTimeout(playMusica, 300);
-    setTimeout(playImagenes, 600);
+    setTimeout(playMusic, 300);
+    setTimeout(playImages, 600);
     setTimeout(playVideo, 900);
   }
 
   const AUDIENCE_LABELS = {
     male: 'Segmento hombre',
     female: 'Segmento mujer',
-    neutral: 'Segmento neutral / todos',
-    todos: 'Todos los públicos',
+    neutral: 'Neutral segment / all',
+    todos: 'All los públicos',
   };
 
   const AGE_BANDS = ['18-24', '25-34', '35-44', '45-54', '55+', 'todos'];
@@ -2014,10 +2021,10 @@
   const PERSONA_TAGS = ['tech', 'urbano', 'fitness', 'profesional', 'familia', 'eco', 'luxury', 'joven', 'padres', 'creativo'];
 
   const TARGET_PRESETS = [
-    { gender: 'hombre', ageBand: '25-34', persona: 'tech-urbano', label: 'Hombres 25-34 Tech' },
-    { gender: 'mujer', ageBand: '25-34', persona: 'profesional', label: 'Mujeres 25-34 Profesional' },
-    { gender: 'hombre', ageBand: '18-24', persona: 'urbano', label: 'Hombres 18-24 Urbano' },
-    { gender: 'mujer', ageBand: '35-44', persona: 'familia', label: 'Mujeres 35-44 Familia' },
+    { gender: 'hombre', ageBand: '25-34', persona: 'tech-urbano', label: 'Males 25-34 Tech' },
+    { gender: 'mujer', ageBand: '25-34', persona: 'profesional', label: 'Femalees 25-34 Profesional' },
+    { gender: 'hombre', ageBand: '18-24', persona: 'urbano', label: 'Males 18-24 Urbano' },
+    { gender: 'mujer', ageBand: '35-44', persona: 'familia', label: 'Femalees 35-44 Familia' },
     { gender: 'todos', ageBand: '18-24', persona: 'joven', label: 'Jóvenes 18-24 Unisex' },
     { gender: 'todos', ageBand: 'todos', persona: '', label: 'Público general' },
   ];
@@ -2074,7 +2081,7 @@
     const product = (ad.product || DEFAULTS.publicidad.product).replace(/\s+/g, ' ').trim();
     if (t && t.headline) return t.headline;
     const g = t ? t.gender : ad.segment;
-    if (g === 'hombre') return `${product}: potencia tu siguiente movimiento`;
+    if (g === 'hombre') return `${product}: potencia tu next movimiento`;
     if (g === 'mujer') return `${product}: diseñado para moverte a tu manera`;
     return `${product}: entra en la experiencia`;
   }
@@ -2082,8 +2089,8 @@
   function getTargetTheme(t) {
     const g = t ? t.gender : 'neutral';
     const age = t ? t.ageBand : 'todos';
-    if (g === 'hombre') return { a: '#00ff41', b: '#50c8ff', c: '#07140d', label: 'HOMBRE' + (age !== 'todos' ? ' ' + age : '') };
-    if (g === 'mujer') return { a: '#d4ff5a', b: '#ff5cc8', c: '#140716', label: 'MUJER' + (age !== 'todos' ? ' ' + age : '') };
+    if (g === 'hombre') return { a: '#00ff41', b: '#50c8ff', c: '#07140d', label: 'MALE' + (age !== 'todos' ? ' ' + age : '') };
+    if (g === 'mujer') return { a: '#d4ff5a', b: '#ff5cc8', c: '#140716', label: 'FEMALE' + (age !== 'todos' ? ' ' + age : '') };
     return { a: '#c8ffd0', b: '#00ff41', c: '#020602', label: 'TODOS' + (age !== 'todos' ? ' ' + age : '') };
   }
 
@@ -2092,8 +2099,8 @@
     if (storeTargets.length > 0) return storeTargets;
     // Fallback a modelo antiguo (3 segmentos)
     return [
-      makeTarget({ gender: 'hombre', ageBand: 'todos', label: 'Hombre' }),
-      makeTarget({ gender: 'mujer', ageBand: 'todos', label: 'Mujer' }),
+      makeTarget({ gender: 'hombre', ageBand: 'todos', label: 'Male' }),
+      makeTarget({ gender: 'mujer', ageBand: 'todos', label: 'Female' }),
       makeTarget({ gender: 'todos', ageBand: 'todos', label: 'Neutral' }),
     ];
   }
@@ -2176,11 +2183,11 @@
     } else {
       wrap.hidden = true;
       img.removeAttribute('src');
-      meta.textContent = 'Sin imagen cargada';
+      meta.textContent = 'No image loaded';
     }
   }
 
-  function bindPublicidadImageUpload() {
+  function bindAdvertisingImageUpload() {
     if (document.body.dataset.page !== 'publicidad') return;
     const input = document.getElementById('ad-image-file');
     const pick = document.getElementById('ad-image-pick');
@@ -2199,7 +2206,7 @@
         const dataUrl = await new Promise((resolve, reject) => {
           const fr = new FileReader();
           fr.onload = () => resolve(fr.result);
-          fr.onerror = () => reject(fr.error || new Error('No se pudo leer la imagen'));
+          fr.onerror = () => reject(fr.error || new Error('Could not read the image'));
           fr.readAsDataURL(file);
         });
         adBaseImage = {
@@ -2208,9 +2215,9 @@
           dataUrl: String(dataUrl),
         };
         updateAdImagePreview();
-        showToast('Imagen base cargada');
+        showToast('Image base cargada');
       } catch (err) {
-        showToast((err && err.message) || 'No se pudo cargar la imagen');
+        showToast((err && err.message) || 'Could not load the image');
       } finally {
         input.value = '';
       }
@@ -2224,7 +2231,7 @@
     const t = { gender: segment === 'male' ? 'hombre' : segment === 'female' ? 'mujer' : 'todos', ageBand: 'todos' };
     const svg = targetedAdSvg(ad, store, t);
     const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-    const title = `${store.cliente || 'XpaceOS'} // ${getTargetLabel(t)} // ${ad.product || 'Publicidad'}`;
+    const title = `${store.cliente || 'XpaceOS'} // ${getTargetLabel(t)} // ${ad.product || 'Advertising'}`;
     return {
       segment,
       target: t,
@@ -2246,7 +2253,7 @@
     const svg = targetedAdSvg(ad, store, t);
     const url = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     const label = getTargetLabel(t);
-    const title = `${store.cliente || 'XpaceOS'} // ${label} // ${ad.product || 'Publicidad'}`;
+    const title = `${store.cliente || 'XpaceOS'} // ${label} // ${ad.product || 'Advertising'}`;
     return {
       target: t,
       label,
@@ -2259,7 +2266,7 @@
       hasBaseImage: !!(adBaseImage && adBaseImage.dataUrl),
       baseImageName: adBaseImage && adBaseImage.name ? adBaseImage.name : '',
       // Prompt listo para IA (para usar en /crear/ Marketing o modelos externos)
-      promptForAI: `Publicidad para ${label}. Producto: ${ad.product}. ${ad.context || ''}. Oferta: ${getTargetedOffer(ad, t)}. Estilo: ${ad.style || ''}. ${t.visual || ''} ${t.tone ? 'Tono: ' + t.tone : ''}. Alta calidad, cinematográfico, matrix retail neon, texto legible alto contraste, composición hero del producto.`,
+      promptForAI: `Advertising para ${label}. Product: ${ad.product}. ${ad.context || ''}. Oferta: ${getTargetedOffer(ad, t)}. Style: ${ad.style || ''}. ${t.visual || ''} ${t.tone ? 'Tone: ' + t.tone : ''}. Alta calidad, cinematográfico, matrix retail neon, texto legible alto contraste, composición hero del producto.`,
     };
   }
 
@@ -2271,7 +2278,7 @@
     if (opts.source) store.publicidad.source = String(opts.source);
     saveStore(store);
     updateSegmentedAdUi();
-    if (opts.autoplay) playPublicidad();
+    if (opts.autoplay) playAdvertising();
   }
 
   function updateSegmentedAdUi() {
@@ -2284,14 +2291,14 @@
     const label = document.getElementById('adSignalLabel');
     if (label) label.textContent = AUDIENCE_LABELS[ad.segment] || AUDIENCE_LABELS.neutral;
     const meta = document.getElementById('adSignalMeta');
-    if (meta) meta.textContent = `fuente: ${ad.source || 'Simulador local'} · confianza ${ad.confidence || '0.64'}`;
+    if (meta) meta.textContent = `source: ${ad.source || 'Local simulator'} · confidence ${ad.confidence || '0.64'}`;
     const sourceSelect = document.getElementById('ad-source');
     if (sourceSelect && [...sourceSelect.options].some((option) => option.value === ad.source)) {
       sourceSelect.value = ad.source;
     }
   }
 
-  function playPublicidad() {
+  function playAdvertising() {
     const { store, ad } = currentAdData();
     const targets = getEffectiveTargets(ad);
     const variants = targets.map((t) => targetVariantData(store, ad, t));
@@ -2333,7 +2340,7 @@
           `).join('')}
         </div>
         <pre class="player-body">${JSON.stringify(plan, null, 2).replace(/</g,'&lt;')}</pre>
-        <small class="player-foot">// Variantes generadas para targets definidos (género + edad + persona). Haz clic en una para activar. Copia los prompts para usar en /crear/ (formato Marketing) o modelos externos.</small>
+        <small class="player-foot">// Variants generadas para targets definidos (género + edad + persona). Haz clic en una para activar. Copia los prompts para usar en /crear/ (formato Marketing) o modelos externos.</small>
       </div>`);
 
     document.querySelectorAll('[data-target-id]').forEach((card) => {
@@ -2352,8 +2359,8 @@
 
   function bindSegmentedAds() {
     if (document.body.dataset.page !== 'publicidad') return;
-    bindPublicidadImageUpload();
-    bindPublicidadTargets();
+    bindAdvertisingImageUpload();
+    bindAdvertisingTargets();
     const params = new URLSearchParams(location.search);
     const incoming = params.get('segment') || params.get('audience');
     if (incoming) {
@@ -2369,11 +2376,11 @@
       const seq = ['male', 'female', 'neutral'];
       const current = currentAdData().ad.segment;
       const next = seq[(seq.indexOf(current) + 1) % seq.length] || 'neutral';
-      setAudienceSegment(next, { confidence: (0.68 + Math.random() * 0.24).toFixed(2), source: 'Simulador local', autoplay: true });
+      setAudienceSegment(next, { confidence: (0.68 + Math.random() * 0.24).toFixed(2), source: 'Local simulator', autoplay: true });
     });
     window.ADMIRA_SEGMENTED_AD = {
       setAudience: ({ segment, confidence, source, autoplay } = {}) => setAudienceSegment(segment, { confidence, source: source || 'XpaceOS LiveCam', autoplay: autoplay !== false }),
-      render: playPublicidad,
+      render: playAdvertising,
     };
     window.addEventListener('message', (event) => {
       const data = event.data || {};
@@ -2394,14 +2401,14 @@
 
   // === CREAR CAMPAÑA · handoff desde admira.app (fase 2) ===
   // admira.app abre publicidad.html?from=admira&product=&segmentation=&combos=
-  // → construimos UN target por cada combinación de los criterios del circuito
+  // → construimos UN target por cada combinación de los criterios del circuit
   // y, al generar, sacamos UNA versión IA por target, publicada al Stock
   // etiquetada por su segmento (audience/edad/franja/emplazamiento).
   const ADM_AGE_TO_BAND = { nino:'18-24', joven:'18-24', adulto:'35-44', senior:'55+', vejez:'55+' };
   // Dimensiones que generan versiones (mismo orden que admira.app): género × edad × franja × contexto.
   const ADM_DIM_ORDER = ['genders','ages','temporales','contextuales','timeSlots','placements'];
   const ADM_LABELS = {
-    genders:{hombre:'Hombre',mujer:'Mujer'}, ages:{nino:'Niño',joven:'Joven',adulto:'Adulto',senior:'Senior',vejez:'Vejez'},
+    genders:{hombre:'Male',mujer:'Female'}, ages:{nino:'Niño',joven:'Joven',adulto:'Adulto',senior:'Senior',vejez:'Vejez'},
     temporales:{manana:'Mañana',tarde:'Tarde',noche:'Noche'}, contextuales:{exterior:'Exterior',interior:'Interior'},
     timeSlots:{manana:'Mañana',mediodia:'Mediodía',tarde:'Tarde',noche:'Noche'}, placements:{exterior:'Exterior',interior:'Interior'},
   };
@@ -2464,8 +2471,8 @@
     let banner = document.getElementById('admCampaignBanner');
     if (!banner) { banner = document.createElement('div'); banner.id = 'admCampaignBanner'; host.insertBefore(banner, host.firstChild); }
     banner.style.cssText = 'background:linear-gradient(90deg,rgba(120,243,255,.1),rgba(255,216,102,.08));border:1px solid rgba(120,243,255,.35);border-radius:10px;padding:12px 14px;margin:0 0 12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap';
-    banner.innerHTML = `<div><b style="color:#ffd866">Campaña desde Admira:</b> ${product} · <b>${combos.length}</b> versiones (una por segmento del circuito)${ctxLine ? `<div style="font-size:11.5px;color:#9ad8ff;margin-top:3px">Contexto en todas: <span style="color:#ffd866">${ctxLine}</span></div>` : ''}</div>
-      <button type="button" id="admGenBtn" class="btn play" style="white-space:nowrap">✨ GENERAR ${combos.length} VERSIONES → STOCK</button>
+    banner.innerHTML = `<div><b style="color:#ffd866">Campaña desde Admira:</b> ${product} · <b>${combos.length}</b> versiones (una por segmento del circuit)${ctxLine ? `<div style="font-size:11.5px;color:#9ad8ff;margin-top:3px">Contexto en todas: <span style="color:#ffd866">${ctxLine}</span></div>` : ''}</div>
+      <button type="button" id="admGenBtn" class="btn play" style="white-space:nowrap">✨ GENERATE ${combos.length} VERSIONS → STOCK</button>
       <div id="admGenProgress" style="flex-basis:100%;font-size:12px;color:#9effa0"></div>`;
     document.getElementById('admGenBtn').addEventListener('click', () => generateAdmiraCampaign(targets, store.publicidad.campaign));
   }
@@ -2476,9 +2483,9 @@
     let ok = 0, fail = 0, lastErr = '';
     for (let i = 0; i < targets.length; i++) {
       const t = targets[i];
-      if (prog) prog.textContent = `Generando ${i + 1}/${targets.length} · ${t.label}…  (✓${ok} ✗${fail})`;
+      if (prog) prog.textContent = `Generating ${i + 1}/${targets.length} · ${t.label}…  (✓${ok} ✗${fail})`;
       const ctxSuffix = (t._ctx && t._ctx.promptSuffix) ? ' ' + t._ctx.promptSuffix.charAt(0).toUpperCase() + t._ctx.promptSuffix.slice(1) + '.' : '';
-      const prompt = `Anuncio publicitario de ${t.offer} dirigido a: ${t.label}.${ctxSuffix} Estilo retail premium, composición limpia, llamada a la acción clara, alta calidad fotográfica, sin texto ilegible.`;
+      const prompt = `Anuncio publicitario de ${t.offer} dirigido a: ${t.label}.${ctxSuffix} Style retail premium, composición limpia, llamada a la acción clara, alta calidad fotográfica, sin texto ilegible.`;
       try {
         const r = await fetch(XAI_WORKER_URL + '/xai/image', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -2488,7 +2495,7 @@
         // /xai/image (grok-imagine) responde { data:[{ b64_json, mime }] }
         const first = d && d.data && d.data[0];
         const b64 = first && first.b64_json;
-        if (!r.ok || !b64) throw new Error((d && d.error && (d.error.message || JSON.stringify(d.error))) || 'sin imagen');
+        if (!r.ok || !b64) throw new Error((d && d.error && (d.error.message || JSON.stringify(d.error))) || 'no image');
         const imgMime = (first && first.mime) || 'image/jpeg';
         const pr = await fetch(STOCK_PUBLISH_URL, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -2510,7 +2517,7 @@
     if (typeof showToast === 'function') showToast(`${ok} versiones publicadas al Stock`);
   }
 
-  // === UI para Targets (nuevo modelo de Publicidad con Target) ===
+  // === UI para Targets (nuevo modelo de Advertising con Target) ===
   function renderTargetsList() {
     const container = document.getElementById('targetsList');
     if (!container) return;
@@ -2544,7 +2551,7 @@
           <input data-tid="${t.id}" data-field="offer" placeholder="oferta específica" value="${t.offer || ''}" style="grid-column:1/-1" />
         </div>
         <div class="t-actions">
-          <button type="button" class="btn-mini" data-apply="${t.id}">Aplicar señal</button>
+          <button type="button" class="btn-mini" data-apply="${t.id}">Apply señal</button>
         </div>
       </div>
     `).join('');
@@ -2604,7 +2611,7 @@
     renderTargetsList();
   }
 
-  function bindPublicidadTargets() {
+  function bindAdvertisingTargets() {
     if (document.body.dataset.page !== 'publicidad') return;
 
     // Seed demo targets on first visit to the publicidad page (great onboarding for "creación con Target")
@@ -2613,8 +2620,8 @@
       store.publicidad = {
         ...(store.publicidad || DEFAULTS.publicidad),
         targets: [
-          makeTarget({ gender: 'hombre', ageBand: '25-34', persona: 'tech-urbano', label: 'Hombres 25-34 Tech' }),
-          makeTarget({ gender: 'mujer', ageBand: '25-34', persona: 'profesional', label: 'Mujeres 25-34 Profesional' }),
+          makeTarget({ gender: 'hombre', ageBand: '25-34', persona: 'tech-urbano', label: 'Males 25-34 Tech' }),
+          makeTarget({ gender: 'mujer', ageBand: '25-34', persona: 'profesional', label: 'Femalees 25-34 Profesional' }),
           makeTarget({ gender: 'todos', ageBand: '18-24', persona: 'joven', label: 'Jóvenes 18-24 Unisex' }),
         ],
         mode: 'batch',
@@ -2654,19 +2661,19 @@
     if (!btn) return;
     const map = {
       audio: playAudio,
-      musica: playMusica,
-      imagenes: playImagenes,
+      musica: playMusic,
+      imagenes: playImages,
       video: playVideo,
-      plataforma: playPlataforma,
-      publicidad: playPublicidad,
+      plataforma: playPlatform,
+      publicidad: playAdvertising,
     };
     const fn = map[page];
     if (!fn) { btn.hidden = true; return; }
     const labels = {
-      audio: '🎙️ CREAR MEGAFONÍA',
-      musica: '🎵 CREAR MÚSICA',
-      imagenes: '✨ CREAR IMAGEN',
-      video: '✨ CREAR VÍDEO',
+      audio: '🎙️ CREAR PA',
+      musica: '🎵 CREAR MUSIC',
+      imagenes: '✨ CREATE IMAGE',
+      video: '✨ CREATE VÍDEO',
       plataforma: '▶ REPRODUCIR TODO DE NUEVO',
       publicidad: '✨ REGENERAR ANUNCIO',
     };
@@ -2677,7 +2684,7 @@
     });
   }
 
-  // Genera letras con Gemini 2.5 Flash vía worker
+  // Genera letras con Gemini 2.5 Flash via worker
   function bindGenLyrics() {
     const btn = document.getElementById('genLyrics');
     const ta = document.getElementById('m-letra');
@@ -2687,9 +2694,9 @@
       const brief = { ...(store.musica || {}), cliente: store.cliente };
       const idioma = (store.audio && store.audio.idioma) ? (LANG_MAP[store.audio.idioma] || 'es-ES').split('-')[0] : 'es';
       const oldLabel = btn.textContent;
-      btn.textContent = '⏳ generando...';
+      btn.textContent = '⏳ generating...';
       btn.disabled = true;
-      ta.value = '// generando letra con Gemini 2.5 Flash...';
+      ta.value = '// generating lyrics with Gemini 2.5 Flash...';
       try {
         const r = await fetch(ELEVEN_WORKER_URL + '/llm/lyrics', {
           method: 'POST',
@@ -2705,7 +2712,7 @@
           const s = loadStore();
           setNested(s, 'musica.letra', data.text);
           saveStore(s);
-          showToast('Letra generada');
+          showToast('Lyrics generada');
         }
       } catch (e) {
         ta.value = '// ERROR: ' + String(e);
@@ -2716,7 +2723,7 @@
     });
   }
 
-  // ─── Stock público (R2 vía worker pixer-eleven) ─────────────────
+  // ─── Stock público (R2 via worker pixer-eleven) ─────────────────
   // Contract esperado:
   //   POST /stock/publish  → body { type, motor, prompt, costEst, mime?,
   //                                  base64? | sourceUrl?, thumbnail? }
@@ -2725,6 +2732,48 @@
   //     → { items: [{ id, type, motor, prompt, costEst, url, thumbnail, createdAt }], cursor? }
   const STOCK_PUBLISH_URL = ELEVEN_WORKER_URL + '/stock/publish';
   const STOCK_LIST_URL    = ELEVEN_WORKER_URL + '/stock/list';
+
+  // ⬇ DESCARGAR A ESTE ORDENADOR
+  // Antes esto era `<a href="https://…" download>`: el atributo `download` lo
+  // ignoran los browseres cuando el href es de otro origen, así que el clic
+  // NO guardaba nada — abría el mp4 en una pestaña. Y las imágenes generadas no
+  // tenían ni botón. Ahora lo hace /assets/descarga-local.js (fetch → blob →
+  // objectURL, que ya es same-origin) con un nombre de fichero legible.
+  function downloadBtnHTML(meta, label) {
+    const m = meta || {};
+    const lite = {
+      type: m.type || '',
+      motor: m.motor || '',
+      title: String(m.title || m.prompt || '').slice(0, 140),
+      mime: m.mime || '',
+      // Las data: URL (Image/Gemini devuelve base64) pesan megas: no caben en un
+      // atributo. Se leen del propio <img>/<video> de la tarjeta al pulsar.
+      url: /^data:/.test(String(m.url || '')) ? '' : (m.url || ''),
+    };
+    const json = JSON.stringify(lite).replace(/'/g, '&#39;');
+    return `<button type="button" class="btn download-btn" data-download-meta='${json}' title="Save the file to this computer with a readable name">⬇ ${label || 'Download'}</button>`;
+  }
+
+  // Fichero de la tarjeta en la que vive el botón (para las data: URL y para los
+  // resultados con varias versiones, donde cada una tiene su propio media).
+  function downloadSrcNear(btn) {
+    const card = btn.closest('.music-result-item, .player-card, .cmp-cell') || document;
+    const el = card.querySelector('img.player-img, video, audio, img');
+    return el ? (el.currentSrc || el.src || '') : '';
+  }
+
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('.download-btn');
+    if (!b) return;
+    e.preventDefault();
+    let meta = {};
+    try { meta = JSON.parse(b.dataset.downloadMeta || '{}'); } catch {}
+    const url = meta.url || downloadSrcNear(b);
+    if (!url) { showToast('❌ no hay fichero que descargar'); return; }
+    const DL = window.PixeriaDescarga;
+    if (!DL) { window.open(url, '_blank', 'noopener'); return; }  // sin el módulo, lo de siempre
+    DL.item({ type: meta.type, title: meta.title, mime: meta.mime, url });
+  });
 
   function publishBtnHTML(meta) {
     const json = JSON.stringify(meta).replace(/'/g, '&#39;');
@@ -2748,7 +2797,7 @@
   async function publishToStock(meta, btn) {
     if (btn) { btn.disabled = true; btn.dataset.origLabel = btn.textContent; btn.textContent = '⏳ subiendo...'; }
     try {
-      // Imágenes con URL externa (Nano Banana): captura el <img> ya mostrado a
+      // Images con URL externa (Nano Banana): captura el <img> ya mostrado a
       // base64 (CORS-safe) → evita el re-fetch servidor (referer) y la
       // re-generación no determinista. Publica EXACTAMENTE lo que se ve.
       if (btn && (meta.type === 'image' || meta.type === 'imagen') && meta.url
@@ -2764,7 +2813,7 @@
           } catch (_) { /* canvas tainted → seguirá por sourceUrl */ }
         }
       }
-      // Música Suno: la URL del botón puede ser la de streaming (audiopipe, NO
+      // Music Suno: la URL del botón puede ser la de streaming (audiopipe, NO
       // descargable por el worker). Re-resolvemos a la URL final (cdn) por el id
       // del clip, esperando a que esté "complete" si hace falta.
       if (meta.type === 'music' && meta.clipId && (!meta.url || /audiopipe\.suno/.test(meta.url) || /streaming/.test(meta.url))) {
@@ -2791,7 +2840,12 @@
         thumbnail: meta.thumbnail || null,
         quality: meta.quality || motorQuality(meta.motor),  // good/better/best (default good)
       };
-      if (meta.url && (meta.url.startsWith('data:') || meta.url.startsWith('blob:'))) {
+      // Fichero ya subido por partes a uploads/: el Worker lo recoge de R2 y no
+      // viaja nada en este JSON. Es lo que permite pasar de los ~74 MB.
+      if (meta.r2Staged) {
+        payload.r2Staged = meta.r2Staged;
+        payload.mime = meta.mime || null;
+      } else if (meta.url && (meta.url.startsWith('data:') || meta.url.startsWith('blob:'))) {
         const { mime, base64 } = await urlToBase64(meta.url);
         payload.mime = mime;
         payload.base64 = base64;
@@ -2834,7 +2888,7 @@
     publishToStock(meta, b);
   });
 
-  // ─── Enviar al feed de Admira XP (KV vía worker) ────────────────
+  // ─── Enviar al feed de Admira XP (KV via worker) ────────────────
   const SIGNAGE_URL = ELEVEN_WORKER_URL + '/signage';
 
   function selectedXpacioTarget() {
@@ -2899,7 +2953,7 @@
     if (cliente && core) return `${cliente} // ${core}`;
     return core || cliente || section;
   }
-  // Genera URL Pollinations (FLUX schnell, gratis, deterministica) para usar
+  // Genera URL Pollinations (FLUX schnell, free, deterministica) para usar
   // como caratula de musica/audio cuando el motor no devuelve image_url propia
   // (Suno si la trae; Lyria y TTS no).
   function pollinationsCoverFor(section, store) {
@@ -3000,7 +3054,7 @@
     btn.addEventListener('click', async () => {
       const asset = detectLatestAsset();
       if (!asset) {
-        showToast('Genera primero contenido (✨ CREAR)');
+        showToast('Genera primero contenido (✨ CREATE)');
         return;
       }
       const cliente = (loadStore().cliente || 'sin cliente').slice(0, 80);
@@ -3091,7 +3145,7 @@
           payload.src = asset.src;
           setSignageStatus({ stage: '📤 Preparando URL externa', log: asset.src.slice(0, 100), pct: 30 });
         } else {
-          setSignageStatus({ stage: '⚙ Convirtiendo asset a base64', log: 'puede tardar unos segundos en videos largos...', indeterminate: true });
+          setSignageStatus({ stage: '⚙ Convirtiendo asset a base64', log: 'puede tardar unos seconds en videos largos...', indeterminate: true });
           const t0 = Date.now();
           const { mime, base64 } = await urlToBase64(asset.src);
           payload.mime = mime;
@@ -3214,7 +3268,7 @@
     setInterval(refreshXtoreStatus, 10000);
   }
 
-  // ─── Importar desde URL (yt-dlp) ─────────────────────────────────
+  // ─── Import desde URL (yt-dlp) ─────────────────────────────────
   // Dos backends posibles segun como se sirva la pagina:
   //   - localhost (suno-local :3777)  → audio mp3 + video mp4 (preferente cuando esta arriba)
   //   - HTTPS publico (admira-tube Funnel) → audio mp3 + video mp4
@@ -3222,7 +3276,7 @@
   // Desde GitHub Pages (https://...) el browser bloquea fetch a http://localhost
   // por mixed-content, asi que routeamos al Funnel.
   // Backends posibles, en orden de preferencia. Cada uno con su health-check.
-  // En https público el navegador bloquea fetch a http://localhost (mixed-content),
+  // En https público el browser bloquea fetch a http://localhost (mixed-content),
   // así que ahí solo está admira-tube. En local probamos suno-local y caemos a admira-tube.
   function importEndpoints() {
     const isLocalOrigin = location.protocol === 'http:'
@@ -3363,7 +3417,7 @@
     retryBtn.type = 'button';
     retryBtn.className = 'btn';
     retryBtn.id = 'retryImport';
-    retryBtn.textContent = '↻ Reintentar';
+    retryBtn.textContent = '↻ Retry';
     retryBtn.hidden = true;
     document.querySelector('#importModal .keys-actions')?.appendChild(retryBtn);
 
@@ -3373,6 +3427,7 @@
     const localInput = document.createElement('input');
     localInput.type = 'file';
     localInput.accept = 'audio/*,video/*,image/*';
+    localInput.multiple = true;   // varios episodios de una tacada, no uno a uno
     localInput.hidden = true;
     localInput.id = 'importLocalFile';
     dlg.appendChild(localInput);
@@ -3380,29 +3435,130 @@
     localBtn.type = 'button';
     localBtn.className = 'btn';
     localBtn.id = 'importLocalBtn';
-    localBtn.textContent = '📂 Archivo local → Stock';
-    localBtn.title = 'Sube un archivo desde este dispositivo directo al Stock (no depende del Mac Mini)';
+    localBtn.textContent = '📂 Local files → Stock';
+    localBtn.title = 'Sube uno o varios archivos de este dispositivo directo al Stock (no depende del Mac Mini)';
     document.querySelector('#importModal .keys-actions')?.appendChild(localBtn);
     localBtn.addEventListener('click', () => localInput.click());
     localInput.addEventListener('change', () => {
-      const file = localInput.files && localInput.files[0];
-      if (file) publishLocalFile(file);
+      const files = Array.from(localInput.files || []);
+      if (files.length) publishLocalFiles(files);
       localInput.value = '';
     });
 
-    // Publica un archivo del dispositivo directo al Stock, sin pasar por el Mac.
-    async function publishLocalFile(file) {
-      if (importInFlight) return;
-      const stat = document.getElementById('importStatus');
-      stat.style.display = 'block';
-      retryBtn.hidden = true;
-      importInFlight = true;
+    // ── SUBIDA POR PARTES ────────────────────────────────────────────────────
+    // El asset viaja normalmente en base64 dentro del JSON de /stock/publish, y
+    // el borde de Cloudflare corta el cuerpo en 100 MB (413 medido) → techo de
+    // ~74 MB. Con R2 multipart cada trozo es su propia petición y ese techo
+    // desaparece. Devuelve la clave de uploads/, o null si el Worker todavía no
+    // tiene los endpoints (entonces se sigue por el camino de siempre).
+    const STOCK_UPLOAD_BASE = ELEVEN_WORKER_URL + '/stock/upload';
+    async function subirPorPartes(file, onProgress) {
+      let ini;
+      try {
+        const r = await fetch(STOCK_UPLOAD_BASE + '/init', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mime: file.type || 'application/octet-stream', size: file.size }),
+        });
+        if (!r.ok) return null;                 // 404: Worker sin la subida por partes
+        ini = await r.json();
+      } catch { return null; }
+      if (!ini || !ini.ok || !ini.key || !ini.uploadId) return null;
+      const partSize = ini.partSize || 25 * 1024 * 1024;
+      const parts = [];
+      let subido = 0;
+      try {
+        for (let n = 1, off = 0; off < file.size; n++, off += partSize) {
+          const trozo = file.slice(off, Math.min(off + partSize, file.size));
+          const pr = await fetch(`${STOCK_UPLOAD_BASE}/part?key=${encodeURIComponent(ini.key)}`
+            + `&uploadId=${encodeURIComponent(ini.uploadId)}&n=${n}`, { method: 'POST', body: trozo });
+          if (!pr.ok) throw new Error(`trozo ${n}: ${await errorLegible(pr)}`);
+          const pd = await pr.json();
+          parts.push({ partNumber: pd.partNumber, etag: pd.etag });
+          subido += trozo.size;
+          if (onProgress) onProgress(subido, file.size);
+        }
+        const cr = await fetch(STOCK_UPLOAD_BASE + '/complete', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: ini.key, uploadId: ini.uploadId, parts }),
+        });
+        if (!cr.ok) throw new Error('cierre: ' + await errorLegible(cr));
+        return ini.key;
+      } catch (e) {
+        // Si nos quedamos a medias, se aborta: si no, los trozos ocupan sitio
+        // en el bucket para siempre.
+        try {
+          await fetch(STOCK_UPLOAD_BASE + '/abort', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: ini.key, uploadId: ini.uploadId }),
+          });
+        } catch {}
+        throw e;
+      }
+    }
+
+    // TOPE POR FICHERO. El asset viaja a /stock/publish como data: URL dentro de
+    // un JSON, y base64 infla un 33%: con el límite de 100 MB de cuerpo que tiene
+    // un Worker de Cloudflare, por encima de ~70 MB el POST se cae. Antes eso
+    // salía como un error de red sin explicación después de leer el fichero
+    // entero. El asset más grande que hay hoy en el Stock son 56,5 MB, así que
+    // el tope es real, no teórico. (Carlos, 28-ago-2026.)
+    const MAX_LOCAL = 70 * 1024 * 1024;
+
+    // Publica UN archivo del dispositivo directo al Stock, sin pasar por el Mac.
+    // Devuelve {ok, id, error}; no navega (de eso se encarga el lote).
+    async function publicarUnLocal(file, stat, prefijo) {
       const mt = file.type || '';
       const type = mt.startsWith('video') ? 'video' : mt.startsWith('image') ? 'image' : 'audio';
       const progress = importProgressStart(type === 'video' ? 'video' : 'audio');
       try {
         const sizeMB = (file.size / 1024 / 1024).toFixed(2);
-        stat.textContent = `// archivo local: ${file.name} · ${sizeMB} MB · subiendo al Stock…`;
+        // Por encima del tope del cuerpo, se sube por partes a R2. Si el Worker
+        // todavía no tiene esos endpoints, subirPorPartes devuelve null y se
+        // explica el porqué en vez de fallar con un error de red opaco.
+        if (file.size > MAX_LOCAL) {
+          stat.textContent = `${prefijo}${file.name} · ${sizeMB} MB · subiendo por partes…`;
+          let clave = null;
+          try {
+            clave = await subirPorPartes(file, (hecho, total) => {
+              progress?.update(hecho, total, 0);
+              stat.textContent = `${prefijo}${file.name} · subiendo por partes… `
+                + `${(hecho / 1048576).toFixed(0)} de ${sizeMB} MB`;
+            });
+          } catch (e) {
+            progress?.error('falló la subida por partes');
+            const msg = `${file.name}: ${String(e && e.message || e)}`;
+            stat.textContent = `${prefijo}❌ ${msg}`;
+            return { ok: false, error: msg };
+          }
+          if (!clave) {
+            progress?.error('demasiado grande');
+            const msg = `${file.name} pesa ${sizeMB} MB y este Stock todavía no admite `
+              + `subida por partes (tope ${(MAX_LOCAL / 1048576).toFixed(0)} MB: el asset viaja en base64 `
+              + `y el borde corta el cuerpo en 100 MB). Mientras tanto: scripts/stock-subir.py ${file.name}`;
+            stat.textContent = `${prefijo}❌ ${msg}`;
+            return { ok: false, error: msg };
+          }
+          const metaPartes = {
+            type, motor: 'local',
+            prompt: file.name,
+            title: file.name.replace(/\.[^.]+$/, ''),
+            comment: (document.getElementById('import-comment')?.value || '').trim() || null,
+            costEst: `local · ${sizeMB}MB`,
+            r2Staged: clave,
+            mime: mt || null,
+          };
+          const res = await publishToStock(metaPartes, null);
+          if (res && res.ok) {
+            progress?.done(file.size, 0);
+            stat.textContent = `${prefijo}✓ ${file.name} · ${sizeMB} MB · ✅ en Stock`;
+            return { ok: true, id: res.id || '' };
+          }
+          progress?.error('fallo al publicar');
+          const fallo = (res && res.error || 'fallo').slice(0, 140);
+          stat.textContent = `${prefijo}❌ Stock: ${fallo}`;
+          return { ok: false, error: 'Stock: ' + fallo };
+        }
+        stat.textContent = `${prefijo}${file.name} · ${sizeMB} MB · subiendo al Stock…`;
         const dataUrl = await new Promise((res, rej) => {
           const fr = new FileReader();
           fr.onload = () => res(fr.result);
@@ -3422,20 +3578,50 @@
         const result = await publishToStock(meta, null);
         if (result && result.ok) {
           progress?.done(file.size, 0);
-          stat.textContent = `✓ ${file.name} · ✅ en Stock · saltando…`;
-          const newId = result.id || '';
-          setTimeout(() => {
-            try { dlg.close(); } catch {}
-            location.href = 'https://www.admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
-          }, 900);
-        } else {
-          progress?.error('fallo al publicar');
-          stat.textContent = `❌ Stock: ${(result && result.error || 'fallo').slice(0, 140)}`;
+          stat.textContent = `${prefijo}✓ ${file.name} · ✅ en Stock`;
+          return { ok: true, id: result.id || '' };
         }
+        progress?.error('fallo al publicar');
+        const fallo = (result && result.error || 'fallo').slice(0, 140);
+        stat.textContent = `${prefijo}❌ Stock: ${fallo}`;
+        return { ok: false, error: 'Stock: ' + fallo };
       } catch (e) {
         const msg = String(e && e.message || e);
         progress?.error(msg.slice(0, 80));
-        stat.textContent = `// ERROR archivo local: ${msg}`;
+        stat.textContent = `${prefijo}ERROR: ${msg}`;
+        return { ok: false, error: msg };
+      }
+    }
+
+    // Sube VARIOS archivos en serie. Antes solo cabía uno y, además, saltaba al
+    // Stock nada más publicarlo: subir nueve episodios eran nueve vueltas al
+    // diálogo. Ahora se eligen todos de golpe y solo se salta al terminar.
+    async function publishLocalFiles(files) {
+      if (importInFlight) return;
+      const stat = document.getElementById('importStatus');
+      stat.style.display = 'block';
+      retryBtn.hidden = true;
+      importInFlight = true;
+      try {
+        const total = files.length;
+        const hechos = [];
+        for (let i = 0; i < total; i++) {
+          const prefijo = total > 1 ? `// [${i + 1}/${total}] ` : '// ';
+          const r = await publicarUnLocal(files[i], stat, prefijo);
+          hechos.push({ nombre: files[i].name, ...(r || { ok: false, error: 'sin resultado' }) });
+        }
+        const ok = hechos.filter(h => h.ok);
+        if (total > 1) {
+          stat.textContent = `// ${ok.length} de ${total} en el Stock\n`
+            + hechos.map(h => `// ${h.ok ? '✅' : '❌'} ${h.nombre}${h.ok ? '' : ' — ' + String(h.error).slice(0, 160)}`).join('\n');
+        }
+        if (ok.length && ok.length === total) {
+          const newId = ok[ok.length - 1].id || '';
+          setTimeout(() => {
+            try { dlg.close(); } catch {}
+            location.href = 'https://www.admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
+          }, total > 1 ? 1800 : 900);
+        }
       } finally {
         importInFlight = false;
       }
@@ -3473,10 +3659,16 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url, format: fmt }),
       });
-      // Cualquier respuesta no-OK o no-JSON ⇒ el server no tiene los endpoints
-      // nuevos (404/HTML estático) o rechazó la URL ⇒ caemos al POST único, que
-      // mostrará el error real (p. ej. host no permitido) si lo hubiera.
-      if (!startR.ok) return 'fallback';
+      // 404 (o cuerpo no-JSON) ⇒ el server no tiene los endpoints nuevos ⇒ al
+      // POST único de siempre. Pero un 400 con JSON es el server DICIENDO que no
+      // (host no permitido, post de Telegram sin media): repetirlo por la otra
+      // ruta solo hace esperar más para el mismo «no». Se corta aquí.
+      if (!startR.ok) {
+        if (startR.status === 404) return 'fallback';
+        const msg = await errorLegible(startR.clone ? startR.clone() : startR);
+        if (/^HTTP \d+: <|^HTTP \d+: $/.test(msg)) return 'fallback';   // HTML estático
+        throw new Error(msg);
+      }
       let jobId;
       try { jobId = (await startR.json()).jobId; } catch { return 'fallback'; }
       if (!jobId) return 'fallback';
@@ -3487,7 +3679,7 @@
         if (Date.now() - tPoll > MAX_MS) throw new Error('timeout esperando al proxy (>6 min)');
         let st;
         try { st = await (await fetch(`${ep.jobBase}/status?id=${encodeURIComponent(jobId)}`, { cache: 'no-store' })).json(); }
-        catch { continue; } // un poll fallido no aborta; reintenta en el siguiente ciclo
+        catch { continue; } // un poll fallido no aborta; reintenta en el next ciclo
         if (st.state === 'running') {
           const mb = (st.size || 0) / 1024 / 1024;
           if (stat) stat.textContent = `// ${ep.kind} · descargando ${fmt}… ${mb.toFixed(1)} MB`;
@@ -3508,42 +3700,40 @@
     }
 
     // Flujo de un solo POST (suno-local, o admira-tube antiguo como fallback).
+    // El proxy responde en JSON y con frases hechas: {error, message, allowed}.
+    // Volcarlo crudo (era `ERROR 400: {"ok":false,"error":"Host not allowed"…`)
+    // llenaba la caja de comillas y se cortaba justo donde estaba el dato útil.
+    async function errorLegible(r) {
+      let d = null, txt = '';
+      try { txt = await r.text(); d = JSON.parse(txt); } catch {}
+      if (d && typeof d === 'object') {
+        if (d.message) return String(d.message);
+        const base = String(d.error || `HTTP ${r.status}`);
+        if (Array.isArray(d.allowed)) {
+          return `${base}${d.host ? ` (${d.host})` : ''}. Supported hosts: ${d.allowed.join(', ')}.`;
+        }
+        return base;
+      }
+      return `HTTP ${r.status}: ${String(txt).slice(0, 200)}`;
+    }
+
     async function importOneShot(ep, url, fmt, progress) {
       const r = await fetch(ep.url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(ep.bodyFor(url, fmt)),
       });
-      if (!r.ok) {
-        let err = ''; try { err = JSON.stringify(await r.json()); } catch { err = await r.text(); }
-        throw new Error(`ERROR ${r.status}: ${err.slice(0, 300)}`);
-      }
+      if (!r.ok) throw new Error(await errorLegible(r));
       let title = ''; try { title = decodeURIComponent(r.headers.get('X-Tube-Title') || ''); } catch {}
       const { blob } = await fetchWithProgress(r, (received, total, sec) => progress?.update(received, total, sec));
       return { blob, title };
     }
 
-    async function runImport() {
-      if (importInFlight || !lastImportArgs) return;
-      const { url, fmt, comment } = lastImportArgs;
-      const stat = document.getElementById('importStatus');
-      stat.style.display = 'block';
-      retryBtn.hidden = true;
-      importInFlight = true;
-      try {
-        // 1) Pre-chequeo: ¿hay backend vivo? Evita esperar a un timeout largo.
-        const ep = await pickHealthyEndpoint(stat);
-        if (!ep) {
-          stat.textContent = `// El importador (Mac Mini) está dormido o apagado ahora mismo.\n`
-            + `// PLAN B: pulsa «📂 Archivo local → Stock» para subir un archivo\n`
-            + `//   desde este dispositivo directo al Stock (funciona sin el Mac).\n`
-            + `// O reintenta (↻) en unos segundos por si el Mac despierta.`;
-          retryBtn.hidden = false;
-          try { localBtn.focus(); } catch {}
-          return;
-        }
-
-        stat.textContent = `// ${ep.kind} OK · descargando ${fmt}…\n// puede tardar 10-60s según media`;
+    // Importa UNA url. Devuelve {ok, id, error} — no navega: de eso se encarga
+    // el lote, que puede tener varias detrás. (Antes esto era todo `runImport`
+    // y saltaba a /stock nada más publicar, que con varias URLs cortaba el resto.)
+    async function importarUna(ep, url, fmt, comment, stat, prefijo) {
+      {
         const progress = importProgressStart(fmt);
         const t0 = Date.now();
         try {
@@ -3569,7 +3759,7 @@
             prompt: url,
             title: importedTitle || null,
             comment: comment || null,
-            costEst: `gratis · ${sizeMB}MB · ${sec}s`,
+            costEst: `free · ${sizeMB}MB · ${sec}s`,
             url: blobUrl,
             mime,
             thumbnail,
@@ -3582,41 +3772,101 @@
                 <div class="player-head">📥 IMPORTADO · ${kind.toUpperCase()} · ${sizeMB} MB · ${sec}s · ${ep.kind}</div>
                 <${elTag} controls autoplay src="${blobUrl}" style="width:100%;${kind === 'video' ? 'max-height:55vh;' : ''}"></${elTag}>
                 <pre class="player-body">${url.replace(/</g, '&lt;')}</pre>
-                <a class="btn" download="import-${Date.now()}.${fmt === 'video' ? 'mp4' : 'mp3'}" href="${blobUrl}">⬇ Descargar</a>
+                ${downloadBtnHTML(importMeta, 'Download')}
                 ${publishBtnHTML(importMeta)}
                 <small class="player-foot">// vía yt-dlp (${ep.kind}) · publicando en Stock automáticamente...</small>
               </div>`;
           }
-          stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · subiendo a Stock...`;
+          stat.textContent = `${prefijo}✓ Importado (${sizeMB} MB en ${sec}s) · subiendo a Stock…`;
           // Auto-publicar en Stock al finalizar la importación
           const publishBtn = player?.querySelector('.publish-btn');
           const result = await publishToStock(importMeta, publishBtn);
           if (result && result.ok) {
-            stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ✅ en Stock · saltando…`;
-            const newId = result.id || '';
-            setTimeout(() => {
-              try { dlg.close(); } catch {}
-              const target = 'https://www.admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
-              location.href = target;
-            }, 900);
-          } else {
-            stat.textContent = `✓ Importado (${sizeMB} MB en ${sec}s) · ❌ Stock: ${(result && result.error || 'fallo').slice(0, 120)}\n// el archivo sigue en el player; pulsa 📌 para reintentar`;
+            stat.textContent = `${prefijo}✓ Importado (${sizeMB} MB en ${sec}s) · ✅ en Stock`;
+            return { ok: true, id: result.id || '' };
           }
+          const fallo = (result && result.error || 'fallo').slice(0, 120);
+          stat.textContent = `${prefijo}✓ Importado (${sizeMB} MB en ${sec}s) · ❌ Stock: ${fallo}\n// el archivo sigue en el player; pulsa 📌 para reintentar`;
+          return { ok: false, error: 'Stock: ' + fallo };
         } catch (e) {
           const msg = String(e && e.message || e);
           progress?.error(msg.slice(0, 80));
           const isNetwork = /Failed to fetch|NetworkError|ERR_|load failed/i.test(msg);
           if (isNetwork && fmt === 'video') {
-            stat.textContent = `// ERROR: ${msg}\n`
+            stat.textContent = `${prefijo}ERROR: ${msg}\n`
               + `// ${ep.kind} respondió al health-check → el proxy NO está caído.\n`
               + `// Probable timeout del Funnel con la descarga de vídeo.\n`
               + `// Reintenta (↻) o importa como AUDIO.`;
           } else if (isNetwork) {
-            stat.textContent = `// ERROR: ${msg}\n// La conexión con ${ep.kind} se cortó. Reintenta (↻).`;
+            stat.textContent = `${prefijo}ERROR: ${msg}\n// La conexión con ${ep.kind} se cortó. Reintenta (↻).`;
           } else {
-            stat.textContent = `// ${msg}\n// Reintenta (↻).`;
+            stat.textContent = `${prefijo}${msg}`;
           }
+          return { ok: false, error: msg };
+        }
+      }
+    }
+
+    // ── LOTE ─────────────────────────────────────────────────────────────────
+    // El campo URL admite VARIAS (una por línea, o separadas por espacios): se
+    // importan una detrás de otra y solo se salta al Stock cuando acaban todas.
+    // Antes solo cabía una, y quien pegaba cinco veía «Invalid URL».
+    function parseUrls(raw) {
+      return String(raw || '')
+        .split(/[\s,;]+/)
+        .map(u => u.trim().replace(/[<>()\[\]"']/g, ''))
+        .filter(u => /^https?:\/\//i.test(u));
+    }
+
+    async function runImport() {
+      if (importInFlight || !lastImportArgs) return;
+      const { urls, fmt, comment } = lastImportArgs;
+      const stat = document.getElementById('importStatus');
+      stat.style.display = 'block';
+      retryBtn.hidden = true;
+      importInFlight = true;
+      try {
+        // Pre-chequeo: ¿hay backend vivo? Evita esperar a un timeout largo.
+        const ep = await pickHealthyEndpoint(stat);
+        if (!ep) {
+          stat.textContent = `// El importador (Mac Mini) está dormido o apagado ahora mismo.\n`
+            + `// PLAN B: pulsa «📂 Archivo local → Stock» para subir un archivo\n`
+            + `//   desde este dispositivo directo al Stock (funciona sin el Mac).\n`
+            + `// O reintenta (↻) en unos seconds por si el Mac despierta.`;
           retryBtn.hidden = false;
+          try { localBtn.focus(); } catch {}
+          return;
+        }
+
+        const total = urls.length;
+        const hechos = [];
+        for (let i = 0; i < total; i++) {
+          const url = urls[i];
+          const prefijo = total > 1 ? `// [${i + 1}/${total}] ` : '// ';
+          stat.textContent = `${prefijo}${ep.kind} OK · descargando ${fmt}…\n// puede tardar 10-60s según media\n// ${url}`;
+          const r = await importarUna(ep, url, fmt, comment, stat, prefijo);
+          hechos.push({ url, ...(r || { ok: false, error: 'sin resultado' }) });
+          if (total > 1 && i < total - 1) await new Promise(r2 => setTimeout(r2, 600));
+        }
+
+        const ok = hechos.filter(h => h.ok);
+        if (total > 1) {
+          stat.textContent = `// ${ok.length} de ${total} en el Stock\n`
+            + hechos.map(h => `// ${h.ok ? '✅' : '❌'} ${h.url}${h.ok ? '' : ' — ' + String(h.error).slice(0, 140)}`).join('\n');
+        }
+        // Las que fallaron se quedan en el campo para poder reintentarlas solas.
+        const fallidas = hechos.filter(h => !h.ok).map(h => h.url);
+        if (fallidas.length) {
+          const campo = document.getElementById('import-url');
+          if (campo) campo.value = fallidas.join('\n');
+          lastImportArgs = { urls: fallidas, fmt, comment };
+          retryBtn.hidden = false;
+        } else if (ok.length) {
+          const newId = ok[ok.length - 1].id || '';
+          setTimeout(() => {
+            try { dlg.close(); } catch {}
+            location.href = 'https://www.admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
+          }, total > 1 ? 1800 : 900);
         }
       } finally {
         importInFlight = false;
@@ -3625,11 +3875,16 @@
 
     retryBtn.addEventListener('click', runImport);
     document.getElementById('doImport')?.addEventListener('click', () => {
-      const url = document.getElementById('import-url').value.trim();
+      const raw = document.getElementById('import-url').value;
+      const urls = parseUrls(raw);
       const fmt = document.querySelector('input[name="import-fmt"]:checked')?.value || 'audio';
       const comment = (document.getElementById('import-comment')?.value || '').trim();
-      if (!url) return;
-      lastImportArgs = { url, fmt, comment };
+      if (!urls.length) {
+        const stat = document.getElementById('importStatus');
+        if (stat && raw.trim()) { stat.style.display = 'block'; stat.textContent = '// Ninguna URL válida: tienen que empezar por http:// o https://'; }
+        return;
+      }
+      lastImportArgs = { urls, fmt, comment };
       runImport();
     });
   }
@@ -3642,7 +3897,7 @@
     const prompt = (params.get('prompt') || '').trim();
     const ar = params.get('ar') || '';
     const motor = params.get('motor') || '';
-    const encMap = { '1:1': 'Cuadrado 1:1', '16:9': 'Horizontal 16:9', '9:16': 'Vertical 9:16' };
+    const encMap = { '1:1': 'Square 1:1', '16:9': 'Horizontal 16:9', '9:16': 'Vertical 9:16' };
     const store = loadStore();
     if (page === 'imagenes') {
       store.imagenes = { ...(store.imagenes || {}) };
@@ -3657,7 +3912,7 @@
       if (form) hydrate(form);
       showToast(prompt ? 'Brief recibido desde el Consejo' : 'Conexión desde el Consejo');
       if (params.get('autoplay') === '1' && prompt) {
-        setTimeout(() => { try { playImagenes(); } catch (e) { console.warn('[Admira Studio] consejo autoplay', e); } }, 500);
+        setTimeout(() => { try { playImages(); } catch (e) { console.warn('[Admira Studio] consejo autoplay', e); } }, 500);
       }
     }
   }

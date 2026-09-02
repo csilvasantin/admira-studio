@@ -29,7 +29,7 @@ export const SKIN_VERSION = '2026.08.05.r3';
 
 export const SKIN_CSS = `/* Piel de Admira Studio · admira.studio/tiktok — functions/_tiktok-skin.js */
 
-/* 1. PALETA. La de verdad: el segundo :root de assets/styles.css, el que
+/* 1. PALETTE. La de verdad: el segundo :root de assets/styles.css, el que
       gobierna la portada. La primera pasada uso el primero que aparecia —una
       paleta antigua de cianes y cremas— y por eso no se parecia en nada. */
 :root{
@@ -129,7 +129,7 @@ export function skinResponse() {
 }
 
 /**
- * La MARCA de la puerta. Quien entra por admira.studio/tiktok esta en Admira Studio, y
+ * La BRAND de la puerta. Quien entra por admira.studio/tiktok esta en Admira Studio, y
  * la cabecera le decia "ADmiraNeXT". No es un cambio de producto: es la misma
  * herramienta entrando por otra puerta, que es justo lo que ya hace la URL.
  *

@@ -45,7 +45,7 @@
     // No se recarga solo: puede haber un filtro puesto o un formulario a medias.
     // Se ofrece, y decide quien mira.
     b.addEventListener("click", function () { location.reload(); });
-    // Estilo propio para no depender del CSS del site que lo monte. Ámbar, no
+    // Style propio para no depender del CSS del site que lo monte. Ámbar, no
     // rojo: es una cortesía, no una avería.
     var css = document.createElement("style");
     css.textContent =

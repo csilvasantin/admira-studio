@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,15 +35,16 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="canonical" href="https://www.admira.studio/en/imagenes.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/imagenes.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/imagenes.html">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
+  <link rel="canonical" href="https://www.admira.studio/imagenes.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/imagenes.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/imagenes.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/imagenes.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio Studio · Imagenes</title>
-  <meta name="description" content="Brief operativo de Imágenes: visuales, assets y mundos de marca para Admira.xp.">
+  <title>Admira Studio · Images</title>
+  <meta name="description" content="Brief operativo de Images: visuales, assets y worlds de marca para Admira.xp.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
@@ -52,7 +53,8 @@
   <link rel="stylesheet" href="../workspace.css?v=20260717-head-caja">
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
+  <script defer src="/assets/descarga-local.js?v=20260828-r1"></script>
 </head>
 <body data-page="imagenes">
   <!-- Google Tag Manager (noscript) -->
@@ -65,7 +67,7 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/en/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Live Council</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
@@ -90,13 +92,13 @@
     </nav>
     <div class="topnav-actions">
       <div class="language-switcher" aria-label="Language selection">
-        <a class="lang-toggle" href="/imagenes.html" aria-label="Switch to Spanish">ESP</a>
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
       <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
     </div>
   </header>
 
-  <header class="page-head has-gif"><figure class="page-gif"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Digital_rain_animation_big_letters_green_and_white.gif" alt="Imágenes · letras grandes verdes" loading="lazy"><figcaption>// Imágenes · letras grandes verdes</figcaption></figure>
+  <header class="page-head has-gif"><figure class="page-gif"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Digital_rain_animation_big_letters_green_and_white.gif" alt="Images · letras grandes verdes" loading="lazy"><figcaption>// Images · letras grandes verdes</figcaption></figure>
     <p class="eyebrow image">Content type · Images</p>
     <h1>Image creation.</h1>
     <p class="lead">Images for campaigns, products, characters, backgrounds, thumbnails and banners. Define palette, framing, light and prompt for coherent series ready to publish or animate.</p>
@@ -106,82 +108,82 @@
     <form id="briefForm">
       <div class="field" style="margin-bottom: 16px; display:grid; grid-template-columns: minmax(220px, 1fr) auto auto; gap:10px; align-items:end;">
         <div>
-          <label for="proj-cliente">Cliente / proyecto</label>
-          <input id="proj-cliente" name="cliente" type="text" placeholder="Ej. Aena Mallorca - Campaña primavera">
+          <label for="proj-cliente">Client / project</label>
+          <input id="proj-cliente" name="cliente" type="text" placeholder="e.g. Aena Mallorca — Spring campaign">
         </div>
-        <button type="button" class="btn" id="sendToAdmiraXP" title="Envía el último contenido generado al feed de Admira XP">📺 ENVIAR A ADMIRA XP</button>
-        <a class="btn" href="../signage.html" target="_blank" rel="noopener" title="Abre la pantalla de signage para ver lo enviado">↗ VER PANTALLA</a>
+        <button type="button" class="btn" id="sendToAdmiraXP" title="Send the latest generated content to the Admira XP feed">📺 SEND TO ADMIRA XP</button>
+        <a class="btn" href="../signage.html" target="_blank" rel="noopener" title="Open the signage screen to view the content">↗ VIEW SCREEN</a>
       </div>
 
       <article class="module">
-        <div class="module-head"><h3><span class="accent" style="background: var(--image);"></span>Imágenes</h3><small>assets + estilo + consistencia</small></div>
+        <div class="module-head"><h3><span class="accent" style="background: var(--image);"></span>Images</h3><small>assets + style + consistency</small></div>
         <div data-motor-section="imagenes"></div>
         <div class="row2">
-          <div class="field"><label for="i-paleta">Paleta</label><input id="i-paleta" name="imagenes.paleta" type="text" placeholder="Coral + crema + azul medianoche"></div>
-          <div class="field"><label for="i-encuadre">Encuadre</label>
+          <div class="field"><label for="i-paleta">Palette</label><input id="i-paleta" name="imagenes.paleta" type="text" placeholder="Coral + crema + azul medianoche"></div>
+          <div class="field"><label for="i-encuadre">Framing</label>
             <select id="i-encuadre" name="imagenes.encuadre">
               <option value="">—</option>
               <option>Vertical 9:16</option>
-              <option>Cuadrado 1:1</option>
+              <option>Square 1:1</option>
               <option>Horizontal 16:9</option>
               <option>Banner 3:1</option>
-              <option>Mixto</option>
+              <option>Mixed</option>
             </select>
           </div>
         </div>
         <div class="row2">
-          <div class="field"><label for="i-luz">Luz</label><input id="i-luz" name="imagenes.luz" type="text" placeholder="Atardecer suave, contraste medio"></div>
+          <div class="field"><label for="i-luz">Lighting</label><input id="i-luz" name="imagenes.luz" type="text" placeholder="Atardecer suave, contraste medio"></div>
           <div class="field"><label for="i-realismo">Nivel de realismo</label>
             <select id="i-realismo" name="imagenes.realismo">
               <option value="">—</option>
-              <option>Foto realista</option>
+              <option>Photorealistic</option>
               <option>Editorial</option>
-              <option>Ilustracion</option>
-              <option>3D estilizado</option>
+              <option>Illustration</option>
+              <option>Stylized 3D</option>
               <option>Pixel art</option>
             </select>
           </div>
         </div>
         <div class="field"><label for="i-prompt">Prompt principal</label><textarea id="i-prompt" name="imagenes.prompt" placeholder="Familia disfrutando del aeropuerto, luz dorada..."></textarea></div>
-        <div class="field"><label for="i-assets">Assets a generar</label><input id="i-assets" name="imagenes.assets" type="text" placeholder="3 banners + 5 miniaturas + 2 fondos"></div>
+        <div class="field"><label for="i-assets">Assets to generate</label><input id="i-assets" name="imagenes.assets" type="text" placeholder="3 banners + 5 miniaturas + 2 fondos"></div>
       </article>
 
       <div class="brief-area">
         <div class="brief-head">
-          <h3>Brief de Imágenes</h3>
+          <h3>Images brief</h3>
           <div class="brief-actions">
-            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ CREAR</span></button>
-            <button class="btn" type="button" id="genBrief">Generar brief</button>
-            <button class="btn" type="button" id="copyBrief">Copiar JSON</button>
-            <button class="btn" type="button" id="copyMd">Copiar Markdown</button>
-            <button class="btn" type="button" id="dlBrief">Descargar .json</button>
-            <button class="btn" type="button" id="clearAll">Limpiar Imágenes</button>
+            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ CREATE</span></button>
+            <button class="btn" type="button" id="genBrief">Generate brief</button>
+            <button class="btn" type="button" id="copyBrief">Copy JSON</button>
+            <button class="btn" type="button" id="copyMd">Copy Markdown</button>
+            <button class="btn" type="button" id="dlBrief">Download .json</button>
+            <button class="btn" type="button" id="clearAll">Clear Images</button>
           </div>
         </div>
-        <pre class="brief" id="briefOut">// Rellena los campos y pulsa "Generar brief".</pre>
+        <pre class="brief" id="briefOut">// Complete the fields and select "Generate brief".</pre>
       </div>
       <div id="player" class="player-area" hidden></div>
     </form>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Open Admira XP — latest Digital Twin version">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
-      <h3>📥 IMPORTAR DESDE URL</h3>
-      <p class="keys-warn">yt-dlp en Mac Mini (audio mp3 + video mp4). Hosts permitidos: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn. Si abres en local también funciona suno-local (:3777).</p>
-      <div class="field"><label for="import-url">URL</label><input id="import-url" type="text" autocomplete="off" placeholder="https://www.youtube.com/watch?v=..."></div>
+      <h3>📥 IMPORT FROM URL</h3>
+      <p class="keys-warn">yt-dlp on Mac Mini (audio mp3 + video mp4). Supported hosts: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn, Telegram (t.me). You can paste SEVERAL URLs at once, one per line. When opened locally, suno-local also works (:3777).</p>
+      <div class="field"><label for="import-url">URL <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(one or more, one per line)</small></label><textarea id="import-url" rows="2" autocomplete="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…&#10;https://t.me/canal/123"></textarea></div>
       <div class="field">
-        <label for="import-comment">Comentarios <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(opcional · indexable por búsqueda en Stock)</small></label>
-        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notas, etiquetas, contexto… (luego se puede buscar)"></textarea>
+        <label for="import-comment">Comments <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(optional · searchable in Stock)</small></label>
+        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notes, tags, context… (searchable later)"></textarea>
       </div>
       <div class="field">
-        <label>Formato</label>
-        <div class="import-fmt" role="radiogroup" aria-label="Formato de importación">
+        <label>Format</label>
+        <div class="import-fmt" role="radiogroup" aria-label="Import format">
           <label class="import-fmt-chip is-audio">
             <input type="radio" name="import-fmt" value="audio" checked>
             <span class="import-fmt-icon" aria-hidden="true">🎵</span>
-            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · sólo pista de audio</small></span>
+            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · audio track only</small></span>
           </label>
           <label class="import-fmt-chip is-video">
             <input type="radio" name="import-fmt" value="video">
@@ -192,7 +194,7 @@
       </div>
       <div class="import-progress" id="importProgress" hidden>
         <div class="import-progress-head">
-          <span class="import-progress-kind" id="importProgressKind">— ESPERANDO —</span>
+          <span class="import-progress-kind" id="importProgressKind">— WAITING —</span>
           <span class="import-progress-stats" id="importProgressStats">0 MB · 0s</span>
         </div>
         <div class="import-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -201,8 +203,8 @@
         </div>
       </div>
       <div class="keys-actions">
-        <button type="button" class="btn primary" id="doImport">Importar</button>
-        <button type="button" class="btn" id="closeImport">Cerrar</button>
+        <button type="button" class="btn primary" id="doImport">Import</button>
+        <button type="button" class="btn" id="closeImport">Close</button>
       </div>
       <pre class="brief" id="importStatus" style="display:none;font-size:11px;max-height:200px;"></pre>
     </form>
@@ -210,10 +212,10 @@
   <dialog id="keysModal" class="keys-modal">
     <form method="dialog" class="keys-form">
       <h3>⚙ API KEYS</h3>
-      <p class="keys-warn">Las claves se guardan solo en este navegador (localStorage). No se envían a ningún servidor de Admira Studio.</p>      <div class="field"><label for="key-elevenlabs-voice">ElevenLabs Voice ID</label><input id="key-elevenlabs-voice" type="text" autocomplete="off" placeholder="EXAVITQu4vr4xnSDxMaL (Bella · default)"></div>      <div class="keys-actions">
-        <button type="button" class="btn primary" id="saveKeys">Guardar</button>
-        <button type="button" class="btn" id="clearKeys">Borrar todas</button>
-        <button type="button" class="btn" id="closeKeys">Cerrar</button>
+      <p class="keys-warn">Keys are stored only in this browser (localStorage). They are not sent to any Admira Studio server.</p>      <div class="field"><label for="key-elevenlabs-voice">ElevenLabs Voice ID</label><input id="key-elevenlabs-voice" type="text" autocomplete="off" placeholder="EXAVITQu4vr4xnSDxMaL (Bella · default)"></div>      <div class="keys-actions">
+        <button type="button" class="btn primary" id="saveKeys">Save</button>
+        <button type="button" class="btn" id="clearKeys">Delete all</button>
+        <button type="button" class="btn" id="closeKeys">Close</button>
       </div>
     </form>
   </dialog>

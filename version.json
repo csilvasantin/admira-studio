@@ -1,13 +1,15 @@
 {
-  "version": "v.09.08.2026.r1.14:05",
-  "deployedAt": "2026-08-09T12:05:54Z",
-  "deployer": "MorfeoMBA16",
-  "machine": "MacBookAir16plata",
-  "signature": "MorfeoMBA16 · MacBookAir16plata",
-  "git": "4c084bb70eda3fef59cf4572aa4b2916e4cf02df",
-  "gitShort": "4c084bb",
-  "gitFull": "4c084bb70eda3fef59cf4572aa4b2916e4cf02df",
+  "version": "v.02.09.2026.r22.13:23",
+  "deployedAt": "2026-09-02T11:23:45Z",
+  "author": "Trinity",
+  "agent": "Trinity",
+  "deployer": "Trinity",
+  "machine": "MBP14",
+  "signature": "Trinity · MBP14",
+  "git": "88d7d030d41f60029a519e6379314b094ed42c4b",
+  "gitShort": "88d7d03",
+  "gitFull": "88d7d030d41f60029a519e6379314b094ed42c4b",
   "dirty": false,
   "espejoDe": "pixeria",
-  "fuente": "bed2037e5dcb9d83c207f4a69af528372c12d20c"
+  "fuente": "382cc019db9df7916067889611e57892a62c2384"
 }

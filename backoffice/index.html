@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,6 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <title>Admira Studio · Referencia en creación de contenidos con IA</title>
   <meta name="description" content="Admira Studio es la referencia para crear contenido con IA y operarlo en producción real: radar de modelos, método, pipelines y Pixer Feed (signage IA para pantallas y directo en eventos).">
   <meta name="theme-color" content="#0b1117">
@@ -65,7 +66,7 @@
   </script>
   <script defer src="/assets/analytics.js?v=20260714-coverage"></script>
   <script defer src="/assets/consent.js?v=20260714-universal"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -79,17 +80,17 @@
     </a>
     <nav class="nav" aria-label="Navegación principal">
       <a href="/audio.html">Audio</a>
-      <a href="/musica.html">Música</a>
-      <a href="/imagenes.html">Imágenes</a>
+      <a href="/musica.html">Music</a>
+      <a href="/imagenes.html">Images</a>
       <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/publicidad.html">Publicidad</a>
+      <a href="/publicidad.html">Advertising</a>
       <a href="/crear/">Assets</a>
       <a href="/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
       <a class="nav-action" href="#contact" data-admira-contact>Hablar</a>
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -97,11 +98,11 @@
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil">
     <a href="/audio.html">Audio</a>
-    <a href="/musica.html">Música</a>
-    <a href="/imagenes.html">Imágenes</a>
+    <a href="/musica.html">Music</a>
+    <a href="/imagenes.html">Images</a>
     <a href="/video.html">Video</a>
     <a href="/tiktok">TikTok</a>
-    <a href="/publicidad.html">Publicidad</a>
+    <a href="/publicidad.html">Advertising</a>
     <a href="/avatar.html">Avatar 3D</a>
     <a href="/crear/">Assets</a>
     <a href="/stock.html">Stock</a>
@@ -121,7 +122,7 @@
         <div class="hero-actions">
           <a class="button primary" href="#radar">Explorar radar</a>
           <a class="button secondary" href="#metodo">Ver metodo</a>
-          <a class="button secondary" href="/god/crear/">Abrir Creador</a>
+          <a class="button secondary" href="/god/crear/">Open Creator</a>
         </div>
       </div>
       <aside class="hero-panel" aria-label="Indicadores Admira Studio">
@@ -184,10 +185,10 @@
         <div class="model-grid">
           <div class="model"><span class="tag">Video</span><strong>Kling 2.1</strong><small>Mejor calidad de movimiento y lipsync</small></div>
           <div class="model"><span class="tag">Video</span><strong>Runway Gen-4</strong><small>Control creativo y storyboards</small></div>
-          <div class="model"><span class="tag">Imagen</span><strong>Midjourney v7</strong><small>Consistencia de marca y detalle</small></div>
-          <div class="model"><span class="tag">Imagen</span><strong>Flux Pro 1.1</strong><small>Velocidad + fidelidad de texto</small></div>
-          <div class="model"><span class="tag">Voz</span><strong>ElevenLabs Multilingual v3</strong><small>Emocion y clonacion de locutores</small></div>
-          <div class="model"><span class="tag">Música</span><strong>Suno v4</strong><small>Estructura y produccion usable</small></div>
+          <div class="model"><span class="tag">Image</span><strong>Midjourney v7</strong><small>Consistencia de marca y detalle</small></div>
+          <div class="model"><span class="tag">Image</span><strong>Flux Pro 1.1</strong><small>Velocidad + fidelidad de texto</small></div>
+          <div class="model"><span class="tag">Voice</span><strong>ElevenLabs Multilingual v3</strong><small>Emocion y clonacion de locutores</small></div>
+          <div class="model"><span class="tag">Music</span><strong>Suno v4</strong><small>Structure y produccion usable</small></div>
         </div>
         <p class="radar-note">Actualizado con pruebas reales de produccion. El radar prioriza control, derechos y calidad final sobre demos virales. Estos modelos alimentan Pixer Feed (signage IA en pantallas y eventos en vivo).</p>
       </div>
@@ -195,7 +196,7 @@
 
     <section id="formatos" class="formats band">
       <div class="section-head">
-        <p class="eyebrow">Formatos</p>
+        <p class="eyebrow">Formats</p>
         <h2>Una mesa de produccion para todos los medios.</h2>
       </div>
       <div class="format-grid">
@@ -206,7 +207,7 @@
         </article>
         <article>
           <span class="icon">I</span>
-          <h3>Imagen</h3>
+          <h3>Image</h3>
           <p>Direccion de arte, producto, fotografia sintetica, retoque, estilos y consistencia visual.</p>
         </article>
         <article>
@@ -217,12 +218,12 @@
         <article>
           <span class="icon">T</span>
           <h3>Texto</h3>
-          <p>Guiones, newsletters, social, SEO, manuales, pitches, prompts y conocimiento interno.</p>
+          <p>Scriptes, newsletters, social, SEO, manuales, pitches, prompts y conocimiento interno.</p>
         </article>
         <article>
           <span class="icon">M</span>
           <h3>Marketing</h3>
-          <p>Campañas, variantes, test creativo, personalizacion y activos para cada canal.</p>
+          <p>Campaigns, variantes, test creativo, personalizacion y activos para cada canal.</p>
         </article>
         <article>
           <span class="icon">O</span>
@@ -244,8 +245,8 @@
           <p>Ranking editorial de modelos, herramientas y flujos por utilidad real: calidad, coste, control, velocidad, derechos y facilidad de integracion. Incluye el pipeline que alimenta Pixer Feed (contenido IA empujado a pantallas y directo en eventos).</p>
           <div class="program-tags" aria-label="Areas del Admira Studio Index">
             <span>Video generativo</span>
-            <span>Imagen de producto</span>
-            <span>Voz y musica</span>
+            <span>Image de producto</span>
+            <span>Voice y musica</span>
             <span>Agentes creativos</span>
             <span>Pixer Feed (live)</span>
           </div>
@@ -287,7 +288,7 @@
         </li>
         <li>
           <span>Publicar</span>
-          <p>Preparar entregables, adaptar canales, guardar aprendizajes y alimentar el siguiente ciclo.</p>
+          <p>Preparar entregables, adaptar canales, guardar aprendizajes y alimentar el next ciclo.</p>
         </li>
       </ol>
     </section>
@@ -394,7 +395,7 @@
       sections.forEach(s => io.observe(s));
     })();
   </script>
-  <script src="backoffice-auth.js"></script>
+  <script src="backoffice-auth.js?v=20260813-auth-redirect"></script>
   <script src="backoffice-mode.js"></script>
   <script defer src="/assets/matrix-rain.js?v=20260608-sides"></script>
 </body>

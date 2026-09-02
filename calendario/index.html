@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,8 +35,9 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <title>Calendario de emisión · Admira Studio</title>
-  <meta name="description" content="Parrilla diaria del circuito de pantallas: qué se emite hoy y qué huecos quedan disponibles para campañas creadas en Admira Studio.">
+  <meta name="description" content="Parrilla diaria del circuit de pantallas: qué se emite hoy y qué huecos quedan disponibles para campañas creadas en Admira Studio.">
   <meta name="theme-color" content="#0b1117">
   <link rel="canonical" href="https://www.admira.studio/calendario/">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
@@ -184,7 +185,7 @@
   </style>
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -198,20 +199,20 @@
     </a>
     <nav class="nav" aria-label="Navegación principal">
       <a href="/audio.html">Audio</a>
-      <a href="/musica.html">Música</a>
-      <a href="/imagenes.html">Imágenes</a>
+      <a href="/musica.html">Music</a>
+      <a href="/imagenes.html">Images</a>
       <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/publicidad.html">Publicidad</a>
+      <a href="/publicidad.html">Advertising</a>
       <a href="/crear/">Assets</a>
       <a href="/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
-      <div class="language-switcher" aria-label="Selección de idioma">
-        <a class="lang-toggle" href="/en/" aria-label="Cambiar a inglés">ENG</a>
+      <div class="language-switcher" aria-label="Language selection">
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
-      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -219,18 +220,18 @@
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil">
     <a href="/audio.html">Audio</a>
-    <a href="/musica.html">Música</a>
-    <a href="/imagenes.html">Imágenes</a>
+    <a href="/musica.html">Music</a>
+    <a href="/imagenes.html">Images</a>
     <a href="/video.html">Video</a>
     <a href="/tiktok">TikTok</a>
-    <a href="/publicidad.html">Publicidad</a>
+    <a href="/publicidad.html">Advertising</a>
     <a href="/avatar.html">Avatar 3D</a>
     <a href="/crear/">Assets</a>
     <a href="/stock.html">Stock</a>
-    <div class="mobile-language-switcher" aria-label="Selección de idioma">
-      <a class="lang-toggle" href="/en/" aria-label="Cambiar a inglés">ENG</a>
+    <div class="mobile-language-switcher" aria-label="Language selection">
+      <span class="lang-toggle" aria-label="English">EN</span>
     </div>
-    <a class="mobile-cta" href="#contact" data-admira-contact>Contacto</a>
+    <a class="mobile-cta" href="#contact" data-admira-contact>Contact</a>
   </nav>
 
   <main>
@@ -238,14 +239,14 @@
       <div>
         <p class="eyebrow">Calendario de emisión</p>
         <h1>Qué se emite hoy</h1>
-        <p>Consulta la parrilla del día por pantalla y reserva los huecos disponibles desde Admira.</p>
+        <p>View today's schedule by screen and book available slots from Admira.</p>
       </div>
     </section>
 
     <section class="calendar-shell">
       <div class="calendar-controls">
         <label class="calendar-field-circuit">
-          Circuito
+          Circuit
           <select id="circuitSel"></select>
         </label>
         <label class="calendar-field-locality">
@@ -257,7 +258,7 @@
           <select id="pointSel"></select>
         </label>
         <label class="calendar-field-screen">
-          Pantalla
+          Screen
           <select id="screenSel"></select>
         </label>
         <label class="calendar-field-date">
@@ -266,14 +267,14 @@
         </label>
       </div>
       <div class="calendar-summary" id="calendarSummary">
-        <span>Selecciona circuito, localidad y punto para ver sus pantallas disponibles.</span>
+        <span>Selecciona circuit, localidad y punto para ver sus pantallas disponibles.</span>
       </div>
       <div class="calendar-panel">
         <div id="cal"></div>
       </div>
       <div class="calendar-cta">
-        <p>Elige el punto y abre Crear campaña para preparar el contenido con preview antes de comprar en Admira.</p>
-        <a class="button primary" id="calendarCampaignLink" href="/crear-campana/">Crear campaña para esta pantalla</a>
+        <p>Choose a location and open Create campaign to prepare the content with a preview before buying in Admira.</p>
+        <a class="button primary" id="calendarCampaignLink" href="/crear-campana/">Create campaign for this screen</a>
       </div>
     </section>
   </main>
@@ -281,7 +282,7 @@
   <footer class="site-footer">
     <span>Admira Studio</span>
     <p>Calendario compartido con Admira y XpaceOS.</p>
-    <a href="/crear-campana/">Crear campaña</a>
+    <a href="/crear-campana/">Create campaign</a>
     <a href="/privacidad.html">Privacidad y cookies</a>
   </footer>
 
@@ -376,7 +377,7 @@
 
       function renderCircuitOptions() {
         var circuits = uniqueSorted(state.allStores.map(circuitOf));
-        var options = [{ value: 'all', label: 'Todos los circuitos' }].concat(circuits.map(function (name) {
+        var options = [{ value: 'all', label: 'All los circuits' }].concat(circuits.map(function (name) {
           var count = state.allStores.filter(function (store) { return circuitOf(store) === name; }).length;
           return { value: name, label: name + ' · ' + count + ' puntos' };
         }));
@@ -454,7 +455,7 @@
       function selectScreen(id) {
         state.screen = state.screens.find(function (s) { return s.id === id; }) || state.screens[0];
         if (!state.screen) {
-          $('#cal').innerHTML = '<div style="color:#75aab9;text-align:center;padding:40px">Este circuito no tiene pantallas.</div>';
+          $('#cal').innerHTML = '<div style="color:#75aab9;text-align:center;padding:40px">Este circuit no tiene pantallas.</div>';
           return;
         }
         var opts = { workerBase: WORKER, role: 'public', screen: state.screen.id, date: state.date, screenName: state.screen.name, storeName: state.store.name, circuit: circuitOf(state.store), locality: cityOf(state.store) };

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,23 +35,21 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.08.2026.r4.12:59">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <link rel="canonical" href="https://www.admira.studio/director.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/director.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/director.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/director.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/director.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio Studio · Director</title>
+  <title>Admira Studio · Director</title>
   <meta name="description" content="Interface de director con IA — Stage/Score/Cast inspirado en Adobe Director, asistido por los 4 motores generativos.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=20260717-head-caja">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=20260803-release">
+  <link rel="stylesheet" href="/workspace.css?v=20260717-head-caja">
   <style>
     /* ── Director layout ──────────────────────────────────────── */
     body[data-page="director"] main { width: min(1600px, calc(100% - 40px)); }
@@ -282,14 +280,10 @@
   </style>
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
+  <script defer src="/assets/descarga-local.js?v=20260828-r1"></script>
 </head>
 <body data-page="director">
-  <!-- Cuadratura: ocultar los raíles al abrir <body> (sin parpadeo) según localStorage -->
-  <script>
-  (function(){var b=document.body,m={pixeria_pf_left:'pf-left-off',pixeria_pf_right:'pf-right-off',pixeria_pf_bottom:'pf-bottom-off'};
-  try{for(var k in m){if(localStorage.getItem(k)!=='1')b.classList.add(m[k]);}}catch(e){for(var j in m){b.classList.add(m[j]);}}})();
-  </script>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
@@ -300,41 +294,41 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">Admira Studio</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Consejo Live</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Live Council</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
-      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
+      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contact</a>
     </div>
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
     <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">P</span><span class="brand-name">Admira Studio</span></a></div>
     <nav class="primary-nav">
-      <a href="audio.html" data-nav="audio">Megafonía</a>
-      <a href="musica.html" data-nav="musica">Música</a>
-      <a href="imagenes.html" data-nav="imagenes">Imágenes</a>
+      <a href="audio.html" data-nav="audio">Audio</a>
+      <a href="musica.html" data-nav="musica">Music</a>
+      <a href="imagenes.html" data-nav="imagenes">Images</a>
       <a href="video.html" data-nav="video">Video</a>
       <a href="/tiktok" data-nav="tiktok">TikTok</a>
-      <a href="publicidad.html" data-nav="publicidad">Publicidad</a>
-      <a href="anonimizador.html" data-nav="anonimizador">Anonimizador</a>
-      <a href="/crear/" data-nav="crear">Assets</a>
+      <a href="publicidad.html" data-nav="publicidad">Advertising</a>
+      <a href="anonimizador.html" data-nav="anonimizador">Anonymizer</a>
+      <a href="/crear/" data-nav="create">Assets</a>
       <a href="stock.html" data-nav="stock">Stock</a>
     </nav>
     <div class="topnav-actions">
-      <div class="language-switcher" aria-label="Selección de idioma">
-        <a class="lang-toggle" href="/en/director.html" aria-label="Cambiar a inglés">ENG</a>
+      <div class="language-switcher" aria-label="Language selection">
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
-      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
+      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
     </div>
   </header>
 
   <header class="page-head">
-    <p class="eyebrow stock">Director r72 · prototipo funcional local</p>
-    <h1>Director · timeline asistido por los 4 motores.</h1>
-    <p class="lead">El director declara la intención y los markers de la pieza; la IA propone Cast y Score. El director acepta, regenera o reorganiza. Inspirado en Adobe Director (Stage / Cast / Score / Markers).</p>
+    <p class="eyebrow stock">Director · functional prototype</p>
+    <h1>Director · timeline assisted by the creative engines.</h1>
+    <p class="lead">The director declares intent and markers; AI proposes Cast and Score. The director accepts, regenerates or reorganizes. Inspired by Adobe Director (Stage / Cast / Score / Markers).</p>
   </header>
 
   <main>
@@ -344,15 +338,15 @@
       <div>
         <div class="brief-row">
           <div>
-            <small>INTENCIÓN</small>
-            <input id="brief-intencion" type="text" value="lanzamiento Veo 3.1 a inversores">
+            <small>INTENT</small>
+            <input id="brief-intencion" type="text" value="Veo 3.1 launch for investors">
           </div>
           <div>
-            <small>ESTILO</small>
+            <small>STYLE</small>
             <input id="brief-estilo" type="text" value="matrix neon cinematic">
           </div>
           <div>
-            <small>RATIO</small>
+            <small>ASPECT RATIO</small>
             <select id="brief-ratio">
               <option>16:9</option>
               <option>9:16</option>
@@ -360,7 +354,7 @@
             </select>
           </div>
           <div>
-            <small>DURACIÓN</small>
+            <small>DURATION</small>
             <input id="brief-duracion" type="text" value="30s">
           </div>
         </div>
@@ -369,7 +363,7 @@
         <button class="btn primary" id="directorAutoCast">✨ AUTO-CAST</button>
         <button class="btn" id="directorAutoScore">✨ AUTO-SCORE</button>
         <button class="btn" id="directorRender">▶ RENDER</button>
-        <button class="btn" id="directorSave">💾 PROYECTO</button>
+        <button class="btn" id="directorSave">💾 PROJECT</button>
       </div>
     </section>
 
@@ -377,7 +371,7 @@
     <section class="director-stage-cast">
       <div class="director-stage" id="directorStage">
         <div class="stage-empty">// STAGE · preview se renderizará aquí</div>
-        <div class="stage-status" id="directorStatus">LISTO</div>
+        <div class="stage-status" id="directorStatus">READY</div>
         <div class="stage-timecode" id="directorTimecode">00:00 / 00:30</div>
         <div class="stage-controls">
           <button title="Inicio" id="directorHome">⏮</button>
@@ -394,11 +388,11 @@
         </div>
         <div class="cast-filters">
           <div class="chips">
-            <label class="chip active"><input type="radio" name="cast-f" value="todos" checked>todos</label>
-            <label class="chip"><input type="radio" name="cast-f" value="image">imagen</label>
+            <label class="chip active"><input type="radio" name="cast-f" value="todos" checked>all</label>
+            <label class="chip"><input type="radio" name="cast-f" value="image">image</label>
             <label class="chip"><input type="radio" name="cast-f" value="video">video</label>
-            <label class="chip"><input type="radio" name="cast-f" value="voice">voz</label>
-            <label class="chip"><input type="radio" name="cast-f" value="music">música</label>
+            <label class="chip"><input type="radio" name="cast-f" value="voice">voice</label>
+            <label class="chip"><input type="radio" name="cast-f" value="music">music</label>
           </div>
         </div>
         <div class="cast-grid" id="directorCast"></div>
@@ -419,13 +413,13 @@
     <!-- INSPECTOR ─────────────────────────────────────────────── -->
     <section class="director-inspector">
       <div>
-        <div class="inspector-head">📌 CLIP SELECCIONADO</div>
+        <div class="inspector-head">📌 SELECTED CLIP</div>
         <div class="inspector-row"><label>track</label><span id="inspTrack">VIDEO</span></div>
         <div class="inspector-row"><label>asset</label><span id="inspAsset" style="color:var(--matrix);font-family:inherit;">-</span></div>
         <div class="inspector-row"><label>motor</label><span><code id="inspMotor">-</code></span></div>
         <div class="inspector-row"><label>in</label><input id="inspIn" type="text" value="0.0s"></div>
         <div class="inspector-row"><label>out</label><input id="inspOut" type="text" value="0.0s"></div>
-        <div class="inspector-row"><label>transición</label>
+        <div class="inspector-row"><label>transition</label>
           <select id="inspTransition"><option>cut</option><option>fade</option><option>dissolve</option></select>
         </div>
       </div>
@@ -433,13 +427,13 @@
         <div class="inspector-head">💬 PROMPT</div>
         <textarea class="inspector-prompt" id="inspPrompt">close-up shot of holographic UI rotating in matrix-green neon, cinematic, slow camera dolly forward, ambient electronic score</textarea>
         <div class="inspector-actions">
-          <button class="btn" id="directorApplyClip">✓ APLICAR</button>
-          <button class="btn" id="directorVariant">🔄 VARIANTE</button>
-          <button class="btn" id="directorDeleteClip">🗑 ELIMINAR</button>
+          <button class="btn" id="directorApplyClip">✓ APPLY</button>
+          <button class="btn" id="directorVariant">🔄 VARIANT</button>
+          <button class="btn" id="directorDeleteClip">🗑 DELETE</button>
         </div>
       </div>
       <div>
-        <div class="inspector-head">📋 ESTRUCTURA · markers</div>
+        <div class="inspector-head">📋 STRUCTURE · markers</div>
         <div id="inspMarkers"></div>
         <div class="inspector-actions" style="margin-top:14px;">
           <button class="btn" id="directorAddMarker">＋ marker</button>
@@ -449,45 +443,45 @@
     </section>
 
     <div class="director-note is-live">
-      <strong>// Prototipo local r72.</strong> Auto-Cast, Auto-Score, preview de Stage, selección de clips, inspector y guardado ya funcionan en el navegador. Los endpoints siguen siendo el siguiente salto:
-      <code>POST /director/autocast</code> (brief → propuesta de cast),
-      <code>POST /director/autoscore</code> (cast + markers → propuesta de score),
-      <code>POST /director/render</code> (proyecto → mp4 final, vía ffmpeg en el Mac Mini),
-      <code>POST /director/save</code> + <code>GET /director/load/:id</code> (proyecto JSON en R2).
+      <strong>// Local prototype r72.</strong> Auto-Cast, Auto-Score, Stage preview, clip selection, inspector and saving already work in the browser. The endpoints are the next step:
+      <code>POST /director/autocast</code> (brief → cast proposal),
+      <code>POST /director/autoscore</code> (cast + markers → score proposal),
+      <code>POST /director/render</code> (project → final mp4, via ffmpeg on the Mac Mini),
+      <code>POST /director/save</code> + <code>GET /director/load/:id</code> (project JSON in R2).
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Open Admira XP — latest Digital Twin version">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form">
-      <h3>📥 IMPORTAR DESDE URL</h3>
-      <p class="keys-warn">yt-dlp en Mac Mini (audio mp3 + video mp4). Hosts permitidos: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn.</p>
-      <div class="field"><label for="import-url">URL</label><input id="import-url" type="text" autocomplete="off" placeholder="https://www.youtube.com/watch?v=..."></div>
+      <h3>📥 IMPORT FROM URL</h3>
+      <p class="keys-warn">yt-dlp on Mac Mini (audio mp3 + video mp4). Supported hosts: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn.</p>
+      <div class="field"><label for="import-url">URL <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(one or more, one per line)</small></label><textarea id="import-url" rows="2" autocomplete="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…&#10;https://t.me/canal/123"></textarea></div>
       <div class="field">
-        <label>Formato</label>
+        <label>Format</label>
         <div class="chips">
           <label class="chip"><input type="radio" name="import-fmt" value="audio" checked> Audio (mp3)</label>
           <label class="chip"><input type="radio" name="import-fmt" value="video"> Video (mp4)</label>
         </div>
       </div>
       <div class="keys-actions">
-        <button type="button" class="btn primary" id="doImport">Importar</button>
-        <button type="button" class="btn" id="closeImport">Cerrar</button>
+        <button type="button" class="btn primary" id="doImport">Import</button>
+        <button type="button" class="btn" id="closeImport">Close</button>
       </div>
       <pre class="brief" id="importStatus" style="display:none;font-size:11px;max-height:200px;"></pre>
     </form>
   </dialog>
 
   <script defer src="/matrix-rain.js?v=20260608-sides"></script>
-  <script src="app.js?v=20260614-barclean"></script>
+  <script src="/app.js?v=20260902-en"></script>
   <script>
   (function () {
     const STORE = 'pixer-director-project-v1';
     const TRACKS = [
       { id: 'video', label: 'VIDEO', color: 'var(--video)' },
-      { id: 'voice', label: 'VOZ', color: 'var(--audio)' },
-      { id: 'music', label: 'MUSICA', color: 'var(--music)' },
+      { id: 'voice', label: 'VOICE', color: 'var(--audio)' },
+      { id: 'music', label: 'MUSIC', color: 'var(--music)' },
       { id: 'sfx', label: 'SFX', color: 'var(--image)' },
     ];
     const state = {
@@ -522,7 +516,7 @@
       return {
         id: 'director-' + Date.now(),
         title: 'Lanzamiento Veo 3.1',
-        brief: { intention: 'lanzamiento Veo 3.1 a inversores', style: 'matrix neon cinematic', ratio: '16:9', duration: 30 },
+        brief: { intention: 'Veo 3.1 launch for investors', style: 'matrix neon cinematic', ratio: '16:9', duration: 30 },
         markers: [
           { id: 'm-intro', label: 'intro', time: 0 },
           { id: 'm-hook', label: 'hook', time: 3 },
@@ -575,13 +569,13 @@
         { id: 'asset-product', kind: 'video', name: 'product reveal', motor: 'veo-3.1-fast-generate-preview', prompt: base + ', product reveal, slow dolly, luminous UI', visual: visualStyle(802, 'video') },
         { id: 'asset-world', kind: 'image', name: 'world frame', motor: 'imagen-4.0-ultra-generate-001', prompt: base + ', worldbuilding frame, graphic background', visual: visualStyle(803, 'image') },
         { id: 'asset-logo', kind: 'image', name: 'logo lockup', motor: 'nano-banana', prompt: 'Admira Studio logo lockup, ' + b.style + ', clean typography', visual: visualStyle(804, 'image') },
-        { id: 'asset-voice-main', kind: 'voice', name: 'voz principal', motor: 'elevenlabs-v3', prompt: 'Locucion principal: ' + b.intention + '. Tono ejecutivo, claro, con cierre memorable.' },
-        { id: 'asset-voice-cta', kind: 'voice', name: 'voz CTA', motor: 'elevenlabs-flash-v2-5', prompt: 'CTA breve para pantalla y evento: pedir accion clara en menos de 4 segundos.' },
+        { id: 'asset-voice-main', kind: 'voice', name: 'main voice', motor: 'elevenlabs-v3', prompt: 'Main voice-over: ' + b.intention + '. Executive, clear tone with a memorable closing.' },
+        { id: 'asset-voice-cta', kind: 'voice', name: 'CTA voice', motor: 'elevenlabs-flash-v2-5', prompt: 'Short CTA for screen and event: request one clear action in under 4 seconds.' },
         { id: 'asset-music-bed', kind: 'music', name: 'electronic bed', motor: 'suno-local-v5', prompt: b.style + ', electronic build up, 30 second loop, confident, futuristic' },
-        { id: 'asset-sfx-hit', kind: 'sfx', name: 'whoosh hit', motor: 'pixer-loop', prompt: 'Whoosh digital + impact hit para cambio de marker.' },
+        { id: 'asset-sfx-hit', kind: 'sfx', name: 'whoosh hit', motor: 'pixer-loop', prompt: 'Digital whoosh + impact hit for marker changes.' },
       ];
       if (!state.selectedClipId) state.selectedClipId = null;
-      flash('AUTO-CAST LISTO');
+      flash('AUTO-CAST READY');
       autoScore(false);
     }
     function autoScore(showStatus) {
@@ -596,18 +590,18 @@
       ];
       const m = state.project.markers;
       state.project.clips = [
-        clip('clip-v-intro', 'video', 'asset-world', m[0].time, m[1].time, 'intro · mundo', 'fade'),
-        clip('clip-v-hook', 'video', 'asset-hero', m[1].time, m[2].time, 'hook · promesa', 'cut'),
+        clip('clip-v-intro', 'video', 'asset-world', m[0].time, m[1].time, 'intro · world', 'fade'),
+        clip('clip-v-hook', 'video', 'asset-hero', m[1].time, m[2].time, 'hook · promise', 'cut'),
         clip('clip-v-drop', 'video', 'asset-product', m[2].time, m[3].time, 'drop · demo', 'dissolve'),
-        clip('clip-v-outro', 'video', 'asset-logo', m[3].time, d, 'outro · marca', 'fade'),
-        clip('clip-voice-hook', 'voice', 'asset-voice-main', m[1].time, Math.min(d, m[2].time + 4), 'voz · manifiesto', 'cut'),
-        clip('clip-voice-cta', 'voice', 'asset-voice-cta', m[3].time, d, 'voz · CTA', 'cut'),
+        clip('clip-v-outro', 'video', 'asset-logo', m[3].time, d, 'outro · brand', 'fade'),
+        clip('clip-voice-hook', 'voice', 'asset-voice-main', m[1].time, Math.min(d, m[2].time + 4), 'voz · manifesto', 'cut'),
+        clip('clip-voice-cta', 'voice', 'asset-voice-cta', m[3].time, d, 'voice · CTA', 'cut'),
         clip('clip-music-bed', 'music', 'asset-music-bed', 0, d, 'suno v5 · bed', 'cut'),
         clip('clip-sfx-hit', 'sfx', 'asset-sfx-hit', m[2].time, Math.min(d, m[2].time + 1), 'whoosh', 'cut'),
       ];
       state.selectedClipId = 'clip-v-hook';
       state.currentTime = state.project.markers[1].time;
-      if (showStatus !== false) flash('AUTO-SCORE LISTO');
+      if (showStatus !== false) flash('AUTO-SCORE READY');
       saveProject();
       render();
     }
@@ -619,7 +613,7 @@
       return Math.max(0, Math.min(100, (time / state.project.brief.duration) * 100));
     }
     function kindLabel(kind) {
-      return ({ image: 'IMG', video: 'VIDEO', voice: 'VOZ', music: 'MUS', sfx: 'SFX' })[kind] || kind.toUpperCase();
+      return ({ image: 'IMG', video: 'VIDEO', voice: 'VOICE', music: 'MUS', sfx: 'SFX' })[kind] || kind.toUpperCase();
     }
     function iconFor(kind) {
       return ({ voice: '🎙', music: '🎵', sfx: '🔔' })[kind] || '';
@@ -729,7 +723,7 @@
       const asset = state.project.cast.find(a => a.id === c.assetId);
       if (asset) asset.visual = visualStyle(Math.floor(Math.random() * 9999), asset.kind);
       saveProject();
-      flash('VARIANTE CREADA');
+      flash('VARIANT CREADA');
       render();
     }
     function deleteClip() {
@@ -819,7 +813,7 @@
     function flash(text) {
       els.status.textContent = text;
       clearTimeout(flash.t);
-      flash.t = setTimeout(() => { els.status.textContent = state.playing ? 'PLAY' : 'LISTO'; }, 1800);
+      flash.t = setTimeout(() => { els.status.textContent = state.playing ? 'PLAY' : 'READY'; }, 1800);
     }
     function escapeHtml(value) {
       return String(value || '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
@@ -863,7 +857,5 @@
     else render();
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=20260803-release"></script>
-  <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>

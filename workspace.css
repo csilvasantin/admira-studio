@@ -904,7 +904,7 @@ body[data-page="admira-xp"] .primary-nav a[data-nav="admira-xp"] {
   max-height: 300px;
 }
 
-/* Target builder cards (Publicidad con Target) */
+/* Target builder cards (Advertising con Target) */
 .targets-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -1036,7 +1036,7 @@ main, header.page-head, footer { width: min(1180px, calc(100% - 40px)); margin: 
    (anonimizador) y 40px (avatar) a la IZQUIERDA de las imágenes — se veía descuadrado.
    Aquí el head copia el ancho Y el padding del main de cada página, así el texto y las
    imágenes comparten los dos bordes. Se apunta por data-page (no :has()) para no
-   depender del soporte del navegador. */
+   depender del soporte del browser. */
 body[data-page="anonimizador"] header.page-head {
   width: min(1080px, calc(100% - 40px));
   padding-left: 20px;
@@ -1185,7 +1185,7 @@ p { margin: 0; }
 .home-card small { color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; display: block; margin-top: 8px; }
 .home-card small::before { content: "// "; }
 
-/* Modulo formulario (Audio/Musica/Imagenes/Video) */
+/* Modulo formulario (Audio/Music/Images/Video) */
 .module {
   border: 1px solid var(--line-bright);
   border-radius: 0;
@@ -1942,7 +1942,7 @@ pre.brief {
   transition: width .06s linear;
 }
 
-/* Botón "Lanzar AdmiraXperience" en la cabecera de Plataforma */
+/* Botón "Lanzar AdmiraXperience" en la cabecera de Platform */
 .xp-launch {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -1989,7 +1989,7 @@ pre.brief {
   .xp-launch-tag { justify-self: start; }
 }
 
-/* Plataforma grid */
+/* Platform grid */
 .platform-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .platform-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; justify-content: space-between; margin-bottom: 18px; }
 .platform-head h2 { margin: 0; }
@@ -2314,7 +2314,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   cursor: pointer;
   transition: background .15s, border-color .15s, color .15s;
 }
-/* "+ más": añade metatags propias (a la derecha de las auto-tags). Verde matriz
+/* "+ more": añade metatags propias (a la derecha de las auto-tags). Verde matriz
    para distinguirlo de las etiquetas automáticas (moradas). */
 .stock-tag-more {
   appearance: none;
@@ -2725,6 +2725,14 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   max-height: 30vh; overflow: auto;
 }
 .stock-lightbox-meta .stock-prompt { color: var(--ink); max-height: none; }
+.stock-lightbox-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-height:28px}
+.stock-rating{display:inline-flex;align-items:center;gap:6px;margin-left:2px}
+.stock-rating-stars{display:inline-flex;gap:1px}
+.stock-rating-stars button{padding:0;border:0;background:transparent;color:#53643f;font-size:18px;line-height:1;cursor:pointer;transition:color .14s,transform .14s,text-shadow .14s}
+.stock-rating-stars button:hover,.stock-rating-stars button:focus-visible,.stock-rating-stars button.selected{color:#dfff65;text-shadow:0 0 14px rgba(223,255,101,.55);transform:translateY(-1px)}
+.stock-rating small,.stock-consumption{color:var(--muted);font:10px var(--mono,monospace);white-space:nowrap}
+.stock-consumption{padding-left:9px;border-left:1px solid var(--line-bright);color:#bfeea8}
+.stock-rating[aria-busy="true"]{opacity:.6;pointer-events:none}
 .stock-lightbox-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 body.stock-lightbox-open { overflow: hidden; }
 

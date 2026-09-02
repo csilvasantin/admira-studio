@@ -3,14 +3,14 @@
   "title_en": "Featured models",
   "updated": "2026-07-10",
   "models": [
-    { "category": "Video",  "category_en": "Video", "name": "Veo 3.1",             "note": "Calidad cinematografica con audio nativo en 4K", "note_en": "Cinematic quality with native 4K audio" },
+    { "category": "Video",  "category_en": "Video", "name": "Veo 3.1",             "note": "Calidad cinematografica con native audio en 4K", "note_en": "Cinematic quality with native 4K audio" },
     { "category": "Video",  "category_en": "Video", "name": "Kling 3.0",           "note": "Storyboard multi-plano y el premium mas barato", "note_en": "Multi-shot storyboards, the cheapest premium" },
     { "category": "Video",  "category_en": "Video", "name": "Runway Gen-4.5",      "note": "Control de camara y personaje consistente", "note_en": "Camera control and consistent characters" },
-    { "category": "Imagen", "category_en": "Image", "name": "Flux 2",              "note": "Fotorrealismo lider y coste bajo por imagen", "note_en": "Leading photorealism at low cost per image" },
-    { "category": "Imagen", "category_en": "Image", "name": "Midjourney v7",       "note": "Rey de la estetica y consistencia de marca", "note_en": "King of aesthetics and brand consistency" },
-    { "category": "Voz",    "category_en": "Voice", "name": "ElevenLabs v3",       "note": "Emocion y clonacion de locutores", "note_en": "Emotion and voice cloning" },
-    { "category": "Musica", "category_en": "Music", "name": "Suno v5",             "note": "Voz con matiz humano y estructura usable", "note_en": "Human-like vocals and usable structure" },
-    { "category": "Musica", "category_en": "Music", "name": "ElevenLabs Music v2", "note": "Audio licenciado, listo para uso comercial", "note_en": "Licensed audio, ready for commercial use" }
+    { "category": "Image", "category_en": "Image", "name": "Flux 2",              "note": "Fotorrealismo lider y coste bajo por imagen", "note_en": "Leading photorealism at low cost per image" },
+    { "category": "Image", "category_en": "Image", "name": "Midjourney v7",       "note": "Rey de la estetica y consistencia de marca", "note_en": "King of aesthetics and brand consistency" },
+    { "category": "Voice",    "category_en": "Voice", "name": "ElevenLabs v3",       "note": "Emocion y clonacion de locutores", "note_en": "Emotion and voice cloning" },
+    { "category": "Music", "category_en": "Music", "name": "Suno v5",             "note": "Voice con matiz humano y estructura usable", "note_en": "Human-like vocals and usable structure" },
+    { "category": "Music", "category_en": "Music", "name": "ElevenLabs Music v2", "note": "Audio licenciado, listo para uso comercial", "note_en": "Licensed audio, ready for commercial use" }
   ],
   "watching": "Seedance 2.5",
   "note": "Actualizado con pruebas reales de produccion. El radar prioriza control, derechos y calidad final sobre demos virales. En el punto de mira: <strong>{watching}</strong>, con clips nativos de 30 s y hasta 50 referencias multimodales. Estos modelos alimentan Pixer Feed (signage IA en pantallas y eventos en vivo).",

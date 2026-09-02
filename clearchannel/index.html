@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.08.2026.r4.12:59">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <title>Admira Studio × Clear Channel · Demo audio + contenidos segmentados</title>
   <meta name="description" content="Demo interna Admira Studio para Clear Channel: hilo musical con Eleven Music, megafonia con ElevenLabs y contenidos automaticos y segmentados. Un solo proveedor de audio.">
   <meta name="robots" content="noindex,nofollow,noarchive">
@@ -143,7 +143,7 @@
   </style>
   <script defer src="/assets/analytics.js?v=20260714-coverage"></script>
   <script defer src="/assets/consent.js?v=20260714-universal"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body>
   <!-- Cuadratura: ocultar los raíles al abrir <body> (sin parpadeo) según localStorage -->
@@ -172,7 +172,7 @@
     </a>
     <nav class="nav" aria-label="Navegación demo">
       <a href="#hilo">Hilo musical</a>
-      <a href="#megafonia">Megafonía</a>
+      <a href="#megafonia">PA</a>
       <a href="#segmentados">Contenidos segmentados</a>
     </nav>
     <div class="header-actions">
@@ -190,13 +190,13 @@
         <p class="lead">Tres capacidades demostrables hoy sobre el motor de Admira Studio: hilo musical propio con Eleven Music, megafonía por voz con ElevenLabs y una parrilla de contenidos que se genera automáticamente y se segmenta por audiencia, ubicación y franja horaria. Todo el audio — música y voz — sale de un único proveedor: <strong>ElevenLabs</strong>. Una integración, una factura.</p>
         <div class="cc-jump">
           <a href="#hilo">1 · Hilo musical (Eleven Music)</a>
-          <a href="#megafonia">2 · Megafonía (ElevenLabs)</a>
+          <a href="#megafonia">2 · PA (ElevenLabs)</a>
           <a href="#segmentados">3 · Contenidos automáticos y segmentados</a>
         </div>
       </div>
     </section>
 
-    <!-- ===================== BLOQUE A · HILO MUSICAL ===================== -->
+    <!-- ===================== BLOQUE A · HILO MUSICL ===================== -->
     <section id="hilo" class="cc-block band">
       <div class="section-head">
         <p class="eyebrow">Bloque 1 · Eleven Music (ElevenLabs)</p>
@@ -239,28 +239,28 @@
         <p><strong>Licencias — el argumento clave:</strong> Eleven Music se entrena sobre un catálogo licenciado con discográficas y editores. Es <strong>música limpia para sonar en espacios públicos</strong>, apta para uso comercial: exactamente lo que una red como Clear Channel necesita para difundir en cientos de locales sin zonas grises de derechos.</p>
       </div>
       <p class="meta" style="color:var(--muted);font-size:13px;margin-top:14px">Suno: en el radar — programa de partners solicitado (jul 2026), sin API pública aún. Cuando abra, se evaluará como fuente adicional; hoy el hilo va sobre Eleven Music.</p>
-      <div class="cc-docs"><a class="button secondary" href="/musica.html">↗ Ver la sección Música</a></div>
+      <div class="cc-docs"><a class="button secondary" href="/musica.html">↗ Ver la sección Music</a></div>
     </section>
 
     <!-- ===================== BLOQUE B · MEGAFONIA ===================== -->
     <section id="megafonia" class="cc-block band">
       <div class="section-head">
         <p class="eyebrow">Bloque 2 · ElevenLabs</p>
-        <h2>Megafonía por voz: escribe el aviso, suena en la tienda.</h2>
+        <h2>PA por voz: escribe el aviso, suena en la tienda.</h2>
       </div>
       <div class="cc-lead-row">
-        <span class="cc-status demo">Voz de esta demo: placeholder local</span>
-        <span class="meta" style="color:var(--muted);font-size:13px">En producción la voz la genera ElevenLabs a través de un worker proxy (la clave nunca viaja al navegador). Los avisos de abajo están pregrabados como ejemplo.</span>
+        <span class="cc-status demo">Voice de esta demo: placeholder local</span>
+        <span class="meta" style="color:var(--muted);font-size:13px">En producción la voz la genera ElevenLabs a través de un worker proxy (la clave nunca viaja al browser). Los avisos de abajo están pregrabados como ejemplo.</span>
       </div>
-      <p style="color:var(--muted);max-width:760px;line-height:1.5">El equipo de tienda o la central escribe el mensaje y lo emite: apertura, cierre, promoción, seguridad, en español o inglés. Voz de marca consistente en todos los centros, sin depender de que alguien coja el micrófono.</p>
+      <p style="color:var(--muted);max-width:760px;line-height:1.5">El equipo de tienda o la central escribe el mensaje y lo emite: apertura, cierre, promoción, seguridad, en español o inglés. Voice de marca consistente en todos los centros, sin depender de que alguien coja el micrófono.</p>
 
       <!-- Compositor (demo: reproduce el ejemplo más cercano) -->
       <div class="cc-compose">
         <label for="ccMsg">Escribe el aviso a emitir</label>
         <textarea id="ccMsg" placeholder="Ej.: El centro cerrará en 15 minutos. Diríjanse a las cajas para finalizar sus compras.">Estimados clientes, el centro cerrará sus puertas en quince minutos. Gracias por su visita.</textarea>
         <div class="row">
-          <select id="ccVoice" aria-label="Idioma y voz">
-            <option value="es">Voz ES · femenina (Mónica)</option>
+          <select id="ccVoice" aria-label="Language y voz">
+            <option value="es">Voice ES · femenina (Mónica)</option>
             <option value="en">Voice EN · female (Samantha)</option>
           </select>
           <button class="button primary" id="ccEmit" type="button">Emitir aviso</button>
@@ -287,8 +287,8 @@
           <audio controls preload="none" src="assets/audio/mega-apertura-es.mp3"></audio>
         </div>
         <div class="cc-player" data-kind="cierre">
-          <div class="tagrow"><span class="cc-tag">Cierre</span><span class="cc-tag">ES</span></div>
-          <h3>Cierre de centro</h3>
+          <div class="tagrow"><span class="cc-tag">Closing</span><span class="cc-tag">ES</span></div>
+          <h3>Closing de centro</h3>
           <p class="meta">Aviso de cierre en 15 minutos, a cajas.</p>
           <audio controls preload="none" src="assets/audio/mega-cierre-es.mp3"></audio>
         </div>
@@ -313,12 +313,12 @@
       </div>
 
       <div class="cc-callout">
-        <p><strong>Por qué un proxy:</strong> la clave de ElevenLabs no puede vivir en el navegador. En producción, "Emitir" llama a un worker de Cloudflare que guarda la clave en la bóveda, genera el MP3 y lo encola en la zona de megafonía correcta. Coste por aviso y tarifas en el roadmap.</p>
+        <p><strong>Por qué un proxy:</strong> la clave de ElevenLabs no puede vivir en el browser. En producción, "Emitir" llama a un worker de Cloudflare que guarda la clave en la bóveda, genera el MP3 y lo encola en la zona de megafonía correcta. Coste por aviso y tarifas en el roadmap.</p>
       </div>
       <div class="cc-callout" style="border-left-color:var(--gold);background:rgba(241,201,106,0.05)">
-        <p><strong>Un solo proveedor para todo el audio:</strong> esta megafonía (TTS) y el hilo musical (Eleven Music) salen ambos de <strong>ElevenLabs</strong>. Voz y música desde la misma API, con la misma clave y la misma factura — una única integración que mantener, no dos contratos.</p>
+        <p><strong>Un solo proveedor para todo el audio:</strong> esta megafonía (TTS) y el hilo musical (Eleven Music) salen ambos de <strong>ElevenLabs</strong>. Voice y música desde la misma API, con la misma clave y la misma factura — una única integración que mantener, no dos contratos.</p>
       </div>
-      <div class="cc-docs"><a class="button secondary" href="/audio.html">↗ Ver la sección Megafonía</a></div>
+      <div class="cc-docs"><a class="button secondary" href="/audio.html">↗ Ver la sección PA</a></div>
     </section>
 
     <!-- ===================== BLOQUE C · CONTENIDOS SEGMENTADOS ===================== -->
@@ -366,11 +366,11 @@
       <div class="cc-grid" id="ccGrid" aria-live="polite"></div>
 
       <div class="cc-callout">
-        <p><strong>Qué es real aquí:</strong> el motor que ves genera y pinta cada creatividad en el navegador a partir de un modelo de campaña y una matriz de segmentos — exactamente la lógica que en Admira Studio vive en el Studio <a href="/crear/" style="color:var(--cyan)">/crear/</a> y se despliega a pantallas. Lo que falta para producción con Clear Channel es conectar el inventario real de soportes y el calendario de emisión.</p>
+        <p><strong>Qué es real aquí:</strong> el motor que ves genera y pinta cada creatividad en el browser a partir de un modelo de campaña y una matriz de segmentos — exactamente la lógica que en Admira Studio vive en el Studio <a href="/crear/" style="color:var(--cyan)">/crear/</a> y se despliega a pantallas. Lo que falta para producción con Clear Channel es conectar el inventario real de soportes y el calendario de emisión.</p>
       </div>
     </section>
 
-    <!-- ===================== CIERRE / DOCS ===================== -->
+    <!-- ===================== CLOSING / DOCS ===================== -->
     <section class="cc-block band">
       <div class="section-head">
         <p class="eyebrow">Para la reunión</p>
@@ -381,7 +381,7 @@
         <a class="button primary" href="/docs/clearchannel-roadmap-2026-07-14.md">Abrir roadmap ejecutivo</a>
         <a class="button secondary" href="/crear/">Abrir Studio Admira Studio</a>
         <a class="button secondary" href="https://www.clearchannel.tv" target="_blank" rel="noopener">Mapa de espacios · clearchannel.tv</a>
-        <a class="button secondary" href="https://www.admira.tv" target="_blank" rel="noopener">Canal en antena · admira.tv</a>
+        <a class="button secondary" href="https://www.admira.tv" target="_blank" rel="noopener">Channel en antena · admira.tv</a>
       </div>
     </section>
   </main>
@@ -393,7 +393,7 @@
   </footer>
 
   <script>
-    /* ---------- Megafonía: el botón reproduce el ejemplo más cercano (demo) ---------- */
+    /* ---------- PA: el botón reproduce el ejemplo más cercano (demo) ---------- */
     (function () {
       const btn = document.getElementById('ccEmit');
       const msg = document.getElementById('ccMsg');
@@ -429,7 +429,7 @@
       const countEl = document.getElementById('ccCount');
       if (!grid) return;
 
-      // Campañas base (modelo editorial reutilizable)
+      // Campaigns base (modelo editorial reutilizable)
       const CAMPAIGNS = {
         rebajas:  { name: 'Rebajas de verano', base: 'Rebajas de verano', hueA: 18, hueB: 344 },
         nuevacol: { name: 'Nueva colección',   base: 'Nueva colección',   hueA: 268, hueB: 210 },
@@ -462,7 +462,7 @@
         { city: 'Madrid', place: 'C.C. La Vaguada', support: 'Tótem 55" pasillo', aud: 'familia', part: 'manana' },
         { city: 'Barcelona', place: 'Passeig de Gràcia', support: 'Escaparate 4K', aud: 'premium', part: 'noche' },
         { city: 'Barcelona', place: 'C.C. Glòries', support: 'Mupi digital', aud: 'joven',   part: 'tarde' },
-        { city: 'Valencia', place: 'Colón', support: 'Pantalla flagship', aud: 'premium', part: 'tarde' },
+        { city: 'Valencia', place: 'Colón', support: 'Screen flagship', aud: 'premium', part: 'tarde' },
         { city: 'Sevilla', place: 'C.C. Nervión', support: 'Ring de cajas', aud: 'familia', part: 'noche' },
         { city: 'Bilbao', place: 'Gran Vía', support: 'Tótem entrada', aud: 'familia', part: 'manana' },
         { city: 'Málaga', place: 'Muelle Uno', support: 'Videowall 3×2', aud: 'joven',   part: 'noche' }
@@ -522,6 +522,6 @@
     })();
   </script>
   <script defer src="/assets/matrix-rain.js?v=20260608-sides"></script>
-  <script defer src="/assets/cuadratura.js?v=20260803-release"></script>
+  <script defer src="/assets/cuadratura.js?v=20260902-en"></script>
 </body>
 </html>

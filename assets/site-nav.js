@@ -1,16 +1,16 @@
 /* Navegacion superior canonica de Admira Studio.
- * La home conserva Idioma y Contacto. Las paginas interiores reutilizan las
+ * La home conserva Language y Contact. Las paginas interiores reutilizan las
  * mismas diez secciones, en el mismo orden, sin esos dos controles.
  */
 (function () {
   var ES = [
     ['/audio.html', 'Audio'],
-    ['/musica.html', 'Música'],
-    ['/imagenes.html', 'Imágenes'],
+    ['/musica.html', 'Music'],
+    ['/imagenes.html', 'Images'],
     ['/video.html', 'Video'],
     ['/tiktok', 'TikTok'],
-    ['/publicidad.html', 'Publicidad'],
-    ['/anonimizador.html', 'Anonimizador'],
+    ['/publicidad.html', 'Advertising'],
+    ['/anonimizador.html', 'Anonymizer'],
     ['/crear/', 'Assets'],
     ['/stock.html', 'Stock']
   ];
@@ -74,7 +74,7 @@
   // El .lead de cada página se lee UNA vez y a partir de ahí solo roba sitio a lo
   // que importa (la galería, los controles). Se pliega POR DEFECTO y se despliega
   // con un botón junto al cursor del titular. La preferencia se recuerda por
-  // navegador: si lo abres, sigue abierto al navegar.
+  // browser: si lo abres, sigue abierto al navegar.
   function installLeadToggle() {
     var head = document.querySelector('header.page-head');
     if (!head || head.querySelector('.lead-toggle')) return;
@@ -91,7 +91,7 @@
       lead.hidden = !open;
       btn.textContent = open ? '\u2212' : '?';          // − / ?
       btn.setAttribute('aria-expanded', String(open));
-      var t = open ? 'Ocultar la descripción' : 'Qué es esto';
+      var t = open ? 'Hide description' : 'What is this';
       btn.setAttribute('aria-label', t);
       btn.title = t;
     }
@@ -199,7 +199,7 @@
       advanced.id = 'pixNavAdvancedLayer';
       advanced.className = 'pix-nav-layer pix-nav-advanced-layer';
       advanced.hidden = true;
-      advanced.innerHTML = '<a href="/radar/">Radar</a><a href="/plataforma.html">Plataforma</a><a href="/documentacion/">Documentación</a><a href="/concepto.html">Concepto Admira Studio</a>';
+      advanced.innerHTML = '<a href="/radar/">Radar</a><a href="/plataforma.html">Platform</a><a href="/documentacion/">Documentation</a><a href="/concepto.html">Admira Studio concept</a>';
       document.body.appendChild(advanced);
     }
     if (!document.getElementById('pixNavExpertLayer')) {
@@ -207,31 +207,31 @@
       expert.id = 'pixNavExpertLayer';
       expert.className = 'pix-nav-layer pix-nav-expert-layer';
       expert.hidden = true;
-      expert.innerHTML = '<span>Admira Studio · sistema creativo</span><a href="/stock.html">Stock</a><a href="/documentacion/">Documentación</a><a href="https://www.xpaceos.com">XpaceOS</a><a href="https://www.admira.app">Admira</a>';
+      expert.innerHTML = '<span>Admira Studio · creative system</span><a href="/stock.html">Stock</a><a href="/documentacion/">Documentation</a><a href="https://www.xpaceos.com">XpaceOS</a><a href="https://www.admira.app">Admira</a>';
       document.body.appendChild(expert);
     }
   }
 
   var HOME_RAIL_SECTIONS = [
-    ['/crear/', 'Studio · Crear', 'Generar assets: video, imagen, audio, texto, mobiliario'],
-    ['/musica.html', 'Música', 'Bandas sonoras, jingles y marca sonora'],
-    ['/audio.html', 'Audio · Megafonía', 'Voces, locución y megafonía de marca'],
-    ['/video.html', 'Vídeo', 'Storyboards, generación, edición y loops'],
-    ['/tiktok', 'TikTok · Vertical', 'Anuncios 9:16 de 25s, listos para el mupi vertical'],
-    ['/imagenes.html', 'Imágenes', 'Dirección de arte, producto y estilo'],
-    ['/avatar.html', 'Avatar 3D', 'Presentadores y avatares generativos'],
-    ['/anonimizador.html', 'Anonimizador', 'Privacidad en imagen y vídeo'],
-    ['/plataforma.html', 'Plataforma', 'Mapa de capas, motores y salida a XpaceOS'],
-    ['/stock.html', 'Stock', 'Galería pública de assets desplegados'],
-    ['/crear-campana/', 'Campañas', 'Compra y activación en puntos y pantallas'],
-    ['/publicidad.html', 'Publicidad', 'Formatos y activos por canal'],
-    ['/clearchannel/', 'Demo Clear Channel', 'Pixer Feed en vivo sobre pantallas reales']
+    ['/crear/', 'Studio · Create', 'Generate assets: video, image, audio, text, furniture'],
+    ['/musica.html', 'Music', 'Soundtracks, jingles and sonic branding'],
+    ['/audio.html', 'Audio · PA', 'Voices, voice-over and brand public address'],
+    ['/video.html', 'Video', 'Storyboards, generation, editing and loops'],
+    ['/tiktok', 'TikTok · Vertical', '25s 9:16 ads, ready for the vertical display'],
+    ['/imagenes.html', 'Images', 'Art direction, product and style'],
+    ['/avatar.html', 'Avatar 3D', 'Generative presenters and avatars'],
+    ['/anonimizador.html', 'Anonymizer', 'Privacy for image and video'],
+    ['/plataforma.html', 'Platform', 'Layer map, engines and XpaceOS output'],
+    ['/stock.html', 'Stock', 'Public gallery of deployed assets'],
+    ['/crear-campana/', 'Campaigns', 'Buying and activation across locations and screens'],
+    ['/publicidad.html', 'Advertising', 'Formats and assets by channel'],
+    ['/clearchannel/', 'Demo Clear Channel', 'Pixer Feed live on real screens']
   ];
   var HOME_RAIL_DOCS = [
     ['/radar/', 'Radar completo de modelos'],
     ['/plataforma.html', 'Arquitectura de plataforma'],
-    ['/documentacion/', 'Documentación'],
-    ['/concepto.html', 'Concepto Admira Studio']
+    ['/documentacion/', 'Documentation'],
+    ['/concepto.html', 'Admira Studio concept']
   ];
 
   function ensureHomeRails() {
@@ -241,17 +241,17 @@
     var left = document.createElement('aside');
     var version = (document.querySelector('meta[name="admiranext-version"]') || {}).content || 'Admira Studio';
     left.className = 'rail rail-left';
-    left.setAttribute('aria-label', 'Opciones · secciones de Admira Studio');
-    left.innerHTML = '<div class="rail-hd">🔍 Opciones</div><nav class="rail-nav" aria-label="Secciones de Admira Studio">' +
+    left.setAttribute('aria-label', 'Options · Admira Studio sections');
+    left.innerHTML = '<div class="rail-hd">🔍 Options</div><nav class="rail-nav" aria-label="Admira Studio sections">' +
       HOME_RAIL_SECTIONS.map(function (s) {
         var current = norm(s[0]) === here;
         return '<a href="' + s[0] + '"' + (current ? ' aria-current="page"' : '') + '><b>' + s[1] + '</b><small>' + s[2] + '</small></a>';
-      }).join('') + '</nav><div class="rail-options-meta" aria-label="Release de Admira Studio">' +
+      }).join('') + '</nav><div class="rail-options-meta" aria-label="Admira Studio release">' +
       '<span class="rail-ver">' + version + '</span></div>';
     var right = document.createElement('aside');
     right.className = 'rail rail-right';
-    right.setAttribute('aria-label', 'Avanzado · método y detalle');
-    right.innerHTML = '<div class="rail-hd">⚙️ Avanzado</div><div class="rail-extra"><p class="rail-sub">Radar ampliado y documentación</p>' +
+    right.setAttribute('aria-label', 'Advanced · method and details');
+    right.innerHTML = '<div class="rail-hd">⚙️ Advanced</div><div class="rail-extra"><p class="rail-sub">Expanded radar and documentation</p>' +
       HOME_RAIL_DOCS.map(function (d) { return '<a class="rail-doc" href="' + d[0] + '">' + d[1] + ' →</a>'; }).join('') + '</div>';
     document.body.appendChild(left);
     document.body.appendChild(right);
@@ -294,7 +294,7 @@
       brand.replaceWith(leading);
       leading.appendChild(brand);
     }
-    var menu = iconButton('menu', 'Mostrar u ocultar menú');
+    var menu = iconButton('menu', 'Show or hide menu');
     leading.insertBefore(menu, brand);
 
     var actions = header.querySelector(':scope > .topnav-actions, :scope > .header-actions');
@@ -306,8 +306,8 @@
     actions.querySelectorAll('.nav-toggle').forEach(function (oldToggle) { oldToggle.remove(); });
     var controls = document.createElement('div');
     controls.className = 'pix-nav-controls';
-    var advanced = iconButton('advanced', 'Abrir panel avanzado');
-    var expert = iconButton('expert', 'Abrir panel experto');
+    var advanced = iconButton('advanced', 'Open advanced panel');
+    var expert = iconButton('expert', 'Open expert panel');
     controls.appendChild(advanced);
     controls.appendChild(expert);
     actions.appendChild(controls);
@@ -352,10 +352,10 @@
       if (!right) {
         var rightPanel = document.createElement('nav');
         rightPanel.className = 'quad-menu quad-right is-collapsed';
-        rightPanel.setAttribute('aria-label', 'Navegación avanzada');
+        rightPanel.setAttribute('aria-label', 'Advanced navigation');
         rightPanel.innerHTML = '<a href="/radar/">Radar</a><a href="/documentacion/">Docs</a>';
         topbar.parentNode.insertBefore(rightPanel, topbar.nextSibling);
-        right = iconButton('advanced', 'Desplegar menú avanzado derecho');
+        right = iconButton('advanced', 'Open right advanced menu');
         right.classList.add('quad-icon');
         right.addEventListener('click', function () {
           var open = rightPanel.classList.contains('is-collapsed');
@@ -434,11 +434,24 @@
     }
   }
 
+  // El sello visible se copia del <meta> canonico, que es el que firma el release
+  // y el que lee /webmaster. Antes iba a mano en cada pagina y derivaba: el
+  // 1-sep-2026 la home enseñaba un sello de 25 dias antes (FLT-1484).
+  function syncRailVersion() {
+    var meta = document.querySelector('meta[name="admiranext-version"]');
+    var version = meta && meta.content;
+    if (!version) return;
+    document.querySelectorAll('.rail-ver').forEach(function (el) {
+      if (el.textContent !== version) el.textContent = version;
+    });
+  }
+
   function start() {
     normalizeInternalNav();
+    syncRailVersion();
     // cuadratura.js crea la barra de la home de forma diferida; esta segunda
     // pasada normaliza tambien esa barra cuando se reutiliza en una interior.
-    setTimeout(normalizeInternalNav, 0);
+    setTimeout(function () { normalizeInternalNav(); syncRailVersion(); }, 0);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);

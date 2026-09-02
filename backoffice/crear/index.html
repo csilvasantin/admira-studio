@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,7 +35,8 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Crear · Admira Studio Studio</title>
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
+  <title>Crear · Admira Studio</title>
   <meta name="description" content="Herramienta de creación de Admira Studio. Inicia sesión para acceder al estudio de generación de contenido con IA.">
   <meta name="theme-color" content="#0b1117">
   <link rel="canonical" href="https://www.admira.studio/god/crear/">
@@ -257,7 +258,7 @@
   </style>
   <script defer src="/assets/analytics.js?v=20260714-coverage"></script>
   <script defer src="/assets/consent.js?v=20260714-universal"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -271,11 +272,11 @@
     </a>
     <nav class="nav" aria-label="Navegación principal">
       <a href="/audio.html">Audio</a>
-      <a href="/musica.html">Música</a>
-      <a href="/imagenes.html">Imágenes</a>
+      <a href="/musica.html">Music</a>
+      <a href="/imagenes.html">Images</a>
       <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/publicidad.html">Publicidad</a>
+      <a href="/publicidad.html">Advertising</a>
       <a href="/crear/" class="active">Assets</a>
       <a href="/stock.html">Stock</a>
     </nav>
@@ -289,7 +290,7 @@
     <div id="login-gate" class="login-gate">
       <div class="login-card">
         <p class="eyebrow">Acceso protegido</p>
-        <h2>Admira Studio Studio</h2>
+        <h2>Admira Studio</h2>
         <p class="subtitle">La herramienta oficial de creación de contenidos con IA de Admira Studio.</p>
 
         <form id="login-form" onsubmit="doLogin(event)">
@@ -314,12 +315,12 @@
       <div style="max-width:1180px; margin:0 auto; padding: 0 20px;">
         <div class="studio-header">
           <div>
-            <strong style="font-size:22px;">Admira Studio Studio</strong>
+            <strong style="font-size:22px;">Admira Studio</strong>
             <span style="margin-left:12px; font-size:12px; background:rgba(104,220,233,0.15); color:var(--cyan); padding:2px 8px; border-radius:3px;">PRODUCCIÓN</span>
           </div>
           <div>
             <span id="user-badge" class="user"></span>
-            <button onclick="logout()" class="button secondary" style="padding:6px 14px; font-size:13px; margin-left:12px;">Cerrar sesión</button>
+            <button onclick="logout()" class="button secondary" style="padding:6px 14px; font-size:13px; margin-left:12px;">Close sesión</button>
           </div>
         </div>
 
@@ -329,10 +330,10 @@
             <h4>Configuración</h4>
 
             <div style="margin-bottom:14px;">
-              <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:6px;">Formato</label>
+              <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:6px;">Format</label>
               <div class="format-grid-small" id="format-chips">
                 <div class="format-chip" data-format="video">Video</div>
-                <div class="format-chip" data-format="imagen">Imagen</div>
+                <div class="format-chip" data-format="imagen">Image</div>
                 <div class="format-chip" data-format="audio">Audio</div>
                 <div class="format-chip" data-format="texto">Texto</div>
                 <div class="format-chip" data-format="marketing">Marketing</div>
@@ -344,17 +345,17 @@
               <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:6px;">Modelo (auto: mejor gratuito según formato)</label>
               <select id="model" class="model-select">
                 <option>Kling 2.1 (Video - free tier limitado)</option>
-                <option>Runway Gen-4 (Video - créditos gratis)</option>
-                <option>Midjourney v7 (Imagen)</option>
-                <option>Flux Pro 1.1 (Imagen - gratuito vía HF/Grok)</option>
-                <option>ElevenLabs Multilingual v3 (Voz - plan free)</option>
-                <option>Suno v4 (Música - free tier)</option>
-                <option>Browser Web Speech API (Voz - 100% gratuito y nativo)</option>
+                <option>Runway Gen-4 (Video - créditos free)</option>
+                <option>Midjourney v7 (Image)</option>
+                <option>Flux Pro 1.1 (Image - gratuito vía HF/Grok)</option>
+                <option>ElevenLabs Multilingual v3 (Voice - plan free)</option>
+                <option>Suno v4 (Music - free tier)</option>
+                <option>Browser Web Speech API (Voice - 100% gratuito y nativo)</option>
               </select>
             </div>
 
             <div>
-              <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:6px;">Aspecto / Duración</label>
+              <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:6px;">Aspecto / Duration</label>
               <select id="aspect" class="model-select">
                 <option>16:9 — Horizontal</option>
                 <option>9:16 — Vertical (Reels/TikTok)</option>
@@ -371,7 +372,7 @@
 
             <div style="display:flex; gap:8px; margin-top:8px;">
               <button class="button secondary" onclick="useMethodPrompt()" style="flex:1; font-size:13px;">Usar prompt del Método</button>
-              <button class="button secondary" onclick="clearPrompt()" style="flex:1; font-size:13px;">Limpiar</button>
+              <button class="button secondary" onclick="clearPrompt()" style="flex:1; font-size:13px;">Clear</button>
             </div>
 
             <button class="generate-btn" onclick="generateContent()">Generar con Admira Studio</button>
@@ -387,7 +388,7 @@
 
             <div id="output-actions" style="display:none; margin-top:14px; gap:8px;">
               <button class="button primary" onclick="sendToPixerFeed()" style="width:100%; margin-bottom:6px;">Enviar a Pixer Feed</button>
-              <button class="button secondary" onclick="saveToLibrary()" style="width:100%;">Guardar en Biblioteca</button>
+              <button class="button secondary" onclick="saveToLibrary()" style="width:100%;">Save en Biblioteca</button>
             </div>
           </div>
         </div>
@@ -402,9 +403,9 @@
   </main>
 
   <footer class="site-footer">
-    <span>Admira Studio Studio</span>
+    <span>Admira Studio</span>
     <p>Herramienta de creación interna. Contenido generado se puede publicar a Pixer Feed.</p>
-    <a href="/god/">Volver al sitio principal (god)</a>
+    <a href="/god/">Back to the main site (god)</a>
   </footer>
 
   <script>
@@ -417,16 +418,16 @@
       let recommended = '';
 
       if (format === 'video') {
-        recommended = 'Runway Gen-4 (Video - créditos gratis)';
+        recommended = 'Runway Gen-4 (Video - créditos free)';
       } else if (format === 'imagen' || format === 'marketing') {
-        recommended = 'Flux Pro 1.1 (Imagen - gratuito vía HF/Grok)';
+        recommended = 'Flux Pro 1.1 (Image - gratuito vía HF/Grok)';
       } else if (format === 'audio') {
         // Prioritize truly free native for voice; Suno for music but default to free TTS
-        recommended = 'Browser Web Speech API (Voz - 100% gratuito y nativo)';
+        recommended = 'Browser Web Speech API (Voice - 100% gratuito y nativo)';
       } else if (format === 'texto') {
-        recommended = 'Flux Pro 1.1 (Imagen - gratuito vía HF/Grok)'; // placeholder, or could be text model
+        recommended = 'Flux Pro 1.1 (Image - gratuito vía HF/Grok)'; // placeholder, or could be text model
       } else if (format === 'operaciones') {
-        recommended = 'Browser Web Speech API (Voz - 100% gratuito y nativo)';
+        recommended = 'Browser Web Speech API (Voice - 100% gratuito y nativo)';
       }
 
       if (recommended) {
@@ -524,12 +525,12 @@
 
     function useMethodPrompt() {
       const prompts = {
-        'video': 'Secuencia de 8-12 segundos: producto entrando en plano, slow motion elegante, transición a modelo usando el producto, final con logo y claim de marca. Movimiento fluido y premium.',
+        'video': 'Secuencia de 8-12 seconds: producto entrando en plano, slow motion elegante, transition a modelo usando el producto, final con logo y claim de marca. Movimiento fluido y premium.',
         'imagen': 'Fotografía de producto de lujo sobre fondo neutro texturizado. Dirección de arte minimalista, luces suaves, sombras controladas, alta resolución, consistencia de marca.',
-        'audio': 'Locución cálida y autoritaria en español neutro, 18 segundos. Música ambiente sutil de sintetizadores y percusión ligera. Final con sting de marca.',
-        'texto': 'Copy para post de Instagram + caption largo. Tono sofisticado, aspiracional pero cercano. Incluye 3 CTAs diferentes y hashtags estratégicos.',
-        'marketing': 'Variantes A/B para campaña paid: 3 headlines + 3 visuals descriptions + 2 versiones de copy largo para landing.',
-        'operaciones': 'Guion de briefing interno + checklist de producción para equipo de 4 personas. Incluye tiempos, assets necesarios y puntos de control de calidad.'
+        'audio': 'Locución cálida y autoritaria en español neutro, 18 seconds. Music ambiente sutil de sintetizadores y percusión ligera. Final con sting de marca.',
+        'texto': 'Copy para post de Instagram + caption largo. Tone sofisticado, aspiracional pero cercano. Incluye 3 CTAs diferentes y hashtags estratégicos.',
+        'marketing': 'Variants A/B para campaña paid: 3 headlines + 3 visuals descriptions + 2 versiones de copy largo para landing.',
+        'operaciones': 'Script de briefing interno + checklist de producción para equipo de 4 personas. Incluye tiempos, assets necesarios y puntos de control de calidad.'
       };
       const ta = document.getElementById('prompt');
       ta.value = prompts[currentFormat] || prompts['video'];
@@ -542,7 +543,7 @@
 
     function playFreeTTS(text) {
       if (!('speechSynthesis' in window)) {
-        alert('Tu navegador no soporta Web Speech API. Usa Chrome, Edge o Safari.');
+        alert('Tu browser no soporta Web Speech API. Usa Chrome, Edge o Safari.');
         return;
       }
       const utterance = new SpeechSynthesisUtterance(text);
@@ -577,7 +578,7 @@
 
       output.innerHTML = `
         <div style="width:100%">
-          <div style="margin-bottom:12px; color:#68dce9;">Generando con ${model}...</div>
+          <div style="margin-bottom:12px; color:#68dce9;">Generating with ${model}...</div>
           <div class="progress" style="height:4px; background:rgba(104,220,233,0.2); border-radius:2px; overflow:hidden;">
             <div style="height:100%; width:0%; background:#68dce9; animation: genprogress 1.8s linear forwards;"></div>
           </div>
@@ -593,7 +594,7 @@
             <div class="result">
               <div style="background:linear-gradient(135deg,#1a242f,#0f161d); padding:12px; border-radius:6px; margin-bottom:10px;">
                 <div style="height:160px; background:linear-gradient(45deg, #68dce9 0%, #ff6b5c 100%); border-radius:4px; display:flex; align-items:center; justify-content:center; color:#0b1117; font-weight:700; font-size:13px; text-align:center;">
-                  IMAGEN GENERADA<br>
+                  IMAGE GENERADA<br>
                   <span style="font-size:10px; opacity:.7;">${aspect}</span>
                 </div>
               </div>
@@ -621,7 +622,7 @@
                 ${isFreeTTS ? 
                   `<button onclick="playFreeTTS('${prompt.replace(/'/g, "\\'")}')" style="margin-top:8px; padding:6px 12px; background:#68dce9; color:#0b1117; border:none; border-radius:4px; cursor:pointer;">▶ Reproducir con TTS Gratuito (nativo)</button>` :
                   `<div style="margin:10px 0; height:3px; background:#68dce9; width:60%;"></div>
-                   <span style="font-size:11px;">Duración: 18s • Calidad: Alta</span>`
+                   <span style="font-size:11px;">Duration: 18s • Calidad: Alta</span>`
                 }
               </div>
               <div style="font-size:12px; margin-top:8px;">${prompt.slice(0,60)}...</div>
@@ -629,7 +630,7 @@
         } else {
           resultHTML = `
             <div class="result" style="text-align:left; font-size:13px;">
-              <strong>Texto / Guion generado</strong><br><br>
+              <strong>Texto / Script generado</strong><br><br>
               ${prompt.slice(0,120)}...<br><br>
               <em style="font-size:11px; color:#aeb9bd;">Listo para revisión editorial. Modelo: ${model}</em>
             </div>`;
@@ -654,7 +655,7 @@
 
     function sendToPixerFeed() {
       const output = document.getElementById('output');
-      alert('✅ Contenido enviado a Pixer Feed.\n\nEl asset aparecerá en los overlays de pantallas activas en los próximos segundos (según polling del worker).');
+      alert('✅ Contenido enviado a Pixer Feed.\n\nEl asset aparecerá en los overlays de pantallas activas en los próximos seconds (según polling del worker).');
       // In real life this would POST to the signage worker
     }
 
@@ -713,9 +714,9 @@
     });
 
     // Make sure chips work even if studio shown later (init is called on login)
-    console.log('%c[Admira Studio Studio] Login + creation tool ready. Password hint: pixeria', 'color:#555');
+    console.log('%c[Admira Studio] Login + creation tool ready. Password hint: pixeria', 'color:#555');
   </script>
-  <script src="../backoffice-auth.js"></script>
+  <script src="../backoffice-auth.js?v=20260813-auth-redirect"></script>
   <script src="../backoffice-mode.js"></script>
   <script defer src="/assets/matrix-rain.js?v=20260608-sides"></script>
 </body>

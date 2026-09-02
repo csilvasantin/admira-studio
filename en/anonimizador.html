@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,14 +35,15 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="canonical" href="https://www.admira.studio/en/anonimizador.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/anonimizador.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/anonimizador.html">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
+  <link rel="canonical" href="https://www.admira.studio/anonimizador.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/anonimizador.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/anonimizador.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/anonimizador.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio Studio · Anonymizer</title>
+  <title>Admira Studio · Anonymizer</title>
   <meta name="description" content="Admira Studio Anonymizer: turn a real photo into a digital-twin NPC and bring it back as a different realistic person. Privacy by design for signage and Pixer Feed.">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
@@ -113,7 +114,7 @@
     .anon-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
     .anon-toast a{color:var(--accent,#39d353);font-weight:700;text-decoration:underline}
   </style>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body data-page="anonimizador">
   <!-- Google Tag Manager (noscript) -->
@@ -152,7 +153,7 @@
     </nav>
     <div class="topnav-actions">
       <div class="language-switcher" aria-label="Language selection">
-        <a class="lang-toggle" href="/anonimizador.html" aria-label="Switch to Spanish">ESP</a>
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
       <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
     </div>

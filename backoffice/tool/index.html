@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,6 +35,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <title>Labs · Lanetro | Admira Studio</title>
   <link rel="canonical" href="https://www.admira.studio/god/tool/">
   <style>
@@ -572,7 +573,7 @@
   </style>
   <script defer src="/assets/analytics.js?v=20260714-coverage"></script>
   <script defer src="/assets/consent.js?v=20260714-universal"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -583,14 +584,14 @@
       <span class="brand-mark">P</span>
       <span>Admira Studio</span>
     </a>
-    <nav class="nav" aria-label="Secciones de Admira Studio">
+    <nav class="nav" aria-label="Admira Studio sections">
       <a href="/audio.html">Audio</a>
-      <a href="/musica.html">Música</a>
-      <a href="/imagenes.html">Imágenes</a>
+      <a href="/musica.html">Music</a>
+      <a href="/imagenes.html">Images</a>
       <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/publicidad.html">Publicidad</a>
-      <a href="/anonimizador.html">Anonimizador</a>
+      <a href="/publicidad.html">Advertising</a>
+      <a href="/anonimizador.html">Anonymizer</a>
       <a href="/crear/">Assets</a>
       <a href="/stock.html">Stock</a>
     </nav>
@@ -645,7 +646,7 @@
 
           <div class="journey">
             <div class="chip"><span>Inicio</span><strong id="startMetric">--</strong></div>
-            <div class="chip"><span>Cierre</span><strong id="endMetric">--</strong></div>
+            <div class="chip"><span>Closing</span><strong id="endMetric">--</strong></div>
             <div class="chip"><span>Modo</span><strong id="modeMetric">manual</strong></div>
           </div>
         </div>
@@ -1028,7 +1029,7 @@
     healthCheck();
     loadYarig();
   </script>
-  <script src="../backoffice-auth.js"></script>
+  <script src="../backoffice-auth.js?v=20260813-auth-redirect"></script>
   <script src="../backoffice-mode.js"></script>
 </body>
 </html>

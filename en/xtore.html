@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,15 +35,16 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
 <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
 <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
 <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio Studio · Signage</title>
+  <title>Admira Studio · Signage</title>
   <meta name="description" content="Admira Studio Xtore display for AI content from Pixer Feed in connected retail spaces.">
   <meta name="theme-color" content="#020602">
-  <link rel="canonical" href="https://www.admira.studio/en/xtore.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/xtore.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/xtore.html">
+  <link rel="canonical" href="https://www.admira.studio/xtore.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/xtore.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/xtore.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/xtore.html">
 <style>
   :root { --matrix:#00ff41; --matrix-deep:#00b82e; --bg:#020602; }
@@ -168,7 +169,7 @@ function renderItem(item) {
   document.getElementById('hud').dataset.id = item.id;
   document.getElementById('hud').insertAdjacentHTML('beforeend',
     `<div class="id" id="idBadge">id ${item.id.slice(-8)}</div>`);
-  // Limpiar badge anterior
+  // Clear badge previous
   const old = document.querySelectorAll('.id');
   if (old.length > 1) old[0].remove();
 }

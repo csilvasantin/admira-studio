@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,16 +35,17 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <title>Admira Studio · Concept — chat with Nemotron</title>
   <meta name="description" content="Bring any question to Nemotron and get an answer. A conversation space to shape your ideas with AI, inside Admira Studio.">
   <meta name="theme-color" content="#020602">
   <meta property="og:title" content="Admira Studio · Concept">
   <meta property="og:description" content="Chat with Nemotron: bring your questions and get answers.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.admira.studio/en/concepto.html">
-  <link rel="canonical" href="https://www.admira.studio/en/concepto.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/concepto.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/concepto.html">
+  <meta property="og:url" content="https://www.admira.studio/concepto.html">
+  <link rel="canonical" href="https://www.admira.studio/concepto.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/concepto.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/concepto.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/concepto.html">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
@@ -181,7 +182,7 @@
   </style>
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -193,7 +194,7 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/en/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.studio">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
@@ -204,23 +205,23 @@
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
 
   <header class="site-header">
-    <a class="brand" href="/en/" aria-label="Admira Studio home">
+    <a class="brand" href="/" aria-label="Admira Studio home">
       <span class="brand-mark">P</span>
       <span>Admira Studio</span>
     </a>
     <nav class="nav" aria-label="Main navigation">
-      <a href="/en/audio.html">Audio</a>
-      <a href="/en/musica.html">Music</a>
-      <a href="/en/imagenes.html">Images</a>
-      <a href="/en/video.html">Video</a>
+      <a href="/audio.html">Audio</a>
+      <a href="/musica.html">Music</a>
+      <a href="/imagenes.html">Images</a>
+      <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/en/publicidad.html">Advertising</a>
+      <a href="/publicidad.html">Advertising</a>
       <a href="/crear/">Assets</a>
-      <a href="/en/stock.html">Stock</a>
+      <a href="/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
       <div class="language-switcher" aria-label="Language selection">
-        <a class="lang-toggle" href="/concepto.html" aria-label="Switch to Spanish">ESP</a>
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
       <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
@@ -230,17 +231,17 @@
   </header>
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-    <a href="/en/audio.html">Audio</a>
-    <a href="/en/musica.html">Music</a>
-    <a href="/en/imagenes.html">Images</a>
-    <a href="/en/video.html">Video</a>
+    <a href="/audio.html">Audio</a>
+    <a href="/musica.html">Music</a>
+    <a href="/imagenes.html">Images</a>
+    <a href="/video.html">Video</a>
     <a href="/tiktok">TikTok</a>
-    <a href="/en/publicidad.html">Advertising</a>
-    <a href="/en/avatar.html">Avatar 3D</a>
+    <a href="/publicidad.html">Advertising</a>
+    <a href="/avatar.html">Avatar 3D</a>
     <a href="/crear/">Assets</a>
-    <a href="/en/stock.html">Stock</a>
+    <a href="/stock.html">Stock</a>
     <div class="mobile-language-switcher" aria-label="Language selection">
-      <a class="lang-toggle" href="/concepto.html" aria-label="Switch to Spanish">ESP</a>
+      <span class="lang-toggle" aria-label="English">EN</span>
     </div>
     <a class="mobile-cta" href="#contact" data-admira-contact>Contact</a>
   </nav>
@@ -249,7 +250,7 @@
     <div class="idea-head">
       <p class="eyebrow">Concept · AI conversation</p>
       <h1>Concept</h1>
-      <p>Bring any question to <strong>Nemotron</strong> and get an answer. A space to think out loud, validate concepts and shape whatever you want to create with Admira Studio. <a href="/en/" style="color:var(--cyan)">← back to Admira Studio</a></p>
+      <p>Bring any question to <strong>Nemotron</strong> and get an answer. A space to think out loud, validate concepts and shape whatever you want to create with Admira Studio. <a href="/" style="color:var(--cyan)">← back to Admira Studio</a></p>
     </div>
 
     <section class="idea-chat" aria-label="Conversation with Nemotron">

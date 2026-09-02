@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,138 +35,152 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <link rel="canonical" href="https://www.admira.studio/video.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/video.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/video.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/video.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/video.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio Studio · Video</title>
+  <title>Admira Studio · Video</title>
   <meta name="description" content="Brief operativo de Video: clips, reels, demos y escenas animadas para Admira.xp.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=20260717-head-caja">
+  <link rel="stylesheet" href="/workspace.css?v=20260717-head-caja">
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
+  <script defer src="/assets/descarga-local.js?v=20260828-r1"></script>
 </head>
-<body data-page="video" class="quad-ui">
+<body data-page="video">
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <canvas id="matrix-rain" aria-hidden="true"></canvas>
-  <!-- Marco cuadrático (quad-ui): navegación en los 4 bordes, estilo Admira.tv -->
-  <nav class="quad-menu quad-top" aria-label="Navegación superior Admira Studio">
-    <button type="button" class="quad-icon" data-quad-toggle="left" aria-label="Desplegar flujo de producción" title="Flujo de producción">☰</button>
-    <a class="quad-brand" href="index.html"><span>P</span><b>Admira Studio</b><small>Video Ops</small></a>
-    <div class="quad-links">
-      <a href="audio.html">Megafonía</a>
-      <a href="musica.html">Música</a>
-      <a href="imagenes.html">Imágenes</a>
-      <a class="active" href="video.html">Video</a><a href="/tiktok">TikTok</a>
-      <a href="stock.html">Stock</a>
+  <!-- Banda superior del grupo Admira · Xperience -->
+  <nav class="admira-nav admira-nav-static" aria-label="Admira · Xperience">
+    <a class="admira-nav-brand" href="https://www.admira.app">
+      <span class="admira-nav-brand-name">Admira</span>
+      <span class="admira-nav-brand-tag">Xperience</span>
+    </a>
+    <div class="admira-nav-items">
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Live Council</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
+      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contact</a>
     </div>
-    <a class="quad-cta" href="https://admira.tv" target="_blank" rel="noopener">Admira.tv</a>
-    <button type="button" class="quad-icon" data-quad-toggle="bottom" aria-label="Desplegar acciones rápidas" title="Acciones rápidas">⌘</button>
   </nav>
-  <nav class="quad-menu quad-bottom is-collapsed" aria-label="Acciones de producción">
-    <button type="button" data-quad-click="playOutput">🎬 Crear vídeo</button>
-    <button type="button" data-quad-click="sendToAdmiraXP">📺 Admira XP</button>
-    <button type="button" data-quad-click="sendToStock">📌 Enviar a Stock</button>
-    <a href="stock.html">🗂 Ver Stock</a>
-  </nav>
-  <nav class="quad-menu quad-left is-collapsed" aria-label="Flujo de producción">
-    <a href="#briefForm" data-quad-scroll="#briefForm"><span>01</span>Brief</a>
-    <a href="#briefForm" data-quad-scroll="[data-motor-section]"><span>02</span>Motor</a>
-    <a href="#playOutput" data-quad-scroll="#playOutput"><span>03</span>Generar</a>
-    <a href="#briefOut" data-quad-scroll="#briefOut"><span>04</span>Revisar</a>
-    <a href="#sendToStock" data-quad-scroll="#sendToStock"><span>05</span>Publicar</a>
-  </nav>
+  <canvas id="matrix-rain" aria-hidden="true"></canvas>
+  <header class="topnav">
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">P</span><span class="brand-name">Admira Studio</span></a></div>
+    <nav class="primary-nav">
+      <a href="audio.html" data-nav="audio">Audio</a>
+      <a href="musica.html" data-nav="musica">Music</a>
+      <a href="imagenes.html" data-nav="imagenes">Images</a>
+      <a href="video.html" data-nav="video">Video</a>
+      <a href="/tiktok" data-nav="tiktok">TikTok</a>
+      <a href="publicidad.html" data-nav="publicidad">Advertising</a>
+      <a href="anonimizador.html" data-nav="anonimizador">Anonymizer</a>
+      <a href="/crear/" data-nav="create">Assets</a>
+      <a href="stock.html" data-nav="stock">Stock</a>
+    </nav>
+    <div class="topnav-actions">
+      <div class="language-switcher" aria-label="Language selection">
+        <span class="lang-toggle" aria-label="English">EN</span>
+      </div>
+      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
+    </div>
+  </header>
 
   <header class="page-head has-gif"><figure class="page-gif"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/Digital_rain_animation_medium_letters_3_clear.gif" alt="Video · cascada Matrix" loading="lazy"><figcaption>// Video · cascada Matrix</figcaption></figure>
-    <p class="eyebrow video">Tipo de contenido · Video</p>
-    <h1>Clips, Reels y demos.</h1>
-    <p class="lead">Video vertical, horizontal o modular para storytelling, anuncios, demostraciones y tutoriales. Define hook, desarrollo, cierre y reusa audio, música e imágenes ya aprobadas.</p>
+    <p class="eyebrow video">Content type · Video</p>
+    <h1>Clips, Reels and demos.</h1>
+    <p class="lead">Vertical, horizontal or modular video for storytelling, ads, demos and tutorials. Define hook, development, closing and reuse approved audio, music and images.</p>
   </header>
 
   <main>
     <form id="briefForm">
       <div class="field" style="margin-bottom: 16px; display:grid; grid-template-columns: minmax(220px, 1fr) auto auto; gap:10px; align-items:end;">
         <div>
-          <label for="proj-cliente">Cliente / proyecto</label>
-          <input id="proj-cliente" name="cliente" type="text" placeholder="Ej. Aena Mallorca - Campaña primavera">
+          <label for="proj-cliente">Client / project</label>
+          <input id="proj-cliente" name="cliente" type="text" placeholder="e.g. Aena Mallorca — Spring campaign">
         </div>
-        <button type="button" class="btn" id="sendToAdmiraXP" title="Envía el último contenido generado al feed de Admira XP">📺 ENVIAR A ADMIRA XP</button>
-        <a class="btn" href="signage.html" target="_blank" rel="noopener" title="Abre la pantalla de signage para ver lo enviado">↗ VER PANTALLA</a>
+        <button type="button" class="btn" id="sendToAdmiraXP" title="Send the latest generated content to the Admira XP feed">📺 SEND TO ADMIRA XP</button>
+        <a class="btn" href="/signage.html" target="_blank" rel="noopener" title="Open the signage screen to view the content">↗ VIEW SCREEN</a>
       </div>
 
       <article class="module">
-        <div class="module-head"><h3><span class="accent" style="background: var(--video);"></span>Video</h3><small>guion + planos + montaje</small></div>
+        <div class="module-head"><h3><span class="accent" style="background: var(--video);"></span>Video</h3><small>script + shots + editing</small></div>
         <div data-motor-section="video"></div>
-        <div class="field"><label for="v-hook">Hook (3s iniciales)</label><input id="v-hook" name="video.hook" type="text" placeholder="Pregunta directa al espectador"></div>
-        <div class="field"><label for="v-desarrollo">Desarrollo</label><textarea id="v-desarrollo" name="video.desarrollo" placeholder="Mostrar producto, beneficios, prueba social..."></textarea></div>
+        <div class="field"><label for="v-hook">Hook (first 3s)</label><input id="v-hook" name="video.hook" type="text" placeholder="Pregunta directa al espectador"></div>
+        <div class="field"><label for="v-desarrollo">Development</label><textarea id="v-desarrollo" name="video.desarrollo" placeholder="Show product, benefits, social proof..."></textarea></div>
         <div class="row2">
-          <div class="field"><label for="v-cierre">Cierre</label><input id="v-cierre" name="video.cierre" type="text" placeholder="Logo + claim"></div>
+          <div class="field"><label for="v-cierre">Closing</label><input id="v-cierre" name="video.cierre" type="text" placeholder="Logo + claim"></div>
           <div class="field"><label for="v-cta">CTA</label><input id="v-cta" name="video.cta" type="text" placeholder="Visita admira.xp"></div>
         </div>
         <div class="row2">
-          <div class="field"><label for="v-canal">Canal / formato</label>
+          <div class="field"><label for="v-canal">Channel / format</label>
             <select id="v-canal" name="video.canal">
               <option value="">—</option>
               <option>Reel vertical 9:16</option>
               <option>YouTube 16:9</option>
-              <option>Demo producto 16:9</option>
-              <option>Pantalla evento 16:9</option>
-              <option>Carrusel cuadrado 1:1</option>
+              <option>Product demo 16:9</option>
+              <option>Event screen 16:9</option>
+              <option>Square carousel 1:1</option>
             </select>
           </div>
-          <div class="field"><label for="v-duracion">Duración</label><input id="v-duracion" name="video.duracion" type="text" placeholder="30s"></div>
+          <div class="field"><label for="v-duracion">Duration</label><input id="v-duracion" name="video.duracion" type="text" placeholder="30s"></div>
         </div>
-        <div class="field"><label>Reusa de otros módulos</label>
+        <div class="field"><label>Reuse from other modules</label>
           <div class="chips" data-name="video.reusa">
             <label class="chip"><input type="checkbox" value="audio">Audio</label>
-            <label class="chip"><input type="checkbox" value="musica">Música</label>
-            <label class="chip"><input type="checkbox" value="imagenes">Imágenes</label>
+            <label class="chip"><input type="checkbox" value="musica">Music</label>
+            <label class="chip"><input type="checkbox" value="imagenes">Images</label>
           </div>
         </div>
       </article>
 
       <div class="brief-area">
         <div class="brief-head">
+          <h3>Video brief</h3>
           <div class="brief-actions">
-            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ CREAR VÍDEO</span></button>
-            <button class="btn" type="button" id="clearAll">Limpiar Video</button>
-            <button class="btn" type="button" id="sendToStock" title="Publica en Stock el vídeo creado">📌 Enviar a Stock</button>
+            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ CREATE</span></button>
+            <button class="btn" type="button" id="genBrief">Generate brief</button>
+            <button class="btn" type="button" id="copyBrief">Copy JSON</button>
+            <button class="btn" type="button" id="copyMd">Copy Markdown</button>
+            <button class="btn" type="button" id="dlBrief">Download .json</button>
+            <button class="btn" type="button" id="clearAll">Clear Video</button>
           </div>
         </div>
-        <pre class="brief" id="briefOut" hidden></pre>
+        <pre class="brief" id="briefOut">// Complete the fields and select "Generate brief".</pre>
       </div>
       <div id="player" class="player-area" hidden></div>
     </form>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Open Admira XP — latest Digital Twin version">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
-      <h3>📥 IMPORTAR DESDE URL</h3>
-      <p class="keys-warn">yt-dlp en Mac Mini (audio mp3 + video mp4). Hosts permitidos: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn. Si abres en local también funciona suno-local (:3777).</p>
-      <div class="field"><label for="import-url">URL</label><input id="import-url" type="text" autocomplete="off" placeholder="https://www.youtube.com/watch?v=..."></div>
+      <h3>📥 IMPORT FROM URL</h3>
+      <p class="keys-warn">yt-dlp on Mac Mini (audio mp3 + video mp4). Supported hosts: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn, Telegram (t.me). You can paste SEVERAL URLs at once, one per line. When opened locally, suno-local also works (:3777).</p>
+      <div class="field"><label for="import-url">URL <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(one or more, one per line)</small></label><textarea id="import-url" rows="2" autocomplete="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…&#10;https://t.me/canal/123"></textarea></div>
       <div class="field">
-        <label for="import-comment">Comentarios <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(opcional · indexable por búsqueda en Stock)</small></label>
-        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notas, etiquetas, contexto… (luego se puede buscar)"></textarea>
+        <label for="import-comment">Comments <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(optional · searchable in Stock)</small></label>
+        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notes, tags, context… (searchable later)"></textarea>
       </div>
       <div class="field">
-        <label>Formato</label>
-        <div class="import-fmt" role="radiogroup" aria-label="Formato de importación">
+        <label>Format</label>
+        <div class="import-fmt" role="radiogroup" aria-label="Import format">
           <label class="import-fmt-chip is-audio">
             <input type="radio" name="import-fmt" value="audio" checked>
             <span class="import-fmt-icon" aria-hidden="true">🎵</span>
-            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · sólo pista de audio</small></span>
+            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · audio track only</small></span>
           </label>
           <label class="import-fmt-chip is-video">
             <input type="radio" name="import-fmt" value="video">
@@ -177,7 +191,7 @@
       </div>
       <div class="import-progress" id="importProgress" hidden>
         <div class="import-progress-head">
-          <span class="import-progress-kind" id="importProgressKind">— ESPERANDO —</span>
+          <span class="import-progress-kind" id="importProgressKind">— WAITING —</span>
           <span class="import-progress-stats" id="importProgressStats">0 MB · 0s</span>
         </div>
         <div class="import-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -186,8 +200,8 @@
         </div>
       </div>
       <div class="keys-actions">
-        <button type="button" class="btn primary" id="doImport">Importar</button>
-        <button type="button" class="btn" id="closeImport">Cerrar</button>
+        <button type="button" class="btn primary" id="doImport">Import</button>
+        <button type="button" class="btn" id="closeImport">Close</button>
       </div>
       <pre class="brief" id="importStatus" style="display:none;font-size:11px;max-height:200px;"></pre>
     </form>
@@ -195,15 +209,14 @@
   <dialog id="keysModal" class="keys-modal">
     <form method="dialog" class="keys-form">
       <h3>⚙ API KEYS</h3>
-      <p class="keys-warn">Las claves se guardan solo en este navegador (localStorage). No se envían a ningún servidor de Admira Studio.</p>      <div class="field"><label for="key-elevenlabs-voice">ElevenLabs Voice ID</label><input id="key-elevenlabs-voice" type="text" autocomplete="off" placeholder="EXAVITQu4vr4xnSDxMaL (Bella · default)"></div>      <div class="keys-actions">
-        <button type="button" class="btn primary" id="saveKeys">Guardar</button>
-        <button type="button" class="btn" id="clearKeys">Borrar todas</button>
-        <button type="button" class="btn" id="closeKeys">Cerrar</button>
+      <p class="keys-warn">Keys are stored only in this browser (localStorage). They are not sent to any Admira Studio server.</p>      <div class="field"><label for="key-elevenlabs-voice">ElevenLabs Voice ID</label><input id="key-elevenlabs-voice" type="text" autocomplete="off" placeholder="EXAVITQu4vr4xnSDxMaL (Bella · default)"></div>      <div class="keys-actions">
+        <button type="button" class="btn primary" id="saveKeys">Save</button>
+        <button type="button" class="btn" id="clearKeys">Delete all</button>
+        <button type="button" class="btn" id="closeKeys">Close</button>
       </div>
     </form>
   </dialog>
   <script defer src="/matrix-rain.js?v=20260608-sides"></script>
-  <script src="app.js?v=20260614-barclean"></script>
-  <script src="/assets/admira-version-watch.js" defer></script>
+  <script src="/app.js?v=20260902-en"></script>
 </body>
 </html>

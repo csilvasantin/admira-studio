@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,14 +35,15 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="canonical" href="https://www.admira.studio/en/publicidad.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/publicidad.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/publicidad.html">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
+  <link rel="canonical" href="https://www.admira.studio/publicidad.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/publicidad.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/publicidad.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/publicidad.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio Studio | Targeted Advertising</title>
+  <title>Admira Studio | Targeted Advertising</title>
   <meta name="description" content="Content creation with Target: generate ad variants for gender, age ranges, personas and live signals from the XpaceOS digital twin / LiveCam.">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
@@ -51,7 +52,8 @@
   <link rel="stylesheet" href="../workspace.css?v=20260717-head-caja">
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
+  <script defer src="/assets/descarga-local.js?v=20260828-r1"></script>
 </head>
 <body data-page="publicidad">
   <!-- Google Tag Manager (noscript) -->
@@ -63,7 +65,7 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/en/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Live Council</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
@@ -88,7 +90,7 @@
     </nav>
     <div class="topnav-actions">
       <div class="language-switcher" aria-label="Language selection">
-        <a class="lang-toggle" href="/publicidad.html" aria-label="Switch to Spanish">ESP</a>
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
       <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
     </div>
@@ -105,17 +107,17 @@
     <form id="briefForm">
       <div class="field" style="margin-bottom: 16px; display:grid; grid-template-columns: minmax(220px, 1fr) auto auto; gap:10px; align-items:end;">
         <div>
-          <label for="proj-cliente">Cliente / proyecto</label>
-          <input id="proj-cliente" name="cliente" type="text" placeholder="Ej. XpaceOS Shoptalk · Escaparate Lenovo">
+          <label for="proj-cliente">Client / project</label>
+          <input id="proj-cliente" name="cliente" type="text" placeholder="e.g. XpaceOS Shoptalk · Lenovo storefront">
         </div>
-        <button type="button" class="btn" id="sendToAdmiraXP" title="Envía la creatividad segmentada al feed de Admira XP">📺 ENVIAR A ADMIRA XP</button>
-        <a class="btn" href="../signage.html" target="_blank" rel="noopener" title="Abre la pantalla de signage para ver lo enviado">↗ VER PANTALLA</a>
+        <button type="button" class="btn" id="sendToAdmiraXP" title="Send the targeted creative to the Admira XP feed">📺 SEND TO ADMIRA XP</button>
+        <a class="btn" href="../signage.html" target="_blank" rel="noopener" title="Open the signage screen to view the content">↗ VIEW SCREEN</a>
       </div>
       <div id="signageStatus" class="signage-status" hidden style="margin-bottom:16px;">
         <img class="signage-thumb" alt="">
         <div class="signage-info">
           <div class="signage-info-row">
-            <span class="signage-stage">📤 Iniciando...</span>
+            <span class="signage-stage">📤 Starting...</span>
             <span class="signage-id"></span>
           </div>
           <div class="signage-bar"><div class="signage-bar-fill"></div></div>
@@ -125,116 +127,116 @@
 
       <section class="segmented-layout">
         <article class="module">
-          <div class="module-head"><h3><span class="accent" style="background: var(--xp);"></span>Señal LiveCam / XpaceOS</h3><small>input del gemelo digital</small></div>
+          <div class="module-head"><h3><span class="accent" style="background: var(--xp);"></span>LiveCam / XpaceOS signal</h3><small>digital twin input</small></div>
           <div class="segmented-signal">
             <div class="signal-readout">
               <span class="signal-dot" id="adSignalDot"></span>
               <div>
                 <strong id="adSignalLabel">Segmento neutral</strong>
-                <small id="adSignalMeta">fuente: simulador local · confianza 0.64</small>
+                <small id="adSignalMeta">source: local simulator · confidence 0.64</small>
               </div>
             </div>
             <div class="segment-switch" role="group" aria-label="Segmento de audiencia">
-              <button type="button" data-ad-segment="male">Hombre</button>
-              <button type="button" data-ad-segment="female">Mujer</button>
+              <button type="button" data-ad-segment="male">Male</button>
+              <button type="button" data-ad-segment="female">Female</button>
               <button type="button" data-ad-segment="neutral">Neutral</button>
             </div>
           </div>
           <div class="row2">
-            <div class="field"><label for="ad-source">Fuente de señal</label>
+            <div class="field"><label for="ad-source">Signal source</label>
               <select id="ad-source" name="publicidad.source">
-                <option>Simulador local</option>
+                <option>Local simulator</option>
                 <option>LiveCam XpaceOS</option>
                 <option>API / signage event</option>
                 <option>Manual operator</option>
               </select>
             </div>
-            <div class="field"><label for="ad-screen">Pantalla destino</label><input id="ad-screen" name="publicidad.screen" type="text" placeholder="escaparate"></div>
+            <div class="field"><label for="ad-screen">Target screen</label><input id="ad-screen" name="publicidad.screen" type="text" placeholder="escaparate"></div>
           </div>
           <div class="field">
-            <label for="ad-privacy">Regla de privacidad</label>
-            <input id="ad-privacy" name="publicidad.privacy" type="text" value="No guardar imagen, no identificar personas, usar solo señal efímera agregada">
+            <label for="ad-privacy">Privacy rule</label>
+            <input id="ad-privacy" name="publicidad.privacy" type="text" value="Do not store images or identify people; use only an aggregated ephemeral signal">
           </div>
         </article>
 
         <article class="module">
-          <div class="module-head"><h3><span class="accent" style="background: var(--video);"></span>Brief creativo</h3><small>copy + oferta + CTA</small></div>
+          <div class="module-head"><h3><span class="accent" style="background: var(--video);"></span>Creative brief</h3><small>copy + offer + CTA</small></div>
           <div class="field">
-            <label>Imagen base del anuncio</label>
+            <label>Base ad image</label>
             <div class="ad-upload">
               <input id="ad-image-file" type="file" accept="image/*" hidden>
-              <button type="button" class="btn" id="ad-image-pick">🖼 Seleccionar imagen</button>
-              <button type="button" class="btn" id="ad-image-clear">Limpiar imagen</button>
-              <span class="ad-upload-meta" id="ad-image-meta">Sin imagen cargada</span>
+              <button type="button" class="btn" id="ad-image-pick">🖼 Select image</button>
+              <button type="button" class="btn" id="ad-image-clear">Clear image</button>
+              <span class="ad-upload-meta" id="ad-image-meta">No image loaded</span>
             </div>
             <div class="ad-image-preview" id="ad-image-preview" hidden>
-              <img id="ad-image-preview-img" alt="Imagen base del anuncio">
+              <img id="ad-image-preview-img" alt="Base ad image">
             </div>
           </div>
           <div class="row2">
-            <div class="field"><label for="ad-product">Producto / servicio</label><input id="ad-product" name="publicidad.product" type="text" placeholder="Zapatillas urbanas · pack premium"></div>
-            <div class="field"><label for="ad-context">Contexto del espacio</label><input id="ad-context" name="publicidad.context" type="text" placeholder="Escaparate interactivo en tienda física"></div>
+            <div class="field"><label for="ad-product">Product / service</label><input id="ad-product" name="publicidad.product" type="text" placeholder="Zapatillas urbanas · pack premium"></div>
+            <div class="field"><label for="ad-context">Space context</label><input id="ad-context" name="publicidad.context" type="text" placeholder="Escaparate interactivo en tienda física"></div>
           </div>
           <div class="row2">
-            <div class="field"><label for="ad-male">Oferta si segmento hombre</label><input id="ad-male" name="publicidad.offerMale" type="text" placeholder="Rendimiento, tecnologia y estilo urbano"></div>
-            <div class="field"><label for="ad-female">Oferta si segmento mujer</label><input id="ad-female" name="publicidad.offerFemale" type="text" placeholder="Diseño, comodidad y expresion personal"></div>
+            <div class="field"><label for="ad-male">Offer for male segment</label><input id="ad-male" name="publicidad.offerMale" type="text" placeholder="Rendimiento, tecnologia y estilo urbano"></div>
+            <div class="field"><label for="ad-female">Offer for female segment</label><input id="ad-female" name="publicidad.offerFemale" type="text" placeholder="Diseño, comodidad y expresion personal"></div>
           </div>
           <div class="row2">
-            <div class="field"><label for="ad-neutral">Oferta neutral / fallback</label><input id="ad-neutral" name="publicidad.offerNeutral" type="text" placeholder="Nueva coleccion disponible hoy"></div>
+            <div class="field"><label for="ad-neutral">Neutral offer / fallback</label><input id="ad-neutral" name="publicidad.offerNeutral" type="text" placeholder="Nueva coleccion disponible hoy"></div>
             <div class="field"><label for="ad-cta">CTA</label><input id="ad-cta" name="publicidad.cta" type="text" placeholder="Toca la pantalla y pruebalo en el gemelo"></div>
           </div>
-          <div class="field"><label for="ad-style">Estilo visual</label><input id="ad-style" name="publicidad.style" type="text" placeholder="Matrix retail, neon verde, producto hero, texto alto contraste"></div>
+          <div class="field"><label for="ad-style">Visual style</label><input id="ad-style" name="publicidad.style" type="text" placeholder="Matrix retail, green neon, hero product, high-contrast text"></div>
         </article>
       </section>
 
       <section class="brief-area">
         <div class="brief-head">
-          <h3>Brief de Publicidad Segmentada</h3>
+          <h3>Targeted Advertising brief</h3>
           <div class="brief-actions">
-            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ GENERAR 2 VERSIONES</span></button>
-            <button class="btn" type="button" id="adSimulatePass">Simular paso LiveCam</button>
-            <button class="btn" type="button" id="genBrief">Generar brief</button>
-            <button class="btn" type="button" id="copyBrief">Copiar JSON</button>
-            <button class="btn" type="button" id="copyMd">Copiar Markdown</button>
-            <button class="btn" type="button" id="dlBrief">Descargar .json</button>
-            <button class="btn" type="button" id="clearAll">Limpiar Publicidad</button>
+            <button class="btn play" type="button" id="playOutput"><span class="play-label">✨ GENERATE 2 VERSIONS</span></button>
+            <button class="btn" type="button" id="adSimulatePass">Simulate LiveCam pass</button>
+            <button class="btn" type="button" id="genBrief">Generate brief</button>
+            <button class="btn" type="button" id="copyBrief">Copy JSON</button>
+            <button class="btn" type="button" id="copyMd">Copy Markdown</button>
+            <button class="btn" type="button" id="dlBrief">Download .json</button>
+            <button class="btn" type="button" id="clearAll">Clear Advertising</button>
           </div>
         </div>
-        <pre class="brief" id="briefOut">// Sube una imagen base, define la oferta para hombre y mujer, y pulsa "Generar 2 versiones".</pre>
+        <pre class="brief" id="briefOut">// Upload a base image, define the offers for men and women, and select "Generate 2 versions".</pre>
       </section>
       <div id="player" class="player-area" hidden></div>
     </form>
   </main>
 
-  <footer><a href="https://www.xpaceos.com" target="_blank" rel="noopener" title="Abrir XpaceOS">Admira Studio AI Workspace · Publicidad segmentada para XpaceOS · v.2026.06.04-r73</a></footer>
+  <footer><a href="https://www.xpaceos.com" target="_blank" rel="noopener" title="Open XpaceOS">Admira Studio AI Workspace · Targeted advertising for XpaceOS · v.2026.06.04-r73</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
-      <h3>📥 IMPORTAR DESDE URL</h3>
-      <p class="keys-warn">yt-dlp en Mac Mini (audio mp3 + video mp4). Hosts permitidos: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn.</p>
-      <div class="field"><label for="import-url">URL</label><input id="import-url" type="text" autocomplete="off" placeholder="https://www.youtube.com/watch?v=..."></div>
-      <div class="field"><label for="import-comment">Comentarios</label><textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notas, etiquetas, contexto..."></textarea></div>
+      <h3>📥 IMPORT FROM URL</h3>
+      <p class="keys-warn">yt-dlp on Mac Mini (audio mp3 + video mp4). Supported hosts: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn.</p>
+      <div class="field"><label for="import-url">URL <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(one or more, one per line)</small></label><textarea id="import-url" rows="2" autocomplete="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…&#10;https://t.me/canal/123"></textarea></div>
+      <div class="field"><label for="import-comment">Comments</label><textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notes, tags, context..."></textarea></div>
       <div class="field">
-        <label>Formato</label>
-        <div class="import-fmt" role="radiogroup" aria-label="Formato de importación">
+        <label>Format</label>
+        <div class="import-fmt" role="radiogroup" aria-label="Import format">
           <label class="import-fmt-chip is-audio"><input type="radio" name="import-fmt" value="audio" checked><span class="import-fmt-icon" aria-hidden="true">🎵</span><span class="import-fmt-label"><b>AUDIO</b><small>mp3</small></span></label>
           <label class="import-fmt-chip is-video"><input type="radio" name="import-fmt" value="video"><span class="import-fmt-icon" aria-hidden="true">🎬</span><span class="import-fmt-label"><b>VIDEO</b><small>mp4</small></span></label>
         </div>
       </div>
       <div class="import-progress" id="importProgress" hidden>
-        <div class="import-progress-head"><span class="import-progress-kind" id="importProgressKind">— ESPERANDO —</span><span class="import-progress-stats" id="importProgressStats">0 MB · 0s</span></div>
+        <div class="import-progress-head"><span class="import-progress-kind" id="importProgressKind">— WAITING —</span><span class="import-progress-stats" id="importProgressStats">0 MB · 0s</span></div>
         <div class="import-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"><div class="import-progress-fill" id="importProgressFill"></div><div class="import-progress-indet" id="importProgressIndet" hidden></div></div>
       </div>
-      <div class="keys-actions"><button type="button" class="btn primary" id="doImport">Importar</button><button type="button" class="btn" id="closeImport">Cerrar</button></div>
+      <div class="keys-actions"><button type="button" class="btn primary" id="doImport">Import</button><button type="button" class="btn" id="closeImport">Close</button></div>
       <pre class="brief" id="importStatus" style="display:none;font-size:11px;max-height:200px;"></pre>
     </form>
   </dialog>
   <dialog id="keysModal" class="keys-modal">
     <form method="dialog" class="keys-form">
       <h3>⚙ API KEYS</h3>
-      <p class="keys-warn">Las claves se guardan solo en este navegador (localStorage).</p>
+      <p class="keys-warn">Las claves se guardan solo en este browser (localStorage).</p>
       <div class="field"><label for="key-elevenlabs-voice">ElevenLabs Voice ID</label><input id="key-elevenlabs-voice" type="text" autocomplete="off" placeholder="EXAVITQu4vr4xnSDxMaL"></div>
-      <div class="keys-actions"><button type="button" class="btn primary" id="saveKeys">Guardar</button><button type="button" class="btn" id="clearKeys">Borrar todas</button><button type="button" class="btn" id="closeKeys">Cerrar</button></div>
+      <div class="keys-actions"><button type="button" class="btn primary" id="saveKeys">Save</button><button type="button" class="btn" id="clearKeys">Delete all</button><button type="button" class="btn" id="closeKeys">Close</button></div>
     </form>
   </dialog>
   <script defer src="/matrix-rain.js?v=20260608-sides"></script>

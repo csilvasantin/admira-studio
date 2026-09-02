@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,14 +35,15 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="canonical" href="https://www.admira.studio/en/stock.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
+  <link rel="canonical" href="https://www.admira.studio/stock.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/stock.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/stock.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio Studio · Stock</title>
+  <title>Admira Studio · Stock</title>
   <meta name="description" content="Public gallery de assets generados por los motores IA — audio, música, imágenes y video — desplegados a Stock.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
@@ -91,7 +92,8 @@
   </style>
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
+  <script defer src="/assets/descarga-local.js?v=20260828-r1"></script>
 </head>
 <body data-page="stock">
   <!-- Google Tag Manager (noscript) -->
@@ -104,7 +106,7 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/en/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Live Council</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
@@ -129,7 +131,7 @@
     </nav>
     <div class="topnav-actions">
       <div class="language-switcher" aria-label="Language selection">
-        <a class="lang-toggle" href="/stock.html" aria-label="Switch to Spanish">ESP</a>
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
       <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
     </div>
@@ -153,7 +155,7 @@
     </section>
 
     <section class="stock-toolbar">
-      <nav class="stock-pager stock-pager-top" aria-label="Vista, filtros, búsqueda, orden y paginación">
+      <nav class="stock-pager stock-pager-top" aria-label="View, filters, search, sorting and pagination">
         <div class="stock-view" role="group" aria-label="View">
           <button type="button" class="stock-view-btn" id="stockViewToggle" title="Toggle view: detail ↔ grid" aria-label="Toggle view">▦</button>
         </div>
@@ -163,20 +165,20 @@
           <button type="button" class="btn primary stock-import-btn" id="stockImportFromSearch" title="Import the URL in the search box (yt-dlp · same as AdmiraXP on Telegram)" aria-label="Import URL">📥</button>
         </div>
         <div class="stock-pager-filters">
-          <select id="stockTypeFilter" title="Filtrar por tipo" aria-label="Filtrar por tipo">
-            <option value="">Todos los tipos</option>
+          <select id="stockTypeFilter" title="Filter by type" aria-label="Filter by type">
+            <option value="">All types</option>
             <option value="audio">Audio</option>
-            <option value="music">Música</option>
-            <option value="image">Imágenes</option>
+            <option value="music">Music</option>
+            <option value="image">Images</option>
             <option value="video" selected>Video</option>
             <option value="animation">Animaciones</option>
-            <option value="furni">Mobiliario</option>
+            <option value="furni">Furniture</option>
           </select>
         </div>
-        <div class="stock-pager-sort" id="stockSortBar" role="group" aria-label="Ordenar por">
-          <span class="stock-sortbar-label">Ordenar:</span>
-          <button type="button" class="stock-sort-th" data-key="name">Nombre <span class="stock-sort-arrow">⇅</span></button>
-          <button type="button" class="stock-sort-th" data-key="date">Fecha <span class="stock-sort-arrow">⇅</span></button>
+        <div class="stock-pager-sort" id="stockSortBar" role="group" aria-label="Sort by">
+          <span class="stock-sortbar-label">Sort:</span>
+          <button type="button" class="stock-sort-th" data-key="name">Name <span class="stock-sort-arrow">⇅</span></button>
+          <button type="button" class="stock-sort-th" data-key="date">Date <span class="stock-sort-arrow">⇅</span></button>
         </div>
         <div class="stock-pager-controls">
           <button type="button" class="stock-pager-btn" data-page="first" title="First page" aria-label="First page">«</button>
@@ -193,11 +195,11 @@
 
       <div id="stockGrid" class="stock-grid"></div>
       <div id="stockEmpty" class="stock-empty" hidden>
-        <p>// Stock vacío.</p>
-        <p>Genera un asset en Audio/Música/Imágenes/Video y pulsa <strong>📌 PUBLICAR EN STOCK</strong>.</p>
+        <p>// Stock is empty.</p>
+        <p>Genera un asset en Audio/Music/Images/Video and select <strong>📌 PUBLICAR EN STOCK</strong>.</p>
       </div>
 
-      <nav class="stock-pager stock-pager-bottom" hidden aria-label="Paginación (abajo)">
+      <nav class="stock-pager stock-pager-bottom" hidden aria-label="Pagination (bottom)">
         <div class="stock-pager-controls">
           <button type="button" class="stock-pager-btn" data-page="first" title="First page" aria-label="First page">«</button>
           <button type="button" class="stock-pager-btn" data-page="prev" title="Previous" aria-label="Previous page">‹</button>
@@ -217,24 +219,24 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Open Admira XP — latest Digital Twin version">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
-      <h3>📥 IMPORTAR DESDE URL</h3>
-      <p class="keys-warn">yt-dlp en Mac Mini (audio mp3 + video mp4). Hosts permitidos: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn. Si abres en local también funciona suno-local (:3777).</p>
-      <div class="field"><label for="import-url">URL</label><input id="import-url" type="text" autocomplete="off" placeholder="https://www.youtube.com/watch?v=..."></div>
+      <h3>📥 IMPORT FROM URL</h3>
+      <p class="keys-warn">yt-dlp on Mac Mini (audio mp3 + video mp4). Supported hosts: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn, Telegram (t.me). You can paste SEVERAL URLs at once, one per line. When opened locally, suno-local also works (:3777).</p>
+      <div class="field"><label for="import-url">URL <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(one or more, one per line)</small></label><textarea id="import-url" rows="2" autocomplete="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…&#10;https://t.me/canal/123"></textarea></div>
       <div class="field">
-        <label for="import-comment">Comentarios <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(opcional · indexable por búsqueda en Stock)</small></label>
-        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notas, etiquetas, contexto… (luego se puede buscar)"></textarea>
+        <label for="import-comment">Comments <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(optional · searchable in Stock)</small></label>
+        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notes, tags, context… (searchable later)"></textarea>
       </div>
       <div class="field">
-        <label>Formato</label>
-        <div class="import-fmt" role="radiogroup" aria-label="Formato de importación">
+        <label>Format</label>
+        <div class="import-fmt" role="radiogroup" aria-label="Import format">
           <label class="import-fmt-chip is-audio">
             <input type="radio" name="import-fmt" value="audio" checked>
             <span class="import-fmt-icon" aria-hidden="true">🎵</span>
-            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · sólo pista de audio</small></span>
+            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · audio track only</small></span>
           </label>
           <label class="import-fmt-chip is-video">
             <input type="radio" name="import-fmt" value="video">
@@ -245,7 +247,7 @@
       </div>
       <div class="import-progress" id="importProgress" hidden>
         <div class="import-progress-head">
-          <span class="import-progress-kind" id="importProgressKind">— ESPERANDO —</span>
+          <span class="import-progress-kind" id="importProgressKind">— WAITING —</span>
           <span class="import-progress-stats" id="importProgressStats">0 MB · 0s</span>
         </div>
         <div class="import-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -254,8 +256,8 @@
         </div>
       </div>
       <div class="keys-actions">
-        <button type="button" class="btn primary" id="doImport">Importar</button>
-        <button type="button" class="btn" id="closeImport">Cerrar</button>
+        <button type="button" class="btn primary" id="doImport">Import</button>
+        <button type="button" class="btn" id="closeImport">Close</button>
       </div>
       <pre class="brief" id="importStatus" style="display:none;font-size:11px;max-height:200px;"></pre>
     </form>
@@ -313,7 +315,7 @@
     }
     function renderPreview(it) {
       if (isFurni(it)) {
-        // Mobiliario del gemelo: sprite pixelado → render nítido.
+        // Furniture del gemelo: sprite pixelado → render nítido.
         return `<img src="${it.url}" alt="" loading="lazy" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
       }
       if (it.type === 'image') {
@@ -420,6 +422,17 @@
         return null;
       }
     }
+    // ── Download to this computer ────────────────────────────────────────────
+    // The old `<a href="https://…r2.dev/…" download>` never saved anything: the
+    // `download` attribute is ignored cross-origin, so the browser just opened
+    // the asset in a tab. /assets/descarga-local.js does it for real (blob).
+    function descargarAsset(it) {
+      if (!it) return;
+      const DL = window.PixeriaDescarga;
+      if (!DL) { if (it.url) window.open(it.url, '_blank', 'noopener'); return; }
+      return DL.item(Object.assign({}, it, { type: displayType(it) }));
+    }
+
     function currentItemInLightbox() {
       const id = window.__lightboxItemId;
       return id ? allItems.find(i => i.id === id) : null;
@@ -452,6 +465,7 @@
               <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Open in AINimation" aria-label="Open in AINimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>
               <button type="button" class="stock-card-btn" data-act="feed" title="Send to Pixer Feed (screens / twin)" aria-label="Send to Pixer Feed"><span aria-hidden="true">📺</span></button>
               <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Open asset in a new tab" aria-label="Open asset in a new tab" data-act="open"><span aria-hidden="true">↗</span></a>
+              <button type="button" class="stock-card-btn" data-act="descargar" title="Download the file to this computer" aria-label="Download to this computer"><span aria-hidden="true">⬇</span></button>
               <button type="button" class="stock-card-btn" data-act="max" title="Maximize" aria-label="Maximize asset"><span aria-hidden="true">⛶</span></button>
               <button type="button" class="stock-card-btn danger" data-act="del" title="Delete" aria-label="Delete asset"><span aria-hidden="true">🗑</span></button>
             </div>
@@ -602,7 +616,7 @@
         ${commentBlock}
         <div class="stock-lightbox-actions">
           <a class="btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener">AI Abrir en AINimation</a>
-          <a class="btn" href="${it.url}" target="_blank" rel="noopener" download>⬇ Descargar archivo</a>
+          <button type="button" class="btn" data-act="descargar" title="Save the file on this computer with a readable name">⬇ Download to this computer</button>
           <a class="btn" href="${it.url}" target="_blank" rel="noopener">↗ Abrir asset</a>
         </div>`;
       window.__lightboxItemId = it.id || null;
@@ -639,6 +653,13 @@
 
     // Edición de tags dentro del lightbox (quitar / añadir)
     lightboxMeta.addEventListener('click', async e => {
+      const dlBtn = e.target.closest('[data-act="descargar"]');
+      if (dlBtn) {
+        e.preventDefault(); e.stopPropagation();
+        const item = currentItemInLightbox();
+        if (item) descargarAsset(item);
+        return;
+      }
       const removeBtn = e.target.closest('[data-act="remove-tag"]');
       const addBtn = e.target.closest('[data-act="add-tag"]');
       if (!removeBtn && !addBtn) return;
@@ -651,7 +672,7 @@
         const t = removeBtn.dataset.tag;
         nextTags = nextTags.filter(x => x !== t);
       } else {
-        const fresh = (prompt('Añadir etiqueta (1-2 palabras):') || '').trim().toLowerCase();
+        const fresh = (prompt('Add tag (1–2 words):') || '').trim().toLowerCase();
         if (!fresh) return;
         if (nextTags.includes(fresh)) { return; }
         if (nextTags.length >= 8) { alert('Máximo 8 etiquetas por asset.'); return; }
@@ -671,7 +692,7 @@
 
     async function deleteAsset(id, card) {
       if (!id) return;
-      if (!confirm('¿Eliminar este asset del Stock? Borra el archivo y la metadata en R2. No se puede deshacer.')) return;
+      if (!confirm('Delete this asset from Stock? This deletes the file and its R2 metadata and cannot be undone.')) return;
       const beforeStatus = status.textContent;
       status.textContent = `// borrando ${id}...`;
       try {
@@ -710,7 +731,7 @@
             mime: it.mime || null,
             meta: {
               source: 'pixeria-stock-en',
-              page: document.title || 'Admira Studio Studio · Stock',
+              page: document.title || 'Admira Studio · Stock',
               page_url: `${location.origin}${location.pathname}`,
               asset_id: it.id || '',
               asset_label: label,
@@ -753,6 +774,7 @@
         const item = allItems.find(i => i.id === id);
         if (!item) return;
         if (btn.dataset.act === 'max') { e.preventDefault(); openLightbox(item); }
+        else if (btn.dataset.act === 'descargar') { e.preventDefault(); descargarAsset(item); }
         else if (btn.dataset.act === 'del') { e.preventDefault(); deleteAsset(id, card); }
         else if (btn.dataset.act === 'feed') { e.preventDefault(); sendToPixerFeed(item, btn); }
         // 'open' es <a target=_blank> → deja burbujear sin preventDefault
@@ -781,7 +803,7 @@
       if (!motorFilter) return;   // el combo de motores se quitó del Stock
       const motors = Array.from(new Set(allItems.map(i => i.motor).filter(Boolean))).sort();
       const cur = filters.motor;
-      motorFilter.innerHTML = `<option value="">Todos los motores</option>`
+      motorFilter.innerHTML = `<option value="">All engines</option>`
         + motors.map(m => `<option value="${String(m).replace(/"/g, '&quot;')}">${String(m).replace(/</g, '&lt;')}</option>`).join('');
       motorFilter.value = motors.includes(cur) ? cur : '';
     }
@@ -805,7 +827,7 @@
             const r = await fetch(src, { cache: 'no-store' });
             if (!r.ok) throw new Error('HTTP ' + r.status);
             const data = await r.json();
-            if (!data || !Array.isArray(data.items)) throw new Error('respuesta sin items');
+            if (!data || !Array.isArray(data.items)) throw new Error('response contains no items');
             return data.items.slice(0, 200);
           } catch (e) {
             lastErr = e;
@@ -821,7 +843,7 @@
         .filter(Boolean);
     }
     async function load() {
-      status.textContent = '// cargando stock...';
+      status.textContent = '// loading stock...';
       empty.hidden = true;
       grid.innerHTML = '';
       try {
@@ -840,10 +862,10 @@
           applyFilters();
           feedMatrix();
           const when = cached.ts ? fmtDate(new Date(cached.ts).toISOString()) : '';
-          status.textContent = `// sin conexión con el servidor · mostrando copia guardada${when ? ' (' + when + ')' : ''} · pulsa ↻ para reintentar`;
+          status.textContent = `// server unavailable · showing saved copy${when ? ' (' + when + ')' : ''} · select ↻ to retry`;
         } else {
           empty.hidden = true; // error de carga, NO "vacío"
-          status.textContent = '// no se pudo cargar el stock (error de red, no se ha borrado nada) · pulsa ↻ para reintentar';
+          status.textContent = '// could not load Stock (network error, nothing was deleted) · select ↻ to retry';
         }
       }
     }
@@ -863,7 +885,7 @@
       if (/^https?:\/\//i.test(v) && urlField) { urlField.value = v; search.value = ''; filters.q = ''; applyFilters(true); }
       dlg.showModal();
     });
-    // Cabezales ordenables (Nombre / Fecha / Tipo / Motor) — clic alterna asc/desc
+    // Cabezales ordenables (Name / Date / Tipo / Motor) — clic alterna asc/desc
     const SORT_DEFAULT_DIR = { name: 'asc', date: 'desc' };
     const SORT_VALID = new Set(['name-asc','name-desc','date-asc','date-desc']);
     function applySortIndicators() {

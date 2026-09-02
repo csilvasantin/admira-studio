@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,33 +35,27 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.08.2026.r4.12:59">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <link rel="canonical" href="https://www.admira.studio/admira-xp.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/admira-xp.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/admira-xp.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/admira-xp.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/admira-xp.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio Studio · Admira XP</title>
+  <title>Admira Studio · Admira XP</title>
   <meta name="description" content="Capa de experiencia que orquesta los outputs de Admira Studio en escenas, triggers y publicaciones.">
   <!-- Admira · Xperience · design system del grupo (tokens + nav header) -->
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=20260717-head-caja">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=20260803-release">
+  <link rel="stylesheet" href="/workspace.css?v=20260717-head-caja">
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
+  <script defer src="/assets/descarga-local.js?v=20260828-r1"></script>
 </head>
 <body data-page="admira-xp">
-  <!-- Cuadratura: ocultar los raíles al abrir <body> (sin parpadeo) según localStorage -->
-  <script>
-  (function(){var b=document.body,m={pixeria_pf_left:'pf-left-off',pixeria_pf_right:'pf-right-off',pixeria_pf_bottom:'pf-bottom-off'};
-  try{for(var k in m){if(localStorage.getItem(k)!=='1')b.classList.add(m[k]);}}catch(e){for(var j in m){b.classList.add(m[j]);}}})();
-  </script>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
@@ -72,51 +66,51 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">Admira Studio</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Consejo Live</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Live Council</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
-      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
+      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contact</a>
     </div>
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
     <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">P</span><span class="brand-name">Admira Studio</span></a></div>
     <nav class="primary-nav">
-      <a href="audio.html" data-nav="audio">Megafonía</a>
-      <a href="musica.html" data-nav="musica">Música</a>
-      <a href="imagenes.html" data-nav="imagenes">Imágenes</a>
+      <a href="audio.html" data-nav="audio">Audio</a>
+      <a href="musica.html" data-nav="musica">Music</a>
+      <a href="imagenes.html" data-nav="imagenes">Images</a>
       <a href="video.html" data-nav="video">Video</a>
       <a href="/tiktok" data-nav="tiktok">TikTok</a>
-      <a href="publicidad.html" data-nav="publicidad">Publicidad</a>
-      <a href="anonimizador.html" data-nav="anonimizador">Anonimizador</a>
-      <a href="/crear/" data-nav="crear">Assets</a>
+      <a href="publicidad.html" data-nav="publicidad">Advertising</a>
+      <a href="anonimizador.html" data-nav="anonimizador">Anonymizer</a>
+      <a href="/crear/" data-nav="create">Assets</a>
       <a href="stock.html" data-nav="stock">Stock</a>
     </nav>
     <div class="topnav-actions">
-      <div class="language-switcher" aria-label="Selección de idioma">
-        <a class="lang-toggle" href="/en/admira-xp.html" aria-label="Cambiar a inglés">ENG</a>
+      <div class="language-switcher" aria-label="Language selection">
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
-      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
+      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
     </div>
   </header>
 
   <header class="page-head has-gif"><figure class="page-gif"><img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Matrixcode.gif" alt="Admira.xp · Matrixcode" loading="lazy"><figcaption>// Admira.xp · Matrixcode</figcaption></figure>
-    <p class="eyebrow xp">Capa de experiencia · Admira.xp</p>
-    <h1>De los outputs de Admira Studio a una experiencia navegable.</h1>
-    <p class="lead">Admira.xp recibe los contenidos generados en Admira Studio (audio, música, imágenes, video) y los organiza por escena, canal o interacción. El resultado: experiencias medibles y reutilizables, no piezas sueltas.</p>
+    <p class="eyebrow xp">Experience layer · Admira XP</p>
+    <h1>From Admira Studio outputs to a navigable experience.</h1>
+    <p class="lead">Admira XP receives Admira Studio outputs (audio, music, images, video) and organizes them by scene, channel or interaction. The result is a measurable reusable experience, not isolated assets.</p>
   </header>
 
   <main>
     <section>
       <h2>Flujo Admira Studio → Admira.xp</h2>
       <div class="xp-flow">
-        <div class="xp-step"><strong>1 · Entrada</strong><p>Brief de cliente, objetivo, tipo de contenido y restricciones de marca. Llega desde la página de cada tipo o desde Plataforma.</p></div>
+        <div class="xp-step"><strong>1 · Entrada</strong><p>Client brief, objective, content type and brand restrictions. It comes from each content page or from Platform.</p></div>
         <div class="xp-step"><strong>2 · Generación</strong><p>Admira Studio produce las piezas: voces y guiones, loops y stingers, assets visuales, video editado por canal.</p></div>
         <div class="xp-step"><strong>3 · Orquestación</strong><p>Admira.xp conecta piezas, define escenas, estados y triggers; añade reglas de reutilización por momento o canal.</p></div>
-        <div class="xp-step"><strong>4 · Salida</strong><p>Publicación: web, demo, presentación, pantalla en evento, campaña multicanal o experiencia interactiva.</p></div>
+        <div class="xp-step"><strong>4 · Salida</strong><p>Publishing: web, demo, event screen, presentation, multichannel campaign or interactive experience.</p></div>
       </div>
     </section>
 
@@ -124,9 +118,9 @@
       <h2>Roles que cubre Admira.xp</h2>
       <div class="xp-roles">
         <div class="xp-role"><h4>Director de experiencia</h4><p>Decide qué pieza aparece en qué momento, según escena, canal o interacción del usuario.</p></div>
-        <div class="xp-role"><h4>Bibliotecario</h4><p>Indexa los outputs por cliente, campaña, idioma y estado (borrador, aprobado, publicado).</p></div>
-        <div class="xp-role"><h4>Orquestador</h4><p>Conecta audio + música + imagen + video como un único paquete reutilizable por canal.</p></div>
-        <div class="xp-role"><h4>Publicador</h4><p>Empaqueta la salida para web, evento o presentación, con las versiones por formato y duración.</p></div>
+        <div class="xp-role"><h4>Bibliotecario</h4><p>Indexes outputs by client, campaign, language and status (draft, approved, published).</p></div>
+        <div class="xp-role"><h4>Orquestador</h4><p>Connects audio + music + image + video as a single reusable package for each channel.</p></div>
+        <div class="xp-role"><h4>Publicador</h4><p>Packages the output for web, events or presentations, with versions for each format and duration.</p></div>
       </div>
     </section>
 
@@ -136,7 +130,7 @@
         <a class="home-card" href="plataforma.html">
           <span class="badge platform">P</span>
           <div>
-            <h3>Ir a Plataforma</h3>
+            <h3>Ir a Platform</h3>
             <p>Rellena el brief consolidado y descarga el JSON. Es la entrada estándar para Admira.xp.</p>
             <small>brief unificado → entrada Admira.xp</small>
           </div>
@@ -144,7 +138,7 @@
         <a class="home-card" href="index.html">
           <span class="badge xp">XP</span>
           <div>
-            <h3>Volver al inicio</h3>
+            <h3>Back to home</h3>
             <p>Vista general de los cuatro tipos de contenido y de las dos capas operativas.</p>
             <small>mapa del workspace</small>
           </div>
@@ -153,24 +147,24 @@
     </section>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Open Admira XP — latest Digital Twin version">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
-      <h3>📥 IMPORTAR DESDE URL</h3>
-      <p class="keys-warn">yt-dlp en Mac Mini (audio mp3 + video mp4). Hosts permitidos: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn. Si abres en local también funciona suno-local (:3777).</p>
-      <div class="field"><label for="import-url">URL</label><input id="import-url" type="text" autocomplete="off" placeholder="https://www.youtube.com/watch?v=..."></div>
+      <h3>📥 IMPORT FROM URL</h3>
+      <p class="keys-warn">yt-dlp on Mac Mini (audio mp3 + video mp4). Supported hosts: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn, Telegram (t.me). You can paste SEVERAL URLs at once, one per line. When opened locally, suno-local also works (:3777).</p>
+      <div class="field"><label for="import-url">URL <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(one or more, one per line)</small></label><textarea id="import-url" rows="2" autocomplete="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…&#10;https://t.me/canal/123"></textarea></div>
       <div class="field">
-        <label for="import-comment">Comentarios <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(opcional · indexable por búsqueda en Stock)</small></label>
-        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notas, etiquetas, contexto… (luego se puede buscar)"></textarea>
+        <label for="import-comment">Comments <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(optional · searchable in Stock)</small></label>
+        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notes, tags, context… (searchable later)"></textarea>
       </div>
       <div class="field">
-        <label>Formato</label>
-        <div class="import-fmt" role="radiogroup" aria-label="Formato de importación">
+        <label>Format</label>
+        <div class="import-fmt" role="radiogroup" aria-label="Import format">
           <label class="import-fmt-chip is-audio">
             <input type="radio" name="import-fmt" value="audio" checked>
             <span class="import-fmt-icon" aria-hidden="true">🎵</span>
-            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · sólo pista de audio</small></span>
+            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · audio track only</small></span>
           </label>
           <label class="import-fmt-chip is-video">
             <input type="radio" name="import-fmt" value="video">
@@ -181,7 +175,7 @@
       </div>
       <div class="import-progress" id="importProgress" hidden>
         <div class="import-progress-head">
-          <span class="import-progress-kind" id="importProgressKind">— ESPERANDO —</span>
+          <span class="import-progress-kind" id="importProgressKind">— WAITING —</span>
           <span class="import-progress-stats" id="importProgressStats">0 MB · 0s</span>
         </div>
         <div class="import-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -190,8 +184,8 @@
         </div>
       </div>
       <div class="keys-actions">
-        <button type="button" class="btn primary" id="doImport">Importar</button>
-        <button type="button" class="btn" id="closeImport">Cerrar</button>
+        <button type="button" class="btn primary" id="doImport">Import</button>
+        <button type="button" class="btn" id="closeImport">Close</button>
       </div>
       <pre class="brief" id="importStatus" style="display:none;font-size:11px;max-height:200px;"></pre>
     </form>
@@ -199,16 +193,14 @@
   <dialog id="keysModal" class="keys-modal">
     <form method="dialog" class="keys-form">
       <h3>⚙ API KEYS</h3>
-      <p class="keys-warn">Las claves se guardan solo en este navegador (localStorage). No se envían a ningún servidor de Admira Studio.</p>      <div class="field"><label for="key-elevenlabs-voice">ElevenLabs Voice ID</label><input id="key-elevenlabs-voice" type="text" autocomplete="off" placeholder="EXAVITQu4vr4xnSDxMaL (Bella · default)"></div>      <div class="keys-actions">
-        <button type="button" class="btn primary" id="saveKeys">Guardar</button>
-        <button type="button" class="btn" id="clearKeys">Borrar todas</button>
-        <button type="button" class="btn" id="closeKeys">Cerrar</button>
+      <p class="keys-warn">Keys are stored only in this browser (localStorage). They are not sent to any Admira Studio server.</p>      <div class="field"><label for="key-elevenlabs-voice">ElevenLabs Voice ID</label><input id="key-elevenlabs-voice" type="text" autocomplete="off" placeholder="EXAVITQu4vr4xnSDxMaL (Bella · default)"></div>      <div class="keys-actions">
+        <button type="button" class="btn primary" id="saveKeys">Save</button>
+        <button type="button" class="btn" id="clearKeys">Delete all</button>
+        <button type="button" class="btn" id="closeKeys">Close</button>
       </div>
     </form>
   </dialog>
   <script defer src="/matrix-rain.js?v=20260608-sides"></script>
-  <script src="app.js?v=20260614-barclean"></script>
-  <script defer src="/assets/cuadratura.js?v=20260803-release"></script>
-  <script src="/assets/admira-version-watch.js" defer></script>
+  <script src="/app.js?v=20260902-en"></script>
 </body>
 </html>

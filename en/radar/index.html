@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,18 +35,19 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <title>AI model radar · June 2026 — Admira Studio</title>
   <meta name="description" content="Admira Studio's radar: the image, video, voice and music models that matter now, chosen for real quality, control and rights. Updated from production tests.">
   <meta name="theme-color" content="#020602">
   <meta property="og:title" content="AI model radar · June 2026 — Admira Studio">
   <meta property="og:description" content="The AI models that matter now for professional content: video, image, voice and music. Chosen for real quality, control and rights.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://www.admira.studio/en/radar/">
+  <meta property="og:url" content="https://www.admira.studio/radar/">
   <meta property="og:image" content="https://www.admira.studio/assets/hero-pixeria.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://www.admira.studio/en/radar/">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/radar/">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/radar/">
+  <link rel="canonical" href="https://www.admira.studio/radar/">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/radar/">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/radar/">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/radar/">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
@@ -64,7 +65,7 @@
     "@type": "ItemList",
     "name": "AI model radar — Admira Studio · June 2026",
     "description": "Featured AI models for professional content creation, selected for real quality, control and rights.",
-    "url": "https://www.admira.studio/en/radar/",
+    "url": "https://www.admira.studio/radar/",
     "itemListOrder": "https://schema.org/ItemListOrderAscending",
     "numberOfItems": 8,
     "itemListElement": [
@@ -84,14 +85,14 @@
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Admira Studio", "item": "https://www.admira.studio/en/" },
-      { "@type": "ListItem", "position": 2, "name": "Radar", "item": "https://www.admira.studio/en/radar/" }
+      { "@type": "ListItem", "position": 1, "name": "Admira Studio", "item": "https://www.admira.studio/" },
+      { "@type": "ListItem", "position": 2, "name": "Radar", "item": "https://www.admira.studio/radar/" }
     ]
   }
   </script>
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -103,36 +104,36 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/en/">Admira Studio</a>
-      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.studio/en/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.studio/">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
-      <a class="admira-nav-link admira-nav-link-cta" href="https://www.admira.studio/en/#contact" data-admira-contact>Contact</a>
+      <a class="admira-nav-link admira-nav-link-cta" href="https://www.admira.studio/#contact" data-admira-contact>Contact</a>
     </div>
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
 
   <header class="site-header">
-    <a class="brand" href="/en/" aria-label="Admira Studio home">
+    <a class="brand" href="/" aria-label="Admira Studio home">
       <span class="brand-mark">P</span>
       <span>Admira Studio</span>
     </a>
     <nav class="nav" aria-label="Main navigation">
-      <a href="/en/audio.html">Audio</a>
-      <a href="/en/musica.html">Music</a>
-      <a href="/en/imagenes.html">Images</a>
-      <a href="/en/video.html">Video</a>
+      <a href="/audio.html">Audio</a>
+      <a href="/musica.html">Music</a>
+      <a href="/imagenes.html">Images</a>
+      <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/en/publicidad.html">Advertising</a>
+      <a href="/publicidad.html">Advertising</a>
       <a href="/crear/">Assets</a>
-      <a href="/en/stock.html">Stock</a>
+      <a href="/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
       <div class="language-switcher" aria-label="Language selection">
-        <a class="lang-toggle" href="/radar/" aria-label="Switch to Spanish">ESP</a>
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
-      <a class="nav-action" href="/en/#contact" data-admira-contact>Contact</a>
+      <a class="nav-action" href="/#contact" data-admira-contact>Contact</a>
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -140,25 +141,25 @@
   </header>
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-    <a href="/en/audio.html">Audio</a>
-    <a href="/en/musica.html">Music</a>
-    <a href="/en/imagenes.html">Images</a>
-    <a href="/en/video.html">Video</a>
+    <a href="/audio.html">Audio</a>
+    <a href="/musica.html">Music</a>
+    <a href="/imagenes.html">Images</a>
+    <a href="/video.html">Video</a>
     <a href="/tiktok">TikTok</a>
-    <a href="/en/publicidad.html">Advertising</a>
-    <a href="/en/avatar.html">Avatar 3D</a>
+    <a href="/publicidad.html">Advertising</a>
+    <a href="/avatar.html">Avatar 3D</a>
     <a href="/crear/">Assets</a>
-    <a href="/en/stock.html">Stock</a>
+    <a href="/stock.html">Stock</a>
     <div class="mobile-language-switcher" aria-label="Language selection">
-      <a class="lang-toggle" href="/radar/" aria-label="Switch to Spanish">ESP</a>
+      <span class="lang-toggle" aria-label="English">EN</span>
     </div>
-    <a class="mobile-cta" href="/en/#contact" data-admira-contact>Contact</a>
+    <a class="mobile-cta" href="/#contact" data-admira-contact>Contact</a>
   </nav>
 
   <main id="top">
     <section class="radar band" id="radar">
       <div class="section-head">
-        <p class="eyebrow"><a href="/en/" style="color:inherit">Admira Studio</a> · Radar</p>
+        <p class="eyebrow"><a href="/" style="color:inherit">Admira Studio</a> · Radar</p>
         <h1>The AI model radar that matters now.</h1>
         <p class="hero-copy">Editorial tracking of image, video, voice and music models with a focus on real quality, control and rights. No viral demos: only what survives production.</p>
       </div>
@@ -190,7 +191,7 @@
 
       <div class="library-actions" style="margin-top:1.5rem">
         <a class="button primary" href="/crear/">Create with these models</a>
-        <a class="button secondary" href="/en/">Back to Admira Studio</a>
+        <a class="button secondary" href="/">Back to Admira Studio</a>
       </div>
     </section>
   </main>
@@ -199,7 +200,7 @@
     <span>Admira Studio</span>
     <p>AI content creation, directed with human judgment. <span class="footer-updated">Radar updated June 2026</span></p>
     <a href="mailto:hola@admiranext.com">hola@admiranext.com</a>
-    <a href="/en/privacy.html">Privacy &amp; cookies</a>
+    <a href="/privacy.html">Privacy &amp; cookies</a>
   </footer>
 
   <script>

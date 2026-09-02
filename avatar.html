@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,32 +35,25 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.08.2026.r4.12:59">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <link rel="canonical" href="https://www.admira.studio/avatar.html">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/avatar.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/avatar.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/avatar.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/avatar.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
-  <title>Admira Studio Studio | Avatar 3D</title>
-  <meta name="description" content="Avatar 3D para Admira Studio: presentadores IA, respuesta conversacional, lip-sync 2D y salida a pantallas Admira XP.">
+  <title>Admira Studio | Avatar 3D</title>
+  <meta name="description" content="3D avatar for Admira Studio: AI presenters, conversational replies, 2D lip-sync and Admira XP screen output.">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=20260717-head-caja">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=20260803-release">
+  <link rel="stylesheet" href="/workspace.css?v=20260717-head-caja">
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body data-page="avatar">
-  <!-- Cuadratura: ocultar los raíles al abrir <body> (sin parpadeo) según localStorage -->
-  <script>
-  (function(){var b=document.body,m={pixeria_pf_left:'pf-left-off',pixeria_pf_right:'pf-right-off',pixeria_pf_bottom:'pf-bottom-off'};
-  try{for(var k in m){if(localStorage.getItem(k)!=='1')b.classList.add(m[k]);}}catch(e){for(var j in m){b.classList.add(m[j]);}}})();
-  </script>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
@@ -76,91 +69,124 @@
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.app">Xbusiness</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
-      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
+      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contact</a>
     </div>
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="topnav">
     <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">P</span><span class="brand-name">Admira Studio</span></a></div>
     <nav class="primary-nav">
-      <a href="audio.html" data-nav="audio">Megafonía</a>
-      <a href="musica.html" data-nav="musica">Música</a>
-      <a href="imagenes.html" data-nav="imagenes">Imágenes</a>
+      <a href="audio.html" data-nav="audio">Audio</a>
+      <a href="musica.html" data-nav="musica">Music</a>
+      <a href="imagenes.html" data-nav="imagenes">Images</a>
       <a href="video.html" data-nav="video">Video</a>
       <a href="/tiktok" data-nav="tiktok">TikTok</a>
-      <a href="publicidad.html" data-nav="publicidad">Publicidad</a>
-      <a href="anonimizador.html" data-nav="anonimizador">Anonimizador</a>
-      <a href="/crear/" data-nav="crear">Assets</a>
+      <a href="publicidad.html" data-nav="publicidad">Advertising</a>
+      <a href="anonimizador.html" data-nav="anonimizador">Anonymizer</a>
+      <a href="/crear/" data-nav="create">Assets</a>
       <a href="stock.html" data-nav="stock">Stock</a>
     </nav>
     <div class="topnav-actions">
-      <div class="language-switcher" aria-label="Selección de idioma">
-        <a class="lang-toggle" href="/en/avatar.html" aria-label="Cambiar a inglés">ENG</a>
+      <div class="language-switcher" aria-label="Language selection">
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
-      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
+      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
     </div>
   </header>
 
   <header class="page-head avatar-head">
     <p class="eyebrow video">XpaceOS · Avatar 3D</p>
-    <h1>Avatar 3D conversacional para pantallas.</h1>
-    <p class="lead">Presentadores IA con guion, voz, pregunta en vivo y lip-sync 2D local. La pieza queda lista para demo, signage o produccion con motores de video.</p>
+    <h1>Conversational 3D avatar for screens.</h1>
+    <p class="lead">AI presenters with script, voice, live questions and local 2D lip-sync. Ready for demos, signage or production with video engines.</p>
   </header>
 
   <main class="avatar-main">
-    <section class="avatar-stage" aria-label="Demo de avatares">
+    <section class="avatar-stage" aria-label="Avatar demo">
       <article class="avatar-poster" data-avatar-card="mother">
         <div class="avatar-label">Avatar A</div>
-        <picture><source srcset="assets/avatar-mother.webp" type="image/webp"><img src="assets/avatar-mother.jpg" alt="Avatar femenino Admira Studio" width="1024" height="1536" loading="eager"></picture>
-        <button type="button" class="avatar-reveal" data-reveal="mother" aria-label="Revelar avatar A"><span>Play</span><strong>Reveal</strong></button>
-        <button type="button" class="avatar-sound" data-sound="mother" aria-label="Activar sonido del avatar A">Sound</button>
+        <picture><source srcset="/assets/avatar-mother.webp" type="image/webp"><img src="/assets/avatar-mother.jpg" alt="Admira Studio female avatar" width="1024" height="1536" loading="eager"></picture>
+        <button type="button" class="avatar-reveal" data-reveal="mother" aria-label="Reveal avatar A"><span>Play</span><strong>Reveal</strong></button>
+        <button type="button" class="avatar-sound" data-sound="mother" aria-label="Enable sound for avatar A">Sound</button>
       </article>
       <article class="avatar-poster" data-avatar-card="father">
         <div class="avatar-label">Avatar B</div>
-        <picture><source srcset="assets/avatar-father.webp" type="image/webp"><img src="assets/avatar-father.jpg" alt="Avatar masculino Admira Studio" width="1024" height="1536" loading="eager"></picture>
-        <button type="button" class="avatar-reveal" data-reveal="father" aria-label="Revelar avatar B"><span>Play</span><strong>Reveal</strong></button>
-        <button type="button" class="avatar-sound" data-sound="father" aria-label="Activar sonido del avatar B">Sound</button>
+        <picture><source srcset="/assets/avatar-father.webp" type="image/webp"><img src="/assets/avatar-father.jpg" alt="Admira Studio male avatar" width="1024" height="1536" loading="eager"></picture>
+        <button type="button" class="avatar-reveal" data-reveal="father" aria-label="Reveal avatar B"><span>Play</span><strong>Reveal</strong></button>
+        <button type="button" class="avatar-sound" data-sound="father" aria-label="Enable sound for avatar B">Sound</button>
       </article>
     </section>
 
-    <div class="avatar-pipeline" aria-label="Pipeline Avatar">
-      <span>Brief</span>
-      <span>Avatar 3D</span>
-      <span>Voz</span>
-      <span>Lip-sync</span>
-      <span>Stock</span>
-      <span>Pantallas</span>
-    </div>
+    <section class="avatar-real-examples" aria-label="Real DigitalAvatar.ai examples">
+      <div class="avatar-real-head">
+        <div>
+          <p class="eyebrow video">DigitalAvatar.ai · real examples</p>
+          <h2>Superman's mother and father.</h2>
+        </div>
+        <div class="avatar-lang-tabs" role="group" aria-label="Real example language">
+          <button type="button" data-avatar-real-lang="en">Castellano</button>
+          <button type="button" class="active" data-avatar-real-lang="en">English</button>
+        </div>
+      </div>
+      <div class="avatar-real-grid">
+        <article class="avatar-real-card">
+          <span class="avatar-real-label">Mother</span>
+          <video class="avatar-real-video" data-real-role="female" controls preload="metadata" playsinline
+            poster="https://digitalavatar.ai/assets/avatar-female-en-poster.jpg"
+            src="https://digitalavatar.ai/assets/avatar-female-en.mp4"></video>
+        </article>
+        <article class="avatar-real-card">
+          <span class="avatar-real-label">Father</span>
+          <video class="avatar-real-video" data-real-role="male" controls preload="metadata" playsinline
+            poster="https://digitalavatar.ai/assets/avatar-male-en-poster.jpg"
+            src="https://digitalavatar.ai/assets/avatar-male-en.mp4"></video>
+        </article>
+      </div>
+    </section>
 
     <section class="avatar-console">
+      <div class="live-avatars" role="group" aria-label="Active avatar selection">
+        <button type="button" class="live-avatar active" data-live="mother" aria-pressed="true" aria-label="Select avatar A">
+          <span class="live-led">live</span>
+          <span class="face face-mother"><span class="eyes"></span><span class="mouth"></span></span>
+          <strong>Avatar A</strong>
+          <small>Replies</small>
+        </button>
+        <button type="button" class="live-avatar" data-live="father" aria-pressed="false" aria-label="Select avatar B">
+          <span class="live-led">live</span>
+          <span class="face face-father"><span class="eyes"></span><span class="mouth"></span></span>
+          <strong>Avatar B</strong>
+          <small>Standby</small>
+        </button>
+      </div>
+
       <div class="avatar-actions">
         <button type="button" class="btn primary" id="askAvatar">Ask</button>
         <button type="button" class="btn" id="lipSyncDemo">Lip-sync demo</button>
-        <button type="button" class="btn" id="copyAvatarBrief">Copiar brief</button>
+        <button type="button" class="btn" id="copyAvatarBrief">Copy brief</button>
       </div>
 
       <div class="field">
-        <label for="avatar-location">Ubicacion Admira</label>
+        <label for="avatar-location">Admira location</label>
         <select id="avatar-location">
           <option>Xtanco Barcelona · Portal de l'Angel 20 · Barcelona 08002</option>
           <option>Admira Studio · Barcelona</option>
-          <option>Retail window · Madrid centro</option>
-          <option>Evento live · Consejo Admira</option>
+          <option>Retail window · Madrid center</option>
+          <option>Live event · Admira Council</option>
         </select>
       </div>
 
       <div class="row2">
         <div class="field">
-          <label for="avatar-tone">Tono</label>
+          <label for="avatar-tone">Tone</label>
           <select id="avatar-tone">
-            <option>Consultivo y claro</option>
-            <option>Retail premium</option>
-            <option>Evento en directo</option>
-            <option>Soporte tecnico</option>
+            <option>Clear consultant</option>
+            <option>Premium retail</option>
+            <option>Live event</option>
+            <option>Technical support</option>
           </select>
         </div>
         <div class="field">
-          <label for="avatar-lang">Idioma</label>
+          <label for="avatar-lang">Language</label>
           <select id="avatar-lang">
             <option>ES</option>
             <option>EN</option>
@@ -170,19 +196,27 @@
       </div>
 
       <div class="field">
-        <label for="avatar-question">Pregunta al avatar</label>
-        <textarea id="avatar-question" rows="3" placeholder="Que puede contar este avatar en una pantalla de retail?">Que puede contar este avatar en una pantalla de retail?</textarea>
+        <label for="avatar-question">Ask the avatar</label>
+        <textarea id="avatar-question" rows="3" placeholder="What can this avatar say on a retail screen?">What can this avatar say on a retail screen?</textarea>
       </div>
 
       <div class="avatar-response" id="avatarResponse" aria-live="polite">
-        <span class="avatar-response-kicker">// listo</span>
-        <p>Selecciona un avatar, escribe una pregunta y pulsa Ask. La demo genera una respuesta local y anima la boca para validar el flujo.</p>
+        <span class="avatar-response-kicker">// ready</span>
+        <p>Select an avatar, type a question and press Ask. The demo generates a local reply and animates the mouth to validate the flow.</p>
       </div>
 
+      <div class="avatar-pipeline" aria-label="Pipeline Avatar">
+        <span>Brief</span>
+        <span>Avatar 3D</span>
+        <span>Voice</span>
+        <span>Lip-sync</span>
+        <span>Stock</span>
+        <span>Screens</span>
+      </div>
     </section>
   </main>
 
-  <footer><a href="https://www.xpaceos.com" target="_blank" rel="noopener" title="Abrir XpaceOS">Admira Studio AI Workspace · Avatar 3D para XpaceOS · v.2026.06.10-avatar</a></footer>
+  <footer><a href="https://www.xpaceos.com" target="_blank" rel="noopener" title="Open XpaceOS">Admira Studio AI Workspace · Avatar 3D for XpaceOS · v.2026.06.10-avatar</a></footer>
 
   <script defer src="/matrix-rain.js?v=20260608-sides"></script>
   <script>
@@ -254,7 +288,7 @@
       btn.addEventListener('click', () => {
         setActive(btn.dataset.sound);
         speakVisual(1600);
-        $('#avatarResponse').innerHTML = `<span class="avatar-response-kicker">// sonido activado</span><p>${active === 'mother' ? 'Avatar A' : 'Avatar B'} preparado para reproducir voz o demo de megafonía.</p>`;
+        $('#avatarResponse').innerHTML = `<span class="avatar-response-kicker">// sound enabled</span><p>${active === 'mother' ? 'Avatar A' : 'Avatar B'} ready to play voice or narration demo.</p>`;
       });
     });
 
@@ -264,7 +298,7 @@
 
     $$('.avatar-lang-tabs button').forEach(btn => {
       btn.addEventListener('click', () => {
-        const lang = btn.dataset.avatarRealLang || 'es';
+        const lang = btn.dataset.avatarRealLang || 'en';
         $$('.avatar-lang-tabs button').forEach(b => b.classList.toggle('active', b === btn));
         $$('.avatar-real-video').forEach(video => {
           const role = video.dataset.realRole;
@@ -280,12 +314,12 @@
 
     $('#askAvatar').addEventListener('click', () => {
       const reply = buildReply();
-      $('#avatarResponse').innerHTML = `<span class="avatar-response-kicker">// respuesta generada</span><p>${reply.replace(/</g, '&lt;')}</p>`;
+      $('#avatarResponse').innerHTML = `<span class="avatar-response-kicker">// reply generated</span><p>${reply.replace(/</g, '&lt;')}</p>`;
       speakVisual(Math.min(5200, Math.max(1800, reply.length * 35)));
     });
 
     $('#lipSyncDemo').addEventListener('click', () => {
-      $('#avatarResponse').innerHTML = '<span class="avatar-response-kicker">// lip-sync demo</span><p>Movimiento 2D local: ojos, boca y estado live se animan sin coste por uso. El siguiente paso es conectar voz ElevenLabs o el motor local de Admira.</p>';
+      $('#avatarResponse').innerHTML = '<span class="avatar-response-kicker">// lip-sync demo</span><p>Local 2D movement: eyes, mouth and live state animate without per-use cost. The next step is connecting ElevenLabs voice or Admira local voice.</p>';
       speakVisual(3800);
     });
 
@@ -300,11 +334,9 @@
         pipeline: ['brief', 'avatar', 'voice', 'lip-sync', 'stock', 'admira-xp'],
       };
       await navigator.clipboard.writeText(JSON.stringify(brief, null, 2));
-      $('#avatarResponse').innerHTML = '<span class="avatar-response-kicker">// brief copiado</span><p>JSON de Avatar copiado al portapapeles.</p>';
+      $('#avatarResponse').innerHTML = '<span class="avatar-response-kicker">// brief copied</span><p>Avatar JSON copied to clipboard.</p>';
     });
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=20260803-release"></script>
-  <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>

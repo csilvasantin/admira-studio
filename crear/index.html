@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,7 +35,8 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admira Studio Studio Assets</title>
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
+  <title>Admira Studio Assets</title>
   <meta name="description" content="Assets de Admira Studio para crear mobiliario y elementos listos para gemelos digitales XpaceOS.">
   <meta name="theme-color" content="#0b1117">
   <link rel="canonical" href="https://www.admira.studio/crear/">
@@ -356,13 +357,13 @@
   </style>
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <h1 class="sr-only">Admira Studio Studio Assets</h1>
+  <h1 class="sr-only">Admira Studio Assets</h1>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="site-header">
     <a class="brand" href="/" aria-label="Admira Studio inicio">
@@ -371,20 +372,20 @@
     </a>
     <nav class="nav" aria-label="Navegación principal">
       <a href="/audio.html">Audio</a>
-      <a href="/musica.html">Música</a>
-      <a href="/imagenes.html">Imágenes</a>
+      <a href="/musica.html">Music</a>
+      <a href="/imagenes.html">Images</a>
       <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/publicidad.html">Publicidad</a>
+      <a href="/publicidad.html">Advertising</a>
       <a href="/crear/" class="active">Assets</a>
       <a href="/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
-      <div class="language-switcher" aria-label="Selección de idioma">
-        <a class="lang-toggle" href="/en/" aria-label="Cambiar a inglés">ENG</a>
+      <div class="language-switcher" aria-label="Language selection">
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
-      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -392,18 +393,18 @@
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil">
     <a href="/audio.html">Audio</a>
-    <a href="/musica.html">Música</a>
-    <a href="/imagenes.html">Imágenes</a>
+    <a href="/musica.html">Music</a>
+    <a href="/imagenes.html">Images</a>
     <a href="/video.html">Video</a>
     <a href="/tiktok">TikTok</a>
-    <a href="/publicidad.html">Publicidad</a>
+    <a href="/publicidad.html">Advertising</a>
     <a href="/avatar.html">Avatar 3D</a>
     <a href="/crear/" class="active">Assets</a>
     <a href="/stock.html">Stock</a>
-    <div class="mobile-language-switcher" aria-label="Selección de idioma">
-      <a class="lang-toggle" href="/en/" aria-label="Cambiar a inglés">ENG</a>
+    <div class="mobile-language-switcher" aria-label="Language selection">
+      <span class="lang-toggle" aria-label="English">EN</span>
     </div>
-    <a class="mobile-cta" href="#contact" data-admira-contact>Contacto</a>
+    <a class="mobile-cta" href="#contact" data-admira-contact>Contact</a>
   </nav>
 
   <main>
@@ -412,7 +413,7 @@
       <div style="max-width:1180px; margin:0 auto; padding: 0 20px;">
         <div class="studio-header">
           <div>
-            <strong style="font-size:22px;">Admira Studio Studio Assets</strong>
+            <strong style="font-size:22px;">Admira Studio Assets</strong>
           </div>
           <div style="display:flex;gap:12px;align-items:center;">
             <button type="button" class="assets-tab" id="tab-creacion">Creación</button>
@@ -426,7 +427,7 @@
         <div class="studio-grid" data-view="creacion">
           <!-- CONFIG -->
           <div class="studio-panel xpace-focus">
-            <h4>Mobiliario XpaceOS</h4>
+            <h4>Furniture XpaceOS</h4>
             <p class="furni-copy">Assets se concentra en elementos físicos para gemelos digitales: piezas recortadas, proporción limpia y publicación directa como <code>furni</code>.</p>
 
             <div style="margin-bottom:14px;">
@@ -434,7 +435,7 @@
               <div class="format-grid-small" id="format-chips">
                 <div class="format-chip" data-format="mobiliario" data-preset="sofa">
                   <span class="matrix-icon">SO</span>
-                  <span><strong>Mobiliario</strong><small>Sofas, sillas, mesas, mostradores</small></span>
+                  <span><strong>Furniture</strong><small>Sofas, sillas, mesas, mostradores</small></span>
                 </div>
                 <div class="format-chip" data-format="mobiliario" data-preset="display">
                   <span class="matrix-icon">DX</span>
@@ -480,7 +481,7 @@
             <h4>Brief de pieza</h4>
             <p style="font-size:12px;color:var(--muted);margin:0 0 10px;">Crea un elemento pixelado; se recorta el fondo a <b>transparente</b> y se publica como <code>furni</code> listo para el gemelo.</p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-              <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Nombre</label><input id="furni-title" class="model-select" placeholder="Ej: Sofá retro" style="width:100%;"></div>
+              <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Name</label><input id="furni-title" class="model-select" placeholder="Ej: Sofá retro" style="width:100%;"></div>
               <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Alto (px)</label><input id="furni-ph" class="model-select" type="number" value="46" min="12" max="200" style="width:100%;"></div>
               <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Huella ancho (tiles)</label><select id="furni-fpw" class="model-select"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
               <div><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Huella fondo (tiles)</label><select id="furni-fpd" class="model-select"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
@@ -492,7 +493,7 @@
 
             <div style="display:flex; gap:8px; margin-top:8px;">
               <button class="button secondary" onclick="useMethodPrompt()" style="flex:1; font-size:13px;">Preset Matrix</button>
-              <button class="button secondary" onclick="clearPrompt()" style="flex:1; font-size:13px;">Limpiar</button>
+              <button class="button secondary" onclick="clearPrompt()" style="flex:1; font-size:13px;">Clear</button>
             </div>
             <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
               <button class="button secondary" id="furni-upload-btn" style="flex:1;">Subir PNG</button>
@@ -520,7 +521,7 @@
               </div>
               <div class="furni-progress-bar"><div class="furni-progress-indet"></div></div>
             </div>
-            <button class="button primary" id="furni-publish-btn" style="width:100%;margin-top:12px;" disabled>Publicar como Mobiliario (furni)</button>
+            <button class="button primary" id="furni-publish-btn" style="width:100%;margin-top:12px;" disabled>Publicar como Furniture (furni)</button>
             <div id="output" class="output" style="display:none;"></div>
             <div id="output-actions" style="display:none; margin-top:14px; gap:8px;">
               <button class="button primary" id="admira-buy-btn" onclick="useInSignage()" style="width:100%; margin-bottom:6px;">Comprar emisión en Admira</button>
@@ -537,37 +538,37 @@
         <!-- DISTRIBUCIONES — sala entera (config + mobiliario + staff) ⇄ gemelos -->
         <div class="studio-panel xpace-focus" id="distro-panel" data-view="distribucion" style="display:none; margin-top:0;">
           <h4>Distribución estándar · sala entera ⇄ gemelos</h4>
-          <p style="font-size:12px;color:var(--muted);margin:4px 0 12px;">Diseña una <b>distribución</b> (tamaño de sala + mobiliario colocado) y publícala a la librería compartida. Los gemelos la aplican con <code>/distribucion aplicar &lt;id&gt;</code>; las que publican los gemelos también aparecen aquí. Canal: worker <code>/layout/*</code>.</p>
+          <p style="font-size:12px;color:var(--muted);margin:4px 0 12px;">Diseña una <b>distribución</b> (tamaño de sala + mobiliario colocado) y publícala a la librería compartida. Los gemelos la aplican con <code>/distribucion aplicar &lt;id&gt;</code>; las que publican los gemelos también aparecen aquí. Channel: worker <code>/layout/*</code>.</p>
 
           <!-- Ciclo Admira Studio → Xpacio (banner) + glosario -->
           <div style="margin:0 0 12px;padding:9px 12px;border:1px solid rgba(120,243,255,.22);border-radius:8px;background:rgba(120,243,255,.04);font-size:11px;color:#bfe;line-height:1.6;">
             🔗 <b>Admira Studio → Xpacio:</b> Admira Studio <b>crea</b> (muebles · distribución · creatividades) → se <b>publica/mude</b> al <b>Xpacio</b> (el gemelo de un punto) → se <b>ve</b> en sus pantallas.
             <details style="margin-top:5px;"><summary style="cursor:pointer;color:#7ee0ff;user-select:none;">📖 ¿Qué es cada cosa?</summary>
               <div style="margin-top:5px;color:var(--muted);">
-                <b>Xpacio</b> = el gemelo digital de un punto (una tienda) · <b>Pantalla</b> = una superficie del Xpacio (LED/TFT/escaparate) · <b>Circuito</b> = grupo de Xpacios (de admira.app) · <b>Distribución</b> = el layout (sala + muebles) de un Xpacio · <b>Mudanza</b> = enviar esta distribución al Xpacio.
+                <b>Xpacio</b> = el gemelo digital de un punto (una tienda) · <b>Screen</b> = una superficie del Xpacio (LED/TFT/escaparate) · <b>Circuit</b> = grupo de Xpacios (de admira.app) · <b>Distribución</b> = el layout (sala + muebles) de un Xpacio · <b>Mudanza</b> = enviar esta distribución al Xpacio.
               </div>
             </details>
           </div>
 
-          <!-- Nombre -->
-          <div style="margin-bottom:10px;"><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Nombre de la distribución</label><input id="distro-name" class="model-select" placeholder="Ej: Estanco estándar v1" style="width:100%;"></div>
-          <!-- Cascada igual que admira.app: Alcance → Circuito → Ubicación -->
+          <!-- Name -->
+          <div style="margin-bottom:10px;"><label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Name de la distribución</label><input id="distro-name" class="model-select" placeholder="Ej: Estanco estándar v1" style="width:100%;"></div>
+          <!-- Cascada igual que admira.app: Scope → Circuit → Ubicación -->
           <div style="display:grid;grid-template-columns:1fr 1.4fr 1.4fr;gap:10px;margin-bottom:10px;">
             <div>
-              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Alcance</label>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Scope</label>
               <select id="distro-scope" class="model-select" style="width:100%;"><option value="">—</option></select>
             </div>
             <div>
-              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Circuito · cliente <span style="opacity:.6;font-size:10px;">(admira.app)</span></label>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Circuit · cliente <span style="opacity:.6;font-size:10px;">(admira.app)</span></label>
               <select id="distro-circuit" class="model-select" style="width:100%;"><option value="">Cargando…</option></select>
               <input id="distro-client" type="hidden">
             </div>
             <div>
               <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">Ubicación</label>
-              <select id="distro-location" class="model-select" style="width:100%;"><option value="">— todo el circuito —</option></select>
+              <select id="distro-location" class="model-select" style="width:100%;"><option value="">— entire circuit —</option></select>
             </div>
           </div>
-          <!-- Resumen de segmentación + destino del circuito/ubicación elegido (sincronizado con admira.app) -->
+          <!-- Resumen de segmentación + destino del circuit/ubicación elegido (sincronizado con admira.app) -->
           <div id="distro-circuit-info" style="display:none;margin:-2px 0 12px;padding:9px 11px;border:1px solid rgba(120,243,255,.22);border-radius:8px;background:rgba(120,243,255,.05);font-size:11px;color:var(--muted);line-height:1.5;"></div>
           <!-- Xpacio activo: sobre qué Xpacio actúan Estado actual / Mudanza / En vivo -->
           <div id="distro-xpacio" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 10px;padding:8px 11px;border:1px solid rgba(46,224,106,.35);border-radius:8px;background:rgba(46,224,106,.06);font-size:12px;color:#cfe;">
@@ -580,15 +581,15 @@
             <div><label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;">Fondo (rows)</label><input id="distro-rows" class="model-select" type="number" min="4" max="16" value="8" style="width:80px;"></div>
             <div><label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;">Pared</label><input id="distro-wallcol" type="color" value="#e0d4b8" style="width:42px;height:34px;padding:2px;background:#0b1117;border:1px solid #28323a;border-radius:6px;"></div>
             <div><label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;">Suelo</label><input id="distro-floorcol" type="color" value="#b8bcc0" style="width:42px;height:34px;padding:2px;background:#0b1117;border:1px solid #28323a;border-radius:6px;"></div>
-            <button class="button secondary" id="distro-apply-size" style="height:34px;">Aplicar tamaño</button>
+            <button class="button secondary" id="distro-apply-size" style="height:34px;">Apply tamaño</button>
             <button class="button secondary" id="distro-current" style="height:34px;" title="Carga en la rejilla la distribución que el Xpacio elegido tiene AHORA mismo (estado vivo del gemelo)">📥 Estado actual</button>
-            <button class="button primary" id="distro-mudanza" style="height:34px;" title="Envía esta distribución a los gemelos del circuito/ubicación elegidos para que la apliquen (re-colocan la sala)">🚚 Mudanza</button>
+            <button class="button primary" id="distro-mudanza" style="height:34px;" title="Envía esta distribución a los gemelos del circuit/ubicación elegidos para que la apliquen (re-colocan la sala)">🚚 Mudanza</button>
             <button class="button secondary" id="distro-live" style="height:34px;" title="EN VIVO (BIDIRECCIONAL): lo que muevas en el plano se aplica al gemelo (XpaceOS) en vivo, y lo que muevas en el gemelo se refleja aquí. 🚚 Mudanza sigue siendo el envío explícito a varios gemelos. Carga antes un Xpacio con 📥 Estado actual.">⚪ En vivo</button>
           </div>
 
-          <!-- Paleta de mobiliario (plegable) -->
+          <!-- Palette de mobiliario (plegable) -->
           <details class="distro-fold">
-            <summary style="cursor:pointer;font-size:12px;color:var(--muted);margin-bottom:6px;user-select:none;">🪑 <b style="color:var(--cyan);">Mobiliario</b> — elige una pieza y haz clic en la rejilla para colocarla (clic en una colocada para quitarla)</summary>
+            <summary style="cursor:pointer;font-size:12px;color:var(--muted);margin-bottom:6px;user-select:none;">🪑 <b style="color:var(--cyan);">Furniture</b> — elige una pieza y haz clic en la rejilla para colocarla (clic en una colocada para quitarla)</summary>
             <div id="distro-palette" style="display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px;"></div>
           </details>
 
@@ -608,7 +609,7 @@
             </aside>
           </div>
           <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
-            <button class="button primary" id="distro-save" style="flex:1;">💾 Guardar y publicar</button>
+            <button class="button primary" id="distro-save" style="flex:1;">💾 Save y publicar</button>
             <button class="button secondary" id="distro-iso" style="flex:1;" title="Ver la distribución en isométrico, con el motor real del gemelo (XpaceOS.com)">📐 Perspectiva isométrica</button>
             <button class="button secondary" id="distro-alzado" style="flex:1;" title="Alzado/sección: vista lateral local para analizar las ALTURAS de los muebles y los elementos de la pared">📏 Alzado</button>
             <button class="button secondary" id="distro-iso25" style="flex:1;" title="Vista 2.5D isométrica LOCAL: muebles a su altura real + pantallas en las paredes, sin abrir el gemelo">🧊 Vista 2.5D</button>
@@ -648,18 +649,18 @@
           <p style="font-size:12px;color:var(--muted);margin:4px 0 12px;">Retoca tus muebles: pinta píxel a píxel, <b>recorta el margen transparente</b> (arregla el efecto «flotando») y ajusta <b>altura</b> y <b>footprint</b> (tamaño en la sala). Guarda y se actualiza en la paleta, el plano y el gemelo.</p>
           <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;">
             <div style="flex:0 0 200px;">
-              <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;">🪑 Muebles <span style="opacity:.6;">· últimos 3</span></label>
+              <label style="display:block;font-size:11px;color:var(--muted);margin-bottom:4px;">🪑 Furnitures <span style="opacity:.6;">· últimos 3</span></label>
               <div id="edit-list" style="display:flex;flex-direction:column;gap:5px;"></div>
-              <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🖼️ Imágenes <span style="opacity:.6;">· últimas 3</span></label>
+              <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🖼️ Images <span style="opacity:.6;">· últimas 3</span></label>
               <div id="edit-list-image" style="display:flex;flex-direction:column;gap:5px;"></div>
-              <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🎬 Vídeos <span style="opacity:.6;">· últimos 3</span></label>
+              <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🎬 Videos <span style="opacity:.6;">· últimos 3</span></label>
               <div id="edit-list-video" style="display:flex;flex-direction:column;gap:5px;"></div>
-              <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🎵 Música <span style="opacity:.6;">· últimas 3</span></label>
+              <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🎵 Music <span style="opacity:.6;">· últimas 3</span></label>
               <div id="edit-list-music" style="display:flex;flex-direction:column;gap:5px;"></div>
               <label style="display:block;font-size:11px;color:var(--muted);margin:10px 0 4px;">🔊 Audio <span style="opacity:.6;">· últimos 3</span></label>
               <div id="edit-list-audio" style="display:flex;flex-direction:column;gap:5px;"></div>
               <div style="margin-top:12px;border-top:1px solid #28323a;padding-top:10px;">
-                <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">📥 Importar imagen</label>
+                <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">📥 Import imagen</label>
                 <input id="edit-import-url" type="text" placeholder="pega una URL de imagen…" class="model-select" style="width:100%;font-size:11px;margin-bottom:6px;">
                 <div style="display:flex;gap:6px;">
                   <button type="button" class="button secondary" id="edit-import-url-btn" style="flex:1;font-size:12px;padding:5px 8px;">🌐 Traer URL</button>
@@ -690,14 +691,14 @@
               <div style="display:flex;gap:6px;align-items:center;margin-top:10px;">
                 <span style="font-size:13px;white-space:nowrap;" title="Edición con IA mediante Gemini 2.5 Flash Image">✨ IA <span style="font-size:10px;color:var(--muted);">(Gemini 2.5 Flash)</span>:</span>
                 <input id="edit-ai-prompt" type="text" placeholder="ej. la moto ahora rosa · quítale el fondo · hazla de noche" class="model-select" style="flex:1;min-width:220px;">
-                <button type="button" class="button primary" id="edit-ai-go" style="font-size:12px;padding:6px 14px;white-space:nowrap;">Aplicar</button>
+                <button type="button" class="button primary" id="edit-ai-go" style="font-size:12px;padding:6px 14px;white-space:nowrap;">Apply</button>
               </div>
               <div style="display:flex;gap:14px;align-items:end;flex-wrap:wrap;margin-top:10px;">
                 <div><label style="display:block;font-size:11px;color:var(--muted);">Altura (px)</label><input id="edit-ph" type="number" min="8" max="400" value="46" class="model-select" style="width:80px;"></div>
                 <div><label style="display:block;font-size:11px;color:var(--muted);">Ancho (tiles)</label><input id="edit-fpw" type="number" min="1" max="6" value="1" class="model-select" style="width:70px;"></div>
                 <div><label style="display:block;font-size:11px;color:var(--muted);">Fondo (tiles)</label><input id="edit-fpd" type="number" min="1" max="6" value="1" class="model-select" style="width:70px;"></div>
-                <button type="button" class="button primary" id="edit-save" style="height:34px;">💾 Guardar cambios</button>
-                <button type="button" class="button secondary" id="edit-save-stock" style="height:34px;" title="Publica el lienzo actual como un asset nuevo en Stock (Biblioteca/Marketplace)">📦 Guardar en Stock</button>
+                <button type="button" class="button primary" id="edit-save" style="height:34px;">💾 Save cambios</button>
+                <button type="button" class="button secondary" id="edit-save-stock" style="height:34px;" title="Publica el lienzo actual como un asset nuevo en Stock (Biblioteca/Marketplace)">📦 Save en Stock</button>
               </div>
               <div id="edit-status" style="font-size:12px;color:var(--muted);margin-top:8px;min-height:16px;">Elige un mueble de «Mis muebles» para editarlo.</div>
             </div>
@@ -724,7 +725,7 @@
 
         <!-- Fullscreen image modal for generated IA images -->
         <div id="ia-fullscreen-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:999999; align-items:center; justify-content:center; flex-direction:column; padding:20px;">
-          <img id="ia-fullscreen-img" style="max-width:95vw; max-height:85vh; object-fit:contain; box-shadow:0 0 40px rgba(0,0,0,0.8); cursor:zoom-out;" alt="Imagen generada con IA - doble click o ESC para cerrar">
+          <img id="ia-fullscreen-img" style="max-width:95vw; max-height:85vh; object-fit:contain; box-shadow:0 0 40px rgba(0,0,0,0.8); cursor:zoom-out;" alt="Image generada con IA - doble click o ESC para cerrar">
           <div style="margin-top:16px; color:#aeb9bd; font-size:13px; text-align:center;">
             Doble click o pulsa ESC para cerrar • Click en la imagen para cerrar
           </div>
@@ -740,9 +741,9 @@
   </main>
 
   <footer class="site-footer">
-    <span>Admira Studio Studio Assets</span>
+    <span>Admira Studio Assets</span>
     <p>Herramienta de creación interna. Contenido generado se puede publicar a Pixer Feed.</p>
-    <a href="/">Volver a admira.studio</a>
+    <a href="/">Back to admira.studio</a>
     <a href="/privacidad.html">Privacidad y cookies</a>
   </footer>
 
@@ -774,20 +775,20 @@
         recommended = 'Grok Imagine · Sprite isométrico XpaceOS';
       } else
       if (format === 'video') {
-        recommended = 'Runway Gen-4 (Video - créditos gratis)';
+        recommended = 'Runway Gen-4 (Video - créditos free)';
       } else if (format === 'imagen' || format === 'marketing') {
-        recommended = 'Flux Pro 1.1 (Imagen - gratuito vía HF/Grok)';
+        recommended = 'Flux Pro 1.1 (Image - gratuito vía HF/Grok)';
       } else if (format === 'audio') {
         // Smart choice: if prompt hints at music → Suno (free tier), else best free voice = native TTS
         const currentPrompt = (document.getElementById('prompt')?.value || '').toLowerCase();
         const wantsMusic = /música|musica|canción|cancion|beat|instrumental|jingle|soundtrack/.test(currentPrompt);
         recommended = wantsMusic 
-          ? 'Suno v4 (Música - free tier)' 
-          : 'Browser Web Speech API (Voz - 100% gratuito y nativo)';
+          ? 'Suno v4 (Music - free tier)'
+          : 'Browser Web Speech API (Voice - 100% gratuito y nativo)';
       } else if (format === 'texto') {
-        recommended = 'Flux Pro 1.1 (Imagen - gratuito vía HF/Grok)'; // placeholder, or could be text model
+        recommended = 'Flux Pro 1.1 (Image - gratuito vía HF/Grok)'; // placeholder, or could be text model
       } else if (format === 'operaciones') {
-        recommended = 'Browser Web Speech API (Voz - 100% gratuito y nativo)';
+        recommended = 'Browser Web Speech API (Voice - 100% gratuito y nativo)';
       }
 
       if (recommended) {
@@ -834,7 +835,7 @@
       setupFurniPanel();
       updateFurniMode();
     }
-    // Modo Mobiliario: muestra el compositor de furni y oculta el flujo genérico.
+    // Modo Furniture: muestra el compositor de furni y oculta el flujo genérico.
     function updateFurniMode() {
       const isFurni = currentFormat === 'mobiliario';
       const fp = document.getElementById('furni-panel');
@@ -968,12 +969,12 @@
 
     function useMethodPrompt() {
       const prompts = {
-        'video': 'Secuencia de 8-12 segundos: producto entrando en plano, slow motion elegante, transición a modelo usando el producto, final con logo y claim de marca. Movimiento fluido y premium.',
+        'video': 'Secuencia de 8-12 seconds: producto entrando en plano, slow motion elegante, transition a modelo usando el producto, final con logo y claim de marca. Movimiento fluido y premium.',
         'imagen': 'Fotografía de producto de lujo sobre fondo neutro texturizado. Dirección de arte minimalista, luces suaves, sombras controladas, alta resolución, consistencia de marca.',
-        'audio': 'Locución cálida y autoritaria en español neutro, 18 segundos. Música ambiente sutil de sintetizadores y percusión ligera. Final con sting de marca.',
-        'texto': 'Copy para post de Instagram + caption largo. Tono sofisticado, aspiracional pero cercano. Incluye 3 CTAs diferentes y hashtags estratégicos.',
-        'marketing': 'Variantes A/B para campaña paid: 3 headlines + 3 visuals descriptions + 2 versiones de copy largo para landing.',
-        'operaciones': 'Guion de briefing interno + checklist de producción para equipo de 4 personas. Incluye tiempos, assets necesarios y puntos de control de calidad.',
+        'audio': 'Locución cálida y autoritaria en español neutro, 18 seconds. Music ambiente sutil de sintetizadores y percusión ligera. Final con sting de marca.',
+        'texto': 'Copy para post de Instagram + caption largo. Tone sofisticado, aspiracional pero cercano. Incluye 3 CTAs diferentes y hashtags estratégicos.',
+        'marketing': 'Variants A/B para campaña paid: 3 headlines + 3 visuals descriptions + 2 versiones de copy largo para landing.',
+        'operaciones': 'Script de briefing interno + checklist de producción para equipo de 4 personas. Incluye tiempos, assets necesarios y puntos de control de calidad.',
         'mobiliario': 'mostrador modular para estanco digital XpaceOS, madera oscura y metal negro, pantalla LED verde Matrix integrada, pixel-art isometrico, objeto unico centrado, fondo magenta plano para recorte alpha, sin suelo, sin sombra externa'
       };
       const ta = document.getElementById('prompt');
@@ -995,7 +996,7 @@
 
     function playFreeTTS(text) {
       if (!('speechSynthesis' in window)) {
-        alert('Tu navegador no soporta Web Speech API. Usa Chrome, Edge o Safari para TTS gratuito.');
+        alert('Tu browser no soporta Web Speech API. Usa Chrome, Edge o Safari para TTS gratuito.');
         return;
       }
 
@@ -1304,7 +1305,7 @@
                 ${isFreeTTS ? 
                   `<button id="tts-play-btn" style="margin-top:8px; padding:6px 12px; background:#68dce9; color:#0b1117; border:none; border-radius:4px; cursor:pointer;">▶ Reproducir con TTS Gratuito (nativo)</button>` :
                   `<div style="margin:10px 0; height:3px; background:#68dce9; width:60%;"></div>
-                   <span style="font-size:11px;">Duración: 18s • Calidad: Alta</span><br>
+                   <span style="font-size:11px;">Duration: 18s • Calidad: Alta</span><br>
                    <small style="opacity:0.7">Para música real: abre Suno.ai (free tier) y pega el brief</small>`
                 }
               </div>
@@ -1313,7 +1314,7 @@
         } else {
           resultHTML = `
             <div class="result" style="text-align:left; font-size:13px;">
-              <strong>Texto / Guion generado</strong><br><br>
+              <strong>Texto / Script generado</strong><br><br>
               ${prompt.slice(0,120)}...<br><br>
               <em style="font-size:11px; color:#aeb9bd;">Listo para revisión editorial. Modelo: ${model}</em>
             </div>`;
@@ -1362,7 +1363,7 @@
 
     function sendToPixerFeed() {
       const output = document.getElementById('output');
-      alert('✅ Contenido enviado a Pixer Feed.\n\nEl asset aparecerá en los overlays de pantallas activas en los próximos segundos (según polling del worker).');
+      alert('✅ Contenido enviado a Pixer Feed.\n\nEl asset aparecerá en los overlays de pantallas activas en los próximos seconds (según polling del worker).');
       // In real life this would POST to the signage worker
     }
 
@@ -1416,7 +1417,7 @@
       try {
         const payload = {
           type: campaignAssetType(meta),
-          motor: meta.motor || 'Admira Studio Studio Assets',
+          motor: meta.motor || 'Admira Studio Assets',
           prompt: meta.prompt || '',
           title: 'Admira Studio · ' + campaignNameFromPrompt(meta.prompt),
           comment: 'Asset preparado para comprar emisión en Admira',
@@ -1482,10 +1483,10 @@
       try {
         const payload = {
           type: meta.type,
-          motor: meta.motor || 'Admira Studio Studio Assets',
+          motor: meta.motor || 'Admira Studio Assets',
           prompt: meta.prompt || '',
-          title: `Admira Studio Studio Assets • ${meta.prompt.substring(0, 50)}`,
-          comment: `Generado con ${meta.motor} en Admira Studio Studio Assets`,
+          title: `Admira Studio Assets • ${meta.prompt.substring(0, 50)}`,
+          comment: `Generado con ${meta.motor} en Admira Studio Assets`,
           tags: ['pixeria', 'studio', meta.type],
           costEst: 0.02,
           thumbnail: meta.thumbnail || null,
@@ -1549,7 +1550,7 @@
         const r = await fetch(ELEVEN_WORKER_URL + '/stock/list?type=furni&limit=200&ts=' + Date.now(), { cache: 'no-store' });
         const d = await r.json(); items = (d.items || []).filter(it => it.url && /jpe?g/i.test(it.mime || ''));
       } catch (e) { say('❌ no se pudo listar: ' + e.message); return { done: 0, fail: 0 }; }
-      if (!items.length) { say('✅ Todos los muebles ya son transparentes (PNG).'); return { done: 0, fail: 0 }; }
+      if (!items.length) { say('✅ All los muebles ya son transparentes (PNG).'); return { done: 0, fail: 0 }; }
       let done = 0, fail = 0;
       for (const it of items) {
         try {
@@ -1648,7 +1649,7 @@
       octx.drawImage(c, minX, minY, bw, bh, 0, 0, ow, oh);
       return { dataUrl: oc.toDataURL('image/png'), w: ow, h: oh };
     }
-    // ── Muebles "girables" (4 caras isométricas) ────────────────────────────
+    // ── Furnitures "girables" (4 caras isométricas) ────────────────────────────
     // Espeja un sprite en horizontal (cara der ↔ izq).
     async function furniFlipH(dataUrl) {
       const im = await furniLoadImg(dataUrl);
@@ -1681,7 +1682,7 @@
       ims.forEach((im, i) => { const x = i * fw + Math.round((fw - im.naturalWidth) / 2); const y = fh - im.naturalHeight; ctx.drawImage(im, x, y); });
       return { dataUrl: c.toDataURL('image/png'), frames: ims.length, frameW: fw, frameH: fh };
     }
-    // Estilo CSS para mostrar UN frame de un sheet horizontal en una caja.
+    // Style CSS para mostrar UN frame de un sheet horizontal en una caja.
     // frames<=1 → imagen completa. Compartido por preview/paleta/rejilla/market.
     window.furniFrameStyle = function (url, frames, idx) {
       const n = Math.max(1, frames | 0);
@@ -1733,7 +1734,7 @@
     function furniProgressPhase(kind) { const k = document.getElementById('furni-progress-kind'); if (k) k.textContent = kind; }
     function furniProgressDone() { clearInterval(_furniProgT); _furniProgT = null; const box = document.getElementById('furni-progress'); if (box) box.classList.remove('show'); }
     // Auto-título: deriva un nombre del prompt/archivo si el usuario no puso uno
-    // (o si el anterior era auto). Evita que todos los muebles salgan con el mismo
+    // (o si el previous era auto). Evita que todos los muebles salgan con el mismo
     // nombre heredado (p.ej. "Sofa Matrix" en todos).
     function furniMaybeAutoTitle(text) {
       const t = document.getElementById('furni-title'); if (!t) return;
@@ -1784,7 +1785,7 @@
       const data = await r.json().catch(() => ({}));
       const first = data && data.data && data.data[0];
       const b64 = first && first.b64_json;
-      if (!r.ok || !b64) throw new Error(data && data.error ? (data.error.message || JSON.stringify(data.error)) : 'sin imagen base64');
+      if (!r.ok || !b64) throw new Error(data && data.error ? (data.error.message || JSON.stringify(data.error)) : 'no image base64');
       return 'data:' + (first.mime || 'image/jpeg') + ';base64,' + b64;
     }
     // Genera UNA cara con Grok Imagine y la recorta a PNG transparente.
@@ -1798,7 +1799,7 @@
       const rot4 = !!(document.getElementById('furni-rot4') || {}).checked;
       const btn = document.getElementById('furni-ai-btn'); btn.disabled = true; const old = btn.textContent; btn.textContent = '⏳ generando…';
       furniProgressStart(rot4 ? '🎨 CARA 1/2 · FRENTE' : '🎨 GENERANDO CON GROK IMAGINE');
-      furniSetStatus('Generando con Grok Imagine…');
+      furniSetStatus('Generating with Grok Imagine…');
       try {
         if (rot4) {
           // 2 vistas IA (frente ¾ + espalda ¾) → 4 caras con espejo horizontal.
@@ -1822,7 +1823,7 @@
           furniAsset = { base64: sheet.dataUrl.split(',')[1], mime: 'image/png', frames: sheet.frames, frameW: sheet.frameW };
           furniAutoFootprint(sheet.frameW, sheet.frameH);
           furniSetPreview(sheet.dataUrl, 'IA · 4 caras girable · ' + sheet.frameW + '×' + sheet.frameH + '/cara', sheet.frames);
-          furniSetStatus('✅ Mueble girable (4 caras) listo. Pulsa ↻ para verlo girar y publica.');
+          furniSetStatus('✅ Furniture girable (4 caras) listo. Pulsa ↻ para verlo girar y publica.');
         } else {
           furniProgressPhase('✂️ RECORTANDO EL FONDO');
           furniSetStatus('Recortando el fondo…');
@@ -1838,7 +1839,7 @@
     }
     async function furniPublish() {
       if (!furniAsset) { alert('Sube o genera una imagen primero.'); return; }
-      const title = (document.getElementById('furni-title').value || '').trim() || 'Mobiliario Admira Studio';
+      const title = (document.getElementById('furni-title').value || '').trim() || 'Furniture Admira Studio';
       const ph = parseInt(document.getElementById('furni-ph').value, 10) || 46;
       const fpw = parseInt(document.getElementById('furni-fpw').value, 10) || 1;
       const fpd = parseInt(document.getElementById('furni-fpd').value, 10) || 1;
@@ -1849,7 +1850,7 @@
         stockType: 'furni',
         kind: 'furni',
         category: 'furni',
-        motor: 'Admira Studio Studio Assets',
+        motor: 'Admira Studio Assets',
         title: title,
         tags: frames > 1 ? ['furni', 'mobiliario', 'pixeria', 'rot4', 'girable'] : ['furni', 'mobiliario', 'pixeria'],
         prompt: (document.getElementById('furni-prompt').value || '').slice(0, 300),
@@ -1858,7 +1859,7 @@
         frames: frames,                       // nº de caras del sprite-sheet horizontal (1 = una sola)
         frameW: (furniAsset && furniAsset.frameW) || null,
         price: price,
-        comment: 'Mobiliario creado en Admira Studio · tipo:furni' + (frames > 1 ? ' · ' + frames + ' caras (girable)' : '')
+        comment: 'Furniture creado en Admira Studio · tipo:furni' + (frames > 1 ? ' · ' + frames + ' caras (girable)' : '')
       };
       if (furniAsset.base64) { payload.base64 = furniAsset.base64; payload.mime = furniAsset.mime; }
       else if (furniAsset.sourceUrl) { payload.sourceUrl = furniAsset.sourceUrl; payload.mime = furniAsset.mime || null; }
@@ -1874,7 +1875,7 @@
         }
         if (r.ok && (data.ok || data.id)) {
           furniSetStatus('✅ Publicado · id ' + data.id + ' · ya en el Marketplace y el gemelo');
-          // Limpiar el formulario para el siguiente mueble (si no, todos heredan
+          // Clear el formulario para el next mueble (si no, todos heredan
           // el mismo nombre/imagen — era el bug de "todos salen como Sofa Matrix").
           const t = document.getElementById('furni-title'); if (t) { t.value = ''; t.dataset.autofill = '1'; }
           const pr = document.getElementById('furni-prompt'); if (pr) pr.value = '';
@@ -1971,7 +1972,7 @@
       try { applyFurniPreset(currentFurniPreset); } catch (e) {}
       const oa = document.getElementById('output-actions'); if (oa) oa.style.display = 'none';
     })();
-    console.log('%c[Admira Studio Studio Assets] Acceso libre · creation tool ready.', 'color:#555');
+    console.log('%c[Admira Studio Assets] Acceso libre · creation tool ready.', 'color:#555');
 
     // ── DISTRIBUCIONES — editor de sala + librería compartida (worker /layout/*) ──
     (function distroModule(){
@@ -2056,18 +2057,18 @@
           svg+='<rect x="'+x+'" y="'+y+'" width="'+ww+'" height="'+hh+'" rx="2" fill="'+hexA('#78f3ff',0.35)+'" stroke="#78f3ff"/>';
           svg+='<text x="'+(x+ww/2)+'" y="'+(y-3)+'" fill="#9fe7ff" font-size="8" text-anchor="middle">'+iconFor(it.type)+'</text>';
         }
-        // Muebles de SUELO (barra por columna a su altura real)
+        // Furnitures de SUELO (barra por columna a su altura real)
         const floor=st.items.filter(it=>!WALL_ITEMS[it.type]&&it.type!=='rug'&&it.type!=='door').sort((a,b)=>a.col-b.col);
         for(const it of floor){ const fp=fpFor(it); const hpx=itemHeight(it);
           const x=PADL+it.col*colW+2, ww=Math.max(10,Math.min(st.cols-it.col,fp.w)*colW-4), y=yTop(hpx), hh=hpx*scale;
           svg+='<rect x="'+x+'" y="'+y+'" width="'+ww+'" height="'+hh+'" rx="2" fill="'+hexA('#2ee06a',0.30)+'" stroke="#2ee06a"/>';
           svg+='<text x="'+(x+ww/2)+'" y="'+(y-3)+'" fill="#bfe9c9" font-size="8" text-anchor="middle">'+iconFor(it.type)+' '+hpx+'</text>';
         }
-        // Etiquetas de columna
+        // Tags de columna
         for(let c=0;c<st.cols;c++) svg+='<text x="'+(PADL+c*colW+colW/2)+'" y="'+(baseY+13)+'" fill="#5a6a72" font-size="8" text-anchor="middle">'+c+'</text>';
         ov.innerHTML='<div style="background:#04101a;border:2px solid #2f8d8d;border-radius:14px;padding:16px 18px;max-width:94vw;max-height:90vh;overflow:auto;box-shadow:0 0 40px rgba(47,141,141,.3);">'
           +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:#7dffd0;font-weight:700;">📏 Alzado · alturas (px) — verde: suelo · cian: pared'
-          +'<button id="alzado-close" style="cursor:pointer;background:#0e2a22;border:1px solid #2f8d8d;color:#7dffd0;border-radius:8px;padding:5px 12px;font:700 12px monospace;">Cerrar ✕</button></div>'
+          +'<button id="alzado-close" style="cursor:pointer;background:#0e2a22;border:1px solid #2f8d8d;color:#7dffd0;border-radius:8px;padding:5px 12px;font:700 12px monospace;">Close ✕</button></div>'
           +'<svg viewBox="0 0 '+Wd+' '+Hd+'" style="width:'+Math.min(Wd,860)+'px;max-width:88vw;height:auto;display:block;background:#071019;border-radius:8px;">'+svg+'</svg>'
           +'<div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5;">Proyección lateral por columna: cada pieza a su altura real (revistero 42 · estantería 55 · mostrador 16…). Los elementos de pared (LED/TFT/aroma) van sobre el fondo a su altura de montaje.</div>'
           +'</div>';
@@ -2099,13 +2100,13 @@
         for(let r=1;r<rows;r++) svg+='<line x1="'+P(0,r).x.toFixed(1)+'" y1="'+P(0,r).y.toFixed(1)+'" x2="'+P(cols,r).x.toFixed(1)+'" y2="'+P(cols,r).y.toFixed(1)+'" stroke="rgba(0,0,0,.18)" stroke-width="0.5"/>';
         svg+=poly([P(0,0),P(cols,0),up(P(cols,0),wallPx),up(P(0,0),wallPx)], shade(wallCol,-20), 'rgba(0,0,0,.35)');   // pared larga (row=0)
         svg+=poly([P(0,0),P(0,rows),up(P(0,rows),wallPx),up(P(0,0),wallPx)], shade(wallCol,-4), 'rgba(0,0,0,.35)');     // pared lateral (col=0)
-        // Pantallas de pared (LED/TFT/aroma) sobre la pared larga, por columna y altura de montaje
+        // Screens de pared (LED/TFT/aroma) sobre la pared larga, por columna y altura de montaje
         for(const it of st.items){ const w=WALL_ITEMS[it.type]; if(!w) continue; const fp=fpFor(it);
           const c0=it.col, c1=Math.min(cols,it.col+(fp.w||1)), zb=w.base*hS, zt=(w.base+w.h)*hS;
           svg+=poly([up(P(c0,0),zb),up(P(c1,0),zb),up(P(c1,0),zt),up(P(c0,0),zt)], 'rgba(120,243,255,.55)', '#78f3ff');
           const m=up(P((c0+c1)/2,0),(zb+zt)/2); svg+='<text x="'+m.x.toFixed(1)+'" y="'+m.y.toFixed(1)+'" font-size="9" text-anchor="middle" dominant-baseline="middle">'+iconFor(it.type)+'</text>';
         }
-        // Muebles de suelo: cajas iso a su altura, ordenados por profundidad (col+row)
+        // Furnitures de suelo: cajas iso a su altura, ordenados por profundidad (col+row)
         const floor=st.items.filter(it=>!WALL_ITEMS[it.type]&&it.type!=='rug'&&it.type!=='door').sort((a,b)=>(a.col+a.row)-(b.col+b.row));
         for(const it of floor){ const fp=fpFor(it); const fw=Math.max(1,Math.min(cols-it.col,fp.w||1)), fd=Math.max(1,Math.min(rows-it.row,fp.d||1));
           const bh=itemHeight(it)*hS, p=P(it.col,it.row), w=fw*hw, d=fd*hw, wh=fw*hh, dh=fd*hh, base=COL[it.type]||'#6e6a60';
@@ -2116,7 +2117,7 @@
           svg+='<text x="'+tx+'" y="'+ty+'" font-size="'+Math.max(8,Math.round(hw*0.5))+'" text-anchor="middle" dominant-baseline="middle">'+iconFor(it.type)+'</text>';
         }
         ov.innerHTML='<div style="background:#04101a;border:2px solid #2f8d8d;border-radius:14px;padding:16px 18px;max-width:96vw;max-height:92vh;overflow:auto;box-shadow:0 0 40px rgba(47,141,141,.3)">'
-          +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:#7dffd0;font-weight:700">🧊 Vista 2.5D · alturas + pantallas de pared <button id="iso25-close" style="cursor:pointer;background:#0e2a22;border:1px solid #2f8d8d;color:#7dffd0;border-radius:8px;padding:5px 12px;font:700 12px monospace">Cerrar ✕</button></div>'
+          +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:#7dffd0;font-weight:700">🧊 Vista 2.5D · alturas + pantallas de pared <button id="iso25-close" style="cursor:pointer;background:#0e2a22;border:1px solid #2f8d8d;color:#7dffd0;border-radius:8px;padding:5px 12px;font:700 12px monospace">Close ✕</button></div>'
           +'<svg viewBox="0 0 '+Wd+' '+Hd+'" style="width:'+Math.min(Wd,900)+'px;max-width:90vw;height:auto;display:block;background:#071019;border-radius:8px">'+svg+'</svg>'
           +'<div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5">Render local de la distribución actual en isométrico: cada mueble a su altura real (mapa local, el mismo que el gemelo) y las pantallas LED/TFT/aroma sobre la pared. Para el motor real del gemelo usa 📐 Perspectiva isométrica.</div>'
           +'</div>';
@@ -2189,7 +2190,7 @@
           if(!items.length){ g.innerHTML='<div style="grid-column:1/-1;color:var(--muted);text-align:center;padding:14px;">Aún no hay muebles en el catálogo. Crea alguno en «Creación».</div>'; return; }
           g.innerHTML='';
           items.forEach(it=>{
-            const url=it.url||it.src||''; if(!url) return; const title=it.title||it.prompt||'Mueble';
+            const url=it.url||it.src||''; if(!url) return; const title=it.title||it.prompt||'Furniture';
             const fp=Array.isArray(it.fp)?it.fp:[1,1]; const price=furniDisplayPrice(it); const frames=it.frames||1;
             const card=document.createElement('div'); card.style.cssText='background:#0b1117;border:1px solid #28323a;border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:6px;';
             card.innerHTML='<div style="height:90px;background:repeating-conic-gradient(#1a1f26 0% 25%, #12161b 0% 50%) 50% / 14px 14px;border-radius:6px;overflow:hidden;'+window.furniFrameStyle(url,frames,0)+'"></div>'+
@@ -2241,7 +2242,7 @@
           b.onclick=()=>{ st.sel=f.type; st.selFurni=null; renderPalette(); };
           p.appendChild(b);
         });
-        // Muebles comprados en el Marketplace → colocables en la rejilla
+        // Furnitures comprados en el Marketplace → colocables en la rejilla
         const owned=ownedFurni();
         if(owned.length){
           const sep=document.createElement('span'); sep.textContent='Mis muebles:'; sep.style.cssText='font-size:11px;color:#7ee0a0;align-self:center;margin-left:4px;'; p.appendChild(sep);
@@ -2334,13 +2335,13 @@
           +row('Denominación',furniName(it))
           +row('Tamaño',w+'×'+d+' casillas'+alto)
           +row('Coste',price+' cr.')
-          +row('Fecha de compra',fecha)
+          +row('Date de compra',fecha)
           +row('Garantía',garantia)
           +'<div style="margin-top:10px;font-size:10px;letter-spacing:.06em;color:var(--muted);">🔧 INCIDENCIAS</div>'
           +row('IoT', iot?'<span style="color:#7ee0a0;">🟢 Sí (conectado)</span>':'<span style="color:var(--muted);">⚪ No</span>')
           +row('Estado', estado);
         if(!pinned){
-          html+=row('Contacto', fiEsc((inc&&inc.contact)||DEFAULT_SUPPORT))
+          html+=row('Contact', fiEsc((inc&&inc.contact)||DEFAULT_SUPPORT))
             +row('Inicio', inc?fmtDate(inc.start):'—')
             +row('Notas', fiEsc((inc&&inc.notes)||'—'))
             +row('Resolución', fiEsc((inc&&inc.resolution)||'—'))
@@ -2355,14 +2356,14 @@
           const cur=it.plv||'auto';
           html+=lbl('📡 Contenido PLV de esta pantalla')+'<select id="fi-plv" style="'+inStyle+'">'+PLV_OPTS.map(o=>'<option value="'+o[0]+'"'+(o[0]===cur?' selected':'')+'>'+o[1]+'</option>').join('')+'</select>';
         }
-        html+=lbl('Contacto en caso de incidencia')+'<input id="fi-contact" value="'+fiEsc((inc&&inc.contact)||DEFAULT_SUPPORT)+'" style="'+inStyle+'">';
+        html+=lbl('Contact en caso de incidencia')+'<input id="fi-contact" value="'+fiEsc((inc&&inc.contact)||DEFAULT_SUPPORT)+'" style="'+inStyle+'">';
         if(inc&&inc.start) html+=row('Empezó', fmtDate(inc.start));
         if(resolved&&inc.resolvedAt) html+=row('Resuelta', fmtDate(inc.resolvedAt));
         html+=lbl('Notas / seguimiento')+'<textarea id="fi-notes" rows="2" style="'+inStyle+'resize:vertical;">'+fiEsc((inc&&inc.notes)||'')+'</textarea>';
         html+=lbl('Resolución')+'<textarea id="fi-res" rows="2" style="'+inStyle+'resize:vertical;">'+fiEsc((inc&&inc.resolution)||'')+'</textarea>';
         html+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">';
         if(!open&&!resolved) html+='<button type="button" class="button secondary" id="fi-open" style="flex:1;font-size:11px;padding:5px;">🔧 Abrir incidencia</button>';
-        if(open) html+='<button type="button" class="button primary" id="fi-resolve" style="flex:1;font-size:11px;padding:5px;">✅ Marcar resuelta</button>';
+        if(open) html+='<button type="button" class="button primary" id="fi-resolve" style="flex:1;font-size:11px;padding:5px;">✅ Brandr resuelta</button>';
         if(inc) html+='<button type="button" class="button secondary" id="fi-clearinc" style="font-size:11px;padding:5px 8px;">🗑</button>';
         html+='</div>';
         b.innerHTML=html;
@@ -2422,7 +2423,7 @@
           el.draggable=true;
           el.ondragstart=(e)=>{ try{ e.dataTransfer.setData('text/plain',it.col+','+it.row); e.dataTransfer.effectAllowed='move'; }catch(_){ } el.style.opacity='.5'; };
           el.ondragend=()=>{ el.style.opacity=''; };
-          el.ondblclick=()=>{ if(confirm('¿Eliminar '+(it.label||it.type)+'?')){ st.items=st.items.filter(i=>i!==it); renderGrid(); pushLiveDebounced(); status('🗑 Eliminado · '+st.items.length+' muebles'); } };
+          el.ondblclick=()=>{ if(confirm('¿Delete '+(it.label||it.type)+'?')){ st.items=st.items.filter(i=>i!==it); renderGrid(); pushLiveDebounced(); status('🗑 Eliminado · '+st.items.length+' muebles'); } };
           el.oncontextmenu=(e)=>{ e.preventDefault(); it.rot=((it.rot||0)+1)%4; if(it.frames>1) it.orientation=((it.orientation||0)+1)%it.frames; renderGrid(); pushLiveDebounced(); status('Girado'); };
           el.ondragover=(e)=>{ e.preventDefault(); };
           el.ondrop=(e)=>{ e.preventDefault(); handleDrop(e,it.col,it.row); };
@@ -2457,8 +2458,8 @@
         try{
           const cc=window.CircuitSync&&window.CircuitSync.selected();
           let name,sub,short;
-          if(cc&&cc.location){ name='📍 '+(cc.location.name||cc.location.id); sub='circuito '+(cc.client||cc.id)+(st.loadedScreen?(' · pantalla '+st.loadedScreen):''); short=(cc.location.name||cc.location.id); }
-          else if(cc){ name='🔗 Circuito '+(cc.client||cc.id); sub=(cc.pointCount||'?')+' Xpacios'+(st.loadedScreen?(' · pantalla '+st.loadedScreen):''); short='circuito '+(cc.client||cc.id); }
+          if(cc&&cc.location){ name='📍 '+(cc.location.name||cc.location.id); sub='circuit '+(cc.client||cc.id)+(st.loadedScreen?(' · pantalla '+st.loadedScreen):''); short=(cc.location.name||cc.location.id); }
+          else if(cc){ name='🔗 Circuit '+(cc.client||cc.id); sub=(cc.pointCount||'?')+' Xpacios'+(st.loadedScreen?(' · pantalla '+st.loadedScreen):''); short='circuit '+(cc.client||cc.id); }
           else if(st.loadedScreen){ name='🪪 '+st.loadedScreen; sub='pantalla cargada del gemelo'; short=st.loadedScreen; }
           else { name='🪪 Xtanco inicial'; sub='gemelo por defecto · '+XTANCO_INICIAL; short='Xtanco inicial'; }
           const nEl=$('distro-xpacio-name'), sEl=$('distro-xpacio-sub');
@@ -2492,7 +2493,7 @@
         if(!st.items.length){ status('Coloca al menos un mueble antes de guardar.','#e0a14a'); return; }
         const cc=window.CircuitSync&&window.CircuitSync.selected();
         const client=xpacioKey();
-        // Numeración por Xpacio: siguiente Layout libre 00..04; tope 5.
+        // Numeración por Xpacio: next Layout libre 00..04; tope 5.
         const mine=await layoutsOf(client);
         const used=new Set(mine.map(x=>layoutNum(x.name)).filter(n=>n!=null));
         let nn=null; for(let i=0;i<5;i++){ if(!used.has(i)){ nn=i; break; } }
@@ -2513,13 +2514,13 @@
         }catch(e){ status('❌ '+e.message,'#e06a6a'); }
       }
       // MUDANZA: publica la distribución actual y la ENVÍA a los gemelos del
-      // circuito/ubicación elegidos para que la apliquen solos (vía /layout/assign;
+      // circuit/ubicación elegidos para que la apliquen solos (vía /layout/assign;
       // el gemelo sondea /layout/pending). "Mudanza" = la sala se recoloca sola.
       async function mudanza(){
         if(!st.items.length){ status('Coloca al menos un mueble antes de la mudanza.','#e0a14a'); return; }
         const cc=window.CircuitSync&&window.CircuitSync.selected();
         let targets=(cc&&Array.isArray(cc.screens))?cc.screens.slice():[];
-        // Sin circuito: devuelve al Xtanco que cargaste con 📥 Estado actual; si
+        // Sin circuit: devuelve al Xtanco que cargaste con 📥 Estado actual; si
         // tampoco, pide el id de pantalla (el que da /xpacio en el gemelo).
         if(!targets.length && st.loadedScreen) targets=[st.loadedScreen];
         if(!targets.length){
@@ -2540,7 +2541,7 @@
           status('⏳ mudanza: enviando a '+targets.length+' gemelo(s)…');
           const ra=await fetch(dBase()+'/layout/assign',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:d.id,name:d.name,targets})});
           const da=await ra.json(); if(!ra.ok||!da.ok) throw new Error(da.error||('HTTP '+ra.status));
-          status('🚚 Mudanza enviada a '+targets.length+' gemelo(s) ('+targets.join(', ')+'). La aplican en segundos.','#7ee0a0');
+          status('🚚 Mudanza enviada a '+targets.length+' gemelo(s) ('+targets.join(', ')+'). La aplican en seconds.','#7ee0a0');
           loadLib();
         }catch(e){ status('❌ '+e.message,'#e06a6a'); }
       }
@@ -2714,7 +2715,7 @@
           m.style.cssText='position:fixed;inset:0;z-index:1000000;background:rgba(0,0,0,.93);display:flex;flex-direction:column;';
           m.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 14px;color:#cfe;font-family:monospace;font-size:13px;border-bottom:1px solid #28323a;background:#0b1117;">'+
             '<span>📐 Perspectiva isométrica · motor real del gemelo (XpaceOS)</span>'+
-            '<span style="display:flex;gap:8px;align-items:center;"><button id="distro-iso-reload" class="button secondary" style="padding:4px 10px;font-size:12px;">↻ recargar</button><button id="distro-iso-close" class="button secondary" style="padding:4px 12px;font-size:12px;">✕ cerrar</button></span></div>'+
+            '<span style="display:flex;gap:8px;align-items:center;"><button id="distro-iso-reload" class="button secondary" style="padding:4px 10px;font-size:12px;">↻ reload</button><button id="distro-iso-close" class="button secondary" style="padding:4px 12px;font-size:12px;">✕ cerrar</button></span></div>'+
             '<iframe id="distro-iso-frame" title="Vista isométrica del gemelo" style="flex:1;width:100%;border:0;background:#0a0e12;" allow="autoplay; fullscreen"></iframe>'+
             '<div id="distro-cli-chips" style="display:flex;flex-wrap:wrap;gap:6px;padding:6px 14px 0;"></div>'+
             '<div id="distro-cli-out" style="max-height:96px;overflow:auto;padding:6px 14px 0;background:#0b1117;color:#9fb0bd;font-family:monospace;font-size:12px;white-space:pre-wrap;line-height:1.5;"></div>'+
@@ -2762,7 +2763,7 @@
             m.querySelector('#distro-cli-send').onclick=cliSend;
             (function(){
               const kb=m.querySelector('#distro-cli-key'); if(!kb) return;
-              kb.onclick=()=>{ let cur=''; try{ cur=localStorage.getItem('xpace_remote_key')||''; }catch(_){} const v=prompt('REMOTE_KEY del stand → envía TAMBIÉN al Xpacio LIVE del punto (se guarda en este navegador). Vacío = solo preview:', cur); if(v===null) return; try{ if(v.trim()) localStorage.setItem('xpace_remote_key',v.trim()); else localStorage.removeItem('xpace_remote_key'); }catch(_){} try{ refreshCliKeyBtns(); }catch(_){} };
+              kb.onclick=()=>{ let cur=''; try{ cur=localStorage.getItem('xpace_remote_key')||''; }catch(_){} const v=prompt('REMOTE_KEY del stand → envía TAMBIÉN al Xpacio LIVE del punto (se guarda en este browser). Vacío = solo preview:', cur); if(v===null) return; try{ if(v.trim()) localStorage.setItem('xpace_remote_key',v.trim()); else localStorage.removeItem('xpace_remote_key'); }catch(_){} try{ refreshCliKeyBtns(); }catch(_){} };
               try{ refreshCliKeyBtns(); }catch(_){}
             })();
             inp.addEventListener('keydown',e=>{
@@ -2838,7 +2839,7 @@
       // EN VIVO = BIDIRECCIONAL (Carlos, 2026-06-17): además de reflejar el gemelo en
       // el plano (liveTick, lectura), lo que muevas en el plano se EMPUJA al gemelo en
       // vivo. Anti-bucle: cada lado ignora sus propios cambios por `origin`, y el gemelo
-      // marca __applyingRemoteLayout 2.5s al aplicar para no re-reportar. Canal:
+      // marca __applyingRemoteLayout 2.5s al aplicar para no re-reportar. Channel:
       // POST /layout/report {origin:'pixeria'} → el gemelo sondea /layout/current cada
       // 3s (pollLayoutLive) y aplica. 🚚 Mudanza sigue siendo el push explícito/pesado.
       let __livePushT=null;
@@ -2886,7 +2887,7 @@
           let cur=null;
           if(screen) cur=await fetchCurrentLayout(screen,'');
           if(!cur && client) cur=await fetchCurrentLayout('',client);
-          // No casa por circuito → pedir el id de pantalla. Si lo dejas VACÍO,
+          // No casa por circuit → pedir el id de pantalla. Si lo dejas VACÍO,
           // atacamos por defecto el gemelo digital: el «Xtanco inicial» (xtore-inicial).
           if(!cur){
             const scr=(prompt('Pega el ID de pantalla del Xpacio (en el gemelo escribe /xpacio a la IA y te lo dice, ej. xtore-mny4b7).\n\nDéjalo VACÍO para atacar el Xtanco inicial (gemelo por defecto).','')||'').trim().toLowerCase() || XTANCO_INICIAL;
@@ -2898,7 +2899,7 @@
           }
           setEditorFromLayout(cur);
           st.loadedScreen=cur.screen||'';   // recuerda el Xtanco de origen → Mudanza lo devuelve a ESA pantalla
-          status('📥 Estado actual cargado · '+cur.furniture.length+' muebles'+(cur.ts?' · '+new Date(cur.ts).toLocaleString('es'):'')+(st.loadedScreen?' · pantalla '+st.loadedScreen:'')+'. Edítalo y pulsa 🚚 Mudanza para devolverlo al Xtanco.','#7ee0a0');
+          status('📥 Estado actual cargado · '+cur.furniture.length+' muebles'+(cur.ts?' · '+new Date(cur.ts).toLocaleString('es'):'')+(st.loadedScreen?' · pantalla '+st.loadedScreen:'')+'. Edítalo and select 🚚 Mudanza para devolverlo al Xtanco.','#7ee0a0');
         }catch(e){ status('❌ '+e.message,'#e06a6a'); }
       }
       // Renombra una distribución de la librería: la baja, le cambia el nombre y
@@ -2945,7 +2946,7 @@
         try{
           const r=await fetch(dBase()+'/layout/list?ts='+Date.now(),{cache:'no-store'});
           const d=await r.json(); const items=(Array.isArray(d.items)?d.items:[]).filter(x=>!String(x.id||'').startsWith('preview-'));
-          if(!items.length){ lib.innerHTML='<div style="grid-column:1/-1;color:var(--muted);font-size:12px;text-align:center;padding:10px;">Aún no hay distribuciones. Diseña una arriba y pulsa «Guardar y publicar».</div>'; return; }
+          if(!items.length){ lib.innerHTML='<div style="grid-column:1/-1;color:var(--muted);font-size:12px;text-align:center;padding:10px;">Aún no hay distribuciones. Diseña una arriba and select «Save y publicar».</div>'; return; }
           lib.innerHTML='';
           items.forEach(it=>{
             const fc=(it.counts&&it.counts.furniture)||0;
@@ -2963,26 +2964,26 @@
               const lock=document.createElement('span'); lock.textContent='🔒'; lock.title='Layout 00 · por defecto (no se puede borrar)';
               lock.style.cssText='position:absolute;top:5px;right:7px;font-size:11px;opacity:.7;'; card.appendChild(lock);
             } else {
-              const x=document.createElement('button'); x.textContent='✕'; x.title='Eliminar este layout';
+              const x=document.createElement('button'); x.textContent='✕'; x.title='Delete este layout';
               x.style.cssText='position:absolute;top:4px;right:4px;width:20px;height:20px;line-height:1;border:1px solid #7a3a2a;background:rgba(40,12,8,.9);color:#ff8866;border-radius:50%;cursor:pointer;font-size:11px;padding:0;z-index:2;';
               x.onclick=()=>delDistro(it.id,it.name,it.client); card.appendChild(x);
             }
             const row=document.createElement('div'); row.style.cssText='display:flex;gap:5px;';
             const bL=document.createElement('button'); bL.className='button secondary'; bL.textContent='Cargar'; bL.style.cssText='flex:1;padding:4px;font-size:11px;'; bL.onclick=()=>loadDistroIntoEditor(it.id);
             const bR=document.createElement('button'); bR.className='button secondary'; bR.textContent='✏️'; bR.title='Renombrar'; bR.style.cssText='padding:4px 8px;font-size:11px;'; bR.onclick=()=>renameDistro(it.id,it.name);
-            const bJ=document.createElement('button'); bJ.className='button secondary'; bJ.textContent='⬇'; bJ.title='Descargar JSON para versionar en el repo (layouts/distribuciones/)'; bJ.style.cssText='padding:4px 8px;font-size:11px;'; bJ.onclick=()=>downloadDistro(it.id);
+            const bJ=document.createElement('button'); bJ.className='button secondary'; bJ.textContent='⬇'; bJ.title='Download JSON para versionar en el repo (layouts/distribuciones/)'; bJ.style.cssText='padding:4px 8px;font-size:11px;'; bJ.onclick=()=>downloadDistro(it.id);
             row.appendChild(bL); row.appendChild(bR); row.appendChild(bJ); card.appendChild(row);
             lib.appendChild(card);
           });
         }catch(e){ lib.innerHTML='<div style="grid-column:1/-1;color:#e06a6a;font-size:12px;text-align:center;padding:10px;">❌ '+e.message+'</div>'; }
       }
 
-      // ── Sincronización con admira.app: cascada Alcance → Circuito → Ubicación ──
-      // Lee el manifiesto compartido circuits.json (fuente única en admira.app):
-      // mismo Alcance (All/Global/National/City/Local) que admira.app, filtra los
-      // circuitos por alcance, y al elegir circuito lista sus ubicaciones reales.
-      // Deriva cliente + pantallas destino + segmentación. Circuitos nuevos dados
-      // de alta en admira.app aparecen aquí al regenerar el manifiesto.
+      // ── Sincronización con admira.app: cascada Scope → Circuit → Ubicación ──
+      // Lee el manifesto compartido circuits.json (fuente única en admira.app):
+      // mismo Scope (All/Global/National/City/Local) que admira.app, filtra los
+      // circuits por alcance, y al elegir circuit lista sus ubicaciones reales.
+      // Deriva cliente + pantallas destino + segmentación. Circuits nuevos dados
+      // de alta en admira.app aparecen aquí al regenerar el manifesto.
       window.CircuitSync = (function(){
         const SRC = 'https://admira.app/circuits.json';   // apex (www→apex es 301); GitHub Pages sirve CORS *
         let circuits=[], scopes=null, scopeId='', selectedId='', locId='';
@@ -2992,14 +2993,14 @@
         const chip=a=>((a||[]).map(x=>ES[x]||x).join(', '))||'—';
         const byId=id=>circuits.find(c=>c.id===id)||null;
         const selected=()=>{ const c=byId(selectedId); if(!c) return null; const loc=locId&&(c.points||[]).find(p=>p.id===locId); return loc?Object.assign({},c,{location:loc}):c; };
-        // Circuitos visibles según el alcance elegido (mapa scopes.circuitIds de admira.app)
+        // Circuits visibles según el alcance elegido (mapa scopes.circuitIds de admira.app)
         function circuitsForScope(){ if(!scopeId||!scopes) return circuits.slice(); const ids=(scopes.circuitIds&&scopes.circuitIds[scopeId])||[]; return circuits.filter(c=>ids.indexOf(c.id)>=0); }
         function fillScopes(){ const sel=$('distro-scope'); if(!sel||!scopes) return; const ord=scopes.order||Object.keys(scopes.labels||{}); sel.innerHTML=ord.map(s=>{ const l=(scopes.labels&&scopes.labels[s]&&(scopes.labels[s][lang()]||scopes.labels[s].es))||s; return '<option value="'+s+'">'+l+'</option>'; }).join(''); }
-        function fillCircuits(){ const sel=$('distro-circuit'); if(!sel) return; const list=circuitsForScope(); sel.innerHTML='<option value="">— elige circuito —</option>'+list.map(c=>'<option value="'+c.id+'">'+label(c)+' · '+c.pointCount+' pts</option>').join(''); }
-        function fillLocations(){ const sel=$('distro-location'); if(!sel) return; const c=byId(selectedId); if(!c){ sel.innerHTML='<option value="">— todo el circuito —</option>'; return; } const pts=c.points||[]; const trunc=c.pointsTruncated?' (primeras '+pts.length+' de '+c.pointCount+')':''; sel.innerHTML='<option value="">— todo el circuito ('+c.pointCount+' Xpacios)'+trunc+' —</option>'+pts.map(p=>'<option value="'+p.id+'">'+(p.name||p.id)+(p.addr?' · '+p.addr:'')+(p.screens?' · '+p.screens+'📺':'')+'</option>').join(''); }
+        function fillCircuits(){ const sel=$('distro-circuit'); if(!sel) return; const list=circuitsForScope(); sel.innerHTML='<option value="">— elige circuit —</option>'+list.map(c=>'<option value="'+c.id+'">'+label(c)+' · '+c.pointCount+' pts</option>').join(''); }
+        function fillLocations(){ const sel=$('distro-location'); if(!sel) return; const c=byId(selectedId); if(!c){ sel.innerHTML='<option value="">— entire circuit —</option>'; return; } const pts=c.points||[]; const trunc=c.pointsTruncated?' (primeras '+pts.length+' de '+c.pointCount+')':''; sel.innerHTML='<option value="">— entire circuit ('+c.pointCount+' Xpacios)'+trunc+' —</option>'+pts.map(p=>'<option value="'+p.id+'">'+(p.name||p.id)+(p.addr?' · '+p.addr:'')+(p.screens?' · '+p.screens+'📺':'')+'</option>').join(''); }
         function renderInfo(){ try{ if(window.updateXpacioChip) window.updateXpacioChip(); }catch(_){ } const box=$('distro-circuit-info'); if(!box) return; const c=byId(selectedId); if(!c){ box.style.display='none'; return; } const s=c.segmentation||{}; const loc=locId&&(c.points||[]).find(p=>p.id===locId); const scr=(c.screens||[]).length; box.style.display='block';
           const repLoc=encodeURIComponent(c.client||c.id);
-          box.innerHTML='<b style="color:#7ee0ff;">'+label(c)+'</b> · cliente <code>'+c.client+'</code> · '+(loc?('📍 '+(loc.name||loc.id)+(loc.addr?' ('+loc.addr+')':'')):(c.pointCount+' Xpacios · '+scr+' pantalla(s) real(es)'+(scr?' ('+(c.screens||[]).join(', ')+')':'')))+'<br>🎯 Segmentación (admira.app): emplazamiento <b>'+chip(s.typologies)+'</b> · género <b>'+chip(s.genders)+'</b> · edad <b>'+chip(s.ages)+'</b> · franja <b>'+chip(s.timeSlots)+'</b>'+(s.schedule?' · horario '+s.schedule.start+'–'+s.schedule.end:'')+'<br><a href="https://www.clearchannel.tv/detail.html?loc='+repLoc+'" target="_blank" rel="noopener" style="color:#7ee0ff;text-decoration:none;font-weight:600;">📡 Informe de audiencia verificada (clearchannel.tv) →</a> <span style="opacity:.6;">qué se emitió × quién lo vio</span>'; }
+          box.innerHTML='<b style="color:#7ee0ff;">'+label(c)+'</b> · client <code>'+c.client+'</code> · '+(loc?('📍 '+(loc.name||loc.id)+(loc.addr?' ('+loc.addr+')':'')):(c.pointCount+' Xpacios · '+scr+' real screen(s)'+(scr?' ('+(c.screens||[]).join(', ')+')':'')))+'<br>🎯 Segmentación (admira.app): emplazamiento <b>'+chip(s.typologies)+'</b> · género <b>'+chip(s.genders)+'</b> · edad <b>'+chip(s.ages)+'</b> · franja <b>'+chip(s.timeSlots)+'</b>'+(s.schedule?' · horario '+s.schedule.start+'–'+s.schedule.end:'')+'<br><a href="https://www.clearchannel.tv/detail.html?loc='+repLoc+'" target="_blank" rel="noopener" style="color:#7ee0ff;text-decoration:none;font-weight:600;">📡 Verified audience report (clearchannel.tv) →</a> <span style="opacity:.6;">qué se emitió × quién lo vio</span>'; }
         function selectCircuit(id){ selectedId=id||''; locId=''; const hid=$('distro-client'); if(hid) hid.value=byId(selectedId)?byId(selectedId).client:''; fillLocations(); renderInfo(); }
         function selectScope(s){ scopeId=s||''; selectedId=''; locId=''; fillCircuits(); fillLocations(); const hid=$('distro-client'); if(hid) hid.value=''; renderInfo(); }
         function selectLocation(id){ locId=id||''; renderInfo(); }
@@ -3060,7 +3061,7 @@
         b.innerHTML='<span style="width:24px;height:24px;flex:none;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:13px;background-color:#0a0f14;'+(thumbStyle||'')+'"></span><span style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+String(title||'asset').slice(0,18)+'</span>';
         b.onclick=onclick; return b;
       }
-      // Muebles propios (del wallet): solo los 3 más recientes → al editor.
+      // Furnitures propios (del wallet): solo los 3 más recientes → al editor.
       function loadEditList(){
         const box=$('edit-list'); if(!box) return;
         const owned=ownedFurni().slice().sort((a,b)=>(b.ts||0)-(a.ts||0)).slice(0,3);
@@ -3148,7 +3149,7 @@
         const nw=maxx-minx+1, nh=maxy-miny+1, tmp=document.createElement('canvas'); tmp.width=nw; tmp.height=nh;
         tmp.getContext('2d').drawImage(EDIT.sc,minx,miny,nw,nh,0,0,nw,nh);
         EDIT.sc.width=nw; EDIT.sc.height=nh; EDIT.sc.getContext('2d').drawImage(tmp,0,0);
-        editFitZoom(); renderEdit(); editStatus('✂️ Recortado a '+nw+'×'+nh+' px (ya no flotará). Pulsa Guardar.','#7ee0a0');
+        editFitZoom(); renderEdit(); editStatus('✂️ Recortado a '+nw+'×'+nh+' px (ya no flotará). Pulsa Save.','#7ee0a0');
       }
       async function saveEdit(){
         if(!EDIT.item){ editStatus('Elige un mueble primero.','#e0a14a'); return; }
@@ -3182,7 +3183,7 @@
       async function aiEdit(){
         if(EDIT.aiBusy){ editStatus('⏳ La IA ya está procesando, espera a que termine…','#e0a14a'); return; }
         if(!EDIT.item||!EDIT.sc.width){ editStatus('Abre un mueble primero.','#e0a14a'); return; }
-        if(EDIT.tainted){ editStatus('Imagen sin acceso a píxeles (CORS): no puedo enviarla a la IA.','#e0a14a'); return; }
+        if(EDIT.tainted){ editStatus('Image sin acceso a píxeles (CORS): no puedo enviarla a la IA.','#e0a14a'); return; }
         const prompt=($('edit-ai-prompt').value||'').trim(); if(!prompt){ editStatus('Escribe qué cambiar (ej. «la moto ahora rosa»).','#e0a14a'); return; }
         let dataUrl; try{ dataUrl=EDIT.sc.toDataURL('image/png'); }catch(e){ editStatus('No puedo leer la imagen (CORS).','#e0a14a'); return; }
         EDIT.aiBusy=true;
@@ -3201,11 +3202,11 @@
             try{ removeBgFlood(EDIT.sc); }catch(_){}   // quita el fondo opaco que mete la IA
             editFitZoom(); renderEdit(); res();
           }; im.onerror=()=>rej(new Error('no se pudo cargar la imagen IA')); im.src=d.image; });
-          editStatus('✨ IA aplicada (fondo recortado). Retoca y pulsa Guardar.','#7ee0a0');
+          editStatus('✨ IA aplicada (fondo recortado). Retoca and select Save.','#7ee0a0');
         }catch(e){ editStatus('❌ IA: '+e.message,'#e06a6a'); }
-        finally{ clearInterval(tick); EDIT.aiBusy=false; if(btn){ btn.disabled=false; btn.textContent=btnTxt||'Aplicar'; } if(inp) inp.disabled=false; }
+        finally{ clearInterval(tick); EDIT.aiBusy=false; if(btn){ btn.disabled=false; btn.textContent=btnTxt||'Apply'; } if(inp) inp.disabled=false; }
       }
-      // ── Importar imagen externa (URL via proxy del worker, o archivo local) ──
+      // ── Import imagen externa (URL via proxy del worker, o archivo local) ──
       function editLoadInto(src, meta){
         meta=meta||{};
         editStatus('⏳ cargando imagen…');
@@ -3219,8 +3220,8 @@
           EDIT.item={ url:null, img:null, title:meta.title||'importada', ph:46, fp:[1,1], imported:true };
           $('edit-ph').value=46; $('edit-fpw').value=1; $('edit-fpd').value=1;
           loadEditList(); editResetHistory(); editFitZoom(); renderEdit();
-          if(EDIT.tainted) editStatus('⚠ Imagen sin permiso de píxeles (CORS): no puedo retocarla ni guardarla. Prueba con «Traer URL» (usa el proxy).','#e0a14a');
-          else editStatus('📥 Importada «'+(meta.title||'imagen')+'» · '+w+'×'+h+' px'+(s<1?' (reescalada)':'')+'. Retoca, recorta y pulsa «Guardar en Stock».','#7ee0a0');
+          if(EDIT.tainted) editStatus('⚠ Image sin permiso de píxeles (CORS): no puedo retocarla ni guardarla. Prueba con «Traer URL» (usa el proxy).','#e0a14a');
+          else editStatus('📥 Importada «'+(meta.title||'imagen')+'» · '+w+'×'+h+' px'+(s<1?' (reescalada)':'')+'. Retoca, recorta and select «Save en Stock».','#7ee0a0');
         };
         img.onerror=()=>editStatus('❌ no se pudo cargar la imagen'+(meta.viaProxy?' (¿la URL es una imagen directa?)':'')+'.','#e06a6a');
         img.src=src;
@@ -3238,7 +3239,7 @@
       }
       async function saveEditToStock(){
         if(!EDIT.sc.width){ editStatus('Importa o abre una imagen primero.','#e0a14a'); return; }
-        if(EDIT.tainted){ editStatus('Imagen sin acceso a píxeles (CORS): no puedo publicarla.','#e0a14a'); return; }
+        if(EDIT.tainted){ editStatus('Image sin acceso a píxeles (CORS): no puedo publicarla.','#e0a14a'); return; }
         let dataUrl; try{ dataUrl=EDIT.sc.toDataURL('image/png'); }catch(e){ editStatus('No puedo leer la imagen (CORS).','#e0a14a'); return; }
         const title=(EDIT.item&&EDIT.item.title)||'Asset Admira Studio';
         const ph=Math.max(8,Math.min(400,+$('edit-ph').value||46));
@@ -3312,7 +3313,7 @@
           const send=()=>{ const c=(inp.value||'').trim(); if(!c) return; hist.push(c); hi=hist.length; xtancoCliSend(c, logLine); inp.value=''; };
           sb.onclick=send;
           inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); send(); } else if(e.key==='ArrowUp'){ if(hi>0){ hi--; inp.value=hist[hi]||''; e.preventDefault(); } } else if(e.key==='ArrowDown'){ if(hi<hist.length-1){ hi++; inp.value=hist[hi]||''; } else { hi=hist.length; inp.value=''; } e.preventDefault(); } });
-          if(kb){ kb.onclick=()=>{ let cur=''; try{ cur=localStorage.getItem('xpace_remote_key')||''; }catch(_){} const v=prompt('REMOTE_KEY del stand → envía también al Xpacio LIVE del punto (se guarda en este navegador). Vacío = solo preview:', cur); if(v===null) return; try{ if(v.trim()) localStorage.setItem('xpace_remote_key',v.trim()); else localStorage.removeItem('xpace_remote_key'); }catch(_){} try{ refreshCliKeyBtns(); }catch(_){} }; try{ refreshCliKeyBtns(); }catch(_){} }
+          if(kb){ kb.onclick=()=>{ let cur=''; try{ cur=localStorage.getItem('xpace_remote_key')||''; }catch(_){} const v=prompt('REMOTE_KEY del stand → envía también al Xpacio LIVE del punto (se guarda en este browser). Vacío = solo preview:', cur); if(v===null) return; try{ if(v.trim()) localStorage.setItem('xpace_remote_key',v.trim()); else localStorage.removeItem('xpace_remote_key'); }catch(_){} try{ refreshCliKeyBtns(); }catch(_){} }; try{ refreshCliKeyBtns(); }catch(_){} }
         })();
         // Submenús: Distribución / Marketplace (clic en el activo → vuelve a Creación)
         wire('tab-creacion',()=>setView('creacion'));

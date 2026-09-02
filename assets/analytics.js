@@ -18,7 +18,7 @@
     wait_for_update: 500
   });
 
-  // Si el usuario ya acepto en una visita anterior, restaurar el consentimiento.
+  // Si el usuario ya acepto en una visita previous, restaurar el consentimiento.
   try {
     if (localStorage.getItem('pixeria_consent') === 'granted') {
       window.gtag('consent', 'update', { analytics_storage: 'granted' });

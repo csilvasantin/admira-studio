@@ -11,6 +11,27 @@
   ],
   "origen": "../pixeria",
   "dominio": "www.admira.studio",
+  "idioma": "en",
+  "raiz_ingles": [
+    ["en/index.html", "index.html"],
+    ["en/_cuadopen.html", "_cuadopen.html"],
+    ["en/admira-xp.html", "admira-xp.html"],
+    ["en/anonimizador.html", "anonimizador.html"],
+    ["en/audio.html", "audio.html"],
+    ["en/avatar.html", "avatar.html"],
+    ["en/concepto.html", "concepto.html"],
+    ["en/director.html", "director.html"],
+    ["en/imagenes.html", "imagenes.html"],
+    ["en/musica.html", "musica.html"],
+    ["en/plataforma.html", "plataforma.html"],
+    ["en/privacy.html", "privacy.html"],
+    ["en/privacy.html", "privacidad.html"],
+    ["en/publicidad.html", "publicidad.html"],
+    ["en/radar/index.html", "radar/index.html"],
+    ["en/signage.html", "signage.html"],
+    ["en/video.html", "video.html"],
+    ["en/xtore.html", "xtore.html"]
+  ],
   "sustituciones": [
     [
       "www.pixeria.com",
@@ -33,15 +54,1135 @@
       "Admira Studio"
     ],
     [
-      "<a href=\"/tiktok\"><b>TikTok · Vertical</b><small>Anuncios 9:16 de 25s, listos para el mupi vertical</small></a>",
-      "<a href=\"/tiktok\"><b>Guiones · Storyboard</b><small>Idea, guion, escenas, producción vertical y publicación trazable en Stock</small></a>"
-    ]
+      "<html lang=\"es\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Admira Studio · Acceso</title>",
+      "<html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Admira Studio · Access</title>"
+    ],
+    [
+      "<h1>Acceso con Google</h1><p>El mismo acceso de Google funciona en cualquier navegador. Admira Studio comprueba que la cuenta esté autorizada y crea una sesión segura en este dispositivo.</p>",
+      "<h1>Continue with Google</h1><p>The same Google sign-in works in any browser. Admira Studio checks that the account is authorized and creates a secure session on this device.</p>"
+    ],
+    [
+      "Cuenta no autorizada para Admira Studio.",
+      "This account is not authorized for Admira Studio."
+    ],
+    [
+      "<title>Entrando · Admira Studio</title>",
+      "<title>Entering · Admira Studio</title>"
+    ],
+    [
+      "Sesión verificada. Entrando…",
+      "Session verified. Entering…"
+    ],
+    [
+      "✖ SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD",
+      "✖ IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD"
+    ],
+    [
+      "\\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD",
+      "\\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD"
+    ],
+    [
+      "SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD",
+      "IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD"
+    ],
+    [
+      "<!doctype html><html lang=\"es\"><head><meta charset=\"utf-8\"><meta http-equiv=\"refresh\"",
+      "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta http-equiv=\"refresh\""
+    ],
+    [
+      "Ocultar la descripción",
+      "Hide description"
+    ],
+    [
+      "Qué es esto",
+      "What is this"
+    ],
+    [
+      "Mostrar u ocultar menú",
+      "Show or hide menu"
+    ],
+    [
+      "Abrir panel avanzado",
+      "Open advanced panel"
+    ],
+    [
+      "Abrir panel experto",
+      "Open expert panel"
+    ],
+    [
+      "Desplegar menú avanzado derecho",
+      "Open right advanced menu"
+    ],
+    [
+      "Navegación avanzada",
+      "Advanced navigation"
+    ],
+    [
+      "Generar assets: video, imagen, audio, texto, mobiliario",
+      "Generate assets: video, image, audio, text, furniture"
+    ],
+    [
+      "Bandas sonoras, jingles y marca sonora",
+      "Soundtracks, jingles and sonic branding"
+    ],
+    [
+      "Voces, locución y megafonía de marca",
+      "Voices, voice-over and brand public address"
+    ],
+    [
+      "Storyboards, generación, edición y loops",
+      "Storyboards, generation, editing and loops"
+    ],
+    [
+      "Anuncios 9:16 de 25s, listos para el mupi vertical",
+      "25s 9:16 ads, ready for the vertical display"
+    ],
+    [
+      "Dirección de arte, producto y estilo",
+      "Art direction, product and style"
+    ],
+    [
+      "Presentadores y avatares generativos",
+      "Generative presenters and avatars"
+    ],
+    [
+      "Privacidad en imagen y vídeo",
+      "Privacy for image and video"
+    ],
+    [
+      "Mapa de capas, motores y salida a XpaceOS",
+      "Layer map, engines and XpaceOS output"
+    ],
+    [
+      "Galería pública de assets desplegados",
+      "Public gallery of deployed assets"
+    ],
+    [
+      "Compra y activación en puntos y pantallas",
+      "Buying and activation across locations and screens"
+    ],
+    [
+      "Formatos y activos por canal",
+      "Formats and assets by channel"
+    ],
+    [
+      "Pixer Feed en vivo sobre pantallas reales",
+      "Pixer Feed live on real screens"
+    ],
+    [
+      "Radar ampliado y documentación",
+      "Expanded radar and documentation"
+    ],
+    [
+      "Opciones · secciones de Admira Studio",
+      "Options · Admira Studio sections"
+    ],
+    [
+      "Secciones de Admira Studio",
+      "Admira Studio sections"
+    ],
+    [
+      "Secciones principales de Admira Studio",
+      "Main Admira Studio sections"
+    ],
+    [
+      "Release de Admira Studio",
+      "Admira Studio release"
+    ],
+    [
+      "Avanzado · método y detalle",
+      "Advanced · method and details"
+    ],
+    [
+      "Opciones · panel izquierdo",
+      "Options · left panel"
+    ],
+    [
+      "Avanzado · panel derecho",
+      "Advanced · right panel"
+    ],
+    [
+      "Studio · Crear",
+      "Studio · Create"
+    ],
+    [
+      "Audio · Megafonía",
+      "Audio · PA"
+    ],
+    [
+      "Concepto Admira Studio",
+      "Admira Studio concept"
+    ],
+    [
+      "Admira Studio · sistema creativo",
+      "Admira Studio · creative system"
+    ],
+    [
+      "🔍 Opciones",
+      "🔍 Options"
+    ],
+    [
+      "⚙️ Avanzado",
+      "⚙️ Advanced"
+    ],
+    [
+      "Contacto",
+      "Contact"
+    ],
+    [
+      "Documentación",
+      "Documentation"
+    ],
+    [
+      "Plataforma",
+      "Platform"
+    ],
+    [
+      "Música",
+      "Music"
+    ],
+    [
+      "Vídeo",
+      "Video"
+    ],
+    [
+      "Imágenes",
+      "Images"
+    ],
+    [
+      "Anonimizador",
+      "Anonymizer"
+    ],
+    [
+      "Campañas",
+      "Campaigns"
+    ],
+    [
+      "Publicidad",
+      "Advertising"
+    ],
+    [
+      "Admira Studio Studio",
+      "Admira Studio"
+    ],
+    [
+      "PA · Public Address (Megafonía)",
+      "PA · Public Address"
+    ],
+    [
+      "CLIENTE / PROYECTO",
+      "CLIENT / PROJECT"
+    ],
+    [
+      "📺 ENVIAR A ADMIRA XP",
+      "📺 SEND TO ADMIRA XP"
+    ],
+    [
+      "↗ VER PANTALLA",
+      "↗ VIEW SCREEN"
+    ],
+    [
+      "voz + guion + escena",
+      "voice + script + scene"
+    ],
+    [
+      "identidad + loop + energía",
+      "identity + loop + energy"
+    ],
+    [
+      "assets + estilo + consistencia",
+      "assets + style + consistency"
+    ],
+    [
+      "guion + planos + montaje",
+      "script + shots + editing"
+    ],
+    [
+      "input del gemelo digital",
+      "digital twin input"
+    ],
+    [
+      "fuente: simulador local · confianza",
+      "source: local simulator · confidence"
+    ],
+    [
+      "copy + oferta + CTA",
+      "copy + offer + CTA"
+    ],
+    [
+      "PERSONAJE / LOCUTOR",
+      "CHARACTER / SPEAKER"
+    ],
+    [
+      "RITMO / DURACIÓN",
+      "PACE / DURATION"
+    ],
+    [
+      "GUION / TEXTO A LOCUTAR",
+      "SCRIPT / TEXT TO SPEAK"
+    ],
+    [
+      "LETRA ✏️ GENERAR CON GEMINI",
+      "LYRICS ✏️ GENERATE WITH GEMINI"
+    ],
+    [
+      "VERSIONES A ENTREGAR",
+      "VERSIONS TO DELIVER"
+    ],
+    [
+      "USO EN EXPERIENCIA",
+      "USE IN EXPERIENCE"
+    ],
+    [
+      "ASSETS A GENERAR",
+      "ASSETS TO GENERATE"
+    ],
+    [
+      "REUSA DE OTROS MÓDULOS",
+      "REUSE FROM OTHER MODULES"
+    ],
+    [
+      "HOOK (3S INICIALES)",
+      "HOOK (FIRST 3S)"
+    ],
+    [
+      "CANAL / FORMATO",
+      "CHANNEL / FORMAT"
+    ],
+    [
+      "IMAGEN BASE DEL ANUNCIO",
+      "BASE AD IMAGE"
+    ],
+    [
+      "🖼 SELECCIONAR IMAGEN",
+      "🖼 SELECT IMAGE"
+    ],
+    [
+      "LIMPIAR IMAGEN",
+      "CLEAR IMAGE"
+    ],
+    [
+      "Sin imagen cargada",
+      "No image loaded"
+    ],
+    [
+      "PRODUCTO / SERVICIO",
+      "PRODUCT / SERVICE"
+    ],
+    [
+      "CONTEXTO DEL ESPACIO",
+      "SPACE CONTEXT"
+    ],
+    [
+      "OFERTA SI SEGMENTO HOMBRE",
+      "OFFER FOR MALE SEGMENT"
+    ],
+    [
+      "OFERTA SI SEGMENTO MUJER",
+      "OFFER FOR FEMALE SEGMENT"
+    ],
+    [
+      "OFERTA NEUTRAL / FALLBACK",
+      "NEUTRAL OFFER / FALLBACK"
+    ],
+    [
+      "✨ GENERAR 2 VERSIONES",
+      "✨ GENERATE 2 VERSIONS"
+    ],
+    [
+      "SIMULAR PASO LIVECAM",
+      "SIMULATE LIVECAM PASS"
+    ],
+    [
+      "Brief creativo",
+      "Creative brief"
+    ],
+    [
+      "Brief consolidado",
+      "Consolidated brief"
+    ],
+    [
+      "Brief de Advertising Segmentada",
+      "Targeted Advertising brief"
+    ],
+    [
+      "Brief de Audio",
+      "Audio brief"
+    ],
+    [
+      "Brief de Music",
+      "Music brief"
+    ],
+    [
+      "Brief de Images",
+      "Images brief"
+    ],
+    [
+      "Brief de Video",
+      "Video brief"
+    ],
+    [
+      "GENERAR BRIEF",
+      "GENERATE BRIEF"
+    ],
+    [
+      "COPIAR JSON",
+      "COPY JSON"
+    ],
+    [
+      "COPIAR MARKDOWN",
+      "COPY MARKDOWN"
+    ],
+    [
+      "DESCARGAR .JSON",
+      "DOWNLOAD .JSON"
+    ],
+    [
+      "LIMPIAR TODO",
+      "CLEAR ALL"
+    ],
+    [
+      "LIMPIAR AUDIO",
+      "CLEAR AUDIO"
+    ],
+    [
+      "LIMPIAR MUSIC",
+      "CLEAR MUSIC"
+    ],
+    [
+      "LIMPIAR IMAGES",
+      "CLEAR IMAGES"
+    ],
+    [
+      "LIMPIAR VIDEO",
+      "CLEAR VIDEO"
+    ],
+    [
+      "LIMPIAR ADVERTISING",
+      "CLEAR ADVERTISING"
+    ],
+    [
+      "// Rellena los campos y pulsa \"Generar brief\".",
+      "// Complete the fields and select \"Generate brief\"."
+    ],
+    [
+      "// Rellena los módulos y pulsa \"Generar brief\".",
+      "// Complete the modules and select \"Generate brief\"."
+    ],
+    [
+      "// Sube una imagen base, define la oferta para hombre y mujer, y pulsa \"Generar 2 versiones\".",
+      "// Upload a base image, define the offers for men and women, and select \"Generate 2 versions\"."
+    ],
+    [
+      "CARGAR DEMO",
+      "LOAD DEMO"
+    ],
+    [
+      "📤 Iniciando...",
+      "📤 Starting..."
+    ],
+    [
+      "Señal LiveCam / XpaceOS",
+      "LiveCam / XpaceOS signal"
+    ],
+    [
+      "FUENTE DE SEÑAL",
+      "SIGNAL SOURCE"
+    ],
+    [
+      "Simulador local",
+      "Local simulator"
+    ],
+    [
+      "PANTALLA DESTINO",
+      "TARGET SCREEN"
+    ],
+    [
+      "REGLA DE PRIVACIDAD",
+      "PRIVACY RULE"
+    ],
+    [
+      "SEGMENTO NEUTRAL",
+      "NEUTRAL SEGMENT"
+    ],
+    [
+      "HOMBRE",
+      "MALE"
+    ],
+    [
+      "MUJER",
+      "FEMALE"
+    ],
+    [
+      "MAPA EMOCIONAL",
+      "EMOTIONAL MAP"
+    ],
+    [
+      "DESCUBRIMIENTO",
+      "DISCOVERY"
+    ],
+    [
+      "CELEBRACIÓN",
+      "CELEBRATION"
+    ],
+    [
+      "TRANSICIÓN",
+      "TRANSITION"
+    ],
+    [
+      "PERCUSIÓN",
+      "PERCUSSION"
+    ],
+    [
+      "MELODÍA",
+      "MELODY"
+    ],
+    [
+      "TONALIDAD",
+      "KEY"
+    ],
+    [
+      "PALETA",
+      "PALETTE"
+    ],
+    [
+      "ENCUADRE",
+      "FRAMING"
+    ],
+    [
+      "Cuadrado 1:1",
+      "Square 1:1"
+    ],
+    [
+      "Carrusel cuadrado 1:1",
+      "Square carousel 1:1"
+    ],
+    [
+      "Mixto",
+      "Mixed"
+    ],
+    [
+      "NIVEL DE REALISMO",
+      "REALISM LEVEL"
+    ],
+    [
+      "Foto realista",
+      "Photorealistic"
+    ],
+    [
+      "Ilustracion",
+      "Illustration"
+    ],
+    [
+      "3D estilizado",
+      "Stylized 3D"
+    ],
+    [
+      "Demo producto 16:9",
+      "Product demo 16:9"
+    ],
+    [
+      "Pantalla evento 16:9",
+      "Event screen 16:9"
+    ],
+    [
+      "DESARROLLO",
+      "DEVELOPMENT"
+    ],
+    [
+      "CIERRE",
+      "CLOSING"
+    ],
+    [
+      "Espanol (ES)",
+      "Spanish (Spain)"
+    ],
+    [
+      "Espanol (LATAM)",
+      "Spanish (LATAM)"
+    ],
+    [
+      "Catalan",
+      "Catalan"
+    ],
+    [
+      "Ingles (UK)",
+      "English (UK)"
+    ],
+    [
+      "Ingles (US)",
+      "English (US)"
+    ],
+    [
+      "Frances",
+      "French"
+    ],
+    [
+      "Aleman",
+      "German"
+    ],
+    [
+      "Portugues",
+      "Portuguese"
+    ],
+    [
+      "Cercano",
+      "Friendly"
+    ],
+    [
+      "Institucional",
+      "Institutional"
+    ],
+    [
+      "Energico",
+      "Energetic"
+    ],
+    [
+      "Misterioso",
+      "Mysterious"
+    ],
+    [
+      "Documental",
+      "Documentary"
+    ],
+    [
+      "Comercial",
+      "Commercial"
+    ],
+    [
+      "IDIOMA",
+      "LANGUAGE"
+    ],
+    [
+      "TONO",
+      "TONE"
+    ],
+    [
+      "TENSIÓN",
+      "TENSION"
+    ],
+    [
+      "MARCA",
+      "BRAND"
+    ],
+    [
+      "CAPAS",
+      "LAYERS"
+    ],
+    [
+      "CALMA",
+      "CALM"
+    ],
+    [
+      "LUZ",
+      "LIGHT"
+    ],
+    [
+      "DURACIÓN",
+      "DURATION"
+    ],
+    [
+      "GUION",
+      "SCRIPT"
+    ],
+    [
+      "✨ CREAR",
+      "✨ CREATE"
+    ],
+    ["Cliente / proyecto", "Client / project"],
+    ["Personaje / locutor", "Character / speaker"],
+    ["Ritmo / duración", "Pace / duration"],
+    ["Guion / texto a locutar", "Script / text to speak"],
+    ["Generar brief", "Generate brief"],
+    ["Copiar Markdown", "Copy Markdown"],
+    ["Copiar JSON", "Copy JSON"],
+    ["Descargar a este ordenador", "Download to this computer"],
+    ["Descargar imagen", "Download image"],
+    ["Descargar .json", "Download .json"],
+    ["Descargar MP3", "Download MP3"],
+    ["Descargar MP4", "Download MP4"],
+    ["Descargar", "Download"],
+    ["Limpiar Advertising", "Clear Advertising"],
+    ["Limpiar Images", "Clear Images"],
+    ["Limpiar Music", "Clear Music"],
+    ["Limpiar Video", "Clear Video"],
+    ["Limpiar Audio", "Clear Audio"],
+    ["Limpiar todo", "Clear all"],
+    ["Idioma", "Language"],
+    ["Tono", "Tone"],
+    ["Duración", "Duration"],
+    ["Desarrollo", "Development"],
+    ["Canal / formato", "Channel / format"],
+    ["Reusa de otros módulos", "Reuse from other modules"],
+    ["Assets a generar", "Assets to generate"],
+    ["Cargar demo", "Load demo"],
+    ["Ej. Aena Mallorca - Campaña primavera", "e.g. Aena Mallorca — Spring campaign"],
+    ["Ej. XpaceOS Shoptalk · Escaparate Lenovo", "e.g. XpaceOS Shoptalk · Lenovo storefront"],
+    ["Envía el último contenido generado al feed de Admira XP", "Send the latest generated content to the Admira XP feed"],
+    ["Envía la creatividad segmentada al feed de Admira XP", "Send the targeted creative to the Admira XP feed"],
+    ["Abre la pantalla de signage para ver lo enviado", "Open the signage screen to view the content"],
+    ["Abrir Admira XP — ultima version del Gemelo Digital", "Open Admira XP — latest Digital Twin version"],
+    ["abrir →", "open →"],
+    ["Voz adulta cálida", "Warm adult voice"],
+    ["Voz femenina, adulta, cálida", "Warm adult female voice"],
+    ["ritmo medio", "medium pace"],
+    ["Esto es una prueba", "This is a test"],
+    ["Reserva ahora en admira.xp", "Book now at admira.xp"],
+    ["Reserva en admira.xp/mallorca", "Book at admira.xp/mallorca"],
+    ["Letra de producción", "Production lyrics"],
+    ["Preparar escucha", "Prepare playback"],
+    ["Usa esta versión para enviarla al Xpacio elegido", "Use this version in the selected Xpacio"],
+    ["Versión ", "Version "],
+    ["Generando audio en ", "Generating audio in "],
+    ["Generando megafonía gratis...", "Generating free PA audio..."],
+    ["Generando música con voz...", "Generating music with vocals..."],
+    ["Generando con ", "Generating with "],
+    ["generando imagen con ", "generating image with "],
+    ["Guardar el fichero en este ordenador con un nombre legible", "Save the file to this computer with a readable name"],
+    ["Guarda el fichero en este ordenador con un nombre legible", "Save the file to this computer with a readable name"],
+    ["Crea el contenido primero (o ya está en Stock)", "Create the content first (or it is already in Stock)"],
+    ["¿Borrar todas las API keys de este navegador?", "Delete all API keys from this browser?"],
+    ["Las claves se guardan solo en este navegador (localStorage). No se envían a ningún servidor de Admira Studio.", "Keys are stored only in this browser (localStorage). They are not sent to any Admira Studio server."],
+    ["Guardar", "Save"],
+    ["Borrar todas", "Delete all"],
+    ["Cerrar", "Close"],
+    ["IMPORTAR DESDE URL", "IMPORT FROM URL"],
+    ["una o varias, una por línea", "one or more, one per line"],
+    ["opcional · indexable por búsqueda en Stock", "optional · searchable in Stock"],
+    ["Comentarios", "Comments"],
+    ["Notas, etiquetas, contexto… (luego se puede buscar)", "Notes, tags, context… (searchable later)"],
+    ["Formato de importación", "Import format"],
+    ["sólo pista de audio", "audio track only"],
+    ["Importar", "Import"],
+    ["Hosts permitidos:", "Supported hosts:"],
+    ["Se pueden pegar VARIAS URLs a la vez, una por línea.", "You can paste SEVERAL URLs at once, one per line."],
+    ["Si abres en local también funciona suno-local", "When opened locally, suno-local also works"],
+    ["Galería pública de assets generados por los motores IA — audio, música, imágenes y video — desplegados a Stock.", "Public gallery of assets generated by the AI engines — audio, music, images and video — deployed to Stock."],
+    ["Galería pública", "Public gallery"],
+    ["assets desplegados desde los 4 motores.", "assets deployed from the 4 engines."],
+    ["Todo lo que se publica desde el botón", "Everything published using the"],
+    ["en audio, música, imágenes o video aparece aquí. Filtros por tipo y motor; búsqueda por prompt.", "button in audio, music, images or video appears here. Filter by type and engine; search by prompt."],
+    ["Selección de idioma", "Language selection"],
+    ["Cambiar a inglés", "Switch to English"],
+    ["Vista, filtros, búsqueda, orden y paginación", "View, filters, search, sorting and pagination"],
+    ["Cambiar vista: detalle ↔ cuadrícula", "Change view: detail ↔ grid"],
+    ["Cambiar vista", "Change view"],
+    ["Búsqueda por prompt/comentario/tag, o URL para importar", "Search by prompt/comment/tag, or enter a URL to import"],
+    ["🔍 buscar… o pega una URL e importa →", "🔍 search… or paste a URL and import →"],
+    ["Importar la URL del buscador (yt-dlp · igual que en AdmiraXP de Telegram)", "Import the URL from search (yt-dlp · same as AdmiraXP on Telegram)"],
+    ["Importar URL", "Import URL"],
+    ["Filtrar por tipo", "Filter by type"],
+    ["Todos los tipos", "All types"],
+    ["Cápsulas", "Capsules"],
+    ["Cápsula", "Capsule"],
+    ["Gestor de etiquetas: renombrar, fusionar variaciones y borrar en todo el Stock", "Tag manager: rename, merge variants and delete throughout Stock"],
+    ["Etiquetas", "Tags"],
+    ["Ordenar por", "Sort by"],
+    ["Ordenar:", "Sort:"],
+    ["Nombre", "Name"],
+    ["Fecha", "Date"],
+    ["Primera página", "First page"],
+    ["Página anterior", "Previous page"],
+    ["Anterior", "Previous"],
+    ["Página siguiente", "Next page"],
+    ["Siguiente", "Next"],
+    ["Última página", "Last page"],
+    ["Paginación (abajo)", "Pagination (bottom)"],
+    ["Stock vacío.", "Stock is empty."],
+    ["Genera un asset en Audio/Music/Images/Video — o un gemelo en el", "Generate an asset in Audio/Music/Images/Video — or a twin in the"],
+    ["y pulsa", "and select"],
+    ["Selección en lote", "Batch selection"],
+    ["Descarga los assets seleccionados a este ordenador, uno detrás de otro", "Download selected assets to this computer one after another"],
+    ["Qué distribuir", "What to distribute"],
+    ["Assets seleccionados", "Selected assets"],
+    ["Cuándo distribuir", "When to distribute"],
+    ["Franja rápida (hoy)", "Quick time slot (today)"],
+    ["Mañana 09:00", "Morning 09:00"],
+    ["Fecha y hora", "Date and time"],
+    ["La programación es local: corre mientras esta pestaña esté abierta. La cola sobrevive a recargas.", "Scheduling is local: it runs while this tab is open. The queue survives reloads."],
+    ["Ver envíos programados e historial", "View scheduled deliveries and history"],
+    ["DISTRIBUCIÓN · COLA E HISTORIAL", "DISTRIBUTION · QUEUE AND HISTORY"],
+    ["Nombre de la playlist", "Playlist name"],
+    ["Elementos a añadir — elige tipo:", "Items to add — choose type:"],
+    ["Aún sin elementos. Añade desde la lista de arriba.", "No items yet. Add them from the list above."],
+    ["Ubicación (punto)", "Location (site)"],
+    ["todo el circuito", "entire circuit"],
+    ["Guardar playlist", "Save playlist"],
+    ["Guardar y distribuir", "Save and distribute"],
+    ["Renombra, <b>fusiona variaciones</b> (robots/robot/robotics) y borra etiquetas en TODO el Stock. Los cambios se guardan en el servidor.", "Rename, <b>merge variants</b> (robots/robot/robotics) and delete tags throughout Stock. Changes are saved on the server."],
+    ["🔍 filtrar etiquetas…", "🔍 filter tags…"],
+    ["Valoración de la cápsula", "Capsule rating"],
+    ["Tu valoración", "Your rating"],
+    ["sin votos", "no votes"],
+    ["Aperturas aproximadas de esta cápsula", "Approximate opens of this capsule"],
+    ["consumos", "views"],
+    ["consumo", "view"],
+    ["Formato del contenido", "Content format"],
+    ["Cápsula de formación", "Training capsule"],
+    ["Cara anterior", "Previous side"],
+    ["Cara siguiente", "Next side"],
+    ["Reproducir aquí (pequeño)", "Play here (small)"],
+    ["Reproducir aquí", "Play here"],
+    ["cápsula vacía", "empty capsule"],
+    ["no reproducibles: cápsulas, enlaces, mobiliario y NPCs", "not playable: capsules, links, furniture and NPCs"],
+    [" en stock", " in stock"],
+    ["Envía este asset AHORA al destino que elijas e interrumpe lo que se esté emitiendo", "Send this asset NOW to your chosen destination and interrupt current playback"],
+    ["Prioridad 0 · interrumpir", "Priority 0 · interrupt"],
+    ["No se pudo guardar", "Could not save"],
+    ["Añadir etiqueta (1-2 palabras):", "Add tag (1–2 words):"],
+    ["Máximo 12 etiquetas por asset.", "Maximum 12 tags per asset."],
+    ["¿Eliminar este asset del Stock? Borra el archivo y la metadata en R2. No se puede deshacer.", "Delete this asset from Stock? This deletes the file and its R2 metadata and cannot be undone."],
+    ["Añadir etiquetas para agrupar (varias separadas por comas):", "Add grouping tags (separate multiple tags with commas):"],
+    ["Todos los motores", "All engines"],
+    ["respuesta sin items", "response contains no items"],
+    ["cargando stock...", "loading stock..."],
+    ["sin conexión con el servidor · mostrando copia guardada", "server unavailable · showing saved copy"],
+    ["pulsa ↻ para reintentar", "select ↻ to retry"],
+    ["no se pudo cargar el stock (error de red, no se ha borrado nada)", "could not load Stock (network error, nothing was deleted)"],
+    ["Cambiar a cuadrícula", "Switch to grid"],
+    ["Cambiar a detalle", "Switch to detail"],
+    ["sin pantallas registradas", "no registered screens"],
+    ["No hay pantallas con heartbeat reciente.", "No screens have a recent heartbeat."],
+    ["Puedes usar “TODAS”.", "You can use ALL."],
+    ["sin envíos programados.", "no scheduled deliveries."],
+    ["sin envíos todavía.", "no deliveries yet."],
+    ["espera: aún descubriendo pantallas…", "wait: still discovering screens…"],
+    ["elige al menos una pantalla (o TODAS)", "choose at least one screen (or ALL)"],
+    ["todas las pantallas", "all screens"],
+    ["pantalla(s)", "screen(s)"],
+    ["envío(s)", "delivery/deliveries"],
+    ["elige fecha/hora o una franja", "choose a date/time or a time slot"],
+    ["la hora ya pasó", "that time has already passed"],
+    ["programado en el servidor (saldrá aunque cierres) para", "scheduled on the server (will run even if closed) for"],
+    ["Sin assets de ese tipo en el Stock.", "No assets of this type in Stock."],
+    ["Silencia toda la playlist", "Mute the entire playlist"],
+    ["Silenciado", "Muted"],
+    ["Sonido", "Sound"],
+    ["anterior", "previous"],
+    ["siguiente", "next"],
+    ["Sin etiquetas que coincidan.", "No matching tags."],
+    ["Renombrar #", "Rename #"],
+    [" en todo el Stock a:", " throughout Stock to:"],
+    ["Borrar #", "Delete #"],
+    [" de TODOS los assets que la tienen?", " from ALL assets that use it?"],
+    ["Musica", "Music"],
+    ["Imagenes", "Images"],
+    ["✏️ GENERAR CON GEMINI", "✏️ GENERATE WITH GEMINI"],
+    ["yt-dlp en Mac Mini", "yt-dlp on Mac Mini"],
+    ["Fuente de señal", "Signal source"],
+    ["Pantalla destino", "Target screen"],
+    ["🖼 Seleccionar imagen", "🖼 Select image"],
+    ["Seleccionar imagen", "Select image"],
+    ["Limpiar imagen", "Clear image"],
+    ["Clear imagen", "Clear image"],
+    ["Producto / servicio", "Product / service"],
+    ["Oferta si segmento hombre", "Offer for male segment"],
+    ["Oferta si segmento mujer", "Offer for female segment"],
+    ["Oferta neutral / fallback", "Neutral offer / fallback"],
+    ["Estilo visual", "Visual style"],
+    ["neon verde, producto hero, texto alto contraste", "green neon, hero product, high-contrast text"],
+    ["Abrir XpaceOS", "Open XpaceOS"],
+    ["Notas, etiquetas, contexto...", "Notes, tags, context..."],
+    ["Guion", "Script"],
+    ["Mostrar producto, beneficios, prueba social...", "Show product, benefits, social proof..."],
+    ["Producto, beneficios...", "Product, benefits..."],
+    ["Limpiar", "Clear"],
+    ["Todos", "All"],
+    ["ETIQUETAS", "TAGS"],
+    ["💾 PROYECTO", "💾 PROJECT"],
+    [">todos</label>", ">all</label>"],
+    [">música</label>", ">music</label>"],
+    ["(proyecto → mp4 final, vía ffmpeg en el Mac Mini)", "(project → final mp4, via ffmpeg on the Mac Mini)"],
+    ["(proyecto JSON en R2)", "(project JSON in R2)"],
+    ["Brief de cliente, objetivo, tipo de contenido y restricciones de marca. Llega desde la página de cada tipo o desde Platform.", "Client brief, objective, content type and brand restrictions. It comes from each content page or from Platform."],
+    ["Publicación: web, demo, presentación, pantalla en evento, campaña multicanal o experiencia interactiva.", "Publishing: web, demo, event screen, presentation, multichannel campaign or interactive experience."],
+    ["Indexa los outputs por cliente, campaña, idioma y estado (borrador, aprobado, publicado).", "Indexes outputs by client, campaign, language and status (draft, approved, published)."],
+    ["Conecta audio + música + imagen + video como un único paquete reutilizable por canal.", "Connects audio + music + image + video as a single reusable package for each channel."],
+    ["Empaqueta la salida para web, evento o presentación, con las versiones por formato y duración.", "Packages the output for web, events or presentations, with versions for each format and duration."],
+    ["Mostrar producto con planos cortos y cierre con logo", "Show the product with close shots and finish on the logo"],
+    ["No guardar imagen, no identificar personas, usar solo señal efímera agregada", "Do not store images or identify people; use only an aggregated ephemeral signal"],
+    ["Matrix retail, neón verde, producto hero, texto alto contraste", "Matrix retail, green neon, hero product, high-contrast text"],
+    ["🔒 Password PRO (necesario para generar con Suno):", "🔒 PRO password (required to generate with Suno):"],
+    ["MEGAFONÍA", "PA"],
+    ["MÚSICA", "MUSIC"],
+    ["IMAGEN", "IMAGE"],
+    ["gratis", "free"],
+    ["No se pudo generar la PA free", "Could not generate the free PA audio"],
+    ["duración aproximada", "approximate duration"],
+    ["segundos", "seconds"],
+    ["proxy NO responde", "proxy IS NOT RESPONDING"],
+    ["falta password PRO", "PRO password missing"],
+    ["sin clips", "no clips"],
+    ["sin audio", "no audio"],
+    ["sin imagen", "no image"],
+    ["Loop generado in-browser con Web Audio API", "Loop generated in-browser with the Web Audio API"],
+    ["C menor", "C minor"],
+    ["Segmento neutral / todos", "Neutral segment / all"],
+    ["Mostrar producto con planos cortos", "Show the product with close shots"],
+    ["Próximamente", "Coming soon"],
+    ["🔒 Modelos PRO bloqueados.\n\nIntroduce el password para desbloquear los modelos de pago (Better + Best · ElevenLabs · Suno · Lyria · Veo · Grok · Runway · Imagen Ultra). Se queda desbloqueado en este navegador hasta que pulses \"Bloquear\".", "🔒 PRO models are locked.\n\nEnter the password to unlock paid models (Better + Best · ElevenLabs · Suno · Lyria · Veo · Grok · Runway · Image Ultra). They remain unlocked in this browser until you select \"Lock\"."],
+    ["¿Bloquear de nuevo los modelos PRO? Tendrás que reintroducir el password.", "Lock PRO models again? You will need to re-enter the password."],
+    ["es DE PAGO y consumirá tokens", "is PAID and will consume tokens"],
+    ["¿Continuar con la reproducción real?", "Continue with real generation?"],
+    ["No se pudo generar la megafonía free", "Could not generate the free PA audio"],
+    ["Generando ·", "Generating ·"],
+    ["No has generado letra todavía. ${label} CON letra suena cantando; sin letra cantará improvisando.\n\n¿Continuar igual?", "You have not generated lyrics yet. ${label} WITH lyrics uses vocals; without lyrics it will improvise.\n\nContinue anyway?"],
+    ["click la imagen para elegir cual enviar", "select an image to choose which one to send"],
+    ["generando...", "generating..."],
+    ["Generando imagen con ", "Generating image with "],
+    ["No se pudo leer la imagen", "Could not read the image"],
+    ["No se pudo cargar la imagen", "Could not load the image"],
+    ["✨ GENERAR ${combos.length} VERSIONES → STOCK", "✨ GENERATE ${combos.length} VERSIONS → STOCK"],
+    ["Generando ${i + 1}/${targets.length}", "Generating ${i + 1}/${targets.length}"],
+    ["⏳ generando...", "⏳ generating..."],
+    ["generando letra con Gemini 2.5 Flash", "generating lyrics with Gemini 2.5 Flash"],
+    ["No se pudo verificar el acceso.", "Access could not be verified."],
+    ["🔒 Modelos PRO bloqueados.", "🔒 PRO models are locked."],
+    ["Introduce el password para desbloquear los modelos de pago (Better + Best · ElevenLabs · Suno · Lyria · Veo · Grok · Runway · Imagen Ultra). Se queda desbloqueado en este navegador hasta que pulses \"Bloquear\".", "Enter the password to unlock paid models (Better + Best · ElevenLabs · Suno · Lyria · Veo · Grok · Runway · Image Ultra). They remain unlocked in this browser until you select \"Lock\"."],
+    ["Password incorrecto. Modelos PRO siguen bloqueados.", "Incorrect password. PRO models remain locked."],
+    ["No has generado letra todavía.", "You have not generated lyrics yet."],
+    ["CON letra suena cantando; sin letra cantará improvisando.", "WITH lyrics uses vocals; without lyrics it will improvise."],
+    ["¿Continuar igual?", "Continue anyway?"],
+    ["TTS libre · free · se puede guardar en Stock", "Open TTS · free · can be saved to Stock"],
+    [") y tu navegador no soporta speechSynthesis.", ") and your browser does not support speechSynthesis."],
+    ["TTS libre no disponible — reproducción local; NO se puede guardar en Stock. Usa ElevenLabs para un fichero.", "Open TTS unavailable — local playback; cannot be saved to Stock. Use ElevenLabs to create a file."],
+    ["motor${motors.length>1?'es':''} en paralelo · resultados conforme lleguen", "engine${motors.length>1?'s':''} in parallel · results appear as they arrive"],
+    ["motores Veo en paralelo · cada uno tarda ~30–90s · resultados conforme lleguen", "Veo engines in parallel · each takes ~30–90s · results appear as they arrive"],
+    [
+      "assets/site-nav.js?v=20260803-release",
+      "assets/site-nav.js?v=20260902-en"
+    ],
+    [
+      "assets/cuadratura.js?v=20260803-release",
+      "assets/cuadratura.js?v=20260902-en"
+    ],
+    [
+      "<script src=\"/app.js\"></script>",
+      "<script src=\"/app.js?v=20260902-en\"></script>"
+    ],
+    [
+      "<script src=\"/app.js?v=20260609-vid1\"></script>",
+      "<script src=\"/app.js?v=20260902-en\"></script>"
+    ],
+    [
+      "Megafonía",
+      "PA"
+    ],
+    ["(PA)</small>", "</small>"],
+    ["Imagen", "Image"],
+    ["Animaciones (interactivos)", "Animations (interactive)"],
+    ["Mobiliario", "Furniture"],
+    ["seleccionados", "selected"],
+    ["DISTRIBUIR A PANTALLAS", "DISTRIBUTE TO SCREENS"],
+    ["DISTRIBUIR →", "DISTRIBUTE →"],
+    ["A PLAYLIST", "TO PLAYLIST"]
+    ,["Suno v4 (Music - free tier)' ", "Suno v4 (Music - free tier)'"]
+    ,["Volver al inicio", "Back to home"]
+    ,["Abrir menú", "Open menu"]
+    ,["Abrir menu", "Open menu"]
+    ,["Abrir herramienta", "Open tool"]
+    ,["Abrir Creador", "Open Creator"]
+    ,["Volver a admira.studio", "Back to admira.studio"]
+    ,["Volver al sitio principal (god)", "Back to the main site (god)"]
+    ,["Abrir Music Ops", "Open Music Ops"]
+    ,["Abrir Voice Ops", "Open Voice Ops"]
+    ,["Abrir Image Ops", "Open Image Ops"]
+    ,["Abrir demo completa", "Open full demo"]
+    ,["🎵 Enviar al Xpacio + Stock", "🎵 Send to Xpacio + Stock"]
+    ,["La canción se publica en el Stock y se encola; el gemelo (admira-xp) la pone en su hilo en seconds.", "The song is published to Stock and queued; the twin (admira-xp) adds it to its music stream in seconds."]
+    ,["aún no tiene API pública (programa partners) → hoy: genera y pega la URL, o usa", "does not yet have a public API (partner program) → for now, generate and paste the URL, or use"]
+    ,["Abrir el gemelo (Xtanco) ↗", "Open the twin (Xtanco) ↗"]
+    ,["cualquier idioma y voz", "any language and voice"]
+    ,[". Suena en el gemelo del Xpacio bajando la música y restaurándola al terminar. Motor: ElevenLabs multilingüe (worker", ". It plays in the Xpacio twin, lowering the music and restoring it when finished. Engine: multilingual ElevenLabs (worker"]
+    ,["Ej.: Atención clientes: oferta 2×1 en perfumería solo hoy.", "e.g. Attention customers: 2-for-1 fragrance offer today only."]
+    ,["📢 Enviar a la tienda", "📢 Send to store"]
+    ,["El aviso se sintetiza una vez, se guarda y se encola por tienda; el gemelo (admira-xp) lo sondea y lo reproduce en seconds. El idioma lo infiere del texto (modelo multilingüe) — escribe en el idioma que quieras.", "The announcement is synthesized once, saved and queued by store; the twin (admira-xp) polls and plays it in seconds. Language is inferred from the text (multilingual model) — write in any language."]
+    ,["Instore Media · admira.studio → cámara → pantalla", "In-store Media · admira.studio → camera → screen"]
+    ,["(edad × sexo) con IA y la publica al Stock etiquetada (", "(age × gender) with AI and publishes it to Stock with tags ("]
+    ,["Brief / producto", "Brief / product"]
+    ,["Ej.: Perfume de verano en oferta 2×1", "e.g. Summer fragrance, 2-for-1 offer"]
+    ,["Producto", "Product"]
+    ,["Segmentos a generar (edad × sexo)", "Segments to generate (age × gender)"]
+    ,["✨ Generar variantes segmentadas", "✨ Generate targeted variants"]
+    ,["Consulta la parrilla del día por pantalla y reserva los huecos disponibles desde Admira.", "View today's schedule by screen and book available slots from Admira."]
+    ,["Elige el punto y abre Crear campaña para preparar el contenido con preview antes de comprar en Admira.", "Choose a location and open Create campaign to prepare the content with a preview before buying in Admira."]
+    ,["Crear campaña para esta pantalla", "Create campaign for this screen"]
+    ,["Crear campaña", "Create campaign"]
+    ,["Pantalla", "Screen"]
+    ,["Esta pantalla no carga datos de puntos, pantallas, previews ni flujos de compra en modo publico.", "This screen does not load location, display, preview or purchasing data in public mode."]
+    ,["Volver al calendario", "Back to calendar"]
+    ,["Herramientas y sistemas que usamos en producción real para crear, orquestar y distribuir contenido con inteligencia artificial.", "Tools and systems we use in real production to create, orchestrate and distribute content with artificial intelligence."]
+    ,["Reloj LaMetric conectado a la jornada de Yarig. Muestra tareas activas, score, pulso y permite fichar o enviar mensajes directamente desde el escritorio o el móvil.", "LaMetric clock connected to Yarig's workday. It shows active tasks, score and pulse, and supports check-ins or messages from desktop or mobile."]
+    ,["Los Labs no son demos aislados. Lanetro alimenta el ritmo de trabajo. Pixer Feed consume el radar de modelos para empujar contenido a pantallas. El Stream Deck permite activar todo sin tocar el teclado. Todo está orquestado como un sistema.", "Labs are not isolated demos. Lanetro drives the work rhythm. Pixer Feed uses the model radar to push content to screens. Stream Deck activates everything without touching the keyboard. Everything is orchestrated as one system."]
+    ,["Herramientas que usamos para crear y operar contenido con IA.", "Tools we use to create and operate AI content."]
+    ,["Admira StudioDescarga", "PixeriaDescarga"]
+    ,["Formato", "Format"]
+    ,["— ESPERANDO —", "— WAITING —"]
+    ,["↻ Reintentar", "↻ Retry"]
+    ,["📂 Archivos locales → Stock", "📂 Local files → Stock"]
+    ,["Distribuir →", "Distribute →"]
+    ,["🎵 A PLAYLIST", "🎵 TO PLAYLIST"]
+    ,["Origen:", "Source:"]
+    ,["▶ Ahora", "▶ Now"]
+    ,["⏰ Programar", "⏰ Schedule"]
+    ,["Tarde 15:00", "Afternoon 15:00"]
+    ,["Noche 21:00", "Night 21:00"]
+    ,["Date y hora", "Date and time"]
+    ,["Nº de pases", "Number of plays"]
+    ,["cada  min", "every  min"]
+    ,["Destino · cargando pantallas…", "Destination · loading screens…"]
+    ,["↻ recargar", "↻ reload"]
+    ,[">Distribuir</button>", ">Distribute</button>"]
+    ,["Cancelar", "Cancel"]
+    ,["⏰ Programados", "⏰ Scheduled"]
+    ,["📜 Historial", "📜 History"]
+    ,["Vaciar historial", "Clear history"]
+    ,["Name de la playlist", "Playlist name"]
+    ,["Mueble", "Furniture"]
+    ,["En la playlist", "In the playlist"]
+    ,["Alcance", "Scope"]
+    ,["Circuito", "Circuit"]
+    ,["circuito", "circuit"]
+    ,["▶ Reproducir playlist", "▶ Play playlist"]
+    ,["Save y distribuir", "Save and distribute"]
+    ,["Capsule de formación", "Training capsule"]
+    ,["Import la URL del buscador", "Import the URL from search"]
+    ,["' de ' + total", "' of ' + total"]
+    ,["+ más", "+ more"]
+    ,["Añadir etiquetas propias para agrupar (varias separadas por comas)", "Add custom grouping tags (separate multiple tags with commas)"]
+    ,["🎵 A playlist", "🎵 To playlist"]
+    ,[">cada <input", ">every <input"]
+    ,[">Destino · <span", ">Destination · <span"]
+    ,["cargando pantallas…", "loading screens…"]
+    ,["cargados · completando…", "loaded · completing…"]
+    ,["a cada pantalla viva", "to each live screen"]
+    ,["pase(s) cada", "play(s) every"]
+    ,["pase ", "play "]
+    ,["programado SOLO en local para", "scheduled LOCALLY ONLY for"]
+    ,["NO cierres ni recargues esta pestaña o el envío", "DO NOT close or reload this tab or the delivery"]
+    ,["NO saldrá. Reintenta más tarde para subirlo al servidor.", "WILL NOT RUN. Retry later to upload it to the server."]
+    ,["cliente <code>", "client <code>"]
+    ,["screen(s) real(es)", "real screen(s)"]
+    ,["📡 Informe de audiencia verificada", "📡 Verified audience report"]
+    ,["fuente:", "source:"]
+    ,["confianza", "confidence"]
+    ,["Hombre", "Male"]
+    ,["Mujer", "Female"]
+    ,["Neutral", "Neutral"]
+    ,["Regla de privacidad", "Privacy rule"]
+    ,["Contexto del espacio", "Space context"]
+    ,["Simular paso LiveCam", "Simulate LiveCam pass"]
+    ,["Advertising segmentada para XpaceOS", "Targeted advertising for XpaceOS"]
+    ,["Motor IA", "AI engine"]
+    ,["Costes orientativos a", "Estimated costs as of"]
+    ,["vía worker", "via worker"]
+    ,["TTS del sistema operativo", "Operating-system TTS"]
+    ,["voz expresiva de xAI", "expressive xAI voice"]
+    ,["máxima expresividad · tags emocionales", "maximum expressiveness · emotional tags"]
+    ,["Borrador", "Draft"]
+    ,["preview rápido para probar intención", "quick preview to test intent"]
+    ,["Alternativa", "Alternative"]
+    ,["con voz cantando la letra", "with vocals singing the lyrics"]
+    ,["créditos / canción · cuenta loguead.", "credits / song · signed-in account"]
+    ,["calidad final vía proxy suno-local", "final quality via the suno-local proxy"]
+    ,["Mapa emocional", "Emotional map"]
+    ,["Calma", "Calm"]
+    ,["Tensión", "Tension"]
+    ,["Descubrimiento", "Discovery"]
+    ,["Celebración", "Celebration"]
+    ,["Marca", "Brand"]
+    ,["Transición", "Transition"]
+    ,["Capas", "Layers"]
+    ,["Percusión", "Percussion"]
+    ,["Melodía", "Melody"]
+    ,["Tonalidad", "Key"]
+    ,["Versiones", "Versions"]
+    ,["Uso", "Use"]
+    ,["Letra", "Lyrics"]
+    ,["generación + edición", "generation + editing"]
+    ,["máxima calidad y seguimiento de prompt", "maximum quality and prompt adherence"]
+    ,["mayor calidad", "higher quality"]
+    ,["Paleta", "Palette"]
+    ,["Encuadre", "Framing"]
+    ,["Luz", "Lighting"]
+    ,["Realismo", "Realism"]
+    ,["audio nativo", "native audio"]
+    ,["texto→vídeo", "text→video"]
+    ,["vídeo cinemático", "cinematic video"]
+    ,["Hook (3s iniciales)", "Hook (first 3s)"]
+    ,["Cierre", "Closing"]
+    ,["Intención", "Intent"]
+    ,["Estilo", "Style"]
+    ,["<small>RATIO</small>", "<small>ASPECT RATIO</small>"]
+    ,["Auto-Cast listo", "Auto-Cast ready"]
+    ,["Items", "Items"]
+    ,["Imagen", "Image"]
+    ,["Voz", "Voice"]
+    ,["voz principal", "main voice"]
+    ,["voz CTA", "CTA voice"]
+    ,["mundo", "world"]
+    ,["promesa", "promise"]
+    ,["manifiesto", "manifesto"]
+    ,["Clip seleccionado", "Selected clip"]
+    ,["Aplicar", "Apply"]
+    ,["Variante", "Variant"]
+    ,["Eliminar", "Delete"]
+    ,["Estructura", "Structure"]
+    ,["Prototipo local", "Local prototype"]
+    ,["preview de Stage, selección de clips, inspector y guardado ya funcionan en el navegador.", "Stage preview, clip selection, inspector and saving already work in the browser."]
+    ,["Los endpoints siguen siendo el next salto:", "The endpoints are the next step:"]
+    ,["JUEGO LIVE", "LIVE GAME"]
+    ,["LANZAR ADMIRAXPERIENCE GAME", "LAUNCH ADMIRAXPERIENCE GAME"]
+    ,["navegador", "browser"]
+    ,["caracteres", "characters"]
+    ,["MUSICA", "MUSIC"]
+    ,["IMAGENES", "IMAGES"]
+    ,["multi-click para comparar", "multi-click to compare"]
+    ,["$0.07 / imagen", "$0.07 / image"]
+    ,["$0.40 / segundo", "$0.40 / second"]
+    ,["Canal", "Channel"]
+    ,["Reusa", "Reuse"]
+    ,["Image base del anuncio", "Base ad image"]
+    ,["INTENCIÓN", "INTENT"]
+    ,["ESTILO", "STYLE"]
+    ,["LISTO", "READY"]
+    ,["CLIP SELECCIONADO", "SELECTED CLIP"]
+    ,["APLICAR", "APPLY"]
+    ,["VARIANTE", "VARIANT"]
+    ,["ELIMINAR", "DELETE"]
+    ,["ESTRUCTURA", "STRUCTURE"]
+    ,["VOZ", "VOICE"]
+    ,[">imagen</label>", ">image</label>"]
+    ,[">voz</label>", ">voice</label>"]
+    ,["intro · mundo", "intro · world"]
+    ,["hook · promesa", "hook · promise"]
+    ,["outro · marca", "outro · brand"]
+    ,["voz · manifiesto", "voice · manifesto"]
+    ,["voz · CTA", "voice · CTA"]
+    ,["voz principal", "main voice"]
+    ,["voz CTA", "CTA voice"]
+    ,["transición", "transition"]
+    ,["propuesta de cast", "cast proposal"]
+    ,["propuesta de score", "score proposal"]
+    ,["const seccion = host.dataset.motorSection;", "const seccion = host.dataset.motorSection;\n      const sectionLabel = ({ audio: 'Audio', musica: 'Music', imagenes: 'Images', video: 'Video' })[seccion] || seccion;"]
+    ,["AI engine · ${seccion}", "AI engine · ${sectionLabel}"]
+    ,["lanzamiento Veo 3.1 a inversores", "Veo 3.1 launch for investors"]
+    ,["Locucion principal: ", "Main voice-over: "]
+    ,["Tone ejecutivo, claro, con cierre memorable.", "Executive, clear tone with a memorable closing."]
+    ,["CTA breve para pantalla y evento: pedir accion clara en menos de 4 seconds.", "Short CTA for screen and event: request one clear action in under 4 seconds."]
+    ,["Whoosh digital + impact hit para cambio de marker.", "Digital whoosh + impact hit for marker changes."]
+    ,["fuente verificable", "verifiable source"]
   ],
   "_no_se_sustituye": [
     "«Pixer Feed» es NOMBRE DE PRODUCTO, no la marca del sitio: se conserva tal cual",
     "(126 apariciones ya conservadas en el clon). Igual el «pixeria» en minúscula de",
     "nombres de fichero e identificadores (hero-pixeria.jpg, #pixerfeed): son rutas y",
     "anclas, no texto de cara al visitante. Renombrarlos rompería enlaces y CSS."
+  ],
+  "_idioma": [
+    "admira.studio se publica únicamente en inglés.",
+    "El sync promociona las páginas /en de Pixeria a la raíz y elimina el selector español.",
+    "Las rutas inglesas originales se conservan para no romper enlaces históricos."
   ],
   "excluidos": [
     "CNAME",

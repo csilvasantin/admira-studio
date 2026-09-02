@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,13 +35,14 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="admiranext-version" content="Admira Studio v.02.09.2026.r3.08:45">
   <title>Campaigns · Protected access · Admira Studio</title>
   <meta name="description" content="Admira Studio Campaigns is a protected area that requires Google Single Sign-On.">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#0b1117">
-  <link rel="canonical" href="https://www.admira.studio/en/crear-campana/">
-  <link rel="alternate" hreflang="es" href="https://www.admira.studio/crear-campana/">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/crear-campana/">
+  <link rel="canonical" href="https://www.admira.studio/crear-campana/">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/crear-campana/">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/crear-campana/">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/crear-campana/">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
@@ -116,7 +117,7 @@
   </style>
   <script defer src="/assets/analytics.js?v=20260617-consent"></script>
   <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260803-release"></script>
+  <script defer src="/assets/site-nav.js?v=20260902-en"></script>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -124,23 +125,23 @@
   <!-- End Google Tag Manager (noscript) -->
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <header class="site-header">
-    <a class="brand" href="/en/" aria-label="Admira Studio home">
+    <a class="brand" href="/" aria-label="Admira Studio home">
       <span class="brand-mark">P</span>
       <span>Admira Studio</span>
     </a>
     <nav class="nav" aria-label="Main navigation">
-      <a href="/en/audio.html">Audio</a>
-      <a href="/en/musica.html">Music</a>
-      <a href="/en/imagenes.html">Images</a>
-      <a href="/en/video.html">Video</a>
+      <a href="/audio.html">Audio</a>
+      <a href="/musica.html">Music</a>
+      <a href="/imagenes.html">Images</a>
+      <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/en/publicidad.html">Advertising</a>
+      <a href="/publicidad.html">Advertising</a>
       <a href="/crear/">Assets</a>
-      <a href="/en/stock.html">Stock</a>
+      <a href="/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
       <div class="language-switcher" aria-label="Language selection">
-        <a class="lang-toggle" href="/crear-campana/" aria-label="Switch to Spanish">ESP</a>
+        <span class="lang-toggle" aria-label="English">EN</span>
       </div>
       <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
       <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
@@ -150,17 +151,17 @@
   </header>
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-    <a href="/en/audio.html">Audio</a>
-    <a href="/en/musica.html">Music</a>
-    <a href="/en/imagenes.html">Images</a>
-    <a href="/en/video.html">Video</a>
+    <a href="/audio.html">Audio</a>
+    <a href="/musica.html">Music</a>
+    <a href="/imagenes.html">Images</a>
+    <a href="/video.html">Video</a>
     <a href="/tiktok">TikTok</a>
-    <a href="/en/publicidad.html">Advertising</a>
-    <a href="/en/avatar.html">Avatar 3D</a>
+    <a href="/publicidad.html">Advertising</a>
+    <a href="/avatar.html">Avatar 3D</a>
     <a href="/crear/">Assets</a>
-    <a href="/en/stock.html">Stock</a>
+    <a href="/stock.html">Stock</a>
     <div class="mobile-language-switcher" aria-label="Language selection">
-      <a class="lang-toggle" href="/crear-campana/" aria-label="Switch to Spanish">ESP</a>
+      <span class="lang-toggle" aria-label="English">EN</span>
     </div>
     <a class="mobile-cta" href="#contact" data-admira-contact>Contact</a>
   </nav>
