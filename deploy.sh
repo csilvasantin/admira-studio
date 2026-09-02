@@ -46,8 +46,14 @@ git archive HEAD | tar -x -C "$TMP"
 # Fuera lo que es herramienta del espejo, no activo web.
 rm -rf "$TMP/sync.sh" "$TMP/marca.json" "$TMP/deploy.sh" "$TMP/.fuente" "$TMP/README.md"
 
-npx --yes wrangler@latest pages deploy "$TMP" \
-  --project-name="$PROYECTO" --branch=main --commit-dirty=true
+# wrangler.toml viaja dentro del archive y declara el binding D1 de autenticación.
+# Ejecutar desde el temporal hace que pages_build_output_dir="." apunte al
+# contenido commiteado, nunca al working tree de esta máquina.
+(
+  cd "$TMP"
+  npx --yes wrangler@latest pages deploy \
+    --project-name="$PROYECTO" --branch=main --commit-dirty=true
+)
 
 echo "→ comprobando lo que sirve producción…"
 SERVIDO="$(curl -fsSL --max-time 25 "https://www.admira.studio/version.json?cb=$$" | python3 -c 'import json,sys; print(json.load(sys.stdin)["version"])' 2>/dev/null || echo '?')"

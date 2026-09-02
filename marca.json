@@ -1189,6 +1189,7 @@
   "excluidos": [
     "CNAME",
     "deploy.sh",
+    "wrangler.toml",
     ".github/",
     "marca.json",
     "sync.sh",
