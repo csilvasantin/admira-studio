@@ -38,6 +38,10 @@
       "www.admira.studio"
     ],
     [
+      "https://www.admira.studio/auth/callback",
+      "https://admira.studio/auth/callback"
+    ],
+    [
       "pixeria.com",
       "admira.studio"
     ],

@@ -1,5 +1,8 @@
 const CLIENT_ID = '861856772040-e1ri6kpu6maagtb6crdfbb923hsaalgb.apps.googleusercontent.com';
-const CALLBACK_URI = 'https://www.admira.studio/auth/callback';
+// Google OAuth has the apex domain registered. Keep the callback on the same
+// origin users reach from admira.studio; using www here produces an exact
+// redirect_uri_mismatch before Google can return the credential.
+const CALLBACK_URI = 'https://admira.studio/auth/callback';
 const WHITELIST_URL = 'https://admira-whitelist.csilvasantin.workers.dev/list';
 const SESSION_COOKIE = '__Host-pixeria_session';
 const CHALLENGE_COOKIE = '__Host-pixeria_login_nonce';
