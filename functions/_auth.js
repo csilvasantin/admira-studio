@@ -3,7 +3,8 @@ const CLIENT_ID = '861856772040-e1ri6kpu6maagtb6crdfbb923hsaalgb.apps.googleuser
 // origin users reach from admira.studio; using www here produces an exact
 // redirect_uri_mismatch before Google can return the credential.
 const CALLBACK_URI = 'https://admira.studio/auth/callback';
-const WHITELIST_URL = 'https://admira-whitelist.csilvasantin.workers.dev/list';
+// Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+const WHITELIST_URL = 'https://whitelist.admira.store/list';
 const SESSION_COOKIE = '__Host-pixeria_session';
 const CHALLENGE_COOKIE = '__Host-pixeria_login_nonce';
 const SESSION_TTL_SECONDS = 12 * 60 * 60;

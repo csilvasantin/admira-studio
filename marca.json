@@ -32,7 +32,38 @@
     ["en/video.html", "video.html"],
     ["en/xtore.html", "xtore.html"]
   ],
+  "_dominios_propios": [
+    "FLT-1633 (4-sep-2026): LaLiga bloquea *.workers.dev y *.r2.dev en horas de fútbol.",
+    "Los seis primeros pares de «sustituciones» llevan cada worker/bucket a su dominio",
+    "propio (api/bridge/imagen/whitelist/scheduler/stock.admira.store). Quedarán sin",
+    "efecto cuando Pixeria haga la misma migración en origen; hasta entonces evitan",
+    "que el siguiente ./sync.sh devuelva admira.studio a workers.dev."
+  ],
   "sustituciones": [
+    [
+      "pixer-eleven.csilvasantin.workers.dev",
+      "api.admira.store"
+    ],
+    [
+      "admira-telegram-bridge.csilvasantin.workers.dev",
+      "bridge.admira.store"
+    ],
+    [
+      "admira-imagen.csilvasantin.workers.dev",
+      "imagen.admira.store"
+    ],
+    [
+      "admira-whitelist.csilvasantin.workers.dev",
+      "whitelist.admira.store"
+    ],
+    [
+      "pixer-scheduler.csilvasantin.workers.dev",
+      "scheduler.admira.store"
+    ],
+    [
+      "pub-bf043a4daa3b43b7a0b769617729d074.r2.dev",
+      "stock.admira.store"
+    ],
     [
       "www.pixeria.com",
       "www.admira.studio"

@@ -23,7 +23,8 @@
  *
  * v.28.08.2026.r6 · NeoMBP16 · MacBook Pro 16
  */
-const ORIGEN = 'https://pub-bf043a4daa3b43b7a0b769617729d074.r2.dev/stock/index.json';
+// Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+const ORIGEN = 'https://stock.admira.store/stock/index.json';
 
 // HEAD también: Pages no lo deriva a onRequestGet solo, y un `curl -I` (o un
 // chequeo de salud) se comía un 404 de HTML mientras el GET iba perfecto.

@@ -596,7 +596,8 @@
     // stock/index.json (lo mantiene el worker) y los blobs salen directos de
     // R2 (rápidos: Range nativo + caché immutable). STOCK_BASE queda solo
     // para operaciones de admin (tags/borrar/push), que requieren el worker.
-    const STOCK_PUBLIC_R2 = 'https://pub-bf043a4daa3b43b7a0b769617729d074.r2.dev';
+    // Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+    const STOCK_PUBLIC_R2 = 'https://stock.admira.store';
     const STOCK_LIST_URL = STOCK_PUBLIC_R2 + '/stock/index.json';
     // El MISMO índice, pero por nuestro dominio: admira.studio es zona de
     // Cloudflare y comprime en Brotli, así que son ~120 KB en vez de 635. R2
@@ -1896,7 +1897,8 @@
       // Scheduler robusto: la cola vive aquí y un cron de 1 min dispara los
       // pases SIN tener la pestaña abierta. La cola local (SCHED_KEY) queda como
       // fallback solo cuando el scheduler no responde.
-      const SCHED_BASE = 'https://pixer-scheduler.csilvasantin.workers.dev';
+      // Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+      const SCHED_BASE = 'https://scheduler.admira.store';
       const ALL = '__ALL__'; // marcador de broadcast a todas
       const sel = new Set();       // ids de assets selected (lote)
       const tsel = new Set();      // ids de pantallas destino elegidas

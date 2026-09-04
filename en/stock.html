@@ -241,11 +241,13 @@
     const lightboxMeta = document.getElementById('stockLightboxMeta');
     const lightboxPrev = document.getElementById('stockLightboxPrev');
     const lightboxNext = document.getElementById('stockLightboxNext');
-    const STOCK_BASE = 'https://pixer-eleven.csilvasantin.workers.dev';
+    // Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+    const STOCK_BASE = 'https://api.admira.store';
     // Spanish ISPs block the *.workers.dev IP range (LaLiga case, Jun 2026).
     // The gallery reads the static index + blobs from the public r2.dev
     // bucket instead (not blocked). STOCK_BASE remains for admin ops only.
-    const STOCK_PUBLIC_R2 = 'https://pub-bf043a4daa3b43b7a0b769617729d074.r2.dev';
+    // Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+    const STOCK_PUBLIC_R2 = 'https://stock.admira.store';
     const STOCK_LIST_URL = STOCK_PUBLIC_R2 + '/stock/index.json';
     const STOCK_LIST_FALLBACK = STOCK_BASE + '/stock/list?limit=200';
     const TYPE_ORDER = { audio: 0, music: 1, image: 2, furni: 3, video: 4, animation: 5 };

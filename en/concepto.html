@@ -51,7 +51,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
   <link rel="apple-touch-icon" href="/assets/favicon-180.png">
   <link rel="preconnect" href="https://www.carlossilva.info" crossorigin>
-  <link rel="preconnect" href="https://pixer-eleven.csilvasantin.workers.dev" crossorigin>
+  <link rel="preconnect" href="https://api.admira.store" crossorigin>
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
@@ -306,7 +306,8 @@
 
     (function () {
       // Proxy endpoint (pixer-eleven worker). Keeps the API key server-side.
-      const ENDPOINT = "https://pixer-eleven.csilvasantin.workers.dev/idea";
+      // Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+      const ENDPOINT = "https://api.admira.store/idea";
 
       const log = document.getElementById("log");
       const empty = document.getElementById("empty");

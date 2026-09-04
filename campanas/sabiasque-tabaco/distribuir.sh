@@ -9,7 +9,8 @@
 # Reversible: para quitarlo, empuja __idle__ al mismo canal (ver final del script).
 set -euo pipefail
 
-WORKER="https://pixer-eleven.csilvasantin.workers.dev"
+# Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+WORKER="https://api.admira.store"
 CANAL="${1:-escaparate}"
 LOC="${2:-Barcelona}"
 BUCLE="https://www.admira.studio/campanas/sabiasque-tabaco/bucle?loc=$(python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))" "$LOC")"
