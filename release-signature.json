@@ -1,12 +1,12 @@
 {
-  "version": "v.04.09.2026.r1.22:31",
-  "author": "MorfeoMacMini",
-  "agent": "MorfeoMacMini",
-  "deployer": "MorfeoMacMini",
-  "machine": "MacMini",
-  "signature": "MorfeoMacMini · MacMini",
-  "git": "09f3a89efcda3a6bfaca7900076afedb977f3292",
-  "gitShort": "09f3a89",
-  "gitFull": "09f3a89efcda3a6bfaca7900076afedb977f3292",
+  "version": "v.11.09.2026.r1.20:08",
+  "author": "NeoMBA16",
+  "agent": "NeoMBA16",
+  "deployer": "NeoMBA16",
+  "machine": "MacBookAir16plata",
+  "signature": "NeoMBA16 · MacBookAir16plata",
+  "git": "f0d67ef4827469ec5479c12a8c4dfde9a2a45414",
+  "gitShort": "f0d67ef",
+  "gitFull": "f0d67ef4827469ec5479c12a8c4dfde9a2a45414",
   "dirty": false
 }
