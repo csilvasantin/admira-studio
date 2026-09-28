@@ -1,12 +1,6 @@
 {
-  "version": "v.11.09.2026.r1.20:08",
-  "author": "NeoMBA16",
-  "agent": "NeoMBA16",
-  "deployer": "NeoMBA16",
-  "machine": "MacBookAir16plata",
-  "signature": "NeoMBA16 · MacBookAir16plata",
-  "git": "f0d67ef4827469ec5479c12a8c4dfde9a2a45414",
-  "gitShort": "f0d67ef",
-  "gitFull": "f0d67ef4827469ec5479c12a8c4dfde9a2a45414",
-  "dirty": false
+  "version": "v.27.09.2026.r2.20:35",
+  "deployer": "OraculoGrokBotBox",
+  "machine": "GrokBotBox",
+  "signature": "OraculoGrokBotBox · GrokBotBox"
 }

@@ -1,15 +1,7 @@
 {
-  "version": "v.11.09.2026.r1.20:08",
-  "deployedAt": "2026-09-11T18:08:59Z",
-  "author": "NeoMBA16",
-  "agent": "NeoMBA16",
-  "deployer": "NeoMBA16",
-  "machine": "MacBookAir16plata",
-  "signature": "NeoMBA16 · MacBookAir16plata",
-  "git": "f0d67ef4827469ec5479c12a8c4dfde9a2a45414",
-  "gitShort": "f0d67ef",
-  "gitFull": "f0d67ef4827469ec5479c12a8c4dfde9a2a45414",
-  "dirty": false,
-  "espejoDe": "pixeria",
-  "fuente": "064c805383eac7aec99011fdb816446a88f62287"
+  "version": "v.27.09.2026.r2.20:35",
+  "deployer": "OraculoGrokBotBox",
+  "machine": "GrokBotBox",
+  "signature": "OraculoGrokBotBox · GrokBotBox",
+  "deployedAt": "2026-09-28T03:30:37.679894+00:00"
 }
