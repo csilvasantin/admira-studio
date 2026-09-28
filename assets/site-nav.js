@@ -11,6 +11,7 @@
     ['/tiktok', 'TikTok'],
     ['/publicidad.html', 'Advertising'],
     ['/anonimizador.html', 'Anonymizer'],
+    ['/ideas.html', 'Ideas'],
     ['/crear/', 'Assets'],
     ['/stock.html', 'Stock']
   ];
@@ -22,6 +23,9 @@
     ['/tiktok', 'TikTok'],
     ['/en/publicidad.html', 'Advertising'],
     ['/en/anonimizador.html', 'Anonymizer'],
+    // Ideas todavía no tiene versión inglesa: se apunta a la española antes que
+    // dejar un enlace roto o esconder la categoría a quien navega en inglés.
+    ['/ideas.html', 'Ideas'],
     ['/en/crear/', 'Assets'],
     ['/en/stock.html', 'Stock']
   ];
@@ -221,6 +225,7 @@
     ['/imagenes.html', 'Images', 'Art direction, product and style'],
     ['/avatar.html', 'Avatar 3D', 'Generative presenters and avatars'],
     ['/anonimizador.html', 'Anonymizer', 'Privacy for image and video'],
+    ['/ideas.html', 'Ideas', 'Mapas del tesoro del Consejo: ideas para debatir'],
     ['/plataforma.html', 'Platform', 'Layer map, engines and XpaceOS output'],
     ['/stock.html', 'Stock', 'Public gallery of deployed assets'],
     ['/crear-campana/', 'Campaigns', 'Buying and activation across locations and screens'],
@@ -236,7 +241,7 @@
 
   function ensureHomeRails() {
     if (isHome() || document.querySelector('.rail-left')) return;
-    document.querySelectorAll('.quad-left,.quad-right,.quad-bottom').forEach(function (rail) { rail.remove(); });
+    document.querySelectorAll('.quad-left,.quad-right').forEach(function (rail) { rail.remove(); });
     var here = norm(location.pathname);
     var left = document.createElement('aside');
     var version = (document.querySelector('meta[name="admiranext-version"]') || {}).content || 'Admira Studio';
@@ -451,7 +456,16 @@
     syncRailVersion();
     // cuadratura.js crea la barra de la home de forma diferida; esta segunda
     // pasada normaliza tambien esa barra cuando se reutiliza en una interior.
-    setTimeout(function () { normalizeInternalNav(); syncRailVersion(); }, 0);
+    setTimeout(function () {
+      normalizeInternalNav(); syncRailVersion();
+      if (!document.querySelector('.rail-bottom,.quad-bottom,#pixNavExpertLayer')) return;
+      var css = document.createElement('link');
+      css.rel = 'stylesheet'; css.href = '/assets/expert-cli.css?v=4663';
+      document.head.appendChild(css);
+      var cli = document.createElement('script');
+      cli.src = '/assets/expert-cli.js?v=4663';
+      document.body.appendChild(cli);
+    }, 0);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
