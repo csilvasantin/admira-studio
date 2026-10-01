@@ -1,9 +1,14 @@
 {
-  "version": "v.28.09.2026.r2.13:07",
+  "version": "v.01.10.2026.r1.11:59",
+  "deployedAt": "2026-10-01T09:59:04Z",
+  "author": "OraculoGrokBotBox",
+  "agent": "OraculoGrokBotBox",
   "deployer": "OraculoGrokBotBox",
-  "machine": "GrokBotBox",
-  "signature": "OraculoGrokBotBox · GrokBotBox",
-  "deployedAt": "2026-09-28T13:07:13.814487+00:00",
-  "mission": "FLT-101203",
-  "encargo": 4663
+  "machine": "MacMini",
+  "signature": "OraculoGrokBotBox · MacMini",
+  "git": "2519902ef6e79a99f64835c2beb436634f2a0f2f",
+  "gitShort": "2519902",
+  "gitFull": "2519902ef6e79a99f64835c2beb436634f2a0f2f",
+  "dirty": false,
+  "espejoDe": "pixeria"
 }
