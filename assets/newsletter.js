@@ -4,7 +4,7 @@
  * perder la suscripcion. Honeypot anti-bots + validacion basica en cliente.
  */
 (function () {
-  // Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+  // dominio propio: LaLiga bloquea workers.dev en horas de fútbol, FLT-1633
   var WORKER = 'https://api.admira.store';
   var ENDPOINT = WORKER + '/newsletter/subscribe';
   var COUNT_ENDPOINT = WORKER + '/newsletter/count';

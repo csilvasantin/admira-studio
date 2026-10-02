@@ -9,7 +9,7 @@
 # Reversible: para quitarlo, empuja __idle__ al mismo canal (ver final del script).
 set -euo pipefail
 
-# Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+# dominio propio: LaLiga bloquea workers.dev en horas de fútbol, FLT-1633
 WORKER="https://api.admira.store"
 CANAL="${1:-escaparate}"
 LOC="${2:-Barcelona}"

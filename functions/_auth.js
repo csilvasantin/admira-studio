@@ -1,13 +1,22 @@
 const CLIENT_ID = '861856772040-e1ri6kpu6maagtb6crdfbb923hsaalgb.apps.googleusercontent.com';
-// Google OAuth has the apex domain registered. Keep the callback on the same
-// origin users reach from admira.studio; using www here produces an exact
-// redirect_uri_mismatch before Google can return the credential.
 const CALLBACK_URI = 'https://admira.studio/auth/callback';
-// Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+// dominio propio: LaLiga bloquea workers.dev en horas de fútbol, FLT-1633
 const WHITELIST_URL = 'https://whitelist.admira.store/list';
+// Desde FLT-100603 el GET anónimo a /list devuelve 401: sin token la verja caía
+// siempre en OWNER_FALLBACK y solo entraban los dos owners. Ahora se pregunta
+// como los perímetros de xpaceos.com/admira.store: /access?site=pixeria con
+// WHITELIST_SITE_TOKEN (solo lectura). Entra quien tenga la casilla «pixeria»
+// en admira-whitelist o sea superuser de AdmiraNeXT. admira.studio es el gemelo
+// generado por sync.sh y comparte la misma casilla (el slug en minúscula no se
+// sustituye).
+const WHITELIST_ACCESS_URL = 'https://whitelist.admira.store/access';
+const WHITELIST_SITE = 'pixeria';
+const ACCESS_CACHE_MS = 60 * 1000;
+const ACCESS_CACHE = new Map();
 const SESSION_COOKIE = '__Host-pixeria_session';
 const CHALLENGE_COOKIE = '__Host-pixeria_login_nonce';
-const SESSION_TTL_SECONDS = 12 * 60 * 60;
+const SESSION_TTL_SECONDS = 24 * 60 * 60;
+const API_TOKEN_TTL_SECONDS = 15 * 60;
 const CHALLENGE_TTL_MS = 10 * 60 * 1000;
 const OWNER_FALLBACK = new Set(['csilva@admira.com', 'csilvasantin@gmail.com']);
 const encoder = new TextEncoder();
@@ -89,7 +98,7 @@ function normalEmail(value) {
 
 export function safeReturnTo(value) {
   const candidate = String(value || '/');
-  if (!candidate.startsWith('/') || candidate.startsWith('//') || candidate.length > 1024) return '/';
+  if (!candidate.startsWith('/') || candidate.startsWith('//') || candidate.length > 1024 || /[\\\u0000-\u001f\u007f]/.test(candidate)) return '/';
   if (candidate.startsWith('/auth/')) return '/';
   return candidate;
 }
@@ -132,12 +141,30 @@ async function consumeChallenge(env, nonce, now = Date.now()) {
   return row ? safeReturnTo(row.return_to) : null;
 }
 
-async function emailAllowed(email, fetchImpl = fetch) {
+async function emailAllowed(email, env = {}, fetchImpl = fetch) {
   const normalized = normalEmail(email);
   if (!normalized) return false;
+  const siteToken = String((env && env.WHITELIST_SITE_TOKEN) || '').trim();
+  const machineToken = String((env && env.WHITELIST_MACHINE_TOKEN) || '').trim();
   try {
-    const response = await fetchImpl(WHITELIST_URL, {
-      headers:{Accept:'application/json'},
+    if (siteToken) {
+      const cached = ACCESS_CACHE.get(normalized);
+      if (cached && cached.until > Date.now()) return cached.allowed;
+      const query = `?site=${encodeURIComponent(WHITELIST_SITE)}&email=${encodeURIComponent(normalized)}`;
+      const response = await fetchImpl(WHITELIST_ACCESS_URL + query, {
+        headers:{Accept:'application/json', 'X-Whitelist-Token':siteToken},
+        cache:'no-store'
+      });
+      if (!response.ok) throw new Error('whitelist_unavailable');
+      const payload = await response.json();
+      const allowed = payload.ok === true && (payload.allowed === true || payload.superuser === true);
+      ACCESS_CACHE.set(normalized, {allowed, until:Date.now() + ACCESS_CACHE_MS});
+      return allowed;
+    }
+    const headers = {Accept:'application/json'};
+    if (machineToken) headers['X-Whitelist-Token'] = machineToken;
+    const response = await fetchImpl(WHITELIST_URL, machineToken ? {headers, cache:'no-store'} : {
+      headers,
       cf:{cacheTtl:60, cacheEverything:true}
     });
     if (!response.ok) throw new Error('whitelist_unavailable');
@@ -176,9 +203,6 @@ export async function verifyGoogleCredential(credential, fetchImpl = fetch) {
     const now = Math.floor(Date.now() / 1000);
     const issuerValid = payload.iss === 'accounts.google.com' || payload.iss === 'https://accounts.google.com';
     const emailVerified = payload.email_verified === true || payload.email_verified === 'true';
-    // `email_verified` is Google's authoritative assertion. The optional `hd`
-    // claim is not emitted for every valid corporate identity or alias, so it
-    // must not be required before the independent whitelist check.
     const googleAuthoritative = emailVerified;
     if (!validSignature || payload.aud !== CLIENT_ID || !issuerValid || !emailVerified || !googleAuthoritative || Number(payload.exp) <= now) return null;
     return {email, sub:String(payload.sub), nonce:String(payload.nonce || '')};
@@ -206,6 +230,33 @@ async function upsertUser(env, identity) {
   return env.AUTH_DB.prepare('SELECT * FROM pixeria_users WHERE email=?').bind(identity.email).first();
 }
 
+export async function createApiToken(env, email, now = Math.floor(Date.now() / 1000)) {
+  if (!env.PIXERIA_SIGNING_KEY) throw new Error('PIXERIA_SIGNING_KEY is not configured');
+  const payload = base64url(encoder.encode(JSON.stringify({
+    v:1, aud:'api.admira.store', email, iat:now, exp:now + API_TOKEN_TTL_SECONDS,
+  })));
+  return { token:`${payload}.${await hmac(env.PIXERIA_SIGNING_KEY, `api:${payload}`)}`, exp:now + API_TOKEN_TTL_SECONDS };
+}
+
+export async function verifyApiToken(token, env, now = Math.floor(Date.now() / 1000)) {
+  try {
+    if (!env.PIXERIA_SIGNING_KEY || !token || String(token).length > 4096) return null;
+    const separator = String(token).lastIndexOf('.');
+    if (separator < 1) return null;
+    const payloadPart = String(token).slice(0, separator);
+    const signature = String(token).slice(separator + 1);
+    if (!sameValue(signature, await hmac(env.PIXERIA_SIGNING_KEY, `api:${payloadPart}`))) return null;
+    const payload = JSON.parse(new TextDecoder().decode(decodeBase64url(payloadPart)));
+    if (payload.aud !== 'api.admira.store' || payload.v !== 1) return null;
+    if (Number(payload.exp) <= now || Number(payload.iat) > now + 60) return null;
+    const email = normalEmail(payload.email);
+    if (!email) return null;
+    return { email, exp:Number(payload.exp) };
+  } catch (_) {
+    return null;
+  }
+}
+
 async function createSessionToken(env, user) {
   if (!env.PIXERIA_SIGNING_KEY) throw new Error('PIXERIA_SIGNING_KEY is not configured');
   const now = Math.floor(Date.now() / 1000);
@@ -231,14 +282,28 @@ async function readSession(request, env) {
     const now = Math.floor(Date.now() / 1000);
     if (payload.aud !== 'admira.studio' || Number(payload.exp) <= now || Number(payload.iat) > now + 60) return null;
     const email = normalEmail(payload.email);
-    if (!email || !(await emailAllowed(email))) return null;
+    if (!email || !(await emailAllowed(email, env))) return null;
     await ensureSchema(env);
     const user = await env.AUTH_DB.prepare('SELECT * FROM pixeria_users WHERE email=? AND google_sub=?').bind(email, String(payload.sub || '')).first();
     if (!user || user.status !== 'active' || Number(user.session_version) !== Number(payload.sv)) return null;
-    return {email:user.email};
+    return {email:user.email, payload};
   } catch (_) {
     return null;
   }
+}
+
+// Upgrade a still-valid 12 h session once, without making the expiry slide on
+// every visit. Signature, allowlist, suspension and session version were checked
+// by readSession; the new deadline remains 24 h after the original Google login.
+async function withSessionRenewal(response, session, env) {
+  const expiresAt = Number(session.payload.iat) + SESSION_TTL_SECONDS;
+  if (Number(session.payload.exp) < expiresAt) {
+    const payload = base64url(encoder.encode(JSON.stringify({...session.payload, exp:expiresAt})));
+    const token = `${payload}.${await hmac(env.PIXERIA_SIGNING_KEY, `px:${payload}`)}`;
+    const maxAge = expiresAt - Math.floor(Date.now() / 1000);
+    response.headers.append('Set-Cookie', `${SESSION_COOKIE}=${token}; Path=/; Max-Age=${maxAge}; HttpOnly; Secure; SameSite=Lax`);
+  }
+  return response;
 }
 
 function loginCsrfValid(request, formToken) {
@@ -261,7 +326,7 @@ function secureHeaders(contentType = 'text/html; charset=utf-8') {
 
 function loginPage(nonce, error = '') {
   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admira Studio · Access</title><style>
-  :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 35%,#18240e,#070a04 68%);color:#f4e2b0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.box{width:100%;max-width:430px;min-width:0;padding:36px 30px;border:1px solid #b5651d;border-radius:16px;background:#120d06;box-shadow:0 25px 80px #000b;text-align:center}.mark{color:#e8c25a;font:700 12px ui-monospace,monospace;letter-spacing:.24em;text-transform:uppercase}h1{margin:16px 0 8px;font-size:28px}p{margin:0 0 24px;color:#baaa86;line-height:1.55}.picker{display:flex;justify-content:center;min-height:44px;max-width:100%;overflow:hidden}@media (max-width:430px){body{padding:14px}.box{padding:28px 18px}}.error{margin-top:18px;color:#ff8f7a;font:600 13px ui-monospace,monospace}.foot{margin-top:24px;color:#74684f;font:11px ui-monospace,monospace}</style></head><body><main class="box"><div class="mark">Admira Studio · Google</div><h1>Continue with Google</h1><p>The same Google sign-in works in any browser. Admira Studio checks that the account is authorized and creates a secure session on this device.</p><div id="g_id_onload" data-client_id="${CLIENT_ID}" data-login_uri="${CALLBACK_URI}" data-nonce="${escapeHtml(nonce)}" data-ux_mode="redirect" data-auto_prompt="false"></div><div class="picker"><div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="continue_with" data-locale="en" data-size="large" data-ux_mode="redirect"></div></div>${error ? `<div class="error">${escapeHtml(error)}</div>` : ''}<div class="foot">csilva@admira.com · csilvasantin@gmail.com</div></main><script src="https://accounts.google.com/gsi/client?hl=en" async defer></script></body></html>`;
+  :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 35%,#18240e,#070a04 68%);color:#f4e2b0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.box{width:100%;max-width:430px;min-width:0;padding:36px 30px;border:1px solid #b5651d;border-radius:16px;background:#120d06;box-shadow:0 25px 80px #000b;text-align:center}.mark{color:#e8c25a;font:700 12px ui-monospace,monospace;letter-spacing:.24em;text-transform:uppercase}h1{margin:16px 0 8px;font-size:28px}p{margin:0 0 24px;color:#baaa86;line-height:1.55}.picker{display:flex;justify-content:center;min-height:44px;max-width:100%;overflow:hidden}@media (max-width:430px){body{padding:14px}.box{padding:28px 18px}}.error{margin-top:18px;color:#ff8f7a;font:600 13px ui-monospace,monospace}.foot{margin-top:24px;color:#74684f;font:11px ui-monospace,monospace}</style></head><body><main class="box"><div class="mark">Admira Studio · Google</div><h1>Continue with Google</h1><p>Sign in once with your authorized Google account. The session lasts 24 hours in the tabs and windows of this browser and profile.</p><div id="g_id_onload" data-client_id="${CLIENT_ID}" data-login_uri="${CALLBACK_URI}" data-nonce="${escapeHtml(nonce)}" data-ux_mode="redirect" data-auto_prompt="false"></div><div class="picker"><div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="continue_with" data-locale="en" data-size="large" data-ux_mode="redirect"></div></div>${error ? `<div class="error">${escapeHtml(error)}</div>` : ''}<div class="foot">csilva@admira.com · csilvasantin@gmail.com</div></main><script src="https://accounts.google.com/gsi/client?hl=en" async defer></script></body></html>`;
 }
 
 async function loginResponse(env, returnTo = '/', error = '', status = 401) {
@@ -291,7 +356,14 @@ export async function handleAuth(request, env) {
         'cache-control':'no-store', 'referrer-policy':'no-referrer'
       }});
     }
-    return loginResponse(env, url.searchParams.get('return_to') || '/');
+    const returnTo = safeReturnTo(url.searchParams.get('return_to') || '/');
+    const session = await readSession(request, env);
+    if (session) {
+      return withSessionRenewal(new Response(null, {status:302, headers:{
+        location:returnTo, 'cache-control':'no-store', 'referrer-policy':'no-referrer'
+      }}), session, env);
+    }
+    return loginResponse(env, returnTo);
   }
   if (url.pathname === '/auth/callback' && request.method === 'POST') {
     const form = await request.formData();
@@ -301,7 +373,7 @@ export async function handleAuth(request, env) {
       return loginResponse(env, '/', 'Access could not be verified.', 401);
     }
     const returnTo = await consumeChallenge(env, identity.nonce);
-    if (!returnTo || !(await emailAllowed(identity.email))) {
+    if (!returnTo || !(await emailAllowed(identity.email, env))) {
       return loginResponse(env, '/', 'This account is not authorized for Admira Studio.', 403);
     }
     const user = await upsertUser(env, identity);
@@ -313,12 +385,30 @@ export async function handleAuth(request, env) {
     response.headers.append('Set-Cookie', 'g_csrf_token=; Path=/; Max-Age=0; Secure; SameSite=Lax');
     return response;
   }
+  if (url.pathname === '/auth/api-token' && request.method === 'GET') {
+    const session = await readSession(request, env);
+    if (!session) return Response.json({ok:false}, {status:401, headers:{'cache-control':'no-store'}});
+    const minted = await createApiToken(env, session.email);
+    return withSessionRenewal(Response.json({ok:true, token:minted.token, exp:minted.exp, email:session.email}, {
+      headers:{'cache-control':'no-store', 'referrer-policy':'no-referrer'}
+    }), session, env);
+  }
+  if (url.pathname === '/auth/verify' && request.method === 'POST') {
+    let body = {};
+    try { body = await request.json(); } catch (_) {}
+    const session = await verifyApiToken(String(body.token || ''), env);
+    return Response.json(session ? {ok:true, email:session.email, exp:session.exp} : {ok:false}, {
+      status:session ? 200 : 401,
+      headers:{'cache-control':'no-store'}
+    });
+  }
   if (url.pathname === '/auth/session' && request.method === 'GET') {
     const session = await readSession(request, env);
-    return Response.json(session ? {ok:true, email:session.email} : {ok:false}, {
+    const response = Response.json(session ? {ok:true, email:session.email} : {ok:false}, {
       status:session ? 200 : 401,
       headers:{'cache-control':'no-store', 'referrer-policy':'no-referrer'}
     });
+    return session ? withSessionRenewal(response, session, env) : response;
   }
   if (url.pathname === '/auth/logout' && (request.method === 'GET' || request.method === 'POST')) {
     const response = new Response(null, {status:303, headers:{location:'/auth/login', 'cache-control':'no-store'}});

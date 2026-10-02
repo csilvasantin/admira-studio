@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=02.10.2026.r1.1127';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -38,7 +38,7 @@
   <title>Admira Studio · AI content creation intelligence</title>
   <meta name="description" content="Admira Studio is the operating reference for creating, directing and publishing AI content: model radar, production method, campaign workflows and Pixer Feed for real-world screens.">
   <meta name="theme-color" content="#0b1117">
-  <meta name="admiranext-version" content="Admira Studio v.28.09.2026.r2.13:07">
+  <meta name="admiranext-version" content="Admira Studio v.02.10.2026.r1.11:27">
   <meta property="og:title" content="Admira Studio · AI content creation intelligence">
   <meta property="og:description" content="Model radar, production method and Pixer Feed: AI content pushed to screens and live event surfaces.">
   <meta property="og:type" content="website">
@@ -54,8 +54,8 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="../assets/styles.css?v=20260617-legal-contact-dmz">
-  <link rel="stylesheet" href="../assets/cuadratura.css?v=20260928-cli4663">
+  <link rel="stylesheet" href="../assets/styles.css?v=02.10.2026.r1.1127">
+  <link rel="stylesheet" href="../assets/cuadratura.css?v=02.10.2026.r1.1127">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -87,9 +87,7 @@
     }
   }
   </script>
-  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
-  <script defer src="/assets/consent.js?v=20260617"></script>
-  <script defer src="/assets/site-nav.js?v=20260928-cli4663"></script>
+  <script defer src="/assets/site-nav.js?v=02.10.2026.r1.1127"></script>
 </head>
 <body>
   <!-- Cuadratura: hide rails on <body> open (no flash) from localStorage -->
@@ -97,9 +95,6 @@
   (function(){var b=document.body,m={pixeria_pf_left:'pf-left-off',pixeria_pf_right:'pf-right-off',pixeria_pf_bottom:'pf-bottom-off'};
   try{for(var k in m){if(localStorage.getItem(k)!=='1')b.classList.add(m[k]);}}catch(e){for(var j in m){b.classList.add(m[j]);}}})();
   </script>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
   <nav class="admira-nav admira-nav-static" aria-label="Admira · Xperience">
     <a class="admira-nav-brand" href="https://www.admira.app">
       <span class="admira-nav-brand-name">Admira</span>
@@ -117,7 +112,6 @@
 
   <header class="site-header">
     <a class="brand" href="/#top" aria-label="Admira Studio home">
-      <span class="brand-mark">P</span>
       <span>Admira Studio</span>
     </a>
     <nav class="nav" aria-label="Main navigation">
@@ -180,7 +174,7 @@
         <a href="/clearchannel/"><b>Clear Channel demo</b><small>Pixer Feed live on real screens</small></a>
       </nav>
       <div class="rail-options-meta" aria-label="Admira Studio release">
-        <span class="rail-ver">Admira Studio v.28.09.2026.r2.13:07</span>
+        <span class="rail-ver">Admira Studio v.02.10.2026.r1.11:27</span>
       </div>
     </aside>
     <!-- ══ CENTER · what matters: hero + radar + formats ══ -->
@@ -493,7 +487,7 @@
     <p>AI content creation, directed with human taste. <span class="footer-updated">Updated July 2026</span></p>
     <a href="mailto:hola@admiranext.com">hola@admiranext.com</a>
     <a href="/concepto.html">Concept</a>
-    <a href="/privacy.html">Privacy &amp; cookies</a>
+    <a href="/privacy.html">Privacy · cookieless analytics</a>
   </footer>
 
   <script>
@@ -551,9 +545,9 @@
       sections.forEach(s => io.observe(s));
     })();
   </script>
-  <script defer src="/assets/radar.js?v=20260617"></script>
-  <script defer src="/assets/matrix-rain.js?v=20260608-sides"></script>
-  <script defer src="/assets/newsletter.js?v=20260617"></script>
-  <script defer src="/assets/cuadratura.js?v=20260928-cli4663"></script>
+  <script defer src="/assets/radar.js?v=02.10.2026.r1.1127"></script>
+  <script defer src="/assets/matrix-rain.js?v=02.10.2026.r1.1127"></script>
+  <script defer src="/assets/newsletter.js?v=02.10.2026.r1.1127"></script>
+  <script defer src="/assets/cuadratura.js?v=02.10.2026.r1.1127"></script>
 </body>
 </html>

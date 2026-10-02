@@ -1029,6 +1029,10 @@ body[data-page="admira-xp"] .primary-nav a[data-nav="admira-xp"] {
 .pixer-progress-status .right { color: var(--ink); opacity: .8; }
 
 main, header.page-head, footer { width: min(1180px, calc(100% - 40px)); margin: 0 auto; position: relative; }
+/* Bloques de capacidad (PA, Hilo musical…) viven entre el page-head y el
+   <main>: sin esto iban de borde a borde (Carlos, 29-sep-2026). Mismo ancho y
+   márgenes laterales que el <main>. */
+header.page-head ~ section.module { box-sizing: border-box; width: min(1180px, calc(100% - 40px)); margin: 0 auto 18px; }
 
 /* El titular tiene que HACER CAJA con el contenido de su página.
    El page-head va a 1180, pero hay páginas que estrechan su main: .anon-main a 1080
@@ -2519,6 +2523,9 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   align-items: center;
   gap: 6px;
 }
+/* El display:flex de arriba pisaba el [hidden] del browser: las flechas del
+   paginador superior seguían visibles al filtrar a una sola página. */
+.stock-pager-controls[hidden] { display: none; }
 .stock-pager-btn {
   appearance: none;
   min-width: 36px;
@@ -2753,6 +2760,7 @@ body.quad-ui > .topnav {
 }
 body.quad-ui main,
 body.quad-ui header.page-head,
+body.quad-ui header.page-head ~ section.module,
 body.quad-ui footer {
   width: min(1180px, calc(100% - 32px));
 }

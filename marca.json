@@ -29,6 +29,7 @@
     ["en/publicidad.html", "publicidad.html"],
     ["en/radar/index.html", "radar/index.html"],
     ["en/signage.html", "signage.html"],
+    ["en/stock.html", "stock.html"],
     ["en/video.html", "video.html"],
     ["en/xtore.html", "xtore.html"]
   ],
@@ -99,6 +100,14 @@
     [
       "<h1>Acceso con Google</h1><p>El mismo acceso de Google funciona en cualquier navegador. Admira Studio comprueba que la cuenta esté autorizada y crea una sesión segura en este dispositivo.</p>",
       "<h1>Continue with Google</h1><p>The same Google sign-in works in any browser. Admira Studio checks that the account is authorized and creates a secure session on this device.</p>"
+    ],
+    [
+      "<h1>Acceso con Google</h1>",
+      "<h1>Continue with Google</h1>"
+    ],
+    [
+      "Entra una vez con tu cuenta autorizada de Google. Tu sesión se conserva durante 24 horas en las pestañas y ventanas de este navegador y perfil.",
+      "Sign in once with your authorized Google account. The session lasts 24 hours in the tabs and windows of this browser and profile."
     ],
     [
       "Cuenta no autorizada para Admira Studio.",
@@ -1133,6 +1142,7 @@
     ,["Descubrimiento", "Discovery"]
     ,["Celebración", "Celebration"]
     ,["Marca", "Brand"]
+    ,["Admira StudioBrand", "AdmiraStudioBrand"]
     ,["Transición", "Transition"]
     ,["Capas", "Layers"]
     ,["Percusión", "Percussion"]

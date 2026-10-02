@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=02.10.2026.r1.1127';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -35,18 +35,13 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.28.09.2026.r2.13:07">
+  <meta name="admiranext-version" content="Admira Studio v.02.10.2026.r1.11:27">
   <title>Admira Studio · Concepto</title>
   <link rel="canonical" href="https://www.admira.studio/concepto.html">
   <meta http-equiv="refresh" content="0; url=/concepto.html">
   <meta name="robots" content="noindex">
-  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
-  <script defer src="/assets/consent.js?v=20260617"></script>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
   <p>Esta página se ha movido a <a href="/concepto.html">/concepto.html</a>.</p>
   <script>location.replace('/concepto.html' + location.hash);</script>
   <script src="/assets/admira-version-watch.js" defer></script>

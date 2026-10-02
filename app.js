@@ -5,6 +5,25 @@
   const COSTES_FECHA = '2026-05-15';
   const ELEVEN_WORKER_URL = 'https://api.admira.store';
   const XAI_WORKER_URL    = 'https://api.admira.store';
+  let _pxTok = '', _pxExp = 0;
+  async function pixeriaApiToken() {
+    const now = Date.now() / 1000;
+    if (_pxTok && _pxExp > now + 20) return _pxTok;
+    const r = await fetch('/auth/api-token', { credentials: 'include', cache: 'no-store', headers: { Accept: 'application/json' } });
+    if (!r.ok) return '';
+    const data = await r.json().catch(() => ({}));
+    _pxTok = data.token || '';
+    _pxExp = Number(data.exp) || 0;
+    return _pxTok;
+  }
+  async function paidFetch(url, init) {
+    const next = Object.assign({}, init);
+    const headers = new Headers(next.headers || {});
+    const tok = await pixeriaApiToken();
+    if (tok && !headers.has('Authorization')) headers.set('Authorization', 'Bearer ' + tok);
+    next.headers = headers;
+    return fetch(url, next);
+  }
 
   // ─── API keys (localStorage) ───────────────────────────────────────
   function loadKeys() {
@@ -591,7 +610,7 @@
     updateProLockBadge();
   }
   async function unlockPro() {
-    const pw = prompt('🔒 PRO models are locked.\n\nEnter the password to unlock paid models (Better + Best · ElevenLabs · Suno · Lyria · Veo · Grok · Runway · Image Ultra). They remain unlocked in this browser until you select "Lock".');
+    const pw = prompt('🔒 PRO models are locked.\n\nIntroduce el password para desbloquear los modelos de pago (Better + Best · ElevenLabs · Suno · Lyria · Veo · Grok · Runway · Image Ultra). Se queda desbloqueado en este browser.');
     if (pw == null) return false;
     const h = await _sha256(pw);
     if (h === PRO_PASSWORD_HASH) {
@@ -621,45 +640,11 @@
     alert('Password PRO incorrecto.');
     return '';
   }
-  // Badge insertado en .topnav-actions (al lado del estado XTORE) para no
-  // solaparse con la banda superior Admira·Xperience. Cae a position:fixed
-  // si no encuentra el contenedor.
+  // Sin candado visible (Carlos, 29-sep-2026): ensuciaba la interfaz. El gate
+  // PRO sigue igual: el popup de password salta al usar un modelo de pago.
   function updateProLockBadge() {
-    let el = document.getElementById('proLockBadge');
-    if (!el) {
-      el = document.createElement('button');
-      el.id = 'proLockBadge';
-      el.type = 'button';
-      el.title = 'Estado de modelos PRO (Better+Best). Click para alternar.';
-      el.style.cssText = 'border:1px solid rgba(120,243,255,.35);background:rgba(5,19,28,.78);color:#cceef5;font:600 11px/1 ui-monospace,monospace;letter-spacing:.04em;padding:6px 9px;border-radius:8px;cursor:pointer';
-      el.addEventListener('click', async () => {
-        if (isProUnlocked()) {
-          if (confirm('Lock PRO models again? You will need to re-enter the password.')) {
-            setProUnlocked(false);
-          }
-        } else {
-          await unlockPro();
-        }
-      });
-      const host = document.querySelector('.topnav-actions');
-      if (host) {
-        host.appendChild(el);
-      } else {
-        el.style.cssText += ';position:fixed;top:64px;right:14px;z-index:9999';
-        document.body.appendChild(el);
-      }
-    }
-    const on = isProUnlocked();
-    el.textContent = on ? '🔓 PRO' : '🔒 PRO';
-    el.style.color = on ? '#a7f0a8' : '#ffd86b';
-    el.style.borderColor = on ? 'rgba(167,240,168,.4)' : 'rgba(255,216,107,.4)';
-  }
-  if (typeof document !== 'undefined') {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', updateProLockBadge);
-    } else {
-      updateProLockBadge();
-    }
+    const el = document.getElementById('proLockBadge');
+    if (el) el.remove();
   }
   function confirmPro(motor, coste) {
     return (async () => {
@@ -694,7 +679,7 @@
         </div>`);
       const stopElevenProg = startProgress('eleven');
       try {
-        const r = await fetch(ELEVEN_WORKER_URL + '/tts', {
+        const r = await paidFetch(ELEVEN_WORKER_URL + '/tts', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -751,7 +736,7 @@
       </div>`);
     const stopGtts = startProgress('gtts');
     try {
-      const r = await fetch(ELEVEN_WORKER_URL + '/tts/free', {
+      const r = await paidFetch(ELEVEN_WORKER_URL + '/tts/free', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text, lang }),
       });
@@ -1159,7 +1144,7 @@
       </div>`);
     const stop = startProgress('lyria3');
     try {
-      const r = await fetch(ELEVEN_WORKER_URL + '/lyria3/generate', {
+      const r = await paidFetch(ELEVEN_WORKER_URL + '/lyria3/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt, lyrics, model }),
@@ -1288,7 +1273,7 @@
       </div>`);
     const stop = startProgress('imagen');
     try {
-      const r = await fetch(ELEVEN_WORKER_URL + '/imagen/generate', {
+      const r = await paidFetch(ELEVEN_WORKER_URL + '/imagen/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: fullPrompt, aspectRatio, numberOfImages: 1, model, imageSize: '2K' }),
@@ -1358,12 +1343,12 @@
   // Devuelve los bytes de la imagen directamente → usable en <img src>.
   function genFluxUrl(fullPrompt, w, h) {
     const ar = (w && h) ? (w / h >= 1.25 ? '16:9' : (h / w >= 1.25 ? '9:16' : '1:1')) : '16:9';
-    // Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+    // dominio propio: LaLiga bloquea workers.dev en horas de fútbol, FLT-1633
     return `https://imagen.admira.store/img?prompt=${encodeURIComponent(fullPrompt)}&ar=${ar}&model=gemini-2.5-flash-image`;
   }
   async function genGrokRaw(fullPrompt, model) {
     try {
-      const r = await fetch(XAI_WORKER_URL + '/xai/image', {
+      const r = await paidFetch(XAI_WORKER_URL + '/xai/image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: fullPrompt, n: 1, model }),
@@ -1376,7 +1361,7 @@
   }
   async function genImageRaw(fullPrompt, aspectRatio) {
     try {
-      const r = await fetch(ELEVEN_WORKER_URL + '/imagen/generate', {
+      const r = await paidFetch(ELEVEN_WORKER_URL + '/imagen/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt: fullPrompt, aspectRatio, numberOfImages: 1, model: 'imagen-4.0-ultra-generate-001', imageSize: '2K' }),
@@ -1391,7 +1376,6 @@
   function nanoBananaUrl(fullPrompt, aspectRatio, model) {
     const ar = aspectRatio || '1:1';
     const m = model || 'gemini-2.5-flash-image';
-    // Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
     return `https://imagen.admira.store/img?prompt=${encodeURIComponent(fullPrompt)}&ar=${ar}&model=${m}`;
   }
   async function genNanoBananaRaw(fullPrompt, aspectRatio) {
@@ -1519,7 +1503,7 @@
         </div>`);
       const stopGrokImg = startProgress('grokimg');
       try {
-        const r = await fetch(XAI_WORKER_URL + '/xai/image', {
+        const r = await paidFetch(XAI_WORKER_URL + '/xai/image', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ prompt: fullPrompt, n: 1, model: motor }),
@@ -1617,7 +1601,7 @@
   // para refrescar etiquetas (barra de progreso o celda del comparador).
   async function genVeoRaw(prompt, aspect, durationSeconds, resolution, model, onTick) {
     try {
-      const r = await fetch(ELEVEN_WORKER_URL + '/veo/generate', {
+      const r = await paidFetch(ELEVEN_WORKER_URL + '/veo/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt, aspectRatio: aspect, durationSeconds, resolution, model }),
@@ -1633,13 +1617,16 @@
         attempt++;
         const elapsed = ((Date.now() - t0) / 1000).toFixed(0);
         if (onTick) onTick(elapsed, attempt);
-        const pollR = await fetch(`${ELEVEN_WORKER_URL}/veo/status/${opName}`);
+        const pollR = await paidFetch(`${ELEVEN_WORKER_URL}/veo/status/${opName}`);
         if (!pollR.ok) return { ok: false, error: `poll ${pollR.status}` };
         const poll = await pollR.json();
         if (poll.done) {
           const uri = poll?.response?.generateVideoResponse?.generatedSamples?.[0]?.video?.uri;
           if (!uri) return { ok: false, error: 'sin URI: ' + JSON.stringify(poll).slice(0, 200) };
-          return { ok: true, url: `${ELEVEN_WORKER_URL}/veo/download?uri=${encodeURIComponent(uri)}`, elapsed };
+          const dl = await paidFetch(`${ELEVEN_WORKER_URL}/veo/download?uri=${encodeURIComponent(uri)}`);
+          if (!dl.ok) return { ok: false, error: `download ${dl.status}` };
+          const blob = await dl.blob();
+          return { ok: true, url: URL.createObjectURL(blob), elapsed };
         }
         if (attempt > 60) return { ok: false, error: 'timeout (>5min)' };
       }
@@ -1688,7 +1675,7 @@
   // GET /xai/video/{id} hasta status "done" → video.url (https://vidgen.x.ai/…).
   async function genGrokVideoRaw(prompt, aspect, durationSeconds, resolution, onTick) {
     try {
-      const r = await fetch(ELEVEN_WORKER_URL + '/xai/video', {
+      const r = await paidFetch(ELEVEN_WORKER_URL + '/xai/video', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt, duration: durationSeconds, aspect_ratio: aspect, resolution }),
@@ -1704,7 +1691,7 @@
         attempt++;
         const elapsed = ((Date.now() - t0) / 1000).toFixed(0);
         if (onTick) onTick(elapsed, attempt);
-        const pollR = await fetch(`${ELEVEN_WORKER_URL}/xai/video/${encodeURIComponent(reqId)}`);
+        const pollR = await paidFetch(`${ELEVEN_WORKER_URL}/xai/video/${encodeURIComponent(reqId)}`);
         if (!pollR.ok) return { ok: false, error: `poll ${pollR.status}` };
         const poll = await pollR.json();
         const status = poll.status || poll.state;
@@ -1778,7 +1765,7 @@
     const to = setTimeout(() => ctrl.abort(), 150000);
     let blobUrl, errMsg;
     try {
-      const r = await fetch(`${ELEVEN_WORKER_URL}/pvideo?${qs.toString()}`, { signal: ctrl.signal });
+      const r = await paidFetch(`${ELEVEN_WORKER_URL}/pvideo?${qs.toString()}`, { signal: ctrl.signal });
       clearTimeout(to);
       if (!r.ok) {
         const raw = (await r.text()).slice(0, 300);
@@ -2489,7 +2476,7 @@
       const ctxSuffix = (t._ctx && t._ctx.promptSuffix) ? ' ' + t._ctx.promptSuffix.charAt(0).toUpperCase() + t._ctx.promptSuffix.slice(1) + '.' : '';
       const prompt = `Anuncio publicitario de ${t.offer} dirigido a: ${t.label}.${ctxSuffix} Style retail premium, composición limpia, llamada a la acción clara, alta calidad fotográfica, sin texto ilegible.`;
       try {
-        const r = await fetch(XAI_WORKER_URL + '/xai/image', {
+        const r = await paidFetch(XAI_WORKER_URL + '/xai/image', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ prompt, model: 'grok-imagine-image', b64: true }),
         });
@@ -2700,7 +2687,7 @@
       btn.disabled = true;
       ta.value = '// generating lyrics with Gemini 2.5 Flash...';
       try {
-        const r = await fetch(ELEVEN_WORKER_URL + '/llm/lyrics', {
+        const r = await paidFetch(ELEVEN_WORKER_URL + '/llm/lyrics', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ brief, idioma }),

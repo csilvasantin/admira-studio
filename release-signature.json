@@ -1,6 +1,12 @@
 {
-  "version": "v.28.09.2026.r2.13:07",
-  "deployer": "OraculoGrokBotBox",
-  "machine": "GrokBotBox",
-  "signature": "OraculoGrokBotBox · GrokBotBox"
+  "version": "v.02.10.2026.r5.11:46",
+  "author": "SmithMacMini",
+  "agent": "SmithMacMini",
+  "deployer": "SmithMacMini",
+  "machine": "MacMini",
+  "signature": "SmithMacMini · MacMini",
+  "git": "2519902ef6e79a99f64835c2beb436634f2a0f2f",
+  "gitShort": "2519902",
+  "gitFull": "2519902ef6e79a99f64835c2beb436634f2a0f2f",
+  "dirty": false
 }

@@ -3,6 +3,50 @@
  * mismas diez secciones, en el mismo orden, sin esos dos controles.
  */
 (function () {
+  // Sello de este fichero (?v=…): marca-blanca.js y la consola experta viajan con el mismo,
+  // así que cada release de sellar.py refresca también los scripts que carga site-nav.js.
+  var SELF = document.currentScript;
+  var STAMP = (function () { try { return new URL(SELF.src).search; } catch (_) { return ''; } })();
+
+  // Brand blanca del catálogo de admiranext.com (FLT-101333). Solo se carga si esta pestaña
+  // la pide (?marca= en la URL o una marca recordada) o si se usa /marca en la consola
+  // experta: en una visita normal Admira Studio no descarga nada nuevo. Ver docs/marca-blanca.md.
+  var marcaPromise = null;
+  function loadBrand() {
+    if (window.AdmiraBrand) return Promise.resolve(window.AdmiraBrand);
+    if (!marcaPromise) {
+      marcaPromise = new Promise(function (resolve, reject) {
+        var s = document.createElement('script');
+        s.src = '/assets/marca-blanca.js' + STAMP;
+        s.setAttribute('data-pixeria-marca', '');
+        s.onload = function () { window.AdmiraBrand ? resolve(window.AdmiraBrand) : reject(new Error('marca-blanca.js')); };
+        s.onerror = function () { s.remove(); marcaPromise = null; reject(new Error('marca-blanca.js')); };
+        (document.head || document.documentElement).appendChild(s);
+      });
+    }
+    return marcaPromise;
+  }
+  window.AdmiraStudioBrand = { cargar: loadBrand };
+  (function () {
+    var q = null, stored = null;
+    try { q = new URLSearchParams(location.search).get('marca'); stored = sessionStorage.getItem('mb:marca'); } catch (_) {}
+    if (q == null && !stored) return;
+    // ?marca=admira/off solo olvida la marca recordada: se carga para eso, sin velo.
+    if (q != null && /^\s*(off|admira|ninguna|ninguno|none|default|apagar|quitar|reset)?\s*$/i.test(q)) { loadBrand().catch(function () {}); return; }
+    // Con marca pedida, la página espera un instante en blanco en vez de enseñar el verde
+    // de Admira Studio y cambiar de golpe: como mucho 1,5 s, y antes si la marca ya está puesta
+    // o no se pudo cargar. Sin marca este velo no existe.
+    var veil = document.createElement('style');
+    veil.id = 'pixeria-marca-velo';
+    veil.textContent = 'html:not([data-mb-marca]) body{opacity:0!important}';
+    (document.head || document.documentElement).appendChild(veil);
+    var lift = function () { if (veil.parentNode) veil.parentNode.removeChild(veil); };
+    document.addEventListener('admira:marca', lift);
+    document.addEventListener('admira:marca-error', lift);
+    setTimeout(lift, 1500);
+    loadBrand().catch(lift);
+  })();
+
   var ES = [
     ['/audio.html', 'Audio'],
     ['/musica.html', 'Music'],
@@ -124,7 +168,7 @@
       '.pf-brand-name{color:var(--ink,#e8f2ec);font-weight:800;letter-spacing:.08em}' +
       '.quad-ui.pix-nav-canonical-header{padding:0!important}' +
       '.pix-nav-home-rails.quad-ui:not(.pix-nav-canonical-header){padding:70px 0 0!important}.pix-nav-home-rails .quad-top{top:0;left:0;right:0;width:auto;height:70px;min-height:70px;box-sizing:border-box;padding:0 28px;border:0;border-bottom:1px solid rgba(26,74,34,.95);box-shadow:0 0 24px rgba(0,255,65,.08);z-index:180}' +
-      '.pix-nav-home-rails .rail{position:fixed;top:70px;bottom:0;z-index:160;width:var(--pf-left-w,300px);max-height:none;overflow:auto;border:1px solid rgba(140,160,150,.30);border-radius:0;background:rgba(2,10,5,.90);box-shadow:0 0 34px rgba(0,255,65,.10);backdrop-filter:blur(8px)}' +
+      '.pix-nav-home-rails .rail{position:fixed;top:var(--pf-topbar-h,70px);bottom:0;z-index:160;width:var(--pf-left-w,300px);max-height:none;overflow:auto;border:1px solid rgba(140,160,150,.30);border-radius:0;background:rgba(2,10,5,.90);box-shadow:0 0 34px rgba(0,255,65,.10);backdrop-filter:blur(8px)}' +
       '.pix-nav-home-rails .rail-left{left:0;display:flex;flex-direction:column;border-left:0;border-top:2px solid #68dce9;border-right-color:#68dce9}.pix-nav-home-rails .rail-right{right:0;width:var(--pf-right-w,330px);border-right:0;border-top:2px solid #e8c268;border-left-color:#e8c268}' +
       '.pix-nav-home-rails .rail-hd{position:sticky;top:0;z-index:3;margin:0;padding:13px 16px 11px;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9ab0a4;background:rgba(8,14,10,.78);border-bottom:1px solid rgba(140,160,150,.30)}.pix-nav-home-rails .rail-left .rail-hd{color:#68dce9}.pix-nav-home-rails .rail-right .rail-hd{color:#e8c268}' +
       '.pix-nav-home-rails .rail-nav{display:flex;flex-direction:column;padding:8px}.pix-nav-home-rails .rail-nav a{display:block;padding:10px 12px;border:1px solid transparent;color:#c8ffd0;text-decoration:none}.pix-nav-home-rails .rail-nav a:hover,.pix-nav-home-rails .rail-nav a[aria-current="page"]{border-color:#00ff41;background:rgba(0,255,65,.07)}.pix-nav-home-rails .rail-nav b{display:block;font-weight:760;font-size:14px;color:#e8f2ec}.pix-nav-home-rails .rail-nav small{display:block;margin-top:2px;font-size:11.5px;color:#7fae8c;line-height:1.3}.pix-nav-home-rails .rail-options-meta{margin-top:auto;padding:12px 16px 16px;border-top:1px solid rgba(140,160,150,.30)}.pix-nav-home-rails .rail-ver{display:block;padding:6px 9px;border:1px solid #68dce9;color:#68dce9;font-size:11px;font-weight:800;letter-spacing:.04em;text-align:center}.pix-nav-home-rails .rail-extra{padding:4px 16px 18px}.pix-nav-home-rails .rail-sub{margin:6px 0 8px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9ab0a4}.pix-nav-home-rails .rail-doc{display:block;padding:9px 0;font-size:13.5px;color:#e8f2ec;border-bottom:1px solid rgba(140,160,150,.30);text-decoration:none}' +
@@ -151,9 +195,12 @@
       '.quad-brand,.pf-topbar-brand,.pf-topbar-lang,.pf-topbar-contact{text-decoration:none!important}' +
       '.pix-nav-layer{position:fixed;z-index:1200;border:1px solid rgba(0,255,65,.42);background:rgba(0,10,3,.97);color:#caffd7;box-shadow:0 0 28px rgba(0,255,65,.18);font:700 12px/1.4 "IBM Plex Mono",monospace}' +
       '.pix-nav-layer[hidden]{display:none!important}' +
-      '.pix-nav-advanced-layer{top:72px;right:18px;width:min(330px,calc(100vw - 36px));padding:18px;display:grid;gap:8px}' +
+      '.pix-nav-advanced-layer{top:calc(var(--pf-topbar-h,70px) + 2px);right:18px;width:min(330px,calc(100vw - 36px));padding:18px;display:grid;gap:8px}' +
       '.pix-nav-expert-layer{left:18px;right:18px;bottom:18px;padding:12px 16px;display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}' +
       '.pix-nav-layer a{color:#caffd7;text-decoration:none;border:1px solid rgba(0,255,65,.22);padding:9px 11px}' +
+      '.pix-nav-meta{box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:6px 18px;width:100%;max-width:none;margin:28px 0 8px;padding:12px 0 0;border-top:1px solid rgba(140,160,150,.30);font:400 12px/1.5 "JetBrains Mono","IBM Plex Mono","Fira Code",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.04em;text-transform:none;text-align:left}' +
+      '.pix-nav-meta a{color:var(--mbx-brand,inherit);text-decoration:none;border:0;padding:0;background:none}' +
+      ':root:not([data-mb-marca]) .pix-nav-meta{color:#7fae8c}:root:not([data-mb-marca]) .pix-nav-meta a{color:#c8ffd0}:root:not([data-mb-marca]) .pix-nav-meta a:hover{color:#00ff41}' +
       '.pix-nav-layer a:hover{color:#00ff41;border-color:#00ff41}' +
       '.quad-right a{min-height:86px;display:flex;align-items:center;justify-content:center;writing-mode:vertical-rl;text-orientation:mixed;padding:8px 4px;font-size:11px;letter-spacing:.08em;text-transform:uppercase}' +
       '@media(max-width:980px){.pf-topbar{grid-template-columns:1fr auto;min-height:62px;padding:0 14px;gap:10px}.pf-topbar-left{grid-column:1;grid-row:1}.pf-topbar-right{grid-column:2;grid-row:1}.pf-topbar-nav{grid-column:1/-1;grid-row:2;justify-content:flex-start!important;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:8px}.pf-topbar-nav a{flex:0 0 auto!important}.pix-nav-icon{width:38px;height:38px;flex-basis:38px}.pix-nav-controls{gap:6px}}';
@@ -168,9 +215,11 @@
       brand.parentNode.replaceChild(link, brand);
     }
     link.className = 'pf-topbar-brand';
-    var mark = link.querySelector('.brand-mark, span');
-    var name = link.querySelector('.brand-name, b, span:not(:first-child)');
-    if (mark) mark.className = 'pf-brand-mark';
+    // Sin «P» de logo: la marca es solo el nombre (Carlos 29-sep-2026).
+    link.querySelectorAll('.brand-mark, .pf-brand-mark, span').forEach(function (mark) {
+      if (mark.matches('.brand-mark, .pf-brand-mark') || mark.textContent.trim() === 'P') mark.remove();
+    });
+    var name = link.querySelector('.brand-name, b, span');
     if (name) name.className = 'pf-brand-name';
     return link;
   }
@@ -211,7 +260,9 @@
       expert.id = 'pixNavExpertLayer';
       expert.className = 'pix-nav-layer pix-nav-expert-layer';
       expert.hidden = true;
-      expert.innerHTML = '<span>Admira Studio · creative system</span><a href="/stock.html">Stock</a><a href="/documentacion/">Documentation</a><a href="https://www.xpaceos.com">XpaceOS</a><a href="https://www.admira.app">Admira</a>';
+      // Un solo bloque: la consola experta lo deja al final del contenido como una línea
+      // de enlaces con el mismo aspecto en todas las páginas, tenga la página el CSS que tenga.
+      expert.innerHTML = '<p class="pix-nav-meta"><span>Admira Studio · creative system</span><a href="/stock.html">Stock</a><a href="/documentacion/">Documentation</a><a href="https://www.xpaceos.com">XpaceOS</a><a href="https://www.admira.app">Admira</a></p>';
       document.body.appendChild(expert);
     }
   }
@@ -222,6 +273,7 @@
     ['/audio.html', 'Audio · PA', 'Voices, voice-over and brand public address'],
     ['/video.html', 'Video', 'Storyboards, generation, editing and loops'],
     ['/tiktok', 'TikTok · Vertical', '25s 9:16 ads, ready for the vertical display'],
+    ['/adaptaciones/', 'Adaptaciones', 'Un vídeo, all screens: 9:16, 16:9, 1:1 y 4:5'],
     ['/imagenes.html', 'Images', 'Art direction, product and style'],
     ['/avatar.html', 'Avatar 3D', 'Generative presenters and avatars'],
     ['/anonimizador.html', 'Anonymizer', 'Privacy for image and video'],
@@ -451,19 +503,37 @@
     });
   }
 
+  // Altura REAL de la barra de 4 bandas en --pf-topbar-h (FLT-101334): en móvil la barra
+  // ocupa dos filas, así que nada de 70px fijos. Raíles, índices pegajosos, anclas y
+  // alturas de pantalla completa de cada página se calculan con esta variable.
+  function trackTopbarHeight() {
+    var bar = document.querySelector('.pf-topbar');
+    if (!bar || bar.dataset.pfHeight === '1') return;
+    bar.dataset.pfHeight = '1';
+    var root = document.documentElement;
+    var apply = function () {
+      var h = Math.round(bar.getBoundingClientRect().height);
+      if (h > 0) root.style.setProperty('--pf-topbar-h', h + 'px');
+    };
+    apply();
+    if (window.ResizeObserver) new ResizeObserver(apply).observe(bar);
+    else window.addEventListener('resize', apply);
+  }
+
   function start() {
     normalizeInternalNav();
     syncRailVersion();
+    trackTopbarHeight();
     // cuadratura.js crea la barra de la home de forma diferida; esta segunda
     // pasada normaliza tambien esa barra cuando se reutiliza en una interior.
     setTimeout(function () {
-      normalizeInternalNav(); syncRailVersion();
+      normalizeInternalNav(); syncRailVersion(); trackTopbarHeight();
       if (!document.querySelector('.rail-bottom,.quad-bottom,#pixNavExpertLayer')) return;
       var css = document.createElement('link');
-      css.rel = 'stylesheet'; css.href = '/assets/expert-cli.css?v=4663';
+      css.rel = 'stylesheet'; css.href = '/assets/expert-cli.css' + (STAMP || '?v=4663');
       document.head.appendChild(css);
       var cli = document.createElement('script');
-      cli.src = '/assets/expert-cli.js?v=4663';
+      cli.src = '/assets/expert-cli.js' + (STAMP || '?v=4663');
       document.body.appendChild(cli);
     }, 0);
   }

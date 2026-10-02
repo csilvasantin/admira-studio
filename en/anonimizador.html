@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=20260813-auth-redirect';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=02.10.2026.r1.1127';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.28.09.2026.r2.13:07">
+  <meta name="admiranext-version" content="Admira Studio v.02.10.2026.r1.11:27">
   <link rel="canonical" href="https://www.admira.studio/anonimizador.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/anonimizador.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/anonimizador.html">
@@ -49,9 +49,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="../workspace.css?v=20260717-head-caja">
-  <script defer src="/assets/analytics.js?v=20260617-consent"></script>
-  <script defer src="/assets/consent.js?v=20260617"></script>
+  <link rel="stylesheet" href="../workspace.css?v=02.10.2026.r1.1127">
   <style>
     .anon-main{max-width:1080px;margin:0 auto;padding:0 20px 64px;display:flex;flex-direction:column;gap:22px}
     .anon-stage-wrap{display:flex;flex-direction:column;gap:16px}
@@ -113,13 +111,24 @@
     .anon-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(18px);z-index:9998;background:rgba(2,18,6,.96);border:1px solid var(--accent,#39d353);border-radius:12px;padding:12px 18px;color:var(--fg,#dffbe6);font-size:14px;box-shadow:0 10px 34px rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;max-width:92vw;text-align:center}
     .anon-toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
     .anon-toast a{color:var(--accent,#39d353);font-weight:700;text-decoration:underline}
-  </style>
-  <script defer src="/assets/site-nav.js?v=20260928-cli4663"></script>
+
+    .anon-demo-tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:0 0 20px}.anon-demo-tools p{flex:1 1 240px;margin:0;color:var(--muted,#a2b4ac)}
+    body.anon-demo .anon-source,body.anon-demo .anon-go,body.anon-demo #btnPublish,body.anon-demo #btnDownload{display:none}
+    body.anon-demo .anon-frame{height:clamp(210px,30vw,370px);aspect-ratio:auto}
+    body.anon-demo .anon-frame img{object-fit:contain;width:100%;height:100%}
+    body.anon-demo .anon-card{background:#0e2221;border-color:#438675}
+    body.anon-demo .anon-pipeline{display:none}
+    .anon-demo-download{display:block;padding:10px;text-align:center;color:#8af0bf}
+</style>
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=02.10.2026.r1.1127">
+  <script defer src="/assets/site-nav.js?v=02.10.2026.r1.1127"></script>
 </head>
 <body data-page="anonimizador">
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KD696XW" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
+  <!-- Cuadratura: ocultar los raíles al abrir <body> (sin parpadeo) según localStorage -->
+  <script>
+  (function(){var b=document.body,m={pixeria_pf_left:'pf-left-off',pixeria_pf_right:'pf-right-off',pixeria_pf_bottom:'pf-bottom-off'};
+  try{for(var k in m){if(localStorage.getItem(k)!=='1')b.classList.add(m[k]);}}catch(e){for(var j in m){b.classList.add(m[j]);}}})();
+  </script>
   <nav class="admira-nav admira-nav-static" aria-label="Admira · Xperience">
     <a class="admira-nav-brand" href="https://www.admira.app">
       <span class="admira-nav-brand-name">Admira</span>
@@ -139,7 +148,7 @@
   <div class="anon-drop" id="anonDrop" aria-hidden="true"><div class="anon-drop-box"><b>📥</b>Drop the image to anonymize it</div></div>
   <div class="anon-toast" id="anonToast" role="status" aria-live="polite"></div>
   <header class="topnav">
-    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-mark">P</span><span class="brand-name">Admira Studio</span></a></div>
+    <div class="brand"><a href="index.html" class="brand-link"><span class="brand-name">Admira Studio</span></a></div>
     <nav class="primary-nav">
       <a href="audio.html" data-nav="audio">Audio</a>
       <a href="musica.html" data-nav="musica">Music</a>
@@ -162,11 +171,12 @@
   <header class="page-head">
     <p class="eyebrow image">Privacy by design · Anonymizer</p>
     <h1>From a real person to someone who doesn't exist.</h1>
-    <p class="lead">Take a photo, watch it turn into an NPC like the ones strolling through the digital twin, then watch it come back as a realistic person who is <strong>similar but different</strong>. The pixel pass wipes the real face: what you keep is no longer anyone. Built to use audiences and passers-by in signage and Pixer Feed without exposing identities.</p>
+    <p class="lead">Start with a ready-made fictional person: compare 8, 16 and 32 bits and send it to your Xpace. You can also transform your own photo.</p>
   </header>
 
   <main class="anon-main">
     <section class="anon-stage-wrap">
+      <div class="anon-demo-tools"><p>Try without a camera: a fictional person in three styles, ready for your Xpace.</p><button class="btn" type="button" id="btnDemo">Use example</button><button class="btn" type="button" id="btnOwn">Use my photo</button></div>
       <div class="anon-source">
         <div class="anon-cam" id="camWrap">
           <div class="anon-cam-hint" id="camHint">
@@ -247,26 +257,27 @@
       <p class="anon-status" id="status" aria-live="polite">Capture, upload or drag a photo and I start anonymizing automatically.</p>
 
       <div class="anon-result-actions">
+        <a class="btn" href="https://www.xpaceos.com/admira-xp/" target="_blank" rel="noopener">Open Xpace ↗</a>
         <button type="button" class="btn" id="btnDownload" disabled>⬇ Download anonymous</button>
         <button type="button" class="btn" id="btnPublish" disabled>📤 Publish to Stock</button>
-        <button type="button" class="btn primary" id="btnSendStore" disabled>🏪 Send to store</button>
+        <button type="button" class="btn primary" id="btnSendStore" disabled>🏪 Send to Xpace</button>
       </div>
       <div class="anon-prog" id="anonProg"><div class="anon-prog-track"><div class="anon-prog-fill" id="anonProgFill"></div></div><div class="anon-prog-label" id="anonProgLabel"></div></div>
 
       <div class="anon-privacy">
         <span aria-hidden="true">🔒</span>
-        <div><b>Privacy by design.</b> The original photo travels to the image engine only to be transformed and is not stored in Admira Studio. What you keep is a synthetic person matching no real individual: use it on screens, campaigns and Pixer Feed without processing biometric data of identifiable people.</div>
+        <div><b>Fictional example.</b> The demo uses no camera and sends no photos to a generation engine. Your own photo is sent to the provider for transformation; changing its style does not guarantee removing all identifying features. Sending to Xpace requires a click.</div>
       </div>
     </section>
   </main>
 
   <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Open Admira XP — the digital twin">Admira Studio AI Workspace · Anonymizer · v.2026.06.19h-anon</a></footer>
 
-  <script defer src="/matrix-rain.js?v=20260608-sides"></script>
+  <script defer src="/matrix-rain.js?v=02.10.2026.r1.1127"></script>
   <script>
   (function () {
     const $ = (s) => document.querySelector(s);
-    // Dominio propio: LaLiga bloquea workers.dev/r2.dev en horas de fútbol (FLT-1633).
+    // dominio propio: LaLiga bloquea workers.dev en horas de fútbol, FLT-1633
     const WORKER = 'https://api.admira.store';
 
     const NPC8_SYS = 'You are an 8-bit pixel-art artist, NES / management-sim style (à la Kairosoft). From the given photo, generate a TINY, stubby character SPRITE: chibi proportions, big head, only 2 to 2.5 heads tall, full body facing front. VERY low resolution (like a ~32×40 px sprite), large clearly-visible square pixels, a palette of ONLY 4-5 flat colors, hard outline, no gradients, shadows or antialiasing. A SINGLE flat uniform background color (pure white) so it can be cut out. KEEP the apparent SEX/gender of the person (if female, female; if male, male), the clothing and hair color and the approximate build. Do NOT keep recognizable facial features: it is a tiny anonymous NPC, not a portrait. It must look clearly SIMPLER, SMALLER and stubbier than a 16-bit sprite.';
@@ -282,6 +293,7 @@
     };
 
     let stream = null, original = null, npc8 = null, npc16 = null, anon = null, busy = false;
+    let demoActive = false, sendInFlight = false;
     let segment = null; // {sex, age} chosen when inventing → travels to the ad (Stock tags)
     let enginesUsed = new Set();   // models that generated the NPCs/person (for the "Done" tooltip)
     let originalSource = 'photo';   // where the original came from (camera / upload / Grok)
@@ -375,6 +387,7 @@
     }
 
     function showOriginal(dataURL) {
+      leaveDemo();
       original = dataURL; npc8 = null; npc16 = null; anon = null;
       frameFillFinish(els.frame1, dataURL);
       els.frame2.innerHTML = '<div class="ph">8-bit NPC<br>(NES)</div>';
@@ -439,13 +452,21 @@
       const m = ((e.message || '') + ' ' + (e.reason || '')).toLowerCase();
       return /high demand|overload|try again|temporar|unavailable|resource_exhausted|rate.?limit|busy|503|429/.test(m);
     }
+    async function pixeriaPaidHeaders() {
+      const headers = { 'Content-Type': 'application/json' };
+      try {
+        const s = await fetch('/auth/api-token', { credentials: 'include', cache: 'no-store' });
+        if (s.ok) { const d = await s.json(); if (d.token) headers.Authorization = 'Bearer ' + d.token; }
+      } catch (e) {}
+      return headers;
+    }
     async function imageEditOnce(image, sys, prompt) {
       let r;
       const ctrl = new AbortController();
       const timeout = setTimeout(() => ctrl.abort(), 90000);
       try {
         r = await fetch(WORKER + '/image/edit', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          method: 'POST', headers: await pixeriaPaidHeaders(),
           body: JSON.stringify({ image, sys, prompt }), signal: ctrl.signal
         });
       } catch (netErr) {
@@ -488,7 +509,7 @@
     const REFUSAL = new Set(['image-declined', 'safety', 'copyright']);
     async function grokImage(prompt) {
       const r = await fetch(WORKER + '/xai/image', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: await pixeriaPaidHeaders(),
         body: JSON.stringify({ prompt, b64: true, model: 'grok-imagine-image' })
       });
       const d = await r.json().catch(() => ({}));
@@ -617,7 +638,7 @@
       activeCard(els.card1); frameFillCreep(els.frame1);
       try {
         const r = await fetch(WORKER + '/xai/image', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          method: 'POST', headers: await pixeriaPaidHeaders(),
           body: JSON.stringify({ prompt: inventPrompt(seg), b64: true, model: 'grok-imagine-image' })
         });
         const d = await r.json().catch(() => ({}));
@@ -705,7 +726,8 @@
     // Send the 8-bit NPC to the twin (queue /twin/spawn) and WAIT for the twin's
     // REAL ack (when it spawns it walking) before saying "in the store".
     async function sendStore() {
-      if (!npc8) return;
+      if (!npc8 || sendInFlight) return;
+      sendInFlight = true;
       const btn = els.sendStore, label = btn.dataset.label || btn.textContent;
       btn.dataset.label = label;
       btn.disabled = true; btn.classList.remove('ok'); els.status.classList.remove('err');
@@ -719,9 +741,14 @@
         const seg = segment ? { sex: segment.sex, age: segment.age, desc: (segment.desc || '').slice(0, 120) } : null;
         const hasSeg = seg && (seg.sex !== 'any' || seg.age !== 'any' || seg.desc);
         const npcName = 'Anonymous' + (hasSeg ? '||' + JSON.stringify(seg) : '');
+        // XpaceOS 16/32/64 bits: la persona realista (y el NPC 16-bit) viajan con el
+        // envío; el worker fabrica una sola vez su paquete de caminata y ficha
+        // (/twin/persona*). Sin persona, el gemelo sigue igual (solo 8-bit).
+        const persona = anon ? await downscale(anon, 768, 'image/jpeg') : null;
+        const npc16Small = npc16 ? await downscale(npc16, 256, 'image/png') : null;
         const r = await fetch(WORKER + '/twin/spawn', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ image: sprite, name: npcName })
+          body: JSON.stringify(Object.assign({ image: sprite, name: npcName }, demoActive ? { demo_id: 'visitor-green-v1', npc32: await downscale(demoAssets.npc32, 512, 'image/png') } : {}, persona ? { persona } : {}, npc16Small ? { npc16: npc16Small } : {}))
         });
         const d = await r.json().catch(() => ({}));
         if (!r.ok || !d.ok) throw new Error((d && (d.error || d.detail)) || ('HTTP ' + r.status));
@@ -735,6 +762,7 @@
           btn.textContent = '✓ In the store'; btn.classList.add('ok');
           els.status.innerHTML = '🏪 <b>Already in the store.</b> Your 8-bit NPC is walking around the twin — <a href="' + STORE_URL + '" target="_blank" rel="noopener" style="color:var(--accent,#39d353);font-weight:700;text-decoration:underline">open the store to see it ↗</a>';
           storeToast('✅ NPC already in the store! <a href="' + STORE_URL + '" target="_blank" rel="noopener">Open the store ↗</a>', true);
+          if(demoActive) setStatus('Received by Xpace. Enable /customers on and switch between Good, Better and Best.');
           setTimeout(() => progShow(false), 900);
         } else {
           // No ack in 30s: no open store is picking up the queue. Honest.
@@ -744,8 +772,9 @@
           storeToast('🕓 NPC queued — <a href="' + STORE_URL + '" target="_blank" rel="noopener">open the store so it can enter ↗</a>', true);
           setTimeout(() => progShow(false), 1200);
         }
-        setTimeout(() => { btn.textContent = label; btn.classList.remove('ok'); btn.disabled = false; }, 3600);
+        setTimeout(() => { btn.textContent = label; btn.classList.remove('ok'); btn.disabled = !npc8; }, 3600);
       } catch (e) { progShow(false); setStatus('Could not send to the store: ' + e.message, true); btn.disabled = false; }
+      sendInFlight = false;
     }
     // Poll /twin/spawn/status?id= until the twin confirms the spawn (ACK) or it
     // times out. The bar eases asymptotically toward ~88% while waiting.
@@ -835,7 +864,7 @@
         els.btnCam.disabled = true; els.btnCam.classList.remove('primary');
         els.btnCam.textContent = '📷 No camera';
         els.invent.classList.add('primary');
-        setStatus('No camera detected: tap “Create audience”, upload a photo or drag one in.');
+        if (!demoActive) setStatus('No camera detected: tap “Create audience”, upload a photo or drag one in.');
       }
     })();
     function loadDataURL(url) {
@@ -888,8 +917,40 @@
     els.download.addEventListener('click', download);
     els.publish.addEventListener('click', publish);
     els.sendStore.addEventListener('click', sendStore);
+
+
+    const demoAssets = {original:'/assets/anonymizer-demo/original.jpg', npc8:'/assets/anonymizer-demo/8-bit.png', npc16:'/assets/anonymizer-demo/16-bit.png', npc32:'/assets/anonymizer-demo/32-bit.png'};
+    const originalHeading = document.querySelector('h1').textContent;
+    const originalFirstHead = els.card1.querySelector('.step').textContent;
+    const originalCardHead = els.card4.querySelector('.anon-card-head').innerHTML;
+    function leaveDemo() {
+      demoActive = false; document.body.classList.remove('anon-demo');
+      document.querySelector('h1').textContent=originalHeading;els.card1.querySelector('.step').textContent=originalFirstHead;
+      els.card4.querySelector('.anon-card-head').innerHTML = originalCardHead;
+      document.querySelectorAll('.anon-demo-download').forEach(a=>a.remove());
+    }
+    function loadDemo() {
+      if (busy || sendInFlight) return;
+      stopCam(); leaveDemo(); demoActive = true; document.body.classList.add('anon-demo');
+      document.querySelector('h1').textContent='One person. Three styles.';els.card1.querySelector('.step').textContent='01 · demo';
+      original = demoAssets.original; npc8 = demoAssets.npc8; npc16 = demoAssets.npc16; anon = demoAssets.original;
+      segment = {sex:'hombre',age:'adulto',desc:'Demo · fictional green cardigan visitor'};
+      originalSource = 'Admira Studio demo · imagegen';
+      [original,npc8,npc16,demoAssets.npc32].forEach((src,i)=>{
+        const card=document.getElementById('card'+(i+1));frameFillFinish(document.getElementById('frame'+(i+1)),src);
+        const a=document.createElement('a');a.className='anon-demo-download';a.href=src;a.download='pixeria-demo-'+['original.jpg','8-bit.png','16-bit.png','32-bit.png'][i];a.textContent="Download";card.appendChild(a);
+      });
+      els.card4.querySelector('.anon-card-head').innerHTML='<span>NPC 32-bit</span><span class="step">04 · 3D</span>';
+      els.go.disabled=false;els.sendStore.disabled=false;els.download.disabled=true;els.publish.disabled=true;
+      activeCard(null);progShow(false);
+      setStatus('Demo ready · 8, 16 and 32 bits. Send to Xpace adds a visitor; use /customers on to show it.');
+    }
+    $('#btnDemo').addEventListener('click',loadDemo);
+    $('#btnOwn').addEventListener('click',()=>{if(busy || sendInFlight)return;leaveDemo();original=null;npc8=null;npc16=null;anon=null;els.sendStore.disabled=true;els.go.disabled=true;els.download.disabled=true;els.publish.disabled=true;setStatus('Enable the camera or upload your photo to create another character.');els.btnUpload.focus();});
+    loadDemo();
     window.addEventListener('beforeunload', stopCam);
   })();
   </script>
+  <script defer src="/assets/cuadratura.js?v=02.10.2026.r1.1127"></script>
 </body>
 </html>

@@ -1,0 +1,461 @@
+{
+  "schema": "pixeria.estanteria-libros/1",
+  "xpace": {
+    "nombre": "Cafetería Alsea",
+    "glb": "1790370079244-cv7t5i",
+    "blend": "1790370032661-p2nbzi",
+    "inventario": "assets/xpaces/inventory/alsea-4380.json"
+  },
+  "generado": "2026-09-26",
+  "fuente": "https://stock.admira.store/stock/index.json (type=capsula + etiqueta/enlace Blinkist) + capsulas-blinkist/usados.json",
+  "libro_del_dia": {
+    "regla": "La cápsula Blinkist más reciente por createdAt; el visor relee el índice cada 5 min y al volver a la pestaña",
+    "actual": "the-hero-with-a-thousand-faces-en"
+  },
+  "estanteria": {
+    "id": "estanteria-libros",
+    "material": "MAT_nogal (el mismo del GLB: mueble-trasero, mesa-baja)",
+    "exterior_m": {
+      "ancho": 1.6,
+      "fondo": 0.28,
+      "alto": 1.1
+    },
+    "tablero_m": 0.025,
+    "trasera_m": 0.012,
+    "baldas": {
+      "tableros": 4,
+      "huecos": 3,
+      "ancho_util_m": 1.55,
+      "fondo_util_m": 0.268,
+      "alto_libre_entre_baldas_m": 0.333
+    },
+    "posicion_glb_m": {
+      "x_centro": 9.8,
+      "z_pared": 0.012,
+      "y_base": 1.15,
+      "suelo_huecos_y": [
+        1.175,
+        1.533,
+        1.892
+      ],
+      "nota": "Coordenadas del GLB 1790370079244-cv7t5i (Y arriba, pared de fondo en z=0, suelo en y=0). Colgada en la pared de fondo, centrada sobre el sofá verde (sofa: x 8.8–10.8, z 0–0.85)"
+    },
+    "reparto": "Hueco superior: libros de pie, lomo al frente, del más reciente al más antiguo. Hueco central: el libro del día de cara (portada al frente) + taza. Hueco inferior: libros que no caben arriba."
+  },
+  "formato_modelos": {
+    "entrega": "Un GLB por libro publicado en Admira Studio Stock (POST api.admira.store/stock/publish, mime model/gltf-binary) con externalRef \"estanteria-libros:<slug>\" y tags [\"3d\",\"libro\",\"estanteria-libros\",\"<slug>\"]. El visor lo detecta solo in stock/index.json y sustituye al provisional.",
+    "unidades": "metros, medidas reales del libro (medidas_cm si constan)",
+    "ejes": "glTF Y arriba; libro de pie; lomo mirando a +Z (hacia la sala); portada hacia +X; grosor en X",
+    "origen": "centro de la cara inferior (apoya en la balda en y=0)",
+    "limites": "alto ≤ 0.30 m, fondo ≤ 0.25 m; ≤ 1.5 MB por GLB; texturas ≤ 1024 px",
+    "alternativa_local": "O bien, fichero en assets/xpaces/libros/modelos/<slug>.glb del repo pixeria y rellenar libros[].modelo_glb.url = \"modelos/<slug>.glb\" (relativo a este JSON). Stock (externalRef) tiene prioridad sobre la ruta local."
+  },
+  "libros": [
+    {
+      "slug": "the-hero-with-a-thousand-faces-en",
+      "titulo": "The Hero with a Thousand Faces",
+      "autor": "Joseph Campbell",
+      "consejero": "George Lucas",
+      "consejero_id": "georgelucas",
+      "capsula": {
+        "id": "1790359342375-25shx5",
+        "titulo": "El héroe de las mil caras: volver con un don",
+        "fecha": "2026-09-25T18:02:22.375Z",
+        "pixeria_url": "https://www.admira.studio/stock?highlight=1790359342375-25shx5",
+        "asset_url": "https://stock.admira.store/stock/1790359342375-25shx5/asset.bin?v=1305",
+        "otras_capsulas": []
+      },
+      "blinkist_url": "https://www.blinkist.com/en/books/the-hero-with-a-thousand-faces-en",
+      "portada_blinkist_url": "https://images.blinkist.io/images/books/6440db6b4463be00089843a8/3_4/470.jpg",
+      "portada_espejo": "https://www.admira.studio/assets/xpaces/libros/portadas/the-hero-with-a-thousand-faces-en.jpg",
+      "portada_casadellibro": "https://imagessl3.casadellibro.com/a/l/t0/03/9788412213003.jpg",
+      "portada_local": "portadas/the-hero-with-a-thousand-faces-en-casadellibro.jpg",
+      "portada_px": {
+        "ancho": 736,
+        "alto": 1152
+      },
+      "isbn": "9788412213003",
+      "edicion": "El héroe de las mil caras · Ediciones Atalanta, 2020 · tapa blanda · castellano",
+      "casadellibro_url": "https://www.casadellibro.com/libro-el-heroe-de-las-mil-caras/9788412213003/11804209",
+      "medidas_cm": {
+        "alto": 22.0,
+        "ancho": 14.0,
+        "grueso": null
+      },
+      "modelo_glb": {
+        "estado": "publicado Admira Studio Stock · FLT-101050",
+        "externalRef": "estanteria-libros:the-hero-with-a-thousand-faces-en",
+        "url": "https://api.admira.store/stock/asset/1790374898228-sylcvc",
+        "id": "1790374898228-sylcvc",
+        "archivo": "modelos/the-hero-with-a-thousand-faces-en.glb"
+      },
+      "audio_resumen": {
+        "url": "audio/the-hero-with-a-thousand-faces-en.mp3",
+        "origen": "Admira Studio Stock · pista de voz de vídeo de cápsula",
+        "stock_video_id": "1790388670350-vqn2l2"
+      },
+      "foto_autor": {
+        "url": "autores/the-hero-with-a-thousand-faces-en.jpg",
+        "autor_foto": "Folkstory",
+        "licencia": "Dominio público",
+        "fuente": "https://commons.wikimedia.org/wiki/File:JosephCampbell_JonathanYoung.jpg"
+      }
+    },
+    {
+      "slug": "sapiens-en",
+      "titulo": "Sapiens: A Brief History of Humankind",
+      "autor": "Yuval Noah Harari",
+      "consejero": "George Lucas",
+      "consejero_id": "georgelucas",
+      "capsula": {
+        "id": "1790336978263-3e2al2",
+        "titulo": "Sapiens: la historia compartida es la tecnología que escala",
+        "fecha": "2026-09-25T11:49:38.263Z",
+        "pixeria_url": "https://www.admira.studio/stock?highlight=1790336978263-3e2al2",
+        "asset_url": "https://stock.admira.store/stock/1790336978263-3e2al2/asset.bin?v=1370",
+        "otras_capsulas": []
+      },
+      "blinkist_url": "https://www.blinkist.com/en/books/sapiens-en",
+      "portada_blinkist_url": "https://images.blinkist.io/images/books/559266ac6561380007da0000/3_4/470.jpg",
+      "portada_espejo": "https://www.admira.studio/assets/xpaces/libros/portadas/sapiens-en.jpg",
+      "portada_casadellibro": "https://imagessl7.casadellibro.com/a/l/t0/17/9788419399717.jpg",
+      "portada_local": "portadas/sapiens-en-casadellibro.jpg",
+      "portada_px": {
+        "ancho": 650,
+        "alto": 1003
+      },
+      "isbn": "9788419399717",
+      "edicion": "Sapiens. De animales a dioses · Debate, 2023 · tapa dura · castellano",
+      "casadellibro_url": "https://www.casadellibro.com/libro-sapiens-de-animales-a-dioses/9788419399717/13931313",
+      "medidas_cm": {
+        "alto": 23.8,
+        "ancho": 16.1,
+        "grueso": 5.3
+      },
+      "modelo_glb": {
+        "estado": "publicado Admira Studio Stock · FLT-101050",
+        "externalRef": "estanteria-libros:sapiens-en",
+        "url": "https://api.admira.store/stock/asset/1790374957269-cqttzk",
+        "id": "1790374957269-cqttzk",
+        "archivo": "modelos/sapiens-en.glb"
+      },
+      "audio_resumen": {
+        "url": "audio/sapiens-en.mp3",
+        "origen": "Admira Studio Stock · pista de voz de vídeo de cápsula",
+        "stock_video_id": "1790388483681-iz12mn"
+      },
+      "foto_autor": {
+        "url": "autores/sapiens-en.jpg",
+        "autor_foto": "Yuval Noah Harari",
+        "licencia": "CC BY 3.0",
+        "fuente": "https://commons.wikimedia.org/wiki/File:Yuval_Noah_Harari_October_2011_small.jpg"
+      }
+    },
+    {
+      "slug": "creatividad-sa-es",
+      "titulo": "Creatividad, S.A.",
+      "autor": "Ed Catmull",
+      "consejero": "Walt Disney",
+      "consejero_id": "waltdisney",
+      "capsula": {
+        "id": "1790336924950-k6ylio",
+        "titulo": "Creatividad, S.A.: la cultura que protege las ideas frágiles",
+        "fecha": "2026-09-25T11:48:44.950Z",
+        "pixeria_url": "https://www.admira.studio/stock?highlight=1790336924950-k6ylio",
+        "asset_url": "https://stock.admira.store/stock/1790336924950-k6ylio/asset.bin?v=1635",
+        "otras_capsulas": [
+          "1789973175020-3cjma4"
+        ]
+      },
+      "blinkist_url": "https://www.blinkist.com/en/books/creatividad-sa-es",
+      "portada_blinkist_url": "https://images.blinkist.io/images/books/63d2dbb578120c00099e634a/3_4/470.jpg",
+      "portada_espejo": "https://www.admira.studio/assets/xpaces/libros/portadas/creatividad-sa-es.jpg",
+      "portada_casadellibro": "https://imagessl5.casadellibro.com/a/l/t0/45/9788418053245.jpg",
+      "portada_local": "portadas/creatividad-sa-es-casadellibro.jpg",
+      "portada_px": {
+        "ancho": 650,
+        "alto": 997
+      },
+      "isbn": "9788418053245",
+      "edicion": "Creatividad, S.A. (nueva edición ampliada y actualizada) · Conecta, 2024 · tapa blanda · castellano",
+      "casadellibro_url": "https://www.casadellibro.com/libro-creatividad-sa-nueva-edicion-ampliada-y-actualizada/9788418053245/15952450",
+      "medidas_cm": {
+        "alto": 23.0,
+        "ancho": 15.3,
+        "grueso": 3.0
+      },
+      "modelo_glb": {
+        "estado": "publicado Admira Studio Stock · FLT-101050",
+        "externalRef": "estanteria-libros:creatividad-sa-es",
+        "url": "https://api.admira.store/stock/asset/1790375013351-f6ip4j",
+        "id": "1790375013351-f6ip4j",
+        "archivo": "modelos/creatividad-sa-es.glb"
+      },
+      "audio_resumen": {
+        "url": "audio/creatividad-sa-es.mp3",
+        "origen": "Admira Studio Stock · pista de voz de vídeo de cápsula",
+        "stock_video_id": "1790381303568-a5ddg0"
+      },
+      "foto_autor": {
+        "url": "autores/creatividad-sa-es.jpg",
+        "autor_foto": "Web Summit",
+        "licencia": "CC BY 2.0",
+        "fuente": "https://commons.wikimedia.org/wiki/File:Ed_Catmull_at_Web_Summit_2015_(cropped).jpg"
+      }
+    },
+    {
+      "slug": "the-impossible-factory-en",
+      "titulo": "The Impossible Factory",
+      "autor": "Josh Dean",
+      "consejero": "Steve Wozniak",
+      "consejero_id": "stevewozniak",
+      "capsula": {
+        "id": "1790336870230-3gr58a",
+        "titulo": "Skunk Works: equipos pequeños, cero burocracia, ingeniería simple",
+        "fecha": "2026-09-25T11:47:50.230Z",
+        "pixeria_url": "https://www.admira.studio/stock?highlight=1790336870230-3gr58a",
+        "asset_url": "https://stock.admira.store/stock/1790336870230-3gr58a/asset.bin?v=1363",
+        "otras_capsulas": []
+      },
+      "blinkist_url": "https://www.blinkist.com/en/books/the-impossible-factory-en",
+      "portada_blinkist_url": "https://images.blinkist.io/images/books/6a96b6a01ae22c000895f154/3_4/470.jpg",
+      "portada_espejo": "https://www.admira.studio/assets/xpaces/libros/portadas/the-impossible-factory-en.jpg",
+      "portada_casadellibro": "https://imagessl3.casadellibro.com/a/l/t7/23/9781524745523.jpg",
+      "portada_local": "portadas/the-impossible-factory-en-casadellibro.jpg",
+      "portada_px": {
+        "ancho": 552,
+        "alto": 828
+      },
+      "isbn": "9781524745516",
+      "edicion": "The Impossible Factory: The Remarkable True Story of Kelly Johnson and the Lockheed Skunk Works, America's Innovation Machine · Dutton, 19-may-2026 · eBook (EPUB) en inglés; es la edición que vende Casa del Libro (ficha 17403821). Tapa dura en inglés: 9781524745516 (campo isbn)",
+      "casadellibro_url": "https://www.casadellibro.com/ebook-the-impossible-factory-ebook/9781524745523/17403821",
+      "medidas_cm": null,
+      "modelo_glb": {
+        "estado": "publicado Admira Studio Stock · FLT-101050",
+        "externalRef": "estanteria-libros:the-impossible-factory-en",
+        "url": "https://api.admira.store/stock/asset/1790375069695-idmmd3",
+        "id": "1790375069695-idmmd3",
+        "archivo": "modelos/the-impossible-factory-en.glb"
+      },
+      "isbn_ebook": "9781524745523",
+      "audio_resumen": {
+        "url": "audio/the-impossible-factory-en.mp3",
+        "origen": "Admira Studio Stock · pista de voz de vídeo de cápsula",
+        "stock_video_id": "1790381512526-e2fgiy"
+      }
+    },
+    {
+      "slug": "co-intelligence-en",
+      "titulo": "Co-Intelligence: Living and Working with AI",
+      "autor": "Ethan Mollick",
+      "consejero": "Steve Jobs",
+      "consejero_id": "stevejobs",
+      "capsula": {
+        "id": "1790336817010-dieu0q",
+        "titulo": "Co-Intelligence: la IA como compañera, no como piloto automático",
+        "fecha": "2026-09-25T11:46:57.010Z",
+        "pixeria_url": "https://www.admira.studio/stock?highlight=1790336817010-dieu0q",
+        "asset_url": "https://stock.admira.store/stock/1790336817010-dieu0q/asset.bin?v=1433",
+        "otras_capsulas": []
+      },
+      "blinkist_url": "https://www.blinkist.com/en/books/co-intelligence-en",
+      "portada_blinkist_url": "https://images.blinkist.io/images/books/663b4e4c195d960008e2c08f/3_4/470.jpg",
+      "portada_espejo": "https://www.admira.studio/assets/xpaces/libros/portadas/co-intelligence-en.jpg",
+      "portada_casadellibro": "https://imagessl4.casadellibro.com/a/l/t0/14/9788418053214.jpg",
+      "portada_local": "portadas/co-intelligence-en-casadellibro.jpg",
+      "portada_px": {
+        "ancho": 650,
+        "alto": 997
+      },
+      "isbn": "9788418053214",
+      "edicion": "Cointeligencia. Vivir y trabajar con la IA · Conecta, 2024 · tapa blanda · castellano",
+      "casadellibro_url": "https://www.casadellibro.com/libro-cointeligencia/9788418053214/16155367",
+      "medidas_cm": {
+        "alto": 22.9,
+        "ancho": 15.2,
+        "grueso": 1.7
+      },
+      "modelo_glb": {
+        "estado": "publicado Admira Studio Stock · FLT-101050",
+        "externalRef": "estanteria-libros:co-intelligence-en",
+        "url": "https://api.admira.store/stock/asset/1790375124838-wgsi5x",
+        "id": "1790375124838-wgsi5x",
+        "archivo": "modelos/co-intelligence-en.glb"
+      },
+      "audio_resumen": {
+        "url": "audio/co-intelligence-en.mp3",
+        "origen": "Admira Studio Stock · pista de voz de vídeo de cápsula",
+        "stock_video_id": "1790381114920-6ovpds"
+      }
+    },
+    {
+      "slug": "creative-confidence-en",
+      "titulo": "Creative Confidence",
+      "autor": "Tom Kelley, David Kelley",
+      "consejero": "Walt Disney",
+      "consejero_id": "waltdisney",
+      "capsula": {
+        "id": "1789973466669-pw0xxa",
+        "titulo": "La chispa antes del pixel: creatividad canónica AdmiraNeXT",
+        "fecha": "2026-09-21T06:51:06.669Z",
+        "pixeria_url": "https://www.admira.studio/stock?highlight=1789973466669-pw0xxa",
+        "asset_url": "https://stock.admira.store/stock/1789973466669-pw0xxa/asset.bin?v=521",
+        "otras_capsulas": []
+      },
+      "blinkist_url": "https://www.blinkist.com/en/books/creative-confidence-en",
+      "portada_blinkist_url": "https://images.blinkist.io/images/books/53fcd12e3762620008000000/3_4/470.jpg",
+      "portada_espejo": "https://www.admira.studio/assets/xpaces/libros/portadas/creative-confidence-en.jpg",
+      "portada_casadellibro": "https://imagessl6.casadellibro.com/a/l/t7/76/9780385349376.jpg",
+      "portada_local": "portadas/creative-confidence-en-casadellibro.jpg",
+      "portada_px": {
+        "ancho": 552,
+        "alto": 849
+      },
+      "isbn": "9780385349376",
+      "edicion": "Creative Confidence · Crown · eBook en inglés (sin edición en castellano; es la que vende Casa del Libro). Tapa en inglés: 9780385349369",
+      "casadellibro_url": "https://www.casadellibro.com/ebook-creative-confidence-ebook/9780385349376/17352716",
+      "medidas_cm": null,
+      "modelo_glb": {
+        "estado": "publicado Admira Studio Stock · FLT-101050",
+        "externalRef": "estanteria-libros:creative-confidence-en",
+        "url": "https://api.admira.store/stock/asset/1790375180840-lnodeq",
+        "id": "1790375180840-lnodeq",
+        "archivo": "modelos/creative-confidence-en.glb"
+      },
+      "audio_resumen": {
+        "url": "audio/creative-confidence-en.mp3",
+        "origen": "Admira Studio Stock · pista de voz de vídeo de cápsula",
+        "stock_video_id": "auto-3910e930b0a79ff8384f"
+      },
+      "foto_autor": {
+        "url": "autores/creative-confidence-en.jpg",
+        "autor_foto": "Jonathan Chen",
+        "licencia": "CC BY 2.0",
+        "fuente": "https://commons.wikimedia.org/wiki/File:David_M_Kelley_(9375796736)_(cropped).jpg"
+      }
+    }
+  ],
+  "url_estable": {
+    "produccion": "https://www.admira.studio/assets/xpaces/libros/estanteria-libros.json",
+    "github": "https://raw.githubusercontent.com/csilvasantin/pixeria/main/assets/xpaces/libros/estanteria-libros.json"
+  },
+  "portadas": {
+    "fuente": "Casa del Libro (imagen de portada de la ficha casadellibro_url; mayor resolución disponible en imagessl*.casadellibro.com), copiada al despliegue por CORS",
+    "blinkist": "portada_blinkist_url y portada_espejo se conservan aparte",
+    "verificado": "2026-09-26"
+  },
+  "discos": {
+    "fuente": "iTunes Search API (country=es); previews oficiales reproducidas desde Apple, sin alojar MP3",
+    "etiqueta_stock": "capsula-sonora",
+    "piezas": [
+      {
+        "slug": "billie-jean",
+        "artist": "Michael Jackson",
+        "title": "Billie Jean",
+        "album": "Thriller",
+        "trackId": 269573364,
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/dc/bc/8a/dcbc8a3e-4ce1-c00d-cc02-eda2212053c7/mzaf_8347559338388601510.plus.aac.p.m4a",
+        "appleMusicUrl": "https://music.apple.com/es/album/billie-jean/269572838?i=269573364&uo=4",
+        "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/32/4f/fd/324ffda2-9e51-8f6a-0c2d-c6fd2b41ac55/074643811224.jpg/600x600bb.jpg",
+        "hook": "El pulso imposible de Billie Jean convirtió una línea de bajo en suspense. Michael Jackson dejó espacio para cada golpe; escucha cómo una canción puede hacer bailar antes de contar su historia.",
+        "durationSeconds": 20,
+        "formats": [
+          "16:9",
+          "9:16"
+        ],
+        "stockId": "1790427924321-mmzq9g",
+        "stockUrl": "https://www.admira.studio/stock?highlight=1790427924321-mmzq9g"
+      },
+      {
+        "slug": "beat-it",
+        "artist": "Michael Jackson",
+        "title": "Beat It",
+        "album": "Thriller",
+        "trackId": 269573341,
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/88/cd/46/88cd46bd-dba7-1dc2-a63b-e8c111ac4fc3/mzaf_4042555053237612653.plus.aac.p.m4a",
+        "appleMusicUrl": "https://music.apple.com/es/album/beat-it/269572838?i=269573341&uo=4",
+        "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/32/4f/fd/324ffda2-9e51-8f6a-0c2d-c6fd2b41ac55/074643811224.jpg/600x600bb.jpg",
+        "hook": "Beat It une pop y guitarra de rock para hablar de salir de una pelea. La tensión crece en cada compás; escucha cómo Jackson convierte un consejo en un himno.",
+        "durationSeconds": 20,
+        "formats": [
+          "16:9",
+          "9:16"
+        ],
+        "stockId": "1790427964026-e6mcae",
+        "stockUrl": "https://www.admira.studio/stock?highlight=1790427964026-e6mcae"
+      },
+      {
+        "slug": "1999",
+        "artist": "Prince",
+        "title": "1999",
+        "album": "1999",
+        "trackId": 214145248,
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/9f/61/90/9f61901a-ad1e-5d03-210d-a68e3ed8af98/mzaf_1053844714447175007.plus.aac.p.m4a",
+        "appleMusicUrl": "https://music.apple.com/es/album/1999/214145240?i=214145248&uo=4",
+        "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music20/v4/b7/f7/51/b7f75189-e6d0-21e0-caf2-c2b5acbb6f33/dj.rpyatgbj.jpg/600x600bb.jpg",
+        "hook": "Prince imaginó una fiesta al borde del cambio de siglo. Sintetizadores brillantes y una frase inolvidable: escucha cómo 1999 invita a celebrar incluso cuando el futuro inquieta.",
+        "durationSeconds": 20,
+        "formats": [
+          "16:9",
+          "9:16"
+        ],
+        "stockId": "1790428024105-0dookx",
+        "stockUrl": "https://www.admira.studio/stock?highlight=1790428024105-0dookx"
+      },
+      {
+        "slug": "when-doves-cry",
+        "artist": "Prince",
+        "title": "When Doves Cry",
+        "album": "The Hits/The B-Sides",
+        "trackId": 212972932,
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/f0/51/fc/f051fcce-eb4f-f9d5-d7ea-eb137750d9a8/mzaf_15769385331104997195.plus.aac.p.m4a",
+        "appleMusicUrl": "https://music.apple.com/es/album/when-doves-cry/212972881?i=212972932&uo=4",
+        "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music/2b/d8/bf/mzi.leavbcjk.jpg/600x600bb.jpg",
+        "hook": "When Doves Cry rompió la fórmula del pop: Prince quitó el bajo y dejó que la batería y la voz llevaran el conflicto. Escucha ese vacío lleno de energía.",
+        "durationSeconds": 20,
+        "formats": [
+          "16:9",
+          "9:16"
+        ],
+        "stockId": "1790428081867-3ys3lr",
+        "stockUrl": "https://www.admira.studio/stock?highlight=1790428081867-3ys3lr"
+      },
+      {
+        "slug": "careless-whisper",
+        "artist": "George Michael",
+        "title": "Careless Whisper",
+        "album": "Ladies & Gentlemen",
+        "trackId": 429945616,
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/7c/bb/d8/7cbbd80c-29a1-6142-d0f3-de33e8569a0e/mzaf_12978360432335063808.plus.aac.p.m4a",
+        "appleMusicUrl": "https://music.apple.com/es/album/careless-whisper/429945575?i=429945616&uo=4",
+        "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/89/46/95/8946959a-e959-f22d-ced2-745feb799454/mzm.upagbaeg.jpg/600x600bb.jpg",
+        "hook": "Careless Whisper abre con un saxofón que ya parece una confesión. George Michael convirtió el remordimiento en melodía; escucha cómo la canción sostiene la emoción sin necesidad de explicarla.",
+        "durationSeconds": 20,
+        "formats": [
+          "16:9",
+          "9:16"
+        ],
+        "stockId": "1790428141954-yt4akd",
+        "stockUrl": "https://www.admira.studio/stock?highlight=1790428141954-yt4akd"
+      },
+      {
+        "slug": "faith",
+        "artist": "George Michael",
+        "title": "Faith",
+        "album": "Faith (2010 Remastered)",
+        "trackId": 395918958,
+        "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/3b/ba/fc/3bbafcda-8454-2df5-300a-3a215beb4abb/mzaf_17008812206809633065.plus.aac.p.m4a",
+        "appleMusicUrl": "https://music.apple.com/es/album/faith/395918916?i=395918958&uo=4",
+        "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/87/29/d2/8729d243-f06f-e588-3ddf-ffa87a2ce17e/mzi.yupygcca.jpg/600x600bb.jpg",
+        "hook": "Faith empieza casi desnuda: guitarra, pulso y la voz de George Michael. Con muy poco construye una identidad propia; escucha cómo cada silencio hace más fuerte el next acento.",
+        "durationSeconds": 20,
+        "formats": [
+          "16:9",
+          "9:16"
+        ],
+        "stockId": "1790428202615-fm56i9",
+        "stockUrl": "https://www.admira.studio/stock?highlight=1790428202615-fm56i9"
+      }
+    ]
+  }
+}
