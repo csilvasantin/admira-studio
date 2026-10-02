@@ -174,6 +174,7 @@ else
         '{version:$v,deployedAt:$t,author:$a,agent:$a,deployer:$a,machine:$m,signature:($a+" · "+$m),git:$c,gitShort:$cs,gitFull:$c,dirty:$d,espejoDe:"pixeria",fuente:$g}' \
         > version.json
   jq '{version,author,agent,deployer,machine,signature,git,gitShort,gitFull,dirty}' version.json > release-signature.json
+  python3 install-live-presence.py
   python3 scripts/check-release-contract.py version.json index.html
   python3 scripts/check-english.py .
   python3 scripts/check-javascript.py .

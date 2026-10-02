@@ -1,6 +1,6 @@
 import {handleAuth, hasSession, safeReturnTo} from './_auth.js';
 
-export async function onRequest(context) {
+async function guardedRequest(context) {
   const {request, env} = context;
   const url = new URL(request.url);
   const authResponse = await handleAuth(request, env);
@@ -48,3 +48,6 @@ function isDocumentPath(pathname) {
   if (!last.includes('.')) return true;
   return last.endsWith('.html') || last.endsWith('.htm');
 }
+
+import {withPresence} from "./_live-presence.js";
+export async function onRequest(context) { return withPresence(await guardedRequest(context)); }

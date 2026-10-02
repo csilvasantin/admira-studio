@@ -1241,6 +1241,9 @@
     "Las rutas inglesas originales se conservan para no romper enlaces históricos."
   ],
   "excluidos": [
+    "functions/_live-presence.js",
+    "install-live-presence.py",
+    "docs/live-analytics.md",
     "CNAME",
     "deploy.sh",
     "wrangler.toml",
