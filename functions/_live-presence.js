@@ -11,6 +11,6 @@ export function withPresence(response) {
     response = new Response(response.body, {status:response.status, statusText:response.statusText, headers});
   }
   return new HTMLRewriter().on('head', { element(el) {
-    el.append('<script defer src="https://www.admiranext.com/assets/live-presence.js?v=1"></script>', {html:true});
+    el.append('<script defer src="https://www.admiranext.com/assets/live-presence.js?v=2"></script>', {html:true});
   }}).transform(response);
 }
