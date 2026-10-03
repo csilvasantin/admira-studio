@@ -3,8 +3,8 @@ export const SCHEMA = 'admira.xpacio.ci/1';
 export const PENDIENTE = 'pendiente';
 
 const CATEGORIA = {
-  Furniture: 'mobiliario',
-  Screens: 'pantallas',
+  Mobiliario: 'mobiliario',
+  Pantallas: 'pantallas',
   Equipamiento: 'equipamiento',
   Iluminacion: 'iluminacion',
   Vegetacion: 'plantas',
@@ -38,7 +38,7 @@ export function fichaDe(row) {
     modelo: texto(row?.modelo),
     serie: texto(row?.serie),
     compra: {
-      fecha: texto(row?.compraDate),
+      fecha: texto(row?.compraFecha),
       proveedor: texto(row?.compraProveedor),
       factura: texto(row?.factura),
     },

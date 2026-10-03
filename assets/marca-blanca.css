@@ -1,4 +1,4 @@
-/* Brand blanca en Admira Studio / Admira Studio (FLT-101333). Solo se descarga cuando hay marca
+/* Marca blanca en Admira Studio / Admira Studio (FLT-101333). Solo se descarga cuando hay marca
    activa (assets/marca-blanca.js la inserta) y todo va bajo
    :root[data-mb-marca][data-mb-plataforma="studio"], que pone el cargador común: sin marca
    esta hoja no existe en la página y Admira Studio queda exactamente como siempre.
@@ -95,7 +95,7 @@
 :root[data-mb-marca][data-mb-plataforma="studio"] .mb-volver::before{content:"↩";margin-right:8px}
 :root[data-mb-marca][data-mb-plataforma="studio"] .mb-volver:hover{background:var(--mbx-brand);color:var(--mbx-on-brand)}
 :root[data-mb-marca][data-mb-plataforma="studio"] .mb-volver:focus-visible{outline:2px solid var(--mbx-brand);outline-offset:3px}
-/* Layers de respaldo de site-nav.js (familias sin raíles). */
+/* Capas de respaldo de site-nav.js (familias sin raíles). */
 :root[data-mb-marca][data-mb-plataforma="studio"] .pix-nav-layer{background:var(--mbx-panel)!important;color:var(--mbx-ink)!important;border-color:var(--mb-borde)!important;box-shadow:var(--mb-sombra-md,none)!important;font-family:var(--mb-fuente-etiquetas)!important;border-radius:var(--mb-radio-md,10px)}
 :root[data-mb-marca][data-mb-plataforma="studio"] .pix-nav-layer a{color:var(--mbx-ink)!important;border-color:var(--mb-borde)!important;border-radius:var(--mb-radio-sm,6px)}
 :root[data-mb-marca][data-mb-plataforma="studio"] .pix-nav-layer a:hover{color:var(--mbx-brand)!important;border-color:var(--mbx-brand)!important}

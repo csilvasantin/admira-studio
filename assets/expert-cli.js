@@ -3,9 +3,9 @@
   'use strict';
   // ─── Piezas puras (también se prueban en node: test/marca-blanca.test.cjs) ───
   var COMMANDS = ['help', 'clear', 'echo', 'date', 'status', 'version', 'history', 'open', 'marca', 'avatardigital', 'digitalavatar'];
-  var BRAND_VERB = /^\/?(?:marca|brand|marcablanca)$/i;
+  var MARCA_VERB = /^\/?(?:marca|brand|marcablanca)$/i;
   // Semilla del catálogo de admiranext.com/marcablanca: vale para el Tab sin red. Con la
-  // marca blanca cargada se usa la lista real (AdmiraBrand.conocidas()).
+  // marca blanca cargada se usa la lista real (AdmiraMarca.conocidas()).
   var BRAND_SEED = ['admira', 'lumbre', 'brumelle', 'frescaria'];
   function commonPrefix(list) {
     return list.reduce(function (a, b) { var i = 0; while (i < a.length && a[i] === b[i]) i++; return a.slice(0, i); }, list[0] || '');
@@ -26,23 +26,23 @@
     var a = text.match(/^(\s*\/?(\S+)\s+)(\S*)$/);
     if (!a) return {value: text, options: []};
     var verb = a[2].toLowerCase(), part = a[3].toLowerCase();
-    var pool = BRAND_VERB.test(verb) ? (brandIds && brandIds.length ? brandIds : BRAND_SEED).concat(['off'])
+    var pool = MARCA_VERB.test(verb) ? (brandIds && brandIds.length ? brandIds : BRAND_SEED).concat(['off'])
       : (verb === 'open' || verb === 'abrir') ? (sections || []) : [];
     var options = pool.filter(function (o, i) { return o.indexOf(part) === 0 && pool.indexOf(o) === i; });
     if (!options.length) return {value: text, options: []};
     if (options.length === 1) return {value: a[1] + options[0], options: options};
     return {value: a[1] + commonPrefix(options), options: options};
   }
-  // /marca <id|off|web> (alias /brand). M es window.AdmiraBrand (assets/marca-blanca.js);
+  // /marca <id|off|web> (alias /brand). M es window.AdmiraMarca (assets/marca-blanca.js);
   // write pinta una línea en la consola. → Promise<{ok}>
-  function runBrand(arg, M, en, write) {
+  function runMarca(arg, M, en, write) {
     function t(es, english) { return en ? english : es; }
     function tag(b) { return b && b.propuesta ? t(' · propuesta automática, no es la marca oficial', ' · automatic proposal, not the official brand') : b && b.ejemplo ? t(' · marca ficticia de ejemplo', ' · fictional sample brand') : ''; }
     function list(items) { return items.map(function (b) { return b.id + (b.propuesta ? t(' (propuesta)', ' (proposal)') : b.ejemplo ? t(' (ejemplo)', ' (sample)') : ''); }).join(', '); }
     if (!M) { write(t('La marca blanca aún no está lista en esta página. Vuelve a intentarlo en un momento.', 'White label is not ready on this page yet. Try again in a moment.')); return Promise.resolve({ok: false}); }
     var p = M.parseArg(arg);
     if (p.kind === 'invalid') {
-      write(t('Brand no válida: «' + p.input + '».', 'Invalid brand: “' + p.input + '”.') + '\n' +
+      write(t('Marca no válida: «' + p.input + '».', 'Invalid brand: “' + p.input + '”.') + '\n' +
         t('Usa un id del catálogo (' + M.conocidas().map(function (b) { return b.id; }).join(', ') + '), off para volver a Admira o una web (starbucks.es) para analizarla.',
           'Use a catalogue id (' + M.conocidas().map(function (b) { return b.id; }).join(', ') + '), off to return to Admira or a website (starbucks.es) to analyse it.'));
       return Promise.resolve({ok: false});
@@ -50,7 +50,7 @@
     if (p.kind === 'status') {
       var now = M.actual();
       write(now
-        ? t('Brand activa: ' + now.nombre + ' (' + now.id + ')' + tag(now) + '. /marca off vuelve a Admira.', 'Active brand: ' + now.nombre + ' (' + now.id + ')' + tag(now) + '. /marca off returns to Admira.')
+        ? t('Marca activa: ' + now.nombre + ' (' + now.id + ')' + tag(now) + '. /marca off vuelve a Admira.', 'Active brand: ' + now.nombre + ' (' + now.id + ')' + tag(now) + '. /marca off returns to Admira.')
         : t('Sin marca blanca: ves el aspecto de Admira.', 'No white label: you see the Admira look.'));
       return M.listar().then(function (items) { write(t('Disponibles: ', 'Available: ') + list(items) + '.'); return {ok: true}; },
         function () { write(t('No se pudo leer el catálogo de admiranext.com. Conocidas: ', 'Could not read the admiranext.com catalogue. Known: ') + list(M.conocidas()) + '.'); return {ok: false}; });
@@ -58,7 +58,7 @@
     if (p.kind === 'off') {
       var r = M.desactivar();
       write(r.changed && r.previous
-        ? t('Brand ' + r.previous.nombre + ' desactivada: vuelve Admira.', r.previous.nombre + ' brand turned off: back to Admira.')
+        ? t('Marca ' + r.previous.nombre + ' desactivada: vuelve Admira.', r.previous.nombre + ' brand turned off: back to Admira.')
         : t('No había ninguna marca blanca activa: ya ves Admira.', 'No white label was active: you already see Admira.'));
       return Promise.resolve({ok: true});
     }
@@ -70,7 +70,7 @@
     }
     write(t('Aplicando la marca ' + p.id + '…', 'Applying the ' + p.id + ' brand…'));
     return M.activar(p.id).then(function (res) {
-      if (res.ok) { write(t('Brand ' + res.nombre + ' (' + res.id + ') activa' + tag(res) + '. Se mantiene al navegar en esta pestaña; /marca off vuelve a Admira.', res.nombre + ' (' + res.id + ') brand on' + tag(res) + '. It stays while you browse in this tab; /marca off returns to Admira.')); return {ok: true}; }
+      if (res.ok) { write(t('Marca ' + res.nombre + ' (' + res.id + ') activa' + tag(res) + '. Se mantiene al navegar en esta pestaña; /marca off vuelve a Admira.', res.nombre + ' (' + res.id + ') brand on' + tag(res) + '. It stays while you browse in this tab; /marca off returns to Admira.')); return {ok: true}; }
       if (res.reason === 'unknown') {
         write(t('La marca «' + p.id + '» no está en el catálogo de admiranext.com. No se ha aplicado nada.', 'The brand “' + p.id + '” is not in the admiranext.com catalogue. Nothing was applied.') + '\n' +
           t('Disponibles: ', 'Available: ') + list(M.conocidas()) + t('. Para crearla: /marca <web de la marca>.', '. To create it: /marca <brand website>.'));
@@ -80,7 +80,7 @@
       return {ok: false};
     });
   }
-  var pure = {COMMANDS: COMMANDS, BRAND_SEED: BRAND_SEED, BRAND_VERB: BRAND_VERB, complete: complete, runBrand: runBrand};
+  var pure = {COMMANDS: COMMANDS, BRAND_SEED: BRAND_SEED, MARCA_VERB: MARCA_VERB, complete: complete, runMarca: runMarca};
   if (typeof module !== 'undefined' && module.exports) module.exports = pure;
   if (typeof document === 'undefined') return;
 
@@ -213,10 +213,10 @@
     while (log.childElementCount > 200) log.firstChild.remove();
     log.scrollTop = log.scrollHeight;
   }
-  // La marca blanca se carga al usarla (site-nav.js la expone en AdmiraStudioBrand.cargar).
+  // La marca blanca se carga al usarla (site-nav.js la expone en PixeriaMarca.cargar).
   function marca() {
-    if (window.AdmiraBrand) return Promise.resolve(window.AdmiraBrand);
-    return window.AdmiraStudioBrand && window.AdmiraStudioBrand.cargar ? window.AdmiraStudioBrand.cargar().catch(function () { return null; }) : Promise.resolve(null);
+    if (window.AdmiraMarca) return Promise.resolve(window.AdmiraMarca);
+    return window.PixeriaMarca && window.PixeriaMarca.cargar ? window.PixeriaMarca.cargar().catch(function () { return null; }) : Promise.resolve(null);
   }
   function cargarAvatar() {
     if (window.AvatarDigital) return Promise.resolve(window.AvatarDigital);
@@ -231,14 +231,14 @@
   }
   function execute(command) {
     var words = command.trim().split(/\s+/), name = words.shift().toLowerCase().replace(/^\//, ''), arg = words.join(' ');
-    if (BRAND_VERB.test(name)) {
-      marca().then(function (M) { return runBrand(arg, M, en, write); });
+    if (MARCA_VERB.test(name)) {
+      marca().then(function (M) { return runMarca(arg, M, en, write); });
       return;
     }
     switch (name) {
       case 'help': case 'ayuda':
-        write(t('Comandos en este browser:', 'Commands in this browser:') + '\nhelp · clear · echo <text> · date · status · version · history\nopen <home|audio|music|images|video|stock|assets|docs|radar>\n' +
-          t('/marca [marca] — Brand blanca del catálogo de admiranext.com/marcablanca: /marca <id> viste la web con esa marca, /marca off vuelve a Admira, /marca sola dice cuál está activa y lista las disponibles, /marca <web> abre el analizador en otra pestaña. Alias: /brand.',
+        write(t('Comandos en este navegador:', 'Commands in this browser:') + '\nhelp · clear · echo <text> · date · status · version · history\nopen <home|audio|music|images|video|stock|assets|docs|radar>\n' +
+          t('/marca [marca] — Marca blanca del catálogo de admiranext.com/marcablanca: /marca <id> viste la web con esa marca, /marca off vuelve a Admira, /marca sola dice cuál está activa y lista las disponibles, /marca <web> abre el analizador en otra pestaña. Alias: /brand.',
             '/marca [brand] — White label from the admiranext.com/marcablanca catalogue: /marca <id> dresses the site in that brand, /marca off returns to Admira, /marca alone shows the active one and lists them, /marca <website> opens the analyser in a new tab. Alias: /brand.') + '\n' +
           t('marca: off (Admira), ', 'brand: off (Admira), ') + brandIds().join(', ') + t(' · o una web para analizarla (starbucks.es)', ' · or a website to analyse (starbucks.es)') + '\n' +
           t('/avatarDigital [on|off] — avatar digital (alias /digitalAvatar, /cli ayudante, /cli helper). Sin argumento alterna.',
@@ -280,7 +280,7 @@
     execute(command);
   });
   function brandIds() {
-    try { if (window.AdmiraBrand) return window.AdmiraBrand.conocidas().map(function (b) { return b.id; }); } catch (_) {}
+    try { if (window.AdmiraMarca) return window.AdmiraMarca.conocidas().map(function (b) { return b.id; }); } catch (_) {}
     return BRAND_SEED.slice();
   }
   input.addEventListener('keydown', function (ev) {
@@ -290,7 +290,7 @@
       ev.preventDefault();
       input.value = c.value;
       if (c.options.length > 1) { if (height === MIN) resize(expanded, false); write(c.options.join('  ')); }
-      // Con /marca se trae el catálogo real para el next Tab (solo al usar /marca).
+      // Con /marca se trae el catálogo real para el siguiente Tab (solo al usar /marca).
       if (/^\s*\/?(?:marca|brand|marcablanca)\s/i.test(input.value)) marca().then(function (M) { if (M) M.listar().catch(function () {}); });
       return;
     }

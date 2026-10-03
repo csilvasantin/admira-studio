@@ -1,6 +1,6 @@
-## Anonymizer demo · Anonymizer demo
+## Anonimizador demo · Anonymizer demo
 
-ES: Abre https://www.admira.studio/anonimizador. Se carga por defecto visitor-green-v1, una persona ficticia con original y ejemplos 8, 16 y 32 bits. No necesita cámara, subida, generación ni publicación en Stock. Download guarda cada variante. Usar mi foto abre el flujo previous; Usar ejemplo recupera la demo. La transformación de una foto real no garantiza anonimización irreversible.
+ES: Abre https://www.admira.studio/anonimizador. Se carga por defecto visitor-green-v1, una persona ficticia con original y ejemplos 8, 16 y 32 bits. No necesita cámara, subida, generación ni publicación en Stock. Descargar guarda cada variante. Usar mi foto abre el flujo anterior; Usar ejemplo recupera la demo. La transformación de una foto real no garantiza anonimización irreversible.
 
 EN: Open https://www.admira.studio/en/anonimizador.html. visitor-green-v1 loads by default: a fictional person with an original and 8, 16 and 32-bit examples. No camera, upload, generation or Stock publication is required. Download saves each variant. Use my photo opens the existing workflow; Use example restores the demo. Transforming a real photo does not guarantee irreversible anonymization.
 

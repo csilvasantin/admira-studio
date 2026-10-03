@@ -1,4 +1,4 @@
-// Admira Studio · Adaptaciones (FLT-101349, 2-oct-2026): un vídeo → all screens.
+// Admira Studio · Adaptaciones (FLT-101349, 2-oct-2026): un vídeo → todas las pantallas.
 // Render en vivo en canvas; las reglas son las del motor de signage de Admira Studio.
 // Reutiliza el motor de reglas real de Admira Studio: assets/signage-perfiles.js
 import { perfilDeSalida, planificar } from '/assets/signage-perfiles.js';
@@ -9,7 +9,7 @@ const $ = (s) => document.querySelector(s);
 const FORMATOS = [
   { id: '9:16', nombre: 'Vertical 9:16', uso: 'tótem / escaparate', on: true },
   { id: '16:9', nombre: 'Horizontal 16:9', uso: 'mostrador / LED', on: true },
-  { id: '1:1', nombre: 'Square 1:1', uso: 'pantalla cuadrada / redes', on: true },
+  { id: '1:1', nombre: 'Cuadrado 1:1', uso: 'pantalla cuadrada / redes', on: true },
   { id: '4:5', nombre: 'Retrato 4:5', uso: 'feed / mupi pequeño', on: true, custom: [1080, 1350] },
 ];
 const MODOS = { auto: t('Auto (regla Admira Studio)', 'Auto (Admira Studio rule)'), cover: t('Recorte', 'Crop'), blur: t('Expandir · fondo desenfocado', 'Expand · blurred background'), contain: t('Contener · negro', 'Contain · black') };
@@ -153,10 +153,10 @@ $('#format-profile').onchange = (e) => {
 };
 $('#compat').onchange = (e) => { state.compat = e.target.value; buildGrid(); };
 
-// ── Altadis: 9 estancos + gemelo + recorrido estilo ChannelKiosk ─────────────
+// ── Altadis: 9 estancos + gemelo + recorrido estilo CanalKiosk ─────────────
 // Patrón copiado de admira.app (clearchannel-tv/app.js · startCircuitDemo /
 // showCircuitDemoPoint): parada a parada, estado «i/N · nombre», dwell fijo y
-// la next parada precargada; el previo abre la pantalla sobre la fachada.
+// la siguiente parada precargada; el previo abre la pantalla sobre la fachada.
 const TOUR_DWELL_MS = 8000;
 let ESTANCOS = [], ORIGEN = null, cur = 0, tour = null;
 async function loadEstancos() {
@@ -175,7 +175,7 @@ function proj(lat, lon) {
 }
 function drawMap() {
   const svg = $('#minimap'); const P = ESTANCOS.map((e) => proj(e.lat, e.lon)); const o = proj(ORIGEN.lat, ORIGEN.lon);
-  svg.innerHTML = `<text x="10" y="16" fill="#8a93a6" font-size="11">${t('Circuit Altadis','Altadis circuit')} · Gràcia (${t('ruta','route')} ${'≈'}${(ESTANCOS.reduce((a, e) => a + e.tramo_desde_previous_m, 0) / 1000).toFixed(1)} km)</text>
+  svg.innerHTML = `<text x="10" y="16" fill="#8a93a6" font-size="11">${t('Circuito Altadis','Altadis circuit')} · Gràcia (${t('ruta','route')} ${'≈'}${(ESTANCOS.reduce((a, e) => a + e.tramo_desde_anterior_m, 0) / 1000).toFixed(1)} km)</text>
     <polyline points="${P.map((p) => p.join(',')).join(' ')}" fill="none" stroke="#ff6a3d" stroke-width="2" stroke-dasharray="4 3"/>
     <rect x="${o[0] - 5}" y="${o[1] - 5}" width="10" height="10" fill="#3ddc97"/><text x="${o[0] + 8}" y="${o[1] + 4}" fill="#3ddc97" font-size="10">Planeta 7</text>
     ${P.map((p, i) => `<g data-i="${i}" style="cursor:pointer"><circle cx="${p[0]}" cy="${p[1]}" r="9" fill="#1b2030" stroke="#ff6a3d"/><text x="${p[0]}" y="${p[1] + 4}" text-anchor="middle" fill="#fff" font-size="10">${i + 1}</text></g>`).join('')}
@@ -195,7 +195,7 @@ function go(i) {
   $('#tour-status').textContent = tour ? `${t('Recorrido · parada','Tour · stop')} ${cur + 1}/${ESTANCOS.length} · ${e.name}` : `${t('Parada','Stop')} ${cur + 1}/${ESTANCOS.length}`;
 }
 function startTour() { stopTour(); tour = { i: cur }; $('#tour').textContent = t('■ Parar recorrido', '■ Stop tour'); go(cur); tour.timer = setInterval(() => { if (cur === ESTANCOS.length - 1) { stopTour(); $('#tour-status').textContent = `${t('Recorrido completado','Tour completed')} · ${ESTANCOS.length} ${t('estancos','stores')}`; return; } go(cur + 1); }, TOUR_DWELL_MS); }
-function stopTour() { if (tour) clearInterval(tour.timer); tour = null; $('#tour').textContent = t('▶ Recorrido del circuit', '▶ Circuit tour'); }
+function stopTour() { if (tour) clearInterval(tour.timer); tour = null; $('#tour').textContent = t('▶ Recorrido del circuito', '▶ Circuit tour'); }
 $('#prev').onclick = () => { stopTour(); go(cur - 1); };
 $('#next').onclick = () => { stopTour(); go(cur + 1); };
 $('#tour').onclick = () => (tour ? stopTour() : startTour());
@@ -210,12 +210,23 @@ if (altadisResponse.ok) {
 buildGrid(); setSource('/adaptaciones/media/jti-tu-sitio-de-siempre-fuente.mp4', 'JTI «Tu sitio de siempre»', true); loadEstancos(); loop();
 window.__pixAdapt = { go, startTour };
 
+// Índice del Stock: primero el proxy comprimido del propio dominio y, si no responde
+// JSON (sin sesión la verja redirige a /auth/login, y en admira.studio ese salto
+// cambia de host y el fetch revienta por CORS), el bucket público con CORS abierto.
+async function fetchStockIndex() {
+  for (const url of ['/stock-index', 'https://stock.admira.store/stock/index.json']) {
+    try {
+      const response = await fetch(url, url.startsWith('/') ? { redirect: 'manual', credentials: 'same-origin' } : { credentials: 'omit' });
+      if (!response.ok || !/json/i.test(response.headers.get('content-type') || '')) continue;
+      return await response.json();
+    } catch (_) { /* siguiente origen */ }
+  }
+  throw new Error('stock unavailable');
+}
+
 async function loadStock() {
   try {
-    let response = await fetch('/stock-index');
-    if (!response.ok) response = await fetch('https://stock.admira.store/stock/index.json');
-    if (!response.ok) throw new Error('stock unavailable');
-    const data = await response.json();
+    const data = await fetchStockIndex();
     const videos = (data.items || []).filter(item => item.type === 'video' && (item.url || item.mediaUrl));
     for (const item of videos) {
       const url = item.url || item.mediaUrl;
@@ -224,7 +235,7 @@ async function loadStock() {
       option.textContent = 'Stock · ' + (item.title || item.name || item.id);
       $('#src-select').append(option);
     }
-    $('#stock-status').textContent = t('Videos Stock disponibles: ', 'Stock videos available: ') + (videos.length + 1);
+    $('#stock-status').textContent = t('Vídeos Stock disponibles: ', 'Stock videos available: ') + (videos.length + 1);
   } catch (_) { $('#stock-status').textContent = t('Stock remoto no disponible. Puedes usar la muestra o subir un vídeo.', 'Remote Stock unavailable. Use the sample or upload a video.'); }
 }
 loadStock();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,38 +20,38 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=03.10.2026.r2.0726';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=03.10.2026.r3.0736';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
   <!-- GATE-FIN -->
 
 <meta charset="utf-8">
-<script>if ((location.hostname.endsWith('admira.studio') || location.hostname.endsWith('pages.dev')) && !location.pathname.startsWith('/') && new URLSearchParams(location.search).get('lang') !== 'es') location.replace('/adaptaciones/' + location.search);</script>
+<script>if (/(^|\.)pixeria\.(com|pages\.dev)$/.test(location.hostname) && !location.pathname.startsWith('/en/') && new URLSearchParams(location.search).get('lang') !== 'es') location.replace('/en/adaptaciones/' + location.search);</script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r2.07:26">
+  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r3.07:36">
 <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
 <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <title>Adaptador · Un contenido, todos los formatos | Admira Studio</title>
-  <meta name="description" content="Adaptaciones de Admira Studio: coge un vídeo y lo adapta a vertical 9:16, horizontal 16:9, cuadrado 1:1 y 4:5 con encuadre ajustable, listo para cada pantalla del circuit.">
+  <meta name="description" content="Adaptaciones de Admira Studio: coge un vídeo y lo adapta a vertical 9:16, horizontal 16:9, cuadrado 1:1 y 4:5 con encuadre ajustable, listo para cada pantalla del circuito.">
   <link rel="canonical" href="https://www.admira.studio/adaptaciones/">
-  <link rel="stylesheet" href="/adaptaciones/adaptaciones.css?v=03.10.2026.r2.0726">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r2.0726">
-  <script defer src="/assets/site-nav.js?v=03.10.2026.r2.0726"></script>
+  <link rel="stylesheet" href="/adaptaciones/adaptaciones.css?v=03.10.2026.r3.0736">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r3.0736">
+  <script defer src="/assets/site-nav.js?v=03.10.2026.r3.0736"></script>
 </head>
 <body class="adapt-page">
   <script>document.body.classList.add('pf-left-off','pf-right-off','pf-bottom-off');</script>
   <header class="site-header">
     <a class="brand" href="/" aria-label="Admira Studio inicio"><span>Admira Studio</span></a>
-    <nav class="nav" aria-label="Admira Studio sections">
-      <a href="/audio.html">Audio</a><a href="/musica.html">Music</a><a href="/imagenes.html">Images</a><a href="/video.html">Video</a><a href="/stock.html">Stock</a>
+    <nav class="nav" aria-label="Secciones de Admira Studio">
+      <a href="/audio.html">Audio</a><a href="/musica.html">Música</a><a href="/imagenes.html">Imágenes</a><a href="/video.html">Video</a><a href="/stock.html">Stock</a>
     </nav>
   </header>
   <main class="adapt-main">
@@ -91,16 +91,16 @@
 </div>
     </section>
 
-    <details id="sec-altadis" class="card"><summary>Ejemplo de aplicación · circuit Altadis</summary>
-      <div class="sec-hd"><h2>Aplicación · Altadis · 9 estancos de Barcelona</h2><span class="tag">circuit altadis_bcn</span></div>
+    <details id="sec-altadis" class="card"><summary>Ejemplo de aplicación · circuito Altadis</summary>
+      <div class="sec-hd"><h2>Aplicación · Altadis · 9 estancos de Barcelona</h2><span class="tag">circuito altadis_bcn</span></div>
       <p class="muted">Cada estanco lleva dos pantallas: <b>P1 vertical 1080×1920</b> en el escaparate y <b>P2 horizontal 1920×1080</b> sobre el mostrador; cada una recibe su adaptación. Los puntos van en orden de ruta desde Planeta 7 (Gràcia).</p>
       <div class="altadis">
         <ol id="lista-estancos" class="lista"></ol>
         <div class="twin-wrap">
           <div class="tour-bar">
-            <button id="prev" class="pill" type="button">◀ Previous</button>
-            <button id="tour" class="pill accent" type="button">▶ Recorrido del circuit</button>
-            <button id="next" class="pill" type="button">Next ▶</button>
+            <button id="prev" class="pill" type="button">◀ Anterior</button>
+            <button id="tour" class="pill accent" type="button">▶ Recorrido del circuito</button>
+            <button id="next" class="pill" type="button">Siguiente ▶</button>
             <span id="tour-status" class="muted"></span>
           </div>
           <div class="twin" id="twin">
@@ -120,15 +120,15 @@
               </div>
             </div>
             <div class="twin-ft muted" id="twin-ft"></div>
-            <div class="twin-links"><a id="link-gemelo" target="_blank" rel="noopener">Abrir gemelo 3D en XpaceOS ↗</a> · <a href="https://www.admira.app/?circuit=altadis_bcn" target="_blank" rel="noopener">Circuit en admira.app ↗</a></div>
+            <div class="twin-links"><a id="link-gemelo" target="_blank" rel="noopener">Abrir gemelo 3D en XpaceOS ↗</a> · <a href="https://www.admira.app/?circuit=altadis_bcn" target="_blank" rel="noopener">Circuito en admira.app ↗</a></div>
           </div>
-          <svg id="minimap" class="minimap" viewBox="0 0 400 260" role="img" aria-label="Mapa del circuit"></svg>
+          <svg id="minimap" class="minimap" viewBox="0 0 400 260" role="img" aria-label="Mapa del circuito"></svg>
         </div>
       </div>
     </details>
   </main>
-  <script type="module" src="/adaptaciones/adaptaciones.js?v=03.10.2026.r2.0726"></script>
-  <script defer src="/assets/cuadratura.js?v=03.10.2026.r2.0726"></script>
+  <script type="module" src="/adaptaciones/adaptaciones.js?v=03.10.2026.r3.0736"></script>
+  <script defer src="/assets/cuadratura.js?v=03.10.2026.r3.0736"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>

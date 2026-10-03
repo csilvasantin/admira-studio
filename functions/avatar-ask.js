@@ -8,11 +8,11 @@ const BRAIN = 'https://brain.digitalavatar.ai/metahuman/ask';
 const SHEET = {
   es: [
     'AdmiraNeXT tiene cuatro pilares, en este orden: Studio, Store, App y Yokup.',
-    'Studio (admira.studio; la cara Admira es admira.studio) es el estudio para crear contenido con IA. Su modo Experto es la consola del browser: /help, /clear, /echo, /date, /status, /version, /history y /open (secciones home, audio, music, images, video, stock, assets, docs, radar).',
+    'Studio (admira.studio; la cara Admira es admira.studio) es el estudio para crear contenido con IA. Su modo Experto es la consola del navegador: /help, /clear, /echo, /date, /status, /version, /history y /open (secciones home, audio, music, images, video, stock, assets, docs, radar).',
     'Store (xpaceos.com y admira.store) es el sistema operativo de la tienda Admira XP. El gemelo digital está en /admira-xp/. El modo Experto es la barra inferior. En cualquier página: /help, /limpiar, /gemelo y /marca (marca blanca; /marca off vuelve a Admira). Los verbos del gemelo (good, better, best, matrix, /distribuir, /inventario, /sincro) se ejecutan en /admira-xp/.',
-    'App (admira.app y clearchannel.tv) es la cara de circuits de publicidad exterior. Tiene su propia consola de experto en esa web.',
+    'App (admira.app y clearchannel.tv) es la cara de circuitos de publicidad exterior. Tiene su propia consola de experto en esa web.',
     'Yokup (yokup.com) es la bandeja de la flota: encargos, decisiones y normativa. No es el estudio ni la tienda.',
-    'El avatar digital se invoca desde el modo Experto con /avatarDigital, /digitalAvatar, /cli ayudante o /cli helper. Sin argumento alterna. on/off, encender/apagar y mostrar/ocultar lo fijan. El estado se recuerda en este sitio, en el browser. No hay claves en la página.',
+    'El avatar digital se invoca desde el modo Experto con /avatarDigital, /digitalAvatar, /cli ayudante o /cli helper. Sin argumento alterna. on/off, encender/apagar y mostrar/ocultar lo fijan. El estado se recuerda en este sitio, en el navegador. No hay claves en la página.',
   ],
   en: [
     'AdmiraNeXT has four pillars, in this order: Studio, Store, App and Yokup.',

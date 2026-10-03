@@ -231,7 +231,7 @@ async function upsertUser(env, identity) {
 }
 
 export async function createApiToken(env, email, now = Math.floor(Date.now() / 1000)) {
-  if (!env.PIXERIA_SIGNING_KEY) throw new Error('PIXERIA_SIGNING_KEY is not configured');
+  if (!env.PIXERIA_SIGNING_KEY) throw new Error('PIXERIA_SIGNING_KEY no configurado');
   const payload = base64url(encoder.encode(JSON.stringify({
     v:1, aud:'api.admira.store', email, iat:now, exp:now + API_TOKEN_TTL_SECONDS,
   })));
@@ -258,7 +258,7 @@ export async function verifyApiToken(token, env, now = Math.floor(Date.now() / 1
 }
 
 async function createSessionToken(env, user) {
-  if (!env.PIXERIA_SIGNING_KEY) throw new Error('PIXERIA_SIGNING_KEY is not configured');
+  if (!env.PIXERIA_SIGNING_KEY) throw new Error('PIXERIA_SIGNING_KEY no configurado');
   const now = Math.floor(Date.now() / 1000);
   const payload = base64url(encoder.encode(JSON.stringify({
     v:1, aud:'admira.studio', email:user.email, sub:user.google_sub,
@@ -325,8 +325,8 @@ function secureHeaders(contentType = 'text/html; charset=utf-8') {
 }
 
 function loginPage(nonce, error = '') {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admira Studio · Access</title><style>
-  :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 35%,#18240e,#070a04 68%);color:#f4e2b0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.box{width:100%;max-width:430px;min-width:0;padding:36px 30px;border:1px solid #b5651d;border-radius:16px;background:#120d06;box-shadow:0 25px 80px #000b;text-align:center}.mark{color:#e8c25a;font:700 12px ui-monospace,monospace;letter-spacing:.24em;text-transform:uppercase}h1{margin:16px 0 8px;font-size:28px}p{margin:0 0 24px;color:#baaa86;line-height:1.55}.picker{display:flex;justify-content:center;min-height:44px;max-width:100%;overflow:hidden}@media (max-width:430px){body{padding:14px}.box{padding:28px 18px}}.error{margin-top:18px;color:#ff8f7a;font:600 13px ui-monospace,monospace}.foot{margin-top:24px;color:#74684f;font:11px ui-monospace,monospace}</style></head><body><main class="box"><div class="mark">Admira Studio · Google</div><h1>Continue with Google</h1><p>Sign in once with your authorized Google account. The session lasts 24 hours in the tabs and windows of this browser and profile.</p><div id="g_id_onload" data-client_id="${CLIENT_ID}" data-login_uri="${CALLBACK_URI}" data-nonce="${escapeHtml(nonce)}" data-ux_mode="redirect" data-auto_prompt="false"></div><div class="picker"><div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="continue_with" data-locale="en" data-size="large" data-ux_mode="redirect"></div></div>${error ? `<div class="error">${escapeHtml(error)}</div>` : ''}<div class="foot">csilva@admira.com · csilvasantin@gmail.com</div></main><script src="https://accounts.google.com/gsi/client?hl=en" async defer></script></body></html>`;
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admira Studio · Acceso</title><style>
+  :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 35%,#18240e,#070a04 68%);color:#f4e2b0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.box{width:100%;max-width:430px;min-width:0;padding:36px 30px;border:1px solid #b5651d;border-radius:16px;background:#120d06;box-shadow:0 25px 80px #000b;text-align:center}.mark{color:#e8c25a;font:700 12px ui-monospace,monospace;letter-spacing:.24em;text-transform:uppercase}h1{margin:16px 0 8px;font-size:28px}p{margin:0 0 24px;color:#baaa86;line-height:1.55}.picker{display:flex;justify-content:center;min-height:44px;max-width:100%;overflow:hidden}@media (max-width:430px){body{padding:14px}.box{padding:28px 18px}}.error{margin-top:18px;color:#ff8f7a;font:600 13px ui-monospace,monospace}.foot{margin-top:24px;color:#74684f;font:11px ui-monospace,monospace}</style></head><body><main class="box"><div class="mark">Admira Studio · Google</div><h1>Acceso con Google</h1><p>Entra una vez con tu cuenta autorizada de Google. Tu sesión se conserva durante 24 horas en las pestañas y ventanas de este navegador y perfil.</p><div id="g_id_onload" data-client_id="${CLIENT_ID}" data-login_uri="${CALLBACK_URI}" data-nonce="${escapeHtml(nonce)}" data-ux_mode="redirect" data-auto_prompt="false"></div><div class="picker"><div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="continue_with" data-size="large" data-ux_mode="redirect"></div></div>${error ? `<div class="error">${escapeHtml(error)}</div>` : ''}<div class="foot">csilva@admira.com · csilvasantin@gmail.com</div></main><script src="https://accounts.google.com/gsi/client" async defer></script></body></html>`;
 }
 
 async function loginResponse(env, returnTo = '/', error = '', status = 401) {
@@ -338,7 +338,7 @@ async function loginResponse(env, returnTo = '/', error = '', status = 401) {
 
 function continuationResponse(returnTo) {
   const destination = safeReturnTo(returnTo);
-  return new Response(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=${escapeHtml(destination)}"><title>Entering · Admira Studio</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#070a04;color:#e8c25a;font:600 14px ui-monospace,monospace}</style></head><body>Session verified. Entering…</body></html>`, {
+  return new Response(`<!doctype html><html lang="es"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=${escapeHtml(destination)}"><title>Entrando · Admira Studio</title><style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#070a04;color:#e8c25a;font:600 14px ui-monospace,monospace}</style></head><body>Sesión verificada. Entrando…</body></html>`, {
     status:200,
     headers:{...secureHeaders(), refresh:`0;url=${destination}`, 'content-security-policy':"default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'"}
   });
@@ -370,14 +370,14 @@ export async function handleAuth(request, env) {
     const identity = await verifyGoogleCredential(String(form.get('credential') || ''));
     const ownNonce = cookieJar(request)[CHALLENGE_COOKIE] || '';
     if (!identity || !loginCsrfValid(request, form.get('g_csrf_token')) || !sameValue(identity.nonce, ownNonce)) {
-      return loginResponse(env, '/', 'Access could not be verified.', 401);
+      return loginResponse(env, '/', 'No se pudo verificar el acceso.', 401);
     }
     const returnTo = await consumeChallenge(env, identity.nonce);
     if (!returnTo || !(await emailAllowed(identity.email, env))) {
-      return loginResponse(env, '/', 'This account is not authorized for Admira Studio.', 403);
+      return loginResponse(env, '/', 'Cuenta no autorizada para Admira Studio.', 403);
     }
     const user = await upsertUser(env, identity);
-    if (!user || user.status !== 'active') return loginResponse(env, '/', 'This account is not authorized for Admira Studio.', 403);
+    if (!user || user.status !== 'active') return loginResponse(env, '/', 'Cuenta no autorizada para Admira Studio.', 403);
     const token = await createSessionToken(env, user);
     const response = continuationResponse(returnTo);
     response.headers.append('Set-Cookie', `${SESSION_COOKIE}=${token}; Path=/; Max-Age=${SESSION_TTL_SECONDS}; HttpOnly; Secure; SameSite=Lax`);

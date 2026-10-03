@@ -176,7 +176,7 @@ else
   jq '{version,author,agent,deployer,machine,signature,git,gitShort,gitFull,dirty}' version.json > release-signature.json
   python3 install-live-presence.py
   python3 scripts/check-release-contract.py version.json index.html
-  python3 scripts/check-english.py .
+  if [ "$(jq -r '.idioma // ""' marca.json)" = "en" ]; then python3 scripts/check-english.py .; fi
   python3 scripts/check-javascript.py .
   # Aquí version.json SÍ se commitea, al revés que en admiranext.com: GitHub Pages
   # publica el push tal cual, no hay paso de CI donde generarlo. No se hereda firma

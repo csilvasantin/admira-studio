@@ -14,7 +14,7 @@
  },
  "items": {
   "pantalla": {
-   "nombre": "Screen / pizarra digital",
+   "nombre": "Pantalla / pizarra digital",
    "clase": "Hardware · Display",
    "tiers": {
     "good": {
@@ -303,7 +303,7 @@
   },
   "camara": {
    "nombre": "Cámara",
-   "clase": "Hardware · Video / aforo",
+   "clase": "Hardware · Vídeo / aforo",
    "tiers": {
     "good": {
      "bits": 8,

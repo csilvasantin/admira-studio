@@ -904,7 +904,7 @@ body[data-page="admira-xp"] .primary-nav a[data-nav="admira-xp"] {
   max-height: 300px;
 }
 
-/* Target builder cards (Advertising con Target) */
+/* Target builder cards (Publicidad con Target) */
 .targets-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -1029,7 +1029,7 @@ body[data-page="admira-xp"] .primary-nav a[data-nav="admira-xp"] {
 .pixer-progress-status .right { color: var(--ink); opacity: .8; }
 
 main, header.page-head, footer { width: min(1180px, calc(100% - 40px)); margin: 0 auto; position: relative; }
-/* Bloques de capacidad (PA, Hilo musical…) viven entre el page-head y el
+/* Bloques de capacidad (Megafonía, Hilo musical…) viven entre el page-head y el
    <main>: sin esto iban de borde a borde (Carlos, 29-sep-2026). Mismo ancho y
    márgenes laterales que el <main>. */
 header.page-head ~ section.module { box-sizing: border-box; width: min(1180px, calc(100% - 40px)); margin: 0 auto 18px; }
@@ -1040,7 +1040,7 @@ header.page-head ~ section.module { box-sizing: border-box; width: min(1180px, c
    (anonimizador) y 40px (avatar) a la IZQUIERDA de las imágenes — se veía descuadrado.
    Aquí el head copia el ancho Y el padding del main de cada página, así el texto y las
    imágenes comparten los dos bordes. Se apunta por data-page (no :has()) para no
-   depender del soporte del browser. */
+   depender del soporte del navegador. */
 body[data-page="anonimizador"] header.page-head {
   width: min(1080px, calc(100% - 40px));
   padding-left: 20px;
@@ -1189,7 +1189,7 @@ p { margin: 0; }
 .home-card small { color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; display: block; margin-top: 8px; }
 .home-card small::before { content: "// "; }
 
-/* Modulo formulario (Audio/Music/Images/Video) */
+/* Modulo formulario (Audio/Musica/Imagenes/Video) */
 .module {
   border: 1px solid var(--line-bright);
   border-radius: 0;
@@ -1946,7 +1946,7 @@ pre.brief {
   transition: width .06s linear;
 }
 
-/* Botón "Lanzar AdmiraXperience" en la cabecera de Platform */
+/* Botón "Lanzar AdmiraXperience" en la cabecera de Plataforma */
 .xp-launch {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -1993,7 +1993,7 @@ pre.brief {
   .xp-launch-tag { justify-self: start; }
 }
 
-/* Platform grid */
+/* Plataforma grid */
 .platform-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .platform-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; justify-content: space-between; margin-bottom: 18px; }
 .platform-head h2 { margin: 0; }
@@ -2318,7 +2318,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   cursor: pointer;
   transition: background .15s, border-color .15s, color .15s;
 }
-/* "+ more": añade metatags propias (a la derecha de las auto-tags). Verde matriz
+/* "+ más": añade metatags propias (a la derecha de las auto-tags). Verde matriz
    para distinguirlo de las etiquetas automáticas (moradas). */
 .stock-tag-more {
   appearance: none;
@@ -2523,7 +2523,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   align-items: center;
   gap: 6px;
 }
-/* El display:flex de arriba pisaba el [hidden] del browser: las flechas del
+/* El display:flex de arriba pisaba el [hidden] del navegador: las flechas del
    paginador superior seguían visibles al filtrar a una sola página. */
 .stock-pager-controls[hidden] { display: none; }
 .stock-pager-btn {

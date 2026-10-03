@@ -1,4 +1,4 @@
-# Brand blanca en Admira Studio / White label (FLT-101333)
+# Marca blanca en Admira Studio / White label (FLT-101333)
 
 Admira Studio (admira.studio, la pata «Studio crea» de admira.studio) puede vestirse con la marca de un cliente del **catálogo único** de https://www.admiranext.com/marcablanca (semillas Admira, Lumbre, BRUMELLE y Frescaria, y las marcas guardadas después, p. ej. `starbucks`). Sigue el mismo diseño, textos y reglas que admira.app (FLT-101331, `clearchannel-tv/docs/marca-blanca.md`).
 
@@ -18,11 +18,11 @@ La marca se mantiene al navegar entre páginas de la misma pestaña. Una pestañ
 
 ## Cómo se carga (un solo enganche)
 
-- **`assets/site-nav.js`** (el shell común: lo cargan 57 de las 73 páginas, ver `docs/shell-cuadratico.md`) es el único punto de entrada. Si la pestaña pide marca (`?marca=` en la URL o `mb:marca` recordada) inserta `assets/marca-blanca.js` con **su mismo sello** (`?v=`). Si no, no carga nada: una visita normal no descarga ni un byte nuevo. La consola experta lo carga al usar `/marca` (`window.AdmiraStudioBrand.cargar()`). Ninguna página lo enlaza a mano.
+- **`assets/site-nav.js`** (el shell común: lo cargan 57 de las 73 páginas, ver `docs/shell-cuadratico.md`) es el único punto de entrada. Si la pestaña pide marca (`?marca=` en la URL o `mb:marca` recordada) inserta `assets/marca-blanca.js` con **su mismo sello** (`?v=`). Si no, no carga nada: una visita normal no descarga ni un byte nuevo. La consola experta lo carga al usar `/marca` (`window.PixeriaMarca.cargar()`). Ninguna página lo enlaza a mano.
 - `assets/marca-blanca.js`, con marca:
   1. **Comprueba primero** que existe: `GET https://www.admiranext.com/marcablanca/api/marcas/<id>` (CORS `*`, 8 s como mucho). 404 → no existe. Si la API no responde, prueba el JSON estático `clientes/<id>.json`, como el cargador común.
-  2. Solo entonces carga `marcablanca.css` y `marcablanca.js` de admiranext.com (`data-mb-plataforma="studio"`, `data-mb-auto="false"`) y `assets/marca-blanca.css` (los ajustes de Admira Studio, con el mismo sello), y llama a `BrandBlanca.aplicar(id, {plataforma: 'studio'})`.
-  3. Si algo falla, no queda nada a medias: Admira Studio sigue igual y solo hay un aviso en la consola del browser (en el CLI, un mensaje claro).
+  2. Solo entonces carga `marcablanca.css` y `marcablanca.js` de admiranext.com (`data-mb-plataforma="studio"`, `data-mb-auto="false"`) y `assets/marca-blanca.css` (los ajustes de Admira Studio, con el mismo sello), y llama a `MarcaBlanca.aplicar(id, {plataforma: 'studio'})`.
+  3. Si algo falla, no queda nada a medias: Admira Studio sigue igual y solo hay un aviso en la consola del navegador (en el CLI, un mensaje claro).
 - El catálogo completo (`/marcablanca/api/marcas`) solo se pide con una marca activa o al usar `/marca`; mientras, el Tab usa la semilla.
 
 ## Qué cambia
@@ -30,10 +30,10 @@ La marca se mantiene al navegar entre páginas de la misma pestaña. Una pestañ
 - **Barra de las 4 bandas**: fondo de la marca casi opaco con borde inferior. Composición: [Opciones] **logo del cliente** (enlace al inicio) **│ powered by Admira Studio**, en pequeño y en el gris de la marca, en el lugar de la marca de Admira Studio; las secciones y los iconos Avanzado y Experto, con los colores de la marca. Bajo 600 px solo queda el logo. Si la marca no tiene logo, su nombre. El `title` del logo avisa si es una **propuesta automática** («no es la marca oficial») o una **marca ficticia de ejemplo**.
 - **Bandas Opciones / Avanzado / Experto**, la consola experta, módulos, tarjetas, botones, chips, campos, tablas del Stock, pestañas de Assets, chat de Concepto, radar y bloques editoriales de la portada: superficies, bordes, radios y textos de la marca.
 - **Variables de Admira Studio** (`--bg --panel --panel-2 --ink --muted --line --line-bright --matrix --matrix-deep --xp --image --video --audio --music --cyan --gold --green --coral --glow`): pasan a la marca. El puente común de `marcablanca.css` ya traduce las de studio; `marca-blanca.css` las vuelve a fijar con los textos corregidos.
-- **Legibilidad (AA)**: `marca-blanca.js` calcula tokens `--mbx-*` (texto, texto suave, marca, acento, ok, aviso, error, texto sobre marca y sobre acento, y los colores por tipo de contenido): toma el color de la marca si contrasta ≥ 4,5:1 con el fondo, la superficie y la superficie alternativa; si no, el next candidato y, en último caso, negro o blanco. Starbucks es una marca **clara**: su verde `#006241` y su gris `#576061` se mantienen; el dorado `#C58800` no llega a AA sobre blanco y cede al verde.
-- **Identidad Matrix**: la lluvia de characters, el tinte verde, las líneas CRT y los halos de neón no se pintan con marca.
+- **Legibilidad (AA)**: `marca-blanca.js` calcula tokens `--mbx-*` (texto, texto suave, marca, acento, ok, aviso, error, texto sobre marca y sobre acento, y los colores por tipo de contenido): toma el color de la marca si contrasta ≥ 4,5:1 con el fondo, la superficie y la superficie alternativa; si no, el siguiente candidato y, en último caso, negro o blanco. Starbucks es una marca **clara**: su verde `#006241` y su gris `#576061` se mantienen; el dorado `#C58800` no llega a AA sobre blanco y cede al verde.
+- **Identidad Matrix**: la lluvia de caracteres, el tinte verde, las líneas CRT y los halos de neón no se pintan con marca.
 - **Tipografía**: textos con `--mb-fuente-texto`, títulos con `--mb-fuente-titulos`, etiquetas y botones con `--mb-fuente-etiquetas`, consola y código con `--mb-fuente-mono` (el cargador carga las fuentes del catálogo).
-- **Pestaña**: favicon y theme-color de la marca y título «Name del cliente · título de la página».
+- **Pestaña**: favicon y theme-color de la marca y título «Nombre del cliente · título de la página».
 
 ## Qué no cambia
 
@@ -54,7 +54,7 @@ Desde FLT-101334 `404.html` y `tester/` también tienen la barra de 4 bandas, co
 | Fichero | Papel |
 |---|---|
 | `assets/site-nav.js` | Único enganche: carga `marca-blanca.js` (y la consola experta) con su sello, solo si la pestaña pide marca o se usa `/marca`. |
-| `assets/marca-blanca.js` | Decide la marca, comprueba el catálogo, carga lo necesario, aplica, deshace y expone `window.AdmiraBrand` (`actual`, `conocidas`, `listar`, `activar`, `desactivar`, `analizar`). |
+| `assets/marca-blanca.js` | Decide la marca, comprueba el catálogo, carga lo necesario, aplica, deshace y expone `window.AdmiraMarca` (`actual`, `conocidas`, `listar`, `activar`, `desactivar`, `analizar`). |
 | `assets/marca-blanca.css` | Todo bajo `:root[data-mb-marca][data-mb-plataforma="studio"]`. Solo se descarga con marca. |
 | `assets/expert-cli.js` | Verbo `/marca` (alias `/brand`), Tab y `help`. |
 | `test/marca-blanca.test.cjs` | Sin marca no se carga nada; catálogo antes que nada; AA; verbo y Tab. |

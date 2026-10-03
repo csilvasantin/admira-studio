@@ -18,16 +18,16 @@ export const DEMO_STATUS={S2:'warn',A1:'down','pantalla-recogida':'warn','camara
  *  dibujo propio (pendiente), «Sin dato». Nunca es un dato real. */
 export function demoStatus(id,pendiente=false){return DEMO_STATUS[id]||(pendiente?'unknown':'ok');}
 // ─── Fuente ÚNICA de verdad: qué es un elemento ITIL (CI) en el inventario del Xpacio ───
-// Cuenta como elemento ITIL todo equipo de TECNOLOGÍA / INFRASTRUCTURE TI del inventario:
+// Cuenta como elemento ITIL todo equipo de TECNOLOGÍA / INFRAESTRUCTURA TI del inventario:
 //   · categoría «IoT» (altavoces, aroma, wifi, gateway, router, switch, cámara, alarma, datáfono, impresora, amplificador…)
-//   · categoría «Screens» (pizarras y pantalla de recogida)
+//   · categoría «Pantallas» (pizarras y pantalla de recogida)
 //   · y de «Equipamiento» solo lo que es TI: TPV (pos) y SAI (ups).
 // No cuentan mobiliario, iluminación, vegetación, arquitectura ni maquinaria de cocina/clima.
 // Los 4 niveles (8/16/32/64) dibujan EXACTAMENTE este conjunto; lo que no tiene dibujo propio
 // sale con el icono genérico «pendiente». El total no depende del nivel.
-export const ITIL_CI_CATEGORIAS=new Set(['IoT','Screens']);
+export const ITIL_CI_CATEGORIAS=new Set(['IoT','Pantallas']);
 export const ITIL_CI_TIPOS_EQUIPAMIENTO=new Set(['pos','ups']);
-export const ITIL_CI_CRITERIO='Equipos de tecnología/infraestructura TI del inventario: categorías IoT y Screens, más TPV y SAI de Equipamiento.';
+export const ITIL_CI_CRITERIO='Equipos de tecnología/infraestructura TI del inventario: categorías IoT y Pantallas, más TPV y SAI de Equipamiento.';
 export const ITIL_CI_CRITERIO_EN='IT technology/infrastructure items in the inventory: IoT and Screens categories, plus POS and UPS from Equipment.';
 export function isItilCI(e){
   if(!e)return false;

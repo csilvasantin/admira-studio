@@ -2,9 +2,9 @@
  *
  * El problema que resuelve: en toda la casa el botón de descargar era
  * `<a href="https://…r2.dev/…" download>`. El atributo `download` lo IGNORAN los
- * browseres cuando el href es de otro origen (spec HTML: solo se respeta en
+ * navegadores cuando el href es de otro origen (spec HTML: solo se respeta en
  * same-origin), así que el clic no guardaba nada — abría el asset en una pestaña
- * y, si el browser sabía pintarlo (mp4, jpg, mp3), se quedaba ahí reproducido.
+ * y, si el navegador sabía pintarlo (mp4, jpg, mp3), se quedaba ahí reproducido.
  * Encima el nombre del fichero lo ponía R2: `asset.mp4`, igual para los 756.
  *
  * Aquí se descarga de verdad: fetch → blob → objectURL (que YA es same-origin, y
@@ -19,7 +19,7 @@
  *   descargar(url, nombre)   → Promise<{ok, via, bytes}>
  *   item(it)                 → descarga un asset del Stock con su nombre bueno
  *   lote(items)              → varios en serie, con un solo aviso de progreso
- *   soportada()              → false en browseres sin Blob/objectURL
+ *   soportada()              → false en navegadores sin Blob/objectURL
  *
  * v.28.08.2026.r1 · NeoMBP16 · MacBookPro16
  */
@@ -47,7 +47,7 @@
            typeof URL.createObjectURL === 'function';
   }
 
-  // ── Name de fichero ──────────────────────────────────────────────────────
+  // ── Nombre de fichero ──────────────────────────────────────────────────────
   // Objetivo: que la carpeta de Descargas se pueda leer. Nada de `asset(3).mp4`.
   function slug(txt, max) {
     return String(txt || '')
@@ -87,7 +87,7 @@
     var texto = slug(rotulo, 55);
     var ext = opts.ext || extDeUrl(it.url) || EXT_POR_MIME[it.mime] || EXT_POR_TIPO[it.type] || 'bin';
     // Cola corta del id: en un lote de variantes del mismo prompt evita que el
-    // browser vaya poniendo (1), (2), (3) y se pierda cuál es cuál.
+    // navegador vaya poniendo (1), (2), (3) y se pierda cuál es cuál.
     var cola = slug(String(it.id || '').split('-').pop(), 8);
     var partes = ['pixeria', tipo];
     if (texto) partes.push(texto);
@@ -101,7 +101,7 @@
     var href = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = href;
-    a.download = filename;              // same-origin (blob:) → el browser obedece
+    a.download = filename;              // same-origin (blob:) → el navegador obedece
     a.rel = 'noopener';
     a.style.display = 'none';
     document.body.appendChild(a);
@@ -114,7 +114,7 @@
   }
 
   // Lo de antes: enlace directo. Ni renombra ni garantiza guardado, pero abre el
-  // asset y desde ahí el usuario siempre puede hacer «Save como».
+  // asset y desde ahí el usuario siempre puede hacer «Guardar como».
   function respaldo(url, filename) {
     try {
       var a = document.createElement('a');
@@ -135,7 +135,7 @@
     var onProgress = typeof opts.onProgress === 'function' ? opts.onProgress : function () {};
     if (!url) return Promise.resolve({ ok: false, via: 'ninguno', error: 'sin url' });
     if (!soportada()) {
-      return Promise.resolve({ ok: respaldo(url, filename), via: 'enlace', error: 'browser sin Blob/objectURL', filename: filename });
+      return Promise.resolve({ ok: respaldo(url, filename), via: 'enlace', error: 'navegador sin Blob/objectURL', filename: filename });
     }
     return fetch(url, { mode: 'cors', credentials: 'omit', cache: 'no-store', signal: opts.signal })
       .then(function (r) {
@@ -235,7 +235,7 @@
   }
 
   // ── Cara pública: varios, en serie ─────────────────────────────────────────
-  // En serie a propósito: en paralelo el browser corta las descargas múltiples
+  // En serie a propósito: en paralelo el navegador corta las descargas múltiples
   // y además se comería la RAM con varios vídeos a la vez.
   function lote(items, opts) {
     opts = opts || {};
@@ -243,7 +243,7 @@
     if (!lista.length) { aviso('Nada que descargar en la selección').cerrar(); return Promise.resolve([]); }
     var av = aviso('⬇ Descargando 1 de ' + lista.length + '…');
     var hechos = [], i = 0;
-    function next() {
+    function siguiente() {
       if (i >= lista.length) {
         var ok = hechos.filter(function (r) { return r.ok; }).length;
         av.texto((ok === lista.length ? '✓ ' : '⚠ ') + ok + ' de ' + lista.length + ' descargados');
@@ -257,16 +257,16 @@
         .then(function (res) {
           hechos.push(res); i++;
           // Respiro entre ficheros: Chrome bloquea la ráfaga si van pegados.
-          return new Promise(function (r) { setTimeout(r, 350); }).then(next);
+          return new Promise(function (r) { setTimeout(r, 350); }).then(siguiente);
         });
     }
-    return Promise.resolve().then(next);
+    return Promise.resolve().then(siguiente);
   }
 
   // Para lo que no es un fichero remoto sino texto que vive en el propio índice
   // (las cápsulas del Stock no tienen url: su contenido es el comentario).
   function texto(contenido, filename) {
-    if (!soportada()) return { ok: false, error: 'browser sin Blob' };
+    if (!soportada()) return { ok: false, error: 'navegador sin Blob' };
     guardarBlob(new Blob([String(contenido == null ? '' : contenido)], { type: 'text/plain;charset=utf-8' }), filename);
     var av = aviso('\u2713 Guardado \u00b7 ' + filename); av.cerrar();
     return { ok: true, via: 'texto', filename: filename };

@@ -20,25 +20,25 @@
 (function () {
   // ── Fuente ÚNICA de las secciones del raíl OPCIONES (mismo orden que la home) ──
   var SECTIONS = [
-    { href: '/crear/',            t: 'Studio · Create',    d: 'Generate assets: video, image, audio, text, furniture' },
-    { href: '/musica.html',       t: 'Music',            d: 'Soundtracks, jingles and sonic branding' },
-    { href: '/audio.html',        t: 'Audio · PA', d: 'Voices, voice-over and brand public address' },
-    { href: '/video.html',        t: 'Video',             d: 'Storyboards, generation, editing and loops' },
+    { href: '/crear/',            t: 'Studio · Crear',    d: 'Generar assets: video, imagen, audio, texto, mobiliario' },
+    { href: '/musica.html',       t: 'Música',            d: 'Bandas sonoras, jingles y marca sonora' },
+    { href: '/audio.html',        t: 'Audio · Megafonía', d: 'Voces, locución y megafonía de marca' },
+    { href: '/video.html',        t: 'Vídeo',             d: 'Storyboards, generación, edición y loops' },
     { href: '/adaptaciones/', t: 'Adaptador', d: 'Un contenido, todos los formatos de pantalla' },
-    { href: '/imagenes.html',     t: 'Images',          d: 'Art direction, product and style' },
-    { href: '/avatar.html',       t: 'Avatar 3D',         d: 'Generative presenters and avatars' },
-    { href: '/anonimizador.html', t: 'Anonymizer',      d: 'Privacy for image and video' },
-    { href: '/plataforma.html',   t: 'Platform',        d: 'Layer map, engines and XpaceOS output' },
-    { href: '/stock.html',        t: 'Stock',             d: 'Public gallery of deployed assets' },
-    { href: '/crear-campana/',    t: 'Campaigns',          d: 'Buying and activation across locations and screens' },
-    { href: '/publicidad.html',   t: 'Advertising',        d: 'Formats and assets by channel' },
-    { href: '/clearchannel/',     t: 'Demo Clear Channel', d: 'Pixer Feed live on real screens' }
+    { href: '/imagenes.html',     t: 'Imágenes',          d: 'Dirección de arte, producto y estilo' },
+    { href: '/avatar.html',       t: 'Avatar 3D',         d: 'Presentadores y avatares generativos' },
+    { href: '/anonimizador.html', t: 'Anonimizador',      d: 'Privacidad en imagen y vídeo' },
+    { href: '/plataforma.html',   t: 'Plataforma',        d: 'Mapa de capas, motores y salida a XpaceOS' },
+    { href: '/stock.html',        t: 'Stock',             d: 'Galería pública de assets desplegados' },
+    { href: '/crear-campana/',    t: 'Campañas',          d: 'Compra y activación en puntos y pantallas' },
+    { href: '/publicidad.html',   t: 'Publicidad',        d: 'Formatos y activos por canal' },
+    { href: '/clearchannel/',     t: 'Demo Clear Channel', d: 'Pixer Feed en vivo sobre pantallas reales' }
   ];
   var DOCS = [
     { href: '/radar/',            t: 'Radar completo de modelos' },
     { href: '/plataforma.html',   t: 'Arquitectura de plataforma' },
-    { href: '/documentacion/',    t: 'Documentation' },
-    { href: '/concepto.html',     t: 'Admira Studio concept' }
+    { href: '/documentacion/',    t: 'Documentación' },
+    { href: '/concepto.html',     t: 'Concepto Admira Studio' }
   ];
 
   var PANELS = [
@@ -76,23 +76,23 @@
     var ver = (document.querySelector('meta[name="admiranext-version"]') || {}).content || 'Admira Studio';
     var left = document.createElement('aside');
     left.className = 'rail rail-left';
-    left.setAttribute('aria-label', 'Options · Admira Studio sections');
-    left.innerHTML = '<div class="rail-hd">🔍 Options</div>' +
-      '<nav class="rail-nav" aria-label="Admira Studio sections">' +
+    left.setAttribute('aria-label', 'Opciones · secciones de Admira Studio');
+    left.innerHTML = '<div class="rail-hd">🔍 Opciones</div>' +
+      '<nav class="rail-nav" aria-label="Secciones de Admira Studio">' +
       SECTIONS.map(function (s) {
         var cur = normPath(s.href) === here;
         return '<a href="' + s.href + '"' + (cur ? ' class="rail-cur" aria-current="page"' : '') + '>' +
           '<b>' + esc(s.t) + '</b><small>' + esc(s.d) + '</small></a>';
       }).join('') + '</nav>' +
-      '<div class="rail-options-meta" aria-label="Admira Studio release">' +
+      '<div class="rail-options-meta" aria-label="Release de Admira Studio">' +
       '<span class="rail-ver">' + esc(ver) + '</span></div>';
 
     var right = document.createElement('aside');
     right.className = 'rail rail-right';
-    right.setAttribute('aria-label', 'Advanced · method and details');
+    right.setAttribute('aria-label', 'Avanzado · método y detalle');
     var tpl = document.getElementById('cuad-avanzado');   // contenido AVANZADO propio de la página (opcional)
-    right.innerHTML = '<div class="rail-hd">⚙️ Advanced</div>' + (tpl ? tpl.innerHTML :
-      '<div class="rail-extra"><p class="rail-sub">Expanded radar and documentation</p>' +
+    right.innerHTML = '<div class="rail-hd">⚙️ Avanzado</div>' + (tpl ? tpl.innerHTML :
+      '<div class="rail-extra"><p class="rail-sub">Radar ampliado y documentación</p>' +
       DOCS.map(function (d) { return '<a class="rail-doc" href="' + d.href + '">' + esc(d.t) + ' &rarr;</a>'; }).join('') +
       '</div>');
 
@@ -103,7 +103,7 @@
       '<div class="rail-meta">' +
       '<a href="https://www.admira.live">Estado del equipo · Live</a>' +
       '<a href="/radar/">Radar</a>' +
-      '<a href="/documentacion/">Documentation</a>' +
+      '<a href="/documentacion/">Documentación</a>' +
       '<a href="https://www.xpaceos.com">XpaceOS</a>' +
       '<a href="https://www.admira.app">Admira</a>' +
       '</div>';
@@ -275,7 +275,7 @@
     left.className = 'pf-topbar-left';
     // Barra de 4 bandas (Carlos 29-sep-2026): Opciones a la izquierda y, al
     // fondo a la derecha, Avanzado justo antes de Experto. Sin la «P» de logo
-    // y sin Contact en la barra (el contacto sigue en el pie de la página).
+    // y sin Contacto en la barra (el contacto sigue en el pie de la página).
     left.appendChild(leftToggle);
 
     var brand = document.createElement('a');
@@ -287,7 +287,7 @@
 
     var nav = document.createElement('nav');
     nav.className = 'pf-topbar-nav';
-    nav.setAttribute('aria-label', 'Main Admira Studio sections');
+    nav.setAttribute('aria-label', 'Secciones principales de Admira Studio');
     mainNavItems().forEach(function (item) {
       var a = document.createElement('a');
       a.href = item.href;

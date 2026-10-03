@@ -72,7 +72,7 @@
       ],
       "variante": "signage/variantes/campana-demo--uhd-4k-landscape.mp4",
       "bytes": 10470545,
-      "seconds": 3.2
+      "segundos": 3.2
     },
     {
       "perfil": {
@@ -120,7 +120,7 @@
       "notas": [],
       "variante": "signage/variantes/campana-demo--fhd-landscape.mp4",
       "bytes": 6694222,
-      "seconds": 1
+      "segundos": 1
     },
     {
       "perfil": {
@@ -174,7 +174,7 @@
       ],
       "variante": "signage/variantes/campana-demo--fhd-portrait.mp4",
       "bytes": 4762405,
-      "seconds": 0.8
+      "segundos": 0.8
     },
     {
       "perfil": {
@@ -227,7 +227,7 @@
       ],
       "variante": "signage/variantes/campana-demo--uhd-portrait.mp4",
       "bytes": 7315425,
-      "seconds": 2.3
+      "segundos": 2.3
     },
     {
       "perfil": {
@@ -277,7 +277,7 @@
       ],
       "variante": "signage/variantes/campana-demo--qhd-landscape.mp4",
       "bytes": 9576279,
-      "seconds": 1.6
+      "segundos": 1.6
     },
     {
       "perfil": {
@@ -324,7 +324,7 @@
       "notas": [],
       "variante": "signage/variantes/campana-demo--hd-legacy.mp4",
       "bytes": 3359376,
-      "seconds": 0.6
+      "segundos": 0.6
     },
     {
       "perfil": {
@@ -371,7 +371,7 @@
       "notas": [],
       "variante": "signage/variantes/campana-demo--hd-720-android.mp4",
       "bytes": 2522013,
-      "seconds": 0.6
+      "segundos": 0.6
     },
     {
       "perfil": {
@@ -422,7 +422,7 @@
       ],
       "variante": "signage/variantes/campana-demo--barra-samsung-ohn.mp4",
       "bytes": 3211391,
-      "seconds": 0.6
+      "segundos": 0.6
     },
     {
       "perfil": {
@@ -475,7 +475,7 @@
       ],
       "variante": "signage/variantes/campana-demo--barra-lg-88bh7d.mp4",
       "bytes": 5685704,
-      "seconds": 0.8
+      "segundos": 0.8
     },
     {
       "perfil": {
@@ -522,7 +522,7 @@
       "notas": [],
       "variante": "signage/variantes/campana-demo--videowall-tile-fhd.mp4",
       "bytes": 6748144,
-      "seconds": 1
+      "segundos": 1
     }
   ]
 }

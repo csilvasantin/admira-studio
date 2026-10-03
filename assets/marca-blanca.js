@@ -1,4 +1,4 @@
-// Brand blanca en Admira Studio / Admira Studio (FLT-101333), la pata «Studio crea».
+// Marca blanca en Admira Studio / Admira Studio (FLT-101333), la pata «Studio crea».
 // Viste la web con una marca del catálogo único de https://www.admiranext.com/marcablanca
 // (tokens --mb-*, logo, nombre, favicon y tipografía), igual que admira.app (FLT-101331).
 //
@@ -167,7 +167,7 @@
 
   const api = {BASE, PLATAFORMA, SESSION_KEY, MODE_KEY, SEED, OFF, ID_RE, TIMEOUT, fold, isOff, decide, decideMode, looksLikeUrl, normalizeUrl, analyzerUrl, brandUrl, parseArg, parseColor, contrast, pick, shellTokens};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
-  if (typeof document === 'undefined' || root.AdmiraBrand) return;
+  if (typeof document === 'undefined' || root.AdmiraMarca) return;
 
   // ─── Navegador ───
   const doc = document, html = doc.documentElement;
@@ -236,7 +236,7 @@
     return cssPromise;
   }
   function loadLoader(modo) {
-    if (root.BrandBlanca && root.BrandBlanca.version) return Promise.resolve(root.BrandBlanca);
+    if (root.MarcaBlanca && root.MarcaBlanca.version) return Promise.resolve(root.MarcaBlanca);
     if (!loaderPromise) {
       loaderPromise = timeout(new Promise((resolve, reject) => {
         const s = doc.createElement('script');
@@ -246,7 +246,7 @@
         s.setAttribute('data-mb-modo', modo || 'marca');
         s.setAttribute('data-mb-auto', 'false');   // la aplica Admira Studio cuando ha comprobado el catálogo
         s.setAttribute('data-admira-marca', '');
-        s.onload = () => (root.BrandBlanca ? resolve(root.BrandBlanca) : reject(new Error('marcablanca.js sin BrandBlanca')));
+        s.onload = () => (root.MarcaBlanca ? resolve(root.MarcaBlanca) : reject(new Error('marcablanca.js sin MarcaBlanca')));
         s.onerror = () => { s.remove(); reject(new Error('no se pudo cargar marcablanca.js')); };
         doc.head.append(s);
       }), TIMEOUT, 'marcablanca.js');
@@ -324,15 +324,15 @@
     slot.toggleAttribute('data-mb-propuesta', current.propuesta);
     if (!slot.firstChild) {
       // El cargador pinta los [data-mb-logo] al aplicar; si la barra llega después, el logo se copia.
-      const m = root.BrandBlanca && root.BrandBlanca.actual && root.BrandBlanca.actual.marca;
+      const m = root.MarcaBlanca && root.MarcaBlanca.actual && root.MarcaBlanca.actual.marca;
       const logo = m && m.logo;
       if (logo && logo.imagen && !logo.svg) {
         const img = doc.createElement('img');
         img.src = logo.imagen; img.alt = logo.alt || current.nombre; img.className = 'mb-logo-img'; img.decoding = 'async';
         slot.append(img);
-      } else if (logo && logo.svg && root.BrandBlanca.aplicar) {
+      } else if (logo && logo.svg && root.MarcaBlanca.aplicar) {
         slot.textContent = current.nombre;
-        root.BrandBlanca.aplicar(current.id, {objetivo: slot, plataforma: PLATAFORMA, modo: current.modo, favicon: false}).catch(() => {});
+        root.MarcaBlanca.aplicar(current.id, {objetivo: slot, plataforma: PLATAFORMA, modo: current.modo, favicon: false}).catch(() => {});
       } else slot.textContent = current.nombre;   // marca sin logo
     }
   }
@@ -380,7 +380,7 @@
     if (snapshot.theme == null) { if (theme) theme.remove(); } else if (theme) theme.setAttribute('content', snapshot.theme);
     snapshot = null;
   }
-  // Título de la pestaña: «Name del cliente · título de la página».
+  // Título de la pestaña: «Nombre del cliente · título de la página».
   let lastPrefix = '';
   const prefix = () => (current ? current.nombre + ' · ' : '');
   function paintTitle() {
@@ -492,12 +492,12 @@
     const url = normalizeUrl(value);
     if (!url) return {ok: false, reason: 'invalid'};
     const href = analyzerUrl(url);
-    // Con noopener el browser devuelve null aunque abra la pestaña: el CLI enseña el enlace igualmente.
+    // Con noopener el navegador devuelve null aunque abra la pestaña: el CLI enseña el enlace igualmente.
     try { root.open(href, '_blank', 'noopener'); } catch (_) {}
     return {ok: true, href, url};
   }
 
-  root.AdmiraBrand = Object.freeze(Object.assign({}, api, {
+  root.AdmiraMarca = Object.freeze(Object.assign({}, api, {
     actual: () => (current ? Object.assign({}, current) : null),
     conocidas: () => known.slice(),
     listar, activar, desactivar, analizar,

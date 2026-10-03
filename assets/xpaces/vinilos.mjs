@@ -1,4 +1,4 @@
-// Capsules sonoras: locución primero, preview oficial de Apple después (#4419).
+// Cápsulas sonoras: locución primero, preview oficial de Apple después (#4419).
 import * as T from './engine/premium-three.mjs';
 
 export const PREVIEW_SECONDS=20;
@@ -11,7 +11,7 @@ export function drawDiscScreen(canvas,disc,phase){
  c.fillStyle='#e7bb75';c.font=`700 ${Math.round(w*.021)}px Arial`;c.fillText(phase==='preview'?'♫  PREVIEW OFICIAL · 20 S':'◉  CÁPSULA SONORA',tx,h*.16,tw);
  c.fillStyle='#fff6e9';c.font=`700 ${Math.round(w*.049)}px Georgia`;c.fillText(disc.title,tx,h*.34,tw);
  c.font=`400 ${Math.round(w*.029)}px Arial`;c.fillText(disc.artist,tx,h*.51,tw);
- c.font=`400 ${Math.round(w*.021)}px Arial`;c.fillText(phase==='preview'?'Voice en silencio · escucha el tema':'Portada y locución · el tema espera',tx,h*.67,tw);
+ c.font=`400 ${Math.round(w*.021)}px Arial`;c.fillText(phase==='preview'?'Voz en silencio · escucha el tema':'Portada y locución · el tema espera',tx,h*.67,tw);
  c.fillText('Comprar en Apple Music ↗',tx,h*.78,tw);
 }
 export function buildVinyls(shelf,discs){
@@ -44,7 +44,7 @@ export function playCapsule(disc,{onPhase=()=>{},onDone=()=>{},onError=()=>{}}={
  };
  onPhase('voz');
  if(!globalThis.speechSynthesis||typeof SpeechSynthesisUtterance==='undefined'){
-  onError('Este browser no dispone de locución.');return {stop};
+  onError('Este navegador no dispone de locución.');return {stop};
  }
  globalThis.speechSynthesis.cancel();voice=new SpeechSynthesisUtterance(disc.hook);voice.lang='es-ES';voice.rate=1;
  const voices=globalThis.speechSynthesis.getVoices();voice.voice=voices.find(v=>/^es[-_]ES/i.test(v.lang))||voices.find(v=>/^es/i.test(v.lang))||null;

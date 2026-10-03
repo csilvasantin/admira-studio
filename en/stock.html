@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=03.10.2026.r2.0726';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=03.10.2026.r3.0736';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,10 +35,10 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r2.07:26">
-  <link rel="canonical" href="https://www.admira.studio/stock.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/stock.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/stock.html">
+  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r3.07:36">
+  <link rel="canonical" href="https://www.admira.studio/en/stock.html">
+  <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
+  <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/stock.html">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="../workspace.css?v=03.10.2026.r2.0726">
+  <link rel="stylesheet" href="../workspace.css?v=03.10.2026.r3.0736">
   <style>
     .stock-lightbox-nav{position:fixed;top:50%;transform:translateY(-50%);z-index:30;width:54px;height:84px;display:flex;align-items:center;justify-content:center;
       border:1px solid rgba(118,185,0,.4);border-radius:12px;background:rgba(8,16,8,.72);color:#b8e577;font-size:34px;line-height:1;cursor:pointer;
@@ -62,7 +62,7 @@
     .stock-lightbox[hidden] .stock-lightbox-nav{display:none}
     @media (max-width:640px){ .stock-lightbox-nav{width:42px;height:64px;font-size:26px} .stock-lightbox-nav.prev{left:8px} .stock-lightbox-nav.next{right:8px} }
 
-    /* ── Catálogos (Yokup #3183): vista por catálogo + asignación a circuit ── */
+    /* ── Catálogos (Yokup #3183): vista por catálogo + asignación a circuito ── */
     body.cat-mode .stock-pager-sort, body.cat-mode .stock-pager-controls, body.cat-mode .stock-pager-bottom, body.cat-mode #stockEmpty{ display:none !important; }
     .cat-bar{ display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:12px; color:var(--muted); margin:0 0 10px; }
     .cat-list{ display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:10px; margin:0 0 16px; }
@@ -103,11 +103,11 @@
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
   </style>
-  <script defer src="/assets/site-nav.js?v=03.10.2026.r2.0726"></script>
-  <script defer src="/assets/descarga-local.js?v=03.10.2026.r2.0726"></script>
-  <link rel="stylesheet" href="../assets/xpaces/viewer.css?v=03.10.2026.r2.0726">
+  <script defer src="/assets/site-nav.js?v=03.10.2026.r3.0736"></script>
+  <script defer src="/assets/descarga-local.js?v=03.10.2026.r3.0736"></script>
+  <link rel="stylesheet" href="../assets/xpaces/viewer.css?v=03.10.2026.r3.0736">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r2.0726">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r3.0736">
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -121,7 +121,7 @@
       <span class="admira-nav-brand-tag">Xperience</span>
     </a>
     <div class="admira-nav-items">
-      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio/en/">Admira Studio</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live/council-scumm.html">Live Council</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
@@ -146,7 +146,7 @@
     </nav>
     <div class="topnav-actions">
       <div class="language-switcher" aria-label="Language selection">
-        <span class="lang-toggle" aria-label="English">EN</span>
+        <a class="lang-toggle" href="/stock.html" aria-label="Switch to Spanish">ESP</a>
       </div>
       <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
     </div>
@@ -160,7 +160,7 @@
 
   <main>
     <section class="stock-toolbar">
-      <nav class="stock-pager stock-pager-top" aria-label="View, filters, search, sorting and pagination">
+      <nav class="stock-pager stock-pager-top" aria-label="Vista, filtros, búsqueda, orden y paginación">
         <div class="stock-view" role="group" aria-label="View">
           <button type="button" class="stock-view-btn" id="stockViewToggle" title="Toggle view: detail ↔ grid" aria-label="Toggle view">▦</button>
         </div>
@@ -170,22 +170,22 @@
           <button type="button" class="btn primary stock-import-btn" id="stockImportFromSearch" title="Import the URL in the search box (yt-dlp · same as AdmiraXP on Telegram)" aria-label="Import URL">📥</button>
         </div>
         <div class="stock-pager-filters">
-          <select id="stockTypeFilter" title="Filter by type" aria-label="Filter by type">
-            <option value="">All types</option>
+          <select id="stockTypeFilter" title="Filtrar por tipo" aria-label="Filtrar por tipo">
+            <option value="">Todos los tipos</option>
             <option value="audio">Audio</option>
-            <option value="music">Music</option>
-            <option value="image">Images</option>
+            <option value="music">Música</option>
+            <option value="image">Imágenes</option>
             <option value="xpaces">Xpaces</option>
             <option value="video" selected>Video</option>
             <option value="catalogo">Catalogues</option>
             <option value="animation">Animaciones</option>
-            <option value="furni">Furniture</option>
+            <option value="furni">Mobiliario</option>
           </select>
         </div>
-        <div class="stock-pager-sort" id="stockSortBar" role="group" aria-label="Sort by">
-          <span class="stock-sortbar-label">Sort:</span>
-          <button type="button" class="stock-sort-th" data-key="name">Name <span class="stock-sort-arrow">⇅</span></button>
-          <button type="button" class="stock-sort-th" data-key="date">Date <span class="stock-sort-arrow">⇅</span></button>
+        <div class="stock-pager-sort" id="stockSortBar" role="group" aria-label="Ordenar por">
+          <span class="stock-sortbar-label">Ordenar:</span>
+          <button type="button" class="stock-sort-th" data-key="name">Nombre <span class="stock-sort-arrow">⇅</span></button>
+          <button type="button" class="stock-sort-th" data-key="date">Fecha <span class="stock-sort-arrow">⇅</span></button>
         </div>
         <div class="stock-pager-controls">
           <button type="button" class="stock-pager-btn" data-page="first" title="First page" aria-label="First page">«</button>
@@ -201,7 +201,7 @@
     <section>
 
 
-      <!-- Vista Catálogos (Yokup #3183): piezas creadas desde catálogos, agrupadas, y asignación a circuit -->
+      <!-- Vista Catálogos (Yokup #3183): piezas creadas desde catálogos, agrupadas, y asignación a circuito -->
       <section id="catSection" hidden aria-label="Catalogues">
         <div class="cat-bar"><span id="catSource"></span><button type="button" class="stock-pager-btn" id="catRefresh" title="Reload catalogues">↻</button></div>
         <div id="catList" class="cat-list"></div>
@@ -209,11 +209,11 @@
       </section>
       <div id="stockGrid" class="stock-grid"></div>
       <div id="stockEmpty" class="stock-empty" hidden>
-        <p>// Stock is empty.</p>
-        <p>Genera un asset en Audio/Music/Images/Video and select <strong>📌 PUBLICAR EN STOCK</strong>.</p>
+        <p>// Stock vacío.</p>
+        <p>Genera un asset en Audio/Música/Imágenes/Video y pulsa <strong>📌 PUBLICAR EN STOCK</strong>.</p>
       </div>
 
-      <nav class="stock-pager stock-pager-bottom" hidden aria-label="Pagination (bottom)">
+      <nav class="stock-pager stock-pager-bottom" hidden aria-label="Paginación (abajo)">
         <div class="stock-pager-controls">
           <button type="button" class="stock-pager-btn" data-page="first" title="First page" aria-label="First page">«</button>
           <button type="button" class="stock-pager-btn" data-page="prev" title="Previous" aria-label="Previous page">‹</button>
@@ -233,7 +233,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Open Admira XP — latest Digital Twin version">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.2026.06.07-ops</a></footer>
 
 
   <dialog id="catAssignModal" class="keys-modal">
@@ -256,20 +256,20 @@
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
-      <h3>📥 IMPORT FROM URL</h3>
-      <p class="keys-warn">yt-dlp on Mac Mini (audio mp3 + video mp4). Supported hosts: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn, Telegram (t.me). You can paste SEVERAL URLs at once, one per line. When opened locally, suno-local also works (:3777).</p>
-      <div class="field"><label for="import-url">URL <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(one or more, one per line)</small></label><textarea id="import-url" rows="2" autocomplete="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…&#10;https://t.me/canal/123"></textarea></div>
+      <h3>📥 IMPORTAR DESDE URL</h3>
+      <p class="keys-warn">yt-dlp en Mac Mini (audio mp3 + video mp4). Hosts permitidos: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn, Telegram (t.me). Se pueden pegar VARIAS URLs a la vez, una por línea. Si abres en local también funciona suno-local (:3777).</p>
+      <div class="field"><label for="import-url">URL <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(una o varias, una por línea)</small></label><textarea id="import-url" rows="2" autocomplete="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…&#10;https://t.me/canal/123"></textarea></div>
       <div class="field">
-        <label for="import-comment">Comments <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(optional · searchable in Stock)</small></label>
-        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notes, tags, context… (searchable later)"></textarea>
+        <label for="import-comment">Comentarios <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(opcional · indexable por búsqueda en Stock)</small></label>
+        <textarea id="import-comment" rows="2" autocomplete="off" placeholder="Notas, etiquetas, contexto… (luego se puede buscar)"></textarea>
       </div>
       <div class="field">
-        <label>Format</label>
-        <div class="import-fmt" role="radiogroup" aria-label="Import format">
+        <label>Formato</label>
+        <div class="import-fmt" role="radiogroup" aria-label="Formato de importación">
           <label class="import-fmt-chip is-audio">
             <input type="radio" name="import-fmt" value="audio" checked>
             <span class="import-fmt-icon" aria-hidden="true">🎵</span>
-            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · audio track only</small></span>
+            <span class="import-fmt-label"><b>AUDIO</b><small>mp3 · sólo pista de audio</small></span>
           </label>
           <label class="import-fmt-chip is-video">
             <input type="radio" name="import-fmt" value="video">
@@ -280,7 +280,7 @@
       </div>
       <div class="import-progress" id="importProgress" hidden>
         <div class="import-progress-head">
-          <span class="import-progress-kind" id="importProgressKind">— WAITING —</span>
+          <span class="import-progress-kind" id="importProgressKind">— ESPERANDO —</span>
           <span class="import-progress-stats" id="importProgressStats">0 MB · 0s</span>
         </div>
         <div class="import-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -289,15 +289,15 @@
         </div>
       </div>
       <div class="keys-actions">
-        <button type="button" class="btn primary" id="doImport">Import</button>
-        <button type="button" class="btn" id="closeImport">Close</button>
+        <button type="button" class="btn primary" id="doImport">Importar</button>
+        <button type="button" class="btn" id="closeImport">Cerrar</button>
       </div>
       <pre class="brief" id="importStatus" style="display:none;font-size:11px;max-height:200px;"></pre>
     </form>
   </dialog>
 
-  <script defer src="/matrix-rain.js?v=03.10.2026.r2.0726"></script>
-  <script src="../app.js?v=03.10.2026.r2.0726"></script>
+  <script defer src="/matrix-rain.js?v=03.10.2026.r3.0736"></script>
+  <script src="../app.js?v=03.10.2026.r3.0736"></script>
   <script type="module">
   import {isXpace, blendFor, xpacePoster} from "../assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "../assets/furniture/catalog.mjs";
@@ -350,10 +350,10 @@
       return isXpace(it) ? 'xpaces' : isFurni(it) ? 'furni' : it.type;
     }
     function renderPreview(it) {
-      if (isFurniture3D(it)) return `<img src="${escAttr(it.poster || it.thumbnail)}" alt="${escAttr(it.title)}" loading="lazy"><span class="xpace-badge">Furniture · 3D</span>`;
+      if (isFurniture3D(it)) return `<img src="${escAttr(it.poster || it.thumbnail)}" alt="${escAttr(it.title)}" loading="lazy"><span class="xpace-badge">Mueble · 3D</span>`;
       if (isXpace(it)) return `<img src="${escAttr(xpacePoster(it, allItems))}" alt="${escAttr(it.title)}" loading="lazy"><span class="xpace-badge">◈ Xpaces · 3D</span>`;
       if (isFurni(it)) {
-        // Furniture del gemelo: sprite pixelado → render nítido.
+        // Mobiliario del gemelo: sprite pixelado → render nítido.
         return `<img src="${it.url}" alt="" loading="lazy" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
       }
       if (it.type === 'image') {
@@ -743,7 +743,7 @@
         const t = removeBtn.dataset.tag;
         nextTags = nextTags.filter(x => x !== t);
       } else {
-        const fresh = (prompt('Add tag (1–2 words):') || '').trim().toLowerCase();
+        const fresh = (prompt('Añadir etiqueta (1-2 palabras):') || '').trim().toLowerCase();
         if (!fresh) return;
         if (nextTags.includes(fresh)) { return; }
         if (nextTags.length >= 8) { alert('Máximo 8 etiquetas por asset.'); return; }
@@ -780,7 +780,7 @@
 
     async function deleteAsset(id, card) {
       if (!id) return;
-      if (!confirm('Delete this asset from Stock? This deletes the file and its R2 metadata and cannot be undone.')) return;
+      if (!confirm('¿Eliminar este asset del Stock? Borra el archivo y la metadata en R2. No se puede deshacer.')) return;
       for (let intento = 0; intento < 2; intento++) {
         const key = stockNotifyKey(intento > 0);
         if (!key) { status.textContent = '// cancelled: nothing is deleted without the Stock key.'; return; }
@@ -904,7 +904,7 @@
       if (!motorFilter) return;   // el combo de motores se quitó del Stock
       const motors = Array.from(new Set(allItems.map(i => i.motor).filter(Boolean))).sort();
       const cur = filters.motor;
-      motorFilter.innerHTML = `<option value="">All engines</option>`
+      motorFilter.innerHTML = `<option value="">Todos los motores</option>`
         + motors.map(m => `<option value="${String(m).replace(/"/g, '&quot;')}">${String(m).replace(/</g, '&lt;')}</option>`).join('');
       motorFilter.value = motors.includes(cur) ? cur : '';
     }
@@ -928,7 +928,7 @@
             const r = await fetch(src, { cache: 'no-store' });
             if (!r.ok) throw new Error('HTTP ' + r.status);
             const data = await r.json();
-            if (!data || !Array.isArray(data.items)) throw new Error('response contains no items');
+            if (!data || !Array.isArray(data.items)) throw new Error('respuesta sin items');
             return data.items.slice(0, 200);
           } catch (e) {
             lastErr = e;
@@ -944,7 +944,7 @@
         .filter(Boolean);
     }
     async function load() {
-      status.textContent = '// loading stock...';
+      status.textContent = '// cargando stock...';
       empty.hidden = true;
       grid.innerHTML = '';
       try {
@@ -963,10 +963,10 @@
           applyFilters();
           feedMatrix();
           const when = cached.ts ? fmtDate(new Date(cached.ts).toISOString()) : '';
-          status.textContent = `// server unavailable · showing saved copy${when ? ' (' + when + ')' : ''} · select ↻ to retry`;
+          status.textContent = `// sin conexión con el servidor · mostrando copia guardada${when ? ' (' + when + ')' : ''} · pulsa ↻ para reintentar`;
         } else {
           empty.hidden = true; // error de carga, NO "vacío"
-          status.textContent = '// could not load Stock (network error, nothing was deleted) · select ↻ to retry';
+          status.textContent = '// no se pudo cargar el stock (error de red, no se ha borrado nada) · pulsa ↻ para reintentar';
         }
       }
     }
@@ -996,7 +996,7 @@
       if (/^https?:\/\//i.test(v) && urlField) { urlField.value = v; search.value = ''; filters.q = ''; applyFilters(true); }
       dlg.showModal();
     });
-    // Cabezales ordenables (Name / Date / Tipo / Motor) — clic alterna asc/desc
+    // Cabezales ordenables (Nombre / Fecha / Tipo / Motor) — clic alterna asc/desc
     const SORT_DEFAULT_DIR = { name: 'asc', date: 'desc' };
     const SORT_VALID = new Set(['name-asc','name-desc','date-asc','date-desc']);
     function applySortIndicators() {
@@ -1109,14 +1109,14 @@
     // ── CATÁLOGOS (Yokup #3183 · NeoMBA16 · 12-sep-2026) ─────────────────────
     // La opción «Catálogos» del selector de tipo agrupa las piezas creadas desde
     // catálogos (admira.tv/contentcatalogue → Stock, con #catalogo #<cliente>
-    // #<catalogo-id> #<aaaa-mm>) y permite ASIGNARLAS a los players de un circuit:
+    // #<catalogo-id> #<aaaa-mm>) y permite ASIGNARLAS a los players de un circuito:
     // escribe la playlist por defecto de cada pantalla (admira.tv/api/playlist, la
     // misma KV que lee canal.html cada 30 s) con la clave del Stock, la que ya se
-    // usa para Delete. Fuente: GET /stock/catalogos + /stock/list?catalogo=<id>;
+    // usa para Eliminar. Fuente: GET /stock/catalogos + /stock/list?catalogo=<id>;
     // si la API no responde, se derivan de las etiquetas del índice ya cargado.
     const CATALOGO = (function () {
       const $ = id => document.getElementById(id);
-      const T = {"sinAsignar": "not assigned", "asignadoA": "Assigned to", "pantallas": "screens", "fallos": "failure(s)", "vigente": "ACTIVE", "caducado": "EXPIRED", "piezas": "pieces", "pieza": "piece", "ultimo": "latest", "volver": "All catalogues", "asignar": "Assign to circuit…", "cargando": "// loading catalogues…", "cargandoPiezas": "// loading the catalogue pieces…", "sinCatalogos": "// No catalogues in the Stock yet. They are created from admira.tv/contentcatalogue.", "sinResultados": "// no catalogue matches the search.", "sinPiezas": "// this catalogue has no playable pieces.", "fuenteIndice": "derived from the #catalogo tags of the index (the /stock/catalogos API is not answering)", "fuenteApi": "source: api.admira.store/stock/catalogos", "sinScreens": "This project has no screens registered in /grid/screens.", "piezasAhora": "pieces now", "sinPlaylist": "no playlist (or no access)", "verChannel": "open channel", "asignarTitulo": "📡 ASSIGN TO CIRCUIT", "segCadaUna": "s each", "notaPlaylist": "writes the default playlist of every checked screen (admira.tv re-reads it within 30 s).", "cargandoScreens": "loading projects and screens…", "asignarBtn": "Assign", "sinProyectos": "— no projects —", "pagina": "page", "eligeScreen": "Check at least one screen.", "asignando": "Assigning…", "errorRed": "network error", "claveMala": "wrong Stock key (401)", "sinClave": "cancelled: nothing is assigned without the Stock key.", "releen": "screens re-read the playlist within 30 s.", "catalogo": "Catalogue"};
+      const T = {"sinAsignar": "not assigned", "asignadoA": "Assigned to", "pantallas": "screens", "fallos": "failure(s)", "vigente": "ACTIVE", "caducado": "EXPIRED", "piezas": "pieces", "pieza": "piece", "ultimo": "latest", "volver": "All catalogues", "asignar": "Assign to circuit…", "cargando": "// loading catalogues…", "cargandoPiezas": "// loading the catalogue pieces…", "sinCatalogos": "// No catalogues in the Stock yet. They are created from admira.tv/contentcatalogue.", "sinResultados": "// no catalogue matches the search.", "sinPiezas": "// this catalogue has no playable pieces.", "fuenteIndice": "derived from the #catalogo tags of the index (the /stock/catalogos API is not answering)", "fuenteApi": "source: api.admira.store/stock/catalogos", "sinPantallas": "This project has no screens registered in /grid/screens.", "piezasAhora": "pieces now", "sinPlaylist": "no playlist (or no access)", "verCanal": "open channel", "asignarTitulo": "📡 ASSIGN TO CIRCUIT", "segCadaUna": "s each", "notaPlaylist": "writes the default playlist of every checked screen (admira.tv re-reads it within 30 s).", "cargandoPantallas": "loading projects and screens…", "asignarBtn": "Assign", "sinProyectos": "— no projects —", "pagina": "page", "eligePantalla": "Check at least one screen.", "asignando": "Assigning…", "errorRed": "network error", "claveMala": "wrong Stock key (401)", "sinClave": "cancelled: nothing is assigned without the Stock key.", "releen": "screens re-read the playlist within 30 s.", "catalogo": "Catalogue"};
       const localOverride = name => {
         try { const o = new URLSearchParams(location.search).get(name); return (o && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(o)) ? o : ''; } catch { return ''; }
       };
@@ -1274,7 +1274,7 @@
         if (!keep) { const h = $('catHead'); if (h) h.scrollIntoView({ block: 'start', behavior: 'smooth' }); }
       }
 
-      // ── Asignar al circuit: proyectos/circuits/pantallas de api.admira.store/grid ──
+      // ── Asignar al circuito: proyectos/circuitos/pantallas de api.admira.store/grid ──
       async function loadGrid() {
         const [p, s] = await Promise.all([
           fetch(`${API}/grid/projects`, { cache: 'no-store' }).then(r => r.json()).catch(() => null),
@@ -1293,7 +1293,7 @@
         const box = $('catScreens'); if (!box) return;
         const p = projectById($('catProject').value);
         const lst = screensOf(p);
-        if (!lst.length) { box.innerHTML = `<p class="cat-empty">${T.sinScreens}</p>`; return; }
+        if (!lst.length) { box.innerHTML = `<p class="cat-empty">${T.sinPantallas}</p>`; return; }
         box.innerHTML = lst.map(s => {
           const lv = live[s.screen];
           const now = lv ? `${(lv.items || []).length} ${T.piezasAhora}${lv.updatedBy ? ` · ${esc(String(lv.updatedBy).slice(0, 40))}` : ''}` : (lv === null ? T.sinPlaylist : '…');
@@ -1301,7 +1301,7 @@
             <input type="checkbox" ${tsel.has(s.screen) ? 'checked' : ''} aria-label="${esc(s.name || s.screen)}">
             <span class="sid">${esc(s.name || s.screen)}</span><span class="srole">${esc(s.screen)} · ${esc(s.circuit || '')}</span>
             <span class="snow">${now}</span>
-            <a class="cat-canal" href="${canalUrl(s)}" target="_blank" rel="noopener" title="${T.verChannel}">📺</a>
+            <a class="cat-canal" href="${canalUrl(s)}" target="_blank" rel="noopener" title="${T.verCanal}">📺</a>
           </label>`;
         }).join('');
         const sum = $('catScreensSummary'); if (sum) sum.textContent = `${tsel.size}/${lst.length} ${T.pantallas}`;
@@ -1323,7 +1323,7 @@
         $('catAssignTitle').textContent = `${T.asignarTitulo} · ${c.nombre || c.id}`;
         $('catAssignNote').textContent = `${piezas.length} ${T.piezas} · ${SLOT_SECONDS} ${T.segCadaUna} · ${T.notaPlaylist}`;
         $('catResults').innerHTML = ''; $('catResults').hidden = true;
-        $('catScreens').innerHTML = `<p class="cat-empty">${T.cargandoScreens}</p>`;
+        $('catScreens').innerHTML = `<p class="cat-empty">${T.cargandoPantallas}</p>`;
         $('catGo').disabled = false; $('catGo').textContent = T.asignarBtn;
         dlg.showModal();
         await loadGrid();
@@ -1344,7 +1344,7 @@
         const c = selected && byId(selected); if (!c || assigning) return;
         const p = projectById($('catProject').value);
         const targets = screensOf(p).filter(s => tsel.has(s.screen));
-        if (!targets.length) { alert(T.eligeScreen); return; }
+        if (!targets.length) { alert(T.eligePantalla); return; }
         const replace = $('catReplace').checked;
         const items = piezas.map(it => toItem(it, c));
         assigning = true; $('catGo').disabled = true; $('catGo').textContent = T.asignando;
@@ -1363,7 +1363,7 @@
               d = await r.json().catch(() => ({}));
             } catch (e) { line = `✗ ${esc(s.name || s.screen)} · ${T.errorRed}`; break; }
             if (r.status === 401) { forgetStockNotifyKey(); key = stockNotifyKey(true); line = `✗ ${esc(s.name || s.screen)} · ${T.claveMala}`; continue; }
-            if (r.ok && d.ok) { ok++; okScreens.push(s.screen); live[s.screen] = d.draft || null; line = `✓ ${esc(s.name || s.screen)} · ${list.length} ${T.piezas} · rev ${esc(d.rev)} · <a href="${canalUrl(s)}" target="_blank" rel="noopener">${T.verChannel} ↗</a>`; }
+            if (r.ok && d.ok) { ok++; okScreens.push(s.screen); live[s.screen] = d.draft || null; line = `✓ ${esc(s.name || s.screen)} · ${list.length} ${T.piezas} · rev ${esc(d.rev)} · <a href="${canalUrl(s)}" target="_blank" rel="noopener">${T.verCanal} ↗</a>`; }
             else line = `✗ ${esc(s.name || s.screen)} · HTTP ${r.status} ${esc(d.error || '')}`;
             break;
           }
@@ -1406,6 +1406,6 @@
     })();
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=03.10.2026.r2.0726"></script>
+  <script defer src="/assets/cuadratura.js?v=03.10.2026.r3.0736"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@ El botón Experto abre una entrada de 48 px dentro de la web. No necesita aplica
 
 - Arrastra el borde superior para ajustar la altura (máximo: la mitad del área visible).
 - Doble clic en el borde o el botón ▴/▾ pliega y despliega. El borde también admite flechas, Inicio, Fin y Enter.
-- Cada entrada al modo experto comienza plegada. Al desplegar recupera la última altura arrastrada, guardada en `localStorage` (`pixeria_cli_height`; la réplica adapta el prefijo según marca.json). La preferencia es por browser y dominio.
+- Cada entrada al modo experto comienza plegada. Al desplegar recupera la última altura arrastrada, guardada en `localStorage` (`pixeria_cli_height`; la réplica adapta el prefijo según marca.json). La preferencia es por navegador y dominio.
 - La consola se superpone al contenido (Carlos, 3-oct-2026): es una franja fija abajo, con fondo y sombra, que no envuelve el documento ni le cambia altura, márgenes ni desplazamiento. Sube con el teclado del móvil (`--pf-cli-keyboard`). Cada página entra con ⌘ cerrado. Ver `docs/shell-cuadratico.md`, «Paneles superpuestos».
 - Una orden muestra su resultado desplegando la consola. ↑/↓ recorre el historial de esta página.
 
@@ -12,9 +12,9 @@ Comandos: `help`, `clear`, `echo <texto>`, `date`, `status`, `version`, `history
 
 `/marca <id|off|web>` (alias `/brand`; también sin barra) viste Admira Studio con una marca blanca del catálogo de admiranext.com/marcablanca: `/marca lumbre` la aplica tras comprobarla en el catálogo, `/marca off` vuelve a Admira, `/marca` sola dice cuál está activa y lista las disponibles, y `/marca starbucks.es` abre el analizador (`https://www.admiranext.com/marcablanca/?web=<url>`) en otra pestaña. Los comandos admiten la barra inicial (`/help`). **Tab** completa el comando, los ids del catálogo (y `off`) tras `/marca` y las secciones tras `open`; con varias opciones las enseña en la consola. Ver `docs/marca-blanca.md`.
 
-`assets/site-nav.js` carga el mismo componente en las tres familias de panel experto, con el mismo sello (`?v=`) que el propio `site-nav.js`. Los contenidos previouses se conservan en la página. Admira Studio genera los mismos assets aplicando las sustituciones de su `marca.json`.
+`assets/site-nav.js` carga el mismo componente en las tres familias de panel experto, con el mismo sello (`?v=`) que el propio `site-nav.js`. Los contenidos anteriores se conservan en la página. Admira Studio genera los mismos assets aplicando las sustituciones de su `marca.json`.
 
-Prueba de browser (servidor estático LOCAL):
+Prueba de navegador (servidor estático LOCAL):
 
 ```sh
 python3 -m http.server 8463 --bind 127.0.0.1
@@ -23,9 +23,9 @@ PLAYWRIGHT_MODULE=/ruta/a/playwright node test/expert-cli.browser.cjs
 
 La prueba simula únicamente la sesión del servidor local. Las comprobaciones y capturas de producción requieren una sesión Google autorizada real.
 
-## Anonymizer demo · Anonymizer demo
+## Anonimizador demo · Anonymizer demo
 
-ES: Abre https://www.admira.studio/anonimizador. Se carga por defecto visitor-green-v1, una persona ficticia con original y ejemplos 8, 16 y 32 bits. No necesita cámara, subida, generación ni publicación en Stock. Download guarda cada variante. Usar mi foto abre el flujo previous; Usar ejemplo recupera la demo. La transformación de una foto real no garantiza anonimización irreversible.
+ES: Abre https://www.admira.studio/anonimizador. Se carga por defecto visitor-green-v1, una persona ficticia con original y ejemplos 8, 16 y 32 bits. No necesita cámara, subida, generación ni publicación en Stock. Descargar guarda cada variante. Usar mi foto abre el flujo anterior; Usar ejemplo recupera la demo. La transformación de una foto real no garantiza anonimización irreversible.
 
 EN: Open https://www.admira.studio/en/anonimizador.html. visitor-green-v1 loads by default: a fictional person with an original and 8, 16 and 32-bit examples. No camera, upload, generation or Stock publication is required. Download saves each variant. Use my photo opens the existing workflow; Use example restores the demo. Transforming a real photo does not guarantee irreversible anonymization.
 

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r2.07:26">
-<title>Bucle ¿Sabías que? · Screen Xtanco</title>
+  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r3.07:36">
+<title>Bucle ¿Sabías que? · Pantalla Xtanco</title>
 <meta name="description" content="Reproductor en bucle de la serie ¿Sabías que? del tabaco para la pantalla del Xtanco.">
 <meta name="pixer-tags" content="sabiasqueXtanco">
 <meta name="pixer-campaign" content="sabiasque-tabaco">
@@ -61,7 +61,7 @@ frames[0].src = urlFor(1);
 idx = 1;
 setInterval(next, DWELL);
 
-// mantener despierta la pantalla si el browser lo permite
+// mantener despierta la pantalla si el navegador lo permite
 if('wakeLock' in navigator){ navigator.wakeLock.request('screen').catch(()=>{}); }
 </script>
 </body>

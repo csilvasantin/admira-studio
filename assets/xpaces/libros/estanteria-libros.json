@@ -43,7 +43,7 @@
     "reparto": "Hueco superior: libros de pie, lomo al frente, del más reciente al más antiguo. Hueco central: el libro del día de cara (portada al frente) + taza. Hueco inferior: libros que no caben arriba."
   },
   "formato_modelos": {
-    "entrega": "Un GLB por libro publicado en Admira Studio Stock (POST api.admira.store/stock/publish, mime model/gltf-binary) con externalRef \"estanteria-libros:<slug>\" y tags [\"3d\",\"libro\",\"estanteria-libros\",\"<slug>\"]. El visor lo detecta solo in stock/index.json y sustituye al provisional.",
+    "entrega": "Un GLB por libro publicado en Admira Studio Stock (POST api.admira.store/stock/publish, mime model/gltf-binary) con externalRef \"estanteria-libros:<slug>\" y tags [\"3d\",\"libro\",\"estanteria-libros\",\"<slug>\"]. El visor lo detecta solo en stock/index.json y sustituye al provisional.",
     "unidades": "metros, medidas reales del libro (medidas_cm si constan)",
     "ejes": "glTF Y arriba; libro de pie; lomo mirando a +Z (hacia la sala); portada hacia +X; grosor en X",
     "origen": "centro de la cara inferior (apoya en la balda en y=0)",
@@ -447,7 +447,7 @@
         "previewUrl": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/3b/ba/fc/3bbafcda-8454-2df5-300a-3a215beb4abb/mzaf_17008812206809633065.plus.aac.p.m4a",
         "appleMusicUrl": "https://music.apple.com/es/album/faith/395918916?i=395918958&uo=4",
         "artworkUrl": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/87/29/d2/8729d243-f06f-e588-3ddf-ffa87a2ce17e/mzi.yupygcca.jpg/600x600bb.jpg",
-        "hook": "Faith empieza casi desnuda: guitarra, pulso y la voz de George Michael. Con muy poco construye una identidad propia; escucha cómo cada silencio hace más fuerte el next acento.",
+        "hook": "Faith empieza casi desnuda: guitarra, pulso y la voz de George Michael. Con muy poco construye una identidad propia; escucha cómo cada silencio hace más fuerte el siguiente acento.",
         "durationSeconds": 20,
         "formats": [
           "16:9",

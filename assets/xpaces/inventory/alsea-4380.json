@@ -14,7 +14,7 @@
       "id": "barra",
       "nombre": "Barra frente verde friso + encimera roble",
       "tipo": "counter",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 4.8,
@@ -32,9 +32,9 @@
     },
     {
       "id": "mueble-trasero",
-      "nombre": "Furniture trasero nogal",
+      "nombre": "Mueble trasero nogal",
       "tipo": "backcounter",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 4.8,
@@ -94,7 +94,7 @@
       "id": "pizarra-1",
       "nombre": "Pizarra digital 49\" · cafés",
       "tipo": "screen",
-      "categoria": "Screens",
+      "categoria": "Pantallas",
       "cantidad": 1,
       "medidas": {
         "ancho": 1.09,
@@ -114,7 +114,7 @@
       "id": "pizarra-2",
       "nombre": "Pizarra digital 49\" · bollería · vertical",
       "tipo": "screen",
-      "categoria": "Screens",
+      "categoria": "Pantallas",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.62,
@@ -135,7 +135,7 @@
       "id": "pizarra-3",
       "nombre": "Pizarra digital 49\" · temporada",
       "tipo": "screen",
-      "categoria": "Screens",
+      "categoria": "Pantallas",
       "cantidad": 1,
       "medidas": {
         "ancho": 1.09,
@@ -153,15 +153,15 @@
       "contenido": {
         "tipo": "libro-del-dia",
         "fuente": "https://stock.admira.store/stock/index.json",
-        "regla": "Capsule Blinkist más reciente (createdAt); se relee cada 5 min",
+        "regla": "Cápsula Blinkist más reciente (createdAt); se relee cada 5 min",
         "encargo": "#4397 · FLT-101048"
       }
     },
     {
       "id": "pantalla-recogida",
-      "nombre": "Screen recogida de pedidos 43\"",
+      "nombre": "Pantalla recogida de pedidos 43\"",
       "tipo": "screen",
-      "categoria": "Screens",
+      "categoria": "Pantallas",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.96,
@@ -181,7 +181,7 @@
       "id": "balda-recogida",
       "nombre": "Balda de recogida (latón/roble)",
       "tipo": "shelf",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 1.3,
@@ -221,7 +221,7 @@
       "id": "barra-ventana",
       "nombre": "Barra de ventana roble",
       "tipo": "ledge",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.45,
@@ -241,7 +241,7 @@
       "id": "taburete-1",
       "nombre": "Taburetes negro/roble (×4)",
       "tipo": "stool",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.4,
@@ -261,7 +261,7 @@
       "id": "taburete-2",
       "nombre": "Taburetes",
       "tipo": "stool",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.4,
@@ -281,7 +281,7 @@
       "id": "taburete-3",
       "nombre": "Taburetes",
       "tipo": "stool",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.4,
@@ -301,7 +301,7 @@
       "id": "taburete-4",
       "nombre": "Taburetes",
       "tipo": "stool",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.4,
@@ -321,7 +321,7 @@
       "id": "mesa-1",
       "nombre": "Mesas redondas Ø70 roble + pie negro (×3)",
       "tipo": "table",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.7,
@@ -341,7 +341,7 @@
       "id": "mesa-2",
       "nombre": "Mesas",
       "tipo": "table",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.7,
@@ -361,7 +361,7 @@
       "id": "mesa-3",
       "nombre": "Mesas",
       "tipo": "table",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.7,
@@ -381,7 +381,7 @@
       "id": "silla-1",
       "nombre": "Sillas de madera (×6)",
       "tipo": "chair",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.45,
@@ -401,7 +401,7 @@
       "id": "silla-2",
       "nombre": "Sillas",
       "tipo": "chair",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.45,
@@ -421,7 +421,7 @@
       "id": "silla-3",
       "nombre": "Sillas",
       "tipo": "chair",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.45,
@@ -441,7 +441,7 @@
       "id": "silla-4",
       "nombre": "Sillas",
       "tipo": "chair",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.45,
@@ -461,7 +461,7 @@
       "id": "silla-5",
       "nombre": "Sillas",
       "tipo": "chair",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.45,
@@ -481,7 +481,7 @@
       "id": "silla-6",
       "nombre": "Sillas",
       "tipo": "chair",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.45,
@@ -501,7 +501,7 @@
       "id": "sofa",
       "nombre": "Sofá terciopelo verde 3 plazas",
       "tipo": "sofa",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 2.0,
@@ -521,7 +521,7 @@
       "id": "mesa-baja",
       "nombre": "Mesa baja nogal",
       "tipo": "coffee",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 1.1,
@@ -541,7 +541,7 @@
       "id": "estanteria-libros",
       "nombre": "Estantería de libros nogal · cápsulas Blinkist",
       "tipo": "bookshelf",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 1.6,

@@ -10,7 +10,7 @@
 //
 // Este fichero es la FUENTE ÚNICA. Lo importan las dos mitades:
 //   · scripts/signage-bateria.mjs  (el motor, con ffmpeg, en node)
-//   · signage-bateria.html         (el cuadro de mando, en el browser)
+//   · signage-bateria.html         (el cuadro de mando, en el navegador)
 // Por eso es ESM puro y no toca ni `fs` ni `document`: si un día divergen el
 // motor y la página, el catálogo deja de ser una verdad y pasa a ser dos.
 // ============================================================================
@@ -68,7 +68,7 @@ export const PERFILES = [
     nombre: 'HD heredada (parque viejo)',
     ancho: 1366, alto: 768, orientacion: 'apaisada',
     familias: ['LG SM3C', 'Samsung DB-E', 'Philips BDL4051D'],
-    // Main@3.1 a propósito: estas gamas NO decodifican High. Screen negra sin
+    // Main@3.1 a propósito: estas gamas NO decodifican High. Pantalla negra sin
     // ningún error en el log del reproductor — el fallo más caro de diagnosticar.
     techoKbps: 4000, sueloKbps: 1200, h264: 'main@3.1', fps: 30
   },
@@ -244,7 +244,7 @@ export function recortePerdido(origen, perfil) {
 //     más detalle que contar; gastar 20 Mbps en él solo sirve para que el
 //     reproductor barato se atragante. Nunca pasamos del bitrate del original.
 //  2. Bajar la resolución y dejar el bitrate del original. Se malgasta ancho de
-//     banda del circuit entero para nada.
+//     banda del circuito entero para nada.
 // Al reducir píxeles el bitrate baja con ellos, pero con SUELO: por debajo del
 // suelo el bloque se ve antes que el contenido, y una pantalla de tienda con
 // bloques es peor que una pantalla apagada.
@@ -277,11 +277,11 @@ export function bitrateObjetivo(origen, perfil) {
 // que la página necesita para explicar por qué una prueba salió "ajustada".
 export function planificar(origen, perfil) {
   const perdido = recortePerdido(origen, perfil);
-  const mismoFraming = Math.abs(aspecto(origen.ancho, origen.alto) - aspecto(perfil.ancho, perfil.alto)) <= TOLERANCIA_ASPECTO;
+  const mismoEncuadre = Math.abs(aspecto(origen.ancho, origen.alto) - aspecto(perfil.ancho, perfil.alto)) <= TOLERANCIA_ASPECTO;
 
   // Un vídeo apaisado dentro de un tótem no está adaptado si se limita a
   // conservar el 16:9 con dos bandas negras enormes. En ese caso concreto la
-  // promise de Admira Studio es entregar una pieza 9:16 que LLENE la pantalla: se
+  // promesa de Admira Studio es entregar una pieza 9:16 que LLENE la pantalla: se
   // hace un recorte centrado automático y se deja a la vista cuánto material
   // lateral se pierde, para que el diseñador pueda reencuadrar si el sujeto no
   // está en el centro. Las barras ultrapanorámicas siguen siendo conservadoras:
@@ -299,7 +299,7 @@ export function planificar(origen, perfil) {
   // `contener` mete la imagen entera y rellena con negro; `recortar` llena la
   // pantalla y sacrifica bordes. Por defecto contenemos cuando la pérdida es
   // grande, salvo en la adaptación apaisado→vertical descrita arriba.
-  const encaje = mismoFraming
+  const encaje = mismoEncuadre
     ? 'exacto'
     : (adaptacionVertical ? 'recortar'
       : (adaptacionHorizontal ? 'expandir'
@@ -430,7 +430,7 @@ export function verificar(plan, sonda, origen = {}) {
   if (origen.duracion && sonda.duracion && Math.abs(sonda.duracion - origen.duracion) > 0.5) {
     fallos.push(`duración ${sonda.duracion.toFixed(2)}s frente a ${origen.duracion.toFixed(2)}s del original`);
   }
-  // El audio perdido no rompe la pantalla, pero en un circuit con megafonía sí
+  // El audio perdido no rompe la pantalla, pero en un circuito con megafonía sí
   // rompe la campaña. Es nota, no fallo.
   if (origen.audio && !sonda.audio) notas.push('el original traía audio y la variante salió muda');
 

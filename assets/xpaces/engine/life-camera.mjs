@@ -30,7 +30,7 @@ export function mappedCameraFrame(snapshot={},width=1,height=1){
     frustum:{left:centerX-horizontal/2,right:centerX+horizontal/2,top:centerY+vertical/2,bottom:centerY-vertical/2}};
 }
 
-/** Framing de un objeto (#ver-mueble): room y box son extensiones en espacio de
+/** Encuadre de un objeto (#ver-mueble): room y box son extensiones en espacio de
  * cámara {minX,maxX,minY,maxY}. Devuelve zoom y desplazamiento para que la caja
  * quede entera y centrada en el mismo encuadre «room-fit» de frameCamera(). */
 export function fitBoxFrame(room,box,aspect=1,margin=1.4){

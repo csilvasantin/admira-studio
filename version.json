@@ -1,15 +1,15 @@
 {
-  "version": "v.03.10.2026.r1.07:30",
-  "deployedAt": "2026-10-03T05:30:12Z",
+  "version": "v.03.10.2026.r2.07:39",
+  "deployedAt": "2026-10-03T05:39:07Z",
   "author": "OraculoGrokBotBox",
   "agent": "OraculoGrokBotBox",
   "deployer": "OraculoGrokBotBox",
   "machine": "GrokBotBox",
   "signature": "OraculoGrokBotBox · GrokBotBox",
-  "git": "75605712d0b82c06e472a2afbb95c2b3586cd7a4",
-  "gitShort": "7560571",
-  "gitFull": "75605712d0b82c06e472a2afbb95c2b3586cd7a4",
+  "git": "74f31751b2cb16fb33b907366b806d160dc098a8",
+  "gitShort": "74f3175",
+  "gitFull": "74f31751b2cb16fb33b907366b806d160dc098a8",
   "dirty": false,
   "espejoDe": "pixeria",
-  "fuente": "2ef3523916484462c2c3f8d5a4ab816c0f228754"
+  "fuente": "bfa24d193e22ceb945cbe79ef86b647b5dd3de4f"
 }

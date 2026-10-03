@@ -15,7 +15,7 @@
    "lat": 41.3996304,
    "lon": 2.155556,
    "dist_planeta7_m": 191,
-   "tramo_desde_previous_m": 0,
+   "tramo_desde_anterior_m": 0,
    "opening_hours": null,
    "osm": "node/12875861930"
   },
@@ -27,7 +27,7 @@
    "lat": 41.3999081,
    "lon": 2.1577654,
    "dist_planeta7_m": 225,
-   "tramo_desde_previous_m": 187,
+   "tramo_desde_anterior_m": 187,
    "opening_hours": "Mo-Sa 08:30-20:30",
    "osm": "node/6777658347"
   },
@@ -39,7 +39,7 @@
    "lat": 41.3991169,
    "lon": 2.1607485,
    "dist_planeta7_m": 478,
-   "tramo_desde_previous_m": 264,
+   "tramo_desde_anterior_m": 264,
    "opening_hours": null,
    "osm": "node/10761696806"
   },
@@ -51,7 +51,7 @@
    "lat": 41.3973394,
    "lon": 2.1602111,
    "dist_planeta7_m": 574,
-   "tramo_desde_previous_m": 203,
+   "tramo_desde_anterior_m": 203,
    "opening_hours": null,
    "osm": "node/10769626613"
   },
@@ -63,7 +63,7 @@
    "lat": 41.3967736,
    "lon": 2.1551713,
    "dist_planeta7_m": 510,
-   "tramo_desde_previous_m": 425,
+   "tramo_desde_anterior_m": 425,
    "opening_hours": null,
    "osm": "node/11554659567"
   },
@@ -75,7 +75,7 @@
    "lat": 41.3997778,
    "lon": 2.1526809,
    "dist_planeta7_m": 316,
-   "tramo_desde_previous_m": 393,
+   "tramo_desde_anterior_m": 393,
    "opening_hours": null,
    "osm": "node/4755079723"
   },
@@ -87,7 +87,7 @@
    "lat": 41.403443,
    "lon": 2.1587066,
    "dist_planeta7_m": 335,
-   "tramo_desde_previous_m": 647,
+   "tramo_desde_anterior_m": 647,
    "opening_hours": null,
    "osm": "node/11741880447"
   },
@@ -99,7 +99,7 @@
    "lat": 41.4027259,
    "lon": 2.1602077,
    "dist_planeta7_m": 396,
-   "tramo_desde_previous_m": 148,
+   "tramo_desde_anterior_m": 148,
    "opening_hours": null,
    "osm": "node/11339652076"
   },
@@ -111,7 +111,7 @@
    "lat": 41.4024557,
    "lon": 2.1599081,
    "dist_planeta7_m": 361,
-   "tramo_desde_previous_m": 39,
+   "tramo_desde_anterior_m": 39,
    "opening_hours": null,
    "osm": "node/10772906416"
   }

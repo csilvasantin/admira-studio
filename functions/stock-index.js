@@ -3,15 +3,15 @@
  * El problema: la galería lee el índice de `pub-….r2.dev/stock/index.json`, que
  * son 635 KB y viajan SIN COMPRIMIR. El bucket público de R2 sirve los bytes tal
  * como están guardados y no negocia `Accept-Encoding`, así que da igual lo que
- * pida el browser. En gzip ese mismo JSON son 120 KB: un 81% menos.
+ * pida el navegador. En gzip ese mismo JSON son 120 KB: un 81% menos.
  *
  * La solución sin tocar el Worker del Stock: servirlo desde el propio dominio.
  * admira.studio es una zona de Cloudflare, y todo lo que sale por ella se comprime
  * en Brotli automáticamente. Esta Function no hace más que traerlo de R2 y
- * devolverlo — la compresión la pone el borde, free.
+ * devolverlo — la compresión la pone el borde, gratis.
  *
  * Se responde con headers NUEVOS a propósito: reenviar los del origen arrastraría
- * su `Content-Length` (el del JSON sin comprimir) y el browser cortaría la
+ * su `Content-Length` (el del JSON sin comprimir) y el navegador cortaría la
  * respuesta comprimida a mitad.
  *
  * El `cacheTtl` guarda la copia en el borde un minuto, igual que el

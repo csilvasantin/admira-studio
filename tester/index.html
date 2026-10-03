@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=03.10.2026.r2.0726';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=03.10.2026.r3.0736';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,7 +35,7 @@
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r2.07:26">
+  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r3.07:36">
 <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
 <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
 <link rel="shortcut icon" href="/favicon.ico?v=20260522-r2">
@@ -43,7 +43,7 @@
   <meta name="description" content="Tester de Admira Studio crea y valida contenidos de digital signage contra hardware real, con resoluciones, bitrates y perfiles H.264 específicos.">
   <meta name="theme-color" content="#020602">
   <link rel="canonical" href="https://www.admira.studio/tester">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/tester">
+  <link rel="alternate" hreflang="es" href="https://www.admira.studio/tester">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/tester">
 <style>
   :root{ --matrix:#00ff41; --deep:#00b82e; --bg:#020602; --panel:#04140a; --dim:#7dff9e; --warn:#ffd166; --bad:#ff5c5c; }
@@ -161,8 +161,8 @@
     .avanzado .cuerpo{ justify-items:start; }
   }
 </style>
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r2.0726">
-  <script defer src="/assets/site-nav.js?v=03.10.2026.r2.0726"></script>
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r3.0736">
+  <script defer src="/assets/site-nav.js?v=03.10.2026.r3.0736"></script>
 </head>
 <body>
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -174,14 +174,14 @@
   <a class="brand" href="/" aria-label="Admira Studio inicio">
     <span>Admira Studio</span>
   </a>
-  <nav class="nav" aria-label="Admira Studio sections">
+  <nav class="nav" aria-label="Secciones de Admira Studio">
     <a href="/audio.html">Audio</a>
-    <a href="/musica.html">Music</a>
-    <a href="/imagenes.html">Images</a>
+    <a href="/musica.html">Música</a>
+    <a href="/imagenes.html">Imágenes</a>
     <a href="/video.html">Video</a>
     <a href="/tiktok">TikTok</a>
-    <a href="/publicidad.html">Advertising</a>
-    <a href="/anonimizador.html">Anonymizer</a>
+    <a href="/publicidad.html">Publicidad</a>
+    <a href="/anonimizador.html">Anonimizador</a>
     <a href="/crear/">Assets</a>
     <a href="/stock.html">Stock</a>
   </nav>
@@ -190,7 +190,7 @@
 <main>
 <header class="tester-head">
   <div class="tester-brand">ADMIRA STUDIO // TESTER DE DIGITAL SIGNAGE</div>
-  <h1>Crea una vez. Prueba contra all screens.</h1>
+  <h1>Crea una vez. Prueba contra todas las pantallas.</h1>
   <details class="info-panel">
     <summary><span class="abrir">mostrar información</span><span class="cerrar">ocultar información</span></summary>
     <div class="info-copy">
@@ -208,7 +208,7 @@
 <div class="wrap">
   <div class="estaciones">
     <section class="mando" aria-labelledby="titulo-formato">
-      <div class="paso" id="titulo-formato"><b>01</b> Format de salida</div>
+      <div class="paso" id="titulo-formato"><b>01</b> Formato de salida</div>
       <div class="op">
         <button id="salida-16-9" aria-pressed="true">horizontal · 16:9</button>
         <button id="salida-4-3" aria-pressed="false">horizontal · 4:3</button>
@@ -232,7 +232,7 @@
           <button id="b-9-16" aria-pressed="false">muestra vertical</button>
           <span class="file"><label for="fichero">elegir fichero</label>
             <input type="file" id="fichero" accept="video/*,image/*"></span>
-          <span class="zona" id="zona">…o arrástralo aquí — no sale de tu browser</span>
+          <span class="zona" id="zona">…o arrástralo aquí — no sale de tu navegador</span>
         </div>
       </div>
       <div class="origen" id="origen">// midiendo la creatividad…</div>
@@ -288,7 +288,7 @@
 </main>
 
 <script type="module">
-import {COMPATIBILIDADES_POR_ID, PERFILES, evaluarCompatibilidad, perfilDeSalida, planificar, verificar} from '/assets/signage-perfiles.js?v=03.10.2026.r2.0726';
+import {COMPATIBILIDADES_POR_ID, PERFILES, evaluarCompatibilidad, perfilDeSalida, planificar, verificar} from '/assets/signage-perfiles.js?v=03.10.2026.r3.0736';
 
 const $ = (id) => document.getElementById(id);
 const rejilla = $('rejilla');
@@ -344,12 +344,12 @@ async function desdeFichero(file) {
   const el = document.createElement(esVideo ? 'video' : 'img');
   await new Promise((res, rej) => {
     el.onloadedmetadata = el.onload = res;
-    el.onerror = () => rej(new Error('el browser no sabe abrir ese fichero'));
+    el.onerror = () => rej(new Error('el navegador no sabe abrir ese fichero'));
     el.src = url;
   });
   const ancho = esVideo ? el.videoWidth : el.naturalWidth;
   const alto = esVideo ? el.videoHeight : el.naturalHeight;
-  // El browser no expone el bitrate; se estima por tamaño y duración. Es una
+  // El navegador no expone el bitrate; se estima por tamaño y duración. Es una
   // estimación y se dice que lo es: el número exacto lo da ffprobe en el motor.
   const bitrateKbps = esVideo && el.duration ? Math.round((file.size * 8) / el.duration / 1000) : 0;
   return {
@@ -381,14 +381,14 @@ async function cargarTikTokTransferido() {
   if (new URLSearchParams(location.search).get('source') !== 'tiktok') return false;
   const transferencia = await leerTikTokTransferido();
   if (!transferencia?.blob) {
-    $('origen').innerHTML = '<span style="color:var(--warn)">~ No encuentro una exportación reciente. Vuelve a TikTok, exporta el vídeo and select “Probar en Tester”.</span>';
+    $('origen').innerHTML = '<span style="color:var(--warn)">~ No encuentro una exportación reciente. Vuelve a TikTok, exporta el vídeo y pulsa “Probar en Tester”.</span>';
     return false;
   }
   const file = new File([transferencia.blob], transferencia.filename || 'tiktok-vertical.webm', {
     type: transferencia.type || transferencia.blob.type || 'video/webm'
   });
   await cargar(file);
-  elegirFormat('16:9');
+  elegirFormato('16:9');
   $('origen').insertAdjacentHTML('beforeend', ' · <strong>recibido del generador TikTok</strong>');
   return true;
 }
@@ -487,7 +487,7 @@ function pintar() {
 
   $('origen').innerHTML = `▸ probando <span style="color:var(--matrix)">${esc(sujeto.nombre)}</span> · ` +
     `${sujeto.ancho}×${sujeto.alto} · ${sujeto.tipo}` +
-    (sujeto.bitrateKbps ? ` · ~${sujeto.bitrateKbps} kbps${sujeto.estimado ? ' (estimado por el browser)' : ''}` : ' · sin bitrate medible') +
+    (sujeto.bitrateKbps ? ` · ~${sujeto.bitrateKbps} kbps${sujeto.estimado ? ' (estimado por el navegador)' : ''}` : ' · sin bitrate medible') +
     ` · contra ${PERFILES.length} pantallas`;
 
   const tarjetas = [];
@@ -548,7 +548,7 @@ function pintar() {
 }
 
 // ── Mando ───────────────────────────────────────────────────────────────────
-const botonesFormat = {
+const botonesFormato = {
   '16:9': $('salida-16-9'),
   '4:3': $('salida-4-3'),
   '1:1': $('salida-1-1'),
@@ -563,9 +563,9 @@ const botonesCompatibilidad = {
   uhd: $('compat-uhd')
 };
 
-function elegirFormat(formato) {
+function elegirFormato(formato) {
   formatoSalida = formato;
-  for (const [id, boton] of Object.entries(botonesFormat)) {
+  for (const [id, boton] of Object.entries(botonesFormato)) {
     boton.setAttribute('aria-pressed', String(id === formato));
   }
   $('custom-medidas').hidden = formato !== 'custom';
@@ -580,7 +580,7 @@ function elegirCompatibilidad(id) {
   pintar();
 }
 
-for (const [formato, boton] of Object.entries(botonesFormat)) boton.onclick = () => elegirFormat(formato);
+for (const [formato, boton] of Object.entries(botonesFormato)) boton.onclick = () => elegirFormato(formato);
 for (const [id, boton] of Object.entries(botonesCompatibilidad)) boton.onclick = () => elegirCompatibilidad(id);
 for (const id of ['custom-ancho', 'custom-alto']) $(id).oninput = pintar;
 
@@ -623,7 +623,7 @@ sujeto = muestra(1920, 1080);
 pintar();
 cargarTikTokTransferido();
 </script>
-  <script defer src="/assets/cuadratura.js?v=03.10.2026.r2.0726"></script>
+  <script defer src="/assets/cuadratura.js?v=03.10.2026.r3.0736"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>

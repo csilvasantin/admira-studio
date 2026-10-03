@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════ -->
   <!-- GATE-INICIO -->
@@ -14,7 +14,7 @@
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='✖ IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='✖ SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -22,7 +22,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r2.07:26">
+  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r3.07:36">
   <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
   <title>Admira Studio · Hilo musical</title>
   <meta name="description" content="Hilo musical del Xpacio: envía una canción al hilo del gemelo (Instore Media) y al Stock a la vez.">
@@ -72,8 +72,8 @@
     .foot{max-width:640px;margin:22px auto 0;font-family:var(--mono);font-size:11px;color:var(--dim);text-align:center}
     .foot a{color:var(--violet);text-decoration:none}
   </style>
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r2.0726">
-  <script defer src="/assets/site-nav.js?v=03.10.2026.r2.0726"></script>
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r3.0736">
+  <script defer src="/assets/site-nav.js?v=03.10.2026.r3.0736"></script>
 </head>
 <body>
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -84,14 +84,14 @@
     <a class="brand" href="/" aria-label="Admira Studio inicio">
       <span>Admira Studio</span>
     </a>
-    <nav class="nav" aria-label="Admira Studio sections">
+    <nav class="nav" aria-label="Secciones de Admira Studio">
       <a href="/audio.html">Audio</a>
-      <a href="/musica.html">Music</a>
-      <a href="/imagenes.html">Images</a>
+      <a href="/musica.html">Música</a>
+      <a href="/imagenes.html">Imágenes</a>
       <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/publicidad.html">Advertising</a>
-      <a href="/anonimizador.html">Anonymizer</a>
+      <a href="/publicidad.html">Publicidad</a>
+      <a href="/anonimizador.html">Anonimizador</a>
       <a href="/crear/">Assets</a>
       <a href="/stock.html">Stock</a>
     </nav>
@@ -121,11 +121,11 @@
 
       <div class="actions">
         <button class="btn" id="preview">🔊 Escuchar</button>
-        <button class="btn primary" id="send">🎵 Send to Xpacio + Stock</button>
+        <button class="btn primary" id="send">🎵 Enviar al Xpacio + Stock</button>
       </div>
       <div id="status"></div>
-      <div class="meta">The song is published to Stock and queued; the twin (admira-xp) adds it to its music stream in seconds.
-        <b>Suno</b> does not yet have a public API (partner program) → for now, generate and paste the URL, or use <code>suno-local :3777</code> en local.</div>
+      <div class="meta">La canción se publica en el Stock y se encola; el gemelo (admira-xp) la pone en su hilo en segundos.
+        <b>Suno</b> aún no tiene API pública (programa partners) → hoy: genera y pega la URL, o usa <code>suno-local :3777</code> en local.</div>
 
       <div class="plist" id="plistWrap">
         <h3>🎶 Hilo actual de la tienda</h3>
@@ -133,7 +133,7 @@
         <div class="empty" id="plistEmpty">Sin canciones aún — envía la primera.</div>
       </div>
     </div>
-    <p class="foot"><a href="musica.html">← Music</a> · <a href="megafonia.html">PA</a> · <a href="https://www.xpaceos.com/admira-xp/?loc=xtanco-valencia" target="_blank">Open the twin (Xtanco) ↗</a></p>
+    <p class="foot"><a href="musica.html">← Música</a> · <a href="megafonia.html">Megafonía</a> · <a href="https://www.xpaceos.com/admira-xp/?loc=xtanco-valencia" target="_blank">Abrir el gemelo (Xtanco) ↗</a></p>
   </div>
   </main>
 
@@ -160,7 +160,7 @@
       fetch(API+'/hilomusical/push',{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({store:store, sourceUrl:url, title:title, motor:'pixeria'})})
       .then(function(r){ return r.json().then(function(d){ if(!r.ok) throw new Error(d.detail||d.error||('HTTP '+r.status)); return d; }); })
-      .then(function(d){ setStatus('✓ En el Stock (id '+d.id+') y en el hilo de «'+d.store+'». Sonará en seconds.','ok'); loadPlaylist(); })
+      .then(function(d){ setStatus('✓ En el Stock (id '+d.id+') y en el hilo de «'+d.store+'». Sonará en segundos.','ok'); loadPlaylist(); })
       .catch(function(e){ setStatus('✖ Error ('+e.message+').','err'); })
       .finally(function(){ btn.disabled=false; });
     };
@@ -177,6 +177,6 @@
     $('store').addEventListener('change', loadPlaylist);
     loadPlaylist();
   </script>
-  <script defer src="/assets/cuadratura.js?v=03.10.2026.r2.0726"></script>
+  <script defer src="/assets/cuadratura.js?v=03.10.2026.r3.0736"></script>
 </body>
 </html>

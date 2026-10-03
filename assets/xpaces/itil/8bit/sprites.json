@@ -1,5 +1,5 @@
 {
- "note": "Sprites 8 bits (Good) 16x16 hechos a mano. Palette cuantizada a pasos de 0x33 como quant8() de Good; contorno duro 1 px; sin degradados. 'L' = piloto de estado ITIL (se colorea en tiempo de ejecución).",
+ "note": "Sprites 8 bits (Good) 16x16 hechos a mano. Paleta cuantizada a pasos de 0x33 como quant8() de Good; contorno duro 1 px; sin degradados. 'L' = piloto de estado ITIL (se colorea en tiempo de ejecución).",
  "palette": {
   "k": "#000000",
   "d": "#333333",

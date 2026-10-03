@@ -11,7 +11,7 @@
       "id": "mostrador",
       "nombre": "Mostrador roble + encimera crema",
       "tipo": "counter",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 3.0,
@@ -31,7 +31,7 @@
       "id": "vitrina",
       "nombre": "Vitrina retroiluminada roble/vidrio",
       "tipo": "vitrina",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 3.2,
@@ -51,7 +51,7 @@
       "id": "pantalla-pared",
       "nombre": "Videowall menú 2×55\" (2,64×0,74 m)",
       "tipo": "screen",
-      "categoria": "Screens",
+      "categoria": "Pantallas",
       "cantidad": 1,
       "medidas": {
         "ancho": 2.64,
@@ -69,9 +69,9 @@
     },
     {
       "id": "pantalla-mostrador",
-      "nombre": "Screen de mostrador 21,5\" cara cliente",
+      "nombre": "Pantalla de mostrador 21,5\" cara cliente",
       "tipo": "screen",
-      "categoria": "Screens",
+      "categoria": "Pantallas",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.52,
@@ -89,9 +89,9 @@
     },
     {
       "id": "pantalla-escaparate",
-      "nombre": "Screen escaparate 55\" doble cara",
+      "nombre": "Pantalla escaparate 55\" doble cara",
       "tipo": "screen",
-      "categoria": "Screens",
+      "categoria": "Pantallas",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.06,
@@ -131,7 +131,7 @@
       "id": "taburete-1",
       "nombre": "Taburetes lacados rojo (×2)",
       "tipo": "stool",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.4,
@@ -151,7 +151,7 @@
       "id": "taburete-2",
       "nombre": "Taburetes lacados rojo (×2)",
       "tipo": "stool",
-      "categoria": "Furniture",
+      "categoria": "Mobiliario",
       "cantidad": 1,
       "medidas": {
         "ancho": 0.4,

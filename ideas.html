@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
        Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=03.10.2026.r2.0726';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=03.10.2026.r3.0736';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r2.07:26">
+  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r3.07:36">
   <title>Admira Studio · Ideas</title>
   <meta name="description" content="Ideas del Consejo de Silicio: mapas del tesoro con las ideas anotadas, listos para debatir.">
   <meta name="theme-color" content="#020602">
@@ -44,7 +44,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.admira.studio/ideas.html">
   <link rel="canonical" href="https://www.admira.studio/ideas.html">
-  <link rel="alternate" hreflang="en" href="https://www.admira.studio/ideas.html">
+  <link rel="alternate" hreflang="es" href="https://www.admira.studio/ideas.html">
   <link rel="alternate" hreflang="x-default" href="https://www.admira.studio/ideas.html">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
@@ -56,8 +56,8 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="assets/styles.css?v=03.10.2026.r2.0726">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r2.0726">
+  <link rel="stylesheet" href="assets/styles.css?v=03.10.2026.r3.0736">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r3.0736">
   <style>
     :root { --idea-max: 860px; }
     .idea-main {
@@ -181,7 +181,7 @@
       .typing span { animation: none; }
     }
   </style>
-  <script defer src="/assets/site-nav.js?v=03.10.2026.r2.0726"></script>
+  <script defer src="/assets/site-nav.js?v=03.10.2026.r3.0736"></script>
 </head>
 <body>
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -199,7 +199,7 @@
       <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
       <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
-      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contact</a>
+      <a class="admira-nav-link admira-nav-link-cta" href="#contact" data-admira-contact>Contacto</a>
     </div>
   </nav>
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
@@ -210,20 +210,20 @@
     </a>
     <nav class="nav" aria-label="Navegación principal">
       <a href="/audio.html">Audio</a>
-      <a href="/musica.html">Music</a>
-      <a href="/imagenes.html">Images</a>
+      <a href="/musica.html">Música</a>
+      <a href="/imagenes.html">Imágenes</a>
       <a href="/video.html">Video</a>
       <a href="/tiktok">TikTok</a>
-      <a href="/publicidad.html">Advertising</a>
+      <a href="/publicidad.html">Publicidad</a>
       <a href="/crear/">Assets</a>
       <a href="/stock.html">Stock</a>
     </nav>
     <div class="header-actions">
-      <div class="language-switcher" aria-label="Language selection">
-        <span class="lang-toggle" aria-label="English">EN</span>
+      <div class="language-switcher" aria-label="Selección de idioma">
+        <a class="lang-toggle" href="/en/ideas.html" aria-label="Cambiar a inglés">ENG</a>
       </div>
-      <a class="nav-action" href="#contact" data-admira-contact>Contact</a>
-      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <a class="nav-action" href="#contact" data-admira-contact>Contacto</a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -231,18 +231,18 @@
 
   <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil">
     <a href="/audio.html">Audio</a>
-    <a href="/musica.html">Music</a>
-    <a href="/imagenes.html">Images</a>
+    <a href="/musica.html">Música</a>
+    <a href="/imagenes.html">Imágenes</a>
     <a href="/video.html">Video</a>
     <a href="/tiktok">TikTok</a>
-    <a href="/publicidad.html">Advertising</a>
+    <a href="/publicidad.html">Publicidad</a>
     <a href="/avatar.html">Avatar 3D</a>
     <a href="/crear/">Assets</a>
     <a href="/stock.html">Stock</a>
-    <div class="mobile-language-switcher" aria-label="Language selection">
-      <span class="lang-toggle" aria-label="English">EN</span>
+    <div class="mobile-language-switcher" aria-label="Selección de idioma">
+      <a class="lang-toggle" href="/en/ideas.html" aria-label="Cambiar a inglés">ENG</a>
     </div>
-    <a class="mobile-cta" href="#contact" data-admira-contact>Contact</a>
+    <a class="mobile-cta" href="#contact" data-admira-contact>Contacto</a>
   </nav>
 
   <style>
@@ -301,7 +301,7 @@
     <div class="ideas-vacio" id="ideasVacio">
       <h2>Todavía no hay ningún mapa aquí</h2>
       <p>Esta categoría está recién abierta y espera su primer mapa. Los mapas se escriben en el Consejo
-         (verbo <strong>CREAR</strong>) y se exportan con <strong>Save como creatividad</strong>.</p>
+         (verbo <strong>CREAR</strong>) y se exportan con <strong>Guardar como creatividad</strong>.</p>
       <p>Cuando decidamos dónde se guardan —en el repo o en el almacén de assets—, aparecerán aquí solos.</p>
       <p><a href="https://www.admira.live">Ir al Consejo de Silicio →</a></p>
     </div>
@@ -345,7 +345,7 @@
             (ideas.length ? '<ol>' + ideas.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ol>' : '') +
             '<div class="enlaces">' +
               (link ? '<a href="' + esc(link) + '">Ver el mapa →</a>' : '') +
-              (img ? '<a href="' + esc(img) + '" download>Download creatividad</a>' : '') +
+              (img ? '<a href="' + esc(img) + '" download>Descargar creatividad</a>' : '') +
             '</div>' +
           '</div></article>';
       }
@@ -362,7 +362,7 @@
         .catch(function () { /* categoría recién abierta: se queda el cartel */ });
     })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=03.10.2026.r2.0726"></script>
+  <script defer src="/assets/cuadratura.js?v=03.10.2026.r3.0736"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>

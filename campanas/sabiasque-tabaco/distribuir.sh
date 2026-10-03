@@ -2,7 +2,7 @@
 # Distribuye la serie "¿Sabías que?" del tabaco a la pantalla del Xtanco vía el
 # Worker pixer-eleven. Empuja el BUCLE (loop de los 5 contenidos) como item web.
 #
-# Use:  ./distribuir.sh [canal] [loc]
+# Uso:  ./distribuir.sh [canal] [loc]
 #   canal : canal de pantalla (por defecto: escaparate)
 #   loc   : ciudad para personalizar ("TU XTANCO · <LOC>"), por defecto Barcelona
 #
@@ -17,7 +17,7 @@ BUCLE="https://www.admira.studio/campanas/sabiasque-tabaco/bucle?loc=$(python3 -
 TS="$(date +%s)000"
 TITLE="[scr:${CANAL}] ¿Sabías que? · tabaco · #sabiasqueXtanco"
 
-echo "→ Channel:  $CANAL"
+echo "→ Canal:  $CANAL"
 echo "→ Bucle:  $BUCLE"
 
 echo "→ /signage/now (puntero limpio por pantalla)…"

@@ -6,12 +6,12 @@
 
 La interfaz cuadrática de la portada (`index.html`) en cuatro bandas:
 
-- **Barra superior** (`header.pf-topbar`): a la izquierda ☰ Opciones + «Admira Studio» (enlace al inicio); en el centro las secciones (Audio, Music, Images, Video, TikTok, Advertising, Anonymizer, Ideas, Assets, Stock); al fondo a la derecha ▤ Avanzado justo antes de ⌘ Experto. El orden lo fijó Carlos (29-sep-2026): no se cambia.
+- **Barra superior** (`header.pf-topbar`): a la izquierda ☰ Opciones + «Admira Studio» (enlace al inicio); en el centro las secciones (Audio, Música, Imágenes, Video, TikTok, Publicidad, Anonimizador, Ideas, Assets, Stock); al fondo a la derecha ▤ Avanzado justo antes de ⌘ Experto. El orden lo fijó Carlos (29-sep-2026): no se cambia.
 - **☰ Opciones** (raíl `.rail-left`): las secciones de Admira Studio con su descripción y el sello del release.
 - **▤ Avanzado** (raíl `.rail-right`): radar, arquitectura, documentación y concepto.
 - **⌘ Experto** (franja inferior): la consola web (`assets/expert-cli.js`, ver `docs/expert-cli.md`), con `/marca` para la marca blanca (`docs/marca-blanca.md`).
 
-En las páginas interiores no hay idioma ni Contact en la barra (decisión de producto: el contacto sigue en el pie). La portada y `en/` conservan los suyos.
+En las páginas interiores no hay idioma ni Contacto en la barra (decisión de producto: el contacto sigue en el pie). La portada y `en/` conservan los suyos.
 
 ## Paneles superpuestos (Carlos, 3-oct-2026)
 
@@ -29,7 +29,7 @@ En las páginas interiores no hay idioma ni Contact en la barra (decisión de pr
 | Pieza | Papel |
 |---|---|
 | `assets/site-nav.js` | El shell de las interiores. Convierte la cabecera de la página en `.pf-topbar` (`canonicalHeader`), pinta las secciones, inyecta los raíles Opciones/Avanzado (`ensureHomeRails`, clase `body.pix-nav-home-rails`), monta Experto (`#pixNavExpertLayer` + `expert-cli.js`), engancha la marca blanca y publica la altura real de la barra en `--pf-topbar-h`. |
-| `assets/cuadratura.css` | Styles de la barra y los raíles, y el bloque **Shell universal**: fija en la barra la tipografía y los colores de la portada y la aísla del CSS de cada página. |
+| `assets/cuadratura.css` | Estilos de la barra y los raíles, y el bloque **Shell universal**: fija en la barra la tipografía y los colores de la portada y la aísla del CSS de cada página. |
 | `assets/cuadratura.js` | En la portada, `en/` y `_cuadopen` monta la cuadratura artesanal (`.cuad`). En las interiores no hace nada (sale al ver `pix-nav-home-rails`), pero se carga igual para que todas las páginas compartan el mismo código. |
 
 ## Cómo adopta el shell una página
@@ -47,7 +47,7 @@ Patrón de `admira-xp.html`:
   <script>document.body.classList.add('pf-left-off','pf-right-off','pf-bottom-off');</script>
   <header class="site-header">                       <!-- o class="topnav" -->
     <a class="brand" href="/" aria-label="Admira Studio inicio"><span>Admira Studio</span></a>   <!-- .brand, hijo DIRECTO -->
-    <nav class="nav" aria-label="Admira Studio sections">…</nav>                         <!-- o .primary-nav -->
+    <nav class="nav" aria-label="Secciones de Admira Studio">…</nav>                         <!-- o .primary-nav -->
   </header>
   <main>…contenido…</main>
   <script defer src="/assets/cuadratura.js?v=<sello>"></script>
@@ -64,7 +64,7 @@ Patrón de `admira-xp.html`:
 - **Una sola barra.** Nada de navegaciones ni selectores de idioma propios en la página. La banda `nav.admira-nav` del kit admira-design ya no se ve en ninguna página: la ocultan `workspace.css` y `styles.css` (`display:none !important`), además de `cuadratura.css` con `pf-has-frame`.
 - **Cabeceras de contenido.** Un `<header>` que es el título de la página se queda, con su CSS acotado a su clase (`header.tester-head`, `header.page-head`, `header.topbar` de `tool/`), nunca `header{…}` a secas.
 - **Alturas.** Nada de `100vh - Npx` ni `top:88px` pensados para la cabecera vieja: `var(--pf-topbar-h, 70px)`. La barra mide 70 px en escritorio y 94 px en móvil (dos filas); `site-nav.js` la mide con `ResizeObserver` y los raíles ya empiezan debajo.
-- **Layers.** Raíles 160, barra 180, consola experta 190, paneles flotantes 1200. Los modales y avisos propios van por encima (≥ 1300; los de `crear/` usan 99998–1000000). Las líneas CRT de `tester/` (z-index 100, sin eventos) quedan bajo la barra.
+- **Capas.** Raíles 160, barra 180, consola experta 190, paneles flotantes 1200. Los modales y avisos propios van por encima (≥ 1300; los de `crear/` usan 99998–1000000). Las líneas CRT de `tester/` (z-index 100, sin eventos) quedan bajo la barra.
 - **Misma barra en todas.** El bloque «Shell universal» de `cuadratura.css` fija familia, cuerpo y colores de la barra y de la marca, y anula en sus botones las reglas genéricas de la página (`button[aria-pressed="true"]` de `tester/` los pintaba de verde lleno). Con marca blanca manda `marca-blanca.css` (todo va bajo `:root:not([data-mb-marca])`).
 - **Puertas de acceso.** El shell no toca la verja: el bloque `GATE-INICIO … GATE-FIN`, `auth-gate.js`, `backoffice/backoffice-auth.js` y `functions/_middleware.js` siguen igual. En local, `?gate=off` solo vale donde ya existía.
 

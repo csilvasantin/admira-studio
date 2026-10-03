@@ -20,14 +20,14 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=03.10.2026.r2.0726';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=03.10.2026.r3.0736';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
     setTimeout(function(){
       if(!document.documentElement.classList.contains('gate-locked')) return;
       var el=document.getElementById('admira-err');
-      if(el && !el.textContent) el.textContent='\u2716 IF SIGN-IN DOES NOT OPEN: www.admira.studio STILL NEEDS AUTHORIZATION IN GOOGLE CLOUD';
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
     }, 10000);
   })();
   </script>
@@ -36,22 +36,22 @@
 <meta charset="utf-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r2.07:26">
+  <meta name="admiranext-version" content="Admira Studio v.03.10.2026.r3.07:36">
 <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
 <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <title>Adapter · One piece of content, every format | Admira Studio</title>
-  <meta name="description" content="Adaptaciones de Admira Studio: coge un vídeo y lo adapta a vertical 9:16, horizontal 16:9, cuadrado 1:1 y 4:5 con encuadre ajustable, listo para cada pantalla del circuit.">
+  <meta name="description" content="Adaptaciones de Admira Studio: coge un vídeo y lo adapta a vertical 9:16, horizontal 16:9, cuadrado 1:1 y 4:5 con encuadre ajustable, listo para cada pantalla del circuito.">
   <link rel="canonical" href="https://www.admira.studio/adaptaciones/">
-  <link rel="stylesheet" href="/adaptaciones/adaptaciones.css?v=03.10.2026.r2.0726">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r2.0726">
-  <script defer src="/assets/site-nav.js?v=03.10.2026.r2.0726"></script>
+  <link rel="stylesheet" href="/adaptaciones/adaptaciones.css?v=03.10.2026.r3.0736">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=03.10.2026.r3.0736">
+  <script defer src="/assets/site-nav.js?v=03.10.2026.r3.0736"></script>
 </head>
 <body class="adapt-page">
   <script>document.body.classList.add('pf-left-off','pf-right-off','pf-bottom-off');</script>
   <header class="site-header">
     <a class="brand" href="/" aria-label="Admira Studio inicio"><span>Admira Studio</span></a>
     <nav class="nav" aria-label="Admira Studio sections">
-      <a href="/audio.html">Audio</a><a href="/musica.html">Music</a><a href="/imagenes.html">Images</a><a href="/video.html">Video</a><a href="/stock.html">Stock</a>
+      <a href="/audio.html">Audio</a><a href="/musica.html">Música</a><a href="/imagenes.html">Imágenes</a><a href="/en/video.html">Video</a><a href="/en/stock.html">Stock</a>
     </nav>
   </header>
   <main class="adapt-main">
@@ -64,7 +64,7 @@
             <option value="/adaptaciones/media/jti-tu-sitio-de-siempre-fuente.mp4">Stock · JTI «Tu sitio de siempre»</option>
           </select>
         </label>
-        <a class="pill" href="/video.html">or create it · video creator</a>
+        <a class="pill" href="/en/video.html">or create it · video creator</a>
         <label class="upload">or upload a video <input type="file" id="src-file" accept="video/*"></label>
         <label>Default framing
           <select id="modo-global"><option value="auto">Auto (Admira Studio rule)</option><option value="cover">Crop (fill)</option><option value="blur">Expand · blurred background</option><option value="contain">Contain · black</option></select>
@@ -122,13 +122,13 @@
             <div class="twin-ft muted" id="twin-ft"></div>
             <div class="twin-links"><a id="link-gemelo" target="_blank" rel="noopener">Open 3D twin in XpaceOS ↗</a> · <a href="https://www.admira.app/?circuit=altadis_bcn" target="_blank" rel="noopener">Circuit in admira.app ↗</a></div>
           </div>
-          <svg id="minimap" class="minimap" viewBox="0 0 400 260" role="img" aria-label="Mapa del circuit"></svg>
+          <svg id="minimap" class="minimap" viewBox="0 0 400 260" role="img" aria-label="Mapa del circuito"></svg>
         </div>
       </div>
     </details>
   </main>
-  <script type="module" src="/adaptaciones/adaptaciones.js?v=03.10.2026.r2.0726"></script>
-  <script defer src="/assets/cuadratura.js?v=03.10.2026.r2.0726"></script>
+  <script type="module" src="/adaptaciones/adaptaciones.js?v=03.10.2026.r3.0736"></script>
+  <script defer src="/assets/cuadratura.js?v=03.10.2026.r3.0736"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>
