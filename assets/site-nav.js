@@ -3,6 +3,15 @@
  * mismas diez secciones, en el mismo orden, sin esos dos controles.
  */
 (function () {
+  // Admira Studio is English; Admira Studio keeps the Spanish source routes.
+  // Explicit language routes remain available for review in this shared preview.
+  var englishHost = /(^|\.)pixeria\.com$/.test(location.hostname) || String(location.hostname || '').endsWith('.pages.dev');
+  var localePath = location.pathname;
+  var translatedPages = ['/', '/index.html', '/audio.html', '/musica.html', '/imagenes.html', '/video.html', '/anonimizador.html', '/publicidad.html', '/stock.html', '/crear/'];
+  if (englishHost && !localePath.startsWith('/en/') && translatedPages.indexOf(localePath) >= 0 && new URLSearchParams(location.search).get('lang') !== 'es') {
+    location.replace('/en' + (localePath === '/index.html' ? '/' : localePath) + location.search + location.hash);
+    return;
+  }
   // Sello de este fichero (?v=…): marca-blanca.js y la consola experta viajan con el mismo,
   // así que cada release de sellar.py refresca también los scripts que carga site-nav.js.
   var SELF = document.currentScript;
@@ -52,7 +61,7 @@
     ['/musica.html', 'Music'],
     ['/imagenes.html', 'Images'],
     ['/video.html', 'Video'],
-    ['/tiktok', 'TikTok'],
+    ['/adaptaciones/', 'Adaptador'],
     ['/publicidad.html', 'Advertising'],
     ['/anonimizador.html', 'Anonymizer'],
     ['/ideas.html', 'Ideas'],
@@ -64,7 +73,7 @@
     ['/en/musica.html', 'Music'],
     ['/en/imagenes.html', 'Images'],
     ['/en/video.html', 'Video'],
-    ['/tiktok', 'TikTok'],
+    ['/en/adaptaciones/', 'Adapter'],
     ['/en/publicidad.html', 'Advertising'],
     ['/en/anonimizador.html', 'Anonymizer'],
     // Ideas todavía no tiene versión inglesa: se apunta a la española antes que
@@ -88,7 +97,9 @@
     nav.replaceChildren();
     items.forEach(function (item) {
       var link = document.createElement('a');
-      link.href = item[0];
+      var previewRoot = document.body.dataset.previewRoot;
+      link.href = previewRoot && /\/(?:en\/)?video\.html$/.test(item[0]) ? previewRoot + 'video.html'
+        : previewRoot && /\/(?:en\/)?adaptaciones\/$/.test(item[0]) ? previewRoot + 'adaptaciones/' : item[0];
       link.textContent = item[1];
       if (norm(item[0]) === here) {
         link.classList.add('active');
@@ -168,11 +179,14 @@
       '.pf-brand-name{color:var(--ink,#e8f2ec);font-weight:800;letter-spacing:.08em}' +
       '.quad-ui.pix-nav-canonical-header{padding:0!important}' +
       '.pix-nav-home-rails.quad-ui:not(.pix-nav-canonical-header){padding:70px 0 0!important}.pix-nav-home-rails .quad-top{top:0;left:0;right:0;width:auto;height:70px;min-height:70px;box-sizing:border-box;padding:0 28px;border:0;border-bottom:1px solid rgba(26,74,34,.95);box-shadow:0 0 24px rgba(0,255,65,.08);z-index:180}' +
-      '.pix-nav-home-rails .rail{position:fixed;top:var(--pf-topbar-h,70px);bottom:0;z-index:160;width:var(--pf-left-w,300px);max-height:none;overflow:auto;border:1px solid rgba(140,160,150,.30);border-radius:0;background:rgba(2,10,5,.90);box-shadow:0 0 34px rgba(0,255,65,.10);backdrop-filter:blur(8px)}' +
+      '.pix-nav-home-rails .rail{position:fixed;top:var(--pf-topbar-h,70px);bottom:0;z-index:160;width:var(--pf-left-w,300px);max-height:none;overflow:auto;border:1px solid rgba(140,160,150,.30);border-radius:0;background:rgba(2,10,5,.96);box-shadow:0 0 34px rgba(0,255,65,.10);backdrop-filter:blur(8px)}' +
       '.pix-nav-home-rails .rail-left{left:0;display:flex;flex-direction:column;border-left:0;border-top:2px solid #68dce9;border-right-color:#68dce9}.pix-nav-home-rails .rail-right{right:0;width:var(--pf-right-w,330px);border-right:0;border-top:2px solid #e8c268;border-left-color:#e8c268}' +
       '.pix-nav-home-rails .rail-hd{position:sticky;top:0;z-index:3;margin:0;padding:13px 16px 11px;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9ab0a4;background:rgba(8,14,10,.78);border-bottom:1px solid rgba(140,160,150,.30)}.pix-nav-home-rails .rail-left .rail-hd{color:#68dce9}.pix-nav-home-rails .rail-right .rail-hd{color:#e8c268}' +
       '.pix-nav-home-rails .rail-nav{display:flex;flex-direction:column;padding:8px}.pix-nav-home-rails .rail-nav a{display:block;padding:10px 12px;border:1px solid transparent;color:#c8ffd0;text-decoration:none}.pix-nav-home-rails .rail-nav a:hover,.pix-nav-home-rails .rail-nav a[aria-current="page"]{border-color:#00ff41;background:rgba(0,255,65,.07)}.pix-nav-home-rails .rail-nav b{display:block;font-weight:760;font-size:14px;color:#e8f2ec}.pix-nav-home-rails .rail-nav small{display:block;margin-top:2px;font-size:11.5px;color:#7fae8c;line-height:1.3}.pix-nav-home-rails .rail-options-meta{margin-top:auto;padding:12px 16px 16px;border-top:1px solid rgba(140,160,150,.30)}.pix-nav-home-rails .rail-ver{display:block;padding:6px 9px;border:1px solid #68dce9;color:#68dce9;font-size:11px;font-weight:800;letter-spacing:.04em;text-align:center}.pix-nav-home-rails .rail-extra{padding:4px 16px 18px}.pix-nav-home-rails .rail-sub{margin:6px 0 8px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9ab0a4}.pix-nav-home-rails .rail-doc{display:block;padding:9px 0;font-size:13.5px;color:#e8f2ec;border-bottom:1px solid rgba(140,160,150,.30);text-decoration:none}' +
-      '.pix-nav-home-rails main{margin-left:var(--pf-left-w,300px);margin-right:var(--pf-right-w,330px);transition:margin .16s ease}.pix-nav-home-rails.pf-left-off .rail-left{display:none}.pix-nav-home-rails.pf-right-off .rail-right{display:none}.pix-nav-home-rails.pf-left-off main{margin-left:0}.pix-nav-home-rails.pf-right-off main{margin-right:0}.pix-nav-home-rails.pf-left-off.pf-right-off main{margin-left:auto;margin-right:auto}' +
+      // Los raíles se SUPERPONEN (Carlos, 3-oct-2026): el <main> conserva sus márgenes
+      // propios y no se mueve al abrir ☰ o ▤. Guardián: test/paneles-superpuestos.test.cjs.
+      '.pix-rail-resize{position:fixed;top:var(--pf-topbar-h,70px);bottom:0;width:14px;z-index:170;cursor:col-resize;touch-action:none;background:transparent}.pix-rail-resize::after{content:"";position:absolute;top:50%;left:5px;width:4px;height:44px;margin-top:-22px;border-radius:2px;background:rgba(104,220,233,.55)}.pix-rail-resize-right::after{background:rgba(232,194,104,.6)}.pix-rail-resize:hover::after,.pix-rail-resize:focus-visible::after,.pix-rail-resizing .pix-rail-resize::after{background:#00ff41}.pix-rail-resize-left{left:calc(min(var(--pf-left-w,300px),100vw - 24px) - 7px)}.pix-rail-resize-right{right:calc(min(var(--pf-right-w,330px),100vw - 24px) - 7px)}.pf-left-off .pix-rail-resize-left,.pf-right-off .pix-rail-resize-right{display:none}.pix-rail-resizing{cursor:col-resize;user-select:none}' +
+      '.pix-nav-home-rails .rail{max-width:calc(100vw - 24px)}.pix-nav-home-rails.pf-left-off .rail-left{display:none}.pix-nav-home-rails.pf-right-off .rail-right{display:none}' +
       // Botón para plegar/desplegar el texto descriptivo del page-head. Va DENTRO del h1,
       // justo antes del cursor ▋, y se dimensiona en em para acompañar al titular a
       // cualquier tamaño de pantalla.
@@ -272,8 +286,7 @@
     ['/musica.html', 'Music', 'Soundtracks, jingles and sonic branding'],
     ['/audio.html', 'Audio · PA', 'Voices, voice-over and brand public address'],
     ['/video.html', 'Video', 'Storyboards, generation, editing and loops'],
-    ['/tiktok', 'TikTok · Vertical', '25s 9:16 ads, ready for the vertical display'],
-    ['/adaptaciones/', 'Adaptaciones', 'Un vídeo, all screens: 9:16, 16:9, 1:1 y 4:5'],
+    ['/adaptaciones/', 'Adaptador', 'Un vídeo, all screens: 9:16, 16:9, 1:1 y 4:5'],
     ['/imagenes.html', 'Images', 'Art direction, product and style'],
     ['/avatar.html', 'Avatar 3D', 'Generative presenters and avatars'],
     ['/anonimizador.html', 'Anonymizer', 'Privacy for image and video'],
@@ -313,28 +326,83 @@
     document.body.appendChild(left);
     document.body.appendChild(right);
     document.body.classList.add('pix-nav-home-rails');
-    try {
-      if (localStorage.getItem('pixeria_pf_left') !== '1') document.body.classList.add('pf-left-off');
-      if (localStorage.getItem('pixeria_pf_right') !== '1') document.body.classList.add('pf-right-off');
-    } catch (_) {
-      document.body.classList.add('pf-left-off', 'pf-right-off');
-    }
+    // Los paneles entran CERRADOS en cada carga: el estado abierto no se recuerda.
+    document.body.classList.add('pf-left-off', 'pf-right-off');
+  }
+
+  // UX cuadrática (#4905): ☰ y ▤ también se redimensionan arrastrando su borde
+  // interior, como ⌘. Los raíles siguen superpuestos (no mueven el <main>) y el
+  // ancho se recuerda con las mismas claves que cuadratura.js.
+  function addRailResizers() {
+    if (!document.body.classList.contains('pix-nav-home-rails')) return;
+    var root = document.documentElement;
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+    function maxW() { return Math.max(220, Math.min(620, window.innerWidth - 24)); }
+    var conf = [
+      ['.rail-left', 'left', '--pf-left-w', 'pixeria_pf_left_w', 220],
+      ['.rail-right', 'right', '--pf-right-w', 'pixeria_pf_right_w', 240]
+    ];
+    conf.forEach(function (c) {
+      var rail = document.querySelector('.pix-nav-home-rails ' + c[0]);
+      if (!rail || document.querySelector('.pix-rail-resize-' + c[1])) return;
+      try {
+        var saved = parseInt(localStorage.getItem(c[3]) || '', 10);
+        if (Number.isFinite(saved)) root.style.setProperty(c[2], clamp(saved, c[4], maxW()) + 'px');
+      } catch (_) {}
+      var h = document.createElement('div');
+      h.className = 'pix-rail-resize pix-rail-resize-' + c[1];
+      h.setAttribute('role', 'separator');
+      h.setAttribute('aria-orientation', 'vertical');
+      h.setAttribute('aria-label', (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0
+        ? (c[1] === 'left' ? 'Resize options panel' : 'Resize advanced panel')
+        : (c[1] === 'left' ? 'Redimensionar panel de opciones' : 'Redimensionar panel avanzado'));
+      h.title = h.getAttribute('aria-label');
+      h.tabIndex = 0;
+      document.body.appendChild(h);
+      function setW(w) {
+        w = Math.round(clamp(w, c[4], maxW()));
+        root.style.setProperty(c[2], w + 'px');
+        try { localStorage.setItem(c[3], String(w)); } catch (_) {}
+      }
+      h.addEventListener('pointerdown', function (ev) {
+        ev.preventDefault();
+        if (h.setPointerCapture && ev.pointerId != null) { try { h.setPointerCapture(ev.pointerId); } catch (_) {} }
+        document.body.classList.add('pix-rail-resizing');
+        function move(e) { setW(c[1] === 'left' ? e.clientX : window.innerWidth - e.clientX); }
+        function up() {
+          document.body.classList.remove('pix-rail-resizing');
+          h.removeEventListener('pointermove', move);
+          h.removeEventListener('pointerup', up);
+          h.removeEventListener('pointercancel', up);
+        }
+        h.addEventListener('pointermove', move);
+        h.addEventListener('pointerup', up);
+        h.addEventListener('pointercancel', up);
+      });
+      h.addEventListener('keydown', function (ev) {
+        if (ev.key !== 'ArrowLeft' && ev.key !== 'ArrowRight') return;
+        ev.preventDefault();
+        var cur = Math.round(rail.getBoundingClientRect().width);
+        var d = (ev.shiftKey ? 32 : 12) * (ev.key === 'ArrowRight' ? 1 : -1) * (c[1] === 'left' ? 1 : -1);
+        setW(cur + d);
+      });
+    });
   }
 
   function bindRailToggles() {
     if (!document.body.classList.contains('pix-nav-home-rails')) return;
     var controls = [
-      ['.pix-nav-icon-menu', 'pf-left-off', 'pixeria_pf_left'],
-      ['.pix-nav-icon-advanced', 'pf-right-off', 'pixeria_pf_right']
+      ['.pix-nav-icon-menu', 'pf-left-off'],
+      ['.pix-nav-icon-advanced', 'pf-right-off']
     ];
     controls.forEach(function (item) {
       var button = document.querySelector('.pf-topbar ' + item[0] + ', .quad-top ' + item[0] + ', .site-header ' + item[0] + ', .topnav ' + item[0]);
       if (!button || button.dataset.railToggle === '1') return;
       button.dataset.railToggle = '1';
+      button.setAttribute('aria-pressed', document.body.classList.contains(item[1]) ? 'false' : 'true');
       button.addEventListener('click', function () {
-        var open = document.body.classList.toggle(item[1]);
-        button.setAttribute('aria-pressed', open ? 'false' : 'true');
-        try { localStorage.setItem(item[2], open ? '0' : '1'); } catch (_) {}
+        var off = document.body.classList.toggle(item[1]);
+        button.setAttribute('aria-pressed', off ? 'false' : 'true');
       });
     });
   }
@@ -384,6 +452,9 @@
     });
     function bindLayer(button, id) {
       button.addEventListener('click', function () {
+        // Con los raíles superpuestos, ▤ ya abre .rail-right (bindRailToggles):
+        // la capa flotante de respaldo duplicaba el panel encima del raíl (#4905).
+        if (id === 'pixNavAdvancedLayer' && document.body.classList.contains('pix-nav-home-rails') && document.querySelector('.rail-right')) return;
         var layer = document.getElementById(id);
         var open = layer.hidden;
         document.querySelectorAll('.pix-nav-layer').forEach(function (other) { other.hidden = true; });
@@ -482,7 +553,15 @@
     upgradeQuadControls();
     upgradeFrameControls();
     ensureHomeRails();
+    addRailResizers();
     bindRailToggles();
+    if (english) {
+      var translatedLabels = {'Show or hide menu':'Options', 'Open advanced panel':'Advanced', 'Open expert panel':'Expert', 'Desplegar flujo de producción':'Options', 'Desplegar acciones rápidas':'Expert'};
+      document.querySelectorAll('.pf-topbar button').forEach(function (button) {
+        var label = translatedLabels[button.getAttribute('aria-label')];
+        if (label) { button.setAttribute('aria-label',label); button.title = label; }
+      });
+    }
 
     // Si cuadratura.js ya creó la barra canónica, sus tres SVG son los buenos.
     // En las demás familias se montan los mismos controles alrededor del menú.
@@ -520,7 +599,15 @@
     else window.addEventListener('resize', apply);
   }
 
+  // Hasta el 3-oct-2026 se guardaba si ☰/▤/⌘ quedaban abiertos (pixeria_pf_left/right/
+  // bottom = '1') y cada página los reabría empujando el contenido. Ya no se lee; se
+  // borra el rastro para que ninguna copia vieja del script inline lo resucite.
+  function forgetOpenPanels() {
+    try { ['pixeria_pf_left', 'pixeria_pf_right', 'pixeria_pf_bottom'].forEach(function (k) { localStorage.removeItem(k); }); } catch (_) {}
+  }
+
   function start() {
+    forgetOpenPanels();
     normalizeInternalNav();
     syncRailVersion();
     trackTopbarHeight();
