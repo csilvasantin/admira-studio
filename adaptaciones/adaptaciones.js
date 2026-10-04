@@ -3,7 +3,8 @@
 // Reutiliza el motor de reglas real de Admira Studio: assets/signage-perfiles.js
 import { perfilDeSalida, planificar } from '/assets/signage-perfiles.js';
 import { STORAGE_KEY, defaults, restore, snapshot, rect, cropWindow, exportBudget, exportJob } from './adapter-core.mjs';
-import { createExporter, MAX_SOURCE_BYTES } from './adapter-export.js';
+import { createEngine, MAX_SOURCE_BYTES } from './adapter-export.js';
+import { createExportQueue } from './export-queue.js';
 import { createCatalog, CATEGORIES, CAMPAIGNS, matchingFormats, customFormat, restoreCustomFormats, formatFamily } from './format-catalog.mjs';
 import { geometry, segmentsJob, atlasJob, atlasFilename, segmentFilename, segmentKbps } from './especiales-core.mjs';
 import { pngDensity } from './png-density.mjs';
@@ -14,14 +15,13 @@ const $ = (s) => document.querySelector(s);
 const FORMATOS = createCatalog(EN);
 const MODOS = { auto: t('Auto (regla Admira Studio)', 'Auto (Admira Studio rule)'), cover: t('Recorte', 'Crop'), blur: t('Expandir · fondo desenfocado', 'Expand · blurred background'), contain: t('Contener · negro', 'Contain · black') };
 const picker = {query:'',orientation:'all',open:new Set()};
-const state = { profile: 'standard', compat: 'fhd', modoGlobal: 'auto', fmt: {}, src: { ancho: 0, alto: 0, fps: 25, bitrateKbps: 0 }, srcName: '', isJti: true };
+const state = { sel: '', profile: 'standard', compat: 'fhd', modoGlobal: 'auto', fmt: {}, src: { ancho: 0, alto: 0, fps: 25, bitrateKbps: 0 }, srcName: '' };
 FORMATOS.forEach((f) => (state.fmt[f.id] = { modo: 'auto', fx: 0.5, fy: 0.5, zoom: 1 }));
 
 const video = $('#src');
-let initialized = false, activeExport = null;
-const downloads = [];
+let initialized = false;
 const selectedFormats = () => FORMATOS.filter(f => f.on && formatFamily(f) === state.profile);
-// Biblioteca uses the compatibility selector; Altadis families keep native resolutions.
+// Biblioteca uses the compatibility selector; client profiles keep native resolutions.
 const syncCompat = () => { $('#compat').disabled = state.profile !== 'standard'; };
 function saveSettings() {
   if (!initialized) return;
@@ -38,13 +38,7 @@ function restoreSettings() {
   $('#format-profile').value=state.profile; $('#compat').value=state.compat; $('#modo-global').value=state.modoGlobal;
   syncCompat();initialized=true;
 }
-function clearDownloads() { downloads.splice(0).forEach(URL.revokeObjectURL); $('#export-results').replaceChildren(); }
-function lockEditor(locked) {
-  document.querySelectorAll('#sec-adapt input, #sec-adapt select, #sec-adapt button').forEach(el=>el.disabled=locked);
-  $('#cancel-export').disabled=false;$('#cancel-export').hidden=!locked;
-  if(!locked) {syncCompat();refreshInfo();}
-}
-// kinds applies to special layouts: the Altadis delivery file, one MP4 per screen, or both.
+// kinds applies to special layouts: the client delivery file, one MP4 per screen, or both.
 function especialJobs(f,kinds) {
   const tech=especialTech(f),mode=modoEfectivo(f),s=state.fmt[f.id],jobs=[];
   if(kinds!=='segments') jobs.push({...atlasJob(state.src,f.layout,mode,s,tech),label:`${f.nombre} · ${t('entrega','delivery')}`});
@@ -54,72 +48,50 @@ function especialJobs(f,kinds) {
   }
   return jobs;
 }
+// Exports go to the background queue: each line freezes its job (settings, size and
+// source) at click time, so the user can keep editing, switch video or go back to step 1.
+const queue = createExportQueue({engine:createEngine(),t,onRelease:url=>{if(url!==sourceObjectURL&&url.startsWith('blob:'))URL.revokeObjectURL(url);}});
 async function exportFormats(formats,kinds='both') {
-  if(activeExport || !state.src.ancho || !formats.length) return;
+  if(!state.src.ancho || !formats.length) return;
+  const status=$('#export-status');status.textContent='';
   const pngFormats=formats.filter(f=>f.output==='png');
-  const jobs=formats.filter(f=>f.output!=='png').flatMap(f=>f.especial?especialJobs(f,kinds):[{...exportJob(state.src,perfil(f),plan(f),modoEfectivo(f),state.fmt[f.id],state.srcName,f.id),label:f.nombre}]);
-  const budget=jobs.length?exportBudget(video.duration,jobs):null;
-  if(budget) {$('#export-status').textContent=budget==='batch-size'
+  const jobs=formats.filter(f=>f.output!=='png').flatMap(f=>f.especial?especialJobs(f,kinds).map(job=>({job,f})):[{job:{...exportJob(state.src,perfil(f),plan(f),modoEfectivo(f),state.fmt[f.id],state.srcName,f.id),label:f.nombre},f}]);
+  const budget=jobs.length?exportBudget(video.duration,jobs.map(j=>j.job)):null;
+  if(budget) {status.textContent=budget==='batch-size'
     ?t('El lote supera el presupuesto local de memoria. Selecciona menos formatos y expórtalos por separado.','This batch exceeds the local memory budget. Select fewer formats and export them separately.')
     :t('Este vídeo es demasiado largo para exportarlo con este perfil en el navegador. Usa un clip más corto o un perfil de menor resolución.','This video is too long to export with this profile in the browser. Use a shorter clip or a lower resolution profile.');return;}
-  const exporter=createExporter();let cancelled=false;activeExport={cancel(){cancelled=true;exporter.cancel();}};
-  clearDownloads(); lockEditor(true);video.pause();
-  const status=$('#export-status'), progress=$('#export-progress');progress.hidden=false;progress.removeAttribute('value');
-  let completed=0,totalBytes=0;
-  const addResult=(job,blob)=>{
-    totalBytes+=blob.size;if(totalBytes>192*1048576)throw new Error('output-size');
-    completed++;const url=URL.createObjectURL(blob);downloads.push(url);
-    const link=document.createElement('a');link.href=url;link.download=job.filename;link.className='pill';link.textContent=`${t('Descargar','Download')} ${job.label} · ${job.W}×${job.H} · ${blob.size<1048576?`${Math.ceil(blob.size/1024)} KB`:`${(blob.size/1048576).toFixed(1)} MB`}${job.limit&&blob.size>job.limit?t(' · revisar límite de 150 KB',' · check the 150 KB limit'):''}`;
-    $('#export-results').append(link);
-  };
-  try {
-    for(const f of pngFormats){
-      if(cancelled)throw new Error('cancelled');
-      const p=perfil(f),canvas=document.createElement('canvas');canvas.width=p.ancho;canvas.height=p.alto;
-      status.textContent=`${t('Exportando PNG','Exporting PNG')} · ${f.nombre}`;
-      drawInto(canvas,f);
-      let blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
-      canvas.width=canvas.height=0;
-      if(!blob)throw new Error('encoding');
-      if(f.print)blob=new Blob([pngDensity(new Uint8Array(await blob.arrayBuffer()))],{type:'image/png'});
-      if(cancelled)throw new Error('cancelled');
-      addResult({filename:`${f.id}-${p.ancho}x${p.alto}.png`,label:`${f.nombre} · PNG`,W:p.ancho,H:p.alto,limit:f.category==='display'?150*1024:0},blob);
-      progress.value=completed/(pngFormats.length+jobs.length);
-    }
-    if(jobs.length) await exporter.run(video.src,jobs,event=>{
-      if(event.phase==='loading') status.textContent=t('Cargando motor de vídeo (unos 32 MB)…','Loading video engine (about 32 MB)…');
-      else if(event.phase==='source') status.textContent=t('Leyendo vídeo de origen…','Reading source video…');
-      else { progress.value=(pngFormats.length+event.index+event.progress)/(pngFormats.length+jobs.length);status.textContent=`${t('Exportando','Exporting')} ${event.index+1}/${event.total} · ${event.job.label} · ${Math.floor(event.progress*100)}%`; }
-    },addResult);
-    progress.value=1;status.textContent=t(`${completed} ${completed===1?'archivo listo':'archivos listos'}. Descárgalos antes de salir de esta página.`,`${completed} ${completed===1?'file':'files'} ready. Download them before leaving this page.`);
-  } catch(error) {
-    const reason=String(error?.message||error);
-    status.textContent=reason==='cancelled'?t('Exportación cancelada. Puedes conservar los archivos ya terminados.','Export cancelled. You can keep files already completed.')
-      :reason==='output-size'?t('La salida alcanzó el límite de memoria. Usa un clip más corto. El archivo incompleto no se ofrece para descarga.','The output reached the memory limit. Use a shorter clip. Incomplete files are not offered for download.')
-      :reason==='source-size'?t('El vídeo supera el límite local de 100 MB. Usa un archivo más pequeño.','The video exceeds the local 100 MB limit. Use a smaller file.')
-      :t('No se pudo completar la exportación. Comprueba la conexión y usa un MP4 local de menos de 100 MB; algunas fuentes Stock no permiten su descarga. Los archivos terminados siguen disponibles.','Export could not complete. Check your connection and try a local MP4 under 100 MB; some Stock sources block downloading. Completed files remain available.');
-    progress.hidden=true;
-  } finally {activeExport=null;lockEditor(false);}
+  const sourceURL=video.currentSrc||video.src,sub=state.srcName;
+  for(const f of pngFormats){
+    const p=perfil(f),canvas=document.createElement('canvas');canvas.width=p.ancho;canvas.height=p.alto;
+    drawInto(canvas,f);
+    let blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+    canvas.width=canvas.height=0;
+    if(!blob)continue;
+    if(f.print)blob=new Blob([pngDensity(new Uint8Array(await blob.arrayBuffer()))],{type:'image/png'});
+    queue.addReady({label:`${f.nombre} · PNG`,sub,sourceURL:null,format:f},[{blob,filename:`${f.id}-${p.ancho}x${p.alto}.png`}]);
+  }
+  for(const {job,f} of jobs) queue.add({label:job.label,sub,sourceURL,job,format:f});
 }
 $('#export-all').onclick=()=>exportFormats(selectedFormats());
-$('#cancel-export').onclick=()=>activeExport?.cancel();
 $('#reset-settings').onclick=()=>{
   Object.assign(state,{profile:'standard',compat:'fhd',modoGlobal:'auto'});FORMATOS.forEach(f=>{f.on=['9:16','16:9','1:1','4:5'].includes(f.id);state.fmt[f.id]=defaults();});
   FORMATOS.filter(f=>f.especial).forEach((f,i)=>f.on=i===0);
   $('#format-profile').value='standard';$('#compat').value='fhd';syncCompat();$('#modo-global').value='auto';buildGrid();
 };
-window.addEventListener('pagehide',event=>{activeExport?.cancel();if(!event.persisted) {clearDownloads();if(sourceObjectURL)URL.revokeObjectURL(sourceObjectURL);}});
+// Closing the tab mid-export loses the work: the browser asks first.
+window.addEventListener('beforeunload',event=>{if(!queue.busy())return;event.preventDefault();event.returnValue=t('Hay exportaciones en curso','Exports are in progress');return event.returnValue;});
+window.addEventListener('pagehide',event=>{if(event.persisted)return;queue.cancelAll();queue.clear();if(sourceObjectURL)URL.revokeObjectURL(sourceObjectURL);});
 
 // ── Perfil + plan (motor Admira Studio) ───────────────────────────────────────────
 function perfil(f) {
   if(f.output==='png')return {ancho:f.custom[0],alto:f.custom[1],orientacion:f.custom[0]>f.custom[1]?'apaisada':f.custom[0]<f.custom[1]?'vertical':'custom',fps:25,techoKbps:8000,sueloKbps:2500,h264:'high@4.0'};
   return f.custom
-    ? perfilDeSalida({ formato: 'custom', ancho: f.custom[0], alto: f.custom[1], compatibilidad: f.altadis || f.especial ? 'uhd' : f.native ? (Math.max(...f.custom)>1920||f.custom[0]*f.custom[1]>1920*1080?'uhd':'fhd') : state.compat })
+    ? perfilDeSalida({ formato: 'custom', ancho: f.custom[0], alto: f.custom[1], compatibilidad: f.cliente || f.especial ? 'uhd' : f.native ? (Math.max(...f.custom)>1920||f.custom[0]*f.custom[1]>1920*1080?'uhd':'fhd') : state.compat })
     : perfilDeSalida({ formato: f.id, compatibilidad: state.compat });
 }
 function plan(f) {
   if (!state.src.ancho) return null;
-  try { const output = planificar(state.src, perfil(f)); if (f.altadis || f.especial) output.fps = 25; return output; } catch (e) { return { error: e.message }; }
+  try { const output = planificar(state.src, perfil(f)); if (f.cliente || f.especial) output.fps = 25; return output; } catch (e) { return { error: e.message }; }
 }
 // Special layouts reframe the physical wall (every screen side by side), not the
 // packed delivery file: that is the picture people actually see across screens.
@@ -155,7 +127,7 @@ function buildPicker() {
     detail.ontoggle=()=>{if(detail.open)picker.open.add(cat.id);else picker.open.delete(cat.id);};
     for(const f of formats){
       const label=document.createElement('label');label.className='size-option';
-      const input=document.createElement('input');input.type='checkbox';input.checked=f.on;input.disabled=!!activeExport;input.setAttribute('aria-label',`${t('Tamaño','Size')} ${f.nombre}`);
+      const input=document.createElement('input');input.type='checkbox';input.checked=f.on;input.setAttribute('aria-label',`${t('Tamaño','Size')} ${f.nombre}`);
       input.onchange=()=>{f.on=input.checked;buildGrid();};
       const text=document.createElement('span');const name=document.createElement('strong');name.textContent=f.nombre;
       const dims=document.createElement('small');const p=perfil(f);dims.textContent=f.especial?`${p.ancho} × ${p.alto} px · ${f.layout.pantallas} ${t('pantallas','screens')} · MP4`:`${p.ancho} × ${p.alto} px · ${f.output==='png'?'PNG':'MP4'}${f.regional?t(' · Polonia',' · Poland'):''}`;
@@ -204,29 +176,44 @@ function buildGrid() {
     if (f.especial) { g.appendChild(especialCard(f)); return; }
     const p = perfil(f); const cw = p.ancho >= p.alto ? 384 : Math.round(384 * p.ancho / p.alto); const ch = Math.round(cw * p.alto / p.ancho);
     const el = document.createElement('div'); el.className = 'fmt'; el.dataset.f = f.id;
-    el.innerHTML = `<div class="fmt-title"><h3>${f.nombre}</h3><button class="remove-format" type="button" aria-label="${t('Quitar','Remove')} ${f.nombre}">×</button></div><div class="dims">${p.ancho}×${p.alto} · ${f.uso} · ${f.output==='png'?'PNG':'MP4'}</div>
+    el.innerHTML = `<div class="fmt-title"><h3>${f.nombre}</h3><button class="remove-format" type="button" aria-label="${t('Quitar','Remove')} ${f.nombre}">×</button></div><div class="dims">${p.ancho}×${p.alto}</div>
       <div class="stage"><canvas width="${cw}" height="${ch}"></canvas></div>
-      <div class="ctl"><span>${t('Método','Method')}</span><select data-k="modo">${Object.entries(MODOS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>
-      <span>${t('Foco X','Focus X')}</span><input type="range" data-k="fx" min="0" max="1" step="0.01" value="0.5">
-      <span>${t('Foco Y','Focus Y')}</span><input type="range" data-k="fy" min="0" max="1" step="0.01" value="0.5">
-      <span>Zoom</span><input type="range" data-k="zoom" min="1" max="2" step="0.01" value="1"></div>
-      <div class="aviso"></div><button class="pill accent export-one" type="button"></button><details class="card-plan"><summary>${t("Plan técnico H.264", "H.264 encoding plan")}</summary><pre></pre></details>`;
-    bindControls(el, f);
-    el.querySelector('.remove-format').onclick=()=>{f.on=false;buildGrid();};
-    el.querySelector('.card-plan').hidden=f.output==='png';
-    el.querySelector('.export-one').textContent=f.output==='png'?t('Exportar PNG','Export PNG'):t('Exportar MP4','Export MP4'); el.querySelector('.export-one').onclick=()=>exportFormats([f]);
+      <button class="pill accent export-one" type="button"></button>`;
+    el.querySelector('.remove-format').onclick=(e)=>{e.stopPropagation();f.on=false;buildGrid();};
+    el.querySelector('.export-one').textContent=f.output==='png'?t('Exportar PNG','Export PNG'):t('Exportar MP4','Export MP4'); el.querySelector('.export-one').onclick=(e)=>{e.stopPropagation();exportFormats([f]);};
+    selectable(el, f);
     g.appendChild(el);
   });
-  refreshInfo();
+  if (!selected.some(f=>f.id===state.sel)) state.sel = selected[0]?.id || '';
+  markSelected(); buildCardSettings(); refreshInfo();
 }
 const controlsHTML = () => `<div class="ctl"><span>${t('Método','Method')}</span><select data-k="modo">${Object.entries(MODOS).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select>
       <span>${t('Foco X','Focus X')}</span><input type="range" data-k="fx" min="0" max="1" step="0.01" value="0.5">
       <span>${t('Foco Y','Focus Y')}</span><input type="range" data-k="fy" min="0" max="1" step="0.01" value="0.5">
       <span>Zoom</span><input type="range" data-k="zoom" min="1" max="2" step="0.01" value="1"></div>`;
+// Avanzado actúa sobre la tarjeta seleccionada: método, foco y zoom, aviso de recorte y dudas del PDF.
+function selectable(el, f) {
+  el.tabIndex = 0; el.setAttribute('role', 'button'); el.setAttribute('aria-pressed', 'false');
+  const pick = () => { if (state.sel === f.id) return; state.sel = f.id; markSelected(); buildCardSettings(); refreshInfo(); };
+  el.addEventListener('click', pick);
+  el.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === el) { e.preventDefault(); pick(); } });
+}
+function markSelected() {
+  document.querySelectorAll('#grid .fmt[data-f]').forEach(el => { const on = el.dataset.f === state.sel; el.classList.toggle('sel', on); el.setAttribute('aria-pressed', String(on)); });
+}
+function buildCardSettings() {
+  const box = $('#card-settings'); if (!box) return;
+  const f = FORMATOS.find(x => x.id === state.sel && x.on);
+  if (!f) { box.innerHTML = `<p class="muted">${t('Elige una tarjeta para ajustar su método, foco y zoom.','Select a card to adjust its method, focus and zoom.')}</p>`; return; }
+  const L = f.layout, size = f.especial ? `${L.entrega[0]}×${L.entrega[1]}` : `${perfil(f).ancho}×${perfil(f).alto}`;
+  box.innerHTML = `<div class="card-sel-hd">${t('Tarjeta seleccionada','Selected card')}: <b>${f.nombre}</b> · ${size}</div>${f.output==='png'?'':controlsHTML()}<div class="aviso"></div>`
+    + (f.especial && L.ambiguedades.length ? `<ul class="esp-warn">${L.ambiguedades.map(a => `<li>${t('Ambigüedad en el PDF','PDF ambiguity')}: ${a}</li>`).join('')}</ul>` : '');
+  bindControls(box, f);
+}
 function bindControls(el, f) {
   el.querySelectorAll('[data-k]').forEach((inp) => { inp.value = state.fmt[f.id][inp.dataset.k]; inp.setAttribute('aria-label', `${t('Ajuste','Setting')} ${inp.dataset.k} · ${f.nombre}`); inp.oninput = () => { const k = inp.dataset.k; state.fmt[f.id][k] = k === 'modo' ? inp.value : +inp.value; refreshInfo(); }; });
 }
-// ── Especiales Altadis: pared física con cortes + entrega con una celda por pantalla ──
+// ── Videowalls segmentados (perfil de cliente): pared física con cortes + entrega con una celda por pantalla ──
 // The wall fills the card width; long walls keep at least WALL_MIN_H px of height and scroll inside the card.
 const WALL_CSS_H = 96, WALL_MIN_H = 64;
 function especialCard(f) {
@@ -235,23 +222,20 @@ function especialCard(f) {
   const aw = W >= H ? 480 : Math.round(480 * W / H), ah = Math.round(aw * H / W);
   const el = document.createElement('div'); el.className = 'fmt fmt-especial'; el.dataset.f = f.id;
   el.innerHTML = `<div class="fmt-title"><h3>${f.nombre}</h3><button class="remove-format" type="button" aria-label="${t('Quitar','Remove')} ${f.nombre}">×</button></div>
-    <div class="dims">${t('Entrega','Delivery')} ${W}×${H} · ${g.segments.length} ${t('pantallas de','screens of')} ${cw}×${ch} · ${t('pared','wall')} ${g.pared.ancho}×${g.pared.alto} · MP4 H.264 25 fps · ${f.uso}</div>
+    <div class="dims">${W}×${H} · ${g.segments.length} ${t('pantallas','screens')}</div>
     <div class="esp-views">
       <figure class="esp-view esp-wall"><figcaption>${t('Pared física · el vídeo continúa de una pantalla a la siguiente','Physical wall · the video continues from one screen to the next')}</figcaption>
         <div class="wall-scroll" tabindex="0" aria-label="${t('Pared física con líneas de corte','Physical wall with cut lines')}"><canvas class="wall" width="${wallW * 2}" height="${WALL_CSS_H * 2}" style="width:max(100%,${Math.round(WALL_MIN_H * aspect)}px);height:auto"></canvas></div></figure>
-      <figure class="esp-view esp-atlas"><figcaption>${t('Entrega Altadis · una celda por pantalla, en orden de lectura','Altadis delivery · one cell per screen, in reading order')}</figcaption>
+      <figure class="esp-view esp-atlas"><figcaption>${t('Entrega · una celda por pantalla, en orden de lectura','Delivery · one cell per screen, in reading order')}</figcaption>
         <div class="stage"><canvas class="atlas" width="${aw}" height="${ah}"></canvas></div></figure>
     </div>
-    ${controlsHTML()}
-    <div class="aviso"></div>
-    ${L.ambiguedades.length ? `<ul class="esp-warn">${L.ambiguedades.map(a => `<li>${t('Ambigüedad en el PDF','PDF ambiguity')}: ${a}</li>`).join('')}</ul>` : ''}
     <div class="esp-actions"><button class="pill accent export-one export-atlas" type="button">${t('Exportar entrega · 1 MP4','Export delivery · 1 MP4')} ${W}×${H}</button>
     <button class="pill export-one export-segments" type="button">${t('Exportar por pantalla','Export per screen')} · ${g.segments.length} MP4 ${cw}×${ch}</button></div>
-    <details class="card-plan"><summary>${t('Plan técnico H.264 y archivos','H.264 plan and files')}</summary><pre></pre></details>`;
-  bindControls(el, f);
-  el.querySelector('.remove-format').onclick = () => { f.on = false; buildGrid(); };
-  el.querySelector('.export-atlas').onclick = () => exportFormats([f], 'atlas');
-  el.querySelector('.export-segments').onclick = () => exportFormats([f], 'segments');
+`;
+  el.querySelector('.remove-format').onclick = (e) => { e.stopPropagation(); f.on = false; buildGrid(); };
+  el.querySelector('.export-atlas').onclick = (e) => { e.stopPropagation(); exportFormats([f], 'atlas'); };
+  el.querySelector('.export-segments').onclick = (e) => { e.stopPropagation(); exportFormats([f], 'segments'); };
+  selectable(el, f);
   return el;
 }
 function especialInfo(f) {
@@ -267,36 +251,33 @@ function especialInfo(f) {
     t('Esta página no sincroniza players: la continuidad depende de que arranquen a la vez.','This page does not synchronise players: continuity depends on them starting together.')];
   return { aviso, plan: files.join('\n') + (state.src.ancho ? `\n\nffmpeg ${atlasJob(state.src, L, m, s, tech).args.map(a => JSON.stringify(a)).join(' ')}` : '') };
 }
+function cardAviso(f) {
+  if (f.especial) return especialInfo(f).aviso;
+  if (f.output === 'png') return t('Fotograma actual en PNG.','Current frame as PNG.');
+  const p = plan(f), m = modoEfectivo(f), settings = state.fmt[f.id];
+  let lost = 0;
+  if (state.src.ancho) {
+    const sourceRatio = state.src.ancho / state.src.alto, targetRatio = perfil(f).ancho / perfil(f).alto;
+    if (m === 'cover') lost = 1 - Math.min(sourceRatio / targetRatio, targetRatio / sourceRatio) / settings.zoom ** 2;
+    else if (settings.zoom > 1) {
+      const k = Math.min(perfil(f).ancho / state.src.ancho, perfil(f).alto / state.src.alto) * settings.zoom;
+      lost = 1 - Math.min(1, perfil(f).ancho / (state.src.ancho * k)) * Math.min(1, perfil(f).alto / (state.src.alto * k));
+    }
+  }
+  return p && !p.error
+    ? `${MODOS[m]} · ${Math.round(lost * 100)}% ${t('perdido', 'lost')}${m === 'blur' ? t(' · fondo derivado, sin expansión IA', ' · derived background, no AI expansion') : ''}`
+    : t('Elige un vídeo para calcular el recorte.', 'Choose a video to calculate cropping.');
+}
 function refreshInfo() {
   drawDirty=true;saveSettings();
-  $('#export-all').disabled=!!activeExport || !state.src.ancho || !selectedFormats().length;
-  document.querySelectorAll('.export-one').forEach(el=>el.disabled=!!activeExport || !state.src.ancho);
-  document.querySelectorAll('#grid .fmt[data-f]').forEach((el) => {
-    const f = FORMATOS.find((x) => x.id === el.dataset.f);
-    if (f.especial) { const info = especialInfo(f); el.querySelector('.aviso').textContent = info.aviso; el.querySelector('.card-plan pre').textContent = info.plan; return; }
-    const p = plan(f); const m = modoEfectivo(f);
-    const settings = state.fmt[f.id];
-    let lost = 0;
-    if (state.src.ancho) {
-      const sourceRatio = state.src.ancho / state.src.alto;
-      const targetRatio = perfil(f).ancho / perfil(f).alto;
-      if (m === 'cover') lost = 1 - Math.min(sourceRatio / targetRatio, targetRatio / sourceRatio) / settings.zoom ** 2;
-      else if (settings.zoom > 1) {
-        const k = Math.min(perfil(f).ancho / state.src.ancho, perfil(f).alto / state.src.alto) * settings.zoom;
-        lost = 1 - Math.min(1, perfil(f).ancho / (state.src.ancho * k)) * Math.min(1, perfil(f).alto / (state.src.alto * k));
-      }
-    }
-    el.querySelector('.aviso').textContent = p && !p.error
-      ? `${MODOS[m]} · ${Math.round(lost * 100)}% ${t('perdido', 'lost')}${m === 'blur' ? t(' · fondo derivado, sin expansión IA', ' · derived background, no AI expansion') : ''}`
-      : t('Elige un vídeo para calcular el recorte.', 'Choose a video to calculate cropping.');
-    el.querySelector('.card-plan pre').textContent = f.output==='png' ? t('Fotograma actual en PNG.','Current frame as PNG.') : p && !p.error
-      ? `${p.ancho}×${p.alto} · H.264 ${p.h264Perfil}@${p.h264Nivel} · ${p.bitrateKbps} kbps · ${p.fps} fps · GOP ${p.gopSegundos}s\n${ffmpegCmd(f)}`
-      : t('Sin vídeo', 'No video');
-  });
+  $('#export-all').disabled=!state.src.ancho || !selectedFormats().length;
+  document.querySelectorAll('.export-one').forEach(el=>el.disabled=!state.src.ancho);
+  const selF = FORMATOS.find((x) => x.id === state.sel && x.on), selAviso = $('#card-settings .aviso');
+  if (selF && selAviso) selAviso.textContent = cardAviso(selF);
   const rows = selectedFormats().map((f) => {
-    if (f.especial) return `<div class="fmt" style="margin-bottom:8px"><h3>${f.nombre} · ${f.layout.entrega[0]}×${f.layout.entrega[1]}</h3><pre style="white-space:pre-wrap;font-size:11px;color:#9fc3ff">${especialInfo(f).plan.replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' })[c])}</pre></div>`;
+    if (f.especial) return `<div class="fmt${f.id===state.sel?' sel':''}" data-plan="${f.id}" style="margin-bottom:8px"><h3>${f.nombre} · ${f.layout.entrega[0]}×${f.layout.entrega[1]}</h3><pre style="white-space:pre-wrap;font-size:11px;color:#9fc3ff">${especialInfo(f).plan.replace(/[<>&]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' })[c])}</pre></div>`;
     const p = plan(f); if(f.output==='png')return `<p>${f.nombre} · ${perfil(f).ancho}×${perfil(f).alto} · PNG${f.print?' · 150 ppp':''}</p>`; if (!p || p.error) return `<p>${f.nombre}: ${p ? p.error : 'sin vídeo'}</p>`;
-    return `<div class="fmt" style="margin-bottom:8px"><h3>${f.nombre} · ${p.ancho}×${p.alto}</h3>
+    return `<div class="fmt${f.id===state.sel?' sel':''}" data-plan="${f.id}" style="margin-bottom:8px"><h3>${f.nombre} · ${p.ancho}×${p.alto}</h3>
       <div class="dims">encaje <b>${p.encaje}</b> · adaptación <b>${p.adaptacion}</b> · recorte ${Math.round(p.recortePerdido * 100)}%<br>
       H.264 ${p.h264Perfil}@${p.h264Nivel} · ${p.bitrateKbps} kbps (${p.bitrateMotivo}) · ${p.fps} fps · GOP ${p.gopSegundos}s</div>
       <div class="aviso">${(p.avisos || []).map(a=>/generativ|imagina/i.test(a)?t('Fondo desenfocado derivado del original; sin expansión IA.','Blurred background derived from the original; no AI expansion.'):a).join(' · ')}</div><pre style="white-space:pre-wrap;font-size:11px;color:#9fc3ff">${ffmpegCmd(f)}</pre></div>`;
@@ -342,7 +323,6 @@ let drawDirty=true,lastFrame=-1;
 function loop() {
   if(drawDirty||video.currentTime!==lastFrame){
   document.querySelectorAll('.fmt[data-f]').forEach((el) => { const f = FORMATOS.find((x) => x.id === el.dataset.f); if (f.especial) { drawEspecial(el, f); return; } const c = el.querySelector('canvas'); if (c) drawInto(c, f); });
-  if (!state.isJti) { drawInto($('#tw-cv-v'), FORMATOS[0]); drawInto($('#tw-cv-h'), FORMATOS[1]); }
   drawDirty=false;lastFrame=video.currentTime;
   }
   requestAnimationFrame(loop);
@@ -350,25 +330,88 @@ function loop() {
 
 // ── Fuente ──────────────────────────────────────────────────────────────────
 let sourceObjectURL = null;
-function setSource(url, name, isJti) {
-  if (sourceObjectURL && sourceObjectURL !== url) URL.revokeObjectURL(sourceObjectURL);
+function setSource(url, name) {
+  // A local file still being exported keeps its blob URL until its last queue line ends.
+  if (sourceObjectURL && sourceObjectURL !== url && !queue.uses(sourceObjectURL)) URL.revokeObjectURL(sourceObjectURL);
   sourceObjectURL = url.startsWith('blob:') ? url : null;
-  clearDownloads();$('#export-status').textContent='';
+  $('#export-status').textContent='';
   state.src = {ancho:0,alto:0,fps:25,bitrateKbps:0};
-  $('#src-info').textContent = t('Cargando vídeo…','Loading video…');
-  state.srcName = name; state.isJti = isJti; refreshInfo(); video.src = url; video.play().catch(() => {});
-  document.querySelectorAll('#twin video').forEach((v) => (v.style.display = isJti ? '' : 'none'));
-  document.querySelectorAll('#twin canvas').forEach((v) => (v.hidden = isJti));
+  $('#src-info').textContent = t('Cargando vídeo…','Loading video…'); $('#src-msg').textContent = t('Cargando vídeo…','Loading video…');
+  state.srcName = name; refreshInfo(); video.src = url; video.play().catch(() => {});
 }
-video.addEventListener('error', () => { $('#src-info').textContent = t('No se pudo reproducir este vídeo. Elige otro archivo o una fuente Stock disponible.', 'Unable to play this video. Choose another file or an available Stock source.'); });
+video.addEventListener('error', () => { if (!video.getAttribute('src')) return; $('#src-preview').hidden = true; $('#btn-adaptar').disabled = true; $('.step[data-go="2"]').disabled = true; $('#src-msg').textContent = $('#src-info').textContent = t('No se pudo reproducir este vídeo. Elige otro archivo o una fuente Stock disponible.', 'Unable to play this video. Choose another file or an available Stock source.'); });
 video.addEventListener('loadedmetadata', () => {
   state.src = { ancho: video.videoWidth, alto: video.videoHeight, fps: 25, bitrateKbps: 0 };
   $('#src-info').textContent = `${state.srcName} · ${video.videoWidth}×${video.videoHeight} · ${video.duration.toFixed(1)} s`;
+  $('#src-info-2').textContent = state.srcName; $('#src-msg').textContent = '';
+  $('#src-preview').hidden = false; $('#btn-adaptar').disabled = false; $('.step[data-go="2"]').disabled = false;
   refreshInfo();
 });
-$('#src-select').onchange = (e) => { const o = e.target.selectedOptions[0]; setSource(o.value, o.textContent.replace(/^Stock · /, ''), /jti-/.test(o.value)); };
-$('#src-file').onchange = (e) => { const f = e.target.files[0]; if(f && f.size>MAX_SOURCE_BYTES) {$('#export-status').textContent=t('El límite local es 100 MB. Elige un vídeo más pequeño.','The local limit is 100 MB. Choose a smaller video.');e.target.value='';return;} if (f) setSource(URL.createObjectURL(f), f.name, false); };
-$('#btn-play').onclick = () => (video.paused ? video.play() : video.pause());
+$('#src-select').onchange = (e) => { const o = e.target.selectedOptions[0]; if (!o.value) { emptySource(); return; } setSource(o.value, o.textContent.replace(/^Stock · /, '')); };
+// Sin vídeo por defecto (ninguna marca): estado vacío hasta que el usuario elige uno.
+function emptySource() { video.removeAttribute('src'); video.load(); state.srcName = ''; state.src = {ancho:0,alto:0,fps:25,bitrateKbps:0}; $('#src-info').textContent = ''; $('#src-msg').textContent = ''; $('#src-preview').hidden = true; $('#btn-adaptar').disabled = true; $('.step[data-go="2"]').disabled = true; goStep(1); refreshInfo(); drawDirty = true; document.querySelectorAll('.fmt canvas').forEach((c) => c.getContext('2d').clearRect(0, 0, c.width, c.height)); }
+$('#src-file').onchange = (e) => { const f = e.target.files[0]; if(f && f.size>MAX_SOURCE_BYTES) {$('#src-msg').textContent=t('El límite local es 100 MB. Elige un vídeo más pequeño.','The local limit is 100 MB. Choose a smaller video.');e.target.value='';return;} if (f) setSource(URL.createObjectURL(f), f.name, false); };
+$('#btn-play').onclick = $('#btn-play-2').onclick = () => (video.paused ? video.play() : video.pause());
+// ── Sonido de la vista previa (Carlos, 4-oct-2026) ─────────────────────────
+// Arranca silenciado para que el autoplay siga funcionando; el botón activa y
+// desactiva el audio (aria-pressed = sonido activado). Si el vídeo no trae pista
+// de audio se muestra «Sin audio» en vez de fingir que suena.
+const soundBtn = $('#btn-sound');
+let soundNoTrack = false;
+function hasAudioTrack(v) {
+  if (typeof v.mozHasAudio === 'boolean') return v.readyState >= 1 ? v.mozHasAudio : null;
+  if (v.audioTracks && typeof v.audioTracks.length === 'number' && v.readyState >= 1) return v.audioTracks.length > 0;
+  if (typeof v.webkitAudioDecodedByteCount === 'number') {
+    if (v.webkitAudioDecodedByteCount > 0) return true;
+    if (v.currentTime > 1.2 && v.readyState >= 2) return false;
+  }
+  return null; // todavía no se sabe
+}
+function renderSound() {
+  if (!soundBtn) return;
+  const on = !video.muted && video.volume > 0 && !soundNoTrack;
+  soundBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  soundBtn.classList.toggle('no-audio', soundNoTrack);
+  soundBtn.querySelector('.snd-ico').textContent = soundNoTrack ? '🔇' : on ? '🔊' : '🔇';
+  soundBtn.querySelector('.snd-lbl').textContent = soundNoTrack ? t('Sin audio', 'No audio') : on ? t('Con sonido', 'Sound on') : t('Sin sonido', 'Sound off');
+  soundBtn.title = soundNoTrack ? t('Este vídeo no tiene pista de audio', 'This video has no audio track') : on ? t('Silenciar', 'Mute') : t('Activar sonido', 'Turn sound on');
+}
+function checkAudioTrack() {
+  const has = hasAudioTrack(video);
+  if (has === false && !soundNoTrack) { soundNoTrack = true; video.muted = true; renderSound(); }
+  else if (has === true && soundNoTrack) { soundNoTrack = false; renderSound(); }
+}
+if (soundBtn) {
+  soundBtn.onclick = () => {
+    checkAudioTrack();
+    if (soundNoTrack) { renderSound(); return; }
+    if (video.muted || video.volume === 0) {
+      video.muted = false;
+      if (video.volume === 0) video.volume = 1;
+      if (video.paused) video.play().catch(() => { video.muted = true; renderSound(); video.play().catch(() => {}); });
+    } else {
+      video.muted = true;
+    }
+    renderSound();
+  };
+  video.addEventListener('volumechange', renderSound);
+  video.addEventListener('timeupdate', () => { if (video.currentTime > 1.2 && hasAudioTrack(video) !== null) checkAudioTrack(); });
+  video.addEventListener('loadstart', () => { soundNoTrack = false; renderSound(); });
+  video.addEventListener('loadedmetadata', checkAudioTrack);
+  renderSound();
+}
+// Flujo en dos pasos: 1 Vídeo (Stock, subir o crear + vista previa) · 2 Adaptar (formatos, vistas previas y Exportar).
+function goStep(n) {
+  if (n === 2 && !state.src.ancho) return;
+  $('#paso-1').hidden = n !== 1; $('#paso-2').hidden = n !== 2; document.body.dataset.paso = String(n);
+  document.querySelectorAll('.steps .step').forEach(b => { if (+b.dataset.go === n) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+  if (n === 2) { drawDirty = true; buildCardSettings(); refreshInfo(); }
+  window.scrollTo({top: 0});
+}
+document.querySelectorAll('.steps .step').forEach(b => b.onclick = () => goStep(+b.dataset.go));
+$('#btn-adaptar').onclick = () => goStep(2);
+$('#btn-volver').onclick = () => goStep(1);
+$('#btn-sizes').onclick = () => { const m = document.querySelector('.pix-nav-icon-menu'); if (m && document.body.classList.contains('pf-left-off')) m.click(); else document.body.classList.remove('pf-left-off'); };
 $('#modo-global').onchange = (e) => { state.modoGlobal = e.target.value; refreshInfo(); };
 $('#format-profile').onchange = (e) => {
   state.profile = e.target.value;
@@ -378,68 +421,20 @@ $('#format-profile').onchange = (e) => {
 };
 $('#compat').onchange = (e) => { state.compat = e.target.value; buildGrid(); };
 
-// ── Altadis: 9 estancos + gemelo + recorrido estilo CanalKiosk ─────────────
-// Patrón copiado de admira.app (clearchannel-tv/app.js · startCircuitDemo /
-// showCircuitDemoPoint): parada a parada, estado «i/N · nombre», dwell fijo y
-// la siguiente parada precargada; el previo abre la pantalla sobre la fachada.
-const TOUR_DWELL_MS = 8000;
-let ESTANCOS = [], ORIGEN = null, cur = 0, tour = null;
-async function loadEstancos() {
-  const d = await (await fetch('/adaptaciones/altadis-bcn-9.json')).json();
-  ESTANCOS = d.estancos; ORIGEN = d.origen;
-  $('#lista-estancos').innerHTML = ESTANCOS.map((e, i) => `<li data-i="${i}"><b>${e.orden}. ${e.name}</b><small>${e.addr}<br>${e.dist_planeta7_m} m ${t('de','from')} Planeta 7 · OSM ${e.osm}</small></li>`).join('');
-  $('#lista-estancos').querySelectorAll('li').forEach((li) => (li.onclick = () => { stopTour(); go(+li.dataset.i); }));
-  drawMap(); go(0);
-}
-function proj(lat, lon) {
-  const pts = ESTANCOS.map((e) => [e.lat, e.lon]).concat([[ORIGEN.lat, ORIGEN.lon]]);
-  const la = pts.map((p) => p[0]), lo = pts.map((p) => p[1]);
-  const [a0, a1, o0, o1] = [Math.min(...la), Math.max(...la), Math.min(...lo), Math.max(...lo)];
-  const kx = Math.cos((a0 * Math.PI) / 180); const sx = 360 / ((o1 - o0) * kx), sy = 220 / (a1 - a0), s = Math.min(sx, sy);
-  return [20 + (lon - o0) * kx * s, 240 - (lat - a0) * s];
-}
-function drawMap() {
-  const svg = $('#minimap'); const P = ESTANCOS.map((e) => proj(e.lat, e.lon)); const o = proj(ORIGEN.lat, ORIGEN.lon);
-  svg.innerHTML = `<text x="10" y="16" fill="#8a93a6" font-size="11">${t('Circuito Altadis','Altadis circuit')} · Gràcia (${t('ruta','route')} ${'≈'}${(ESTANCOS.reduce((a, e) => a + e.tramo_desde_anterior_m, 0) / 1000).toFixed(1)} km)</text>
-    <polyline points="${P.map((p) => p.join(',')).join(' ')}" fill="none" stroke="#ff6a3d" stroke-width="2" stroke-dasharray="4 3"/>
-    <rect x="${o[0] - 5}" y="${o[1] - 5}" width="10" height="10" fill="#3ddc97"/><text x="${o[0] + 8}" y="${o[1] + 4}" fill="#3ddc97" font-size="10">Planeta 7</text>
-    ${P.map((p, i) => `<g data-i="${i}" style="cursor:pointer"><circle cx="${p[0]}" cy="${p[1]}" r="9" fill="#1b2030" stroke="#ff6a3d"/><text x="${p[0]}" y="${p[1] + 4}" text-anchor="middle" fill="#fff" font-size="10">${i + 1}</text></g>`).join('')}
-    <circle id="mk" r="13" fill="none" stroke="#ffd84a" stroke-width="3" cx="${P[0][0]}" cy="${P[0][1]}" style="transition:cx 1.2s ease,cy 1.2s ease"/>`;
-  svg.querySelectorAll('g[data-i]').forEach((g) => (g.onclick = () => { stopTour(); go(+g.dataset.i); }));
-}
-function go(i) {
-  cur = (i + ESTANCOS.length) % ESTANCOS.length; const e = ESTANCOS[cur];
-  document.querySelectorAll('#lista-estancos li').forEach((li) => li.classList.toggle('on', +li.dataset.i === cur));
-  document.querySelector('#lista-estancos li.on')?.scrollIntoView({ block: 'nearest' });
-  $('#twin-name').textContent = `${t('Gemelo','Twin')} ${e.orden}/9 · ${e.name}`;
-  $('#twin-addr').textContent = e.addr;
-  $('#twin-ft').innerHTML = `${t('Disposición','Layout')}: <b>P1 ${t('vertical','portrait')} 1080×1920</b> (${t('escaparate','shop window')}) + <b>P2 ${t('horizontal','landscape')} 1920×1080</b> (${t('sobre mostrador','above counter')}) · ${e.dist_planeta7_m} m ${t('de','from')} Planeta 7 · <a href="https://www.openstreetmap.org/${e.osm}" target="_blank" rel="noopener">OSM ${e.osm}</a>${e.opening_hours ? ' · ' + e.opening_hours : ''}${cur === 0 ? ` · <b style="color:#3ddc97">${t('el más cercano a Planeta 7','nearest to Planeta 7')}</b>` : ''}`;
-  $('#link-gemelo').href = `https://www.xpaceos.com/admira-xp/?autostart=xtanco&loc=${e.id}`;
-  const p = proj(e.lat, e.lon); const mk = $('#mk'); if (mk) { mk.setAttribute('cx', p[0]); mk.setAttribute('cy', p[1]); }
-  const tw = $('#twin'); tw.animate([{ opacity: 0.25, transform: 'translateX(18px)' }, { opacity: 1, transform: 'none' }], { duration: 500, easing: 'ease-out' });
-  $('#tour-status').textContent = tour ? `${t('Recorrido · parada','Tour · stop')} ${cur + 1}/${ESTANCOS.length} · ${e.name}` : `${t('Parada','Stop')} ${cur + 1}/${ESTANCOS.length}`;
-}
-function startTour() { stopTour(); tour = { i: cur }; $('#tour').textContent = t('■ Parar recorrido', '■ Stop tour'); go(cur); tour.timer = setInterval(() => { if (cur === ESTANCOS.length - 1) { stopTour(); $('#tour-status').textContent = `${t('Recorrido completado','Tour completed')} · ${ESTANCOS.length} ${t('estancos','stores')}`; return; } go(cur + 1); }, TOUR_DWELL_MS); }
-function stopTour() { if (tour) clearInterval(tour.timer); tour = null; $('#tour').textContent = t('▶ Recorrido del circuito', '▶ Circuit tour'); }
-$('#prev').onclick = () => { stopTour(); go(cur - 1); };
-$('#next').onclick = () => { stopTour(); go(cur + 1); };
-$('#tour').onclick = () => (tour ? stopTour() : startTour());
-document.addEventListener('keydown', (ev) => { if (ev.target.tagName === 'INPUT') return; if (ev.key === 'ArrowRight') $('#next').click(); if (ev.key === 'ArrowLeft') $('#prev').click(); });
 
-const altadisResponse = await fetch('/adaptaciones/altadis-18.json');
-if (altadisResponse.ok) {
- const data = await altadisResponse.json();
+const clienteResponse = await fetch('/adaptaciones/perfil-cliente-18.json');
+if (clienteResponse.ok) {
+ const data = await clienteResponse.json();
  for (const f of data.formats) { f.on=true;f.category='digital'; if (EN) f.uso = f.useEn; FORMATOS.push(f); state.fmt[f.id] = {modo:'auto',fx:0.5,fy:0.5,zoom:1}; }
- $('#format-profile').querySelector('[value=altadis]').disabled = false;
+ $('#format-profile').querySelector('[value=cliente]').disabled = false;
 }
-const especialesResponse = await fetch('/adaptaciones/altadis-especiales.json');
+const especialesResponse = await fetch('/adaptaciones/perfil-cliente-especiales.json');
 if (especialesResponse.ok) {
  const data = await especialesResponse.json();
  data.layouts.forEach((layout, i) => { FORMATOS.push({ id: layout.id, nombre: layout.nombre, nameEn: layout.nombre, uso: EN ? layout.useEn : layout.uso, custom: layout.entrega, category: 'digital', especial: true, layout, fps: 25, on: i === 0 }); state.fmt[layout.id] = defaults(); });
  $('#format-profile').querySelector('[value=especiales]').disabled = false;
 }
-restoreSettings(); buildGrid(); setSource('/adaptaciones/media/jti-tu-sitio-de-siempre-fuente.mp4', 'JTI «Tu sitio de siempre»', true); loadEstancos(); loop();
-window.__pixAdapt = { go, startTour };
+restoreSettings(); buildGrid(); emptySource(); loop();
 
 // Índice del Stock: primero el proxy comprimido del propio dominio y, si no responde
 // JSON (sin sesión la verja redirige a /auth/login, y en admira.studio ese salto
@@ -458,7 +453,11 @@ async function fetchStockIndex() {
 async function loadStock() {
   try {
     const data = await fetchStockIndex();
-    const videos = (data.items || []).filter(item => item.type === 'video' && (item.url || item.mediaUrl));
+    // Página genérica del Adaptador: no lista piezas de marcas de cliente (las marcas competidoras
+    // nunca se mezclan). Se queda con el Stock sin marca; los vídeos de cliente se suben o se eligen en su espacio.
+    const CLIENTE = /\b(jti|altadis|philip morris|pmi|bat|imperial)\b|tu sitio de siempre/i;
+    const videos = (data.items || []).filter(item => item.type === 'video' && (item.url || item.mediaUrl)
+      && !CLIENTE.test([item.title, item.name, item.prompt, item.comment, (item.tags || []).join(' ')].join(' ')));
     for (const item of videos) {
       const url = item.url || item.mediaUrl;
       if (!/^https:\/\//.test(url)) continue;
@@ -466,7 +465,7 @@ async function loadStock() {
       option.textContent = 'Stock · ' + (item.title || item.name || item.id);
       $('#src-select').append(option);
     }
-    $('#stock-status').textContent = t('Vídeos Stock disponibles: ', 'Stock videos available: ') + (videos.length + 1);
-  } catch (_) { $('#stock-status').textContent = t('Stock remoto no disponible. Puedes usar la muestra o subir un vídeo.', 'Remote Stock unavailable. Use the sample or upload a video.'); }
+    $('#stock-status').textContent = t('Vídeos Stock disponibles: ', 'Stock videos available: ') + videos.length;
+  } catch (_) { $('#stock-status').textContent = t('Stock remoto no disponible. Puedes subir un vídeo.', 'Remote Stock unavailable. You can upload a video.'); }
 }
 loadStock();
