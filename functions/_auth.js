@@ -454,7 +454,8 @@ async function agente(request, env, waitUntil) {
     }
   }
   const given = bearer ? bearer[1] : formToken;
-  const who = String(request.headers.get('X-Agente') || formAgent || '').replace(/[^\p{L}\p{N} ._·@-]/gu, '').slice(0, 80) || 'sin nombre';
+  // #5075: X-Agente opcional; sin nombre → «agente» (nunca 400).
+  const who = String(request.headers.get('X-Agente') || formAgent || '').replace(/[^\p{L}\p{N} ._·@-]/gu, '').slice(0, 80) || 'agente';
   const returnTo = safeReturnTo(request.headers.get('X-Return-To') || formReturn || '/');
   const key = env.PIXERIA_SIGNING_KEY;
   const ok = given.length > 0 && given.length <= 512 &&
