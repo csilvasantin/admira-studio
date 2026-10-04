@@ -1,15 +1,15 @@
 {
-  "version": "v.03.10.2026.r2.07:39",
-  "deployedAt": "2026-10-03T05:39:07Z",
-  "author": "OraculoGrokBotBox",
-  "agent": "OraculoGrokBotBox",
-  "deployer": "OraculoGrokBotBox",
-  "machine": "GrokBotBox",
-  "signature": "OraculoGrokBotBox · GrokBotBox",
-  "git": "74f31751b2cb16fb33b907366b806d160dc098a8",
-  "gitShort": "74f3175",
-  "gitFull": "74f31751b2cb16fb33b907366b806d160dc098a8",
+  "version": "v.04.10.2026.r2.18:44",
+  "deployedAt": "2026-10-04T16:44:14Z",
+  "author": "MorfeoMacMini",
+  "agent": "MorfeoMacMini",
+  "deployer": "MorfeoMacMini",
+  "machine": "MacMini",
+  "signature": "MorfeoMacMini · MacMini",
+  "git": "c8b61e27022659abbfc2ee9e002b30fd4cc1df85",
+  "gitShort": "c8b61e2",
+  "gitFull": "c8b61e27022659abbfc2ee9e002b30fd4cc1df85",
   "dirty": false,
   "espejoDe": "pixeria",
-  "fuente": "bfa24d193e22ceb945cbe79ef86b647b5dd3de4f"
+  "fuente": "2e0ca2528ff974b87e95fd675c06adf23609037a"
 }
