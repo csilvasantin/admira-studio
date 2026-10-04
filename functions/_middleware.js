@@ -1,4 +1,12 @@
 import {handleAuth, hasSession, safeReturnTo} from './_auth.js';
+import {withAvatar} from './_avatar-loader.js';
+import {withPresence} from './_live-presence.js';
+
+// El avatar digital se añade a las páginas que ya pasaron la verja (encargo avatar · 4-oct-2026).
+export async function onRequest(context) {
+  const response = await guardedRequest(context);
+  return withPresence(withAvatar(response, new URL(context.request.url)));
+}
 
 async function guardedRequest(context) {
   const {request, env} = context;
@@ -48,6 +56,3 @@ function isDocumentPath(pathname) {
   if (!last.includes('.')) return true;
   return last.endsWith('.html') || last.endsWith('.htm');
 }
-
-import {withPresence} from "./_live-presence.js";
-export async function onRequest(context) { return withPresence(await guardedRequest(context)); }
