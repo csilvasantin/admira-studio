@@ -170,6 +170,7 @@
       "Admira StudioAdaptador",
       "PixeriaAdaptador"
     ],
+    ["Admira StudioStock", "PixeriaStock"],
     [
       "ADMIRA STUDIO_SIGNING_KEY",
       "PIXERIA_SIGNING_KEY"

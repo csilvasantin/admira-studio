@@ -162,7 +162,8 @@
   function sync() {
     var open = mode === 'rail' ? !document.body.classList.contains('pf-bottom-off') : mode === 'quad' ? !panel.classList.contains('is-collapsed') : !panel.hidden;
     if (panel.dataset.cliOpen !== String(open)) panel.dataset.cliOpen = String(open);
-    if (open && !wasOpen) resize(MIN, false);
+    // Con la piel ⌘ EXPERTO · CLI de la suite (look digitalavatar.ai) se abre desplegada: ficha + registro + orden.
+    if (open && !wasOpen) resize(document.documentElement.hasAttribute('data-ax-experto') ? Math.max(expanded, 300) : MIN, false);
     wasOpen = open;
     if (document.body.classList.contains('pf-cli-open') !== open) document.body.classList.toggle('pf-cli-open', open);
     var vv = window.visualViewport;
@@ -239,6 +240,8 @@
   // → true si ya está resuelto aquí; false para seguir con la marca blanca (runMarca).
   function marcaCliente(arg) {
     var PC = window.PixeriaCliente, a = String(arg || '').trim();
+    // off oculta el selector aunque la lista de clientes aún no haya llegado.
+    if (PC && /^off$/i.test(a) && !(PC.listo && PC.listo())) { PC.selector(false); PC.fijar(''); return false; }
     if (!PC || !PC.listo || !PC.listo()) return false;
     var def = PC.porDefecto(), defNombre = def ? def.nombre : 'Admira';
     if (/^(todas|todos|all)$/i.test(a)) {
