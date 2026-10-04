@@ -163,6 +163,14 @@
       "PixeriaMarca"
     ],
     [
+      "Admira StudioCliente",
+      "PixeriaCliente"
+    ],
+    [
+      "Admira StudioAdaptador",
+      "PixeriaAdaptador"
+    ],
+    [
       "ADMIRA STUDIO_SIGNING_KEY",
       "PIXERIA_SIGNING_KEY"
     ]
