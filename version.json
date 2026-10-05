@@ -1,15 +1,15 @@
 {
-  "version": "v.05.10.2026.r5.18:14",
-  "deployedAt": "2026-10-05T16:14:25Z",
+  "version": "v.05.10.2026.r6.18:45",
+  "deployedAt": "2026-10-05T16:45:33Z",
   "author": "csilvasantin",
   "agent": "csilvasantin",
   "deployer": "csilvasantin",
   "machine": "MacMini",
   "signature": "csilvasantin · MacMini",
-  "git": "3b8732a74f3b5528d29fd3adb97501718d26e552",
-  "gitShort": "3b8732a",
-  "gitFull": "3b8732a74f3b5528d29fd3adb97501718d26e552",
+  "git": "015f4c049af1c764e0422c20e64235b6b9445bf6",
+  "gitShort": "015f4c0",
+  "gitFull": "015f4c049af1c764e0422c20e64235b6b9445bf6",
   "dirty": false,
   "espejoDe": "pixeria",
-  "fuente": "18c87affe6c423ee7a0d3c20869e6b1b35b9b8fb"
+  "fuente": "3bb1388783f3e3c4733c25419fabbdc64b7af3f9"
 }

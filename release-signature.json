@@ -1,13 +1,12 @@
 {
-  "version": "v.05.10.2026.r5.18:14",
-  "author": "HuangMacMini",
-  "agent": "HuangMacMini",
-  "deployer": "HuangMacMini",
+  "version": "v.05.10.2026.r6.18:45",
+  "author": "csilvasantin",
+  "agent": "csilvasantin",
+  "deployer": "csilvasantin",
   "machine": "MacMini",
-  "signature": "HuangMacMini · MacMini",
-  "git": "3b8732a74f3b5528d29fd3adb97501718d26e552",
-  "gitShort": "3b8732a",
-  "gitFull": "3b8732a74f3b5528d29fd3adb97501718d26e552",
-  "dirty": false,
-  "evidence": "Sync pixeria Suno cápsula fase 1 (PR #56) · dry-run queue"
+  "signature": "csilvasantin · MacMini",
+  "git": "015f4c049af1c764e0422c20e64235b6b9445bf6",
+  "gitShort": "015f4c0",
+  "gitFull": "015f4c049af1c764e0422c20e64235b6b9445bf6",
+  "dirty": false
 }
