@@ -482,6 +482,8 @@
         // la capa flotante de respaldo duplicaba el panel encima del raíl (#4905).
         if (id === 'pixNavAdvancedLayer' && document.body.classList.contains('pix-nav-home-rails') && document.querySelector('.rail-right')) return;
         var layer = document.getElementById(id);
+        // Con la piel ⌘ EXPERTO · CLI anclada, el clic lo gobierna suite/experto.js y expert-cli.js lo sigue.
+        if (id === 'pixNavExpertLayer' && layer && layer.classList.contains('ax-dock')) return;
         var open = layer.hidden;
         document.querySelectorAll('.pix-nav-layer').forEach(function (other) { other.hidden = true; });
         document.querySelectorAll('.pf-topbar-right .pix-nav-icon, .pix-nav-controls .pix-nav-icon').forEach(function (other) { other.setAttribute('aria-expanded', 'false'); });
@@ -632,7 +634,41 @@
     try { ['pixeria_pf_left', 'pixeria_pf_right', 'pixeria_pf_bottom'].forEach(function (k) { localStorage.removeItem(k); }); } catch (_) {}
   }
 
+  // Suno es un motor oculto (norma de Carlos, 5-oct-2026): nunca se ve en la interfaz. Los textos
+  // del sitio ya no lo nombran; esto cubre lo que llega de datos (títulos, comentarios y prompts del
+  // Stock): en pantalla se lee «Admira Studio Music». Solo cambia lo que se ve, no los datos.
+  var SUNO_RE = /\bsuno(?:[ -]?local)?(?:[ -]?v?\d+(?:[.-]\d+)?)?(?:\.ai)?\b/gi;
+  var SUNO_TEST = /suno/i;
+  var SUNO_SKIP = {SCRIPT: 1, STYLE: 1, TEXTAREA: 1, INPUT: 1, NOSCRIPT: 1};
+  function ocultarSunoEn(rootNode) {
+    if (!rootNode) return;
+    if (rootNode.nodeType === 3) {
+      var par = rootNode.parentNode;
+      if (par && !SUNO_SKIP[par.nodeName] && !(par.isContentEditable) && SUNO_TEST.test(rootNode.nodeValue)) rootNode.nodeValue = rootNode.nodeValue.replace(SUNO_RE, 'Admira Studio Music');
+      return;
+    }
+    if (rootNode.nodeType !== 1 || SUNO_SKIP[rootNode.nodeName] || rootNode.isContentEditable) return;
+    ['title', 'alt', 'placeholder', 'aria-label'].forEach(function (at) {
+      var v = rootNode.getAttribute(at);
+      if (v && SUNO_TEST.test(v)) rootNode.setAttribute(at, v.replace(SUNO_RE, 'Admira Studio Music'));
+    });
+    if (!SUNO_TEST.test(rootNode.textContent) && !rootNode.querySelector('[title],[alt],[placeholder],[aria-label]')) return;
+    for (var c = rootNode.firstChild; c; c = c.nextSibling) ocultarSunoEn(c);
+  }
+  function vigilarSuno() {
+    ocultarSunoEn(document.body);
+    if (/suno/i.test(document.title)) document.title = document.title.replace(SUNO_RE, 'Admira Studio Music');
+    new MutationObserver(function (muts) {
+      muts.forEach(function (m) {
+        if (m.type === 'characterData') ocultarSunoEn(m.target);
+        else if (m.type === 'attributes') ocultarSunoEn(m.target);
+        else for (var i = 0; i < m.addedNodes.length; i++) ocultarSunoEn(m.addedNodes[i]);
+      });
+    }).observe(document.body, {childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['title', 'alt', 'placeholder', 'aria-label']});
+  }
+
   function start() {
+    try { vigilarSuno(); } catch (_) {}
     forgetOpenPanels();
     normalizeInternalNav();
     syncRailVersion();
@@ -655,10 +691,10 @@
       // ⌘ EXPERTO · CLI con el look de digitalavatar.ai (Carlos, 4-oct-2026): piel compartida de la
       // suite (www.admiranext.com/suite) sobre la consola de expert-cli.js; los comandos no cambian.
       var axCss = document.createElement('link');
-      axCss.rel = 'stylesheet'; axCss.href = 'https://www.admiranext.com/suite/experto.css?v=20261004-experto-min-2';
+      axCss.rel = 'stylesheet'; axCss.href = 'https://www.admiranext.com/suite/experto.css?v=20261005-experto-oculto-1';
       document.head.appendChild(axCss);
       var ax = document.createElement('script');
-      ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261004-experto-min-2';
+      ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261005-experto-oculto-1';
       ax.setAttribute('data-panel', '.pf-cli');
       ax.setAttribute('data-body', '');
       ax.setAttribute('data-form', '.pf-cli-form');
@@ -667,6 +703,9 @@
       ax.setAttribute('data-extras', '');
       ax.setAttribute('data-chrome', '');
       ax.setAttribute('data-engine', 'ADMIRA STUDIO ENGINE');
+      // Modo Experto: el icono lo muestra completo o lo oculta DEL TODO (Carlos, 5-oct-2026), sin la
+      // línea mínima «› /help»; el estado se recuerda en la pestaña.
+      ax.setAttribute('data-min', 'hide');
       document.body.appendChild(ax);
     }, 0);
   }

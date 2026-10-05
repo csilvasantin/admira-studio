@@ -41,6 +41,7 @@ export function createCatalog(en=false) {
  return formats;
 }
 export const CAMPAIGNS=[
+ {id:'altadis',es:'Altadis',en:'Altadis',descriptionEs:'18 pantallas del circuito · MP4 H.264 · 25 fps',descriptionEn:'18 circuit screens · MP4 H.264 · 25 fps',matches:f=>!!f.cliente,profile:'cliente'},
  {id:'social',es:'Campaña de redes sociales',en:'Social media campaign',descriptionEs:'Publicaciones, stories y portadas',descriptionEn:'Posts, stories and covers',matches:f=>f.category==='social'},
  {id:'display',es:'Anuncios display',en:'Display ads',descriptionEs:'Rectángulos, banners y formatos regionales',descriptionEn:'Rectangles, banners and regional sizes',matches:f=>f.category==='display'},
  {id:'mobile',es:'Anuncios móviles',en:'Mobile ads',descriptionEs:'Tres banners para móvil',descriptionEn:'Three mobile banners',matches:f=>f.mobile},
@@ -68,4 +69,47 @@ export function restoreCustomFormats(raw,en=false) {
   if(!Array.isArray(size))return [];const f=customFormat(size[0],size[1],en);
   if(!f||seen.has(f.id))return [];seen.add(f.id);return [f];
  });
+}
+// The size library is the 42 presets (social 8, digital 6, display 23, print 5).
+// Client profiles and sizes the user typed are other families.
+export const LIBRARY_SIZE_COUNT = 42;
+export const isLibrarySize = f => !f.cliente && !f.especial && !f.user;
+export function applyCampaign(formats, campaignId) {
+ const campaign = CAMPAIGNS.find(c => c.id === campaignId);
+ if (!campaign) return 0;
+ let n = 0;
+ const profile = campaign.profile || 'standard';
+ for (const f of formats) {
+  // Biblioteca: solo presets de redes/digital/display/impresión.
+  // Campañas de cliente (Altadis): activan el perfil cliente y sus formatos.
+  if (profile === 'standard') {
+   if (!isLibrarySize(f)) continue;
+  } else if (formatFamily(f) !== profile) continue;
+  f.on = !!campaign.matches(f);
+  if (f.on) n++;
+ }
+ return n;
+}
+export function setGroupSelected(formats, categoryId, on) {
+ let n = 0;
+ for (const f of formats) {
+  if (!isLibrarySize(f) || f.category !== categoryId) continue;
+  f.on = !!on;
+  if (f.on) n++;
+ }
+ return n;
+}
+export function groupSelection(formats, categoryId) {
+ const group = formats.filter(f => isLibrarySize(f) && f.category === categoryId);
+ const on = group.filter(f => f.on).length;
+ return { total: group.length, on, all: group.length > 0 && on === group.length, none: on === 0 };
+}
+export function selectAllSizes(formats) {
+ let n = 0;
+ for (const f of formats) {
+  if (!isLibrarySize(f)) continue;
+  f.on = true;
+  n++;
+ }
+ return n;
 }
