@@ -168,10 +168,16 @@ else
   PROPIO="$(git rev-parse HEAD 2>/dev/null || echo '')"
   SUCIO=false
   LC_ALL=C sed -i '' -E "s|<span class=\"rail-ver\"[^>]*>[^<]*</span>|<span class=\"rail-ver\" data-release-signature>Admira Studio ${SELLO} · ${AGENTE} · ${PROPIO:0:7} · clean</span>|" index.html
-  jq -n --arg v "$SELLO" --arg a "$AGENTE" --arg m "$MAQUINA" --arg g "$FUENTE" \
+  # Novedades del sello (Merovingio, 06-10-2026): novedades.json (propio) → version.json.novedades[]
+  NOVEDADES_JSON='[]'
+  if [ -f novedades.json ]; then
+    NOVEDADES_JSON="$(jq -c --arg v "$SELLO" '(if type=="object" then (.[$v] // .default // .novedades // []) elif type=="array" then . else [] end) | if type=="array" then . else [] end | map(tostring) | map(select(length>0)) | .[0:4]' novedades.json 2>/dev/null || echo '[]')"
+  fi
+  [ -n "$NOVEDADES_JSON" ] || NOVEDADES_JSON='[]'
+  jq -n --argjson novedades "$NOVEDADES_JSON" --arg v "$SELLO" --arg a "$AGENTE" --arg m "$MAQUINA" --arg g "$FUENTE" \
         --arg c "$PROPIO" --arg cs "${PROPIO:0:7}" --argjson d "$SUCIO" \
         --arg t "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-        '{version:$v,deployedAt:$t,author:$a,agent:$a,deployer:$a,machine:$m,signature:($a+" · "+$m),git:$c,gitShort:$cs,gitFull:$c,dirty:$d,espejoDe:"pixeria",fuente:$g}' \
+        '{version:$v,deployedAt:$t,author:$a,agent:$a,deployer:$a,machine:$m,signature:($a+" · "+$m),git:$c,gitShort:$cs,gitFull:$c,dirty:$d,novedades:$novedades,espejoDe:"pixeria",fuente:$g}' \
         > version.json
   jq '{version,author,agent,deployer,machine,signature,git,gitShort,gitFull,dirty}' version.json > release-signature.json
   python3 install-live-presence.py

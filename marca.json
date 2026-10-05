@@ -238,7 +238,8 @@
   ],
   "propios": [
     "god/",
-    "privacy.html"
+    "privacy.html",
+    "novedades.json"
   ],
   "_por_que_propios": [
     "Existen solo en admira.studio y no tienen equivalente en Pixeria. El sync no los toca",
