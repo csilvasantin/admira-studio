@@ -11,5 +11,9 @@
   "gitFull": "46aaec91653f8d217b88f3585ec51b7d0f27ac2a",
   "dirty": false,
   "espejoDe": "pixeria",
-  "fuente": "204ba72de34e1953e54b706f1870b711e7a62c62"
+  "fuente": "204ba72de34e1953e54b706f1870b711e7a62c62",
+  "novedades": [
+    "Sello de versión con novedades al pasar el ratón",
+    "Marca NUEVO cuando hay una versión que aún no has visto"
+  ]
 }
