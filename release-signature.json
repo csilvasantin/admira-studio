@@ -1,12 +1,12 @@
 {
-  "version": "v.04.10.2026.r8.23:38",
-  "author": "WaltDisneyBox",
-  "agent": "WaltDisneyBox",
-  "deployer": "WaltDisneyBox",
-  "machine": "Box",
-  "signature": "WaltDisneyBox · Box",
-  "git": "bbca919c2824c59f356635cedad61c07401c4133",
-  "gitShort": "bbca919",
-  "gitFull": "bbca919c2824c59f356635cedad61c07401c4133",
+  "version": "v.05.10.2026.r2.09:25",
+  "author": "csilvasantin",
+  "agent": "csilvasantin",
+  "deployer": "csilvasantin",
+  "machine": "MacMini",
+  "signature": "csilvasantin · MacMini",
+  "git": "513db1a30b1a23ca646b3ee72f71744b2f1f32b1",
+  "gitShort": "513db1a",
+  "gitFull": "513db1a30b1a23ca646b3ee72f71744b2f1f32b1",
   "dirty": false
 }

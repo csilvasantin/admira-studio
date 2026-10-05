@@ -1,15 +1,15 @@
 {
-  "version": "v.04.10.2026.r8.23:38",
-  "deployedAt": "2026-10-04T21:38:45Z",
-  "author": "WaltDisneyBox",
-  "agent": "WaltDisneyBox",
-  "deployer": "WaltDisneyBox",
-  "machine": "Box",
-  "signature": "WaltDisneyBox · Box",
-  "git": "bbca919c2824c59f356635cedad61c07401c4133",
-  "gitShort": "bbca919",
-  "gitFull": "bbca919c2824c59f356635cedad61c07401c4133",
+  "version": "v.05.10.2026.r2.09:25",
+  "deployedAt": "2026-10-05T07:25:49Z",
+  "author": "csilvasantin",
+  "agent": "csilvasantin",
+  "deployer": "csilvasantin",
+  "machine": "MacMini",
+  "signature": "csilvasantin · MacMini",
+  "git": "513db1a30b1a23ca646b3ee72f71744b2f1f32b1",
+  "gitShort": "513db1a",
+  "gitFull": "513db1a30b1a23ca646b3ee72f71744b2f1f32b1",
   "dirty": false,
   "espejoDe": "pixeria",
-  "fuente": "035810c0f93bce9b49568e44f12c00d67403a319"
+  "fuente": "8bf02a69cf94e31017b60fd6c77a251af8a5e69e"
 }
