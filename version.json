@@ -1,19 +1,19 @@
 {
-  "version": "v.05.10.2026.r16.23:48",
-  "deployedAt": "2026-10-05T21:48:32Z",
-  "author": "MorfeoMacMini",
-  "agent": "MorfeoMacMini",
-  "deployer": "MorfeoMacMini",
+  "version": "v.06.10.2026.r1.01:22",
+  "deployedAt": "2026-10-05T23:22:17Z",
+  "author": "SmithMacMini",
+  "agent": "SmithMacMini",
+  "deployer": "SmithMacMini",
   "machine": "MacMini",
-  "signature": "MorfeoMacMini · MacMini",
-  "git": "46aaec91653f8d217b88f3585ec51b7d0f27ac2a",
-  "gitShort": "46aaec9",
-  "gitFull": "46aaec91653f8d217b88f3585ec51b7d0f27ac2a",
+  "signature": "SmithMacMini · MacMini",
+  "git": "e2ef2bd87f7afdec79f555e49fa3550a654733ff",
+  "gitShort": "e2ef2bd",
+  "gitFull": "e2ef2bd87f7afdec79f555e49fa3550a654733ff",
   "dirty": false,
-  "espejoDe": "pixeria",
-  "fuente": "204ba72de34e1953e54b706f1870b711e7a62c62",
   "novedades": [
     "Sello de versión con novedades al pasar el ratón",
     "Marca NUEVO cuando hay una versión que aún no has visto"
-  ]
+  ],
+  "espejoDe": "pixeria",
+  "fuente": "4e66a6372dc0b11a573c491225ac43559c8c6eb3"
 }
