@@ -1,13 +1,13 @@
 {
-  "version": "v.07.10.2026.r3.07:39",
-  "author": "GrokBot",
-  "agent": "GrokBot",
-  "deployer": "GrokBot",
-  "machine": "MacMini",
-  "signature": "GrokBot · MacMini",
-  "git": "cd4ad82e2bcbdc7fd77631f895ab477bcc4d0c59",
-  "gitShort": "cd4ad82",
-  "gitFull": "cd4ad82e2bcbdc7fd77631f895ab477bcc4d0c59",
+  "version": "v.07.10.2026.r4.13:00",
+  "author": "TrinityMBP16",
+  "agent": "TrinityMBP16",
+  "deployer": "TrinityMBP16",
+  "machine": "MBP16",
+  "signature": "TrinityMBP16 · MBP16",
+  "git": "a677d0597c285dc65e6e99c2865eeb2f90517c00",
+  "gitShort": "a677d05",
+  "gitFull": "a677d0597c285dc65e6e99c2865eeb2f90517c00",
   "dirty": false,
-  "evidence": "Panel del avatar unificado: pastilla de categoría (avatar/human/metahuman) y pines avatar.js/experto.js 20261007-pill-1."
+  "evidence": "Cargador HTML y fallback CLI del propio Studio cargan avatar.js?v=20261007-demo-ack-1; relé y configuración propios conservados."
 }

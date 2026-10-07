@@ -1,18 +1,18 @@
 {
-  "version": "v.07.10.2026.r3.07:39",
-  "deployedAt": "2026-10-07T05:22:57Z",
-  "author": "MorfeoMacMini",
-  "agent": "MorfeoMacMini",
-  "deployer": "MorfeoMacMini",
-  "machine": "MacMini",
-  "signature": "MorfeoMacMini · MacMini",
-  "git": "cd4ad82e2bcbdc7fd77631f895ab477bcc4d0c59",
-  "gitShort": "cd4ad82",
-  "gitFull": "cd4ad82e2bcbdc7fd77631f895ab477bcc4d0c59",
+  "version": "v.07.10.2026.r4.13:00",
+  "deployedAt": "2026-10-07T11:00:12Z",
+  "author": "TrinityMBP16",
+  "agent": "TrinityMBP16",
+  "deployer": "TrinityMBP16",
+  "machine": "MBP16",
+  "signature": "TrinityMBP16 · MBP16",
+  "git": "a677d0597c285dc65e6e99c2865eeb2f90517c00",
+  "gitShort": "a677d05",
+  "gitFull": "a677d0597c285dc65e6e99c2865eeb2f90517c00",
   "dirty": false,
   "novedades": [
-    "Sello de versión con novedades al pasar el ratón",
-    "Marca NUEVO cuando hay una versión que aún no has visto"
+    "Studio renueva la referencia del avatar para confirmar los comandos de demo local",
+    "El cargador HTML y el fallback del CLI comparten la versión actual sin cambiar el relé"
   ],
   "espejoDe": "pixeria",
   "fuente": "2f2710cf9795bad408b2bc6921bfa2ff62fe78de"
