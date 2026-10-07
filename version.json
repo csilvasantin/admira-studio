@@ -1,20 +1,20 @@
 {
-  "version": "v.07.10.2026.r13.23:08",
-  "deployedAt": "2026-10-07T21:08:20Z",
-  "author": "NeoMBP16",
-  "agent": "NeoMBP16",
-  "deployer": "NeoMBP16",
-  "machine": "MacBookPro16",
-  "signature": "NeoMBP16 · MacBookPro16",
-  "git": "149b17bc7294974475f2aa8751d870b53d466844",
-  "gitShort": "149b17b",
-  "gitFull": "149b17bc7294974475f2aa8751d870b53d466844",
+  "version": "v.07.10.2026.r14.23:17",
+  "deployedAt": "2026-10-07T21:17:04Z",
+  "author": "OraculoMacMini",
+  "agent": "OraculoMacMini",
+  "deployer": "OraculoMacMini",
+  "machine": "MacMini",
+  "signature": "OraculoMacMini · MacMini",
+  "git": "f33aef3683b00f12204a0271449a14545eaabd11",
+  "gitShort": "f33aef3",
+  "gitFull": "f33aef3683b00f12204a0271449a14545eaabd11",
   "dirty": false,
   "novedades": [
-    "Ver en gemelo digital debajo de cada formato adaptado",
-    "Estanco 3D: distribución física, vídeo/GIF en silencio, IA, giro y zoom",
-    "Ayuda y MCP actualizados en español e inglés"
+    "Visitar demo junto a Aplicar demo al estanco",
+    "Abre el formato y estanco seleccionados con el contenido actual",
+    "Ayuda y MCP bilingües; vídeo en silencio y pausa restaurada al cerrar"
   ],
   "espejoDe": "pixeria",
-  "fuente": "b3820438411c30dc9fb763b44ea7cd15b18b27dc"
+  "fuente": "e3f54e14b6c2e0f0e872e3074478edc85ff82079"
 }
