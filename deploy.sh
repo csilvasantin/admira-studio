@@ -37,14 +37,43 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 1
 fi
 
-echo "→ GitHub (push de código, backup)…"
-git push origin main 2>&1 | tail -1 || echo "  (nada que pushear)"
+[ "$(git branch --show-current)" = "main" ] || { echo "✖ publica solo desde main"; exit 1; }
+git fetch origin main
+SOURCE_SHA="$(git rev-parse HEAD)"
+[ "$SOURCE_SHA" = "$(git rev-parse FETCH_HEAD)" ] || { echo "✖ main no coincide con origin/main; sincroniza antes de publicar"; exit 1; }
 
 echo "→ Cloudflare Pages ($PROYECTO)…"
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
-git archive HEAD | tar -x -C "$TMP"
+git archive "$SOURCE_SHA" | tar -x -C "$TMP"
 # Fuera lo que es herramienta del espejo, no activo web.
 rm -rf "$TMP/sync.sh" "$TMP/marca.json" "$TMP/deploy.sh" "$TMP/.fuente" "$TMP/README.md"
+
+# La firma del artefacto identifica el SHA archivado, incluso después de merge.
+# Conserva versión, responsable y configuración del propio Studio.
+python3 - "$TMP" "$SOURCE_SHA" <<'PY_RELEASE'
+import json, re, sys
+from pathlib import Path
+from datetime import datetime, timezone
+artifact, sha = Path(sys.argv[1]), sys.argv[2]
+if not re.fullmatch(r"[0-9a-f]{40}", sha):
+    raise SystemExit("SHA de publicación inválido")
+version = json.loads((artifact / "version.json").read_text())
+signature = json.loads((artifact / "release-signature.json").read_text())
+if version.get("version") != signature.get("version"):
+    raise SystemExit("Versiones del sello no coinciden")
+for name, data in [("version.json", version), ("release-signature.json", signature)]:
+    data.update(git=sha, gitFull=sha, gitShort=sha[:7], dirty=False)
+    if name == "version.json":
+        data["deployedAt"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    (artifact / name).write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n")
+for page in artifact.rglob("*.html"):
+    html = page.read_text(encoding="utf-8")
+    updated = re.sub(r'(<span\b(?=[^>]*\bclass="rail-ver")(?=[^>]*\bdata-release-signature)[^>]*>[^<]*? · )[0-9a-fA-F]{7,40}( · )(?:clean|dirty)', lambda m: m.group(1) + sha[:7] + m.group(2) + "clean", html)
+    if updated != html:
+        page.write_text(updated, encoding="utf-8")
+PY_RELEASE
+python3 "$TMP/scripts/check-release-contract.py" "$TMP/version.json" "$TMP/index.html"
+[ "$SOURCE_SHA" = "$(git rev-parse HEAD)" ] && [ -z "$(git status --porcelain)" ] || { echo "✖ checkout cambió durante el build"; exit 1; }
 
 # wrangler.toml viaja dentro del archive y declara el binding D1 de autenticación.
 # Ejecutar desde el temporal hace que pages_build_output_dir="." apunte al
@@ -52,7 +81,7 @@ rm -rf "$TMP/sync.sh" "$TMP/marca.json" "$TMP/deploy.sh" "$TMP/.fuente" "$TMP/RE
 (
   cd "$TMP"
   npx --yes wrangler@latest pages deploy \
-    --project-name="$PROYECTO" --branch=main --commit-dirty=true
+    --project-name="$PROYECTO" --branch=main --commit-hash="$SOURCE_SHA" --commit-dirty=false
 )
 
 echo "→ comprobando lo que sirve producción…"
