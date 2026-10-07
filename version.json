@@ -1,14 +1,14 @@
 {
-  "version": "v.07.10.2026.r7.22:30",
-  "deployedAt": "2026-10-07T20:30:12Z",
-  "author": "NeoMBP16",
-  "agent": "NeoMBP16",
-  "deployer": "NeoMBP16",
-  "machine": "MacBookPro16",
-  "signature": "NeoMBP16 · MacBookPro16",
-  "git": "099d8ab02b82dc1101cf5b1f0d254778ffceb78d",
-  "gitShort": "099d8ab",
-  "gitFull": "099d8ab02b82dc1101cf5b1f0d254778ffceb78d",
+  "version": "v.07.10.2026.r9.22:34",
+  "deployedAt": "2026-10-07T20:34:26Z",
+  "author": "OraculoMacMini",
+  "agent": "OraculoMacMini",
+  "deployer": "OraculoMacMini",
+  "machine": "MacMini",
+  "signature": "OraculoMacMini · MacMini",
+  "git": "226536a29552e17c7a8a40427f003723a1c16d00",
+  "gitShort": "226536a",
+  "gitFull": "226536a29552e17c7a8a40427f003723a1c16d00",
   "dirty": false,
   "novedades": [
     "Altadis: fondo IA estático con el contenido original completo delante",
@@ -16,5 +16,5 @@
     "Guardar formatos, geometrías, ajustes y asignaciones como contrato portable"
   ],
   "espejoDe": "pixeria",
-  "fuente": "18a39b100c68ae8d368a188de5010b35414cd889"
+  "fuente": "e1286e07fe46515b713fd7a63e6892f07cdf7091"
 }
