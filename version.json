@@ -1,14 +1,14 @@
 {
-  "version": "v.07.10.2026.r16.23:35",
-  "deployedAt": "2026-10-07T21:35:27Z",
-  "author": "OraculoMacMini",
-  "agent": "OraculoMacMini",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
-  "git": "7ea9136a69aa164a984868d0d970dc119e53b34d",
-  "gitShort": "7ea9136",
-  "gitFull": "7ea9136a69aa164a984868d0d970dc119e53b34d",
+  "version": "v.07.10.2026.r17.23:41",
+  "deployedAt": "2026-10-07T21:41:16Z",
+  "author": "NeoMBP16",
+  "agent": "NeoMBP16",
+  "deployer": "NeoMBP16",
+  "machine": "MacBookPro16",
+  "signature": "NeoMBP16 · MacBookPro16",
+  "git": "04126b35fca10ea2c13bcb6e4675c03a20d03ae9",
+  "gitShort": "04126b3",
+  "gitFull": "04126b35fca10ea2c13bcb6e4675c03a20d03ae9",
   "dirty": false,
   "novedades": [
     "Estanco Better detallado de Stock con vista isométrica inicial",
@@ -16,5 +16,5 @@
     "Mismo motor Xpaces, contenido actual y fondo IA; ayuda y MCP ES/EN"
   ],
   "espejoDe": "pixeria",
-  "fuente": "7545a1f6ec6e50407e9f43e0881164753ac2a514"
+  "fuente": "0892bf679543da307d1c218807f39c6dc94a1e75"
 }
