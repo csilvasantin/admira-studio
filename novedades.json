@@ -1,9 +1,9 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "Altadis: fondo IA estático con el contenido original completo delante",
-    "29 formatos conservados y aplicaciones virtuales en Estancos",
-    "Guardar formatos, geometrías, ajustes y asignaciones como contrato portable"
+    "Ver en gemelo digital debajo de cada formato adaptado",
+    "Estanco 3D: distribución física, vídeo/GIF en silencio, IA, giro y zoom",
+    "Ayuda y MCP actualizados en español e inglés"
   ],
   "v.07.10.2026.r7.22:30": [
     "Vista por cliente: una cuenta asignada a un cliente ve su contenido y el genérico, no el de otros clientes",
@@ -25,6 +25,11 @@
     "Ayuda y MCP actualizados en español e inglés"
   ],
   "v.07.10.2026.r11.22:51": [
+    "Ver en gemelo digital debajo de cada formato adaptado",
+    "Estanco 3D: distribución física, vídeo/GIF en silencio, IA, giro y zoom",
+    "Ayuda y MCP actualizados en español e inglés"
+  ],
+  "v.07.10.2026.r12.22:54": [
     "Ver en gemelo digital debajo de cada formato adaptado",
     "Estanco 3D: distribución física, vídeo/GIF en silencio, IA, giro y zoom",
     "Ayuda y MCP actualizados en español e inglés"
