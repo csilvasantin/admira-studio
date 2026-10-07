@@ -87,9 +87,9 @@ python3 "$TMP/scripts/check-release-contract.py" "$TMP/version.json" "$TMP/index
 echo "→ comprobando lo que sirve producción…"
 SERVIDO="$(curl -fsSL --max-time 25 "https://www.admira.studio/version.json?cb=$$" | python3 -c 'import json,sys; print(json.load(sys.stdin)["version"])' 2>/dev/null || echo '?')"
 LOCAL="$(python3 -c 'import json; print(json.load(open("version.json"))["version"])' 2>/dev/null || echo '?')"
-if [ "$SERVIDO" = "$LOCAL" ]; then
-  echo "✓ https://www.admira.studio sirve $SERVIDO"
+if [ "${SERVIDO}" = "${LOCAL}" ]; then
+  echo "✓ https://www.admira.studio sirve ${SERVIDO}"
 else
-  echo "· producción sirve «$SERVIDO» y aquí tenemos «$LOCAL»: puede ser la caché de tu DNS o del borde."
+  echo "· producción sirve «${SERVIDO}» y aquí tenemos «${LOCAL}»: puede ser la caché de tu DNS o del borde."
   echo "  Comprueba sin caché:  curl -s --resolve www.admira.studio:443:172.66.46.230 https://www.admira.studio/version.json"
 fi
