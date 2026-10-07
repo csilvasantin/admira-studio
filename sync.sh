@@ -168,6 +168,22 @@ else
   PROPIO="$(git rev-parse HEAD 2>/dev/null || echo '')"
   SUCIO=false
   LC_ALL=C sed -i '' -E "s|<span class=\"rail-ver\"[^>]*>[^<]*</span>|<span class=\"rail-ver\" data-release-signature>Admira Studio ${SELLO} · ${AGENTE} · ${PROPIO:0:7} · clean</span>|" index.html
+  # All generated pages and asset URLs use Studio's own release, not Pixeria's stamp.
+  python3 - "$SELLO" <<'PY_STUDIO_STAMP'
+import re, sys
+from pathlib import Path
+stamp = sys.argv[1]
+token = stamp[2:].replace(':', '')
+for page in Path('.').rglob('*.html'):
+    if any(part in {'.git', 'node_modules', '.wrangler'} for part in page.parts):
+        continue
+    old = page.read_text(encoding='utf-8')
+    new = re.sub(r'(<meta\s+name="admiranext-version"\s+content=")[^"]*(")', lambda m: m[1] + 'Admira Studio ' + stamp + m[2], old)
+    new = re.sub(r'(["\'](?!https?:|//)[\w./-]+\.(?:js|css))\?v=[^"\'\s>]*', lambda m: m[1] + '?v=' + token, new)
+    if new != old:
+        page.write_text(new, encoding='utf-8')
+PY_STUDIO_STAMP
+
   # Novedades del sello (Merovingio, 06-10-2026): novedades.json (propio) → version.json.novedades[]
   NOVEDADES_JSON='[]'
   if [ -f novedades.json ]; then

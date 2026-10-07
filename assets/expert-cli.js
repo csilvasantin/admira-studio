@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   // ─── Piezas puras (también se prueban en node: test/marca-blanca.test.cjs) ───
-  var COMMANDS = ['help', 'clear', 'echo', 'date', 'status', 'version', 'history', 'open', 'marca', 'idioma', 'language', 'languague', 'avatar', 'avataron', 'avataroff', 'avatardigital', 'digitalavatar', 'admirito'];
+  var COMMANDS = ['help', 'demo', 'clear', 'echo', 'date', 'status', 'version', 'history', 'open', 'marca', 'idioma', 'language', 'languague', 'avatar', 'avataron', 'avataroff', 'avatardigital', 'digitalavatar', 'admirito'];
   var MARCA_VERB = /^\/?(?:marca|brand|marcablanca)$/i;
   // Semilla del catálogo de admiranext.com/marcablanca: vale para el Tab sin red. Con la
   // marca blanca cargada se usa la lista real (AdmiraMarca.conocidas()).
@@ -355,8 +355,10 @@
       return;
     }
     switch (name) {
+      case 'demo': import('/assets/taza-demo.mjs?v=1').then(function(m){write(m.runTazaDemo(arg,en?'en':'es'));}).catch(function(){write(t('No se pudo cargar la cámara.','Could not load camera.'));});break;
       case 'help': case 'ayuda':
-        write(t('Comandos en este navegador:', 'Commands in this browser:') + '\nhelp · clear · echo <text> · date · status · version · history\nopen <home|audio|music|images|video|stock|assets|docs|radar>\nidioma [/language] [ESP|ENG] — ' + t('alterna o fija el idioma (también idiomaESP)', 'toggle or set language (also idiomaESP)') + '\n' +
+        write(t('/demo taza — cámara en una esquina; /demo taza cerrar — cerrar cámara.','/demo taza — corner camera; /demo taza close — close camera.'));
+        write(t('Adaptador Altadis: open adapter → contenido → formato/estanco → Generar fondo IA → Aplicar demo → Guardar formatos y aplicaciones. Guía: /docs/altadis-ia-estancos.md\nComandos en este navegador:', 'Altadis adapter: open adapter → content → format/shop → Generate AI background → Apply shop demo → Save formats and placements. Guide: /docs/altadis-ia-estancos.md\nCommands in this browser:') + '\nhelp · clear · echo <text> · date · status · version · history\nopen <home|audio|music|images|video|adapter|stock|assets|docs|radar>\nidioma [/language] [ESP|ENG] — ' + t('alterna o fija el idioma (también idiomaESP)', 'toggle or set language (also idiomaESP)') + '\n' +
           t('/marca [marca] — Marca blanca del catálogo de admiranext.com/marcablanca: /marca <id> viste la web con esa marca, /marca off vuelve a Admira, /marca sola dice cuál está activa y lista las disponibles, /marca <web> abre el analizador en otra pestaña. Alias: /brand.',
             '/marca [brand] — White label from the admiranext.com/marcablanca catalogue: /marca <id> dresses the site in that brand, /marca off returns to Admira, /marca alone shows the active one and lists them, /marca <website> opens the analyser in a new tab. Alias: /brand.') + '\n' +
           t('marca: off (Admira), ', 'brand: off (Admira), ') + brandIds().join(', ') + t(' · o una web para analizarla (starbucks.es)', ' · or a website to analyse (starbucks.es)') + '\n' +
@@ -389,6 +391,8 @@
       default: write(t('Comando desconocido. Escribe help.', 'Unknown command. Type help.'));
     }
   }
+  // The suite owns slash demos; this camera command belongs to this page.
+  document.addEventListener('submit', function(e){if(e.target===form && /^\/demo\s+taza(?:\s|$)/i.test(input.value.trim()))input.value=input.value.trim().slice(1);},true);
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
     var command = input.value.trim();

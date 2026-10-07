@@ -1,13 +1,12 @@
 {
-  "version": "v.07.10.2026.r4.13:00",
-  "author": "TrinityMBP16",
-  "agent": "TrinityMBP16",
-  "deployer": "TrinityMBP16",
-  "machine": "MBP16",
-  "signature": "TrinityMBP16 · MBP16",
-  "git": "a677d0597c285dc65e6e99c2865eeb2f90517c00",
-  "gitShort": "a677d05",
-  "gitFull": "a677d0597c285dc65e6e99c2865eeb2f90517c00",
-  "dirty": false,
-  "evidence": "Cargador HTML y fallback CLI del propio Studio cargan avatar.js?v=20261007-demo-ack-1; relé y configuración propios conservados."
+  "version": "v.07.10.2026.r6.22:17",
+  "author": "OraculoMacMini",
+  "agent": "OraculoMacMini",
+  "deployer": "OraculoMacMini",
+  "machine": "MacMini",
+  "signature": "OraculoMacMini · MacMini",
+  "git": "5fa866e73dd258f46a4b3a03fe3e6b85aa61969f",
+  "gitShort": "5fa866e",
+  "gitFull": "5fa866e73dd258f46a4b3a03fe3e6b85aa61969f",
+  "dirty": false
 }

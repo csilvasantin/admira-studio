@@ -1,19 +1,20 @@
 {
-  "version": "v.07.10.2026.r4.13:00",
-  "deployedAt": "2026-10-07T11:00:12Z",
-  "author": "TrinityMBP16",
-  "agent": "TrinityMBP16",
-  "deployer": "TrinityMBP16",
-  "machine": "MBP16",
-  "signature": "TrinityMBP16 · MBP16",
-  "git": "a677d0597c285dc65e6e99c2865eeb2f90517c00",
-  "gitShort": "a677d05",
-  "gitFull": "a677d0597c285dc65e6e99c2865eeb2f90517c00",
+  "version": "v.07.10.2026.r6.22:17",
+  "deployedAt": "2026-10-07T20:17:01Z",
+  "author": "OraculoMacMini",
+  "agent": "OraculoMacMini",
+  "deployer": "OraculoMacMini",
+  "machine": "MacMini",
+  "signature": "OraculoMacMini · MacMini",
+  "git": "5fa866e73dd258f46a4b3a03fe3e6b85aa61969f",
+  "gitShort": "5fa866e",
+  "gitFull": "5fa866e73dd258f46a4b3a03fe3e6b85aa61969f",
   "dirty": false,
   "novedades": [
-    "Studio renueva la referencia del avatar para confirmar los comandos de demo local",
-    "El cargador HTML y el fallback del CLI comparten la versión actual sin cambiar el relé"
+    "Altadis: fondo IA estático con el contenido original completo delante",
+    "29 formatos conservados y aplicaciones virtuales en Estancos",
+    "Guardar formatos, geometrías, ajustes y asignaciones como contrato portable"
   ],
   "espejoDe": "pixeria",
-  "fuente": "2f2710cf9795bad408b2bc6921bfa2ff62fe78de"
+  "fuente": "8b733d5289d3374b667e82bb2b9c927c8dbb7371"
 }

@@ -1,8 +1,9 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "Sello de versión con novedades al pasar el ratón",
-    "Marca NUEVO cuando hay una versión que aún no has visto"
+    "Altadis: fondo IA estático con el contenido original completo delante",
+    "29 formatos conservados y aplicaciones virtuales en Estancos",
+    "Guardar formatos, geometrías, ajustes y asignaciones como contrato portable"
   ],
   "v.07.10.2026.r3.07:39": [
     "El avatar estrena pastilla: AVATAR · Admirito, HUMAN · Luna, METAHUMAN · Neo; púlsala para cambiar",
