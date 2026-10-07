@@ -18,5 +18,10 @@
   "v.07.10.2026.r4.13:00": [
     "Studio renueva la referencia del avatar para confirmar los comandos de demo local",
     "El cargador HTML y el fallback del CLI comparten la versión actual sin cambiar el relé"
+  ],
+  "v.07.10.2026.r10.22:46": [
+    "Ver en gemelo digital debajo de cada formato adaptado",
+    "Estanco 3D con distribución física, vídeo/fondo IA, giro y zoom",
+    "Ayuda y MCP actualizados en español e inglés"
   ]
 }

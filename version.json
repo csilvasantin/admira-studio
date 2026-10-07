@@ -1,20 +1,20 @@
 {
-  "version": "v.07.10.2026.r9.22:34",
-  "deployedAt": "2026-10-07T20:34:26Z",
+  "version": "v.07.10.2026.r10.22:46",
+  "deployedAt": "2026-10-07T20:46:38Z",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "226536a29552e17c7a8a40427f003723a1c16d00",
-  "gitShort": "226536a",
-  "gitFull": "226536a29552e17c7a8a40427f003723a1c16d00",
+  "git": "ba7112ae927446e2622de79f268de30ae57464d0",
+  "gitShort": "ba7112a",
+  "gitFull": "ba7112ae927446e2622de79f268de30ae57464d0",
   "dirty": false,
   "novedades": [
-    "Altadis: fondo IA estático con el contenido original completo delante",
-    "29 formatos conservados y aplicaciones virtuales en Estancos",
-    "Guardar formatos, geometrías, ajustes y asignaciones como contrato portable"
+    "Ver en gemelo digital debajo de cada formato adaptado",
+    "Estanco 3D con distribución física, vídeo/fondo IA, giro y zoom",
+    "Ayuda y MCP actualizados en español e inglés"
   ],
   "espejoDe": "pixeria",
-  "fuente": "e1286e07fe46515b713fd7a63e6892f07cdf7091"
+  "fuente": "ab3e74b4e079603c554d152fc9932712f76bdeb0"
 }
