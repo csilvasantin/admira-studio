@@ -1,20 +1,20 @@
 {
-  "version": "v.07.10.2026.r10.22:46",
-  "deployedAt": "2026-10-07T20:46:38Z",
+  "version": "v.07.10.2026.r11.22:51",
+  "deployedAt": "2026-10-07T20:51:54Z",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "ba7112ae927446e2622de79f268de30ae57464d0",
-  "gitShort": "ba7112a",
-  "gitFull": "ba7112ae927446e2622de79f268de30ae57464d0",
+  "git": "682e9fe32b294d025ee573557c9921db599df3c6",
+  "gitShort": "682e9fe",
+  "gitFull": "682e9fe32b294d025ee573557c9921db599df3c6",
   "dirty": false,
   "novedades": [
     "Ver en gemelo digital debajo de cada formato adaptado",
-    "Estanco 3D con distribución física, vídeo/fondo IA, giro y zoom",
+    "Estanco 3D: distribución física, vídeo/GIF en silencio, IA, giro y zoom",
     "Ayuda y MCP actualizados en español e inglés"
   ],
   "espejoDe": "pixeria",
-  "fuente": "ab3e74b4e079603c554d152fc9932712f76bdeb0"
+  "fuente": "63a3507c8b96f7278b01441fadbb1667a5478802"
 }
