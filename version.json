@@ -1,14 +1,14 @@
 {
-  "version": "v.07.10.2026.r14.23:17",
-  "deployedAt": "2026-10-07T21:17:04Z",
-  "author": "OraculoMacMini",
-  "agent": "OraculoMacMini",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
-  "git": "f33aef3683b00f12204a0271449a14545eaabd11",
-  "gitShort": "f33aef3",
-  "gitFull": "f33aef3683b00f12204a0271449a14545eaabd11",
+  "version": "v.07.10.2026.r15.23:32",
+  "deployedAt": "2026-10-07T21:32:01Z",
+  "author": "NeoMBP16",
+  "agent": "NeoMBP16",
+  "deployer": "NeoMBP16",
+  "machine": "MacBookPro16",
+  "signature": "NeoMBP16 · MacBookPro16",
+  "git": "96a6438d3b03da751e672a973f15b27a4e4bd14a",
+  "gitShort": "96a6438",
+  "gitFull": "96a6438d3b03da751e672a973f15b27a4e4bd14a",
   "dirty": false,
   "novedades": [
     "Visitar demo junto a Aplicar demo al estanco",
@@ -16,5 +16,5 @@
     "Ayuda y MCP bilingües; vídeo en silencio y pausa restaurada al cerrar"
   ],
   "espejoDe": "pixeria",
-  "fuente": "e3f54e14b6c2e0f0e872e3074478edc85ff82079"
+  "fuente": "f18ead959f0ca0fc8b27df9edd5012937185eab3"
 }
