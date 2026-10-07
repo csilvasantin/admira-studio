@@ -30,6 +30,7 @@ Last updated: 2026-07-21
 ## /demo · cinco soluciones · five solutions
 
 ES: En el ⌘ Experto de toda la suite y en el avatar digital, /demo lista studio, store, tv, app y biz; /demo <solución|1-5> abre su demo (store = /demo tpv del gemelo Starbucks Alsea). /demo siguiente pasa a la siguiente. El avatar la presenta y luego la abre (postMessage {type:"da-demo", id} desde https://digitalavatar.ai). Catálogo: https://www.admiranext.com/suite/experto.js (AdmiraExperto.demos()). Guía: https://www.admira.store/admira-xp/docs/demo-soluciones.md
+ES: En admira.studio y pixeria.com (misma plataforma), /demo 1…5 son las subdemos de Studio: 1 voz/locucion, 2 musica, 3 imagen, 4 video, 5 adaptar/formatos; /demo help lista solo estas; modo muestra (resultado preparado, sin generar ni publicar). Manifiesto: https://www.admira.studio/demo/studio.subdemos.json
 
 EN: In the ⌘ Expert of the whole suite and the digital avatar, /demo lists studio, store, tv, app and biz; /demo <solution|1-5> opens its demo (store = the Alsea Starbucks twin's /demo tpv). /demo next moves on. The avatar introduces it, then opens it.
 
