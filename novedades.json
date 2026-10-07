@@ -1,9 +1,10 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "Estanco Better detallado de Stock con vista isométrica inicial",
-    "Pared plana o esquina 90° de ensayo; observador en perspectiva ajustable",
-    "Mismo motor Xpaces, contenido actual y fondo IA; ayuda y MCP ES/EN"
+    "Modelo Best de Xtanco con geometría refinada y mapas PBR; Better sigue disponible",
+    "Seis montajes de referencia para los 29 formatos Altadis, incluida esquina de ensayo",
+    "Selector de formatos y recorrido automático al pulsar, reutilizando contenido y modelo",
+    "Ayudas y MCP ES/EN; modelo editable, hashes y validación para continuar"
   ],
   "v.07.10.2026.r17.23:41": [
     "Campo de etiquetas al importar (URL o ficheros) y junto a «Publicar en Stock» de lo que creas",

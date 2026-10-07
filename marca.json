@@ -245,5 +245,9 @@
     "Existen solo en admira.studio y no tienen equivalente en Pixeria. El sync no los toca",
     "ni los borra.",
     "privacy.html: desde idioma=es (3-oct-2026) es un puente a /en/privacy.html para no romper enlaces externos (p. ej. la política del acceso Google)."
+  ],
+  "incluidos": [
+    "/assets/xpaces/README.md",
+    "/adaptaciones/modelos/xtanco-best/README.md"
   ]
 }

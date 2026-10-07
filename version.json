@@ -1,20 +1,21 @@
 {
-  "version": "v.07.10.2026.r17.23:41",
-  "deployedAt": "2026-10-07T21:41:16Z",
-  "author": "NeoMBP16",
-  "agent": "NeoMBP16",
-  "deployer": "NeoMBP16",
-  "machine": "MacBookPro16",
-  "signature": "NeoMBP16 · MacBookPro16",
-  "git": "04126b35fca10ea2c13bcb6e4675c03a20d03ae9",
-  "gitShort": "04126b3",
-  "gitFull": "04126b35fca10ea2c13bcb6e4675c03a20d03ae9",
+  "version": "v.08.10.2026.r2.00:32",
+  "deployedAt": "2026-10-07T22:32:29Z",
+  "author": "OraculoMacMini",
+  "agent": "OraculoMacMini",
+  "deployer": "OraculoMacMini",
+  "machine": "MacMini",
+  "signature": "OraculoMacMini · MacMini",
+  "git": "24bda5b3f2703c114ad703bd93bc2ea046e394dd",
+  "gitShort": "24bda5b",
+  "gitFull": "24bda5b3f2703c114ad703bd93bc2ea046e394dd",
   "dirty": false,
   "novedades": [
-    "Estanco Better detallado de Stock con vista isométrica inicial",
-    "Pared plana o esquina 90° de ensayo; observador en perspectiva ajustable",
-    "Mismo motor Xpaces, contenido actual y fondo IA; ayuda y MCP ES/EN"
+    "Modelo Best de Xtanco con geometría refinada y mapas PBR; Better sigue disponible",
+    "Seis montajes de referencia para los 29 formatos Altadis, incluida esquina de ensayo",
+    "Selector de formatos y recorrido automático al pulsar, reutilizando contenido y modelo",
+    "Ayudas y MCP ES/EN; modelo editable, hashes y validación para continuar"
   ],
   "espejoDe": "pixeria",
-  "fuente": "0892bf679543da307d1c218807f39c6dc94a1e75"
+  "fuente": "b74d837087f417de4129f61eb342adadb84f6d03"
 }
