@@ -1,12 +1,12 @@
 {
-  "version": "v.07.10.2026.r6.22:17",
-  "author": "OraculoMacMini",
-  "agent": "OraculoMacMini",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
-  "git": "5fa866e73dd258f46a4b3a03fe3e6b85aa61969f",
-  "gitShort": "5fa866e",
-  "gitFull": "5fa866e73dd258f46a4b3a03fe3e6b85aa61969f",
+  "version": "v.07.10.2026.r7.22:30",
+  "author": "NeoMBP16",
+  "agent": "NeoMBP16",
+  "deployer": "NeoMBP16",
+  "machine": "MacBookPro16",
+  "signature": "NeoMBP16 · MacBookPro16",
+  "git": "099d8ab02b82dc1101cf5b1f0d254778ffceb78d",
+  "gitShort": "099d8ab",
+  "gitFull": "099d8ab02b82dc1101cf5b1f0d254778ffceb78d",
   "dirty": false
 }

@@ -5,6 +5,11 @@
     "29 formatos conservados y aplicaciones virtuales en Estancos",
     "Guardar formatos, geometrías, ajustes y asignaciones como contrato portable"
   ],
+  "v.07.10.2026.r7.22:30": [
+    "Vista por cliente: una cuenta asignada a un cliente ve su contenido y el genérico, no el de otros clientes",
+    "La asignación sale de la identidad central (admiranext.com/usuarios) y no se cambia con /marca",
+    "El hashtag de un centro o de una pantalla también marca la pieza como del cliente"
+  ],
   "v.07.10.2026.r3.07:39": [
     "El avatar estrena pastilla: AVATAR · Admirito, HUMAN · Luna, METAHUMAN · Neo; púlsala para cambiar",
     "Desliza o usa ←/→ para subir o bajar de categoría; /avatar avatar|human|metahuman sigue funcionando",
