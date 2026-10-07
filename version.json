@@ -1,14 +1,14 @@
 {
-  "version": "v.07.10.2026.r12.22:54",
-  "deployedAt": "2026-10-07T20:54:31Z",
-  "author": "OraculoMacMini",
-  "agent": "OraculoMacMini",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
-  "git": "dce92389fb45bbc58e69cee980fe2e9ef67312ba",
-  "gitShort": "dce9238",
-  "gitFull": "dce92389fb45bbc58e69cee980fe2e9ef67312ba",
+  "version": "v.07.10.2026.r13.23:08",
+  "deployedAt": "2026-10-07T21:08:20Z",
+  "author": "NeoMBP16",
+  "agent": "NeoMBP16",
+  "deployer": "NeoMBP16",
+  "machine": "MacBookPro16",
+  "signature": "NeoMBP16 · MacBookPro16",
+  "git": "149b17bc7294974475f2aa8751d870b53d466844",
+  "gitShort": "149b17b",
+  "gitFull": "149b17bc7294974475f2aa8751d870b53d466844",
   "dirty": false,
   "novedades": [
     "Ver en gemelo digital debajo de cada formato adaptado",
@@ -16,5 +16,5 @@
     "Ayuda y MCP actualizados en español e inglés"
   ],
   "espejoDe": "pixeria",
-  "fuente": "ece47346188e82535629ed3e93e5a0f81bbf6d1f"
+  "fuente": "b3820438411c30dc9fb763b44ea7cd15b18b27dc"
 }
