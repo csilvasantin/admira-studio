@@ -1,9 +1,9 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "Visitar demo junto a Aplicar demo al estanco",
-    "Abre el formato y estanco seleccionados con el contenido actual",
-    "Ayuda y MCP bilingües; vídeo en silencio y pausa restaurada al cerrar"
+    "Estanco Better detallado de Stock con vista isométrica inicial",
+    "Pared plana o esquina 90° de ensayo; observador en perspectiva ajustable",
+    "Mismo motor Xpaces, contenido actual y fondo IA; ayuda y MCP ES/EN"
   ],
   "v.07.10.2026.r15.23:32": [
     "Ver como: /marca ver-como starbucks enseña la web exactamente como la ve una cuenta asignada a ese cliente",
