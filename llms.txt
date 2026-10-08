@@ -46,3 +46,11 @@ Assets: https://www.admira.studio/assets/anonymizer-demo/{original.jpg,8-bit.png
 ## Stock · Megafonía / Public announcements
 ES: Las locuciones ElevenLabs creadas en admira.store se archivan automáticamente como tipo locucion en el Stock compartido. Stock → Megafonía permite leer su ficha y escuchar el MP3; el enlace ?highlight=<id> abre el visor y selecciona Megafonía, incluso fuera de la primera página. La voz gratuita del navegador no crea un archivo.
 EN: ElevenLabs announcements created in admira.store are automatically archived as type locucion in the shared Stock. Stock → Public announcements shows their metadata and MP3 player; ?highlight=<id> opens the viewer and selects Public announcements, even outside the first page. The free browser voice does not create a file.
+
+Adapter export / Exportación: final MP4s use H.264 veryfast and Lanczos+accurate_rnd within existing profile limits; slower export, no recovered detail. Guide ES/EN: https://www.admira.studio/docs/adaptador.md. MCP adaptacion_plan remains plan-only; the browser renders.
+
+Adapter still advertisements: anuncio_analizar extracts authenticated verbatim OCR. Web /adaptaciones/ recomposes full editable copy or recreates the scene when a crop is not acceptable. Review and approve each draft before PNG/H264 export. Block uncertain OCR, residual text, missing product and unreadable overflow. Video/GIF do not gain temporal OCR. ES/EN guide: https://www.admira.studio/docs/adaptador.md#anuncios-reales
+
+Advanced still-image recreation: choose Advanced > Recreate with AI > reconstruct. Generate missing surroundings from the original scene and protect important elements; exact copy is typeset separately. Native full-scene preview/PNG/MP4, per-piece approval, reserved-zone intersection checks. Default adapt preserved. Generative inference is not DLSS or factual restoration. Guide: /docs/adaptador.md#recrear-con-ia--recreate-with-ai
+
+Adapter typography / Tipografía: OCR extracts optional per-block observed type traits and colour blocks. Local OFL fonts load before layout; failure blocks. Reconstruction integrates exact copy into a complete photograph, preserving source hierarchy. Similar font, not exact identification; review every piece. Old documents valid; analyze again. Guide https://www.admira.studio/docs/adaptador.md#tipografía-recreada--recreated-typography

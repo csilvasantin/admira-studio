@@ -909,5 +909,89 @@
       ]
     },
     "anamorphic_export": false
+  },
+  "export_quality": {
+    "preset": "veryfast",
+    "resize_flags": "lanczos+accurate_rnd",
+    "canvas_smoothing": "high",
+    "profile_limits": "unchanged",
+    "tradeoff": {
+      "es": "Más detalle por bitrate; exportación más lenta. Sin reconstrucción de detalle ausente.",
+      "en": "More detail per bitrate; slower export. No reconstruction of missing detail."
+    },
+    "guide": "/docs/adaptador.md#calidad-de-adaptación--adaptation-quality--8-oct-2026",
+    "verified": {
+      "native_tests": 65,
+      "stock_fixture_test": "skipped_without_saved_index",
+      "wasm": "local_browser_export_download_and_ffprobe",
+      "sample": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 25,
+        "frames": 50,
+        "duration_seconds": 2,
+        "codec": "h264",
+        "pix_fmt": "yuv420p"
+      },
+      "stock_publication": "not_retested"
+    }
+  },
+  "still_advertisement": {
+    "schema": "pixeria.advertisement.v1",
+    "analysis_endpoint": "https://api.admira.store/image/analyze",
+    "analysis_tool": "anuncio_analizar",
+    "authentication": "existing Admira Studio/Studio session or fleet key",
+    "copy": "verbatim editable OCR; typeset complete copy with measured wrapping; no generated lettering",
+    "recreate_when": [
+      "ratio change greater than 2",
+      "billboard/screen within source",
+      "recomposition visual fails checks"
+    ],
+    "export_requires": "per-piece approval after copy/product review",
+    "blocking": [
+      "uncertain OCR",
+      "residual advertising text",
+      "incomplete product",
+      "text overflow at readable minimum",
+      "provider failure/timeout"
+    ],
+    "render": "one native canvas for preview, PNG and still MP4; same canvas cut for wall atlas/segments",
+    "limits": [
+      "AI identity must be reviewed",
+      "no temporal video/GIF OCR",
+      "no hardware proof"
+    ],
+    "guide": "https://www.admira.studio/docs/adaptador.md#anuncios-reales",
+    "advanced_recreation": {
+      "treatment": "reconstruct",
+      "default": "adapt",
+      "location": "Advanced > Recreate with AI",
+      "inputs": [
+        "important elements to preserve",
+        "optional recreation direction"
+      ],
+      "visual": "full target scene inferred from reference; copy typeset separately",
+      "verification": "map protected subject boxes to native canvas; reflow copy into a free rectangle; block when none fits readable copy",
+      "not_dlss": true,
+      "approval": "per piece",
+      "video_gif": "unchanged"
+    },
+    "typography": {
+      "analysis": "required texts[].typography in new analyses; optional in legacy documents; split at observed colour/size/style changes",
+      "families": [
+        "condensed",
+        "rounded",
+        "sans",
+        "serif",
+        "script",
+        "mono"
+      ],
+      "catalogue": "self-hosted OFL Anton/Oswald, Fredoka, Montserrat, Libre Baskerville, Lobster, Roboto Mono",
+      "font_identity": "approximation, never exact identification",
+      "measurement": "await catalogue fonts before layout or export; loading failure blocks",
+      "composition": "full recreated photograph with source colours and hierarchy; no fixed blank cream panel",
+      "legacy": "unstyled documents still valid; analyze again to extract typography",
+      "review": "review typography, exact copy and product per piece"
+    }
   }
 }
