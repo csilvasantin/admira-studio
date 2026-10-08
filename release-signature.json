@@ -1,12 +1,12 @@
 {
-  "version": "v.08.10.2026.r3.19:31",
+  "version": "v.08.10.2026.r4.22:22",
   "author": "MorfeoMacMini",
   "agent": "MorfeoMacMini",
   "deployer": "MorfeoMacMini",
   "machine": "MacMini",
   "signature": "MorfeoMacMini · MacMini",
-  "git": "4ad0d74b7609dc0491af251188468a02ac11d488",
-  "gitShort": "4ad0d74",
-  "gitFull": "4ad0d74b7609dc0491af251188468a02ac11d488",
+  "git": "abb2e2e15b4db83ef8f80db1a6a8ddecba4c3378",
+  "gitShort": "abb2e2e",
+  "gitFull": "abb2e2e15b4db83ef8f80db1a6a8ddecba4c3378",
   "dirty": false
 }
