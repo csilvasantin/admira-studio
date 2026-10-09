@@ -169,18 +169,21 @@ else
   # `fuente` se conserva porque dice de qué origen se copió, que es otra cosa.
   PROPIO="$(git rev-parse HEAD 2>/dev/null || echo '')"
   SUCIO=false
-  LC_ALL=C sed -i '' -E "s|<span class=\"rail-ver\"[^>]*>[^<]*</span>|<span class=\"rail-ver\" data-release-signature>Admira Studio ${SELLO} · ${AGENTE} · ${PROPIO:0:7} · clean</span>|" index.html
   # All generated pages and asset URLs use Studio's own release, not Pixeria's stamp.
-  python3 - "$SELLO" <<'PY_STUDIO_STAMP'
-import re, sys
+  python3 - "$SELLO" "$AGENTE" "$MAQUINA" "$PROPIO" <<'PY_STUDIO_STAMP'
+import html, re, sys
 from pathlib import Path
-stamp = sys.argv[1]
+stamp, agent, machine, commit = sys.argv[1:]
 token = stamp[2:].replace(':', '')
+rail = '<span class="rail-ver" data-release-signature>' + html.escape(f'Admira Studio {stamp} · {agent} · {machine} · {commit[:7]} · clean') + '</span>'
 for page in Path('.').rglob('*.html'):
     if any(part in {'.git', 'node_modules', '.wrangler'} for part in page.parts):
         continue
     old = page.read_text(encoding='utf-8')
     new = re.sub(r'(<meta\s+name="admiranext-version"\s+content=")[^"]*(")', lambda m: m[1] + 'Admira Studio ' + stamp + m[2], old)
+    # The EN home and shared shells also carry rails. Sign every existing rail
+    # once, so deploy.sh can replace the archived SHA on every generated page.
+    new = re.sub(r'''<span\b(?=[^>]*\bclass=["'][^"']*\brail-ver\b[^"']*["'])[^>]*>[^<]*</span>''', lambda m: rail, new)
     new = re.sub(r'(["\'](?!https?:|//)[\w./-]+\.(?:js|css))\?v=[^"\'\s>]*', lambda m: m[1] + '?v=' + token, new)
     if new != old:
         page.write_text(new, encoding='utf-8')

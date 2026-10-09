@@ -1,9 +1,9 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "Adaptación clásica horizontal ↔ vertical completa en el paso 1",
-    "Permite crear, revisar, aprobar y descargar sin abrir los formatos especiales",
-    "Paso 2 dedicado a otros tamaños y formatos propios del proyecto"
+    "El clásico genera el entorno que falta al elegir horizontal o vertical",
+    "El texto detectado requiere confirmación; la revisión compara la imagen con el original",
+    "El lienzo queda cubierto y bloquea proporciones incompatibles o productos recortados"
   ],
   "v.07.10.2026.r17.23:41": [
     "Campo de etiquetas al importar (URL o ficheros) y junto a «Publicar en Stock» de lo que creas",
@@ -65,5 +65,10 @@
     "Adaptación clásica horizontal ↔ vertical completa en el paso 1",
     "Permite crear, revisar, aprobar y descargar sin abrir los formatos especiales",
     "Paso 2 dedicado a otros tamaños y formatos propios del proyecto"
+  ],
+  "v.09.10.2026.r18.12:11": [
+    "El clásico genera el entorno que falta al elegir horizontal o vertical",
+    "El texto detectado requiere confirmación; la revisión compara la imagen con el original",
+    "El lienzo queda cubierto y bloquea proporciones incompatibles o productos recortados"
   ]
 }

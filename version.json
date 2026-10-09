@@ -1,20 +1,20 @@
 {
-  "version": "v.09.10.2026.r17.11:41",
-  "deployedAt": "2026-10-09T09:41:50Z",
+  "version": "v.09.10.2026.r18.12:11",
+  "deployedAt": "2026-10-09T10:11:34Z",
   "author": "TrinityMBP16",
   "agent": "TrinityMBP16",
   "deployer": "TrinityMBP16",
   "machine": "MacBookPro16",
   "signature": "TrinityMBP16 · MacBookPro16",
-  "git": "4a87138f0c2fd447b554a903689a68376ca1c8af",
-  "gitShort": "4a87138",
-  "gitFull": "4a87138f0c2fd447b554a903689a68376ca1c8af",
+  "git": "1410c9a355d712cf7b198985100ab0b8d30c28a4",
+  "gitShort": "1410c9a",
+  "gitFull": "1410c9a355d712cf7b198985100ab0b8d30c28a4",
   "dirty": false,
   "novedades": [
-    "Adaptación clásica horizontal ↔ vertical completa en el paso 1",
-    "Permite crear, revisar, aprobar y descargar sin abrir los formatos especiales",
-    "Paso 2 dedicado a otros tamaños y formatos propios del proyecto"
+    "El clásico genera el entorno que falta al elegir horizontal o vertical",
+    "El texto detectado requiere confirmación; la revisión compara la imagen con el original",
+    "El lienzo queda cubierto y bloquea proporciones incompatibles o productos recortados"
   ],
   "espejoDe": "pixeria",
-  "fuente": "138661b743cbb6ec7970531f700fdb00f5d03675"
+  "fuente": "456c457c60649a16d298fda8bbdf452ff5a96b5c"
 }
