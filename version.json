@@ -1,20 +1,20 @@
 {
-  "version": "v.09.10.2026.r22.13:26",
-  "deployedAt": "2026-10-09T11:26:06Z",
+  "version": "v.09.10.2026.r23.13:35",
+  "deployedAt": "2026-10-09T11:35:01Z",
   "author": "TrinityMBP16",
   "agent": "TrinityMBP16",
   "deployer": "TrinityMBP16",
   "machine": "MacBookPro16",
   "signature": "TrinityMBP16 · MacBookPro16",
-  "git": "8b8dfb0ddda7e4ee33d93491f9faf76553885265",
-  "gitShort": "8b8dfb0",
-  "gitFull": "8b8dfb0ddda7e4ee33d93491f9faf76553885265",
+  "git": "8cfa9e34bf8944cd6e942608abe7bd4ebfddb97c",
+  "gitShort": "8cfa9e3",
+  "gitFull": "8cfa9e34bf8944cd6e942608abe7bd4ebfddb97c",
   "dirty": false,
   "novedades": [
+    "Creador vuelve a abrir su taller con los controles compartidos completos en español e inglés",
     "Original y resultados primero; texto, composición y tratamiento debajo",
-    "Las nuevas generaciones piden creatividad final sin marcos ni pantallas de exposición",
-    "Creador publica PNG y MP4 con sus capas; Adaptador recupera texto guardado completo y mantiene OCR para piezas sin capas"
+    "Creador conserva las capas al publicar PNG y MP4; Adaptador recupera el texto guardado y mantiene revisión final"
   ],
   "espejoDe": "pixeria",
-  "fuente": "902f1a4b34c9b5235047c041bdf7ba95626fe31d"
+  "fuente": "6acd193c26a41856923e6d7c60a906566261e8ca"
 }
