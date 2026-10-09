@@ -1,21 +1,21 @@
 {
-  "version": "v.09.10.2026.r6.06:36",
-  "deployedAt": "2026-10-09T04:36:16Z",
+  "version": "v.09.10.2026.r7.06:46",
+  "deployedAt": "2026-10-09T04:46:37Z",
   "author": "csilvasantin",
   "agent": "csilvasantin",
   "deployer": "csilvasantin",
   "machine": "MacMini",
   "signature": "csilvasantin · MacMini",
-  "git": "d68f7bae8d86235755ee7a656beca87f0a1844d6",
-  "gitShort": "d68f7ba",
-  "gitFull": "d68f7bae8d86235755ee7a656beca87f0a1844d6",
+  "git": "750cbea623b6671eb7212aa0c79606ad5abb1d36",
+  "gitShort": "750cbea",
+  "gitFull": "750cbea623b6671eb7212aa0c79606ad5abb1d36",
   "dirty": false,
   "novedades": [
-    "Creador sustituye a Publicidad: campañas desde cero para las pantallas de destino.",
-    "Adaptador conserva la adaptación de contenidos existentes y de terceros.",
-    "Campaña nueva con elementos neutros, ejemplo Sneakers Store y borradores independientes.",
-    "Ayuda, tutorial y MCP ES/EN actualizados; rutas e historial conservados."
+    "Creador y Adaptador pasan al principio del menú.",
+    "Orden: Creador, Adaptador, Audio, Música, Imágenes, Video, Assets y Stock.",
+    "Home, páginas interiores y menú móvil alineados en español e inglés.",
+    "Las herramientas adicionales siguen disponibles en Opciones."
   ],
   "espejoDe": "pixeria",
-  "fuente": "b01a9e816717dc939adf321ab1810d4cc7a1092e"
+  "fuente": "bb691e07b33cd7359295ec00c957fb45e0fde79d"
 }
