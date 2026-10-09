@@ -1,9 +1,9 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "El clásico genera el borrador vertical u horizontal con texto leído con confianza",
-    "Titulares, precios y condiciones se recomponen completos y requieren revisión final",
-    "La lectura dudosa o editada abre el panel para corregir antes de generar"
+    "Los elementos adicionales son opcionales y no incluyen automáticamente soportes detectados",
+    "Conserva las indicaciones manuales al volver a analizar el mismo original",
+    "Los borradores bloqueados muestran la imagen, dimensiones y causa exacta sin permitir exportar"
   ],
   "v.07.10.2026.r17.23:41": [
     "Campo de etiquetas al importar (URL o ficheros) y junto a «Publicar en Stock» de lo que creas",
@@ -75,5 +75,10 @@
     "El clásico genera el borrador vertical u horizontal con texto leído con confianza",
     "Titulares, precios y condiciones se recomponen completos y requieren revisión final",
     "La lectura dudosa o editada abre el panel para corregir antes de generar"
+  ],
+  "v.09.10.2026.r20.12:51": [
+    "Los elementos adicionales son opcionales y no incluyen automáticamente soportes detectados",
+    "Conserva las indicaciones manuales al volver a analizar el mismo original",
+    "Los borradores bloqueados muestran la imagen, dimensiones y causa exacta sin permitir exportar"
   ]
 }
