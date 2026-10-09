@@ -1,14 +1,14 @@
 {
-  "version": "v.09.10.2026.r27.16:04",
-  "deployedAt": "2026-10-09T14:04:46Z",
+  "version": "v.09.10.2026.r28.16:19",
+  "deployedAt": "2026-10-09T14:19:54Z",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "5f2bc91ccbce60d4599a7d92ce762a6cf3960d35",
-  "gitShort": "5f2bc91",
-  "gitFull": "5f2bc91ccbce60d4599a7d92ce762a6cf3960d35",
+  "git": "f11960476581d9cf1bd6b9fee1ba681698b111b3",
+  "gitShort": "f119604",
+  "gitFull": "f11960476581d9cf1bd6b9fee1ba681698b111b3",
   "dirty": false,
   "novedades": [
     "Creador: vídeos animados nativos por pantalla y publicación en Stock tras revisión.",
@@ -16,5 +16,5 @@
     "Edición por instrucciones ES/EN y fondos IA separados conservando los originales."
   ],
   "espejoDe": "pixeria",
-  "fuente": "e82bc990dc9445ac51325ebca50d892fa8bae757"
+  "fuente": "867fa1469accd323b2ffa83c24e24c6809c51489"
 }
