@@ -1,10 +1,9 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "Demo Creador todo: imagen y vídeo IA originales bajo petición.",
-    "Proceso visible con estados reales y recuperación sin repetir solicitudes.",
-    "Nuevos medios aplicados a las siete composiciones del gemelo 360 y 3D.",
-    "Ayuda y MCP bilingües; biblioteca, PNG y contrato, sin programación física."
+    "Ayuda orientada a Creador, Adaptador, demos y biblioteca, con índice de temas",
+    "Catálogo MCP compartido actualizado desde el servicio; distingue consulta, planes y generación",
+    "Guía de las cinco subdemos alineada con los manifiestos publicados"
   ],
   "v.07.10.2026.r17.23:41": [
     "Campo de etiquetas al importar (URL o ficheros) y junto a «Publicar en Stock» de lo que creas",

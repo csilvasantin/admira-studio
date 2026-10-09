@@ -1,21 +1,20 @@
 {
-  "version": "v.09.10.2026.r13.08:51",
-  "deployedAt": "2026-10-09T06:51:32Z",
-  "author": "OraculoMacMini",
-  "agent": "OraculoMacMini",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
-  "git": "c418836fcda21f4e5962ee045a52a06d69a60475",
-  "gitShort": "c418836",
-  "gitFull": "c418836fcda21f4e5962ee045a52a06d69a60475",
+  "version": "v.09.10.2026.r14.10:17",
+  "deployedAt": "2026-10-09T08:17:42Z",
+  "author": "TrinityMBP16",
+  "agent": "TrinityMBP16",
+  "deployer": "TrinityMBP16",
+  "machine": "MacBookPro16",
+  "signature": "TrinityMBP16 · MacBookPro16",
+  "git": "5f824bb52ea773818caf13653ed23434328b1c4d",
+  "gitShort": "5f824bb",
+  "gitFull": "5f824bb52ea773818caf13653ed23434328b1c4d",
   "dirty": false,
   "novedades": [
-    "Demo Creador todo: imagen y vídeo IA originales bajo petición.",
-    "Proceso visible con estados reales y recuperación sin repetir solicitudes.",
-    "Nuevos medios aplicados a las siete composiciones del gemelo 360 y 3D.",
-    "Ayuda y MCP bilingües; biblioteca, PNG y contrato, sin programación física."
+    "Ayuda orientada a Creador, Adaptador, demos y biblioteca, con índice de temas",
+    "Catálogo MCP compartido actualizado desde el servicio; distingue consulta, planes y generación",
+    "Guía de las cinco subdemos alineada con los manifiestos publicados"
   ],
   "espejoDe": "pixeria",
-  "fuente": "aa87e382f61869b025ec82b1e07961097db5ac4d"
+  "fuente": "13c0b1e6552ce676dde1a441500201572d687f1b"
 }
