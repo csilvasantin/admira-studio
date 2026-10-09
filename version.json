@@ -1,14 +1,14 @@
 {
-  "version": "v.09.10.2026.r8.07:12",
-  "deployedAt": "2026-10-09T05:12:56Z",
-  "author": "csilvasantin",
-  "agent": "csilvasantin",
-  "deployer": "csilvasantin",
+  "version": "v.09.10.2026.r9.07:17",
+  "deployedAt": "2026-10-09T05:17:06Z",
+  "author": "OraculoMacMini",
+  "agent": "OraculoMacMini",
+  "deployer": "OraculoMacMini",
   "machine": "MacMini",
-  "signature": "csilvasantin · MacMini",
-  "git": "07c616346d0e14be035f3902fe72aac8fb1dd0c0",
-  "gitShort": "07c6163",
-  "gitFull": "07c616346d0e14be035f3902fe72aac8fb1dd0c0",
+  "signature": "OraculoMacMini · MacMini",
+  "git": "93b21701df6519e0e9b737c26599847861c0832d",
+  "gitShort": "93b2170",
+  "gitFull": "93b21701df6519e0e9b737c26599847861c0832d",
   "dirty": false,
   "novedades": [
     "NEXT STEP: campaña de SneakerStore desde Creador y Experto.",
@@ -17,5 +17,5 @@
     "Borradores, mobiliario y playlists anteriores conservados."
   ],
   "espejoDe": "pixeria",
-  "fuente": "6114fd980741cf1007c75622b0a2e82eba2b365a"
+  "fuente": "afb79bb83ec1f39f9e6af5ed36849d77b4925416"
 }
