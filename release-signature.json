@@ -1,12 +1,12 @@
 {
-  "version": "v.09.10.2026.r7.06:46",
+  "version": "v.09.10.2026.r8.07:12",
   "author": "csilvasantin",
   "agent": "csilvasantin",
   "deployer": "csilvasantin",
   "machine": "MacMini",
   "signature": "csilvasantin · MacMini",
-  "git": "750cbea623b6671eb7212aa0c79606ad5abb1d36",
-  "gitShort": "750cbea",
-  "gitFull": "750cbea623b6671eb7212aa0c79606ad5abb1d36",
+  "git": "07c616346d0e14be035f3902fe72aac8fb1dd0c0",
+  "gitShort": "07c6163",
+  "gitFull": "07c616346d0e14be035f3902fe72aac8fb1dd0c0",
   "dirty": false
 }

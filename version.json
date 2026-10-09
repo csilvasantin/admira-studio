@@ -1,21 +1,21 @@
 {
-  "version": "v.09.10.2026.r7.06:46",
-  "deployedAt": "2026-10-09T04:46:37Z",
+  "version": "v.09.10.2026.r8.07:12",
+  "deployedAt": "2026-10-09T05:12:56Z",
   "author": "csilvasantin",
   "agent": "csilvasantin",
   "deployer": "csilvasantin",
   "machine": "MacMini",
   "signature": "csilvasantin · MacMini",
-  "git": "750cbea623b6671eb7212aa0c79606ad5abb1d36",
-  "gitShort": "750cbea",
-  "gitFull": "750cbea623b6671eb7212aa0c79606ad5abb1d36",
+  "git": "07c616346d0e14be035f3902fe72aac8fb1dd0c0",
+  "gitShort": "07c6163",
+  "gitFull": "07c616346d0e14be035f3902fe72aac8fb1dd0c0",
   "dirty": false,
   "novedades": [
-    "Creador y Adaptador pasan al principio del menú.",
-    "Orden: Creador, Adaptador, Audio, Música, Imágenes, Video, Assets y Stock.",
-    "Home, páginas interiores y menú móvil alineados en español e inglés.",
-    "Las herramientas adicionales siguen disponibles en Opciones."
+    "NEXT STEP: campaña de SneakerStore desde Creador y Experto.",
+    "Siete configuraciones y trece MP4 nativos disponibles para descargar.",
+    "Composiciones coordinadas en el gemelo con Jordan, LCD y LED con puerta.",
+    "Borradores, mobiliario y playlists anteriores conservados."
   ],
   "espejoDe": "pixeria",
-  "fuente": "bb691e07b33cd7359295ec00c957fb45e0fde79d"
+  "fuente": "6114fd980741cf1007c75622b0a2e82eba2b365a"
 }
