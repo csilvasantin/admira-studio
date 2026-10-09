@@ -1,21 +1,21 @@
 {
-  "version": "v.09.10.2026.r10.08:08",
-  "deployedAt": "2026-10-09T06:08:33Z",
+  "version": "v.09.10.2026.r11.08:36",
+  "deployedAt": "2026-10-09T06:36:31Z",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "a3bb79bec2a6e8352b6616ac1144762cf25675ae",
-  "gitShort": "a3bb79b",
-  "gitFull": "a3bb79bec2a6e8352b6616ac1144762cf25675ae",
+  "git": "bce5ebb9a57e2318e5fba70a16c4878d61708844",
+  "gitShort": "bce5ebb",
+  "gitFull": "bce5ebb9a57e2318e5fba70a16c4878d61708844",
   "dirty": false,
   "novedades": [
-    "Demo Creador: campaña nueva de Sneaker Xtore en cada ejecución.",
-    "Brief, concepto, creatividades, adaptación y gemelo 360/3D visibles.",
-    "Pausa, reanudar, siguiente e historial de campañas independientes.",
-    "Trece PNG y contrato reproducible; ayuda MCP en español e inglés."
+    "Demo Creador todo: imagen y vídeo IA originales bajo petición.",
+    "Proceso visible con estados reales y recuperación sin repetir solicitudes.",
+    "Nuevos medios aplicados a las siete composiciones del gemelo 360 y 3D.",
+    "Ayuda y MCP bilingües; biblioteca, PNG y contrato, sin programación física."
   ],
   "espejoDe": "pixeria",
-  "fuente": "ba099d528c2e0ea78628f5dbcb6d1b23fa413923"
+  "fuente": "73b6b2ab4391b438d3338631e2851d0465789146"
 }
