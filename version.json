@@ -1,21 +1,21 @@
 {
-  "version": "v.09.10.2026.r9.07:17",
-  "deployedAt": "2026-10-09T05:17:06Z",
+  "version": "v.09.10.2026.r10.08:08",
+  "deployedAt": "2026-10-09T06:08:33Z",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "93b21701df6519e0e9b737c26599847861c0832d",
-  "gitShort": "93b2170",
-  "gitFull": "93b21701df6519e0e9b737c26599847861c0832d",
+  "git": "a3bb79bec2a6e8352b6616ac1144762cf25675ae",
+  "gitShort": "a3bb79b",
+  "gitFull": "a3bb79bec2a6e8352b6616ac1144762cf25675ae",
   "dirty": false,
   "novedades": [
-    "NEXT STEP: campaña de SneakerStore desde Creador y Experto.",
-    "Siete configuraciones y trece MP4 nativos disponibles para descargar.",
-    "Composiciones coordinadas en el gemelo con Jordan, LCD y LED con puerta.",
-    "Borradores, mobiliario y playlists anteriores conservados."
+    "Demo Creador: campaña nueva de Sneaker Xtore en cada ejecución.",
+    "Brief, concepto, creatividades, adaptación y gemelo 360/3D visibles.",
+    "Pausa, reanudar, siguiente e historial de campañas independientes.",
+    "Trece PNG y contrato reproducible; ayuda MCP en español e inglés."
   ],
   "espejoDe": "pixeria",
-  "fuente": "afb79bb83ec1f39f9e6af5ed36849d77b4925416"
+  "fuente": "ba099d528c2e0ea78628f5dbcb6d1b23fa413923"
 }

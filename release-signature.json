@@ -1,12 +1,12 @@
 {
-  "version": "v.09.10.2026.r9.07:17",
+  "version": "v.09.10.2026.r10.08:08",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "93b21701df6519e0e9b737c26599847861c0832d",
-  "gitShort": "93b2170",
-  "gitFull": "93b21701df6519e0e9b737c26599847861c0832d",
+  "git": "a3bb79bec2a6e8352b6616ac1144762cf25675ae",
+  "gitShort": "a3bb79b",
+  "gitFull": "a3bb79bec2a6e8352b6616ac1144762cf25675ae",
   "dirty": false
 }
