@@ -1,20 +1,20 @@
 {
-  "version": "v.09.10.2026.r20.12:51",
-  "deployedAt": "2026-10-09T10:51:57Z",
+  "version": "v.09.10.2026.r22.13:26",
+  "deployedAt": "2026-10-09T11:26:06Z",
   "author": "TrinityMBP16",
   "agent": "TrinityMBP16",
   "deployer": "TrinityMBP16",
   "machine": "MacBookPro16",
   "signature": "TrinityMBP16 · MacBookPro16",
-  "git": "1b9b388c75868ebb21b7809279251bc9ba2b87a4",
-  "gitShort": "1b9b388",
-  "gitFull": "1b9b388c75868ebb21b7809279251bc9ba2b87a4",
+  "git": "8b8dfb0ddda7e4ee33d93491f9faf76553885265",
+  "gitShort": "8b8dfb0",
+  "gitFull": "8b8dfb0ddda7e4ee33d93491f9faf76553885265",
   "dirty": false,
   "novedades": [
-    "Los elementos adicionales son opcionales y no incluyen automáticamente soportes detectados",
-    "Conserva las indicaciones manuales al volver a analizar el mismo original",
-    "Los borradores bloqueados muestran la imagen, dimensiones y causa exacta sin permitir exportar"
+    "Original y resultados primero; texto, composición y tratamiento debajo",
+    "Las nuevas generaciones piden creatividad final sin marcos ni pantallas de exposición",
+    "Creador publica PNG y MP4 con sus capas; Adaptador recupera texto guardado completo y mantiene OCR para piezas sin capas"
   ],
   "espejoDe": "pixeria",
-  "fuente": "d58764add86ba92801c72e112779f850a656b274"
+  "fuente": "902f1a4b34c9b5235047c041bdf7ba95626fe31d"
 }
