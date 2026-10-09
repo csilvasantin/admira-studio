@@ -1,21 +1,20 @@
 {
-  "version": "v.09.10.2026.r26.15:56",
-  "deployedAt": "2026-10-09T13:56:31Z",
+  "version": "v.09.10.2026.r27.16:04",
+  "deployedAt": "2026-10-09T14:04:46Z",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "fdfdc3d311193429082105f8c0369362d4e27f15",
-  "gitShort": "fdfdc3d",
-  "gitFull": "fdfdc3d311193429082105f8c0369362d4e27f15",
+  "git": "5f2bc91ccbce60d4599a7d92ce762a6cf3960d35",
+  "gitShort": "5f2bc91",
+  "gitFull": "5f2bc91ccbce60d4599a7d92ce762a6cf3960d35",
   "dirty": false,
   "novedades": [
-    "Creador muestra horizontal y vertical desde las mismas capas, sin añadir generaciones de IA ni cambiar destinos guardados.",
-    "Admirito dibuja y borra junto al previo durante los trabajos reales, con cancelación, móvil y movimiento reducido.",
-    "Adaptador comprueba que la creatividad salga sin pantalla o marco exterior, manteniendo controles de producto y texto.",
-    "El acceso al Adaptador queda en el menú superior del Creador."
+    "Creador: vídeos animados nativos por pantalla y publicación en Stock tras revisión.",
+    "Campañas privadas en nube con versiones, comparación y recuperación en otro ordenador.",
+    "Edición por instrucciones ES/EN y fondos IA separados conservando los originales."
   ],
   "espejoDe": "pixeria",
-  "fuente": "9d46be7a1190f9aec8f649757cdfcdcd71596998"
+  "fuente": "e82bc990dc9445ac51325ebca50d892fa8bae757"
 }
