@@ -1,9 +1,9 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
+    "Creador vuelve a abrir su taller con los controles compartidos completos en español e inglés",
     "Original y resultados primero; texto, composición y tratamiento debajo",
-    "Las nuevas generaciones piden creatividad final sin marcos ni pantallas de exposición",
-    "Creador publica PNG y MP4 con sus capas; Adaptador recupera texto guardado completo y mantiene OCR para piezas sin capas"
+    "Creador conserva las capas al publicar PNG y MP4; Adaptador recupera el texto guardado y mantiene revisión final"
   ],
   "v.07.10.2026.r17.23:41": [
     "Campo de etiquetas al importar (URL o ficheros) y junto a «Publicar en Stock» de lo que creas",
@@ -85,5 +85,10 @@
     "Original y resultados primero; texto, composición y tratamiento debajo",
     "Las nuevas generaciones piden creatividad final sin marcos ni pantallas de exposición",
     "Creador publica PNG y MP4 con sus capas; Adaptador recupera texto guardado completo y mantiene OCR para piezas sin capas"
+  ],
+  "v.09.10.2026.r23.13:35": [
+    "Creador vuelve a abrir su taller con los controles compartidos completos en español e inglés",
+    "Original y resultados primero; texto, composición y tratamiento debajo",
+    "Creador conserva las capas al publicar PNG y MP4; Adaptador recupera el texto guardado y mantiene revisión final"
   ]
 }
