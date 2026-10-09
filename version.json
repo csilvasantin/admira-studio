@@ -1,14 +1,14 @@
 {
-  "version": "v.09.10.2026.r2.06:04",
-  "deployedAt": "2026-10-09T04:04:40Z",
-  "author": "MorfeoMacMini",
-  "agent": "MorfeoMacMini",
-  "deployer": "MorfeoMacMini",
+  "version": "v.09.10.2026.r3.06:12",
+  "deployedAt": "2026-10-09T04:12:13Z",
+  "author": "OraculoMacMini",
+  "agent": "OraculoMacMini",
+  "deployer": "OraculoMacMini",
   "machine": "MacMini",
-  "signature": "MorfeoMacMini · MacMini",
-  "git": "3285f685380952c24097c087ccf299859baee2ad",
-  "gitShort": "3285f68",
-  "gitFull": "3285f685380952c24097c087ccf299859baee2ad",
+  "signature": "OraculoMacMini · MacMini",
+  "git": "ca2e58bc4a81b11d68e70fc59156d6ee83e652fc",
+  "gitShort": "ca2e58b",
+  "gitFull": "ca2e58bc4a81b11d68e70fc59156d6ee83e652fc",
   "dirty": false,
   "novedades": [
     "Modelo Best de Xtanco con geometría refinada y mapas PBR; Better sigue disponible",
@@ -17,5 +17,5 @@
     "Ayudas y MCP ES/EN; modelo editable, hashes y validación para continuar"
   ],
   "espejoDe": "pixeria",
-  "fuente": "4346044fb0645d22b645e7b6149e7ac124988fda"
+  "fuente": "08cdf6b25ddd9730929123ecb505e7331cbf73fe"
 }
