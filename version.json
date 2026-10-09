@@ -1,20 +1,20 @@
 {
-  "version": "v.09.10.2026.r19.12:35",
-  "deployedAt": "2026-10-09T10:35:41Z",
+  "version": "v.09.10.2026.r20.12:51",
+  "deployedAt": "2026-10-09T10:51:57Z",
   "author": "TrinityMBP16",
   "agent": "TrinityMBP16",
   "deployer": "TrinityMBP16",
   "machine": "MacBookPro16",
   "signature": "TrinityMBP16 · MacBookPro16",
-  "git": "403eb4537f89b4edac23dbdc5bfe38f04195ed5f",
-  "gitShort": "403eb45",
-  "gitFull": "403eb4537f89b4edac23dbdc5bfe38f04195ed5f",
+  "git": "1b9b388c75868ebb21b7809279251bc9ba2b87a4",
+  "gitShort": "1b9b388",
+  "gitFull": "1b9b388c75868ebb21b7809279251bc9ba2b87a4",
   "dirty": false,
   "novedades": [
-    "El clásico genera el borrador vertical u horizontal con texto leído con confianza",
-    "Titulares, precios y condiciones se recomponen completos y requieren revisión final",
-    "La lectura dudosa o editada abre el panel para corregir antes de generar"
+    "Los elementos adicionales son opcionales y no incluyen automáticamente soportes detectados",
+    "Conserva las indicaciones manuales al volver a analizar el mismo original",
+    "Los borradores bloqueados muestran la imagen, dimensiones y causa exacta sin permitir exportar"
   ],
   "espejoDe": "pixeria",
-  "fuente": "33cc8653ccf5c0f18ddb9d76dc1f38495c5a6316"
+  "fuente": "d58764add86ba92801c72e112779f850a656b274"
 }
