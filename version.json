@@ -1,20 +1,20 @@
 {
-  "version": "v.09.10.2026.r16.10:54",
-  "deployedAt": "2026-10-09T08:54:44Z",
+  "version": "v.09.10.2026.r17.11:41",
+  "deployedAt": "2026-10-09T09:41:50Z",
   "author": "TrinityMBP16",
   "agent": "TrinityMBP16",
   "deployer": "TrinityMBP16",
   "machine": "MacBookPro16",
   "signature": "TrinityMBP16 · MacBookPro16",
-  "git": "1f84948a80a7a5ac1123804ebb6bc8780f3d71f6",
-  "gitShort": "1f84948",
-  "gitFull": "1f84948a80a7a5ac1123804ebb6bc8780f3d71f6",
+  "git": "4a87138f0c2fd447b554a903689a68376ca1c8af",
+  "gitShort": "4a87138",
+  "gitFull": "4a87138f0c2fd447b554a903689a68376ca1c8af",
   "dirty": false,
   "novedades": [
-    "Adaptador: entrada directa de imagen horizontal a un primer formato vertical",
-    "Prioriza el destino nativo del proyecto y mantiene los ajustes de composición",
-    "Después puedes añadir variantes y revisar cada pieza antes de exportar"
+    "Adaptación clásica horizontal ↔ vertical completa en el paso 1",
+    "Permite crear, revisar, aprobar y descargar sin abrir los formatos especiales",
+    "Paso 2 dedicado a otros tamaños y formatos propios del proyecto"
   ],
   "espejoDe": "pixeria",
-  "fuente": "4866a87e2bfe080b8f0cab381c5e030f7a99feb2"
+  "fuente": "138661b743cbb6ec7970531f700fdb00f5d03675"
 }
