@@ -1,14 +1,14 @@
 {
-  "version": "v.09.10.2026.r24.13:57",
-  "deployedAt": "2026-10-09T11:57:40Z",
-  "author": "TrinityMBP16",
-  "agent": "TrinityMBP16",
-  "deployer": "TrinityMBP16",
-  "machine": "MacBookPro16",
-  "signature": "TrinityMBP16 · MacBookPro16",
-  "git": "8f4bbede19a4bd783be448b196509cf8b2560a7e",
-  "gitShort": "8f4bbed",
-  "gitFull": "8f4bbede19a4bd783be448b196509cf8b2560a7e",
+  "version": "v.09.10.2026.r26.15:56",
+  "deployedAt": "2026-10-09T13:56:31Z",
+  "author": "OraculoMacMini",
+  "agent": "OraculoMacMini",
+  "deployer": "OraculoMacMini",
+  "machine": "MacMini",
+  "signature": "OraculoMacMini · MacMini",
+  "git": "fdfdc3d311193429082105f8c0369362d4e27f15",
+  "gitShort": "fdfdc3d",
+  "gitFull": "fdfdc3d311193429082105f8c0369362d4e27f15",
   "dirty": false,
   "novedades": [
     "Creador muestra horizontal y vertical desde las mismas capas, sin añadir generaciones de IA ni cambiar destinos guardados.",
@@ -17,5 +17,5 @@
     "El acceso al Adaptador queda en el menú superior del Creador."
   ],
   "espejoDe": "pixeria",
-  "fuente": "e465fc04bdca9e004e1c23f38204722543b6afd8"
+  "fuente": "9d46be7a1190f9aec8f649757cdfcdcd71596998"
 }
