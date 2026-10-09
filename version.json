@@ -1,20 +1,20 @@
 {
-  "version": "v.09.10.2026.r3.06:12",
-  "deployedAt": "2026-10-09T04:12:13Z",
+  "version": "v.09.10.2026.r4.06:16",
+  "deployedAt": "2026-10-09T04:16:37Z",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "ca2e58bc4a81b11d68e70fc59156d6ee83e652fc",
-  "gitShort": "ca2e58b",
-  "gitFull": "ca2e58bc4a81b11d68e70fc59156d6ee83e652fc",
+  "git": "0e93f881034fc80cf9b844131455476066f086f2",
+  "gitShort": "0e93f88",
+  "gitFull": "0e93f881034fc80cf9b844131455476066f086f2",
   "dirty": false,
   "novedades": [
-    "Modelo Best de Xtanco con geometría refinada y mapas PBR; Better sigue disponible",
-    "Seis montajes de referencia para los 29 formatos Altadis, incluida esquina de ensayo",
-    "Selector de formatos y recorrido automático al pulsar, reutilizando contenido y modelo",
-    "Ayudas y MCP ES/EN; modelo editable, hashes y validación para continuar"
+    "Taller Sneakers Store: producto, logo y copia separados; tres propuestas editables.",
+    "Cinco configuraciones con zonas seguras, juntas y puerta; selección de destinos y catálogo Altadis.",
+    "Revisión por pieza, campaña JSON portátil y PNG/MP4 nativo por pantalla.",
+    "Tutorial ES/EN y contratos MCP; publicación explícita en Stock."
   ],
   "espejoDe": "pixeria",
   "fuente": "08cdf6b25ddd9730929123ecb505e7331cbf73fe"
