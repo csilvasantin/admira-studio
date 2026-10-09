@@ -1,20 +1,20 @@
 {
-  "version": "v.09.10.2026.r18.12:11",
-  "deployedAt": "2026-10-09T10:11:34Z",
+  "version": "v.09.10.2026.r19.12:35",
+  "deployedAt": "2026-10-09T10:35:41Z",
   "author": "TrinityMBP16",
   "agent": "TrinityMBP16",
   "deployer": "TrinityMBP16",
   "machine": "MacBookPro16",
   "signature": "TrinityMBP16 · MacBookPro16",
-  "git": "1410c9a355d712cf7b198985100ab0b8d30c28a4",
-  "gitShort": "1410c9a",
-  "gitFull": "1410c9a355d712cf7b198985100ab0b8d30c28a4",
+  "git": "403eb4537f89b4edac23dbdc5bfe38f04195ed5f",
+  "gitShort": "403eb45",
+  "gitFull": "403eb4537f89b4edac23dbdc5bfe38f04195ed5f",
   "dirty": false,
   "novedades": [
-    "El clásico genera el entorno que falta al elegir horizontal o vertical",
-    "El texto detectado requiere confirmación; la revisión compara la imagen con el original",
-    "El lienzo queda cubierto y bloquea proporciones incompatibles o productos recortados"
+    "El clásico genera el borrador vertical u horizontal con texto leído con confianza",
+    "Titulares, precios y condiciones se recomponen completos y requieren revisión final",
+    "La lectura dudosa o editada abre el panel para corregir antes de generar"
   ],
   "espejoDe": "pixeria",
-  "fuente": "456c457c60649a16d298fda8bbdf452ff5a96b5c"
+  "fuente": "33cc8653ccf5c0f18ddb9d76dc1f38495c5a6316"
 }
