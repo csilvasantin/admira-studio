@@ -1,10 +1,10 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "Taller Sneakers Store: producto, logo y copia separados; tres propuestas editables.",
-    "Cinco configuraciones con zonas seguras, juntas y puerta; selección de destinos y catálogo Altadis.",
-    "Revisión por pieza, campaña JSON portátil y PNG/MP4 nativo por pantalla.",
-    "Tutorial ES/EN y contratos MCP; publicación explícita en Stock."
+    "Creador sustituye a Publicidad: campañas desde cero para las pantallas de destino.",
+    "Adaptador conserva la adaptación de contenidos existentes y de terceros.",
+    "Campaña nueva con elementos neutros, ejemplo Sneakers Store y borradores independientes.",
+    "Ayuda, tutorial y MCP ES/EN actualizados; rutas e historial conservados."
   ],
   "v.07.10.2026.r17.23:41": [
     "Campo de etiquetas al importar (URL o ficheros) y junto a «Publicar en Stock» de lo que creas",
