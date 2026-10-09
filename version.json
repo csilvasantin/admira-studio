@@ -1,20 +1,21 @@
 {
-  "version": "v.09.10.2026.r23.13:35",
-  "deployedAt": "2026-10-09T11:35:01Z",
+  "version": "v.09.10.2026.r24.13:57",
+  "deployedAt": "2026-10-09T11:57:40Z",
   "author": "TrinityMBP16",
   "agent": "TrinityMBP16",
   "deployer": "TrinityMBP16",
   "machine": "MacBookPro16",
   "signature": "TrinityMBP16 · MacBookPro16",
-  "git": "8cfa9e34bf8944cd6e942608abe7bd4ebfddb97c",
-  "gitShort": "8cfa9e3",
-  "gitFull": "8cfa9e34bf8944cd6e942608abe7bd4ebfddb97c",
+  "git": "8f4bbede19a4bd783be448b196509cf8b2560a7e",
+  "gitShort": "8f4bbed",
+  "gitFull": "8f4bbede19a4bd783be448b196509cf8b2560a7e",
   "dirty": false,
   "novedades": [
-    "Creador vuelve a abrir su taller con los controles compartidos completos en español e inglés",
-    "Original y resultados primero; texto, composición y tratamiento debajo",
-    "Creador conserva las capas al publicar PNG y MP4; Adaptador recupera el texto guardado y mantiene revisión final"
+    "Creador muestra horizontal y vertical desde las mismas capas, sin añadir generaciones de IA ni cambiar destinos guardados.",
+    "Admirito dibuja y borra junto al previo durante los trabajos reales, con cancelación, móvil y movimiento reducido.",
+    "Adaptador comprueba que la creatividad salga sin pantalla o marco exterior, manteniendo controles de producto y texto.",
+    "El acceso al Adaptador queda en el menú superior del Creador."
   ],
   "espejoDe": "pixeria",
-  "fuente": "6acd193c26a41856923e6d7c60a906566261e8ca"
+  "fuente": "e465fc04bdca9e004e1c23f38204722543b6afd8"
 }

@@ -126,7 +126,8 @@ if [ "$(jq -r '.idioma // ""' marca.json)" = "en" ]; then
 fi
 
 # Y ahora se vuelca sobre el repo, respetando lo propio.
-EXCL=(--exclude '.git/')
+# Linked worktrees use a .git file instead of a directory. Preserve both forms.
+EXCL=(--exclude '.git')
 # Scoped nested documentation must precede the root README exclusion.
 while read -r p; do EXCL+=(--include "$p"); done < <(jq -r '.incluidos[]?' marca.json)
 while read -r p; do EXCL+=(--exclude "$p"); done < <(jq -r '.propios[], .excluidos[]' marca.json)
