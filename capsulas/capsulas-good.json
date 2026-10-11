@@ -63,6 +63,81 @@
           "cost_eur": 0
         }
       }
+    },
+    {
+      "id": "musical-disco-oro-voyager-good",
+      "tipo": "musical",
+      "tema": "musica",
+      "calidad": "good",
+      "titulo": {
+        "es": "El Disco de Oro de las Voyager",
+        "en": "The Voyager Golden Record"
+      },
+      "guion": {
+        "es": "¿Sabías que las sondas Voyager se lanzaron en 1977? Cada nave lleva un disco de cobre bañado en oro. El disco contiene alrededor de noventa minutos de música de distintas culturas y épocas. Incluye obras de Bach, Beethoven y Johnny B. Goode de Chuck Berry. El comité lo presidió Carl Sagan y Voyager 1 entró en el espacio interestelar en 2012.",
+        "en": "Did you know the twin Voyager probes launched in 1977? Each spacecraft carries a gold-plated copper disc. The record holds about ninety minutes of music from many cultures and eras. It features works by Bach, Beethoven and Johnny B. Goode by Chuck Berry. The committee was chaired by Carl Sagan and Voyager 1 entered interstellar space in 2012."
+      },
+      "model": "nvidia/nemotron-3-ultra-550b-a55b",
+      "seed": 5710,
+      "cost_eur": 0,
+      "usage": {
+        "prompt_tokens": 462,
+        "completion_tokens": 3676,
+        "total_tokens": 4138
+      },
+      "usage_descartado": {
+        "prompt_tokens": 389,
+        "completion_tokens": 4000,
+        "total_tokens": 4389,
+        "motivo": "primer intento cortado por max_tokens (finish_reason=length), sin JSON final; no se usó"
+      },
+      "edicion_humana": "Guion ES tal cual lo devolvió Nemotron. En EN se quitó «designed to last billions of years» (no verificado en las fuentes). Títulos ajustados a mano (Nemotron: «Disco de Oro Voyager» / «Voyager Golden Record»).",
+      "voices": {
+        "es": "Mónica",
+        "en": "Daniel"
+      },
+      "sources": [
+        "https://science.nasa.gov/mission/voyager/golden-record-contents/",
+        "https://science.nasa.gov/mission/voyager/golden-record-contents/sounds/",
+        "https://science.nasa.gov/mission/voyager/making-of-the-golden-record/",
+        "https://www.jpl.nasa.gov/news/nasa-spacecraft-embarks-on-historic-journey-into-interstellar-space/"
+      ],
+      "poster": "/capsulas/musical-good-poster.png",
+      "fondo": {
+        "src": "/capsulas/musical-good-fondo.webp",
+        "engine": "mflux/MLX local MacBook Pro 16",
+        "model": "mflux-community/flux-1-schnell-mflux-q8",
+        "base_model": "FLUX.1-schnell",
+        "seed": 5710,
+        "steps": 4,
+        "prompt": "A vertical illustration of a golden phonograph record drifting in deep space with subtle stars and a faint silhouette of the Voyager spacecraft, minimalistic style, vibrant colors, no text, no logos, no human faces. Soft editorial illustration, deep navy blue and warm gold, luminous cyan accents, main objects in lower half, calm empty dark space above, vertical 9:16 composition, no text, no typography, no numbers, no logos, no faces.",
+        "cost_eur": 0
+      },
+      "audio": {
+        "voz": "say de macOS a fichero",
+        "colchon": "acorde sintetizado con ffmpeg (senoidales, sin música con derechos)",
+        "cost_eur": 0
+      },
+      "videos": {
+        "es": {
+          "src": "/capsulas/musical-good-es.mp4",
+          "duration_s": 30,
+          "width": 720,
+          "height": 1280,
+          "voice": "Mónica",
+          "voice_rate_wpm": 128,
+          "cost_eur": 0
+        },
+        "en": {
+          "src": "/capsulas/musical-good-en.mp4",
+          "duration_s": 30,
+          "width": 720,
+          "height": 1280,
+          "voice": "Daniel",
+          "voice_rate_wpm": 150,
+          "cost_eur": 0
+        }
+      }
     }
   ]
 }

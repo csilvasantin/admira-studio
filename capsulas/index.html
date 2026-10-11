@@ -1,11 +1,21 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>¿Sabías que…? · Admira Studio</title>
 <style>body{margin:0;background:#071a24;color:#f6f1e7;font:18px system-ui,sans-serif}main{max-width:840px;margin:8vh auto;padding:24px}h1{font-size:clamp(32px,6vw,60px);letter-spacing:-.04em}p{line-height:1.65}a{color:#70d9db}button{font:inherit;cursor:pointer;background:#ffd166;color:#071a24;border:0;border-radius:9px;padding:12px 20px;margin:8px 12px 8px 0}code{font-size:15px}dialog::backdrop{background:#000b}.stamp{font-size:13px;color:#abc0c7}#status{min-height:3em;white-space:pre-line}</style></head>
-<body><main><a href="/">admira.studio</a><p>GOOD · 0 €</p><h1 id="title">Internet y la Web</h1><p id="intro">Una cápsula de conocimiento de 30 segundos: descubre la diferencia entre Internet y la Web.</p><button id="es">▶ Español · Mónica</button><button id="en">▶ English · Daniel</button><p><code>/demo capsula conocimiento good [es|en]</code></p><p id="status" role="status"></p><p><a href="conocimiento-good-es.mp4">MP4 ES</a> · <a href="conocimiento-good-en.mp4">MP4 EN</a> · <a href="capsulas-good.json">Modelo, semilla y coste / Model, seed and cost</a> · <a href="/docs/capsula-conocimiento-good.md">Guía / Guide</a></p><p class="stamp" data-release-signature>Admira Studio · v.11.10.2026.r4.14:43 · OraculoMBP16 · MacBook Pro 16</p></main>
+<body><main><a href="/">admira.studio</a><p>GOOD · 0 €</p><h1 id="title">Internet y la Web</h1><p id="intro">Una cápsula de conocimiento de 30 segundos: descubre la diferencia entre Internet y la Web.</p><button id="es">▶ Español · Mónica</button><button id="en">▶ English · Daniel</button><p><code id="cmd">/demo capsula conocimiento good [es|en]</code></p><p id="status" role="status"></p><p><a id="mp4es" href="conocimiento-good-es.mp4">MP4 ES</a> · <a id="mp4en" href="conocimiento-good-en.mp4">MP4 EN</a> · <a href="capsulas-good.json">Modelo, semilla y coste / Model, seed and cost</a> · <a id="guide" href="/docs/capsula-conocimiento-good.md">Guía / Guide</a></p><p><a id="other" href="?tipo=musical">Cápsula musical / Musical capsule →</a></p><p class="stamp" data-release-signature>Admira Studio · v.11.10.2026.r4.14:43 · OraculoMBP16 · MacBook Pro 16</p></main>
 <script type="module">
 import {runKnowledgeDemo} from '/assets/capsula-good.mjs';
 const status=document.getElementById('status');
-const english=new URLSearchParams(location.search).get('lang')==='en';
-if(english){document.documentElement.lang='en';document.title='Did you know…? · Admira Studio';document.getElementById('title').textContent='The Internet and the Web';document.getElementById('intro').textContent='A 30-second knowledge capsule: discover the difference between the Internet and the Web.';}
-for(const lang of ['es','en'])document.getElementById(lang).onclick=()=>runKnowledgeDemo('capsula conocimiento good '+lang,lang).then(message=>status.textContent=message).catch(e=>status.textContent=e.message);
+const params=new URLSearchParams(location.search);
+const english=params.get('lang')==='en';
+const tipo=/^(musical|musica|música|music)$/i.test(params.get('tipo')||'')?'musical':'conocimiento';
+const $=id=>document.getElementById(id);
+if(english){document.documentElement.lang='en';document.title='Did you know…? · Admira Studio';$('title').textContent='The Internet and the Web';$('intro').textContent='A 30-second knowledge capsule: discover the difference between the Internet and the Web.';}
+if(tipo==='musical'){
+  $('title').textContent=english?'The Voyager Golden Record':'El Disco de Oro de las Voyager';
+  $('intro').textContent=english?'A 30-second musical capsule: the record that carries Bach, Beethoven and Chuck Berry beyond the Solar System.':'Una cápsula musical de 30 segundos: el disco que lleva a Bach, Beethoven y Chuck Berry más allá del Sistema Solar.';
+  $('cmd').textContent='/demo capsula musical good [es|en]';
+  $('mp4es').href='musical-good-es.mp4';$('mp4en').href='musical-good-en.mp4';$('guide').href='/docs/capsula-musical-good.md';
+  $('other').href='?tipo=conocimiento'+(english?'&lang=en':'');$('other').textContent='← Cápsula de conocimiento / Knowledge capsule';
+}else if(english)$('other').href='?tipo=musical&lang=en';
+for(const lang of ['es','en'])$(lang).onclick=()=>runKnowledgeDemo('capsula '+tipo+' good '+lang,lang).then(message=>status.textContent=message).catch(e=>status.textContent=e.message);
 </script></body></html>
