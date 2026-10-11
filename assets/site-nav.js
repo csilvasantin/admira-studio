@@ -722,6 +722,16 @@
     normalizeInternalNav();
     syncRailVersion();
     trackTopbarHeight();
+    // Home chrome can arrive after both initial passes (cuadratura schedules it).
+    // Observe only until that header exists, then disconnect before normalising it.
+    if (isHome() && !document.querySelector('.pf-topbar')) {
+      var homeChrome = new MutationObserver(function () {
+        if (!document.querySelector('.pf-topbar')) return;
+        homeChrome.disconnect();
+        upgradeFrameControls(); trackTopbarHeight();
+      });
+      homeChrome.observe(document.body, {childList:true, subtree:true});
+    }
     // cuadratura.js crea la barra de la home de forma diferida; esta segunda
     // pasada normaliza tambien esa barra cuando se reutiliza en una interior.
     setTimeout(function () {
