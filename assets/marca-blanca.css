@@ -203,3 +203,9 @@
 :root[data-mb-marca][data-mb-plataforma="studio"] :is(.msg.user .who,.msg.bot .who){background:var(--mbx-soft);color:var(--mbx-brand);border-color:var(--mb-borde)}
 :root[data-mb-marca][data-mb-plataforma="studio"] :is(.msg.user .bubble,.msg.bot .bubble){background:var(--mbx-inset);color:var(--mbx-ink);border-color:var(--mb-borde)}
 :root[data-mb-marca][data-mb-plataforma="studio"] .msg.error .bubble{color:var(--mbx-error);border-color:var(--mbx-error);background:var(--mbx-inset)}
+
+/* 14 · Creador: los textos del taller usan los tokens AA de la marca.
+   Los verdes claros originales pierden contraste en marcas con fondo blanco. */
+:root[data-mb-marca][data-mb-plataforma="studio"] .campaign-heading p,
+:root[data-mb-marca][data-mb-plataforma="studio"] .campaign-flow{color:var(--mbx-mut)}
+:root[data-mb-marca][data-mb-plataforma="studio"] .campaign-heading .campaign-kicker{color:var(--mbx-brand)}
