@@ -122,3 +122,8 @@ html:root:not([data-mb-marca]) :is(.btn.play, .btn.primary) {
 }
 html:root:not([data-mb-marca]) :is(.btn:hover, .btn-back:hover, .publish-btn:hover) { background:rgba(255,51,204,.14); }
 html:root:not([data-mb-marca]) :is(.btn.play:hover, .btn.primary:hover) { background:#FF33CC; }
+/* The walkthrough scrolls inside its frame; keep the host header anchored. */
+html:has(#admira-native-studio), body:has(#admira-native-studio) { overflow:hidden !important; }
+body:has(#admira-native-studio) .pf-topbar {
+  position:fixed !important; top:0 !important; left:0; right:0;
+}

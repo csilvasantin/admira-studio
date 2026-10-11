@@ -11,7 +11,7 @@
     "Mobile navigation overflow affordance",
     "Studio magenta chrome and existing EN auxiliary routes"
   ],
-  "version": "v.11.10.2026.r8.20:47",
+  "version": "v.11.10.2026.r9.20:49",
   "scope": "Preview release only; production release remains the frozen base",
   "comparison_sha": "41bfa429184d0a0ef21c0b3fae35b18098642906"
 }
