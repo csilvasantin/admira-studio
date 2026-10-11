@@ -108,3 +108,7 @@ Real MCP `creador_demo({mode:"full",language:"en"})` is **plan only**. Explicit 
 ## Idioma de interfaz / UI language
 
 ES: `/language ENG` y `/idioma ESP` conservan el historial y los valores internos, y cambian las etiquetas, opciones y ayudas de las ocho secciones. EN: `/language ENG` and `/idioma ESP` retain history and internal values while changing UI labels, options and help across all eight sections. [Tutorial y contrato / Tutorial and contract](/docs/ui-idioma.md).
+
+## Cápsula de conocimiento GOOD / GOOD knowledge capsule
+
+`/demo capsula conocimiento good [es|en]`: vídeo vertical de 30 s, voz Mónica/Daniel; reproducción de medios existentes, coste 0 €. / A 30-second vertical video with Mónica/Daniel narration; plays existing media, €0. [Guía ES/EN](/docs/capsula-conocimiento-good.md).
