@@ -9,5 +9,27 @@
   "registry": "https://www.admira.studio/capsulas/capsulas-good.json",
   "videos": {"es":"https://www.admira.studio/capsulas/conocimiento-good-es.mp4","en":"https://www.admira.studio/capsulas/conocimiento-good-en.mp4"},
   "side_effects": "browser playback only",
-  "cost_eur": 0
+  "cost_eur": 0,
+  "capsulas": [
+    {
+      "name": "capsula_conocimiento_good",
+      "tipo": "conocimiento",
+      "description": {"es":"Cápsula de conocimiento vertical ES/EN de 30 s (Internet y la Web); reproducción de vídeos existentes, 0 €.","en":"30-second vertical ES/EN knowledge capsule (the Internet and the Web); plays existing videos, €0."},
+      "command": "/demo capsula conocimiento good [es|en]",
+      "url": "https://www.admira.studio/capsulas/",
+      "videos": {"es":"https://www.admira.studio/capsulas/conocimiento-good-es.mp4","en":"https://www.admira.studio/capsulas/conocimiento-good-en.mp4"},
+      "docs": "https://www.admira.studio/docs/capsula-conocimiento-good.md",
+      "cost_eur": 0
+    },
+    {
+      "name": "capsula_musical_good",
+      "tipo": "musical",
+      "description": {"es":"Cápsula musical vertical ES/EN de 30 s (el Disco de Oro de las Voyager); reproducción de vídeos existentes, 0 €.","en":"30-second vertical ES/EN musical capsule (the Voyager Golden Record); plays existing videos, €0."},
+      "command": "/demo capsula musical good [es|en]",
+      "url": "https://www.admira.studio/capsulas/?tipo=musical",
+      "videos": {"es":"https://www.admira.studio/capsulas/musical-good-es.mp4","en":"https://www.admira.studio/capsulas/musical-good-en.mp4"},
+      "docs": "https://www.admira.studio/docs/capsula-musical-good.md",
+      "cost_eur": 0
+    }
+  ]
 }

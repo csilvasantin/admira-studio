@@ -1,12 +1,17 @@
 export const BANK_URL = '/capsulas/capsulas-good.json';
 
+const MUSICAL_WORDS = ['musical', 'musica', 'music'];
+
 export function parseKnowledgeDemo(arg, lang = 'es') {
   const words = String(arg || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().split(/\s+/);
   if (!['capsula', 'capsule'].includes(words[0])) return null;
-  if (words.slice(1).some(w => !['conocimiento', 'knowledge', 'good', 'es', 'en', 'cerrar', 'close', 'help', 'ayuda'].includes(w))) {
+  if (words.slice(1).some(w => !['conocimiento', 'knowledge', ...MUSICAL_WORDS, 'good', 'es', 'en', 'cerrar', 'close', 'help', 'ayuda'].includes(w))) {
     return {action:'help', lang};
   }
-  return {action: words.some(w => ['cerrar','close'].includes(w)) ? 'close' : words.some(w => ['help','ayuda'].includes(w)) ? 'help' : 'play', lang: words.includes('en') ? 'en' : words.includes('es') ? 'es' : lang};
+  const command = {action: words.some(w => ['cerrar','close'].includes(w)) ? 'close' : words.some(w => ['help','ayuda'].includes(w)) ? 'help' : 'play', lang: words.includes('en') ? 'en' : words.includes('es') ? 'es' : lang};
+  // La cápsula de conocimiento es la de por defecto y su comando no cambia; la musical se marca con `tipo`.
+  if (words.some(w => MUSICAL_WORDS.includes(w))) command.tipo = 'musical';
+  return command;
 }
 
 let active = null;
@@ -28,14 +33,15 @@ export async function runKnowledgeDemo(arg, lang = 'es', {doc=document, fetcher=
   if (!command) return '';
   const en = command.lang === 'en';
   if (command.action === 'close') { closeKnowledgeDemo(); return en ? 'Capsule closed.' : 'Cápsula cerrada.'; }
-  if (command.action === 'help') return '/demo capsula conocimiento good [es|en] · /demo capsula cerrar · /docs/capsula-conocimiento-good.md';
+  if (command.action === 'help') return '/demo capsula conocimiento good [es|en] · /demo capsula musical good [es|en] · /demo capsula cerrar · /docs/capsula-conocimiento-good.md · /docs/capsula-musical-good.md';
+  const tipo = command.tipo || 'conocimiento';
   closeKnowledgeDemo();
   const request = ++requestVersion;
   const response = await fetcher(BANK_URL, {cache:'no-store'});
   if (!response.ok) throw Error('capsulas-good.json HTTP ' + response.status);
   const bank = await response.json();
   if (request !== requestVersion) return en ? 'Capsule closed.' : 'Cápsula cerrada.';
-  const capsule = bank.capsulas.find(c => c.tipo === 'conocimiento' && c.calidad === 'good');
+  const capsule = bank.capsulas.find(c => c.tipo === tipo && c.calidad === 'good');
   if (!capsule?.videos?.[command.lang]?.src) throw Error(en ? 'Capsule unavailable.' : 'Cápsula no disponible.');
   const dialog = doc.createElement('dialog');
   dialog.className = 'knowledge-capsule';
@@ -49,9 +55,9 @@ export async function runKnowledgeDemo(arg, lang = 'es', {doc=document, fetcher=
   video.style.cssText = 'display:block;width:100%;height:auto;max-height:60dvh;aspect-ratio:9/16;object-fit:contain;border:0;box-shadow:none;border-radius:10px;background:#000;';
   const status = doc.createElement('p'); status.setAttribute('role','status'); status.textContent = en ? 'GOOD · 30 seconds · €0' : 'GOOD · 30 segundos · 0 €';
   const switchLang = doc.createElement('button'); switchLang.type='button'; switchLang.textContent = en ? 'Español' : 'English';
-  switchLang.onclick = () => { runKnowledgeDemo('capsula conocimiento good ' + (en ? 'es' : 'en'), command.lang, {doc,fetcher}).catch(e => { status.textContent = e.message; }); };
+  switchLang.onclick = () => { runKnowledgeDemo('capsula ' + tipo + ' good ' + (en ? 'es' : 'en'), command.lang, {doc,fetcher}).catch(e => { status.textContent = e.message; }); };
   const close = doc.createElement('button'); close.type='button'; close.textContent = en ? 'Close' : 'Cerrar'; close.onclick = closeKnowledgeDemo;
-  const download = doc.createElement('a'); download.href = capsule.videos[command.lang].src; download.download = 'capsula-conocimiento-good-' + command.lang + '.mp4'; download.textContent = en ? 'Download MP4' : 'Descargar MP4'; download.style.color='#ffd166';
+  const download = doc.createElement('a'); download.href = capsule.videos[command.lang].src; download.download = 'capsula-' + tipo + '-good-' + command.lang + '.mp4'; download.textContent = en ? 'Download MP4' : 'Descargar MP4'; download.style.color='#ffd166';
   controls.append(switchLang, download, close);
   dialog.append(title, video, controls, status);
   dialog.addEventListener('cancel', e => { e.preventDefault(); closeKnowledgeDemo(); });
