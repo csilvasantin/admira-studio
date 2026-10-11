@@ -148,6 +148,21 @@
         </div>
       </article>
 
+      <article id="clip-desde-imagen" class="brief-area" style="margin-top:18px">
+        <h2 style="margin:0 0 8px;font:700 16px ui-monospace,monospace;color:var(--studio-accent,#FF33CC)">Image to video · 5 s</h2>
+        <p style="margin:0 0 10px;color:var(--muted)">The image is used for this clip without publishing another copy. The video is saved in the Admira Studio library.</p>
+        <div class="field"><label for="clip-prompt">Image movement</label><input id="clip-prompt" type="text" placeholder="The camera moves closer and the light changes"></div>
+        <div class="field"><label for="clip-file">Your image</label><input id="clip-file" type="file" accept="image/*"></div>
+        <div class="field"><label for="clip-stock">Or a Stock asset ID</label><input id="clip-stock" type="text" placeholder="Internal ID, without publishing another copy"></div>
+        <div class="field"><label for="clip-scenes">Scene script (up to 6, one per line). Optional: text || stock-id</label><textarea id="clip-scenes" rows="4" placeholder="Enter the frame&#10;Turn towards the camera"></textarea></div>
+        <div class="brief-actions">
+          <button class="btn play" type="button" id="clip-one">Generate a 5 s clip</button>
+          <button class="btn" type="button" id="clip-batch">Generate the script</button>
+        </div>
+        <p id="clip-status" style="min-height:1.2em;color:var(--ink)"></p>
+        <div id="clip-out" hidden></div>
+      </article>
+
       <div class="brief-area">
         <div class="brief-head">
           <h3>Video brief</h3>
@@ -222,5 +237,6 @@
   <script defer src="/matrix-rain.js?v=11.10.2026.r3.1252"></script>
   <script src="../app.js?v=11.10.2026.r3.1252"></script>
   <script defer src="/assets/cuadratura.js?v=11.10.2026.r3.1252"></script>
+<script defer src="/assets/clip-desde-imagen.js?v=5762"></script>
 </body>
 </html>

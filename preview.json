@@ -1,0 +1,12 @@
+{
+  "encargo": 5762,
+  "mission": "FLT-101995",
+  "mode": "preview-only",
+  "agent": "OraculoMBP16",
+  "base_sha": "2f42b7f308bf2da3b1bccc71e1c3cb939af56830",
+  "fixes": [
+    "Restore EN walkthrough controls",
+    "Localise walkthrough values",
+    "Studio #FF33CC and minimised Expert"
+  ]
+}

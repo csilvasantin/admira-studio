@@ -1,0 +1,51 @@
+/* Studio identity, reviewed for the Starbucks preview (#5762). */
+html:root:not([data-mb-marca]) {
+  --studio-accent: #FF33CC;
+  --bg: #100910;
+  --bg-soft: rgba(24, 10, 24, .94);
+  --panel: #1b101c;
+  --panel-2: #251327;
+  --ink: #f8edf6;
+  --muted: #c9a9c2;
+  --line: #62405c;
+  --line-bright: #a85690;
+  --cyan: var(--studio-accent);
+  --coral: #ff9cde;
+  --gold: #efc7e5;
+  --green: var(--studio-accent);
+  --matrix: var(--studio-accent);
+  --matrix-deep: #a82082;
+  --xp: var(--studio-accent);
+  --glow: none;
+}
+html[data-ax-experto]:not([data-mb-marca]) .ax-experto {
+  --ax-cyan: var(--studio-accent);
+  --ax-green: #ff9cde;
+  --ax-bg: #180d19;
+  --ax-bg2: #231326;
+  --ax-text: #f8edf6;
+  --ax-muted: #c9a9c2;
+}
+/* The prepared tour has its own readable palette; white-label tokens take priority. */
+html:not([data-mb-marca]) #admira-native-demo {
+  --mb-superficie: #1b101c;
+  --mb-fondo: #251327;
+  --mb-borde: #a85690;
+  --mbx-ink: #f8edf6;
+  --mbx-brand: #FF33CC;
+  --mbx-accent: #ff9cde;
+}
+html .admira-demo-target { outline-color: var(--mbx-brand, var(--studio-accent, #FF33CC)) !important; }
+html #matrix-rain { opacity: .12; }
+html .hero, html .card, html .panel { text-shadow: none; }
+html :focus-visible { outline-color: var(--mbx-brand, var(--studio-accent, #FF33CC)); }
+@media (max-width: 600px) {
+  #briefForm > .field:first-child[style*="grid-template-columns"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* Keep the host navigation usable above the tour iframe. */
+body:has(#admira-native-studio) :is(.pf-topbar, .quad-top) {
+  z-index: 2147483199 !important;
+}

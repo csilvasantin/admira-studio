@@ -720,8 +720,19 @@
       var axCss = document.createElement('link');
       axCss.rel = 'stylesheet'; axCss.href = 'https://www.admiranext.com/suite/experto.css?v=20261005-experto-idioma-2';
       document.head.appendChild(axCss);
+      // Studio owns its preview fixes; frozen mirrors and the shared suite stay untouched.
+      var studioCss = document.createElement('link');
+      studioCss.rel = 'stylesheet'; studioCss.href = '/assets/studio-identity.css?v=5762';
+      document.head.appendChild(studioCss);
+      if (new URLSearchParams(location.search).get('ax_demo') === 'studio' && window.top === window.self) {
+        var studioDemo = document.createElement('script');
+        studioDemo.src = '/assets/starbucks-demo.js?v=5762';
+        studioDemo.async = false;
+        document.body.appendChild(studioDemo);
+      }
       var ax = document.createElement('script');
       ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261009-idioma-demo-1';
+      ax.async = false;
       ax.setAttribute('data-panel', '.pf-cli');
       ax.setAttribute('data-body', '');
       ax.setAttribute('data-form', '.pf-cli-form');
@@ -730,9 +741,8 @@
       ax.setAttribute('data-extras', '');
       ax.setAttribute('data-chrome', '');
       ax.setAttribute('data-engine', 'ADMIRA STUDIO ENGINE');
-      // Modo Experto: el icono lo muestra completo o lo oculta DEL TODO (Carlos, 5-oct-2026), sin la
-      // línea mínima «› /help»; el estado se recuerda en la pestaña.
-      ax.setAttribute('data-min', 'hide');
+      // Walt review / #5762: keep the command entry visible when Expert is minimised.
+      ax.setAttribute('data-min', 'line');
       document.body.appendChild(ax);
     }, 0);
   }
