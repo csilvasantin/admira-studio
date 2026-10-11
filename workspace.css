@@ -1328,6 +1328,10 @@ p { margin: 0; }
 .music-workbench {
   position: relative;
 }
+#musicaClassicFields { display: grid; gap: 14px; min-width: 0; }
+.music-lyrics-heading { display: flex; align-items: center; gap: 12px; }
+.music-lyrics-heading label { flex: 0 0 auto; }
+.music-lyrics-heading #genLyrics { font-size: 10px; padding: 4px 8px; margin: 0; min-width: 0; letter-spacing: 0; }
 .music-form-grid {
   display: grid;
   gap: 14px;
@@ -1354,6 +1358,8 @@ p { margin: 0; }
   flex-direction: column;
   gap: 6px;
 }
+#m-cover[hidden] { display: none; }
+.music-lyrics-grid:has(#m-cover[hidden]) { grid-template-columns: minmax(0, 1fr); }
 #m-cover img {
   width: 100%;
   aspect-ratio: 1 / 1;

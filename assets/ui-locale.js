@@ -20,6 +20,10 @@
 ,
   "Mapas del tesoro del Consejo: ideas para debatir": "Council treasure maps: ideas to discuss",
   "Música · loop Matrix": "Music · Matrix loop",
+  "Audio · letras Matrix": "Audio · Matrix letters",
+  "Video · letras Matrix": "Video · Matrix letters",
+  "Video · cascada Matrix": "Video · Matrix cascade",
+  "Vídeo · letras Matrix": "Video · Matrix letters",
   "Imágenes · letras grandes verdes": "Images · large green letters",
   "por defecto": "default",
   "Imagen generada con IA - doble click o ESC para cerrar": "AI-generated image - double-click or press ESC to close",
@@ -667,7 +671,7 @@
       if (protectedContent(el)) continue;
       if (el.tagName === 'A' && el.hasAttribute('href') && !el.matches('.lang-toggle,[hreflang="es"],.language-switcher a,.mobile-language-switcher a')) {
         const url = new URL(el.getAttribute('href'), location.href);
-        const pages = ['/', '/index.html', '/creador/', '/adaptaciones/', '/audio.html', '/musica.html', '/imagenes.html', '/video.html', '/crear/', '/stock.html', '/stock'];
+        const pages = ['/', '/index.html', '/creador/', '/adaptaciones/', '/audio.html', '/musica.html', '/imagenes.html', '/video.html', '/crear/', '/stock.html', '/stock', '/avatar.html', '/signage.html', '/plataforma.html', '/concepto.html', '/radar/', '/crear-campana/', '/director.html', '/admira-xp.html', '/xtore.html', '/privacy.html'];
         if (url.origin === location.origin && pages.includes(url.pathname) && url.searchParams.get('lang') !== 'es') {
           url.pathname = '/en' + url.pathname;
           el.setAttribute('href', url.pathname + url.search + url.hash);

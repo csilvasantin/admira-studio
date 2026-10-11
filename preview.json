@@ -1,0 +1,18 @@
+{
+  "encargo": 5774,
+  "mission": "FLT-102005",
+  "mode": "preview-only",
+  "agent": "OraculoMBP16",
+  "base_sha": "2f42b7f308bf2da3b1bccc71e1c3cb939af56830",
+  "fixes": [
+    "Audio row spacing and readable placeholders",
+    "Accessible EN captions and alt text",
+    "Studio Adapter palette with brand tokens preserved",
+    "Bilingual Starbucks entry and explicit legacy Spanish samples",
+    "Consolidated inventory with specific remaining causes"
+  ],
+  "version": "v.11.10.2026.r12.21:50",
+  "scope": "Preview release only; production release remains the frozen base",
+  "comparison_sha": "43cde9c04e7b5aa9a27e45051b337e1a7a9cdce3",
+  "original_encargo": 5773
+}

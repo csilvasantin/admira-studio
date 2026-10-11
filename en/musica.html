@@ -199,10 +199,31 @@
           <div class="field"><label for="m-bpm">BPM</label><input id="m-bpm" name="musica.bpm" type="text" placeholder="92"></div>
           <div class="field"><label for="m-tonalidad">Key</label><input id="m-tonalidad" name="musica.tonalidad" type="text" placeholder="C minor"></div>
         </div>
-        <div class="field"><label for="m-versiones">Versions to deliver</label><input id="m-versiones" name="musica.versiones" type="text" placeholder="Clean loop, 30s version, extended 2min version"></div>
+        <div class="field"><label for="m-versiones">Versions to deliver</label>
+          <select id="m-versiones" name="musica.versiones">
+            <option value="Canción ~2 min">Song ~2 min</option>
+            <option value="Canción ~1 min">Song ~1 min</option>
+            <option value="Canción ~3 min">Song ~3 min</option>
+            <option value="Canción completa">Full song</option>
+            <option value="Loop instrumental ~15s">Instrumental loop ~15s</option>
+            <option value="Stinger ~3s">Stinger ~3s</option>
+          </select>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="m-style">Style</label>
+            <select id="m-style" name="musica.style">
+              <option value="blues" selected>Blues</option>
+              <option value="flamenco">Flamenco</option>
+              <option value="samba">Samba</option>
+              <option value="rap">Rap</option>
+              <option value="techno">Techno</option>
+            </select>
+          </div>
+          <div class="field"><label for="m-titulo">Song title</label><input id="m-titulo" name="musica.titulo" type="text" placeholder="e.g. A coffee break"></div>
+        </div>
         <div class="field"><label for="m-uso">Use in experience</label><input id="m-uso" name="musica.uso" type="text" placeholder="Menu bed + closing stinger"></div>
         <div class="field">
-          <label for="m-letra">Lyrics <button type="button" class="btn" id="genLyrics" style="font-size:10px;padding:4px 8px;margin-left:8px;vertical-align:middle;">✏️ GENERATE WITH GEMINI</button></label>
+          <div class="music-lyrics-heading"><label for="m-letra">Lyrics</label><button type="button" class="btn" id="genLyrics">✏️ GENERATE WITH GEMINI</button></div>
           <textarea id="m-letra" name="musica.letra" rows="10" placeholder="[Verse 1]&#10;...&#10;&#10;[Chorus]&#10;..." style="font-family:inherit;"></textarea>
         </div>
         </div>
