@@ -1,14 +1,14 @@
 {
-  "version": "v.11.10.2026.r2.12:50",
+  "version": "v.11.10.2026.r3.12:52",
   "deployedAt": "2026-10-09T14:26:23Z",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "1cb98b1d3e8a5ea676968a5a1c9bfd704e3e10f9",
-  "gitShort": "1cb98b1",
-  "gitFull": "1cb98b1d3e8a5ea676968a5a1c9bfd704e3e10f9",
+  "git": "1e1af6a258601352bfa85de31d51afaf971b4c49",
+  "gitShort": "1e1af6a",
+  "gitFull": "1e1af6a258601352bfa85de31d51afaf971b4c49",
   "dirty": false,
   "novedades": [
     "Controles, desplegables y ayudas en inglés en las ocho secciones.",

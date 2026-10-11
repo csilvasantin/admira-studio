@@ -591,6 +591,7 @@
   "Pixeria · sistema creativo": "Pixeria · creative system",
   "Pixeria Studio · sistema creativo": "Pixeria Studio · creative system",
   "NUEVO": "NEW",
+  "VERSIÓN NUEVA · RECARGAR": "NEW VERSION · RELOAD",
   "Novedades": "What's new",
   "recargar": "reload",
   "Versión publicada, sin notas en este sello.": "Published version, with no notes in this stamp.",
@@ -628,6 +629,9 @@
   }
   function translateAttribute(s) {
     let out = translate(s);
+    if (out.startsWith('Se ha publicado algo desde que abriste esta pestaña')) {
+      out = out.replace('Se ha publicado algo desde que abriste esta pestaña', 'An update has been published since you opened this tab').replace(' (ahora en producción: ', ' (now in production: ').replace('. Los datos se refrescan, el código no: recarga para verlos bien.', '. Data refreshes automatically; reload to load the updated code.');
+    }
     const add = /^Añadir (.+) al plano$/.exec(out);
     if (add) return 'Add ' + translate(add[1]) + ' to the plan';
     const replacements = [
