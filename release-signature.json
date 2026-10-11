@@ -1,13 +1,13 @@
 {
-  "version": "v.11.10.2026.r1.12:43",
+  "version": "v.11.10.2026.r2.12:50",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "ba3c2475d727bcc9b5087e127efb0da5bb780caa",
-  "gitShort": "ba3c247",
-  "gitFull": "ba3c2475d727bcc9b5087e127efb0da5bb780caa",
+  "git": "1cb98b1d3e8a5ea676968a5a1c9bfd704e3e10f9",
+  "gitShort": "1cb98b1",
+  "gitFull": "1cb98b1d3e8a5ea676968a5a1c9bfd704e3e10f9",
   "dirty": false,
   "rollback": {
     "tag": "retorno/pre-controles-en-5634-studio-20261011",
