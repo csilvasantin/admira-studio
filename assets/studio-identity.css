@@ -114,3 +114,11 @@ html[data-ax-experto]:not([data-mb-marca]) .ax-experto {
 html[data-ax-experto]:not([data-mb-marca]) .ax-experto :is(.ax-cli-form,.ax-engine,.ax-fold,.ax-extras-btn) {
   border-color:var(--studio-accent,#FF33CC) !important; box-shadow:none !important;
 }
+html:root:not([data-mb-marca]) :is(.btn, .btn-back, .publish-btn) {
+  background:rgba(255,51,204,.06); box-shadow:none !important; text-shadow:none !important;
+}
+html:root:not([data-mb-marca]) :is(.btn.play, .btn.primary) {
+  background:#FF33CC; color:#100910; border-color:#FF33CC; animation:none !important;
+}
+html:root:not([data-mb-marca]) :is(.btn:hover, .btn-back:hover, .publish-btn:hover) { background:rgba(255,51,204,.14); }
+html:root:not([data-mb-marca]) :is(.btn.play:hover, .btn.primary:hover) { background:#FF33CC; }
