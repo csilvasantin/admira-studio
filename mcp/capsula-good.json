@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "name": "capsula_conocimiento_good",
+  "kind": "web_resource",
+  "server_tool": false,
+  "description": {"es":"Cápsula de conocimiento vertical ES/EN de 30 s; reproducción de vídeos existentes, 0 €.","en":"30-second vertical ES/EN knowledge capsule; plays existing videos, €0."},
+  "command": "/demo capsula conocimiento good [es|en]",
+  "url": "https://www.admira.studio/capsulas/",
+  "registry": "https://www.admira.studio/capsulas/capsulas-good.json",
+  "videos": {"es":"https://www.admira.studio/capsulas/conocimiento-good-es.mp4","en":"https://www.admira.studio/capsulas/conocimiento-good-en.mp4"},
+  "side_effects": "browser playback only",
+  "cost_eur": 0
+}

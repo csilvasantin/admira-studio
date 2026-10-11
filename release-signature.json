@@ -1,21 +1,20 @@
 {
-  "version": "v.11.10.2026.r3.12:52",
-  "author": "OraculoMacMini",
-  "agent": "OraculoMacMini",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
+  "version": "v.11.10.2026.r4.14:43",
+  "author": "OraculoMBP16",
+  "agent": "OraculoMBP16",
+  "deployer": "OraculoMBP16",
+  "machine": "MacBook Pro 16",
+  "signature": "OraculoMBP16 · MacBook Pro 16",
   "git": "1e1af6a258601352bfa85de31d51afaf971b4c49",
   "gitShort": "1e1af6a",
   "gitFull": "1e1af6a258601352bfa85de31d51afaf971b4c49",
   "dirty": false,
   "rollback": {
-    "tag": "retorno/pre-controles-en-5634-studio-20261011",
-    "git": "ba3c2475d727bcc9b5087e127efb0da5bb780caa"
+    "git": "cd9d0cc21b5e62db28ee1e84011170143f2d4f28"
   },
   "novedades": [
-    "Controles, desplegables y ayudas en inglés en las ocho secciones.",
-    "Assets conserva la ruta inglesa; opciones y preferencias mantienen sus valores.",
-    "Castellano y contenido de Stock conservados; revisión de menús generados por código."
+    "Cápsula de conocimiento GOOD: vídeos ES y EN verticales de 30 segundos.",
+    "Guion Nemotron Ultra gratuito, fondo FLUX.1-schnell local y voces Mónica/Daniel; coste 0 €.",
+    "Disponible con /demo capsula conocimiento good; modelo, semilla y fuentes en capsulas-good.json."
   ]
 }

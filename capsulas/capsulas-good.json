@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "quality": "good",
+  "cost_eur": 0,
+  "model": "nvidia/nemotron-3-ultra-550b-a55b",
+  "seed": 5664,
+  "usage": {
+    "prompt_tokens": 255,
+    "completion_tokens": 1769,
+    "total_tokens": 2024
+  },
+  "capsulas": [
+    {
+      "id": "conocimiento-internet-web-good",
+      "tipo": "conocimiento",
+      "tema": "tecnologia",
+      "calidad": "good",
+      "titulo": {
+        "es": "Internet y la Web",
+        "en": "Internet and the Web"
+      },
+      "guion": {
+        "es": "¿Sabías que Internet es una red de redes que conecta dispositivos en todo el mundo? La Web usa esa red para compartir páginas enlazadas. Tim Berners‑Lee propuso la Web en el CERN en marzo de 1989. El correo electrónico puede funcionar en Internet sin necesidad de la Web. Esta red permite que millones de personas se comuniquen, accedan a información y colaboren cada día.",
+        "en": "Did you know the Internet is a network of networks linking devices worldwide? The Web uses that network to share linked pages. Tim Berners‑Lee proposed the Web at CERN in March 1989. Email can run on the Internet without the Web. This network lets millions of people communicate, access information, and collaborate every day. It also powers streaming, gaming, and cloud services across the globe."
+      },
+      "model": "nvidia/nemotron-3-ultra-550b-a55b",
+      "seed": 5664,
+      "cost_eur": 0,
+      "voices": {
+        "es": "Mónica",
+        "en": "Daniel"
+      },
+      "sources": [
+        "https://www.w3.org/People/Berners-Lee/FAQ.html",
+        "https://home.cern/world-wide-web-35/"
+      ],
+      "poster": "/capsulas/conocimiento-good-poster.png",
+      "fondo": {
+        "src": "/capsulas/conocimiento-good-fondo.webp",
+        "engine": "mflux/MLX local MacBook Pro 16",
+        "model": "mflux-community/flux-1-schnell-mflux-q8",
+        "base_model": "FLUX.1-schnell",
+        "seed": 5664,
+        "steps": 4,
+        "prompt": "Vertical editorial background, glowing network lines connecting luminous pages, soft gradients, subtle particles, vibrant colors, minimalist composition, cinematic lighting, no text logos high detail immersive. Soft editorial illustration, navy blue and warm cream, luminous cyan connections, main objects in lower half, calm empty space above, vertical 9:16 composition, no text, no typography, no numbers, no logos, no faces.",
+        "cost_eur": 0
+      },
+      "videos": {
+        "es": {
+          "src": "/capsulas/conocimiento-good-es.mp4",
+          "duration_s": 30,
+          "width": 720,
+          "height": 1280,
+          "voice": "Mónica",
+          "cost_eur": 0
+        },
+        "en": {
+          "src": "/capsulas/conocimiento-good-en.mp4",
+          "duration_s": 30,
+          "width": 720,
+          "height": 1280,
+          "voice": "Daniel",
+          "cost_eur": 0
+        }
+      }
+    }
+  ]
+}
