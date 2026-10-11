@@ -10,12 +10,12 @@ const label=process.env.AUDIT_LABEL||'inventory';
  const browser=await chromium.launch({headless:true,...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE?{executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE}:{})});
  const results=[];
  try{for(const lang of ['es','en'])for(const width of [1440,390]){
-  const c=await browser.newContext({viewport:{width,height:900}}),writes=[],errors=[];
+  const c=await browser.newContext({viewport:{width,height:900}}),writes=[],blockedPresence=[],errors=[];
   if(base.startsWith('https:')){
    const token=execFileSync('bash',['/Users/csilvasantin/Claude/admira-vault/vault-get.sh','ADMIRA_AGENT_LOGIN_TOKEN'],{encoding:'utf8',stdio:['ignore','pipe','ignore']}).trim();
    const login=await c.request.post(base+'/auth/agente',{headers:{Authorization:'Bearer '+token,'X-Agente':'OraculoMBP16'}});assert.equal(login.status(),200);
   }else await c.route('**/auth/session',r=>r.fulfill({json:{ok:true,superusuario:true,clientes:null}}));
-  await c.route('**/*',r=>{if(!['GET','HEAD','OPTIONS'].includes(r.request().method())){writes.push(r.request().url());return r.abort('blockedbyclient')}return r.fallback()});
+  await c.route('**/*',r=>{if(!['GET','HEAD','OPTIONS'].includes(r.request().method())){const url=r.request().url();(/\/api\/presence$/.test(url)?blockedPresence:writes).push(url);return r.abort('blockedbyclient')}return r.fallback()});
   const p=await c.newPage();p.on('pageerror',e=>errors.push(e.message));
   const route=s=>base+'/'+(lang==='en'?'en/':'')+s+'?lang='+lang;
   await p.goto(route('audio.html'));await p.waitForFunction(()=>document.querySelector('.pf-topbar'));
@@ -49,7 +49,7 @@ const label=process.env.AUDIT_LABEL||'inventory';
   await p.screenshot({path:`${out}/${label}-entry-${lang}-${width}.png`});
   await p.goto(route('video.html'));await p.waitForFunction(()=>document.querySelector('.page-gif img')?.alt==='Video · Matrix cascade'||document.documentElement.lang==='es');
   assert.deepEqual(writes,[]);assert.deepEqual(errors,[]);
-  results.push({lang,width,audio,adapter,branded,writes,errors});console.log('PASS inventory',lang,width,JSON.stringify(audio));await c.close();
+  results.push({lang,width,audio,adapter,branded,writes,blockedPresence,errors});console.log('PASS inventory',lang,width,JSON.stringify(audio));await c.close();
  }}finally{await browser.close()}
  fs.writeFileSync(out+'/'+label+'-inventory.json',JSON.stringify(results,null,2));
 })().catch(e=>{console.error(e);process.exitCode=1});

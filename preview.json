@@ -11,7 +11,7 @@
     "Bilingual Starbucks entry and explicit legacy Spanish samples",
     "Consolidated inventory with specific remaining causes"
   ],
-  "version": "v.11.10.2026.r11.21:48",
+  "version": "v.11.10.2026.r12.21:50",
   "scope": "Preview release only; production release remains the frozen base",
   "comparison_sha": "43cde9c04e7b5aa9a27e45051b337e1a7a9cdce3",
   "original_encargo": 5773

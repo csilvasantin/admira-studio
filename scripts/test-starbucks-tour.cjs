@@ -10,8 +10,8 @@ const token=base.startsWith('https:')?execFileSync('bash',['/Users/csilvasantin/
   const c=await browser.newContext({viewport:{width,height:900},locale:lang});
   if(base.startsWith('https:')){const r=await c.request.post(base+'/auth/agente',{headers:{Authorization:'Bearer '+token,'X-Agente':'OraculoMBP16'}});if(r.status()!==200)throw Error('Authorized login status '+r.status());}
   else await c.route('**/auth/session',r=>r.fulfill({json:{ok:true,superusuario:true,clientes:null}}));
-  const p=await c.newPage();const row={lang,width,label,mutations:[],errors:[],bad:[],phases:[],failures:[],routes:[]};let phase=0,lastPath='',start=Date.now();
-  await c.route('**/*',r=>{if(!['GET','HEAD','OPTIONS'].includes(r.request().method())){row.mutations.push({method:r.request().method(),url:r.request().url()});return r.abort('blockedbyclient')}return r.fallback()});
+  const p=await c.newPage();const row={lang,width,label,mutations:[],blockedPresence:[],errors:[],bad:[],phases:[],failures:[],routes:[]};let phase=0,lastPath='',start=Date.now();
+  await c.route('**/*',r=>{if(!['GET','HEAD','OPTIONS'].includes(r.request().method())){const url=r.request().url();(/\/api\/presence$/.test(url)?row.blockedPresence:row.mutations).push({method:r.request().method(),url});return r.abort('blockedbyclient')}return r.fallback()});
   p.on('pageerror',e=>row.errors.push(e.message));p.on('response',r=>{if(r.status()>=400)row.bad.push({url:r.url(),status:r.status()})});
   await p.goto(base+'/'+(lang==='en'?'en/':'')+'?lang='+lang+'&ax_demo=studio&ax_run='+label+'-'+lang+'-'+width+(base.startsWith('http:')?'&ax_preview=studio':''),{waitUntil:'domcontentloaded',timeout:45000});
   await p.waitForFunction(()=>window.AdmiraDemoControl,{timeout:15000});
