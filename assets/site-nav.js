@@ -754,10 +754,10 @@
       document.head.appendChild(axCss);
       // Studio owns its preview fixes; frozen mirrors and the shared suite stay untouched.
       var studioCss = document.createElement('link');
-      studioCss.rel = 'stylesheet'; studioCss.href = '/assets/studio-identity.css?v=5767';
+      studioCss.rel = 'stylesheet'; studioCss.href = '/assets/studio-identity.css?v=5774';
       document.head.appendChild(studioCss);
       if (document.documentElement.lang === 'en' && !document.querySelector('script[src*="/assets/ui-locale.js"]')) {
-        var localeScript = document.createElement('script'); localeScript.src = '/assets/ui-locale.js?v=5767';
+        var localeScript = document.createElement('script'); localeScript.src = '/assets/ui-locale.js?v=5774';
         document.body.appendChild(localeScript);
       }
       if (new URLSearchParams(location.search).get('ax_demo') === 'studio' && window.top === window.self) {

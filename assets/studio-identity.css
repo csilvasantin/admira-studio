@@ -127,3 +127,25 @@ html:has(#admira-native-studio), body:has(#admira-native-studio) { overflow:hidd
 body:has(#admira-native-studio) .pf-topbar {
   position:fixed !important; top:0 !important; left:0; right:0;
 }
+
+/* Audio: keep labels clear of the previous row and the tour's 6px outline. */
+#briefForm > article.module > :is(.row2, .field) + :is(.row2, .field) { margin-top:16px; }
+html:root:not([data-mb-marca]) .field :is(input, textarea)::placeholder { color:var(--muted); opacity:1; }
+
+/* Adapter owns body-level tokens; match the Studio palette without touching brands. */
+html:root:not([data-mb-marca]) .adapt-page {
+  --bg:#100910; --pn:#1b101c; --mu:#c9a9c2; --ok:#ff9cde;
+  --hover:#35142d; --btn-bg:rgba(255,51,204,.06);
+  --field:#160c17; --field-2:#251327; --card:#1b101c; --card-hi:#35142d;
+  --fmt-a:#251327; --fmt-b:#180d19; --lib:#180d19;
+  --pre:#efc7e5; --link:#ff9cde; --on-ac:#100910; --on-ok:#100910;
+}
+html:root:not([data-mb-marca]) :is(h1, .page-gif, .motor-tag, .module .accent) {
+  text-shadow:none !important; box-shadow:none !important;
+}
+html:root:not([data-mb-marca]) .motor-opt > label { background:var(--panel); }
+html:root:not([data-mb-marca]) .motor-opt > label:hover { background:var(--panel-2); }
+html:root:not([data-mb-marca]) .adapt-page .campaign-launch {
+  border-color:var(--ln); background:var(--card);
+}
+html:root:not([data-mb-marca]) .adapt-page .campaign-launch p { color:var(--mu); }

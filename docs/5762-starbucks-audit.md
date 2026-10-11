@@ -67,3 +67,27 @@ La continuación conserva la rama `oraculo/5762-starbucks-preview` y el PR draft
 Validación reproducible de DOM: `scripts/test-starbucks-preview.cjs`, con Playwright y `AUDIT_BASE`. Comprueba valores, cambio de idioma, conservación de texto editado, gaps y alineación, colores computados, altura conjunta, padding, Experto abierto/cerrado, scroll del pie, menú móvil, fase/pausa y ausencia de solicitudes a proveedores. Las pruebas existentes de locale conservan valores internos y contenido de usuarios.
 
 Siguen pendientes del inventario original el catálogo central con 401, el login Google de preview con callback fijo de producción, las cinco muestras EN aprobadas, las traducciones que no existen en Clear Channel/Documentación, la integración del lanzador compartido `/demo 1` y la limpieza general de pies históricos. Este paso no modifica esos servicios ni declara cerrados esos asuntos. Las capturas antes/después, SHA y URL de preview se entregan en el encargo #5767, su informe Yokup y el PR #30; #5724 sigue abierto con su plazo original.
+
+
+## Cierre del inventario · #5774 / FLT-102005 · continuación autorizada de #5773
+
+Estado consolidado para revisión Walt de #5724. Los párrafos anteriores conservan las observaciones de cada entrega; esta tabla establece el estado actual y sustituye los «Pendiente» históricos cuando ya están resueltos.
+
+| Hallazgo del inventario | Estado de cierre y alcance concreto |
+| --- | --- |
+| Seis controles EN que detenían la demo, ejemplos ES en EN, guía/Experto solapados, fila de proyecto móvil | Cerrados en #5762/#5767; se vuelven a comprobar cuatro recorridos ES/EN de 27 fases en 1440/390. |
+| TONO/TONE pegado al contorno Personaje/Character | Cerrado en #5774: 16 px entre filas y antes de Guion/Script; contorno de 3 px + offset 5 px deja 8 px libres. En móvil cada fila tiene una columna. |
+| Placeholder de Audio tenue | Cerrado: opacidad 1 sobre texto secundario Studio; contraste computado 9,94:1 sobre el campo. |
+| Rótulos NUEVO y captions GIF EN | Cerrados por el localizador compartido en #5767. #5774 completa alternativas accesibles Audio y Video; texto personalizado, valores internos y títulos Stock se conservan. |
+| Adaptador conserva superficies y texto verdes propios | Cerrado para el recorrido: tokens del body, campos, tarjetas, biblioteca, enlace, hover y llamada a Creador usan Studio. Se elimina brillo de títulos/GIF/motores. El override excluye marca blanca; se comprueba el contrato de tokens de marca. |
+| Salidas EN hacia Signage, Avatar, Plataforma, Concepto, Radar, Campañas, Director, Admira XP, Xtore y Privacy | Cerradas en #5767: rutas EN existentes; localizador compartido. |
+| Segunda entrada `demo/studio-preview.html` no representa Starbucks | Cerrada como acceso: título, introducción y aviso ES/EN enlazan explícitamente al recorrido nativo Starbucks. Catálogo de cinco muestras y `studio-guion.html` quedan identificados como archivos históricos ES, con enlaces al recorrido actual. No se presentan sus guiones ni assets como traducidos. |
+| Catálogo `/api/clientes` devuelve 401 en origen central | Pendiente #5724: requiere resolver el contrato de sesión Studio/AdmiraNeXT; no corresponde alterar autenticación entre servicios desde esta preview. |
+| Login Google humano en preview redirige a producción | Pendiente #5724: callback/orígenes OAuth requieren revisión de autenticación. Validación interactiva de esta entrega usa login de agente autorizado; capturas accesibles por URL. |
+| Cinco muestras audiovisuales EN aprobadas | Pendiente #5724: aún no se han aportado/aprobado versiones EN; preparar otras generaría consumo fuera del encargo. Muestras originales ES identificadas explícitamente. |
+| Clear Channel y Documentación sin versión EN | Pendiente #5724: no existe destino traducido equivalente; se necesita contenido aprobado, no basta cambiar un href. |
+| Lanzador común `/demo 1` | Pendiente #5724: contrato del motor compartido en otro repo; esta autorización cubre solo la entrada nativa `ax_demo=studio` de la preview Studio. |
+| Pies históricos y skin de editor/modal fuera del recorrido | Pendiente editorial #5724: pies históricos, `.campaign-workshop` y modales twin tienen valores heredados; no se acredita auditoría funcional de esos editores. El sello del artefacto preview se actualiza. |
+| Subtítulos de marca Starbucks en Creador | Pendiente de revisión/merge del PR draft #29 (separado); este encargo no autoriza merge ni producción. |
+
+Pruebas reproducibles: `scripts/test-starbucks-preview.cjs` (Música/guía/Experto/idioma) y `scripts/test-starbucks-inventory.cjs` (Audio/contraste/Adaptador/entradas/accesibilidad). La prueba de inventario bloquea toda escritura tras el login de agente; el recorrido completo se verifica con `scripts/test-starbucks-tour.cjs` y la misma barrera, sin saltar fases fallidas. Las URLs de capturas, SHA exacto, preview y resultados finales quedan en PR #30 y en el informe Yokup de #5774 enlazado a #5773. No se afirma aprobación personal de Walt; #5724 sigue abierto, plazo 12-octubre 20:00 Madrid.
