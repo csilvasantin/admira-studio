@@ -5,6 +5,11 @@
     "Assets conserva la ruta inglesa; opciones y preferencias mantienen sus valores.",
     "Castellano y contenido de Stock conservados; revisión de menús generados por código."
   ],
+  "v.11.10.2026.r5.16:10": [
+    "Cápsula musical GOOD «¿Sabías que…?»: el Disco de Oro de las Voyager, en vídeos verticales ES y EN de 30 segundos.",
+    "Guion Nemotron Ultra gratuito, fondo FLUX.1-schnell local y voces Mónica/Daniel; coste 0 €.",
+    "Disponible con /demo capsula musical good; modelo, semilla y fuentes en capsulas-good.json."
+  ],
   "v.07.10.2026.r17.23:41": [
     "Campo de etiquetas al importar (URL o ficheros) y junto a «Publicar en Stock» de lo que creas",
     "La etiqueta del cliente decide quién ve la pieza; la de un centro o una pantalla la emite sola allí"
