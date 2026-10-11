@@ -15,7 +15,7 @@
   var LANG_KEY = 'admiranext_expert_lang';
   var englishHost = /(^|\.)pixeria\.(com|pages\.dev)$/.test(location.hostname);
   var localePath = location.pathname;
-  var translatedPages = ['/', '/index.html', '/audio.html', '/musica.html', '/imagenes.html', '/video.html', '/anonimizador.html', '/publicidad.html', '/stock.html', '/crear/', '/creador/', '/adaptaciones/'];
+  var translatedPages = ['/', '/index.html', '/audio.html', '/musica.html', '/imagenes.html', '/video.html', '/anonimizador.html', '/publicidad.html', '/stock.html', '/crear/', '/creador/', '/adaptaciones/', '/avatar.html', '/signage.html', '/plataforma.html', '/concepto.html', '/radar/', '/crear-campana/', '/director.html', '/admira-xp.html', '/xtore.html', '/privacy.html'];
   function langPref() {
     try { var v = localStorage.getItem(LANG_KEY); return v === 'es' || v === 'en' ? v : ''; } catch (_) { return ''; }
   }
@@ -299,6 +299,26 @@
     return link;
   }
 
+  function installNavOverflow(nav) {
+    if (!nav || nav.parentElement.classList.contains('pf-topbar-nav-wrap')) return nav && nav.parentElement;
+    var navWrap = document.createElement('div'), moreNav = document.createElement('button');
+    navWrap.className = 'pf-topbar-nav-wrap';
+    moreNav.type = 'button'; moreNav.className = 'pf-nav-more'; moreNav.textContent = '›';
+    moreNav.setAttribute('aria-label', document.documentElement.lang === 'en' ? 'More sections' : 'Más secciones');
+    moreNav.addEventListener('click', function () { nav.scrollBy({left: Math.max(180, nav.clientWidth * .7), behavior: 'smooth'}); });
+    function navOverflow() {
+      var remaining = nav.scrollWidth - nav.clientWidth - nav.scrollLeft;
+      navWrap.classList.toggle('has-more', remaining > 2);
+      moreNav.hidden = remaining <= 2;
+    }
+    nav.parentNode.insertBefore(navWrap, nav);
+    navWrap.appendChild(nav); navWrap.appendChild(moreNav);
+    nav.addEventListener('scroll', navOverflow, {passive:true});
+    new ResizeObserver(navOverflow).observe(nav);
+    document.fonts.ready.then(navOverflow);
+    return navWrap;
+  }
+
   function canonicalHeader(header, menu, brand, nav, advanced, expert) {
     if (!header || !menu || !brand || !nav || !advanced || !expert) return;
     var left = document.createElement('div');
@@ -311,12 +331,13 @@
     left.appendChild(menu);
     left.appendChild(canonicalBrand(brand));
     nav.className = 'pf-topbar-nav';
+    var navWrap = installNavOverflow(nav);
     right.appendChild(advanced);
     right.appendChild(expert);
     header.className = 'pf-topbar';
     while (header.firstChild) header.removeChild(header.firstChild);
     header.appendChild(left);
-    header.appendChild(nav);
+    header.appendChild(navWrap);
     header.appendChild(right);
     document.body.classList.add('pix-nav-canonical-header');
   }
@@ -596,6 +617,7 @@
 
   function upgradeFrameControls() {
     document.querySelectorAll('.pf-topbar').forEach(function (topbar) {
+      installNavOverflow(topbar.querySelector('.pf-topbar-nav'));
       var menu = topbar.querySelector('.pf-window-left');
       var advanced = topbar.querySelector('.pf-window-advanced');
       var expert = topbar.querySelector('.pf-window-expert');
@@ -722,11 +744,15 @@
       document.head.appendChild(axCss);
       // Studio owns its preview fixes; frozen mirrors and the shared suite stay untouched.
       var studioCss = document.createElement('link');
-      studioCss.rel = 'stylesheet'; studioCss.href = '/assets/studio-identity.css?v=5762';
+      studioCss.rel = 'stylesheet'; studioCss.href = '/assets/studio-identity.css?v=5767';
       document.head.appendChild(studioCss);
+      if (document.documentElement.lang === 'en' && !document.querySelector('script[src*="/assets/ui-locale.js"]')) {
+        var localeScript = document.createElement('script'); localeScript.src = '/assets/ui-locale.js?v=5767';
+        document.body.appendChild(localeScript);
+      }
       if (new URLSearchParams(location.search).get('ax_demo') === 'studio' && window.top === window.self) {
         var studioDemo = document.createElement('script');
-        studioDemo.src = '/assets/starbucks-demo.js?v=5762';
+        studioDemo.src = '/assets/starbucks-demo.js?v=5767';
         studioDemo.async = false;
         document.body.appendChild(studioDemo);
       }

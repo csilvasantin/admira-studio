@@ -93,7 +93,7 @@
     cliente: 'Admira Studio',
     audio: {
       personaje: 'Voz adulta cálida',
-      idioma: 'Espanol (ES)',
+      idioma: providerCopy('Espanol (ES)', 'Ingles (UK)'),
       tono: 'Cercano',
       ritmo: '8s, ritmo medio',
       guion: 'Esto es una prueba',
@@ -102,7 +102,7 @@
     musica: {
       bpm: '92',
       tonalidad: 'C menor',
-      versiones: 'Loop 8s · Stinger 2s',
+      versiones: 'Loop instrumental ~15s',
       uso: 'Bed de menú + stinger de cierre',
       emocion: ['Calma', 'Marca'],
       capas: ['Base', 'Pad'],
@@ -143,6 +143,43 @@
     },
   };
 
+  // Only built-in examples are localised. Provider IDs, select values, media
+  // titles and edited customer copy keep their original contract.
+  const EXAMPLE_COPY = {
+    audio: {
+      personaje: ['Voz adulta cálida', 'Warm adult voice'],
+      ritmo: ['8s, ritmo medio', '8s, medium pace'],
+      guion: ['Esto es una prueba', 'This is a test'],
+      cta: ['Visita admira.xp', 'Visit admira.xp'],
+    },
+    musica: {
+      tonalidad: ['C menor', 'C minor'],
+      uso: ['Bed de menú + stinger de cierre', 'Menu bed + closing stinger'],
+    },
+    imagenes: {
+      paleta: ['Verde fósforo + negro profundo', 'Phosphor green + deep black'],
+      luz: ['Atardecer suave, contraste medio', 'Soft sunset, medium contrast'],
+      prompt: ['Una pantalla de terminal vintage estilo Matrix con código verde cayendo, luz cinematográfica', 'A vintage Matrix-style terminal screen with falling green code, cinematic lighting'],
+      assets: ['1 imagen 1024x1024', '1 image 1024x1024'],
+    },
+    video: {
+      hook: ['Una pregunta directa al espectador en 3 segundos', 'A direct question to the viewer in 3 seconds'],
+      desarrollo: ['Mostrar producto con planos cortos y cierre con logo', 'Show the product in short shots and close with the logo'],
+      cierre: ['Logo + claim', 'Logo + tagline'],
+      cta: ['Visita admira.xp', 'Visit admira.xp'],
+    },
+    publicidad: {
+      privacy: ['No guardar imagen, no identificar personas, usar solo señal efímera agregada', 'Do not save images or identify people; use only aggregated transient signals'],
+      product: ['Colección XpaceOS Retail', 'XpaceOS Retail collection'],
+      context: ['Escaparate interactivo en tienda física', 'Interactive storefront in a physical shop'],
+      offerMale: ['Rendimiento, tecnología y estilo urbano', 'Performance, technology and urban style'],
+      offerFemale: ['Diseño, comodidad y expresión personal', 'Design, comfort and personal expression'],
+      offerNeutral: ['Nueva colección disponible hoy', 'New collection available today'],
+      cta: ['Toca la pantalla y pruébalo en el gemelo', 'Tap the screen and try it in the twin'],
+      style: ['Matrix retail, neón verde, producto hero, texto alto contraste', 'Matrix retail, green neon, hero product, high-contrast text'],
+    },
+  };
+
   function applyDefaults() {
     const store = loadStore();
     let changed = false;
@@ -154,6 +191,12 @@
       if (!store[key] || Object.keys(store[key]).length === 0) {
         store[key] = JSON.parse(JSON.stringify(DEFAULTS[key]));
         changed = true;
+      }
+      for (const [field, pair] of Object.entries(EXAMPLE_COPY[key] || {})) {
+        if (pair.includes(store[key][field])) {
+          const localized = providerCopy(pair[0], pair[1]);
+          if (store[key][field] !== localized) { store[key][field] = localized; changed = true; }
+        }
       }
     }
     if (changed) saveStore(store);

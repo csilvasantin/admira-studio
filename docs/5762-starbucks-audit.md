@@ -52,3 +52,18 @@ No se modifica el clon principal ni Pixeria ni el motor compartido de AdmiraNeXT
 ## Preparación para mañana · #5724
 
 Primero resolver catálogo central y continuidad EN; después preparar muestras EN, unificar entradas de demo, limpiar rótulos/pies y revisar #29 con el diseño Starbucks. Mantener clones congelados y llevar el parte de avances a admira.live/diario y Yokup. El cierre de #5762 cubre la entrega de hoy; no cierra #5724 ni acredita como ejecutadas estas tareas de mañana.
+
+## Paso 2 · #5767 / FLT-102000 · revisión del 11 de octubre
+
+La continuación conserva la rama `oraculo/5762-starbucks-preview` y el PR draft #30. Base de comparación: `41bfa42` y su preview `07b5fa25.admira-studio.pages.dev`.
+
+- Se localizan únicamente los ejemplos de texto reconocidos de Audio, Música, Imágenes, Vídeo y Publicidad. Al volver entre ES y EN, `C menor`/`C minor` y el uso de experiencia siguen el idioma; el texto personalizado permanece intacto. Los valores internos de selects y chips conservan el contrato de proveedores. Las muestras audiovisuales y los títulos originales de Stock se conservan.
+- Música: al menos 14 px entre campos consecutivos; etiqueta Letra/Lyrics y Generar con Gemini/Generate with Gemini son hermanos en una fila con 12 px entre ellos. Una portada aún no generada permanece oculta, sin reservar una columna vacía.
+- Guía: título y estado comparten fila, descripción limitada a dos líneas, controles en una sola fila. En móvil quedan Pausar/Reanudar, Siguiente y «…»; este último contiene sonido, voz y devolver control. Experto minimizado sigue mostrando la orden en una barra de 48 px. El conjunto ocupa 138,64 px a 1440×900 (15,4 %) y 129,88 px a 390×900 (14,4 %), frente a 231,19 y 236,95 px de la base. El iframe reserva su altura real más 8 px; el pie puede subir por encima del conjunto incluso con Experto abierto.
+- Menú móvil: degradado y flecha «Más secciones/More sections», con ocultación al llegar al final y soporte de scroll táctil. Se aplica tanto a la home anfitriona como a los formularios.
+- Unificados en `#FF33CC` los chips seleccionados, ☰, iconos y estados de navegación. Los tokens de marca blanca siguen teniendo prioridad; el verde de la lluvia de fondo se conserva.
+- Inventario avanzado: enlaces a versiones EN existentes de Signage, Avatar, Plataforma, Concepto, Radar, Campañas, Director, Admira XP, Xtore y Privacy. Localizador compartido cargado en auxiliares EN sin duplicarlo. El catálogo secundario de demos ofrece enlaces explícitos a la guía nativa Starbucks ES/EN y aclara que sus muestras originales son españolas.
+
+Validación reproducible de DOM: `scripts/test-starbucks-preview.cjs`, con Playwright y `AUDIT_BASE`. Comprueba valores, cambio de idioma, conservación de texto editado, gaps y alineación, colores computados, altura conjunta, padding, Experto abierto/cerrado, scroll del pie, menú móvil, fase/pausa y ausencia de solicitudes a proveedores. Las pruebas existentes de locale conservan valores internos y contenido de usuarios.
+
+Siguen pendientes del inventario original el catálogo central con 401, el login Google de preview con callback fijo de producción, las cinco muestras EN aprobadas, las traducciones que no existen en Clear Channel/Documentación, la integración del lanzador compartido `/demo 1` y la limpieza general de pies históricos. Este paso no modifica esos servicios ni declara cerrados esos asuntos. Las capturas antes/después, SHA y URL de preview se entregan en el encargo #5767, su informe Yokup y el PR #30; #5724 sigue abierto con su plazo original.

@@ -33,7 +33,7 @@ html:not([data-mb-marca]) #admira-native-demo {
   --mb-borde: #a85690;
   --mbx-ink: #f8edf6;
   --mbx-brand: #FF33CC;
-  --mbx-accent: #ff9cde;
+  --mbx-accent: #FF33CC;
 }
 html .admira-demo-target { outline-color: var(--mbx-brand, var(--studio-accent, #FF33CC)) !important; }
 html #matrix-rain { opacity: .12; }
@@ -48,4 +48,69 @@ html :focus-visible { outline-color: var(--mbx-brand, var(--studio-accent, #FF33
 /* Keep the host navigation usable above the tour iframe. */
 body:has(#admira-native-studio) :is(.pf-topbar, .quad-top) {
   z-index: 2147483199 !important;
+}
+
+/* Preview review #5767: one accent for interactive Studio chrome. */
+html:root:not([data-mb-marca]) :is(.chip.active, .motor-opt input:checked + label, .suno-pill.is-on, .suno-lang.is-on, .suno-attach button.is-on) {
+  color: #FF33CC !important;
+  border-color: #FF33CC !important;
+  background: rgba(255, 51, 204, .12) !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+html:root:not([data-mb-marca]) :is(.pix-nav-icon, .pf-window-menu, .pf-window-advanced, .pf-window-expert, .lead-toggle) {
+  color: #FF33CC !important;
+  border-color: #FF33CC !important;
+  background: rgba(255, 51, 204, .04) !important;
+  box-shadow: none !important;
+}
+html:root:not([data-mb-marca]) :is(.pix-nav-icon, .pf-window-menu, .pf-window-advanced, .pf-window-expert) :is(.frame, .menu-line) {
+  stroke: #FF33CC !important;
+  filter: none !important;
+}
+html:root:not([data-mb-marca]) :is(.pix-nav-icon, .pf-window-advanced, .pf-window-expert) .panel { fill: #FF33CC !important; }
+html:root:not([data-mb-marca]) :is(.primary-nav, .site-header .nav, .quad-links, .pf-topbar-nav) a {
+  color: var(--ink) !important; text-shadow: none !important;
+}
+html:root:not([data-mb-marca]) :is(.primary-nav, .site-header .nav, .quad-links, .pf-topbar-nav) :is(a:hover, a.active, a[aria-current="page"]) {
+  color: #FF33CC !important; border-color: #FF33CC !important; background: rgba(255,51,204,.10) !important;
+}
+html:root:not([data-mb-marca]) :is(.pf-topbar, .quad-top, .module, .pix-nav-layer, .rail) {
+  background: var(--bg-soft) !important; box-shadow: none !important; border-color: var(--line) !important;
+}
+html:root:not([data-mb-marca]) :is(.rail-hd, .rail-ver, .pix-nav-meta, .rail-nav small) { color: var(--muted) !important; }
+html:root:not([data-mb-marca]) :is(.rail-nav a, .rail-doc, .pix-nav-meta a, .pix-nav-layer a) { color: var(--ink) !important; }
+html:root:not([data-mb-marca]) :is(.rail-nav a:hover, .rail-nav a[aria-current="page"], .pix-nav-layer a:hover) {
+  color:#FF33CC !important; border-color:#FF33CC !important; background:rgba(255,51,204,.08) !important;
+}
+html:root:not([data-mb-marca]) :is(.field input:focus, .field select:focus, .field textarea:focus, .btn:hover) { box-shadow:none !important; }
+.pf-topbar-nav-wrap { position:relative; min-width:0; }
+.pf-nav-more { display:none; }
+@media (max-width:980px) {
+  .pf-topbar-nav-wrap { grid-column:1/-1; grid-row:2; }
+  .pf-topbar-nav-wrap .pf-topbar-nav { padding-right:36px; }
+  .pf-topbar-nav-wrap.has-more::after {
+    content:""; position:absolute; right:0; top:0; bottom:0; width:54px; pointer-events:none;
+    background:linear-gradient(90deg,transparent,var(--bg,#100910) 70%);
+  }
+  .pf-nav-more:not([hidden]) {
+    display:block; position:absolute; right:0; top:0; z-index:1; width:32px; height:34px;
+    color:var(--mbx-brand,var(--studio-accent,#FF33CC)); background:var(--bg,#100910);
+    border:1px solid currentColor; font:22px/1 system-ui; cursor:pointer;
+  }
+}
+/* Keep the host Expert above the full-height content frame. */
+html:root[data-ax-experto] body:has(#admira-native-studio) .ax-experto.ax-dock { z-index:2147483201 !important; }
+html:root[data-ax-experto] .ax-experto.ax-dock.ax-min {
+  padding:4px 12px calc(4px + env(safe-area-inset-bottom)) !important;
+}
+html:root[data-ax-experto] .ax-experto.ax-dock.ax-min .ax-grip {
+  position:absolute; top:-7px; left:calc(50% - 28px); height:8px; margin:0;
+}
+html:root[data-ax-experto] .ax-experto.ax-dock.ax-min .ax-grip::before { top:2px; height:3px; background:var(--mbx-brand,var(--studio-accent,#FF33CC)); }
+html[data-ax-experto]:not([data-mb-marca]) .ax-experto {
+  --ax-cyan:#FF33CC; --ax-green:#FF33CC;
+}
+html[data-ax-experto]:not([data-mb-marca]) .ax-experto :is(.ax-cli-form,.ax-engine,.ax-fold,.ax-extras-btn) {
+  border-color:var(--studio-accent,#FF33CC) !important; box-shadow:none !important;
 }
