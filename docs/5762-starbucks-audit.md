@@ -26,6 +26,8 @@ En producción, ES terminó todas las fases. EN se detuvo en seis controles, en 
 | P2 | EN conserva rótulos secundarios españoles, incluidos GIF/caption Música, NUEVO y cadenas de páginas auxiliares. | Pendiente: barrido de textos y alternativas accesibles. |
 | P2 | `/demo 1` continúa dependiendo del motor común y su detección del host; la rama corrige la entrada nativa `ax_demo=studio`. | Pendiente: contrato del lanzador común para previews; no se modifica otro repositorio congelado. |
 | P2 | `/demo/studio-preview.html` conserva cafetería genérica y castellano fijo. | Pendiente: unificar o retirar esa segunda entrada; no representa la demo nativa auditada. |
+| P1 | El login Google común tiene callback fijo de producción; una preview nueva requiere entrada de agente autorizada para la revisión interactiva. | Pendiente: circuito de login humano en preview sin alterar producción. Las capturas y el PR son accesibles por sus enlaces directos. |
+| P2 | Quedan colores verdes escritos directamente en componentes antiguos (cabecera, fondos y bordes). | Pendiente: migración de esos componentes a los tokens Studio; el acento principal y la guía ya son magenta. |
 | P2 | Pies antiguos y fechas de textos históricos conviven con el sello de release actual. | Pendiente: consolidación editorial y sello. |
 | P1 | Subtítulos de marca Starbucks en Creador tienen contraste insuficiente. | Ya existe el PR draft #29, SHA `5387c5fa042773ceb7af108413297817abbf6175`; se conserva separado para revisión conjunta de Jobs/Walt. |
 
@@ -45,7 +47,7 @@ La prueba del recorrido exige cuatro ejecuciones completas, 27 fases, cinco ruta
 
 19 pruebas de autenticación/cápsula pasan. La prueba existente de posters de Stock falla también en la base congelada (regex de texto antiguo), y se registra como fallo previo. Comprobación sintáctica JavaScript y `git diff --check` acompañan la entrega.
 
-No se modifica el clon principal ni Pixeria ni el motor compartido de AdmiraNeXT. No se mergea ni se despliega producción. Para permitir pruebas reales se añaden únicamente las dos claves de autenticación que faltaban en el entorno **preview** de Cloudflare Pages; configuración y deployment de producción se comparan sin cambios. El rollback de esas nuevas claves consiste en eliminarlas del entorno preview. La URL requiere sesión autorizada, igual que Studio.
+No se modifica el clon principal ni Pixeria ni el motor compartido de AdmiraNeXT. No se mergea ni se despliega producción. Para permitir pruebas reales se añaden únicamente las dos claves de autenticación que faltaban en el entorno **preview** de Cloudflare Pages; configuración y deployment de producción se comparan sin cambios. El rollback de esas nuevas claves consiste en eliminarlas del entorno preview. La URL de preview se ha probado con entrada de agente autorizada. El login Google mantiene un callback fijo de producción; no se afirma acceso humano a esa preview mediante Google. Las capturas se sirven por enlaces directos.
 
 ## Preparación para mañana · #5724
 

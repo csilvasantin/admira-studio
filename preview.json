@@ -8,5 +8,7 @@
     "Restore EN walkthrough controls",
     "Localise walkthrough values",
     "Studio #FF33CC and minimised Expert"
-  ]
+  ],
+  "version": "v.11.10.2026.r6.19:50",
+  "scope": "Preview release only; production release remains the frozen base"
 }
