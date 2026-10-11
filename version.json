@@ -1,20 +1,22 @@
 {
-  "version": "v.09.10.2026.r29.16:26",
+  "version": "v.11.10.2026.r1.12:43",
   "deployedAt": "2026-10-09T14:26:23Z",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "22e63d8cab36e9c47d25d83ea2792e6fa757468b",
-  "gitShort": "22e63d8",
-  "gitFull": "22e63d8cab36e9c47d25d83ea2792e6fa757468b",
+  "git": "ba3c2475d727bcc9b5087e127efb0da5bb780caa",
+  "gitShort": "ba3c247",
+  "gitFull": "ba3c2475d727bcc9b5087e127efb0da5bb780caa",
   "dirty": false,
   "novedades": [
-    "Creador: vídeos animados nativos por pantalla y publicación en Stock tras revisión.",
-    "Campañas privadas en nube con versiones, comparación y recuperación en otro ordenador.",
-    "Edición por instrucciones ES/EN y fondos IA separados conservando los originales."
+    "Controles, desplegables y ayudas en inglés en las ocho secciones.",
+    "Assets conserva la ruta inglesa; opciones y preferencias mantienen sus valores.",
+    "Castellano y contenido de Stock conservados; revisión de menús generados por código."
   ],
-  "espejoDe": "pixeria",
-  "fuente": "a12d531079801a05e1de7d62cbd00f18872dfbf3"
+  "rollback": {
+    "tag": "retorno/pre-controles-en-5634-studio-20261011",
+    "git": "ba3c2475d727bcc9b5087e127efb0da5bb780caa"
+  }
 }
