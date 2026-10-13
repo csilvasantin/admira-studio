@@ -5,7 +5,7 @@ El botón Experto abre una entrada de 48 px dentro de la web. No necesita aplica
 - Arrastra el borde superior para ajustar la altura (máximo: la mitad del área visible).
 - Doble clic en el borde o el botón ▴/▾ pliega y despliega. El borde también admite flechas, Inicio, Fin y Enter.
 - Cada entrada al modo experto comienza plegada. Al desplegar recupera la última altura arrastrada, guardada en `localStorage` (`pixeria_cli_height`; la réplica adapta el prefijo según marca.json). La preferencia es por navegador y dominio.
-- La consola se superpone al contenido (Carlos, 3-oct-2026): es una franja fija abajo, con fondo y sombra, que no envuelve el documento ni le cambia altura, márgenes ni desplazamiento. Sube con el teclado del móvil (`--pf-cli-keyboard`). Cada página entra con ⌘ cerrado. Ver `docs/shell-cuadratico.md`, «Paneles superpuestos».
+- La consola se superpone al contenido (Carlos, 3-oct-2026): es una franja fija abajo, con fondo y sombra, que conserva la geometría del contenido en escritorio. En móvil reserva su altura al final del documento para permitir llegar al contenido inferior. Sube con el teclado del móvil (`--pf-cli-keyboard`). Cada página entra con ⌘ cerrado. Ver `docs/shell-cuadratico.md`, «Paneles superpuestos».
 - Una orden muestra su resultado desplegando la consola. ↑/↓ recorre el historial de esta página.
 
 Comandos: `help`, `clear`, `echo <texto>`, `date`, `status`, `version`, `history` y `open <sección>`. `help` enumera las secciones admitidas; las respuestas usan el idioma de la página. Son comandos de navegación e inspección de la web, no una shell del sistema operativo. No se ejecuta JavaScript introducido por el usuario.
@@ -108,11 +108,3 @@ Real MCP `creador_demo({mode:"full",language:"en"})` is **plan only**. Explicit 
 ## Idioma de interfaz / UI language
 
 ES: `/language ENG` y `/idioma ESP` conservan el historial y los valores internos, y cambian las etiquetas, opciones y ayudas de las ocho secciones. EN: `/language ENG` and `/idioma ESP` retain history and internal values while changing UI labels, options and help across all eight sections. [Tutorial y contrato / Tutorial and contract](/docs/ui-idioma.md).
-
-## Cápsula de conocimiento GOOD / GOOD knowledge capsule
-
-`/demo capsula conocimiento good [es|en]`: vídeo vertical de 30 s, voz Mónica/Daniel; reproducción de medios existentes, coste 0 €. / A 30-second vertical video with Mónica/Daniel narration; plays existing media, €0. [Guía ES/EN](/docs/capsula-conocimiento-good.md).
-
-## Cápsula musical GOOD / GOOD musical capsule
-
-`/demo capsula musical good [es|en]` (`/demo capsule musical good`): vídeo vertical de 30 s sobre el Disco de Oro de las Voyager, voz Mónica/Daniel; `/demo capsula cerrar` lo cierra; reproducción de medios existentes, coste 0 €. / A 30-second vertical video about the Voyager Golden Record with Mónica/Daniel narration; `/demo capsule close` closes it; plays existing media, €0. [Guía ES/EN](/docs/capsula-musical-good.md).

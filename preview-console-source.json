@@ -1,0 +1,19 @@
+{
+  "source": "csilvasantin/pixeria",
+  "sourceCommit": "4bbd8af0b76d80750afbafddbf44f40efee6e52a",
+  "assignment": 4663,
+  "scope": "preview only; changed console files generated using marca.json substitutions; full production sync deferred",
+  "files": [
+    "assets/expert-cli.js",
+    "assets/expert-cli.css",
+    "assets/site-nav.js",
+    "docs/expert-cli.md",
+    "test/expert-cli.browser.cjs",
+    "test/marca-blanca.test.cjs",
+    "docs/encargos/4663/cli-expanded-en-1440.png",
+    "docs/encargos/4663/tutorial-4663-brief.json",
+    "docs/encargos/4663/README.md",
+    "docs/encargos/4663/tutorial-4663.mp4",
+    "docs/encargos/4663/cli-folded-en-1440.png"
+  ]
+}
