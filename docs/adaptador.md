@@ -765,3 +765,7 @@ EN: Creator → Example · Sneakers Store → edit → review and approve every 
 ES: Las piezas importadas, antiguas o generadas desde un prompt libre sin capas guardadas siguen usando OCR y confirmación cuando la lectura es dudosa. Un modelo, nombre de archivo o prompt no prueban qué quedó escrito. Si se usan imágenes o logos importados que pueden contener más texto, el contrato se conserva como incompleto y no sustituye el OCR. El contrato de MP4 describe la composición fija del Creador; no añade lectura ni recomposición temporal de vídeos arbitrarios. La declaración autenticada y vinculada al archivo no certifica semánticamente sus píxeles. Referencia técnica: `admira.composition.v1` en `assets/content-composition.mjs`.
 
 EN: Imported, historical and free-prompt assets without saved layers retain OCR and confirmation when uncertain. A model, filename or prompt cannot prove the rendered words. Imported products/logos may contain additional copy, so their contract remains incomplete and cannot replace OCR. MP4 metadata describes the Creator’s fixed composition; it does not add temporal OCR/reflow for arbitrary videos. An authenticated declaration linked to an asset is not semantic pixel certification. Technical reference: `admira.composition.v1` in `assets/content-composition.mjs`.
+
+## Creador → Adaptador GOOD
+
+Tutorial ES/EN y límites: [creator-adapter-good.md](creator-adapter-good.md). Recompone un contrato aprobado horizontal ⇄ vertical conservando sus capas originales.

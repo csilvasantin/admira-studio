@@ -160,7 +160,8 @@
       var link = document.createElement('a');
       var previewRoot = document.body.dataset.previewRoot;
       link.href = previewRoot && /\/(?:en\/)?video\.html$/.test(item[0]) ? previewRoot + 'video.html'
-        : previewRoot && /\/(?:en\/)?adaptaciones\/$/.test(item[0]) ? previewRoot + 'adaptaciones/' : item[0];
+        : previewRoot && /\/(?:en\/)?adaptaciones\/$/.test(item[0]) ? previewRoot + 'adaptaciones/'
+        : previewRoot && /\/(?:en\/)?creador\/$/.test(item[0]) ? previewRoot + 'creador/' : item[0];
       link.textContent = item[1];
       if (norm(item[0]) === here) {
         link.classList.add('active');

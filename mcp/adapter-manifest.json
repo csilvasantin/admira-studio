@@ -1245,5 +1245,28 @@
         "clip_estado"
       ]
     }
+  },
+  "creator_adapter_good": {
+    "schema": "admira.creator-adaptation.v1",
+    "guide": "/docs/creator-adapter-good.md",
+    "quality": "good",
+    "languages": [
+      "es",
+      "en"
+    ],
+    "source": "approved portable single-screen Creator contract",
+    "targets": [
+      "landscape",
+      "portrait"
+    ],
+    "method": "authored-layer-reflow",
+    "aiCalls": 0,
+    "requires_output_review": true,
+    "outputs": [
+      "PNG",
+      "H264 MP4",
+      "editable JSON"
+    ],
+    "hardwareDelivery": false
   }
 }
