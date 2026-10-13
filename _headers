@@ -18,3 +18,6 @@
   Cache-Control: public, max-age=300
 /assets/demos/studio-v1/*
   Access-Control-Allow-Origin: *
+
+/campanas/starbucks-5839/*
+  Access-Control-Allow-Origin: *

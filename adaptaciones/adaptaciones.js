@@ -1,3 +1,4 @@
+import {mountCreatorAdapter} from './creator-adapter.mjs?v=5839-1';
 import {classicTargets,isClassicFormat,extraFormats} from './classic-step.mjs?v=20261009-classic-step-1';
 import {mountAdvertisement} from './anuncio-studio.mjs?v=classic-auto-6';
 import {compositionFromStock} from '../assets/content-composition.mjs?v=composition-1';
@@ -1957,6 +1958,7 @@ PROJECTS = mergeProjects(savedList, INDEX);
 // Altadis preferences saved before the fichas move to their project once; nothing is deleted.
 let migratedTo = null; try { migratedTo = migrateStorage(localStorage, STORAGE_KEY); } catch (_) {}
 campaignWorkshop=mountCampaign({t,queue,openTwin:f=>twin?.open(f)});
+mountCreatorAdapter({t,queue});
 let query = null, lastProject = null;
 try { query = new URLSearchParams(location.search).get('proyecto'); } catch (_) {}
 try { lastProject = localStorage.getItem(PROJECT_KEY) || migratedTo; } catch (_) { lastProject = migratedTo; }

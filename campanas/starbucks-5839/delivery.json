@@ -1,0 +1,181 @@
+{
+  "schema": "admira.delivery.v1",
+  "task": 5839,
+  "quality": "good",
+  "previewOnly": true,
+  "brand": "Starbucks white-label neutral wordmark",
+  "source": "Creator authored ES/EN landscape; Adapter authored-layer reflow portrait",
+  "physicalPlaybackVerified": false,
+  "assets": [
+    {
+      "file": "starbucks-tu-momento-es-1080x1920.mp4",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/campanas/starbucks-5839/media/starbucks-tu-momento-es-1080x1920.mp4",
+      "bytes": 5512323,
+      "sha256": "caa71bab85c51cd41453787f8bc6dd0e8f4c35cbef5446f73478d538c4be72ba",
+      "language": "es",
+      "orientation": "portrait",
+      "width": 1080,
+      "height": 1920,
+      "codec": "h264",
+      "fps": 25,
+      "durationSeconds": 10,
+      "audio": false
+    },
+    {
+      "file": "starbucks-tu-momento-es-1080x1920.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/campanas/starbucks-5839/media/starbucks-tu-momento-es-1080x1920.png",
+      "bytes": 1867598,
+      "sha256": "eef132757bf0e8ad7baba66fdc28092e296d4565d818cd30c2403d972b51b053",
+      "language": "es",
+      "orientation": "portrait"
+    },
+    {
+      "file": "starbucks-tu-momento-es-1920x1080.mp4",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/campanas/starbucks-5839/media/starbucks-tu-momento-es-1920x1080.mp4",
+      "bytes": 5342117,
+      "sha256": "6b076b57588f65b606691bdc1a15da685cfc98796edc20e454576828fa6ee8d1",
+      "language": "es",
+      "orientation": "landscape",
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "fps": 25,
+      "durationSeconds": 10,
+      "audio": false
+    },
+    {
+      "file": "starbucks-tu-momento-es-1920x1080.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/campanas/starbucks-5839/media/starbucks-tu-momento-es-1920x1080.png",
+      "bytes": 2140674,
+      "sha256": "a4c4f23a331a6523f7cd11d7cce6796ca6e336dfd80acab904872a82b8bd56f7",
+      "language": "es",
+      "orientation": "landscape"
+    },
+    {
+      "file": "starbucks-your-moment-en-1080x1920.mp4",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/campanas/starbucks-5839/media/starbucks-your-moment-en-1080x1920.mp4",
+      "bytes": 5561368,
+      "sha256": "3f099a85016b327c49de1235648b9bb1f82bce3d4d14d6772eee4cdf5afd6ec0",
+      "language": "en",
+      "orientation": "portrait",
+      "width": 1080,
+      "height": 1920,
+      "codec": "h264",
+      "fps": 25,
+      "durationSeconds": 10,
+      "audio": false
+    },
+    {
+      "file": "starbucks-your-moment-en-1080x1920.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/campanas/starbucks-5839/media/starbucks-your-moment-en-1080x1920.png",
+      "bytes": 1868411,
+      "sha256": "7446772e789cfb8d6cdc6411deb2bc950e48ca990033e608f9f35ac1f4820e29",
+      "language": "en",
+      "orientation": "portrait"
+    },
+    {
+      "file": "starbucks-your-moment-en-1920x1080.mp4",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/campanas/starbucks-5839/media/starbucks-your-moment-en-1920x1080.mp4",
+      "bytes": 5409853,
+      "sha256": "c3783d3331bb3962590e839b82dc288f40fac11dee8fab60817696d8f0e837b4",
+      "language": "en",
+      "orientation": "landscape",
+      "width": 1920,
+      "height": 1080,
+      "codec": "h264",
+      "fps": 25,
+      "durationSeconds": 10,
+      "audio": false
+    },
+    {
+      "file": "starbucks-your-moment-en-1920x1080.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/campanas/starbucks-5839/media/starbucks-your-moment-en-1920x1080.png",
+      "bytes": 2136184,
+      "sha256": "1d4d09a01c37a5c39f59dc23c60ce394aea959a7eeeb1d3b811283eb4c8e4482",
+      "language": "en",
+      "orientation": "landscape"
+    }
+  ],
+  "captures": [
+    {
+      "file": "01-creator-starbucks-es-entry.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/01-creator-starbucks-es-entry.png"
+    },
+    {
+      "file": "02-creator-starbucks-es-content.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/02-creator-starbucks-es-content.png"
+    },
+    {
+      "file": "03-creator-starbucks-es-horizontal-review.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/03-creator-starbucks-es-horizontal-review.png"
+    },
+    {
+      "file": "04-creator-starbucks-es-approved.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/04-creator-starbucks-es-approved.png"
+    },
+    {
+      "file": "05-creator-starbucks-es-mp4-export.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/05-creator-starbucks-es-mp4-export.png"
+    },
+    {
+      "file": "06-adapter-starbucks-es-entry.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/06-adapter-starbucks-es-entry.png"
+    },
+    {
+      "file": "07-adapter-starbucks-es-source-metadata.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/07-adapter-starbucks-es-source-metadata.png"
+    },
+    {
+      "file": "08-adapter-es-default-crop-failure.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/08-adapter-es-default-crop-failure.png"
+    },
+    {
+      "file": "09-adapter-es-good-complete-portrait.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/09-adapter-es-good-complete-portrait.png"
+    },
+    {
+      "file": "10-adapter-es-good-mp4-queue.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/10-adapter-es-good-mp4-queue.png"
+    },
+    {
+      "file": "11-creator-starbucks-en-entry.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/11-creator-starbucks-en-entry.png"
+    },
+    {
+      "file": "12-creator-starbucks-en-content.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/12-creator-starbucks-en-content.png"
+    },
+    {
+      "file": "13-creator-starbucks-en-horizontal-review.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/13-creator-starbucks-en-horizontal-review.png"
+    },
+    {
+      "file": "14-creator-starbucks-en-approved.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/14-creator-starbucks-en-approved.png"
+    },
+    {
+      "file": "15-creator-en-mp4-export.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/15-creator-en-mp4-export.png"
+    },
+    {
+      "file": "16-adapter-en-good-complete-portrait.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/16-adapter-en-good-complete-portrait.png"
+    },
+    {
+      "file": "17-adapter-en-good-mp4-queue.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/17-adapter-en-good-mp4-queue.png"
+    },
+    {
+      "file": "18-adapter-es-mp4-complete.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/18-adapter-es-mp4-complete.png"
+    },
+    {
+      "file": "19-adapter-en-mp4-complete.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/19-adapter-en-mp4-complete.png"
+    },
+    {
+      "file": "20-public-preview-playback-url.png",
+      "url": "https://5839-starbucks-preview.admira-studio.pages.dev/docs/encargos/5839/captures/20-public-preview-playback-url.png"
+    }
+  ]
+}

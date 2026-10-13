@@ -31,3 +31,7 @@
 ## Verificación / verification
 
 Focused checks cover owner isolation, concurrent versions, immutable restore, idempotency, private fields, Spanish/English instruction plans, source preservation, twin presentation validation and all thirteen native video crops. Browser and public release evidence are recorded separately after deployment; no claim of physical delivery.
+
+## Creador → Adaptador GOOD
+
+Tutorial ES/EN y límites: [creator-adapter-good.md](creator-adapter-good.md). Recompone un contrato aprobado horizontal ⇄ vertical conservando sus capas originales.
