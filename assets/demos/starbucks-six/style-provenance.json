@@ -1,0 +1,85 @@
+{
+  "schema": "admira.campaign-style-provenance.v1",
+  "campaign": "starbucks-six",
+  "revision": 2,
+  "authoredBy": "OraculoMacMini",
+  "referenceAgent": "Trinity",
+  "referenceSite": "https://admira.studio",
+  "steps": [
+    "photography",
+    "animated-copy",
+    "integrated-brand-composition"
+  ],
+  "aiGenerations": 0,
+  "sources": [
+    {
+      "id": "1791915160442-204h2z",
+      "title": "Starbucks · Cada café tiene una historia · Alsea · fotografía original Creador",
+      "url": "https://stock.admira.store/stock/1791915160442-204h2z/asset.jpg?v=213003",
+      "model": "grok-imagine-image-pro",
+      "file": "/adaptaciones/campanas/coffee/coffee-beans.jpg",
+      "sha256": "50f76f843e27cec46cf9e684fba97133faecebdfc5390fc7bb7fc1515aa06eb6"
+    },
+    {
+      "id": "1791915272989-m1q8y9",
+      "title": "Starbucks · Tu pausa · Alsea · fotografía original Creador",
+      "url": "https://stock.admira.store/stock/1791915272989-m1q8y9/asset.jpg?v=188675",
+      "model": "grok-imagine-image-pro",
+      "file": "/adaptaciones/campanas/coffee/coffee-pause.jpg",
+      "sha256": "d6d9de1a3b52fce7e2d3f150cd7a2cb0eab60ae2af6d0dc3bd28a8129ebbfd9b"
+    }
+  ],
+  "referenceVideos": [
+    {
+      "id": "1791925386784-qtbxqe",
+      "title": "Starbucks · Tu pausa · movimiento · Alsea",
+      "url": "https://stock.admira.store/stock/1791925386784-qtbxqe/asset.mp4?v=1707689"
+    },
+    {
+      "id": "1791927365186-donzfm",
+      "title": "Starbucks · Tu pausa · textos animados y logo oficial · Alsea",
+      "url": "https://stock.admira.store/stock/1791927365186-donzfm/asset.mp4?v=7476430"
+    },
+    {
+      "id": "1791928549336-i9yz75",
+      "title": "Starbucks · Tu pausa · diseño integrado · Alsea",
+      "url": "https://stock.admira.store/stock/1791928549336-i9yz75/asset.mp4?v=4466258"
+    },
+    {
+      "id": "1791928559944-a0rcjo",
+      "title": "Starbucks · Cada café tiene una historia · diseño integrado · Alsea",
+      "url": "https://stock.admira.store/stock/1791928559944-a0rcjo/asset.mp4?v=7731972"
+    }
+  ],
+  "brand": {
+    "source": "https://www.starbucks.com/",
+    "guidelines": "https://creative.starbucks.com/logos/",
+    "retrievedAt": "2026-10-14",
+    "sha256": "cc9990217d0a6594bbbea91342a56e890395b0742c4b3777c215ed8937e5492a",
+    "normalizedSHA256": "7877c27a396d67a2762ce565bb24620608e700da670a6659b55af9a816810e2a",
+    "normalization": "only width/height 100% → 1024; viewBox, geometry and colours retained"
+  },
+  "style": {
+    "fullBleed": true,
+    "palette": [
+      "#003e2e",
+      "#e8e5c9",
+      "#fffaf0"
+    ],
+    "headline": "Tu café sigue contigo.",
+    "cta": "Disfruta el momento.",
+    "lineStaggerSeconds": 0.12,
+    "headlineEntranceSeconds": 0.6,
+    "ctaStartSeconds": 1,
+    "ctaEntranceSeconds": 0.5,
+    "slidePixels": 24,
+    "slideEasing": "easeOutCubic",
+    "opacityEasing": "linear",
+    "stableCopyAfterSeconds": 1.5
+  },
+  "hardware": {
+    "state": "stopped_by_user",
+    "currentRevisionPhysicallyVerified": false,
+    "previousProof": "/assets/demos/starbucks-six/hardware-proof.json"
+  }
+}

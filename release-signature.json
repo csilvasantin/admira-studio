@@ -1,5 +1,5 @@
 {
-  "version": "v.14.10.2026.r1.00:00",
+  "version": "v.14.10.2026.r2.00:30",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
@@ -10,11 +10,11 @@
   "gitFull": "acf0c16b0a3c48d517fb1ebe979e8ed8252cc004",
   "dirty": false,
   "rollback": {
-    "git": "2d85ba367a04841df00aa8f0e36e167f125347f7"
+    "git": "4fcf5c0549ad3df411e85b4066cdb5df89efcb8a"
   },
   "novedades": [
-    "Creador Starbucks: café animado que recorre seis pantallas V–H–V–V–H–V",
-    "Ocho MP4 nativos y playlist mixta de 24+8 segundos",
-    "Exportación del navegador verificada, tutorial y MCP ES/EN actualizados"
+    "Starbucks: fotografías de taza y granos con metaestilo integrado de Trinity",
+    "Textos animados en los seis murales y las adaptaciones horizontal y vertical",
+    "Revisión anterior conservada; ocho vídeos publicados; players parados por Carlos"
   ]
 }

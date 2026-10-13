@@ -1,21 +1,21 @@
 {
   "schema": "pixeria.installation-campaign.v1",
   "id": "starbucks-six",
-  "revision": 1,
+  "revision": 2,
   "name": "Starbucks · Un café, seis pantallas",
   "headline": "Tu café sigue contigo.",
   "cta": "Disfruta el momento.",
   "price": "",
-  "background": "#05372d",
-  "accent": "#d9d4a5",
+  "background": "#003e2e",
+  "accent": "#e8e5c9",
   "foreground": "#fffaf0",
   "direction": "travel",
   "placements": {},
   "seconds": 24,
   "unitSeconds": 8,
-  "product": "/adaptaciones/campanas/coffee-cup-demo.svg",
-  "logo": "/adaptaciones/campanas/coffee-wordmark.svg",
-  "productLabel": "Café · ilustración editable de prueba",
+  "product": "/adaptaciones/campanas/coffee/coffee-beans.jpg",
+  "logo": "/adaptaciones/campanas/coffee/starbucks-siren.svg",
+  "productLabel": "Fotografía de café y granos · Trinity · Stock",
   "installations": [
     {
       "id": "starbucks-six",
@@ -118,5 +118,7 @@
         }
       ]
     }
-  ]
+  ],
+  "visualStyle": "coffee-integrated",
+  "portraitPhoto": "/adaptaciones/campanas/coffee/coffee-pause.jpg"
 }

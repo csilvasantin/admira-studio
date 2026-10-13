@@ -1,17 +1,17 @@
 // One authored timeline, cut into native per-screen files. No playback of hardware.
 export const TRAVEL_FPS=25;
-export function travelGeometry(i){
+export function travelGeometry(i,c){
  const screens=[...i.screens].sort((a,b)=>a.x-b.x||a.y-b.y);
  const top=Math.max(...screens.map(s=>s.y)),bottom=Math.min(...screens.map(s=>s.y+s.h));
  if(bottom-top<240)throw Error('travel-no-common-line');
  if((i.masks||[]).length)throw Error('travel-masked-wall');
  if(screens.some(s=>s.rotation||s.w%2||s.h%2))throw Error('travel-native-geometry');
- const h=Math.min(680,(bottom-top)*.63),w=h*.8;
+ const integrated=c?.visualStyle==='coffee-integrated';const h=integrated?bottom-top:Math.min(680,(bottom-top)*.63),w=integrated?h*16/9:h*.8;
  return {x0:screens.length===1?screens[0].x-w:screens[0].x+screens[0].w/2-w/2,x1:screens.length===1?screens[0].x+screens[0].w:screens.at(-1).x+screens.at(-1).w/2-w/2,y:(top+bottom-h)/2,w,h};
 }
-export function travelPosition(c,i,time=0){const g=travelGeometry(i),p=Math.max(0,Math.min(1,time/c.seconds));return {...g,x:g.x0+(g.x1-g.x0)*p};}
+export function travelPosition(c,i,time=0){const g=travelGeometry(i,c),p=Math.max(0,Math.min(1,time/c.seconds));return {...g,x:g.x0+(g.x1-g.x0)*p};}
 export function travelPlan(c,i,measure,fit){
- const layers=[],errors=[];let g;try{g=travelGeometry(i);}catch(e){return{valid:false,errors:[e.message],layers:[]};}
+ const layers=[],errors=[];let g;try{g=travelGeometry(i,c);}catch(e){return{valid:false,errors:[e.message],layers:[]};}
  for(const s of i.screens){
   const p=Math.min(s.w,s.h)*.055,box={x:s.x+p,y:s.y+p+105,w:s.w-2*p,h:Math.min(190,g.y-s.y-p-105)};
   layers.push({role:'logo',x:s.x+p,y:s.y+p,w:Math.min(440,s.w-2*p),h:84});
@@ -23,7 +23,7 @@ export function travelPlan(c,i,measure,fit){
  return {valid:!errors.length,errors,layers,direction:'travel',installation:i.id,width:i.width,height:i.height,animation:{kind:'travel',...g},regions:i.screens};
 }
 export function travelJob(c,i,s){
- const g=travelGeometry(i),W=s.w,H=s.h;
+ const g=travelGeometry(i,c),W=s.w,H=s.h;
  if(W%2||H%2||s.rotation)throw Error('travel-native-geometry');
  const filename=`${c.id}-${i.id}-travel-${s.id}-r${c.revision}-${W}x${H}.mp4`;
  // Output-only crop: each worker composites at the panel's resolution, never 8K.

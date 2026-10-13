@@ -122,3 +122,8 @@ Creador → Ejemplo · Starbucks seis pantallas / Creator → Example · Starbuc
 CLI existente: /creador, /creator, open creator; elige el ejemplo en Creador / choose the example in Creator.
 MCP: campana_instalacion({demo:"starbucks-six"}) → plan, ocho trabajos, seis programas 24+8 s; no emisión / plan, eight jobs, six 24+8 s programs, no playback.
 Guía y tutorial / guide and tutorial: https://admira.studio/docs/starbucks-six-screens.md
+
+Starbucks r2 · Metaestilo / Visual style: coffee-integrated; fotos de café y granos, sirena oficial y textos animados en ocho MP4 / coffee/bean photos, official siren and animated copy in all eight MP4s.
+CLI: /creador, /creator, open creator → Ejemplo Starbucks → Editar contenido / Edit content → Metaestilo / Visual style. Sin nuevo comando / no new command.
+Vídeos / Movies: https://admira.studio/campanas/starbucks-six/ · R1: https://admira.studio/creador/?demo=starbucks-six&version=1
+Players parados por Carlos / Players stopped at Carlos’s request.

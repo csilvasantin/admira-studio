@@ -1,4 +1,5 @@
-import {travelPlan,travelJob} from './campaign-travel.mjs?v=starbucks-six-1';
+import {COFFEE_STYLE,integratedPlan,integratedJob} from './campaign-integrated.mjs?v=starbucks-six-2';
+import {travelPlan,travelJob,travelGeometry} from './campaign-travel.mjs?v=starbucks-six-2';
 // Installation-aware, deterministic campaign layouts. No generative API calls.
 export const CAMPAIGN_SCHEMA='pixeria.installation-campaign.v1';
 export const DIRECTIONS=[{id:'hero',es:'Producto protagonista',en:'Product hero'},{id:'editorial',es:'Composición editorial',en:'Editorial composition'},{id:'sequence',es:'Relato entre pantallas',en:'Story across screens'},{id:'travel',es:'Recorrido animado',en:'Animated journey'}];
@@ -42,6 +43,8 @@ export function restoreCampaign(value){
  for(const k of ['product','logo']){const u=String(value[k]||'');if(!/^(\/[^/]|https:\/\/|data:image\/(png|jpeg|webp);base64,)/.test(u)||u.length>12000000)throw Error('campaign-asset');out[k]=u;}
  if(!DIRECTIONS.some(x=>x.id===value.direction))throw Error('campaign-direction');out.direction=value.direction;
  if(!Number.isInteger(value.seconds)||value.seconds<1||value.seconds>60)throw Error('campaign-duration');out.seconds=value.seconds;
+ if(value.visualStyle!==undefined){if(!['classic',COFFEE_STYLE].includes(value.visualStyle))throw Error('campaign-visual-style');out.visualStyle=value.visualStyle;}
+ if(value.portraitPhoto!==undefined){const u=String(value.portraitPhoto);if(!/^(\/[^/]|https:\/\/|data:image\/(png|jpeg|webp);base64,)/.test(u)||u.length>12000000)throw Error('campaign-asset');out.portraitPhoto=u;}
  if(value.unitSeconds!==undefined){if(!Number.isInteger(value.unitSeconds)||value.unitSeconds<1||value.unitSeconds>60)throw Error('campaign-unit-duration');out.unitSeconds=value.unitSeconds;}
  if(!Array.isArray(value.installations)||!value.installations.length||value.installations.length>64||new Set(value.installations.map(i=>i?.id)).size!==value.installations.length||value.installations.some(i=>validateInstallation(i).length))throw Error('campaign-installations');
  if(value.placements!==undefined){if(!value.placements||Array.isArray(value.placements)||typeof value.placements!=='object'||Object.keys(value.placements).length>1000)throw Error('campaign-placements');for(const [key,r] of Object.entries(value.placements))if(!/^[a-z0-9_-]+:(hero|editorial|sequence|travel):(logo|product|headline|cta|price)$/.test(key)||!r||!['x','y','w','h'].every(k=>finite(r[k]))||r.w<=0||r.h<=0||r.w>2||r.h>2||Math.abs(r.x)>2||Math.abs(r.y)>2)throw Error('campaign-placements');out.placements=clone(value.placements);}
@@ -73,6 +76,7 @@ function divide(r,wide,direction){
 }
 export function planCampaign(c,i,direction=c.direction,measure=(s,px)=>s.length*px*.59){
  const errors=validateInstallation(i);if(errors.length)return{valid:false,errors,layers:[]};
+ if(c.visualStyle===COFFEE_STYLE&&direction==='travel'){try{if(i.phase!=='unit')travelGeometry(i,c);}catch(e){return{valid:false,errors:[e.message],layers:[]};}return integratedPlan(c,i,measure,fit);}
  if(direction==='travel'&&i.phase==='unit')return planCampaign(c,i,'hero',measure);
  if(direction==='travel')return travelPlan(c,i,measure,fit);
  if(!DIRECTIONS.some(d=>d.id===direction))return{valid:false,errors:['campaign-direction'],layers:[]};
@@ -111,10 +115,11 @@ export function planCampaign(c,i,direction=c.direction,measure=(s,px)=>s.length*
 }
 export function campaignContract(c,approvals={}){
  const campaign=restoreCampaign(c);
- return{schema:CAMPAIGN_SCHEMA,campaign,delivery:{fps:25,gopFrames:25,audio:false,kind:campaign.direction==='travel'?'animated-travel':'still-composition',hardwareVerified:false},approvals:clone(approvals),limits:{measuredGeometry:false,anamorphicExport:false,automaticVideoLayerExtraction:false},derived:campaign.installations.filter(i=>i.enabled!==false).flatMap(i=>i.screens.map(s=>({installation:i.id,screen:s.id,width:s.rotation%180?s.h:s.w,height:s.rotation%180?s.w:s.h,rotation:s.rotation||0,tags:['campaign:'+campaign.id,'installation:'+i.id,'screen:'+s.id,'direction:'+campaign.direction]})))};
+ return{schema:CAMPAIGN_SCHEMA,campaign,delivery:{fps:25,gopFrames:25,audio:false,kind:campaign.visualStyle===COFFEE_STYLE&&campaign.direction==='travel'?'animated-integrated':campaign.direction==='travel'?'animated-travel':'still-composition',visualStyle:campaign.visualStyle||'classic',copyAnimation:campaign.visualStyle===COFFEE_STYLE&&campaign.direction==='travel'?{lineStaggerSeconds:.12,headlineSeconds:.6,ctaStartSeconds:1,ctaSeconds:.5,slidePixels:24,easing:'easeOutCubic',stableAfterSeconds:1.5}:null,hardwareVerified:false},approvals:clone(approvals),limits:{measuredGeometry:false,anamorphicExport:false,automaticVideoLayerExtraction:false},derived:campaign.installations.filter(i=>i.enabled!==false).flatMap(i=>i.screens.map(s=>({installation:i.id,screen:s.id,width:s.rotation%180?s.h:s.w,height:s.rotation%180?s.w:s.h,rotation:s.rotation||0,tags:['campaign:'+campaign.id,'installation:'+i.id,'screen:'+s.id,'direction:'+campaign.direction]})))};
 }
-export function campaignJob(c,i,s){
+export function campaignJob(c,i,s,plan){
  if(validateInstallation(i).length)throw Error('campaign-installations');
+ if(c.direction==='travel'&&c.visualStyle===COFFEE_STYLE)return integratedJob(c,i,s,plan||planCampaign(c,i),i.phase==='unit'?null:travelGeometry(i,c));
  if(c.direction==='travel'&&i.phase!=='unit')return travelJob(c,i,s);
  if(i.phase==='unit')c={...c,seconds:c.unitSeconds||8};
  const W=s.rotation%180?s.h:s.w,H=s.rotation%180?s.w:s.h;

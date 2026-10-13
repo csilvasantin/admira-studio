@@ -18,3 +18,12 @@ test('legacy campaigns and dangerous imports keep validation behavior',()=>{
  assert.equal(restoreCampaign(DEFAULT_CAMPAIGN).id,'sneakers-store');for(const patch of [{unitSeconds:0},{unitSeconds:8.5}])assert.throws(()=>restoreCampaign({...demo(),...patch}),/campaign-unit-duration/);
  const c=demo();c.installations[0].screens[1].y=0;c.installations[0].screens[2].y=1100;c.installations[0].screens[2].h=800;assert.equal(planCampaign(c,c.installations[0]).valid,false);
 });
+
+test('coffee style animates every output, keeps line timing and restores the earlier revision',()=>{
+ const c=demo(),jobs=c.installations.flatMap(i=>i.screens.map(s=>campaignJob(c,i,s)));
+ assert.equal(c.visualStyle,'coffee-integrated');assert(c.portraitPhoto.endsWith('coffee-pause.jpg'));
+ assert(jobs.every(j=>j.kind==='animated-integrated'&&j.args.includes('-filter_complex')));
+ for(const j of jobs){assert.equal(j.args[j.args.indexOf('-frames:v')+1],String(j.durationSeconds*25));assert(j.layers.some(l=>l.role==='headline'));assert(j.layers.some(l=>l.role==='cta'&&l.start===1));assert.equal(j.mural,j.durationSeconds===24);}
+ const old=restoreCampaign(JSON.parse(fs.readFileSync(new URL('../adaptaciones/campanas/starbucks-six-r1.json',import.meta.url))));assert.equal(old.revision,1);assert.equal(campaignJob(old,old.installations[0],old.installations[0].screens[0]).kind,'animated-travel');assert.equal(campaignJob(old,old.installations[1],old.installations[1].screens[0]).kind,undefined);
+ for(const patch of [{visualStyle:'unknown'},{portraitPhoto:'javascript:alert(1)'}])assert.throws(()=>restoreCampaign({...c,...patch}));
+});

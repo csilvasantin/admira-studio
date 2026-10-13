@@ -1,7 +1,21 @@
-import {travelPosition} from './campaign-travel.mjs?v=starbucks-six-1';
-export function drawCampaign(canvas,c,i,plan,assets,{guides=false,time=0,backgroundOnly=false}={}){
+import {COFFEE_STYLE,entrance,integratedBackground,integratedLayers,integratedLayerCanvas,integratedProductCanvas} from './campaign-integrated.mjs?v=starbucks-six-2';
+import {travelPosition} from './campaign-travel.mjs?v=starbucks-six-2';
+const integratedCaches=new WeakMap();
+function cachedCanvas(assets,key,create){let map=integratedCaches.get(assets);if(!map){map=new Map();integratedCaches.set(assets,map);}if(map.size>100)map.clear();if(!map.has(key))map.set(key,create());return map.get(key);}
+export function drawCampaign(canvas,c,i,plan,assets,{guides=false,time,backgroundOnly=false}={}){
  const x=canvas.getContext('2d'),scale=canvas.width/i.width;canvas.height=Math.round(i.height*scale);x.save();x.scale(scale,scale);
- x.fillStyle=c.background;x.fillRect(0,0,i.width,i.height);
+ if(c.visualStyle===COFFEE_STYLE&&plan.direction==='travel'){
+  x.save();x.beginPath();i.screens.forEach(s=>x.rect(s.x,s.y,s.w,s.h));x.clip();
+  for(const s of i.screens)integratedBackground(x,c,s,assets,{mural:i.phase!=='unit'});
+  if(!backgroundOnly){
+   const t=time??2;
+   if(i.phase!=='unit'&&assets.product){const r=travelPosition(c,i,t),p=cachedCanvas(assets,`photo:${r.w}:${r.h}`,()=>integratedProductCanvas(c,i,assets,r));x.drawImage(p,r.x,r.y,r.w,r.h);}
+   if(assets.logo)for(const l of integratedLayers(plan)){const m=entrance(t,l.start,l.duration),cv=cachedCanvas(assets,JSON.stringify([l.role,l.text,l.w,l.h,l.px,c.foreground,c.accent]),()=>integratedLayerCanvas(l,c,assets));x.globalAlpha=m.alpha;x.drawImage(cv,l.x,l.y+m.slide);}x.globalAlpha=1;
+  }
+  x.restore();if(guides){x.strokeStyle='#74ffb7';x.lineWidth=2/scale;i.screens.forEach(s=>x.strokeRect(s.x,s.y,s.w,s.h));}
+  x.restore();return canvas;
+ }
+ time=time??0;x.fillStyle=c.background;x.fillRect(0,0,i.width,i.height);
  x.save();x.beginPath();i.screens.forEach(s=>x.rect(s.x,s.y,s.w,s.h));x.clip();
  const g=x.createLinearGradient(0,i.height,i.width,0);g.addColorStop(0,c.background);g.addColorStop(1,c.accent+'38');x.fillStyle=g;x.fillRect(0,0,i.width,i.height);
  x.strokeStyle=c.accent+'35';x.lineWidth=Math.min(i.width,i.height)*.003;

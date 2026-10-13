@@ -1118,7 +1118,18 @@
       "program": "admira.mixed-screen-program.v1",
       "delivery": "/assets/demos/starbucks-six/playlist-mixta.json",
       "mcp": "https://mcp-pixeria.admira.store/mcp",
-      "hardware_verification": "Separate live proof / Evidencia física separada"
+      "hardware_verification": "Separate live proof / Evidencia física separada",
+      "revision": 2,
+      "visualStyle": "coffee-integrated",
+      "copyAnimation": "all eight outputs / los ocho archivos",
+      "photographs": [
+        "1791915160442-204h2z",
+        "1791915272989-m1q8y9"
+      ],
+      "preview": "/campanas/starbucks-six/",
+      "provenance": "/assets/demos/starbucks-six/style-provenance.json",
+      "previous": "/adaptaciones/campanas/starbucks-six-r1.json",
+      "playersState": "stopped_by_user"
     }
   },
   "content_workflows": {

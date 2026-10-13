@@ -4,6 +4,9 @@
 (function () {
   'use strict';
   const COPY = {
+  "Starbucks: fotografías de taza y granos con metaestilo integrado de Trinity": "Starbucks: cup and bean photography with Trinity’s integrated visual style",
+  "Textos animados en los seis murales y las adaptaciones horizontal y vertical": "Animated copy in six wall movies and both landscape and portrait adaptations",
+  "Revisión anterior conservada; ocho vídeos publicados; players parados por Carlos": "Earlier revision preserved; eight published movies; players stopped by Carlos",
   "Creador Starbucks: café animado que recorre seis pantallas V–H–V–V–H–V": "Starbucks Creator: animated coffee crosses six P–L–P–P–L–P screens",
   "Ocho MP4 nativos y playlist mixta de 24+8 segundos": "Eight native MP4s and a mixed 24+8 second playlist",
   "Exportación del navegador verificada, tutorial y MCP ES/EN actualizados": "Verified browser export, updated ES/EN tutorial and MCP",

@@ -1,0 +1,583 @@
+{
+  "schema": "admira.mixed-screen-delivery.v1",
+  "fps": 25,
+  "audio": false,
+  "files": [
+    {
+      "installation": "starbucks-six",
+      "screen": "macstudio-starbucks-vertical",
+      "job": {
+        "filename": "starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-r1-1080x1920.mp4",
+        "W": 1080,
+        "H": 1920,
+        "input": "input.png",
+        "durationSeconds": 24,
+        "kind": "animated-travel",
+        "args": [
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "input.png",
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "product.png",
+          "-filter_complex",
+          "[1:v]scale=544:680:force_original_aspect_ratio=decrease,pad=544:680:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba[p];[0:v][p]overlay=x='268+7080*min(t/24,1)':y=620:eval=frame:shortest=1,format=yuv420p,setsar=1[out]",
+          "-map",
+          "[out]",
+          "-frames:v",
+          "600",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "veryfast",
+          "-threads",
+          "1",
+          "-profile:v",
+          "high",
+          "-pix_fmt",
+          "yuv420p",
+          "-r",
+          "25",
+          "-g",
+          "25",
+          "-crf",
+          "21",
+          "-movflags",
+          "+faststart",
+          "output.mp4"
+        ]
+      },
+      "filename": "starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-r1-1080x1920.mp4",
+      "bytes": 1615008,
+      "sha256": "7d949a1e57ff953a8c83adbfd123363a46ba2479efb8f147543773a51816a9c2",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "25/1",
+            "nb_frames": "600"
+          }
+        ],
+        "format": {
+          "duration": "24.000000"
+        }
+      }
+    },
+    {
+      "installation": "starbucks-six",
+      "screen": "macstudio-starbucks-horizontal",
+      "job": {
+        "filename": "starbucks-six-starbucks-six-travel-macstudio-starbucks-horizontal-r1-1920x1080.mp4",
+        "W": 1920,
+        "H": 1080,
+        "input": "input.png",
+        "durationSeconds": 24,
+        "kind": "animated-travel",
+        "args": [
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "input.png",
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "product.png",
+          "-filter_complex",
+          "[1:v]scale=544:680:force_original_aspect_ratio=decrease,pad=544:680:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba[p];[0:v][p]overlay=x='-812+7080*min(t/24,1)':y=200:eval=frame:shortest=1,format=yuv420p,setsar=1[out]",
+          "-map",
+          "[out]",
+          "-frames:v",
+          "600",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "veryfast",
+          "-threads",
+          "1",
+          "-profile:v",
+          "high",
+          "-pix_fmt",
+          "yuv420p",
+          "-r",
+          "25",
+          "-g",
+          "25",
+          "-crf",
+          "21",
+          "-movflags",
+          "+faststart",
+          "output.mp4"
+        ]
+      },
+      "filename": "starbucks-six-starbucks-six-travel-macstudio-starbucks-horizontal-r1-1920x1080.mp4",
+      "bytes": 1438548,
+      "sha256": "5df81c2554e80d32c04e5c6aa5b8abe960f5183bb113a23e9ad60dc9e2369f65",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "25/1",
+            "nb_frames": "600"
+          }
+        ],
+        "format": {
+          "duration": "24.000000"
+        }
+      }
+    },
+    {
+      "installation": "starbucks-six",
+      "screen": "macstudio-starbucks-vertical-right",
+      "job": {
+        "filename": "starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-right-r1-1080x1920.mp4",
+        "W": 1080,
+        "H": 1920,
+        "input": "input.png",
+        "durationSeconds": 24,
+        "kind": "animated-travel",
+        "args": [
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "input.png",
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "product.png",
+          "-filter_complex",
+          "[1:v]scale=544:680:force_original_aspect_ratio=decrease,pad=544:680:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba[p];[0:v][p]overlay=x='-2732+7080*min(t/24,1)':y=620:eval=frame:shortest=1,format=yuv420p,setsar=1[out]",
+          "-map",
+          "[out]",
+          "-frames:v",
+          "600",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "veryfast",
+          "-threads",
+          "1",
+          "-profile:v",
+          "high",
+          "-pix_fmt",
+          "yuv420p",
+          "-r",
+          "25",
+          "-g",
+          "25",
+          "-crf",
+          "21",
+          "-movflags",
+          "+faststart",
+          "output.mp4"
+        ]
+      },
+      "filename": "starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-right-r1-1080x1920.mp4",
+      "bytes": 1484239,
+      "sha256": "8d1b6af9981f294a320ddc6d4ab21dc178a43e9a87352c0a599bd5e1ded9d9ff",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "25/1",
+            "nb_frames": "600"
+          }
+        ],
+        "format": {
+          "duration": "24.000000"
+        }
+      }
+    },
+    {
+      "installation": "starbucks-six",
+      "screen": "macmini-starbucks-vertical",
+      "job": {
+        "filename": "starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-r1-1080x1920.mp4",
+        "W": 1080,
+        "H": 1920,
+        "input": "input.png",
+        "durationSeconds": 24,
+        "kind": "animated-travel",
+        "args": [
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "input.png",
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "product.png",
+          "-filter_complex",
+          "[1:v]scale=544:680:force_original_aspect_ratio=decrease,pad=544:680:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba[p];[0:v][p]overlay=x='-3812+7080*min(t/24,1)':y=620:eval=frame:shortest=1,format=yuv420p,setsar=1[out]",
+          "-map",
+          "[out]",
+          "-frames:v",
+          "600",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "veryfast",
+          "-threads",
+          "1",
+          "-profile:v",
+          "high",
+          "-pix_fmt",
+          "yuv420p",
+          "-r",
+          "25",
+          "-g",
+          "25",
+          "-crf",
+          "21",
+          "-movflags",
+          "+faststart",
+          "output.mp4"
+        ]
+      },
+      "filename": "starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-r1-1080x1920.mp4",
+      "bytes": 1116349,
+      "sha256": "f59f7b49368c1ae20910fc2ca03791f4a2ae89cae25e3908f0c7bdc152b68322",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "25/1",
+            "nb_frames": "600"
+          }
+        ],
+        "format": {
+          "duration": "24.000000"
+        }
+      }
+    },
+    {
+      "installation": "starbucks-six",
+      "screen": "macmini-starbucks-horizontal",
+      "job": {
+        "filename": "starbucks-six-starbucks-six-travel-macmini-starbucks-horizontal-r1-1920x1080.mp4",
+        "W": 1920,
+        "H": 1080,
+        "input": "input.png",
+        "durationSeconds": 24,
+        "kind": "animated-travel",
+        "args": [
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "input.png",
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "product.png",
+          "-filter_complex",
+          "[1:v]scale=544:680:force_original_aspect_ratio=decrease,pad=544:680:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba[p];[0:v][p]overlay=x='-4892+7080*min(t/24,1)':y=200:eval=frame:shortest=1,format=yuv420p,setsar=1[out]",
+          "-map",
+          "[out]",
+          "-frames:v",
+          "600",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "veryfast",
+          "-threads",
+          "1",
+          "-profile:v",
+          "high",
+          "-pix_fmt",
+          "yuv420p",
+          "-r",
+          "25",
+          "-g",
+          "25",
+          "-crf",
+          "21",
+          "-movflags",
+          "+faststart",
+          "output.mp4"
+        ]
+      },
+      "filename": "starbucks-six-starbucks-six-travel-macmini-starbucks-horizontal-r1-1920x1080.mp4",
+      "bytes": 1179429,
+      "sha256": "fca44f72f1aeb8e1616cb2657df5684972850aa46268dc3050a801a69ba0eb7d",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "25/1",
+            "nb_frames": "600"
+          }
+        ],
+        "format": {
+          "duration": "24.000000"
+        }
+      }
+    },
+    {
+      "installation": "starbucks-six",
+      "screen": "macmini-starbucks-vertical-right",
+      "job": {
+        "filename": "starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-right-r1-1080x1920.mp4",
+        "W": 1080,
+        "H": 1920,
+        "input": "input.png",
+        "durationSeconds": 24,
+        "kind": "animated-travel",
+        "args": [
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "input.png",
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-i",
+          "product.png",
+          "-filter_complex",
+          "[1:v]scale=544:680:force_original_aspect_ratio=decrease,pad=544:680:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba[p];[0:v][p]overlay=x='-6812+7080*min(t/24,1)':y=620:eval=frame:shortest=1,format=yuv420p,setsar=1[out]",
+          "-map",
+          "[out]",
+          "-frames:v",
+          "600",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "veryfast",
+          "-threads",
+          "1",
+          "-profile:v",
+          "high",
+          "-pix_fmt",
+          "yuv420p",
+          "-r",
+          "25",
+          "-g",
+          "25",
+          "-crf",
+          "21",
+          "-movflags",
+          "+faststart",
+          "output.mp4"
+        ]
+      },
+      "filename": "starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-right-r1-1080x1920.mp4",
+      "bytes": 1481732,
+      "sha256": "7432ad863ad3c197ffb4cf94bdaea632d59059f9be239fdd9e8b4c3980122f26",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "25/1",
+            "nb_frames": "600"
+          }
+        ],
+        "format": {
+          "duration": "24.000000"
+        }
+      }
+    },
+    {
+      "installation": "landscape",
+      "screen": "landscape",
+      "job": {
+        "filename": "starbucks-six-landscape-travel-landscape-r1-1920x1080.mp4",
+        "W": 1920,
+        "H": 1080,
+        "input": "input.png",
+        "durationSeconds": 8,
+        "bitrateKbps": 8294,
+        "args": [
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-t",
+          "8",
+          "-i",
+          "input.png",
+          "-t",
+          "8",
+          "-vf",
+          "format=yuv420p,setsar=1",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "veryfast",
+          "-tune",
+          "stillimage",
+          "-threads",
+          "1",
+          "-profile:v",
+          "high",
+          "-level:v",
+          "5.1",
+          "-pix_fmt",
+          "yuv420p",
+          "-color_range",
+          "tv",
+          "-r",
+          "25",
+          "-b:v",
+          "8294k",
+          "-maxrate",
+          "8294k",
+          "-bufsize",
+          "16588k",
+          "-g",
+          "25",
+          "-movflags",
+          "+faststart",
+          "output.mp4"
+        ]
+      },
+      "filename": "starbucks-six-landscape-travel-landscape-r1-1920x1080.mp4",
+      "bytes": 3439440,
+      "sha256": "d491346861a071fb0752943e387f3ff95f4a827467185b495ad3b875a4ced4f4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1920,
+            "height": 1080,
+            "r_frame_rate": "25/1",
+            "nb_frames": "200"
+          }
+        ],
+        "format": {
+          "duration": "8.000000"
+        }
+      }
+    },
+    {
+      "installation": "portrait",
+      "screen": "portrait",
+      "job": {
+        "filename": "starbucks-six-portrait-travel-portrait-r1-1080x1920.mp4",
+        "W": 1080,
+        "H": 1920,
+        "input": "input.png",
+        "durationSeconds": 8,
+        "bitrateKbps": 8294,
+        "args": [
+          "-loop",
+          "1",
+          "-framerate",
+          "25",
+          "-t",
+          "8",
+          "-i",
+          "input.png",
+          "-t",
+          "8",
+          "-vf",
+          "format=yuv420p,setsar=1",
+          "-an",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "veryfast",
+          "-tune",
+          "stillimage",
+          "-threads",
+          "1",
+          "-profile:v",
+          "high",
+          "-level:v",
+          "5.1",
+          "-pix_fmt",
+          "yuv420p",
+          "-color_range",
+          "tv",
+          "-r",
+          "25",
+          "-b:v",
+          "8294k",
+          "-maxrate",
+          "8294k",
+          "-bufsize",
+          "16588k",
+          "-g",
+          "25",
+          "-movflags",
+          "+faststart",
+          "output.mp4"
+        ]
+      },
+      "filename": "starbucks-six-portrait-travel-portrait-r1-1080x1920.mp4",
+      "bytes": 3610628,
+      "sha256": "fafb5f64e93afa00a756058cf8fbbf0edcd4540fe1e1f750e6bc7991c11a6634",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1080,
+            "height": 1920,
+            "r_frame_rate": "25/1",
+            "nb_frames": "200"
+          }
+        ],
+        "format": {
+          "duration": "8.000000"
+        }
+      }
+    }
+  ]
+}
