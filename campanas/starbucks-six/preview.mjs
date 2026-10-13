@@ -14,3 +14,5 @@ document.querySelector('#pause').onclick=()=>{if(playing)elapsed=(performance.no
 document.querySelector('#reset').onclick=async()=>{playing=false;elapsed=0;videos.forEach(v=>v.pause());await sync(true);};
 let syncing=false;setInterval(async()=>{if(!playing||syncing)return;syncing=true;elapsed=(performance.now()-start)/1000;try{await sync();}catch{playing=false;videos.forEach(v=>v.pause());clock.textContent=en?'Video could not load.':'No se pudo cargar el vídeo.';}finally{syncing=false;}},250);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)document.querySelector('#pause').click();});
+
+for(const id of ['play','pause','reset'])document.querySelector('#'+id).disabled=false;
