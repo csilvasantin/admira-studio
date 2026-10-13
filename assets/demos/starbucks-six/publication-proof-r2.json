@@ -244,8 +244,16 @@
       24,
       8
     ],
-    "maxVideoSpreadSeconds": 0.005,
-    "physicalHardware": false
+    "maxVideoSpreadSeconds": 0.013,
+    "physicalHardware": false,
+    "environment": "https://admira.studio/campanas/starbucks-six/",
+    "full32SecondCycleVerified": true,
+    "languages": [
+      "es",
+      "en"
+    ],
+    "pauseVerified": true,
+    "checkedAt": "2026-10-13T22:37:40.294523+00:00"
   },
   "players": {
     "MacMini": "stopped",
