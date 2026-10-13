@@ -1,0 +1,98 @@
+{
+  "schema": "admira.mixed-screen-hardware-proof.v1",
+  "verifiedAt": "2026-10-13T22:08:54.414795+00:00",
+  "site": "Gran de Gràcia 51",
+  "order": "V-H-V-V-H-V",
+  "slotsSeconds": [
+    24,
+    8
+  ],
+  "state": "stopped_by_user",
+  "startedAndDecodedOnSixScreens": true,
+  "fullCycleVerified": false,
+  "reason": "Carlos requested keeping all six players stopped after Escape interrupted two verification runs.",
+  "samples": 20,
+  "clockOffsetSpreadMaxMs": 104,
+  "videoTimelineErrorMaxSecStable": 0.027652166330753403,
+  "screens": [
+    {
+      "screen": "macstudio-starbucks-vertical",
+      "nativeVideoResolution": [
+        1080,
+        1920
+      ],
+      "phasesObserved": [
+        0,
+        1
+      ],
+      "decodedFramesObserved": 558,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macstudio-starbucks-vertical.jpg"
+    },
+    {
+      "screen": "macstudio-starbucks-horizontal",
+      "nativeVideoResolution": [
+        1920,
+        1080
+      ],
+      "phasesObserved": [
+        0,
+        1
+      ],
+      "decodedFramesObserved": 558,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macstudio-starbucks-horizontal.jpg"
+    },
+    {
+      "screen": "macstudio-starbucks-vertical-right",
+      "nativeVideoResolution": [
+        1080,
+        1920
+      ],
+      "phasesObserved": [
+        0,
+        1
+      ],
+      "decodedFramesObserved": 559,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macstudio-starbucks-vertical-right.jpg"
+    },
+    {
+      "screen": "macmini-starbucks-vertical",
+      "nativeVideoResolution": [
+        1080,
+        1920
+      ],
+      "phasesObserved": [
+        0,
+        1
+      ],
+      "decodedFramesObserved": 562,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macmini-starbucks-vertical.jpg"
+    },
+    {
+      "screen": "macmini-starbucks-horizontal",
+      "nativeVideoResolution": [
+        1920,
+        1080
+      ],
+      "phasesObserved": [
+        0,
+        1
+      ],
+      "decodedFramesObserved": 558,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macmini-starbucks-horizontal.jpg"
+    },
+    {
+      "screen": "macmini-starbucks-vertical-right",
+      "nativeVideoResolution": [
+        1080,
+        1920
+      ],
+      "phasesObserved": [
+        0,
+        1
+      ],
+      "decodedFramesObserved": 557,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macmini-starbucks-vertical-right.jpg"
+    }
+  ],
+  "captureLimit": "MacMini desktop screenshots available; MacStudio OS desktop capture denied. Six player frame captures plus direct WKWebView telemetry were verified. No optical genlock measurement."
+}
