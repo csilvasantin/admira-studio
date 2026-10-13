@@ -3,7 +3,7 @@
   "campaign": "starbucks-six",
   "revision": 2,
   "site": "Gran de Gràcia 51",
-  "checkedAt": "2026-10-13T22:31:27.369998+00:00",
+  "checkedAt": "2026-10-13T22:46:59.830853+00:00",
   "sourceCommit": "bbe2571",
   "mcpCommit": "080d7b9",
   "publicFiles": [
@@ -256,10 +256,11 @@
     "checkedAt": "2026-10-13T22:37:40.294523+00:00"
   },
   "players": {
-    "MacMini": "stopped",
-    "MacStudio": "stopped",
-    "reason": "Carlos requested keeping six players stopped",
-    "currentRevisionPhysicallyVerified": false
+    "MacMini": "playing",
+    "MacStudio": "playing",
+    "reason": "Carlos authorized starting all six with revision 2 and leaving playback running",
+    "currentRevisionPhysicallyVerified": true,
+    "proof": "/assets/demos/starbucks-six/hardware-proof.json"
   },
   "previousRevisionPreserved": true,
   "stock": "/assets/demos/starbucks-six/stock-publication-r2.json"

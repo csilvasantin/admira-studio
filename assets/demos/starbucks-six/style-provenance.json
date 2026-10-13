@@ -78,8 +78,9 @@
     "stableCopyAfterSeconds": 1.5
   },
   "hardware": {
-    "state": "stopped_by_user",
-    "currentRevisionPhysicallyVerified": false,
-    "previousProof": "/assets/demos/starbucks-six/hardware-proof.json"
+    "state": "playing",
+    "currentRevisionPhysicallyVerified": true,
+    "previousProof": "/assets/demos/starbucks-six/hardware-proof-r1.json",
+    "proof": "/assets/demos/starbucks-six/hardware-proof.json"
   }
 }

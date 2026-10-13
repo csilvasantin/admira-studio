@@ -5,7 +5,7 @@
   "clock": "https://brain.digitalavatar.ai/sync/state",
   "fps": 25,
   "totalSeconds": 32,
-  "hardwareVerified": false,
+  "hardwareVerified": true,
   "screens": [
     {
       "screen": "macstudio-starbucks-vertical",
@@ -135,6 +135,7 @@
     }
   ],
   "visualStyle": "coffee-integrated",
-  "playersState": "stopped_by_user",
-  "fullCycleVerified": false
+  "playersState": "playing",
+  "fullCycleVerified": true,
+  "hardwareProof": "/assets/demos/starbucks-six/hardware-proof.json"
 }

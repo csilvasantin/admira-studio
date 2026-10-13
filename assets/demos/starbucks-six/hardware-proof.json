@@ -1,19 +1,20 @@
 {
   "schema": "admira.mixed-screen-hardware-proof.v1",
-  "verifiedAt": "2026-10-13T22:08:54.414795+00:00",
+  "revision": 2,
+  "verifiedAt": "2026-10-13T22:46:59.830853+00:00",
   "site": "Gran de Gràcia 51",
   "order": "V-H-V-V-H-V",
   "slotsSeconds": [
     24,
     8
   ],
-  "state": "stopped_by_user",
+  "state": "playing",
   "startedAndDecodedOnSixScreens": true,
-  "fullCycleVerified": false,
-  "reason": "Carlos requested keeping all six players stopped after Escape interrupted two verification runs.",
-  "samples": 20,
-  "clockOffsetSpreadMaxMs": 104,
-  "videoTimelineErrorMaxSecStable": 0.027652166330753403,
+  "fullCycleVerified": true,
+  "uninterruptedObservationSeconds": 45.506,
+  "samples": 35,
+  "clockOffsetSpreadMaxMs": 23,
+  "videoTimelineErrorMaxSecStable": 0.03266529166817023,
   "screens": [
     {
       "screen": "macstudio-starbucks-vertical",
@@ -26,7 +27,7 @@
         1
       ],
       "decodedFramesObserved": 558,
-      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macstudio-starbucks-vertical.jpg"
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures-r2/starbucks-six-r2-frame-macstudio-starbucks-vertical.jpg"
     },
     {
       "screen": "macstudio-starbucks-horizontal",
@@ -38,8 +39,8 @@
         0,
         1
       ],
-      "decodedFramesObserved": 558,
-      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macstudio-starbucks-horizontal.jpg"
+      "decodedFramesObserved": 559,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures-r2/starbucks-six-r2-frame-macstudio-starbucks-horizontal.jpg"
     },
     {
       "screen": "macstudio-starbucks-vertical-right",
@@ -51,8 +52,8 @@
         0,
         1
       ],
-      "decodedFramesObserved": 559,
-      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macstudio-starbucks-vertical-right.jpg"
+      "decodedFramesObserved": 558,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures-r2/starbucks-six-r2-frame-macstudio-starbucks-vertical-right.jpg"
     },
     {
       "screen": "macmini-starbucks-vertical",
@@ -64,8 +65,8 @@
         0,
         1
       ],
-      "decodedFramesObserved": 562,
-      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macmini-starbucks-vertical.jpg"
+      "decodedFramesObserved": 555,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures-r2/starbucks-six-r2-frame-macmini-starbucks-vertical.jpg"
     },
     {
       "screen": "macmini-starbucks-horizontal",
@@ -77,8 +78,8 @@
         0,
         1
       ],
-      "decodedFramesObserved": 558,
-      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macmini-starbucks-horizontal.jpg"
+      "decodedFramesObserved": 562,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures-r2/starbucks-six-r2-frame-macmini-starbucks-horizontal.jpg"
     },
     {
       "screen": "macmini-starbucks-vertical-right",
@@ -90,9 +91,12 @@
         0,
         1
       ],
-      "decodedFramesObserved": 557,
-      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures/starbucks-six-frame-macmini-starbucks-vertical-right.jpg"
+      "decodedFramesObserved": 558,
+      "frameCapture": "https://admira.studio/assets/demos/starbucks-six/captures-r2/starbucks-six-r2-frame-macmini-starbucks-vertical-right.jpg"
     }
   ],
-  "captureLimit": "MacMini desktop screenshots available; MacStudio OS desktop capture denied. Six player frame captures plus direct WKWebView telemetry were verified. No optical genlock measurement."
+  "evidence": "direct WKWebView diagnostics, six fullscreen window bounds, three MacMini desktop captures and six decoded native frame captures",
+  "opticalGenlock": false,
+  "measuredGaps": false,
+  "previousProof": "/assets/demos/starbucks-six/hardware-proof-r1.json"
 }

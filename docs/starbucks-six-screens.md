@@ -55,6 +55,9 @@ ES/EN: [Procedencia / Provenance](https://admira.studio/assets/demos/starbucks-s
 
 ES/EN: Revisión anterior preservada / Earlier revision preserved: [Creador r1](https://admira.studio/creador/?demo=starbucks-six&version=1), [programa r1 / r1 program](https://admira.studio/assets/demos/starbucks-six/playlist-mixta-r1.json), [paquete r1 / r1 package](https://admira.studio/assets/demos/starbucks-six/starbucks-six-playlist-mixta-r1.zip). Los vídeos r1 permanecen disponibles. / Existing r1 movie URLs remain available.
 
-ES: Las seis fuentes se actualizan a r2 manteniendo 24+8 s, reloj y orden. Los players permanecen parados por petición de Carlos. La evidencia física anterior corresponde a r1; r2 tiene comprobación de archivos y reproducción web, pendiente de reproducción física cuando Carlos la pida.
+ES: Las seis fuentes se actualizan a r2 manteniendo 24+8 s, reloj y orden. Carlos autorizó arrancar r2 el 14-oct-2026 y dejar las seis pantallas reproduciendo. Se ha verificado un ciclo físico completo de 24+8 s en los seis players nativos. La prueba r1 se conserva aparte.
 
-EN: Six sources update to r2 while retaining the 24+8-second clock and order. Players remain stopped at Carlos’s request. Earlier physical proof belongs to r1; r2 has file and browser playback validation, with physical playback pending a new request.
+EN: Six sources update to r2 while retaining the 24+8-second clock and order. Carlos authorized starting r2 on 14-Oct-2026 and leaving all six screens playing. A complete 24+8-second native cycle was verified on all six players. Earlier r1 proof is retained separately.
+
+
+ES/EN: Verificación física r2 / Native r2 verification: 35 muestras durante 45.506 s; diferencia máxima de reloj / maximum clock offset spread 23 ms; error máximo vídeo–timeline en fase estable / maximum stable video-to-timeline error 0.033 s. Todos los vídeos con resolución nativa, fotogramas decodificados y reproducción activa / All videos have native resolution, decoded frames and active playback. La medición es del software de los players; no es una prueba de genlock óptico ni de separaciones físicas medidas / Player software timing, not optical genlock or measured physical gaps. [Prueba / Proof](https://admira.studio/assets/demos/starbucks-six/hardware-proof.json).

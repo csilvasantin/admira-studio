@@ -1129,7 +1129,8 @@
       "preview": "/campanas/starbucks-six/",
       "provenance": "/assets/demos/starbucks-six/style-provenance.json",
       "previous": "/adaptaciones/campanas/starbucks-six-r1.json",
-      "playersState": "stopped_by_user"
+      "playersState": "playing",
+      "nativePlaybackProof": "/assets/demos/starbucks-six/hardware-proof.json"
     }
   },
   "content_workflows": {
