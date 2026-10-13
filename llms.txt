@@ -59,3 +59,9 @@ Adapter typography / Tipografía: OCR extracts optional per-block observed type 
 - Creator / Creador: https://www.admira.studio/creador/ and /en/creador/ — campaigns from scratch with separate product, logo and copy, designed for target screen configurations. Replaces Advertising in primary navigation.
 - Adapter / Adaptador: https://www.admira.studio/adaptaciones/ — adapts existing or third-party image/video assets.
 - Sneakers Store is an optional Creator example: /creador/?demo=sneakers-store. Guide ES/EN: /docs/campanas-instalacion.md. Old workshop URL, saved history and audience creatives remain available.
+
+## Starbucks · seis pantallas / Six screens
+Creador → Ejemplo · Starbucks seis pantallas / Creator → Example · Starbucks six screens.
+CLI existente: /creador, /creator, open creator; elige el ejemplo en Creador / choose the example in Creator.
+MCP: campana_instalacion({demo:"starbucks-six"}) → plan, ocho trabajos, seis programas 24+8 s; no emisión / plan, eight jobs, six 24+8 s programs, no playback.
+V-H-V-V-H-V; cuatro 1080x1920 y dos 1920x1080. Guía y tutorial / guide and tutorial: https://admira.studio/docs/starbucks-six-screens.md

@@ -116,3 +116,9 @@ ES: `/language ENG` y `/idioma ESP` conservan el historial y los valores interno
 ## Cápsula musical GOOD / GOOD musical capsule
 
 `/demo capsula musical good [es|en]` (`/demo capsule musical good`): vídeo vertical de 30 s sobre el Disco de Oro de las Voyager, voz Mónica/Daniel; `/demo capsula cerrar` lo cierra; reproducción de medios existentes, coste 0 €. / A 30-second vertical video about the Voyager Golden Record with Mónica/Daniel narration; `/demo capsule close` closes it; plays existing media, €0. [Guía ES/EN](/docs/capsula-musical-good.md).
+
+## Starbucks · seis pantallas / Six screens
+Creador → Ejemplo · Starbucks seis pantallas / Creator → Example · Starbucks six screens.
+CLI existente: /creador, /creator, open creator; elige el ejemplo en Creador / choose the example in Creator.
+MCP: campana_instalacion({demo:"starbucks-six"}) → plan, ocho trabajos, seis programas 24+8 s; no emisión / plan, eight jobs, six 24+8 s programs, no playback.
+Guía y tutorial / guide and tutorial: https://admira.studio/docs/starbucks-six-screens.md

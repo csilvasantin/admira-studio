@@ -1042,7 +1042,8 @@
     "directions": [
       "hero",
       "editorial",
-      "sequence"
+      "sequence",
+      "travel"
     ],
     "configurations": [
       "landscape",
@@ -1096,7 +1097,29 @@
     "measuredGeometry": false,
     "anamorphicExport": false,
     "pilotEditor": "/creador/?demo=sneakers-store",
-    "legacyEditor": "/adaptaciones/?taller=sneakers-store"
+    "legacyEditor": "/adaptaciones/?taller=sneakers-store",
+    "starbucks_six": {
+      "demo": "starbucks-six",
+      "creator": "https://admira.studio/creador/?demo=starbucks-six",
+      "guide": "/docs/starbucks-six-screens.md",
+      "physical_order": [
+        "V",
+        "H",
+        "V",
+        "V",
+        "H",
+        "V"
+      ],
+      "files": 8,
+      "slots_seconds": [
+        24,
+        8
+      ],
+      "program": "admira.mixed-screen-program.v1",
+      "delivery": "/assets/demos/starbucks-six/playlist-mixta.json",
+      "mcp": "https://mcp-pixeria.admira.store/mcp",
+      "hardware_verification": "Separate live proof / Evidencia física separada"
+    }
   },
   "content_workflows": {
     "creator": {

@@ -18,3 +18,7 @@
   Cache-Control: public, max-age=300
 /assets/demos/studio-v1/*
   Access-Control-Allow-Origin: *
+
+/assets/demos/starbucks-six/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300

@@ -1,6 +1,7 @@
+import {travelPlan,travelJob} from './campaign-travel.mjs?v=starbucks-six-1';
 // Installation-aware, deterministic campaign layouts. No generative API calls.
 export const CAMPAIGN_SCHEMA='pixeria.installation-campaign.v1';
-export const DIRECTIONS=[{id:'hero',es:'Producto protagonista',en:'Product hero'},{id:'editorial',es:'Composición editorial',en:'Editorial composition'},{id:'sequence',es:'Relato entre pantallas',en:'Story across screens'}];
+export const DIRECTIONS=[{id:'hero',es:'Producto protagonista',en:'Product hero'},{id:'editorial',es:'Composición editorial',en:'Editorial composition'},{id:'sequence',es:'Relato entre pantallas',en:'Story across screens'},{id:'travel',es:'Recorrido animado',en:'Animated journey'}];
 const screen=(id,x,y,w,h)=>({id,x,y,w,h,rotation:0});
 export const INSTALLATIONS=[
  {id:'landscape',name:{es:'Horizontal',en:'Landscape'},width:1920,height:1080,screens:[screen('lcd',0,0,1920,1080)]},
@@ -16,7 +17,7 @@ const inside=(a,b)=>a.x>=b.x-.01&&a.y>=b.y-.01&&a.x+a.w<=b.x+b.w+.01&&a.y+a.h<=b
 const finite=v=>typeof v==='number'&&Number.isFinite(v);
 const identifier=v=>typeof v==='string'&&/^[a-z0-9][a-z0-9_-]{0,79}$/i.test(v);
 export function validateInstallation(i){
- const errors=[];if(i?.enabled!==undefined&&typeof i.enabled!=='boolean')errors.push('installation-enabled');if(!i||!Number.isInteger(i.width)||!Number.isInteger(i.height)||i.width<64||i.height<64||i.width>16384||i.height>16384||i.width*i.height>16777216)errors.push('installation-size');
+ const errors=[];if(i?.phase!==undefined&&!['mural','unit'].includes(i.phase))errors.push('installation-phase');if(i?.enabled!==undefined&&typeof i.enabled!=='boolean')errors.push('installation-enabled');if(!i||!Number.isInteger(i.width)||!Number.isInteger(i.height)||i.width<64||i.height<64||i.width>16384||i.height>16384||i.width*i.height>16777216)errors.push('installation-size');
  if(!identifier(i?.id))errors.push('installation-id');
  if(i?.enabled!==undefined&&typeof i.enabled!=='boolean')errors.push('installation-enabled');
  if(!Array.isArray(i?.screens)||!i.screens.length||i.screens.length>32)errors.push('screens');
@@ -41,8 +42,9 @@ export function restoreCampaign(value){
  for(const k of ['product','logo']){const u=String(value[k]||'');if(!/^(\/[^/]|https:\/\/|data:image\/(png|jpeg|webp);base64,)/.test(u)||u.length>12000000)throw Error('campaign-asset');out[k]=u;}
  if(!DIRECTIONS.some(x=>x.id===value.direction))throw Error('campaign-direction');out.direction=value.direction;
  if(!Number.isInteger(value.seconds)||value.seconds<1||value.seconds>60)throw Error('campaign-duration');out.seconds=value.seconds;
+ if(value.unitSeconds!==undefined){if(!Number.isInteger(value.unitSeconds)||value.unitSeconds<1||value.unitSeconds>60)throw Error('campaign-unit-duration');out.unitSeconds=value.unitSeconds;}
  if(!Array.isArray(value.installations)||!value.installations.length||value.installations.length>64||new Set(value.installations.map(i=>i?.id)).size!==value.installations.length||value.installations.some(i=>validateInstallation(i).length))throw Error('campaign-installations');
- if(value.placements!==undefined){if(!value.placements||Array.isArray(value.placements)||typeof value.placements!=='object'||Object.keys(value.placements).length>1000)throw Error('campaign-placements');for(const [key,r] of Object.entries(value.placements))if(!/^[a-z0-9_-]+:(hero|editorial|sequence):(logo|product|headline|cta|price)$/.test(key)||!r||!['x','y','w','h'].every(k=>finite(r[k]))||r.w<=0||r.h<=0||r.w>2||r.h>2||Math.abs(r.x)>2||Math.abs(r.y)>2)throw Error('campaign-placements');out.placements=clone(value.placements);}
+ if(value.placements!==undefined){if(!value.placements||Array.isArray(value.placements)||typeof value.placements!=='object'||Object.keys(value.placements).length>1000)throw Error('campaign-placements');for(const [key,r] of Object.entries(value.placements))if(!/^[a-z0-9_-]+:(hero|editorial|sequence|travel):(logo|product|headline|cta|price)$/.test(key)||!r||!['x','y','w','h'].every(k=>finite(r[k]))||r.w<=0||r.h<=0||r.w>2||r.h>2||Math.abs(r.x)>2||Math.abs(r.y)>2)throw Error('campaign-placements');out.placements=clone(value.placements);}
  if(!Number.isSafeInteger(value.revision)||value.revision<1)throw Error('campaign-revision');
  out.installations=clone(value.installations);out.revision=value.revision;return out;
 }
@@ -71,6 +73,8 @@ function divide(r,wide,direction){
 }
 export function planCampaign(c,i,direction=c.direction,measure=(s,px)=>s.length*px*.59){
  const errors=validateInstallation(i);if(errors.length)return{valid:false,errors,layers:[]};
+ if(direction==='travel'&&i.phase==='unit')return planCampaign(c,i,'hero',measure);
+ if(direction==='travel')return travelPlan(c,i,measure,fit);
  if(!DIRECTIONS.some(d=>d.id===direction))return{valid:false,errors:['campaign-direction'],layers:[]};
  const regions=safeRegions(i);if(!regions.length)return{valid:false,errors:['safe-space'],layers:[]};
  let copy,product,logo,extras=[];
@@ -107,10 +111,12 @@ export function planCampaign(c,i,direction=c.direction,measure=(s,px)=>s.length*
 }
 export function campaignContract(c,approvals={}){
  const campaign=restoreCampaign(c);
- return{schema:CAMPAIGN_SCHEMA,campaign,delivery:{fps:25,gopFrames:25,audio:false,kind:'still-composition',hardwareVerified:false},approvals:clone(approvals),limits:{measuredGeometry:false,anamorphicExport:false,automaticVideoLayerExtraction:false},derived:campaign.installations.filter(i=>i.enabled!==false).flatMap(i=>i.screens.map(s=>({installation:i.id,screen:s.id,width:s.rotation%180?s.h:s.w,height:s.rotation%180?s.w:s.h,rotation:s.rotation||0,tags:['campaign:'+campaign.id,'installation:'+i.id,'screen:'+s.id,'direction:'+campaign.direction]})))};
+ return{schema:CAMPAIGN_SCHEMA,campaign,delivery:{fps:25,gopFrames:25,audio:false,kind:campaign.direction==='travel'?'animated-travel':'still-composition',hardwareVerified:false},approvals:clone(approvals),limits:{measuredGeometry:false,anamorphicExport:false,automaticVideoLayerExtraction:false},derived:campaign.installations.filter(i=>i.enabled!==false).flatMap(i=>i.screens.map(s=>({installation:i.id,screen:s.id,width:s.rotation%180?s.h:s.w,height:s.rotation%180?s.w:s.h,rotation:s.rotation||0,tags:['campaign:'+campaign.id,'installation:'+i.id,'screen:'+s.id,'direction:'+campaign.direction]})))};
 }
 export function campaignJob(c,i,s){
  if(validateInstallation(i).length)throw Error('campaign-installations');
+ if(c.direction==='travel'&&i.phase!=='unit')return travelJob(c,i,s);
+ if(i.phase==='unit')c={...c,seconds:c.unitSeconds||8};
  const W=s.rotation%180?s.h:s.w,H=s.rotation%180?s.w:s.h;
  if(W%2||H%2)throw Error('even-resolution');
  const rate=Math.max(800,Math.min(12000,Math.round(W*H*.004))),filename=`${c.id}-${i.id}-${c.direction}-${s.id}-r${c.revision}-${W}x${H}.mp4`;

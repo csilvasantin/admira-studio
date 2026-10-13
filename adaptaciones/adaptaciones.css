@@ -453,3 +453,5 @@ body.classic-active #cuad-avanzado-live .profile-label,
 body.image-source[data-paso="1"] #cuad-opciones,
 body.image-source[data-paso="1"] #cuad-avanzado-live .profile-label{display:none!important}
 @media(min-width:700px){body.classic-active #grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.campaign-travel-controls{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin:1rem 0}.campaign-travel-controls[hidden]{display:none}.campaign-travel-controls input{width:min(480px,40vw)}

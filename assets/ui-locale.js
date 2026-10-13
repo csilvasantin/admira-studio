@@ -4,6 +4,9 @@
 (function () {
   'use strict';
   const COPY = {
+  "Creador Starbucks: café animado que recorre seis pantallas V–H–V–V–H–V": "Starbucks Creator: animated coffee crosses six P–L–P–P–L–P screens",
+  "Ocho MP4 nativos y playlist mixta de 24+8 segundos": "Eight native MP4s and a mixed 24+8 second playlist",
+  "Exportación del navegador verificada, tutorial y MCP ES/EN actualizados": "Verified browser export, updated ES/EN tutorial and MCP",
   "Cerrar ficha de mueble": "Close furniture details",
   "Roble": "Oak",
   "Nogal": "Walnut",
