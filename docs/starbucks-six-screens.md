@@ -12,7 +12,7 @@ EN: Editable [Creator test](https://admira.studio/en/creador/?demo=starbucks-six
 4. **Ajustar instalación** permite editar posiciones y tamaños. El mapa nominal es 8160×1920: cuatro ventanas 1080×1920 y dos 1920×1080, horizontales centradas en altura. La foto acredita el orden; no determina milímetros, separaciones físicas ni calibración anamórfica. Para movimiento, los paneles deben compartir una franja vertical, estar sin girar y tener dimensiones pares.
 5. Aprueba las tres piezas. Cambiar contenido o mapa invalida las aprobaciones. **Preparar MP4 por pantalla** usa la cola FFmpeg existente: seis recortes de la misma trayectoria y dos archivos individuales. El ZIP PNG conserva un fotograma, no la animación.
 6. Cuando terminen los ocho trabajos, **Descargar playlist mixta** entrega ZIP con MP4, campaña portable y `playlist-mixta.json`: dos entradas por screen, recorrido y pieza individual del formato correcto. Los cuatro verticales comparten el archivo individual vertical; los dos horizontales comparten el horizontal. **Publicar MP4 en Stock** sigue siendo una acción posterior explícita.
-7. Para probar sin codificar, descarga el [paquete de ejemplo](https://admira.studio/assets/demos/starbucks-six/starbucks-six-playlist-mixta.zip) o el [programa](https://admira.studio/assets/demos/starbucks-six/playlist-mixta.json). Los ocho MP4 han sido codificados/probados: H.264, 25 fps, 600 o 200 fotogramas, dimensiones nativas, sin audio.
+7. Para probar sin codificar, descarga el [paquete de ejemplo](https://admira.studio/assets/demos/starbucks-six/starbucks-six-playlist-mixta.zip?revision=2) o el [programa](https://admira.studio/assets/demos/starbucks-six/playlist-mixta.json). Los ocho MP4 han sido codificados/probados: H.264, 25 fps, 600 o 200 fotogramas, dimensiones nativas, sin audio.
 
 ## English tutorial
 
@@ -22,7 +22,7 @@ EN: Editable [Creator test](https://admira.studio/en/creador/?demo=starbucks-six
 4. **Adjust installation** edits dimensions and positions. The nominal 8160×1920 map uses four 1080×1920 portrait windows and two centered 1920×1080 landscape windows. The photograph confirms order, not measured gaps, physical scale or anamorphic calibration. Moving panels need a shared vertical band, no rotation and even output dimensions.
 5. Approve all three pieces. Edits invalidate approvals. **Prepare per-screen MP4** uses the existing FFmpeg queue: six cuts of one path and two individual files. PNG ZIP is a still frame, not animation.
 6. Once eight jobs finish, **Download mixed playlist** delivers movies, portable campaign and `playlist-mixta.json`: two slots per screen, a wall segment then its individual orientation item. Four portraits share one individual portrait movie, two landscapes share one landscape movie. **Publish MP4 to Stock** remains a separate explicit action.
-7. [Example package](https://admira.studio/assets/demos/starbucks-six/starbucks-six-playlist-mixta.zip) and [program](https://admira.studio/assets/demos/starbucks-six/playlist-mixta.json) are available without encoding. Eight example MP4s were encoded/probed: H.264, 25 fps, 600/200 frames, native dimensions, no audio.
+7. [Example package](https://admira.studio/assets/demos/starbucks-six/starbucks-six-playlist-mixta.zip?revision=2) and [program](https://admira.studio/assets/demos/starbucks-six/playlist-mixta.json) are available without encoding. Eight example MP4s were encoded/probed: H.264, 25 fps, 600/200 frames, native dimensions, no audio.
 
 ## Contrato / Contract
 
