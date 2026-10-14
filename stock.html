@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r6.1248';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r7.1307';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r6.12:48">
+  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r7.13:07">
   <link rel="canonical" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r6.1248">
+  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r7.1307">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -72,6 +72,25 @@
     /* ── Distribuidor de assets ───────────────────────────────── */
     /* Casilla de selección en lote sobre cada tarjeta */
     .stock-card{ position:relative; }
+    .stock-origen-bar[hidden]{display:none!important}
+    #localUploadModal{width:min(660px,95vw);max-width:660px;max-height:90vh;overflow:hidden}
+    #localUploadModal [hidden]{display:none!important}
+    #localUploadModal .keys-form{display:flex;flex-direction:column;box-sizing:border-box;max-height:calc(90vh - 2px);overflow:hidden}
+    #localUploadModal h3,#localUploadStatus,.local-upload-actions{flex-shrink:0}
+    .local-upload-content{display:grid;gap:14px;overflow-y:auto;min-height:0}
+    #localUploadModal textarea,#localUploadModal input{width:100%;box-sizing:border-box;font:inherit;padding:8px;background:var(--bg);border:1px solid var(--line-bright);color:var(--ink)}
+    .local-drop-zone{border:2px dashed var(--line-bright);border-radius:10px;padding:24px 12px;text-align:center}
+    .local-drop-zone p{margin:0 0 12px}
+    .local-upload-queue{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+    .local-upload-queue li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;padding:10px;border:1px solid var(--line-bright);border-radius:8px}
+    .local-file-name,.local-file-state{overflow-wrap:anywhere}
+    .local-file-state{grid-column:1;color:var(--muted);font-size:12px}
+    .local-upload-queue button{grid-column:2;grid-row:1/3;background:transparent;border:1px solid var(--line-bright);color:var(--ink);cursor:pointer}
+    #localUploadStatus{white-space:pre-line;overflow-wrap:anywhere;min-height:1.5em}
+    .local-upload-actions{display:flex;flex-wrap:wrap;gap:8px}
+    #localDropOverlay{position:fixed;inset:12px;z-index:10000;border:3px dashed var(--matrix);background:#001509ee;display:grid;place-content:center;text-align:center;pointer-events:none;color:var(--matrix);padding:20px;font-size:24px}
+    #localDropOverlay[hidden]{display:none}
+    #localDropOverlay span{font-size:16px}
     .stock-card-media{position:relative}
     .stock-playlist-badge{position:absolute;right:9px;bottom:9px;z-index:4;border:1px solid var(--matrix);border-radius:7px;background:#001b0bee;color:var(--matrix);padding:5px 8px;font-size:11px;font-weight:700;font-family:inherit;cursor:help;max-width:80%}
     .stock-playlist-badge:focus-visible{outline:2px solid #fff;outline-offset:2px}
@@ -347,11 +366,11 @@
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
   </style>
-  <script defer src="/assets/site-nav.js?v=14.10.2026.r6.1248"></script>
-  <script defer src="/assets/descarga-local.js?v=14.10.2026.r6.1248"></script>
-  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r6.1248">
+  <script defer src="/assets/site-nav.js?v=14.10.2026.r7.1307"></script>
+  <script defer src="/assets/descarga-local.js?v=14.10.2026.r7.1307"></script>
+  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r7.1307">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r6.1248">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r7.1307">
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -414,6 +433,7 @@
           <input id="stockSearch" type="text" placeholder="🔍 buscar… o pega una URL e importa →" autocomplete="off">
           <button type="button" class="btn primary stock-import-btn" id="stockImportFromSearch" title="Importar la URL del buscador (yt-dlp · igual que en AdmiraXP de Telegram)" aria-label="Importar URL">📥</button>
         </div>
+        <button type="button" class="stock-pager-btn" id="stockLocalUpload" title="Busca archivos en tu equipo o arrástralos sobre Stock. Hasta 5 archivos, 100 MB por archivo.">📂 Subir archivos</button>
         <div class="stock-pager-filters">
           <select id="stockTypeFilter" title="Filtrar por tipo" aria-label="Filtrar por tipo">
             <option value="">Todos los tipos</option>
@@ -562,6 +582,24 @@
       </div>
     </form>
   </dialog>
+
+  <div id="localDropOverlay" hidden aria-hidden="true"><strong>Suelta los archivos para añadirlos</strong><span>Hasta 5 archivos · 100 MB por archivo</span></div>
+  <dialog id="localUploadModal" class="keys-modal" aria-labelledby="localUploadTitle">
+    <form method="dialog" class="keys-form">
+      <h3 id="localUploadTitle">📂 SUBIR ARCHIVOS LOCALES</h3>
+      <div class="local-upload-content">
+      <p class="keys-warn">Vídeos, imágenes y audio. Hasta <strong>5 archivos por carga</strong>, con un máximo de <strong>100 MB por archivo</strong>.</p>
+      <div class="local-drop-zone"><p>Arrastra los archivos aquí o búscalos en tu equipo.</p><button type="button" class="btn" id="localUploadBrowse">Buscar en el equipo</button></div>
+      <input id="localUploadInput" type="file" accept="video/*,audio/*,image/*,.mp4,.mov,.m4v,.webm,.mkv,.avi,.mp3,.m4a,.aac,.wav,.ogg,.flac,.jpg,.jpeg,.png,.gif,.webp,.avif,.heic,.heif,.svg" multiple hidden>
+      <ul id="localUploadQueue" class="local-upload-queue" aria-label="Archivos de esta carga"></ul>
+      <label for="localUploadComment">Comentarios (opcional · genera etiquetas de búsqueda)</label><textarea id="localUploadComment" rows="2" maxlength="4000" placeholder="Describe el contenido para encontrarlo después"></textarea>
+      <label for="localUploadTags">Etiquetas (opcional · cliente, espacio o dispositivo)</label><input id="localUploadTags" type="text" maxlength="2000" placeholder="#starbucks #hilomusical">
+      </div>
+      <div id="localUploadStatus" role="status" aria-live="polite"></div>
+      <div class="local-upload-actions"><button type="button" class="btn primary" id="localUploadSend" disabled>Subir archivos</button><button type="button" class="btn" id="localUploadView" hidden>Ver en Stock</button><button type="button" class="btn" id="localUploadClear">Nueva carga</button><button type="button" class="btn" id="localUploadClose">Cerrar</button></div>
+    </form>
+  </dialog>
+  <script type="module" src="/assets/stock-local-upload.mjs?v=14.10.2026.r7.1307"></script>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -750,11 +788,11 @@
     </form>
   </dialog>
 
-  <script defer src="/matrix-rain.js?v=14.10.2026.r6.1248"></script>
-  <script src="app.js?v=14.10.2026.r6.1248"></script>
-  <script src="assets/stock-search.js?v=14.10.2026.r6.1248"></script>
-  <script src="/assets/stock-destinations.js?v=14.10.2026.r6.1248"></script>
-  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r6.1248"></script>
+  <script defer src="/matrix-rain.js?v=14.10.2026.r7.1307"></script>
+  <script src="app.js?v=14.10.2026.r7.1307"></script>
+  <script src="assets/stock-search.js?v=14.10.2026.r7.1307"></script>
+  <script src="/assets/stock-destinations.js?v=14.10.2026.r7.1307"></script>
+  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r7.1307"></script>
   <script type="module">
   import {isXpace, blendFor, xpacePoster} from "./assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "./assets/furniture/catalog.mjs";
@@ -796,6 +834,9 @@
     const RATING_VOTES_KEY = 'pixeria-stock-ratings-v1';
     const CONSUMPTION_SESSION_KEY = 'pixeria-stock-consumption-session-v1';
     let allItems = [], allItemsTodo = [];
+    // Sólo entradas confirmadas por /stock-publish: visibles al terminar aunque
+    // el índice esté todavía reconstruyéndose. El índice las sustituye al llegar.
+    const localPublished = new Map();
     // Cuenta asignada a un cliente (identidad central de AdmiraNeXT → /auth/session): lo que no es suyo ni genérico
     // no entra en la página, así ninguna vista —rejilla, catálogos, etiquetas, contadores, enlace directo— lo enseña.
     // Es una vista, no una barrera: el índice del Stock sigue siendo público por dirección.
@@ -2022,8 +2063,10 @@
         const absorber = (lista, mandaEnElDedupe) => {
           for (const it of lista) {
             if (!it || !it.id) continue;
+            if(mandaEnElDedupe)localPublished.delete(it.id);
             if (mandaEnElDedupe || !byId.has(it.id)) byId.set(it.id, it);
           }
+          for(const [id,item] of localPublished)if(!byId.has(id))byId.set(id,item);
           hubo = true;
           if (onParcial) { try { onParcial(Array.from(byId.values())); } catch (e) {} }
         };
@@ -2107,6 +2150,15 @@
         }
       }
     }
+    document.addEventListener('stock:local-published',e=>{
+      const it=e.detail?.item;if(!it?.id||!it.url)return;
+      localPublished.set(it.id,it);allItems=soloMio([it,...allItemsTodo.filter(x=>x.id!==it.id)]);writeCache(allItemsTodo);buildMotorOptions();applyFilters(true);feedMatrix();
+    });
+    document.addEventListener('stock:local-view',()=>{
+      if(filters.type==='catalogo')CATALOGO.leave();
+      filters.q='';search.value='';filters.type='';typeFilter.value='';filters.tags=[];filters.origen='';sortMode='date-desc';applyFilters(true);
+      const u=new URL(location.href);u.searchParams.delete('type');u.searchParams.delete('origen');history.replaceState({},'',u);
+    });
     { const tp = new URLSearchParams(location.search).get('type'); if (tp === 'xpaces' || tp === 'capsula') { filters.type = tp; typeFilter.value = tp; } } // ?type=capsula: enlace «Cápsulas de Conocimiento» del Adaptador
     typeFilter.addEventListener('change', () => {
       const was = filters.type === 'catalogo';
@@ -3397,7 +3449,7 @@
       .catch(()=>{});
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=14.10.2026.r6.1248"></script>
+  <script defer src="/assets/cuadratura.js?v=14.10.2026.r7.1307"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>
