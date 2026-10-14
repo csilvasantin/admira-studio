@@ -1,11 +1,11 @@
-import {mountAdapterInstallations} from './client-format-controls.mjs?v=starbucks-story-1';
+import {mountAdapterInstallations} from './client-format-controls.mjs?v=starbucks-room-2';
 import {readHandoff} from './campaign-handoff.mjs?v=starbucks-story-1';
 import {classicTargets,isClassicFormat,extraFormats} from './classic-step.mjs?v=20261009-classic-step-1';
 import {mountAdvertisement} from './anuncio-studio.mjs?v=classic-auto-6';
 import {compositionFromStock} from '../assets/content-composition.mjs?v=composition-1';
-import {mountCampaign} from './campaign-studio.mjs?v=starbucks-story-1';
+import {mountCampaign} from './campaign-studio.mjs?v=starbucks-room-2';
 let campaignWorkshop=null;
-import {mountTwin} from './gemelo-digital.mjs?v=starbucks-video-twin-1';
+import {mountTwin} from './gemelo-digital.mjs?v=starbucks-room-2';
 import {aiJob} from './ia-core.mjs?v=adapter-detail-1';
 import {APPLICATION_KEY,restoreApplications,applyApplications} from './aplicaciones-core.mjs';
 import {mountStudio} from './studio-adaptaciones.mjs';
@@ -450,7 +450,9 @@ function buildGrid() {
     el.querySelector('.export-one').onclick=(e)=>{e.stopPropagation();exportFormats([f]);};
     // Display (no print) from a still image: JPG as well, lighter for ad networks.
     if(f.category==='display'&&f.output==='png'){const j=document.createElement('button');j.type='button';j.className='pill export-one export-jpg';j.textContent='JPG';j.hidden=!isPicture();j.title=t('JPG calidad 90, más ligero para redes de display','JPG quality 90, lighter for display networks');j.onclick=(e)=>{e.stopPropagation();exportFormats([f],'jpg');};el.querySelector('.export-one').after(j);}
-    if(twin&&!classicActive())el.append(twin.button(f));
+    if(twin&&!classicActive()){
+      const source=el.querySelector('.esp-views')||el.querySelector('.stage'),pair=document.createElement('div');pair.className='adaptation-preview-pair';source.before(pair);pair.append(source,twin.button(f));
+    }
     selectable(el, f);
     g.appendChild(el);
   });
@@ -526,7 +528,9 @@ function especialCard(f) {
   el.querySelector('.export-atlas').onclick = (e) => { e.stopPropagation(); exportFormats([f], 'atlas'); };
   el.querySelector('.export-segments').onclick = (e) => { e.stopPropagation(); exportFormats([f], 'segments'); };
   el.querySelector('.esp-actions').before(crearControls(f));
-  if(twin&&!classicActive())el.append(twin.button(f));
+  if(twin&&!classicActive()){
+      const source=el.querySelector('.esp-views')||el.querySelector('.stage'),pair=document.createElement('div');pair.className='adaptation-preview-pair';source.before(pair);pair.append(source,twin.button(f));
+    }
   selectable(el, f);
   return el;
 }
@@ -1864,7 +1868,7 @@ Schedule now?`);
 // Lista: proyectos de Yokup (en vivo, con respaldo en proyectos/yokup.json). Ajustes propios:
 // fichas de proyectos/index.json. Sin ficha, el proyecto usa solo la biblioteca general.
 const PROJECTS_DIR = 'adaptaciones/proyectos/';
-const getJSON = async (url) => { const r = await fetch(url); if (!r.ok) throw new Error(`${r.status} ${url}`); return r.json(); };
+const getJSON = async (url) => { const r = await fetch(url+(url.includes("/adaptaciones/proyectos/")?(url.includes("?")?"&":"?")+"v=starbucks-layouts-3":""),{cache:"no-cache"}); if (!r.ok) throw new Error(`${r.status} ${url}`); return r.json(); };
 const fichaCache = new Map();
 async function loadFicha(entry) {
   if (fichaCache.has(entry.id)) return fichaCache.get(entry.id);
@@ -1960,7 +1964,7 @@ if (savedList.length) { yokupSource = 'saved'; yokupDate = String(yokupJSON.actu
 PROJECTS = mergeProjects(savedList, INDEX);
 // Altadis preferences saved before the fichas move to their project once; nothing is deleted.
 let migratedTo = null; try { migratedTo = migrateStorage(localStorage, STORAGE_KEY); } catch (_) {}
-campaignWorkshop=mountCampaign({t,queue,openTwin:f=>twin?.open(f),clientCatalog:INDEX});
+campaignWorkshop=mountCampaign({t,queue,openTwin:f=>twin?.open(f),previewTwin:(f,draw,stamp)=>twin?.preview(f,{draw,stamp}),clientCatalog:INDEX});
 let query = null, lastProject = null;
 try { query = new URLSearchParams(location.search).get('proyecto'); } catch (_) {}
 try { lastProject = localStorage.getItem(PROJECT_KEY) || migratedTo; } catch (_) { lastProject = migratedTo; }
@@ -1997,6 +2001,7 @@ function endTwinPlayback(){
   twinPlayback=null;
 }
 twin=mountTwin({t,start:startTwinPlayback,end:endTwinPlayback,transport:campaignWorkshop?.twinPlayback,ready:()=>campaignWorkshop?.active()?campaignWorkshop.ready():mediaReady(),destino:f=>f.installation?{ancho:f.installation.width,alto:f.installation.height}:destino(f),formats:()=>campaignWorkshop?.active()?campaignWorkshop.formats():FORMATOS.filter(isProjectFormat),background:f=>studio?.background(f),shops:()=>EST?.estancos,shop:()=>studio?.shop(),selectShop:id=>studio?.selectShop(id),draw:(cv,f,bg)=>{if(campaignWorkshop?.draw(cv,f))return;if(advertisement?.draw(cv,f))return;if(creando(f)&&!bg)paintCrear(cv,destino(f),f);else paint(cv,destino(f),modoEfectivo(f),state.fmt[f.id],null,bg);}});
+campaignWorkshop?.refresh();
 advertisement=mountAdvertisement({t,formats:()=>FORMATOS,selected:selectedFormats,classicTarget:()=>classicActive()?classicTargetId:null,source:()=>({kind:srcKind,image:img,src:state.src,composition:state.origin?.composition||null}),destino,seconds:()=>stillSec,
 textZone:f=>{if(!f.especial)return null;const seg=geometry(f.layout).segments.reduce((a,b)=>a.wall.w*a.wall.h>=b.wall.w*b.wall.h?a:b);return {...seg.wall};},
 changed:()=>{buildCardSettings();refreshInfo();drawDirty=true;}});

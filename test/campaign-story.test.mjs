@@ -22,13 +22,13 @@ test('story has bounded fade/slide entrances and exits, with one readable messag
   const l=layers[0];assert.equal(layerMotion(l,0).alpha,0);assert.equal(layerMotion(l,l.end).alpha,0);assert(Math.abs(layerMotion(l,2).x)<=10);assert(motionExpressions(l).x.includes('pow'));
  }
 });
-test('four destinations yield 14 native jobs, with actual language metadata and two-language individual timelines',()=>{
+test('five destinations yield 20 native jobs, with actual language metadata and two-language individual timelines',()=>{
  const c=campaign(),jobs=c.installations.flatMap(i=>{const p=planCampaign(c,i);assert.equal(p.valid,true);return i.screens.map(s=>campaignJob(c,i,s,p));});
- assert.equal(jobs.length,14);assert.equal(new Set(jobs.map(j=>j.filename)).size,14);
- assert.equal(jobs.filter(j=>j.contentLanguages.join(',')==='en').length,6);assert.equal(jobs.filter(j=>j.contentLanguages.length===2).length,2);
+ assert.equal(jobs.length,20);assert.equal(new Set(jobs.map(j=>j.filename)).size,20);
+ assert.equal(jobs.filter(j=>j.contentLanguages.join(',')==='en').length,9);assert.equal(jobs.filter(j=>j.contentLanguages.length===2).length,2);
  for(const j of jobs){assert.equal(j.args[j.args.indexOf('-frames:v')+1],String(j.durationSeconds*25));assert(j.args[j.args.indexOf('-filter_complex')+1].includes('fade=t=out'));}
  const unit=c.installations.find(i=>i.phase==='unit');assert.deepEqual(screenStory(c,unit,unit.screens[0]).map(r=>[r.language,r.start]),[['es',0],['en',4]]);
- const contract=campaignContract(c);assert.equal(contract.derived.filter(d=>d.tags.includes('content-language:en')).length,8);
+ const contract=campaignContract(c);assert.equal(contract.derived.filter(d=>d.tags.includes('content-language:en')).length,11);
  c.contentLanguages=['es','en'];c.copyByLanguage.en={headline:'Every coffee has a story.',cta:'Enjoy the moment.',price:''};assert.equal(campaignVariants(c).length,1);
  assert(mixedPrograms(c).every(p=>p.program.totalSeconds===24&&p.program.screens.every(s=>s.items.length===1)));
 });

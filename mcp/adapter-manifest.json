@@ -908,7 +908,19 @@
         "dialog_close"
       ]
     },
-    "anamorphic_export": false
+    "anamorphic_export": false,
+    "clientScenes": {
+      "starbucks": {
+        "scene": "adaptaciones/starbucks-twin.mjs",
+        "sourcePhoto": "/assets/xpaces/starbucks/pg103-reference.png",
+        "guide": "/docs/starbucks-gemelo.md",
+        "photoLocation": "pg103",
+        "visualGeometry": "photo_reference_approximation",
+        "measuredGeometry": false,
+        "nativeCropsUnchanged": true,
+        "gdg51Setting": "PG103 reference, separate photo unavailable"
+      }
+    }
   },
   "export_quality": {
     "preset": "veryfast",
@@ -1140,6 +1152,26 @@
       "englishDelivery": "/assets/demos/starbucks-six/en/playlist-mixta.json",
       "languageGuide": "/docs/creator-content-language.md",
       "multipleContentLanguages": true
+    },
+    "starbucks_client": {
+      "catalogue": "/adaptaciones/proyectos/pixeria-alsea.json",
+      "layouts": [
+        "starbucks-pg103",
+        "starbucks-gdg51",
+        "starbucks-gdg51-vhvvhv"
+      ],
+      "patterns": [
+        "2V-1V-3V",
+        "H-V-H-H-V-H",
+        "V-H-V-V-H-V"
+      ],
+      "individualOrientations": [
+        "landscape",
+        "portrait"
+      ],
+      "allDestinations": 5,
+      "allNativeFiles": 20,
+      "guide": "/docs/starbucks-gemelo.md"
     }
   },
   "content_workflows": {
@@ -1188,7 +1220,12 @@
       "Assets",
       "Stock"
     ],
-    "additionalTools": "Options panel; existing routes retained"
+    "additionalTools": "Options panel; existing routes retained",
+    "panels": {
+      "options": "left",
+      "advanced": "right",
+      "expert": "bottom"
+    }
   },
   "nextStepCampaign": {
     "id": "sneakers-next-step",

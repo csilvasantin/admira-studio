@@ -462,3 +462,22 @@ body.image-source[data-paso="1"] #cuad-avanzado-live .profile-label{display:none
 .campaign-client-formats label{display:grid;gap:6px;font-weight:650}.campaign-client-formats select{min-width:240px;max-width:100%;padding:9px;color:inherit;background:var(--pn,#07130c);border:1px solid currentColor;border-radius:var(--rad,0)}.campaign-client-formats p{width:100%;margin:0}
 .adapter-client-installations{margin:20px 0}.adapter-client-installations h2{font-size:1.2rem}.adapter-installation-card{display:inline-flex;vertical-align:top;flex-direction:column;gap:12px;max-width:100%;margin:8px 12px 8px 0;padding:16px;border:1px solid var(--line,#53665d);border-radius:12px}
 .client-screen-map,.client-screen-group{display:inline-flex;align-items:center;gap:4px}.client-screen-map{gap:15px;min-height:54px}.client-screen{display:inline-grid;place-items:center;border:2px solid currentColor;border-radius:3px;font-size:11px}.client-screen.landscape{width:40px;height:23px}.client-screen.portrait{width:23px;height:40px}
+
+/* Flat adaptation and its physical 3D trial stay visible together. */
+.adaptation-preview-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:center;min-width:0}
+.inline-twin{display:flex;flex-direction:column;align-items:stretch;gap:7px;width:100%;min-width:0;border:1px solid #355747;border-radius:8px;background:#17261e;color:#dceee1;padding:8px;cursor:pointer;text-align:left;font:12px inherit}
+.inline-twin canvas,.campaign-mini .inline-twin canvas,.campaign-stage .inline-twin canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;max-height:none;margin:0;object-fit:contain;background:#e7e8dc;border-radius:4px}
+.inline-twin span,.campaign-mini .inline-twin span{margin:0;font-size:11px}.inline-twin small{font-size:9px;line-height:1.4;opacity:.7}.inline-twin:focus-visible{outline:2px solid #47f795;outline-offset:3px}.inline-twin:disabled{opacity:.55;cursor:wait}
+.campaign-overview{grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr))}.campaign-mini{cursor:default}.campaign-flat{border:0;padding:0;background:transparent;color:inherit;text-align:left;min-width:0;cursor:pointer}.campaign-flat canvas{width:100%;height:180px;object-fit:contain}
+.campaign-stage-pair{grid-template-columns:minmax(0,3fr) minmax(240px,2fr)}.campaign-stage-pair>#campaign-canvas{width:100%;max-height:55vh}
+.fmt:has(>.adaptation-preview-pair){min-width:0}.fmt>.adaptation-preview-pair>.stage{min-width:0}.fmt>.adaptation-preview-pair .esp-views{min-width:0;overflow:hidden}
+@media(max-width:680px){.campaign-overview{grid-template-columns:1fr}.campaign-stage-pair{grid-template-columns:1fr}.adaptation-preview-pair{gap:8px}.inline-twin{padding:5px}.campaign-flat canvas{height:150px}}
+
+.twin-photo{font-size:12px;padding:10px 0}.twin-photo img{display:block;max-width:100%;max-height:300px;margin:12px auto;object-fit:contain}.twin-photo[hidden]{display:none}
+
+/* The white-label page keeps its light palette; the 3D viewer has its own dark surface. */
+:root[data-mb-marca] .adapter-twin{color:#e8f1ec!important}
+:root[data-mb-marca] .adapter-twin :is(h2,label,summary,output,.twin-format,.twin-status){color:#e8f1ec!important}
+:root[data-mb-marca] .adapter-twin .pill{background:#1c3025!important;color:#edf7f1!important;border-color:#668975!important}
+:root[data-mb-marca] .adapter-twin .pill:hover{background:#2c4837!important;border-color:#b6d6c3!important}
+:root[data-mb-marca] .adapter-twin footer{background:transparent!important;color:#c6d9cd!important}

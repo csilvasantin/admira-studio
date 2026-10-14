@@ -43,10 +43,10 @@
 
   var PANELS = [
     { sel: '.rail-left', cls: 'pf-left-off', id: 'left',
-      title: 'Opciones · panel derecho',
+      title: 'Opciones · panel izquierdo',
       svg: '<rect class="frame" x="1" y="1" width="14" height="12" rx="1.5"/><rect class="panel" x="1.6" y="1.6" width="4.4" height="10.8" rx="1"/>' },
     { sel: '.rail-right', cls: 'pf-right-off', id: 'right',
-      title: 'Avanzado · panel izquierdo',
+      title: 'Avanzado · panel derecho',
       svg: '<rect class="frame" x="1" y="1" width="14" height="12" rx="1.5"/><rect class="panel" x="10" y="1.6" width="4.4" height="10.8" rx="1"/>' },
     { sel: '.rail-bottom', cls: 'pf-bottom-off', id: 'bottom',
       title: 'Experto · panel inferior',
@@ -148,11 +148,11 @@
       var move = function (e) {
         var root = document.documentElement;
         if (kind === 'left') {
-          var lw = clamp(window.innerWidth - e.clientX, 220, Math.min(560, window.innerWidth - 260));
+          var lw = clamp(e.clientX, 220, Math.min(560, window.innerWidth - 260));
           root.style.setProperty('--pf-left-w', lw + 'px');
           try { localStorage.setItem('pixeria_pf_left_w', String(Math.round(lw))); } catch (err) {}
         } else if (kind === 'right') {
-          var rw = clamp(e.clientX, 240, Math.min(600, window.innerWidth - 260));
+          var rw = clamp(window.innerWidth - e.clientX, 240, Math.min(600, window.innerWidth - 260));
           root.style.setProperty('--pf-right-w', rw + 'px');
           try { localStorage.setItem('pixeria_pf_right_w', String(Math.round(rw))); } catch (err2) {}
         } else {
@@ -186,13 +186,13 @@
       if (kind === 'left' && (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight')) {
         ev.preventDefault();
         current = parseInt(getComputedStyle(root).getPropertyValue('--pf-left-w'), 10) || 300;
-        current = clamp(current + (ev.key === 'ArrowLeft' ? delta : -delta), 220, 520);
+        current = clamp(current + (ev.key === 'ArrowRight' ? delta : -delta), 220, 520);
         root.style.setProperty('--pf-left-w', current + 'px');
         try { localStorage.setItem('pixeria_pf_left_w', String(current)); } catch (e) {}
       } else if (kind === 'right' && (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight')) {
         ev.preventDefault();
         current = parseInt(getComputedStyle(root).getPropertyValue('--pf-right-w'), 10) || 330;
-        current = clamp(current + (ev.key === 'ArrowRight' ? delta : -delta), 240, 560);
+        current = clamp(current + (ev.key === 'ArrowLeft' ? delta : -delta), 240, 560);
         root.style.setProperty('--pf-right-w', current + 'px');
         try { localStorage.setItem('pixeria_pf_right_w', String(current)); } catch (e2) {}
       } else if (kind === 'bottom' && (ev.key === 'ArrowUp' || ev.key === 'ArrowDown')) {
@@ -215,7 +215,7 @@
 
   // ── Toggles (look SCUMM, tematizados en cuadratura.css) ───────────────────
   function makeToggle(p) {
-    if (document.documentElement.lang.indexOf('en') === 0) p.title = p.id === 'left' ? 'Options · right panel' : p.id === 'right' ? 'Advanced · left panel' : 'Expert · web console';
+    if (document.documentElement.lang.indexOf('en') === 0) p.title = p.id === 'left' ? 'Options · left panel' : p.id === 'right' ? 'Advanced · right panel' : 'Expert · web console';
     if (!document.querySelector(p.sel)) return null;
     var on = !document.body.classList.contains(p.cls);
     var b = document.createElement('button');

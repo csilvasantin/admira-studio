@@ -88,3 +88,17 @@ EN: Creator → NEXT STEP · Store demo, or /demo in Creator; /demo sneakers els
 ## Nube / Cloud
 
 Creador incorpora versiones privadas por cuenta con comparación/restauración y detección de conflictos. Los JSON y versiones locales siguen disponibles. / Creator adds private account-scoped cloud snapshots with compare/restore and conflict detection while retaining JSON/local versions. [Tutorial ES/EN](creator-tools.md).
+
+
+## Previo junto a cada adaptación / Preview beside every adaptation
+
+ES: Creador muestra cada adaptación plana junto a una vista del modelo 3D, también horizontal, vertical y los dos montajes Starbucks. Pulsa el previo para abrir el gemelo interactivo con reproducción, cámara y formatos. Las miniaturas muestran un fotograma de revisión a los 2 s; se actualizan al cambiar contenido, dirección o mapa y no avanzan el reloj de la campaña. Adaptador muestra el mismo previo junto a cada formato de pantalla. Un renderizador compartido carga solo las tarjetas cercanas a la vista. El modelo sigue siendo un ensayo nominal, no un levantamiento medido de la cafetería.
+
+EN: Creator pairs every flat adaptation with a 3D model preview, including landscape, portrait and both Starbucks layouts. Click the preview to open the interactive twin with playback, camera and format controls. Thumbnails show a review frame at 2 s; changes to content, creative direction or layout refresh them without advancing campaign time. Adapter pairs screen formats with the same preview. A shared renderer loads cards near the viewport. The model remains a nominal installation trial, not a measured café survey.
+
+La cabecera usa el logo como Inicio/Home; los tres controles Opciones, Avanzado y Experto son un 10% menores. / The header uses its logo as Home; Options, Advanced and Expert controls are 10% smaller.
+
+
+### Starbucks · actualización / update
+
+La escena Starbucks usa la fotografía PG103 y ofrece tres montajes, incluidos ambos esquemas de GdG51. Opciones a la izquierda; Avanzado a la derecha. / The Starbucks scene uses the PG103 photo and supplies three layouts, including both GdG51 patterns. Options left; Advanced right. [Guía / Guide](starbucks-gemelo.md).

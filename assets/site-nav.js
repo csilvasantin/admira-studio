@@ -126,7 +126,6 @@
   })();
 
   var ES = [
-    ['/', 'Inicio'],
     ['/creador/', 'Creador'],
     ['/adaptaciones/', 'Adaptador'],
     ['/audio.html', 'Audio'],
@@ -137,7 +136,6 @@
     ['/stock.html', 'Stock']
   ];
   var EN = [
-    ['/en/', 'Home'],
     ['/en/creador/', 'Creator'],
     ['/en/adaptaciones/', 'Adapter'],
     ['/en/audio.html', 'Audio'],
@@ -245,7 +243,7 @@
       '.quad-ui.pix-nav-canonical-header{padding:0!important}' +
       '.pix-nav-home-rails.quad-ui:not(.pix-nav-canonical-header){padding:70px 0 0!important}.pix-nav-home-rails .quad-top{top:0;left:0;right:0;width:auto;height:70px;min-height:70px;box-sizing:border-box;padding:0 28px;border:0;border-bottom:1px solid rgba(26,74,34,.95);box-shadow:0 0 24px rgba(0,255,65,.08);z-index:180}' +
       '.pix-nav-home-rails .rail{position:fixed;top:var(--pf-topbar-h,70px);bottom:0;z-index:160;width:var(--pf-left-w,300px);max-height:none;overflow:auto;border:1px solid rgba(140,160,150,.30);border-radius:0;background:rgba(2,10,5,.96);box-shadow:0 0 34px rgba(0,255,65,.10);backdrop-filter:blur(8px)}' +
-      '.pix-nav-home-rails .rail-left{left:0;display:flex;flex-direction:column;border-left:0;border-top:2px solid #68dce9;border-right-color:#68dce9}.pix-nav-home-rails .rail-right{right:0;width:var(--pf-right-w,330px);border-right:0;border-top:2px solid #e8c268;border-left-color:#e8c268}' +
+      '.pix-nav-home-rails .rail-left{left:0;right:auto;display:flex;flex-direction:column;border-left:0;border-top:2px solid #68dce9;border-right-color:#68dce9}.pix-nav-home-rails .rail-right{right:0;left:auto;width:var(--pf-right-w,330px);border-right:0;border-top:2px solid #e8c268;border-left-color:#e8c268}' +
       '.pix-nav-home-rails .rail-hd{position:sticky;top:0;z-index:3;margin:0;padding:13px 16px 11px;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9ab0a4;background:rgba(8,14,10,.78);border-bottom:1px solid rgba(140,160,150,.30)}.pix-nav-home-rails .rail-left .rail-hd{color:#68dce9}.pix-nav-home-rails .rail-right .rail-hd{color:#e8c268}' +
       '.pix-nav-home-rails .rail-nav{display:flex;flex-direction:column;padding:8px}.pix-nav-home-rails .rail-nav a{display:block;padding:10px 12px;border:1px solid transparent;color:#c8ffd0;text-decoration:none}.pix-nav-home-rails .rail-nav a:hover,.pix-nav-home-rails .rail-nav a[aria-current="page"]{border-color:#00ff41;background:rgba(0,255,65,.07)}.pix-nav-home-rails .rail-nav b{display:block;font-weight:760;font-size:14px;color:#e8f2ec}.pix-nav-home-rails .rail-nav small{display:block;margin-top:2px;font-size:11.5px;color:#7fae8c;line-height:1.3}.pix-nav-home-rails .rail-options-meta{margin-top:auto;padding:12px 16px 16px;border-top:1px solid rgba(140,160,150,.30)}.pix-nav-home-rails .rail-ver{display:block;padding:6px 9px;border:1px solid #68dce9;color:#68dce9;font-size:11px;font-weight:800;letter-spacing:.04em;text-align:center}.pix-nav-home-rails .rail-extra{padding:4px 16px 18px}.pix-nav-home-rails .rail-sub{margin:6px 0 8px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9ab0a4}.pix-nav-home-rails .rail-doc{display:block;padding:9px 0;font-size:13.5px;color:#e8f2ec;border-bottom:1px solid rgba(140,160,150,.30);text-decoration:none}' +
       // Los raíles se SUPERPONEN (Carlos, 3-oct-2026): el <main> conserva sus márgenes
@@ -261,7 +259,7 @@
       'padding:0;text-shadow:none;box-shadow:none}'+
       '.lead-toggle:hover,.lead-toggle:focus-visible{opacity:1;background:rgba(0,255,65,.14);outline:none}'+
       '.page-head .lead[hidden]{display:none}'+
-      '.pix-nav-icon{width:42px;height:42px;display:inline-grid;place-items:center;flex:0 0 42px;padding:0;border:1px solid rgba(0,255,65,.42);border-radius:0;background:rgba(0,255,65,.04);color:#00ff41;cursor:pointer;box-shadow:inset 0 0 16px rgba(0,255,65,.04)}' +
+      '.pix-nav-icon{zoom:.9;width:42px;height:42px;display:inline-grid;place-items:center;flex:0 0 42px;padding:0;border:1px solid rgba(0,255,65,.42);border-radius:0;background:rgba(0,255,65,.04);color:#00ff41;cursor:pointer;box-shadow:inset 0 0 16px rgba(0,255,65,.04)}' +
       '.pix-nav-icon:hover,.pix-nav-icon[aria-expanded="true"]{background:rgba(0,255,65,.12);box-shadow:0 0 16px rgba(0,255,65,.18),inset 0 0 16px rgba(0,255,65,.08)}' +
       '.pix-nav-icon svg{width:21px;height:19px;display:block}' +
       '.pix-nav-icon .frame{fill:none;stroke:#8bd49f;stroke-width:1.4}' +
