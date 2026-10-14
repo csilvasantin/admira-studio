@@ -1,0 +1,25 @@
+{
+  "kind": "canonical-domain-change",
+  "canonicalBase": "1b0c54fc9003560d93f663c5d43abf235d7104e9",
+  "domain": "admira.studio",
+  "mission": "DCL-3afd369655adc4fbdfee6908",
+  "reason": "Mover creación de cápsulas a Creador y dar a Stock filtro/selector de versiones de formato. Clones congelados, sin réplica ni despliegue en Pixeria.",
+  "files": [
+    "stock.html",
+    "app.js",
+    "creador/index.html",
+    "en/creador/index.html",
+    "adaptaciones/index.html",
+    "en/adaptaciones/index.html",
+    "assets/stock-formats.js",
+    "assets/creator-capsule.mjs",
+    "assets/creator-capsule-core.mjs",
+    "assets/creator-capsule.css",
+    "functions/stock-capsule.js",
+    "capsulas.test.mjs",
+    "test/stock-formats.test.mjs",
+    "test/creator-capsule.test.mjs"
+  ],
+  "relationships": "Vínculo explícito original/adaptación y procedencia de campaña; revisiones, idiomas y tipos separados; no agrupar por título.",
+  "formatLimit": "Sin metadatos, formato sin confirmar. Anamórfico sólo declarado; una pieza ancha no demuestra anamorfismo."
+}

@@ -4219,87 +4219,6 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
   }
 
 
-  // ─── Cápsula Blinkist (Stock · Cafebrería) ───────────────────────
-  // Formulario simple en stock.html → POST /stock/publish type:capsula.
-  // Sin vídeo en este flujo: solo el texto; la composición 9:16 es aparte
-  // (tools/capsulas/capsula.sh). El worker puede pedir Grok Video solo si
-  // tiene ADMIRANEXT_INGEST_TOKEN (comportamiento previo del puente).
-  async function bindCapsulaForm() {
-    const form = document.getElementById('capsulaForm');
-    if (!form) return;
-    const { CONSEJEROS, TEMAS, buildCapsulaPayload } = await import('/assets/capsula-publicar.mjs');
-    const consEl = document.getElementById('cap-consejero');
-    const temaEl = document.getElementById('cap-tema');
-    if (consEl && !consEl.options.length) {
-      consEl.innerHTML = CONSEJEROS.map(c => `<option value="${c.id}">${c.label}</option>`).join('');
-    }
-    if (temaEl && !temaEl.options.length) {
-      temaEl.innerHTML = TEMAS.map(t => `<option value="${t.id}">${t.label}</option>`).join('');
-    }
-    const status = document.getElementById('cap-status');
-    const setStatus = (msg, ok) => {
-      if (!status) return;
-      status.textContent = msg || '';
-      status.dataset.ok = ok ? '1' : '0';
-    };
-    const toggle = document.getElementById('capsulaFormToggle');
-    const panel = document.getElementById('capsulaPanel');
-    if (toggle && panel) {
-      toggle.addEventListener('click', () => {
-        const open = panel.hasAttribute('hidden');
-        if (open) panel.removeAttribute('hidden'); else panel.setAttribute('hidden', '');
-        toggle.setAttribute('aria-expanded', String(open));
-      });
-    }
-    const typeFilter = document.getElementById('stockTypeFilter');
-    if (typeFilter && panel && toggle) {
-      const sync = () => {
-        if (typeFilter.value === 'capsula') {
-          panel.removeAttribute('hidden');
-          toggle.setAttribute('aria-expanded', 'true');
-        }
-      };
-      typeFilter.addEventListener('change', sync);
-      sync();
-    }
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = form.querySelector('[type="submit"]');
-      const raw = {
-        url: document.getElementById('cap-url')?.value,
-        libro: document.getElementById('cap-libro')?.value,
-        autor: document.getElementById('cap-autor')?.value,
-        tesis: document.getElementById('cap-tesis')?.value,
-        consejeroId: document.getElementById('cap-consejero')?.value,
-        tema: document.getElementById('cap-tema')?.value,
-        carbono: document.getElementById('cap-carbono')?.value,
-        silicio: document.getElementById('cap-silicio')?.value,
-        aplicacion: document.getElementById('cap-aplicacion')?.value,
-      };
-      const built = buildCapsulaPayload(raw);
-      if (!built.ok) {
-        setStatus('⚠ ' + built.errors.join(' · '), false);
-        showToast('Completa el formulario: ' + built.errors[0]);
-        return;
-      }
-      if (btn) { btn.disabled = true; btn.textContent = '⏳ Publicando…'; }
-      setStatus('Publicando cápsula de texto en Stock…', true);
-      const result = await publishToStock(built.payload, btn);
-      if (result && result.ok) {
-        setStatus('✅ En Stock · id ' + (result.id || '') + ' · Cafebrería la verá con tag blinkist (índice ~1–5 min). Vídeo 9:16: capsula.sh aparte.', true);
-        showToast('Cápsula publicada · ' + (result.id || 'ok'));
-        try {
-          const tf = document.getElementById('stockTypeFilter');
-          if (tf) { tf.value = 'capsula'; tf.dispatchEvent(new Event('change')); }
-        } catch (_) {}
-      } else {
-        setStatus('❌ ' + ((result && result.error) || 'falló la publicación'), false);
-        if (btn) { btn.disabled = false; btn.textContent = '📌 Publicar cápsula'; }
-      }
-    });
-  }
-
-
   // ─── Imágenes · galería de la sesión ─────────────────────────────
   // Cada imagen que termina de cargar en #player (motor único o comparativa)
   // se copia a una galería de sesión (últimas IMAGE_GALLERY_MAX) bajo la
@@ -4447,7 +4366,6 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     bindSettingsModal();
     renderMotorSelectors();
     renderMotorCatalog();
-    bindCapsulaForm();
     const form = document.getElementById('briefForm');
     if (form) {
       hydrate(form);
