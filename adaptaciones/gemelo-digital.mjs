@@ -1,3 +1,4 @@
+import {mountInlineTwins} from './gemelo-inline.mjs?v=inline-twin-1';
 import {twinGeometry,localizedTwinWarnings} from './gemelo-core.mjs?v=installation-20261009';
 import {TWIN_REFERENCES,recommendedReferenceId,referenceById} from './gemelo-catalog.mjs?v=installation-20261009';
 
@@ -68,6 +69,7 @@ export function mountTwin(h){
   quality.onchange=()=>{stopTour();try{localStorage.setItem('studio-twin-quality',quality.value);}catch(_){}if(active)load();};
   function open(f){if(!h.ready())return;if(modal.open){stopTour();chooseFormat(f);return;}focus=document.activeElement;clean();active=f;const all=h.formats?.()||[f];list=all.some(x=>x.id===f.id)?all:[f,...all];formats.replaceChildren(...list.map(x=>new Option(x.nombre,x.id)));formats.value=f.id;reference.value='automatic';$('#twin-light').value='day';$('#twin-eye').value='1.65';$('#twin-distance').value='3';$('#twin-lateral').value='0';$('.twin-observer').hidden=true;stopTour();modal.showModal();startMedia();
     const shops=h.shops()||[];shop.replaceChildren(...(shops.length?shops:[{id:'studio-demo',nombre:t('Estanco · demo','Shop · demo')}]).map(s=>new Option(s.nombre,s.id)));if(shops.some(s=>s.id===h.shop()))shop.value=h.shop();shop.disabled=shops.length<2;load();}
-  function button(f){const b=document.createElement('button');b.type='button';b.className='pill view-twin';b.textContent=`▣ ${t('Ver en gemelo digital','View in digital twin')}`;b.setAttribute('aria-label',`${t('Ver en gemelo digital','View in digital twin')}: ${f.nombre}`);b.disabled=!h.ready();b.onclick=e=>{e.stopPropagation();open(f);};return b;}
-  controls(false);return {button,open,draw,close,sync:()=>document.querySelectorAll('.view-twin').forEach(b=>b.disabled=!h.ready())};
+  const inline=mountInlineTwins({...h,open});
+  function button(f){return inline.preview(f);}
+  controls(false);return {button,preview:inline.preview,open,draw,close,sync:()=>{inline.sync();document.querySelectorAll('.view-twin').forEach(b=>b.disabled=!h.ready());}};
 }

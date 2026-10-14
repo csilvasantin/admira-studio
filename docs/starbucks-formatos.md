@@ -39,3 +39,12 @@ En Editar contenido, **Relato bilingüe de Starbucks · mitad ES / mitad EN** su
 Horizontal y vertical alternan castellano e inglés, cuatro segundos por idioma. Se conservan las 14 salidas nativas; las etiquetas y nombres identifican el idioma real de cada pantalla. El programa bilingüe mantiene el mural en bucle de 24 segundos para conservar el reparto simultáneo 3+3. Las piezas individuales se entregan por separado.
 
 **Starbucks bilingual story · half ES / half EN** replaces repetition with three eight-second acts: first three screens in Spanish, last three in English. PG103 follows groups 2+1 and 3; GdG51 keeps H–V–H for each language. Alternate entrance/exit directions and gentle movement preserve reading time. Both three-act scripts are editable. Individual landscape and portrait videos alternate Spanish and English, four seconds each. The same 14 native outputs retain their actual language metadata; the bilingual wall programme loops 24 seconds to preserve the simultaneous split.
+
+
+## Previo junto a cada adaptación / Preview beside every adaptation
+
+ES: Creador muestra cada adaptación plana junto a una vista del modelo 3D, también horizontal, vertical y los dos montajes Starbucks. Pulsa el previo para abrir el gemelo interactivo con reproducción, cámara y formatos. Las miniaturas muestran un fotograma de revisión a los 2 s; se actualizan al cambiar contenido, dirección o mapa y no avanzan el reloj de la campaña. Adaptador muestra el mismo previo junto a cada formato de pantalla. Un renderizador compartido carga solo las tarjetas cercanas a la vista. El modelo sigue siendo un ensayo nominal, no un levantamiento medido de la cafetería.
+
+EN: Creator pairs every flat adaptation with a 3D model preview, including landscape, portrait and both Starbucks layouts. Click the preview to open the interactive twin with playback, camera and format controls. Thumbnails show a review frame at 2 s; changes to content, creative direction or layout refresh them without advancing campaign time. Adapter pairs screen formats with the same preview. A shared renderer loads cards near the viewport. The model remains a nominal installation trial, not a measured café survey.
+
+La cabecera usa el logo como Inicio/Home; los tres controles Opciones, Avanzado y Experto son un 10% menores. / The header uses its logo as Home; Options, Advanced and Expert controls are 10% smaller.

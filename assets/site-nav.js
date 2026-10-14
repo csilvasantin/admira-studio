@@ -126,7 +126,6 @@
   })();
 
   var ES = [
-    ['/', 'Inicio'],
     ['/creador/', 'Creador'],
     ['/adaptaciones/', 'Adaptador'],
     ['/audio.html', 'Audio'],
@@ -137,7 +136,6 @@
     ['/stock.html', 'Stock']
   ];
   var EN = [
-    ['/en/', 'Home'],
     ['/en/creador/', 'Creator'],
     ['/en/adaptaciones/', 'Adapter'],
     ['/en/audio.html', 'Audio'],
@@ -261,7 +259,7 @@
       'padding:0;text-shadow:none;box-shadow:none}'+
       '.lead-toggle:hover,.lead-toggle:focus-visible{opacity:1;background:rgba(0,255,65,.14);outline:none}'+
       '.page-head .lead[hidden]{display:none}'+
-      '.pix-nav-icon{width:42px;height:42px;display:inline-grid;place-items:center;flex:0 0 42px;padding:0;border:1px solid rgba(0,255,65,.42);border-radius:0;background:rgba(0,255,65,.04);color:#00ff41;cursor:pointer;box-shadow:inset 0 0 16px rgba(0,255,65,.04)}' +
+      '.pix-nav-icon{zoom:.9;width:42px;height:42px;display:inline-grid;place-items:center;flex:0 0 42px;padding:0;border:1px solid rgba(0,255,65,.42);border-radius:0;background:rgba(0,255,65,.04);color:#00ff41;cursor:pointer;box-shadow:inset 0 0 16px rgba(0,255,65,.04)}' +
       '.pix-nav-icon:hover,.pix-nav-icon[aria-expanded="true"]{background:rgba(0,255,65,.12);box-shadow:0 0 16px rgba(0,255,65,.18),inset 0 0 16px rgba(0,255,65,.08)}' +
       '.pix-nav-icon svg{width:21px;height:19px;display:block}' +
       '.pix-nav-icon .frame{fill:none;stroke:#8bd49f;stroke-width:1.4}' +
