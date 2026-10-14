@@ -1,3 +1,4 @@
+import {createFormatTwin,isStarbucksFormat} from './gemelo-factory.mjs?v=starbucks-room-1';
 import {twinGeometry} from './gemelo-core.mjs?v=inline-twin-1';
 
 // One WebGL context for all visible cards. Snapshot previews never own media time.
@@ -7,13 +8,14 @@ export function mountInlineTwins(h){
  const ctl=new AbortController();
  const observer=new IntersectionObserver(rows=>{for(const row of rows){const e=entries.get(row.target);if(e)e.visible=row.isIntersecting;}void pump();},{rootMargin:'160px'});
  const wait=()=>new Promise(resolve=>requestAnimationFrame(resolve));
- async function model(f){if(!built){loading||=import('./gemelo-better.mjs?v=inline-twin-1').then(m=>m.createRetailTwin({canvas:gl,geometry:twinGeometry(f,h.destino(f)),formatId:f.id,quality:'best',signal:ctl.signal})).catch(e=>{loading=null;throw e;});built=await loading;}return built;}
+ async function model(f){const kind=isStarbucksFormat(f)?'starbucks':'retail';if(built&&built.sceneKind!==kind){built.dispose();built=null;loading=null;}if(!built){loading||=createFormatTwin({format:f,canvas:gl,geometry:twinGeometry(f,h.destino(f)),formatId:f.id,quality:'best',signal:ctl.signal}).then(twin=>{if(disposed){twin.dispose();throw new DOMException('Aborted','AbortError');}return twin;}).catch(e=>{loading=null;throw e;});built=await loading;}return built;}
+
  function prune(){for(const [node] of entries)if(!node.isConnected){observer.unobserve(node);entries.delete(node);}}
  async function pump(){
   if(disposed)return;if(running){requested=true;return;}running=true;requested=false;
   try{prune();for(const e of entries.values()){
    if(disposed)break;if(!e.visible||e.done===revision||!h.ready()||!e.node.isConnected)continue;
-   const version=revision,key=e.stamp+':'+version;
+   const version=revision,key=(isStarbucksFormat(e.f)?'starbucks:':'retail:')+e.stamp+':'+version;
    e.node.disabled=false;e.status.textContent=h.t('Cargando previo 3D…','Loading 3D preview…');
    try{let cached=cache.get(key);
     if(!cached){const twin=await model(e.f);if(disposed||!e.node.isConnected)continue;
@@ -35,11 +37,11 @@ export function mountInlineTwins(h){
   node.setAttribute('aria-label',h.t('Ver en gemelo digital','View in digital twin')+': '+f.nombre);
   const canvas=document.createElement('canvas');canvas.width=640;canvas.height=360;canvas.setAttribute('aria-label',h.t('Modelo 3D con esta adaptación','3D model with this adaptation'));
   const status=document.createElement('span');status.className='inline-twin-status';status.textContent=h.t('Previo 3D','3D preview');
-  const note=document.createElement('small');note.textContent=h.t('Modelo de ensayo · medidas nominales','Trial model · nominal dimensions');node.append(canvas,status,note);
+  const note=document.createElement('small');note.textContent=isStarbucksFormat(f)?h.t('Starbucks · referencia fotográfica PG103','Starbucks · PG103 photo reference'):h.t('Modelo de ensayo · medidas nominales','Trial model · nominal dimensions');node.append(canvas,status,note);
   node.onclick=e=>{e.stopPropagation();h.open(f);};entries.set(node,{node,canvas,status,f,draw,stamp,done:-1,visible:false});observer.observe(node);return node;
  }
  function sync(){revision++;cache.clear();prune();for(const e of entries.values())e.node.disabled=!h.ready();void pump();}
  function dispose(){disposed=true;ctl.abort();observer.disconnect();entries.clear();cache.clear();built?.dispose();gl.width=gl.height=0;}
- window.addEventListener('pagehide',dispose,{once:true});
+ window.addEventListener('pagehide',event=>{if(!event.persisted)dispose();});
  return {preview,sync,dispose};
 }

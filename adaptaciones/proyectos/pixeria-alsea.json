@@ -217,11 +217,88 @@
           "group": 1
         }
       ]
+    },
+    {
+      "address": "Gran de Gràcia 51 · Barcelona",
+      "height": 1920,
+      "phase": "mural",
+      "approximate": true,
+      "catalogClient": "starbucks",
+      "groups": [
+        6
+      ],
+      "geometryStatus": "nominal",
+      "anamorphic": {
+        "calibrated": false
+      },
+      "id": "starbucks-gdg51-vhvvhv",
+      "name": {
+        "es": "AdmiraNeXT · Gran de Gracia 51 · V–H–V–V–H–V",
+        "en": "AdmiraNeXT · Gran de Gracia 51 · V–H–V–V–H–V"
+      },
+      "width": 8160,
+      "pattern": "V-H-V-V-H-V",
+      "screens": [
+        {
+          "id": "starbucks-gdg51-vhvvhv-p1",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-gdg51-vhvvhv-p2",
+          "x": 1080,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-gdg51-vhvvhv-p3",
+          "x": 3000,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-gdg51-vhvvhv-p4",
+          "x": 4080,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-gdg51-vhvvhv-p5",
+          "x": 5160,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-gdg51-vhvvhv-p6",
+          "x": 7080,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        }
+      ]
     }
   ],
   "notas": {
-    "es": "Dos montajes registrados, con vídeo por pantalla a 25 fps. H = horizontal; V = vertical. Ajusta medidas y separaciones en Creador. La anamorfosis necesita la calibración del punto de vista.",
-    "en": "Two registered layouts, with per-screen video at 25 fps. H = landscape; V = portrait. Adjust dimensions and spacing in Creator. Anamorphosis requires viewpoint calibration."
+    "es": "Tres montajes registrados, con vídeo por pantalla a 25 fps. H = horizontal; V = vertical. Ajusta medidas y separaciones en Creador. La anamorfosis necesita la calibración del punto de vista.",
+    "en": "Three registered layouts, with per-screen video at 25 fps. H = landscape; V = portrait. Adjust dimensions and spacing in Creator. Anamorphosis requires viewpoint calibration."
   },
   "creacion": {
     "visualStyle": "coffee-integrated",
@@ -232,5 +309,6 @@
     "accent": "#e8e5c9",
     "foreground": "#fffaf0",
     "logo": "/adaptaciones/campanas/coffee/starbucks-siren.svg"
-  }
+  },
+  "revision": 2
 }

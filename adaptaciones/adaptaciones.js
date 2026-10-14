@@ -1,11 +1,11 @@
-import {mountAdapterInstallations} from './client-format-controls.mjs?v=starbucks-story-1';
+import {mountAdapterInstallations} from './client-format-controls.mjs?v=starbucks-room-1';
 import {readHandoff} from './campaign-handoff.mjs?v=starbucks-story-1';
 import {classicTargets,isClassicFormat,extraFormats} from './classic-step.mjs?v=20261009-classic-step-1';
 import {mountAdvertisement} from './anuncio-studio.mjs?v=classic-auto-6';
 import {compositionFromStock} from '../assets/content-composition.mjs?v=composition-1';
-import {mountCampaign} from './campaign-studio.mjs?v=inline-twin-1';
+import {mountCampaign} from './campaign-studio.mjs?v=starbucks-room-1';
 let campaignWorkshop=null;
-import {mountTwin} from './gemelo-digital.mjs?v=inline-twin-1';
+import {mountTwin} from './gemelo-digital.mjs?v=starbucks-room-1';
 import {aiJob} from './ia-core.mjs?v=adapter-detail-1';
 import {APPLICATION_KEY,restoreApplications,applyApplications} from './aplicaciones-core.mjs';
 import {mountStudio} from './studio-adaptaciones.mjs';
@@ -1868,7 +1868,7 @@ Schedule now?`);
 // Lista: proyectos de Yokup (en vivo, con respaldo en proyectos/yokup.json). Ajustes propios:
 // fichas de proyectos/index.json. Sin ficha, el proyecto usa solo la biblioteca general.
 const PROJECTS_DIR = 'adaptaciones/proyectos/';
-const getJSON = async (url) => { const r = await fetch(url); if (!r.ok) throw new Error(`${r.status} ${url}`); return r.json(); };
+const getJSON = async (url) => { const r = await fetch(url+(url.includes("/adaptaciones/proyectos/")?(url.includes("?")?"&":"?")+"v=starbucks-layouts-3":""),{cache:"no-cache"}); if (!r.ok) throw new Error(`${r.status} ${url}`); return r.json(); };
 const fichaCache = new Map();
 async function loadFicha(entry) {
   if (fichaCache.has(entry.id)) return fichaCache.get(entry.id);
@@ -2001,6 +2001,7 @@ function endTwinPlayback(){
   twinPlayback=null;
 }
 twin=mountTwin({t,start:startTwinPlayback,end:endTwinPlayback,transport:campaignWorkshop?.twinPlayback,ready:()=>campaignWorkshop?.active()?campaignWorkshop.ready():mediaReady(),destino:f=>f.installation?{ancho:f.installation.width,alto:f.installation.height}:destino(f),formats:()=>campaignWorkshop?.active()?campaignWorkshop.formats():FORMATOS.filter(isProjectFormat),background:f=>studio?.background(f),shops:()=>EST?.estancos,shop:()=>studio?.shop(),selectShop:id=>studio?.selectShop(id),draw:(cv,f,bg)=>{if(campaignWorkshop?.draw(cv,f))return;if(advertisement?.draw(cv,f))return;if(creando(f)&&!bg)paintCrear(cv,destino(f),f);else paint(cv,destino(f),modoEfectivo(f),state.fmt[f.id],null,bg);}});
+campaignWorkshop?.refresh();
 advertisement=mountAdvertisement({t,formats:()=>FORMATOS,selected:selectedFormats,classicTarget:()=>classicActive()?classicTargetId:null,source:()=>({kind:srcKind,image:img,src:state.src,composition:state.origin?.composition||null}),destino,seconds:()=>stillSec,
 textZone:f=>{if(!f.especial)return null;const seg=geometry(f.layout).segments.reduce((a,b)=>a.wall.w*a.wall.h>=b.wall.w*b.wall.h?a:b);return {...seg.wall};},
 changed:()=>{buildCardSettings();refreshInfo();drawDirty=true;}});

@@ -1,25 +1,37 @@
 {
-  "version": "v.14.10.2026.r17.18:29",
+  "version": "v.14.10.2026.r18.18:54",
   "deployedAt": "2026-10-14T15:56:46.116151+00:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "b701e7943aff84c29bc4986f547fcef49991552d",
-  "gitFull": "b701e7943aff84c29bc4986f547fcef49991552d",
-  "gitShort": "b701e79",
+  "git": "45b1eb343c7beba71ede29f5a046218082857924",
+  "gitFull": "45b1eb343c7beba71ede29f5a046218082857924",
+  "gitShort": "45b1eb3",
   "dirty": false,
   "novedades": [
-    "Previo del modelo 3D junto a cada adaptación; abre el gemelo interactivo del formato.",
-    "El logo es Inicio; Opciones, Avanzado y Experto son un 10% más pequeños en la suite y sus clones."
+    "Starbucks: modelo 3D de la barra y la pared de PG103 basado en la fotografía, con sus grupos 2+1+3.",
+    "Nuevo montaje GdG51 V–H–V–V–H–V, junto al H–V–H–H–V–H existente; cinco destinos y 20 salidas nativas.",
+    "Opciones abre a la izquierda y Avanzado a la derecha, con redimensionado corregido."
   ],
   "rollback": {
-    "git": "e9486b9d9000fcb89d67abb2ff8a7448d249b1c9"
+    "git": "45b1eb343c7beba71ede29f5a046218082857924"
   },
   "sourcePatches": [
+    ".source-patches/import-search-tags.json",
+    ".source-patches/inline-twins-header.json",
+    ".source-patches/playlist-download-progress.json",
+    ".source-patches/starbucks-bilingual-story.json",
     ".source-patches/starbucks-creation-formats.json",
+    ".source-patches/starbucks-photo-twin.json",
+    ".source-patches/starbucks-six-shell-stock.json",
     ".source-patches/starbucks-video-twin.json",
-    ".source-patches/starbucks-bilingual-story.json"
+    ".source-patches/stock-compact-layout.json",
+    ".source-patches/stock-destinations.json",
+    ".source-patches/stock-filtered-count.json",
+    ".source-patches/stock-formats-capsules.json",
+    ".source-patches/stock-local-upload.json",
+    ".source-patches/studio-universal-navigation.json"
   ]
 }

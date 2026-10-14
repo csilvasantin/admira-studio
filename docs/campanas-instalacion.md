@@ -97,3 +97,8 @@ ES: Creador muestra cada adaptación plana junto a una vista del modelo 3D, tamb
 EN: Creator pairs every flat adaptation with a 3D model preview, including landscape, portrait and both Starbucks layouts. Click the preview to open the interactive twin with playback, camera and format controls. Thumbnails show a review frame at 2 s; changes to content, creative direction or layout refresh them without advancing campaign time. Adapter pairs screen formats with the same preview. A shared renderer loads cards near the viewport. The model remains a nominal installation trial, not a measured café survey.
 
 La cabecera usa el logo como Inicio/Home; los tres controles Opciones, Avanzado y Experto son un 10% menores. / The header uses its logo as Home; Options, Advanced and Expert controls are 10% smaller.
+
+
+### Starbucks · actualización / update
+
+La escena Starbucks usa la fotografía PG103 y ofrece tres montajes, incluidos ambos esquemas de GdG51. Opciones a la izquierda; Avanzado a la derecha. / The Starbucks scene uses the PG103 photo and supplies three layouts, including both GdG51 patterns. Options left; Advanced right. [Guía / Guide](starbucks-gemelo.md).

@@ -430,11 +430,11 @@ body.pf-bottom-off .rail-bottom {display:none}
 .rail-nav a.rail-cur{border-color:var(--cyan, #68dce9);background:rgba(104,220,233,0.10)}
 .rail-nav a.rail-cur b{color:var(--cyan, #68dce9)}
 
-/* Canonical quadratura: advanced on the left, options on the right. */
-.cuad .rail-left { left:auto; right:0; }
-.cuad .rail-right { right:auto; left:0; }
-.cuad .rail-left .pf-resize-left { right:auto; left:-9px; }
-.cuad .rail-right .pf-resize-right { left:auto; right:-9px; }
+/* Opciones a la izquierda; Avanzado a la derecha, con sus bordes interiores. */
+.cuad .rail-left { left:0; right:auto; }
+.cuad .rail-right { right:0; left:auto; }
+.cuad .rail-left .pf-resize-left { left:auto; right:-9px; }
+.cuad .rail-right .pf-resize-right { right:auto; left:-9px; }
 
 /* ══ Shell universal (FLT-101334) ═══════════════════════════════════════════
    La barra de 4 bandas es la MISMA en todas las páginas, traigan la tipografía o

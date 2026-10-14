@@ -1,0 +1,39 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "45b1eb343c7beba71ede29f5a046218082857924",
+  "reason": "Carlos pide reemplazar el estanco por una escena Starbucks basada en la foto PG103, respetar montajes, corregir los laterales de Opciones/Avanzado y añadir V-H-V-V-H-V como otro formato de GdG51.",
+  "files": [
+    "adaptaciones/gemelo-factory.mjs",
+    "adaptaciones/starbucks-twin-core.mjs",
+    "adaptaciones/starbucks-twin.mjs",
+    "adaptaciones/gemelo-inline.mjs",
+    "adaptaciones/gemelo-digital.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/adaptaciones.css",
+    "adaptaciones/client-format-controls.mjs",
+    "adaptaciones/proyectos/pixeria-alsea.json",
+    "adaptaciones/proyectos/index.json",
+    "assets/cuadratura.css",
+    "assets/cuadratura.js",
+    "assets/site-nav.js",
+    "assets/xpaces/starbucks/pg103-reference.png",
+    "assets/xpaces/starbucks/reference.json",
+    "docs/starbucks-gemelo.md",
+    "docs/starbucks-formatos.md",
+    "docs/campanas-instalacion.md",
+    "mcp/adapter-manifest.json",
+    "mcp/index.html",
+    "help/index.html",
+    "test/starbucks-twin.test.mjs",
+    "test/starbucks-formats.test.mjs",
+    "test/campaign-story.test.mjs"
+  ],
+  "limits": {
+    "measuredGeometry": false,
+    "gdg51PhotoAvailable": false,
+    "anamorphicCalibration": false,
+    "hardwareSyncVerified": false
+  }
+}

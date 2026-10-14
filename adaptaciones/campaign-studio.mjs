@@ -1,6 +1,6 @@
 import {STARBUCKS_STORY} from './campaign-story.mjs?v=starbucks-story-1';
 import {createCampaignPlayback} from './campaign-playback.mjs?v=starbucks-story-1';
-import {mountCreatorFormats} from './client-format-controls.mjs?v=starbucks-story-1';
+import {mountCreatorFormats} from './client-format-controls.mjs?v=starbucks-room-1';
 import {clientReference,clientEntry} from './client-installations.mjs?v=starbucks-story-1';
 import {contentLanguage,contentLanguages,languageVariant,campaignVariants,setContentLanguages,selectContentLanguage,rememberLanguageCopy,contentLanguageControl} from './campaign-language.mjs?v=starbucks-story-1';
 import {integratedLayerCanvas,integratedProductCanvas} from './campaign-integrated.mjs?v=starbucks-story-1';
@@ -87,7 +87,7 @@ export function mountCampaign({t,queue,openTwin,previewTwin,clientCatalog=[]}){
   const destinations=$('.campaign-destinations');destinations.replaceChildren(...c.installations.map(i=>{const b=document.createElement('button');b.type='button';b.className='pill';b.textContent=label(i.name);b.setAttribute('aria-pressed',String(i.id===selected));b.onclick=()=>{selected=i.id;mapEditor();render();};return b;}));
   $('#campaign-include').checked=i.enabled!==false;$('#campaign-include').disabled=busy;$('#campaign-title').textContent=label(i.name);$('#campaign-dimensions').textContent=`${i.width} × ${i.height} px · ${i.screens.length} ${t('pantallas','screens')} · r${c.revision}`;
   if(i.phase==='unit'&&c.visualStyle!=='coffee-integrated')stopTravel();const canvas=$('#campaign-canvas');canvas.width=Math.min(1600,i.width);drawCampaign(canvas,c,i,p,assets,{guides:$('#campaign-guides').checked,time:travelTime});$('.campaign-travel-controls').hidden=!(c.direction==='travel'&&(i.phase!=='unit'||c.visualStyle==='coffee-integrated'));$('#campaign-travel-time').max=i.phase==='unit'?(c.unitSeconds||8):c.seconds;$('#campaign-travel-time').value=travelTime;$('#campaign-travel-clock').textContent=travelTime.toFixed(2)+' s';options.querySelector('.campaign-unit-seconds').hidden=!c.unitSeconds;$('#campaign-program').textContent=c.wallStory?t('Descargar programa bilingüe','Download bilingual programme'):t('Descargar playlist mixta','Download mixed playlist');$('#campaign-program').hidden=!c.unitSeconds;$('#campaign-program').disabled=busy||!c.installations.some(i=>i.phase==='mural'&&i.enabled!==false)||!exportItems.length||!exportItems.every(item=>item.state==='done');canvas.setAttribute('aria-label',`${c.name} · ${label(i.name)} · ${c.direction}`);
-  stagePair.querySelector('.inline-twin')?.remove();if(ready){const thumb=previewTwin?.({id:i.id,nombre:label(i.name),installation:i},cv=>drawCampaign(cv,c,i,p,assets,{time:2}),key(i));if(thumb)stagePair.append(thumb);}
+  stagePair.querySelector('.inline-twin')?.remove();if(ready){const thumb=previewTwin?.({id:i.id,nombre:label(i.name),client:c.client||(/starbucks/i.test(c.name)?{id:"starbucks"}:undefined),installation:i},cv=>drawCampaign(cv,c,i,p,assets,{time:2}),key(i));if(thumb)stagePair.append(thumb);}
   $('#campaign-reference').textContent=clientReference(i,en)|| (i.phase==='mural'?t('Mapa nominal V–H–V–V–H–V: ajusta medidas y separación en Ajustar instalación. El recorrido cruza las juntas a propósito.','Nominal P–L–P–P–L–P map: edit dimensions and spacing in Adjust installation. The journey intentionally crosses joints.'):i.approximate?t('Referencia aproximada: confirma medidas y distribución antes de instalar. El hueco oscuro representa la puerta.','Approximate reference: confirm measurements and arrangement before installation. The dark opening represents the doorway.'):t('Perfil de píxeles. Comprueba escala física y distancia de lectura en destino.','Pixel profile. Check physical scale and viewing distance on site.'));
   $('#campaign-check').textContent=!ready?t('Cargando elementos…','Loading elements…'):!p.valid?t('Necesita ajustes','Adjustments needed'):approvals[key(i)]?t('Pieza aprobada','Piece approved'):t('Composición comprobada · pendiente de tu revisión','Composition checked · awaiting your review');
   $('#campaign-issues').replaceChildren(...p.errors.map(e=>{const li=document.createElement('li');li.textContent=reason(e);return li;}));$('#campaign-approve').disabled=busy||!ready||!p.valid||!!approvals[key(i)];
@@ -98,7 +98,7 @@ export function mountCampaign({t,queue,openTwin,previewTwin,clientCatalog=[]}){
    const text=document.createElement('span');text.textContent=`${label(i.name)} · ${i.width}×${i.height} · ${!p.valid?t('ajustar','adjust'):approvals[key(i)]?'✓':t('revisar','review')}${i.enabled===false?' · '+t('fuera del paquete','excluded from package'):''}`;
    flat.append(cv,text);flat.disabled=busy;flat.onclick=()=>{if(busy)return;selected=i.id;mapEditor();render();$('#campaign-title').scrollIntoView({block:'nearest'});};
    const pair=document.createElement('div');pair.className='adaptation-preview-pair';pair.append(flat);
-   const preview=ready&&previewTwin?.({id:i.id,nombre:label(i.name),installation:i},(canvas)=>drawCampaign(canvas,c,i,p,assets,{time:2}),key(i));if(preview)pair.append(preview);
+   const preview=ready&&previewTwin?.({id:i.id,nombre:label(i.name),client:c.client||(/starbucks/i.test(c.name)?{id:"starbucks"}:undefined),installation:i},(canvas)=>drawCampaign(canvas,c,i,p,assets,{time:2}),key(i));if(preview)pair.append(preview);
    card.append(pair);return card;
   };
   const paired=creator?orientationPair(c.installations):[],pair=$('#campaign-pair');pair.hidden=!paired.length;pair.replaceChildren(...all.filter(({i})=>paired.includes(i)).map(previewCard));
@@ -177,9 +177,9 @@ export function mountCampaign({t,queue,openTwin,previewTwin,clientCatalog=[]}){
  // Queue notifications update only the publish control; do not repaint the whole workshop per frame.
  function exportChanged(){if(root.hidden)return;$('#campaign-program').disabled=busy||!c.installations.some(i=>i.phase==='mural'&&i.enabled!==false)||!exportItems.length||!exportItems.every(item=>item.state==='done');$('#campaign-publish').disabled=busy||!exportItems.length||!exportItems.every(i=>i.state==='done')||exportItems.every(i=>i.published);}
  if(creator||params.get('taller')==='sneakers-store'){open();if(creator){persist();if(params.get('demo')==='sneakers-store'||params.has('nuevo')){params.delete('demo');params.delete('nuevo');window.history.replaceState(null,'',location.pathname+(params.size?'?'+params.toString():''));}}}
- function formats(){return c.installations.map(i=>({id:i.id,nombre:label(i.name),custom:[i.width,i.height],installation:i}));}
+ function formats(){return c.installations.map(i=>({id:i.id,nombre:label(i.name),custom:[i.width,i.height],client:c.client||(/starbucks/i.test(c.name)?{id:"starbucks"}:undefined),installation:i}));}
  $('#campaign-twin').onclick=()=>{if(ready)openTwin?.(formats().find(f=>f.id===selected));};
- return{open,exportChanged,active:()=>!root.hidden,ready:()=>ready,formats,
+ return{open,refresh:render,exportChanged,active:()=>!root.hidden,ready:()=>ready,formats,
   startTwin:f=>{if(f?.installation&&c.direction==='travel')playback.start(f.installation,c);},endTwin:()=>playback.stop(),
   twinPlayback:{available:()=>!root.hidden&&c.direction==='travel',snapshot:f=>playback.snapshot(f.installation,c),toggle:()=>playback.toggle(),seek:value=>playback.seek(value)},
   draw:(cv,f)=>{if(!f.installation)return false;drawCampaign(cv,c,f.installation,planCampaign(c,f.installation,c.direction,measure),assets,{time:playback.active?playback.snapshot(f.installation,c).time:undefined});return true;}};
