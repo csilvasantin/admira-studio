@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r20.1913';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r21.1920';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r20.19:13">
+  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r21.19:20">
   <link rel="canonical" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r20.1913">
+  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r21.1920">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -353,12 +353,12 @@
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
   </style>
-  <script defer src="/assets/site-nav.js?v=14.10.2026.r20.1913"></script>
-  <script defer src="/assets/descarga-local.js?v=14.10.2026.r20.1913"></script>
-  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r20.1913">
+  <script defer src="/assets/site-nav.js?v=14.10.2026.r21.1920"></script>
+  <script defer src="/assets/descarga-local.js?v=14.10.2026.r21.1920"></script>
+  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r21.1920">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r20.1913">
-  <link rel="stylesheet" href="/assets/music/cards.css?v=14.10.2026.r20.1913">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r21.1920">
+  <link rel="stylesheet" href="/assets/music/cards.css?v=14.10.2026.r21.1920">
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -534,7 +534,7 @@
       <div class="local-upload-actions"><button type="button" class="btn primary" id="localUploadSend" disabled>Subir archivos</button><button type="button" class="btn" id="localUploadView" hidden>Ver en Stock</button><button type="button" class="btn" id="localUploadClear">Nueva carga</button><button type="button" class="btn" id="localUploadClose">Cerrar</button></div>
     </form>
   </dialog>
-  <script type="module" src="/assets/stock-local-upload.mjs?v=14.10.2026.r7.1307"></script>
+  <script type="module" src="/assets/stock-local-upload.mjs?v=14.10.2026.r21.1920"></script>
 
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
@@ -723,16 +723,16 @@
     </form>
   </dialog>
 
-  <script defer src="/matrix-rain.js?v=14.10.2026.r20.1913"></script>
-  <script src="app.js?v=14.10.2026.r20.1913"></script>
-  <script src="assets/stock-search.js?v=14.10.2026.r20.1913"></script>
-  <script src="/assets/stock-formats.js?v=14.10.2026.r20.1913"></script>
-  <script src="/assets/stock-counts.js?v=14.10.2026.r20.1913"></script>
-  <script src="/assets/stock-destinations.js?v=14.10.2026.r20.1913"></script>
-  <script src="/assets/stock-playlist-progress.js?v=14.10.2026.r20.1913"></script>
-  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r20.1913"></script>
+  <script defer src="/matrix-rain.js?v=14.10.2026.r21.1920"></script>
+  <script src="app.js?v=14.10.2026.r21.1920"></script>
+  <script src="assets/stock-search.js?v=14.10.2026.r21.1920"></script>
+  <script src="/assets/stock-formats.js?v=14.10.2026.r21.1920"></script>
+  <script src="/assets/stock-counts.js?v=14.10.2026.r21.1920"></script>
+  <script src="/assets/stock-destinations.js?v=14.10.2026.r21.1920"></script>
+  <script src="/assets/stock-playlist-progress.js?v=14.10.2026.r21.1920"></script>
+  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r21.1920"></script>
   <script type="module">
-  import {normalizeMusic,isMusic,hasMusicCards,matchesMusicType,cardHtml,bindMusicCards} from "/assets/music/cards.mjs?v=14.10.2026.r20.1913";
+  import {normalizeMusic,isMusic,hasMusicCards,matchesMusicType,cardHtml,bindMusicCards} from "/assets/music/cards.mjs?v=14.10.2026.r21.1920";
   import {isXpace, blendFor, xpacePoster} from "./assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "./assets/furniture/catalog.mjs";
   (function () {
@@ -1580,7 +1580,7 @@
         actions.querySelector('[data-xpace-download="blend"]').onclick = () => blend && descargarAsset({...blend, mime:'application/x-blender'});
         const controller = xpaceController = new AbortController();
         const host = lightboxInner.querySelector('.xpace-viewer');
-        import('./assets/xpaces/viewer.mjs?v=itil-capa-2').then(m => {if (!controller.signal.aborted) return m.mountXpace(host, it, {signal:controller.signal});}).catch(() => {if (!controller.signal.aborted) host.textContent = 'No se ha podido cargar el 3D. Cierra y vuelve a abrir para reintentar.';});
+        import('./assets/xpaces/viewer.mjs?v=14.10.2026.r21.1920').then(m => {if (!controller.signal.aborted) return m.mountXpace(host, it, {signal:controller.signal});}).catch(() => {if (!controller.signal.aborted) host.textContent = 'No se ha podido cargar el 3D. Cierra y vuelve a abrir para reintentar.';});
       }
       window.__lightboxItemId = it.id || null;
       lightbox.hidden = false;
@@ -3402,7 +3402,7 @@
       .catch(()=>{});
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=14.10.2026.r20.1913"></script>
+  <script defer src="/assets/cuadratura.js?v=14.10.2026.r21.1920"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>
