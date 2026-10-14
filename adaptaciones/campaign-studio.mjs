@@ -1,6 +1,6 @@
 import {STARBUCKS_STORY} from './campaign-story.mjs?v=starbucks-story-1';
 import {createCampaignPlayback} from './campaign-playback.mjs?v=starbucks-story-1';
-import {mountCreatorFormats} from './client-format-controls.mjs?v=starbucks-room-1';
+import {mountCreatorFormats} from './client-format-controls.mjs?v=starbucks-room-2';
 import {clientReference,clientEntry} from './client-installations.mjs?v=starbucks-story-1';
 import {contentLanguage,contentLanguages,languageVariant,campaignVariants,setContentLanguages,selectContentLanguage,rememberLanguageCopy,contentLanguageControl} from './campaign-language.mjs?v=starbucks-story-1';
 import {integratedLayerCanvas,integratedProductCanvas} from './campaign-integrated.mjs?v=starbucks-story-1';

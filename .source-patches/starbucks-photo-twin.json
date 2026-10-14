@@ -1,7 +1,7 @@
 {
   "kind": "canonical-domain-change",
   "domain": "admira.studio",
-  "canonicalBase": "45b1eb343c7beba71ede29f5a046218082857924",
+  "canonicalBase": "493fc5286d8ec9656f3bc8e4db293121dc3ad9f3",
   "reason": "Carlos pide reemplazar el estanco por una escena Starbucks basada en la foto PG103, respetar montajes, corregir los laterales de Opciones/Avanzado y añadir V-H-V-V-H-V como otro formato de GdG51.",
   "files": [
     "adaptaciones/gemelo-factory.mjs",
