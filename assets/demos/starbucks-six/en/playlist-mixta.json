@@ -6,7 +6,7 @@
   "clock": "https://brain.digitalavatar.ai/sync/state",
   "fps": 25,
   "totalSeconds": 32,
-  "hardwareVerified": false,
+  "hardwareVerified": true,
   "screens": [
     {
       "screen": "macstudio-starbucks-vertical",
@@ -136,7 +136,9 @@
     }
   ],
   "visualStyle": "coffee-integrated",
-  "playersState": "stopped_by_user",
-  "fullCycleVerified": false,
-  "nativeAttempt": "https://admira.studio/assets/demos/starbucks-six/en/hardware-attempt-r3.json"
+  "playersState": "playing_at_verification",
+  "fullCycleVerified": true,
+  "nativeAttempt": "https://admira.studio/assets/demos/starbucks-six/en/hardware-attempt-r3.json",
+  "nativeVerifiedAt": "2026-10-14T13:31:34.598851+00:00",
+  "nativeProof": "https://admira.studio/assets/demos/starbucks-six/en/hardware-proof-r3-afternoon.json"
 }

@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r11.1436';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r12.1600';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r11.14:36">
+  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r12.16:00">
   <link rel="canonical" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r11.1436">
+  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r12.1600">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -353,11 +353,11 @@
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
   </style>
-  <script defer src="/assets/site-nav.js?v=14.10.2026.r11.1436"></script>
-  <script defer src="/assets/descarga-local.js?v=14.10.2026.r11.1436"></script>
-  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r11.1436">
+  <script defer src="/assets/site-nav.js?v=14.10.2026.r12.1600"></script>
+  <script defer src="/assets/descarga-local.js?v=14.10.2026.r12.1600"></script>
+  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r12.1600">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r11.1436">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r12.1600">
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -722,14 +722,14 @@
     </form>
   </dialog>
 
-  <script defer src="/matrix-rain.js?v=14.10.2026.r11.1436"></script>
-  <script src="app.js?v=14.10.2026.r11.1436"></script>
-  <script src="assets/stock-search.js?v=14.10.2026.r11.1436"></script>
-  <script src="/assets/stock-formats.js?v=14.10.2026.r11.1436"></script>
-  <script src="/assets/stock-counts.js?v=14.10.2026.r11.1436"></script>
-  <script src="/assets/stock-destinations.js?v=14.10.2026.r11.1436"></script>
-  <script src="/assets/stock-playlist-progress.js?v=14.10.2026.r11.1436"></script>
-  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r11.1436"></script>
+  <script defer src="/matrix-rain.js?v=14.10.2026.r12.1600"></script>
+  <script src="app.js?v=14.10.2026.r12.1600"></script>
+  <script src="assets/stock-search.js?v=14.10.2026.r12.1600"></script>
+  <script src="/assets/stock-formats.js?v=14.10.2026.r12.1600"></script>
+  <script src="/assets/stock-counts.js?v=14.10.2026.r12.1600"></script>
+  <script src="/assets/stock-destinations.js?v=14.10.2026.r12.1600"></script>
+  <script src="/assets/stock-playlist-progress.js?v=14.10.2026.r12.1600"></script>
+  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r12.1600"></script>
   <script type="module">
   import {isXpace, blendFor, xpacePoster} from "./assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "./assets/furniture/catalog.mjs";
@@ -791,7 +791,8 @@
     const verMotor = m => /suno/i.test(String(m || '')) ? 'Admira Studio Music' : String(m || '');
     const verTag = t => /^suno/i.test(String(t)) ? 'pixeria-music' : String(t);
     let currentView = []; // lista filtrada+ordenada actual (para navegar el lightbox)
-    let filters = { format:new URLSearchParams(location.search).get('format')||'', origen: (new URLSearchParams(location.search).get('origen') || '').replace(/[^A-Za-z0-9-]/g, ''), type: 'video', motor: '', q: '', tags: [], tagMode: 'or', dateQuick: '', dateFrom: '', dateTo: '' };
+    let filters = { format:new URLSearchParams(location.search).get('format')||'', origen: (new URLSearchParams(location.search).get('origen') || '').replace(/[^A-Za-z0-9-]/g, ''), type: 'video', motor: '', q: (new URLSearchParams(location.search).get('q') || '').slice(0,200), tags: (new URLSearchParams(location.search).getAll('tag')).filter(t=>/^[a-zA-Z0-9:_-]{1,80}$/.test(t)).map(t=>t.toLowerCase()), tagMode: 'or', dateQuick: '', dateFrom: '', dateTo: '' };
+    search.value = filters.q;
     let sortMode = 'date-desc';
     let pageSize = 10; // 0 = mostrar todos
     let currentPage = 1;
@@ -1369,10 +1370,10 @@
     }
     function updateStockCount(matching){
       const el=document.getElementById('stockCount');if(!el)return;
-      if(matching===null){el.textContent='… contenidos';el.title='';delete el.dataset.found;delete el.dataset.total;return;}
-      const catalog=countCatalog(),count=StockCounts.measure(catalog,matching),text=StockCounts.label(count,false);
+      if(matching===null){el.textContent=document.documentElement.lang==='en'?'… contents':'… contenidos';el.title='';delete el.dataset.found;delete el.dataset.total;return;}
+      const catalog=countCatalog(),count=StockCounts.measure(catalog,matching),text=StockCounts.label(count,document.documentElement.lang==='en');
       if(el.textContent!==text)el.textContent=text;el.dataset.found=count.found;el.dataset.total=count.total;
-      el.title=count.found+' contenidos encontrados en todas las páginas · '+count.total+' contenidos disponibles para esta cuenta. Las versiones relacionadas cuentan una vez por contenido, medio, idioma y revisión. '+count.foundVersions+' archivos encontrados / '+count.totalVersions+' archivos totales.';
+      el.title=document.documentElement.lang==='en'?count.found+' contents found across all pages · '+count.total+' contents available to this account. Related versions count once per content, medium, language and revision. '+count.foundVersions+' matching files / '+count.totalVersions+' total files.':count.found+' contenidos encontrados en todas las páginas · '+count.total+' contenidos disponibles para esta cuenta. Las versiones relacionadas cuentan una vez por contenido, medio, idioma y revisión. '+count.foundVersions+' archivos encontrados / '+count.totalVersions+' archivos totales.';
       const failed=catalog.filter(isFailedImport).length,fo=document.getElementById('stockFailedOpt');if(fo){fo.hidden=failed===0&&typeFilter.value!=='fallidos';fo.textContent='Importaciones fallidas'+' ('+failed+')';}
     }
 
@@ -1428,6 +1429,12 @@
     setTimeout(() => { clienteEsperaAgotada = true; if (allItems.length) applyFilters(); }, 4000);
     document.addEventListener('pixeria:cliente', () => { allItems = soloMio(allItemsTodo); applyFilters(true); });
     function applyFilters(resetPage) {
+      const filterStateUrl = new URL(location.href);
+      if (filters.q) filterStateUrl.searchParams.set('q',filters.q); else filterStateUrl.searchParams.delete('q');
+      filterStateUrl.searchParams.delete('tag');
+      for (const tag of filters.tags || []) filterStateUrl.searchParams.append('tag',tag);
+      history.replaceState(history.state,'',filterStateUrl);
+
       // Vista Catálogos: la rejilla la pinta CATALOGO (piezas del catálogo elegido).
       if (filters.type === 'catalogo') { if (window.CATALOGO) window.CATALOGO.repaint(); return; }
       // Cliente activo (/marca en la CLI): Admira lo ve todo. Si se pidió otro cliente, hasta
@@ -2076,7 +2083,7 @@
     document.addEventListener('stock:local-view',()=>{
       if(filters.type==='catalogo')CATALOGO.leave();
       filters.q='';search.value='';filters.type='';typeFilter.value='';filters.format='';filters.tags=[];filters.origen='';sortMode='date-desc';applyFilters(true);
-      const u=new URL(location.href);u.searchParams.delete('type');u.searchParams.delete('origen');u.searchParams.delete('format');history.replaceState({},'',u);
+      const u=new URL(location.href);u.searchParams.delete('type');u.searchParams.delete('origen');u.searchParams.delete('format');u.searchParams.delete('q');u.searchParams.delete('tag');history.replaceState({},'',u);
     });
     { const tp = new URLSearchParams(location.search).get('type'); if (tp === 'xpaces' || tp === 'capsula') { filters.type = tp; typeFilter.value = tp; } } // ?type=capsula: enlace «Cápsulas de Conocimiento» del Adaptador
     formatFilter.addEventListener('change',()=>{filters.format=formatFilter.value;const u=new URL(location.href);if(filters.format)u.searchParams.set('format',filters.format);else u.searchParams.delete('format');history.replaceState({},'',u);applyFilters(true);});
@@ -3383,7 +3390,7 @@
       .catch(()=>{});
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=14.10.2026.r11.1436"></script>
+  <script defer src="/assets/cuadratura.js?v=14.10.2026.r12.1600"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>

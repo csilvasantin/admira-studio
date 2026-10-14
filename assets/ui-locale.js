@@ -4,6 +4,15 @@
 (function () {
   'use strict';
   const COPY = {
+  "Inicio": "Home",
+  "Volver al inicio de Admira Studio": "Back to Admira Studio home",
+  "Ver en Stock": "View in Stock",
+  "📂 Subir archivos": "📂 Upload files",
+  "Todos los formatos": "All formats",
+  "Filtrar por formato": "Filter by format",
+  "Elegir versión de formato": "Select format version",
+  "Búsqueda por prompt/comentario/tag, o URL para importar": "Search prompt/comment/tag, or paste a URL to import",
+
   "Creador: Castellano e Inglés seleccionables juntos; idioma de interfaz por defecto": "Creator: Spanish and English together; UI language selected by default",
   "Exportación bilingüe: ocho piezas por idioma y dos programas mixtos": "Bilingual export: eight pieces per language and two mixed programs",
   "Starbucks inglés: reproducción nativa y protección contra apagado por inactividad": "English Starbucks: native playback and protection against idle display sleep",

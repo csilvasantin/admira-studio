@@ -124,6 +124,7 @@
   })();
 
   var ES = [
+    ['/', 'Inicio'],
     ['/creador/', 'Creador'],
     ['/adaptaciones/', 'Adaptador'],
     ['/audio.html', 'Audio'],
@@ -134,6 +135,7 @@
     ['/stock.html', 'Stock']
   ];
   var EN = [
+    ['/en/', 'Home'],
     ['/en/creador/', 'Creator'],
     ['/en/adaptaciones/', 'Adapter'],
     ['/en/audio.html', 'Audio'],
@@ -368,6 +370,7 @@
   }
 
   var HOME_RAIL_SECTIONS = [
+    ['/', 'Inicio', 'Volver al inicio de Admira Studio'],
     ['/creador/', 'Creador', 'Crea campañas desde cero para tus pantallas'],
     ['/adaptaciones/', 'Adaptador', 'Adapta contenidos existentes a cada pantalla'],
     ['/audio.html', 'Audio · Megafonía', 'Voces, locución y megafonía de marca'],
@@ -399,7 +402,12 @@
     left.className = 'rail rail-left';
     left.setAttribute('aria-label', 'Opciones · secciones de Admira Studio');
     left.innerHTML = '<div class="rail-hd">🔍 Opciones</div><nav class="rail-nav" aria-label="Secciones de Admira Studio">' +
-      HOME_RAIL_SECTIONS.map(function (s) {
+      HOME_RAIL_SECTIONS.map(function (section) {
+        var s = section.slice();
+        if ((document.documentElement.lang || '').startsWith('en')) {
+          var navItem = EN.find(function (item) { return norm(item[0].replace(/^\/en(?=\/)/, '')) === norm(s[0]); });
+          if (navItem) { s[0] = navItem[0]; s[1] = navItem[1]; }
+        }
         var current = norm(s[0]) === here;
         return '<a href="' + s[0] + '"' + (current ? ' aria-current="page"' : '') + '><b>' + s[1] + '</b><small>' + s[2] + '</small></a>';
       }).join('') + '</nav><div class="rail-options-meta" aria-label="Release de Admira Studio">' +

@@ -1,0 +1,16 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "0c17432c5c5ab8d8876b28406c9f09be1b940cd2",
+  "mission": "DCL-49244df6cfd55264825ad050",
+  "reason": "Carlos exige campaña inglesa nativa y cuadratura persistente en campaña y Stock; preservar funciones publicadas esta mañana y clones congelados.",
+  "files": [
+    "assets/site-nav.js",
+    "assets/ui-locale.js",
+    "campanas/starbucks-six/index.html",
+    "campanas/starbucks-six/preview.mjs",
+    "stock.html",
+    "en/stock.html"
+  ],
+  "englishStockSource": "Current canonical stock.html with root asset paths, English chrome through known-label locale mapping and identical functional IDs/values."
+}

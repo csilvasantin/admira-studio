@@ -1438,5 +1438,8 @@
   ],
   "visualStyle": "coffee-integrated",
   "reference": "Trinity evolution · stock photography → animated copy → integrated brand gradients",
-  "hardwareVerified": false
+  "hardwareVerified": true,
+  "fullCycleVerified": true,
+  "nativeVerifiedAt": "2026-10-14T13:31:34.598851+00:00",
+  "nativeProof": "https://admira.studio/assets/demos/starbucks-six/en/hardware-proof-r3-afternoon.json"
 }

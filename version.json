@@ -1,26 +1,26 @@
 {
-  "version": "v.14.10.2026.r11.14:36",
-  "deployedAt": "2026-10-14T12:36:29.237792+00:00",
-  "author": "TrinityMBP14",
-  "agent": "TrinityMBP14",
-  "deployer": "TrinityMBP14",
-  "machine": "MacBookProNegro14",
-  "signature": "TrinityMBP14 · MacBookProNegro14",
+  "version": "v.14.10.2026.r12.16:00",
+  "deployedAt": "2026-10-14T14:00:57.443144+00:00",
+  "author": "OraculoMacMini",
+  "agent": "OraculoMacMini",
+  "deployer": "OraculoMacMini",
+  "machine": "MacMini",
+  "signature": "OraculoMacMini · MacMini",
   "git": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
   "gitShort": "e409c20",
   "gitFull": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
   "dirty": false,
   "novedades": [
-    "Stock actualiza encontrados de total contenidos al buscar o filtrar, incluyendo todas las páginas.",
-    "Ambas cifras cuentan contenidos agrupando sus versiones y respetando el catálogo disponible para la cuenta.",
-    "El detalle del contador muestra archivos coincidentes y totales; la cabecera mantiene una sola línea."
+    "Campaña inglesa Starbucks verificada en los seis players nativos, con recorrido V-H-V-V-H-V y ciclo común de 32 segundos.",
+    "La campaña conserva cuadratura y navegación Inicio/Stock; Stock mantiene su interfaz al buscar, cambiar formato o abrir Opciones.",
+    "Stock en español e inglés muestra la campaña y sus ocho versiones inglesas mediante filtros enlazables; ayuda y evidencia bilingües."
   ],
   "rollback": {
-    "git": "8d0c7e3"
+    "git": "0c17432c5c5ab8d8876b28406c9f09be1b940cd2"
   },
   "sourcePatches": [
     "14a886b6407883ed49b25fefdd54a81e00405a95",
     "5c978fa73e8efac8df1b82b623a1e92991e7dae4"
   ],
-  "mission": "DCL-2a121fa6354b6fa5be104815"
+  "mission": "DCL-49244df6cfd55264825ad050"
 }
