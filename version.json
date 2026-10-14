@@ -1,21 +1,24 @@
 {
-  "version": "v.14.10.2026.r4.08:00",
-  "deployedAt": "2026-10-11T12:43:11.874478+00:00",
-  "author": "OraculoMacMini",
-  "agent": "OraculoMacMini",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
-  "git": "acf0c16b0a3c48d517fb1ebe979e8ed8252cc004",
-  "gitShort": "acf0c16",
-  "gitFull": "acf0c16b0a3c48d517fb1ebe979e8ed8252cc004",
+  "version": "v.14.10.2026.r5.11:23",
+  "deployedAt": "2026-10-14T09:23:57.017267+00:00",
+  "author": "TrinityMBP14",
+  "agent": "TrinityMBP14",
+  "deployer": "TrinityMBP14",
+  "machine": "MacBookProNegro14",
+  "signature": "TrinityMBP14 · MacBookProNegro14",
+  "git": "0118e881eb5f97eda2c8cf02ce6c18ac96d39864",
+  "gitShort": "0118e88",
+  "gitFull": "0118e881eb5f97eda2c8cf02ce6c18ac96d39864",
   "dirty": false,
   "novedades": [
-    "Creador: Castellano e Inglés seleccionables juntos; idioma de interfaz por defecto",
-    "Exportación bilingüe: ocho piezas por idioma y dos programas mixtos",
-    "Starbucks inglés: reproducción nativa y protección contra apagado por inactividad"
+    "Importar URL selecciona vídeo por defecto.",
+    "Comentarios naturales y fotogramas generan etiquetas de búsqueda revisables.",
+    "La búsqueda combina términos y equivalencias music/música."
   ],
   "rollback": {
     "git": "8d0c7e3"
-  }
+  },
+  "sourcePatches": [
+    "14a886b6407883ed49b25fefdd54a81e00405a95"
+  ]
 }

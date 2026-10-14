@@ -1,20 +1,11 @@
 {
-  "version": "v.14.10.2026.r4.08:00",
-  "author": "OraculoMacMini",
-  "agent": "OraculoMacMini",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
-  "git": "acf0c16b0a3c48d517fb1ebe979e8ed8252cc004",
-  "gitShort": "acf0c16",
-  "gitFull": "acf0c16b0a3c48d517fb1ebe979e8ed8252cc004",
-  "dirty": false,
-  "rollback": {
-    "git": "8d0c7e3"
-  },
-  "novedades": [
-    "Creador: Castellano e Inglés seleccionables juntos; idioma de interfaz por defecto",
-    "Exportación bilingüe: ocho piezas por idioma y dos programas mixtos",
-    "Starbucks inglés: reproducción nativa y protección contra apagado por inactividad"
-  ]
+  "version": "v.14.10.2026.r5.11:23",
+  "agent": "TrinityMBP14",
+  "deployer": "TrinityMBP14",
+  "machine": "MacBookProNegro14",
+  "signature": "TrinityMBP14 · MacBookProNegro14",
+  "git": "0118e881eb5f97eda2c8cf02ce6c18ac96d39864",
+  "gitFull": "0118e881eb5f97eda2c8cf02ce6c18ac96d39864",
+  "gitShort": "0118e88",
+  "dirty": false
 }
