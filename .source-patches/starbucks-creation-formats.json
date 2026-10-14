@@ -1,0 +1,31 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "bce8127e04af27445c2815203da67689756696ab",
+  "reason": "Carlos solicita formatos Starbucks compartidos entre Creador y Adaptador. PG103 confirmado como seis verticales 2+1+3. Se conserva la versión canónica publicada y la congelación de los clones.",
+  "files": [
+    "adaptaciones/client-installations.mjs",
+    "adaptaciones/client-format-controls.mjs",
+    "adaptaciones/campaign-handoff.mjs",
+    "adaptaciones/proyectos/pixeria-alsea.json",
+    "adaptaciones/proyectos/index.json",
+    "adaptaciones/campaign-core.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/campaign-travel.mjs",
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/adaptaciones.css",
+    "adaptaciones/studio-adaptaciones.mjs",
+    "creador/index.html",
+    "en/creador/index.html",
+    "adaptaciones/index.html",
+    "en/adaptaciones/index.html",
+    "docs/starbucks-formatos.md",
+    "help/index.html",
+    "test/starbucks-formats.test.mjs"
+  ],
+  "limits": {
+    "measuredGeometry": false,
+    "anamorphicCalibration": false,
+    "hardwareSyncVerified": false
+  }
+}

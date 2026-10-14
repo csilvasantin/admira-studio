@@ -40,3 +40,14 @@ export function mixedProgram(c,files=[]){
   return {screen:s.id,format:{width:s.w,height:s.h},items:[{kind:'mural',seconds:c.seconds,file:file(mural.id,s.id)},{kind:'individual',seconds:c.unitSeconds||8,file:file(unit.id,unit.screens[0].id)}]};
  })};
 }
+
+// Each registered location receives its own programme and shared wall clock.
+export function mixedPrograms(c,files=[]){
+ const units=c.installations.filter(i=>i.phase==='unit');
+ return c.installations.filter(i=>i.phase==='mural'&&i.enabled!==false).map(i=>{
+  const complete=i.screens.every(s=>units.some(u=>u.enabled!==false&&u.width/u.height===s.w/s.h));
+  const program=complete?mixedProgram({...c,installations:[i,...units.filter(u=>u.enabled!==false)]},files):{schema:'admira.mixed-screen-program.v1',campaign:c.id,revision:c.revision,contentLanguage:c.contentLanguage||'es',clock:'https://brain.digitalavatar.ai/sync/state',fps:25,totalSeconds:c.seconds,hardwareVerified:false,screens:i.screens.map(s=>({screen:s.id,format:{width:s.w,height:s.h},items:[{kind:'mural',seconds:c.seconds,file:files.find(f=>f.installation===i.id&&f.screen===s.id)?.filename||null}]}))};
+  if(files.length&&program.screens.some(s=>s.items.some(item=>!item.file)))throw Error('mixed-export-file-required');
+  return {installation:i.id,program:{...program,installation:i.id}};
+ });
+}

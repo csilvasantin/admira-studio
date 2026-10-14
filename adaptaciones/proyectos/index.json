@@ -17,6 +17,26 @@
       "campanas": [
         "altadis"
       ]
+    },
+    {
+      "id": "pixeria-alsea",
+      "nombre": "Starbucks",
+      "cliente": "starbucks",
+      "alias": [
+        "starbucks",
+        "alsea"
+      ],
+      "archivo": "pixeria-alsea.json",
+      "formatos": {
+        "estandar": 2,
+        "especiales": 0,
+        "myblu": 0
+      },
+      "instalaciones": 2,
+      "creador": true,
+      "campanas": [
+        "starbucks-individuales"
+      ]
     }
   ]
 }

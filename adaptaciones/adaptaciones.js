@@ -1,7 +1,9 @@
+import {mountAdapterInstallations} from './client-format-controls.mjs?v=starbucks-formats-1';
+import {readHandoff} from './campaign-handoff.mjs?v=starbucks-formats-1';
 import {classicTargets,isClassicFormat,extraFormats} from './classic-step.mjs?v=20261009-classic-step-1';
 import {mountAdvertisement} from './anuncio-studio.mjs?v=classic-auto-6';
 import {compositionFromStock} from '../assets/content-composition.mjs?v=composition-1';
-import {mountCampaign} from './campaign-studio.mjs?v=content-language-2';
+import {mountCampaign} from './campaign-studio.mjs?v=starbucks-formats-1';
 let campaignWorkshop=null;
 import {mountTwin} from './gemelo-digital.mjs?v=installation-20261009';
 import {aiJob} from './ia-core.mjs?v=adapter-detail-1';
@@ -1175,6 +1177,7 @@ const readError = (e, what) => String(e?.message) === 'source-size' ? t('El lím
 // los primeros bytes) y la ruta: vídeo, imagen (JPG/PNG/WebP/AVIF/HEIC/GIF estático), SVG o GIF animado.
 let cargaTurno = 0;
 async function cargarFuente(o) {
+  if(o.origen!=='creador'){sourceHandoff=null;const clean=new URL(location.href);clean.searchParams.delete('handoff');history.replaceState(history.state,'',clean.href);}
   const turno = ++cargaTurno, nombre = o.nombre || o.file?.name || 'archivo';
   announce(''); // el aviso de ⌘V solo describe la fuente que se acaba de pegar o soltar
   const origin = o.origin || {id: null, title: nombre.replace(/\.[^.]+$/, '')};
@@ -1886,7 +1889,7 @@ function renderProjects() {
   option(sel, GENERAL, t('General (sin proyecto)', 'General (no project)'));
   const own = PROJECTS.filter(p => p.propios), rest = PROJECTS.filter(p => !p.propios);
   const count = p => (p.ficha.formatos?.estandar || 0) + (p.ficha.formatos?.especiales || 0);
-  group(t('Con formatos propios', 'With own formats'), own, p => `★ ${p.nombre} · ${count(p)} ${t('propios', 'own')}`);
+  group(t('Con formatos propios', 'With own formats'), own, p => `★ ${p.nombre} · ${count(p)} ${t('formatos', 'formats')}${p.ficha.instalaciones?' + '+p.ficha.instalaciones+' '+t('montajes','layouts'):''}`);
   group(t('Proyectos de Yokup · solo biblioteca general', 'Yokup projects · general library only'), rest, p => p.nombre);
   if (state.proyecto !== GENERAL && !PROJECTS.some(p => p.id === state.proyecto)) option(sel, state.proyecto, state.proyecto);
   sel.value = state.proyecto;
@@ -1895,7 +1898,7 @@ function renderProjectStatus(extra = '') {
   const box = $('#project-status'); if (!box) return;
   const own = FORMATOS.filter(f => f.proyecto && !f.especial).length, walls = FORMATOS.filter(f => f.especial).length, myblu = FORMATOS.filter(f => f.proyecto && f.myblu).length;
   const what = state.proyecto === GENERAL ? t('Biblioteca general, sin ajustes de cliente.', 'General library, no client settings.')
-    : FICHA ? `${t('Biblioteca general', 'General library')} + ${own} ${t('formatos propios', 'own formats')}${myblu ? ` (${myblu} MyBlu)` : ''}${walls ? ` + ${walls} ${t('videowalls segmentados', 'segmented video walls')}` : ''}.`
+    : FICHA ? `${t('Biblioteca general', 'General library')} + ${own} ${t('formatos propios', 'own formats')}${myblu ? ` (${myblu} MyBlu)` : ''}${walls ? ` + ${walls} ${t('videowalls segmentados', 'segmented video walls')}` : ''}${FICHA.instalaciones?.length?' + '+FICHA.instalaciones.length+' '+t('montajes de Creador','Creator layouts'):''}.`
     : t('Sin ficha propia: usa solo la biblioteca general.', 'No project file: uses the general library only.');
   const src = yokupSource === 'live' ? t('Proyectos de Yokup en vivo.', 'Live Yokup projects.')
     : yokupSource === 'saved' ? t(`Proyectos de Yokup: copia guardada (${yokupDate}).`, `Yokup projects: saved copy (${yokupDate}).`) : '';
@@ -1921,6 +1924,7 @@ function syncURL() {
   } catch (_) {}
   try { if (state.proyecto === GENERAL) localStorage.removeItem(PROJECT_KEY); else localStorage.setItem(PROJECT_KEY, state.proyecto); } catch (_) {}
 }
+let sourceHandoff=null;const installationPanel=mountAdapterInstallations({host:document.querySelector('#paso-2'),t,getSource:()=>isImage()&&img.naturalWidth?img:null,getCampaign:()=>sourceHandoff?.campaign,locked:()=>!!pkg?.running});
 let switching = 0;
 async function switchProject(id) {
   resetClassic({keepStep:true,keepAnalysis:true});saveSettings();
@@ -1931,7 +1935,7 @@ async function switchProject(id) {
     catch (_) { note = t('No se pudo leer la ficha del proyecto: se usa la biblioteca general.', 'Could not read the project file: using the general library.'); }
   }
   if (turn !== switching) return; // a later pick won while this ficha was loading
-  FICHA = ficha; state.proyecto = id;
+  FICHA = ficha; state.proyecto = id;installationPanel.update(ficha);
   campaigns = [...projectCampaigns(ficha), ...CAMPAIGNS];
   restoreSettings(lists);
   setEstancos(estancos);
@@ -1956,7 +1960,7 @@ if (savedList.length) { yokupSource = 'saved'; yokupDate = String(yokupJSON.actu
 PROJECTS = mergeProjects(savedList, INDEX);
 // Altadis preferences saved before the fichas move to their project once; nothing is deleted.
 let migratedTo = null; try { migratedTo = migrateStorage(localStorage, STORAGE_KEY); } catch (_) {}
-campaignWorkshop=mountCampaign({t,queue,openTwin:f=>twin?.open(f)});
+campaignWorkshop=mountCampaign({t,queue,openTwin:f=>twin?.open(f),clientCatalog:INDEX});
 let query = null, lastProject = null;
 try { query = new URLSearchParams(location.search).get('proyecto'); } catch (_) {}
 try { lastProject = localStorage.getItem(PROJECT_KEY) || migratedTo; } catch (_) { lastProject = migratedTo; }
@@ -1967,6 +1971,7 @@ if (start.unknown) { await live; start = initialProject({query, saved: lastProje
 await switchProject(start.id);
 if (start.unknown) renderProjectStatus(t(`«${start.unknown}» no es un proyecto de Yokup: se usa ${projectName(start.id) === GENERAL ? 'General' : projectName(start.id)}.`, `«${start.unknown}» is not a Yokup project: using ${projectName(start.id) === GENERAL ? 'General' : projectName(start.id)}.`));
 emptySource(); loop();
+if(!/(?:^|\/)creador(?:\/|$)/.test(location.pathname)&&new URLSearchParams(location.search).has('handoff')){try{sourceHandoff=await readHandoff(new URLSearchParams(location.search).get('handoff'));await cargarFuente({file:new File([sourceHandoff.source.blob],sourceHandoff.source.name||'campaign.png',{type:sourceHandoff.source.blob.type}),nombre:sourceHandoff.source.name||'Campaign',origen:'creador'});}catch{announce(t('No se pudo recuperar la imagen de Creador. Vuelve a abrirla desde la campaña.','Creator image could not restore. Open it again from the campaign.'));}}
 
 // El desplegable y el contador del Stock viven en ./stock-select.js (script clásico aparte): si este
 // módulo falla en un navegador, el Stock se lista igual y avisa si no se puede leer.

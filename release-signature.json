@@ -1,8 +1,11 @@
 {
-  "version": "v.14.10.2026.r13.17:15",
-  "agent": "OraculoMacMini",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
-  "mission": "DCL-581417814c661b6c92810b91"
+  "version": "v.14.10.2026.r14.17:22",
+  "agent": "TrinityMacStudio",
+  "deployer": "TrinityMacStudio",
+  "machine": "MacStudio",
+  "signature": "TrinityMacStudio · MacStudio",
+  "git": "bce8127e04af27445c2815203da67689756696ab",
+  "gitFull": "bce8127e04af27445c2815203da67689756696ab",
+  "gitShort": "bce8127",
+  "dirty": false
 }
