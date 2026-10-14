@@ -27,7 +27,7 @@ export function mountStudio(h) {
   };
   function sync(){
     const formats=h.formats(),doc=h.doc(),sig=JSON.stringify([formats.map(f=>f.id),doc?.proyecto]);
-    root.hidden=!formats.length;
+    root.hidden=!formats.length||!!h.ficha()?.instalaciones?.length;
     if(sig!==signature){signature=sig;const old=sel.value;sel.replaceChildren(...formats.map(f=>new Option(`${f.nombre} · ${f.layout?t('videowall','video wall'):f.custom.join('×')}`,f.id)));if(formats.some(f=>f.id===old))sel.value=old;else sel.value=formats.find(f=>f.id==='cliente-esp-2')?.id||formats[0]?.id;shop.replaceChildren(...(doc?.estancos||[]).map(e=>new Option(e.nombre,e.id)));}
     const f=format(),bg=backgrounds.get(f?.id),apps=h.applications();
     appliedName=apps.some(x=>x.estanco===shop.value&&x.formato===f?.id)?`${shop.value}:${f.id}`:'';

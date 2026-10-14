@@ -1,26 +1,24 @@
 {
-  "version": "v.14.10.2026.r13.17:15",
-  "deployedAt": "2026-10-14T15:15:04.339126+00:00",
-  "author": "OraculoMacMini",
-  "agent": "OraculoMacMini",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
-  "git": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
-  "gitShort": "e409c20",
-  "gitFull": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
+  "version": "v.14.10.2026.r14.17:22",
+  "deployedAt": "2026-10-14T15:22:53.651881+00:00",
+  "author": "TrinityMacStudio",
+  "agent": "TrinityMacStudio",
+  "deployer": "TrinityMacStudio",
+  "machine": "MacStudio",
+  "signature": "TrinityMacStudio · MacStudio",
+  "git": "bce8127e04af27445c2815203da67689756696ab",
+  "gitFull": "bce8127e04af27445c2815203da67689756696ab",
+  "gitShort": "bce8127",
   "dirty": false,
   "novedades": [
-    "Cuadratura auditada en todas las rutas de navegación de Studio en español e inglés, con Inicio y Stock visibles incluso después de scroll.",
-    "Demos, cápsulas, ensayos y fichas públicas usan la barra común; alias de administración llegan al backoffice con autorización de servidor.",
-    "Cambiar idioma conserva parámetros y actualiza enlaces; arranque de la portada y accesos desde Creador y Adaptador comprobados en escritorio y móvil."
+    "Starbucks ofrece horizontal, vertical y dos montajes: Paseo de Gracia 103 (2V–1V–3V) y AdmiraNeXT Gran de Gracia 51 (H–V–H–H–V–H).",
+    "Creador y Adaptador comparten imagen, borrador y formatos de cliente; se conservan textos y mapas al continuar la campaña.",
+    "Con ambos locales se preparan 14 archivos nativos y un programa temporal por ubicación. La anamorfosis requiere calibración física."
   ],
   "rollback": {
-    "git": "251bd2f"
+    "git": "bce8127e04af27445c2815203da67689756696ab"
   },
   "sourcePatches": [
-    "14a886b6407883ed49b25fefdd54a81e00405a95",
-    "5c978fa73e8efac8df1b82b623a1e92991e7dae4"
-  ],
-  "mission": "DCL-581417814c661b6c92810b91"
+    ".source-patches/starbucks-creation-formats.json"
+  ]
 }

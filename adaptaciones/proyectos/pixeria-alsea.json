@@ -1,0 +1,236 @@
+{
+  "version": 1,
+  "id": "pixeria-alsea",
+  "nombre": "Starbucks",
+  "cliente": "starbucks",
+  "alias": [
+    "starbucks",
+    "alsea"
+  ],
+  "hereda": "general",
+  "fuente": {
+    "titulo": "Configuraciones indicadas por Carlos · Paseo de Gracia: seis verticales 2+1+3 confirmadas · 14 octubre 2026",
+    "documentacion": "docs/starbucks-formatos.md"
+  },
+  "formatos": {
+    "estandar": [
+      {
+        "id": "starbucks-horizontal",
+        "nombre": "Starbucks · Horizontal",
+        "custom": [
+          1920,
+          1080
+        ],
+        "uso": "Vídeo individual horizontal",
+        "useEn": "Individual landscape video"
+      },
+      {
+        "id": "starbucks-vertical",
+        "nombre": "Starbucks · Vertical",
+        "custom": [
+          1080,
+          1920
+        ],
+        "uso": "Vídeo individual vertical",
+        "useEn": "Individual portrait video"
+      }
+    ],
+    "especiales": []
+  },
+  "ajustes": {
+    "metodo": "auto",
+    "compatibilidad": "fhd",
+    "fps": 25,
+    "codec": "h264",
+    "familia": "proyecto"
+  },
+  "familias": {
+    "proyecto": {
+      "es": "Starbucks · formatos propios",
+      "en": "Starbucks · own formats"
+    }
+  },
+  "campanas": [
+    {
+      "id": "starbucks-individuales",
+      "es": "Starbucks · horizontal y vertical",
+      "en": "Starbucks · landscape and portrait",
+      "descripcionEs": "Las dos orientaciones individuales de la campaña",
+      "descripcionEn": "Both individual campaign orientations",
+      "incluye": "todos"
+    }
+  ],
+  "instalaciones": [
+    {
+      "id": "starbucks-pg103",
+      "name": {
+        "es": "Paseo de Gracia 103 · 2V–1V–3V",
+        "en": "Paseo de Gracia 103 · 2V–1V–3V"
+      },
+      "address": "Passeig de Gràcia 103 · Barcelona",
+      "width": 6840,
+      "height": 1920,
+      "phase": "mural",
+      "approximate": true,
+      "catalogClient": "starbucks",
+      "pattern": "2V–1V–3V",
+      "groups": [
+        2,
+        1,
+        3
+      ],
+      "geometryStatus": "nominal",
+      "anamorphic": {
+        "calibrated": false
+      },
+      "screens": [
+        {
+          "id": "starbucks-pg103-p1",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-pg103-p2",
+          "x": 1080,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-pg103-p3",
+          "x": 2340,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 2
+        },
+        {
+          "id": "starbucks-pg103-p4",
+          "x": 3600,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 3
+        },
+        {
+          "id": "starbucks-pg103-p5",
+          "x": 4680,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 3
+        },
+        {
+          "id": "starbucks-pg103-p6",
+          "x": 5760,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 3
+        }
+      ],
+      "groupGap": 180
+    },
+    {
+      "id": "starbucks-gdg51",
+      "name": {
+        "es": "AdmiraNeXT · Gran de Gracia 51 · H–V–H–H–V–H",
+        "en": "AdmiraNeXT · Gran de Gracia 51 · H–V–H–H–V–H"
+      },
+      "address": "Gran de Gràcia 51 · Barcelona",
+      "width": 9840,
+      "height": 1920,
+      "phase": "mural",
+      "approximate": true,
+      "catalogClient": "starbucks",
+      "pattern": "H-V-H-H-V-H",
+      "groups": [
+        6
+      ],
+      "geometryStatus": "nominal",
+      "anamorphic": {
+        "calibrated": false
+      },
+      "screens": [
+        {
+          "id": "starbucks-gdg51-p1",
+          "x": 0,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-gdg51-p2",
+          "x": 1920,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-gdg51-p3",
+          "x": 3000,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-gdg51-p4",
+          "x": 4920,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-gdg51-p5",
+          "x": 6840,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "starbucks-gdg51-p6",
+          "x": 7920,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        }
+      ]
+    }
+  ],
+  "notas": {
+    "es": "Dos montajes registrados, con vídeo por pantalla a 25 fps. H = horizontal; V = vertical. Ajusta medidas y separaciones en Creador. La anamorfosis necesita la calibración del punto de vista.",
+    "en": "Two registered layouts, with per-screen video at 25 fps. H = landscape; V = portrait. Adjust dimensions and spacing in Creator. Anamorphosis requires viewpoint calibration."
+  },
+  "creacion": {
+    "visualStyle": "coffee-integrated",
+    "direction": "travel",
+    "seconds": 24,
+    "unitSeconds": 8,
+    "background": "#003e2e",
+    "accent": "#e8e5c9",
+    "foreground": "#fffaf0",
+    "logo": "/adaptaciones/campanas/coffee/starbucks-siren.svg"
+  }
+}
