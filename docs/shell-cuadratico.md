@@ -22,7 +22,7 @@ En las páginas interiores no hay idioma ni Contacto en la barra (decisión de p
 - **Única excepción: `_cuadopen.html` y `en/_cuadopen.html`.** Son la ficha de QA de la cuadratura (noindex y sin enlaces): enseñan los tres paneles abiertos, superpuestos, para revisarlos. No guardan nada; el resto del sitio entra cerrado igualmente.
 - **La consola ⌘** (`assets/expert-cli.js`) ya no envuelve el `<body>` en `.pf-cli-viewport` ni le recorta la altura: es una franja fija abajo. Siguen igual la entrada, el historial (↑/↓), Tab, los verbos y `/marca`. Los raíles laterales se apoyan encima de ella (`body.pf-cli-open .rail{bottom:…}`): eso sí está permitido, porque solo cambia un panel.
 - **`quad-ui`** (`audio`, `musica`, `imagenes`, `video`): el relleno del marco de `workspace.css` es fijo; `body.quad-<lado>-open` queda como marcador de estado sin efecto en el contenido.
-- **Qué está prohibido**: cualquier regla de CSS (hojas, `<style>` de las páginas o CSS inyectado desde JS) que, según `pf-*-off`, `pf-cli-open`, `quad-*-open` o un `:has()` de un panel, cambie `margin`, `padding`, `width`, `height`, `grid-template-columns`, posición, tamaño de letra o variables del contenido; medir el contenido con `--pf-left-w`, `--pf-right-w`, `--pf-bottom-h` o `--pf-cli-height`; envolver el contenido en un contenedor que cambie con los paneles; y guardar o restaurar el estado abierto. Lo vigila `test/paneles-superpuestos.test.cjs`.
+- **Qué está prohibido**: cualquier regla de CSS (hojas, `<style>` de las páginas o CSS inyectado desde JS) que, según `pf-*-off`, `pf-cli-open`, `quad-*-open` o un `:has()` de un panel, cambie `margin`, `padding`, `width`, `height`, `grid-template-columns`, posición, tamaño de letra o variables del contenido; medir el contenido con `--pf-left-w`, `--pf-right-w`, `--pf-bottom-h` o `--pf-cli-height`; envolver el contenido en un contenedor que cambie con los paneles; y guardar o restaurar el estado abierto. Lo vigila `test/studio-navigation.browser.cjs`.
 
 ### Quién monta qué
 
@@ -70,13 +70,13 @@ Patrón de `admira-xp.html`:
 
 ## Guardián
 
-`test/shell-cuadratico.test.cjs` recorre todos los `.html` del repo. Cada uno carga `site-nav.js` (defer, en el `<head>`), `cuadratura.css` (después del CSS propio) y `cuadratura.js`, los tres con el sello vigente de `index.html`, tiene `<main>` y una barra montable (cabecera canónica o `quad-ui`); o figura en `SHELL_EXCEPTIONS` con su motivo. Una página nueva sin shell hace fallar el test, y también una excepción que ya no existe o que sí carga el shell. Además vigila que ninguna página adoptada vuelva a `calc(100vh - Npx)`.
+`test/studio-navigation.test.mjs` inspecciona todos los HTML: una página de interfaz tiene main, cabecera montable, scripts comunes diferidos, versiones de assets vigentes y cierre inicial de paneles. `test/studio-page-exceptions.json` documenta exclusivamente alias, documentos de emisión y redirecciones fuera de Studio. Una nueva página sin shell hace fallar la prueba; los alias de administración conservan query/hash y no incluyen lógica local de privilegios.
 
-`test/paneles-superpuestos.test.cjs` vigila el principio de los paneles superpuestos: recorre todas las hojas `.css`, los `<style>` de cada página y el CSS que inyectan `site-nav.js`, `cuadratura.js`, `expert-cli.js` y `app.js`, y falla si una regla dependiente del estado de un panel toca el contenido, si el contenido se mide con el tamaño de un panel, si vuelve `.pf-cli-viewport`, si algo lee o guarda `pixeria_pf_left/right/bottom` o si el primer `<script>` del `<body>` de una página con shell no es el cierre uniforme. Lleva las reglas antiguas como casos que deben fallar.
+`test/studio-navigation.browser.cjs` verifica las 76 rutas de navegación, incluidos los seis alias interiores, en español e inglés: una barra, Inicio/Stock del idioma actual, tres controles de panel, superposición sin mover main y barra visible después de scroll. Recorre cambios reales `/language ENG` → `/language ESP` desde Creador, Adaptador y Cápsulas, conserva los parámetros del ejemplo y comprueba accesos a Stock e Inicio en escritorio y móvil. La variante de fuentes locales usa `STUDIO_SOURCE_OVERLAY=1`; la comprobación final usa la web real con autenticación de servidor, sin sustituir API ni acceso.
 
 ## Páginas
 
-**Con shell (57 de 73).**
+**Con shell (70 de 88).**
 
 | Grupo | Páginas |
 |---|---|
@@ -100,12 +100,15 @@ Qué cambió al adoptarlas:
 | `stock.html` | `cuadratura.css` pasa detrás de `viewer.css` y `editor.css`. |
 | Resto | `cuadratura.css`, script en línea de cierre y `cuadratura.js` (la barra ya se montaba). |
 
-### Excepciones (16)
+### Excepciones (18)
+
+Los seis alias interiores (idea, privacy y cuatro rutas god) terminan en una página de Studio con shell. Las seis rutas de Xpacios trasladadas mantienen su redirección a XpaceOS. Los seis documentos de emisión/fragmentos conservan el lienzo de pantalla completa que consumen los players e iframes; no son páginas de navegación del estudio.
 
 | Página | Motivo |
 |---|---|
+| `privacy.html` | Redirección a la política inglesa, con retorno a español mediante idioma. |
+| `god/` (+ `crear/`, `labs/`, `tool/`) | Alias antiguos hacia su equivalente `/backoffice/`, con autorización de servidor intacta y query/hash conservados. |
 | `idea.html` | Redirección inmediata a `/concepto.html`; no pinta nada. |
-| `en/crear/index.html` | Redirección inmediata a `/crear/`; no pinta nada. |
 | `xpacios/index.html` | Redirección a xpaceos.com (Xpacios se mudó a XpaceOS). |
 | `xpacios/crear/index.html` | Ídem. |
 | `xpacios/crear/phone.html` | Ídem. |
@@ -118,8 +121,6 @@ Qué cambió al adoptarlas:
 | `en/xtore.html` | Ídem (inglés). |
 | `campanas/sabiasque-tabaco/bucle.html` | Bucle de la campaña a pantalla completa: lo que emite la pantalla y lo que se previsualiza en el iframe de `/campanas/`. |
 | `campanas/sabiasque-tabaco/slide.html` | Fragmento: cada pieza que el bucle carga en su iframe. |
-| `xpacios/aulestia-i-pijoan/index.html` | Una de las dos rutas públicas sin sesión (`functions/_middleware.js`): mapa friends and family. La barra llevaría a un estudio cerrado con login de Google. |
-| `xpacios/cafebreria/ci/index.html` | La otra ruta pública: ficha de cada aparato que se abre con un QR en el móvil. Ídem. |
 
 `_cuadopen.html` y `en/_cuadopen.html` no son excepción: son la portada con la cuadratura completa y ya cumplen.
 
@@ -127,8 +128,17 @@ Qué cambió al adoptarlas:
 
 - `tool/` y `backoffice/tool/` cargan JetBrains Mono de Google Fonts; el resto del sitio no la descarga y usa la monoespaciada del sistema. La barra declara la misma familia en todas, pero en esas dos se ve con la fuente real.
 - `en/audio.html` no es `quad-ui` (la española sí). Las dos montan la misma barra; convertirla es otra tarea.
-- La barra es `position:sticky` pero se va con el scroll: el `overflow-x:hidden` del `<body>` (`styles.css`/`workspace.css`) lo convierte en contenedor de scroll. Pasa igual en la portada y en `admira-xp.html`; no lo cambia esta tarea.
+- La barra mantiene `position:sticky`; el body de páginas con shell usa `overflow-x:clip`, sin crear un contenedor de scroll que se lleve la barra fuera de la vista.
 
 ---
 
-**Rule: every new Admira Studio page uses the shell.** Load `/assets/cuadratura.css` after the page CSS, `/assets/site-nav.js` (defer) and `/assets/cuadratura.js`, give the page a `header.site-header` (or `.topnav`) with a direct `.brand` child and a `nav.nav`, and wrap the content in `<main>`. Use `var(--pf-topbar-h)` for heights and keep own modals above z-index 1300. Panels overlay the content (Carlos, 3 Oct 2026): opening ☰, ▤ or ⌘ never moves or resizes `main`, `.cuad-center`, `.page-head` or `body`, and every page loads with the three panels closed (only their resized size is remembered); `test/paneles-superpuestos.test.cjs` enforces it. 57 of the 73 pages carry the shell; the 16 exceptions (redirects, full-screen players, an iframe fragment and the two public no-session routes) are listed above and in `SHELL_EXCEPTIONS` of `test/shell-cuadratico.test.cjs`, which fails when a page skips the shell.
+**Rule: every new Admira Studio page uses the shell.** Load `/assets/cuadratura.css` after the page CSS, `/assets/site-nav.js` (defer) and `/assets/cuadratura.js`, give the page a `header.site-header` (or `.topnav`) with a direct `.brand` child and a `nav.nav`, and wrap the content in `<main>`. Use `var(--pf-topbar-h)` for heights and keep own modals above z-index 1300. Panels overlay the content (Carlos, 3 Oct 2026): opening ☰, ▤ or ⌘ never moves or resizes `main`, `.cuad-center`, `.page-head` or `body`, and every page loads with the three panels closed (only their resized size is remembered); `test/studio-navigation.browser.cjs` enforces it. 70 of the 88 pages carry the shell; the 18 exceptions (redirects, full-screen players, an iframe fragment and the migrated administration aliases) are listed above and in `test/studio-page-exceptions.json` of `test/studio-navigation.test.mjs`, which fails when a page skips the shell.
+
+
+## Continuidad ES / EN · 14-oct-2026
+
+ES: Inicio y Stock están en la misma barra de todas las páginas de interfaz. Los enlaces del raíl Opciones y de la marca siguen el idioma de la interfaz. Cuando una demo cambia el idioma sin recargar, sólo se actualiza la navegación: el contenido central, el borrador y los paneles abiertos se conservan. El comando de idioma actualiza también `lang` en la URL para que una recarga no revierta la selección; mantiene los demás parámetros y el fragmento. Las parejas traducidas, incluida Privacidad, navegan a su ruta real. Las fichas públicas y las páginas de demos, cápsulas y ensayos ahora adoptan el mismo shell. Los alias god usan las páginas protegidas backoffice y no restauran un superusuario local.
+
+EN: Home and Stock remain in the common header on every workspace page. The brand and Options links follow the UI language. In-place language changes update navigation without replacing the main content, draft or open panels. The language command updates the URL preference so reload retains the choice; other parameters and the fragment survive. Translated counterparts, including Privacy, resolve to their actual routes. Public sheets, demos, capsules and adapter studies now use the shared shell. Legacy god aliases lead to server-protected backoffice pages without restoring a local superuser. Full-screen media documents and redirects to XpaceOS retain their delivery roles.
+
+Read-only public browser audit: `PLAYWRIGHT_MODULE=/path/to/playwright node test/studio-navigation.browser.cjs`. Static guard: `node --test test/studio-navigation.test.mjs`.

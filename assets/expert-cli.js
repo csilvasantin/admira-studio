@@ -357,6 +357,13 @@
   function applyExpertLang(next) {
     var l = next === 'en' ? 'en' : 'es';
     try { localStorage.setItem(LANG_KEY, l); } catch (_) {}
+    // The explicit URL preference must follow the control too, including
+    // examples that change language in place instead of reloading a draft.
+    try {
+      var query = new URLSearchParams(location.search);
+      query.set('lang', l);
+      history.replaceState(history.state, '', location.pathname + '?' + query.toString() + location.hash);
+    } catch (_) {}
     document.documentElement.lang = l;
     // La suite (si está) aplica el idioma y puede navegar ella misma, a la misma URL que calculamos aquí.
     try { if (typeof window.AdmiraSetLanguage === 'function') window.AdmiraSetLanguage(l); } catch (_) {}

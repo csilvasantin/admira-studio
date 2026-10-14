@@ -1,0 +1,21 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "251bd2f",
+  "mission": "DCL-581417814c661b6c92810b91",
+  "reason": "Persistent quadratura and Home/Stock across Studio navigation and ES/EN transitions; preserve full-screen media and server authorization.",
+  "adoptedPages": [
+    "adaptaciones/ensayos/2026-10-08/index.html",
+    "capsulas/index.html",
+    "demo/studio-guion.html",
+    "demo/studio-preview.html",
+    "xpacios/aulestia-i-pijoan/index.html",
+    "xpacios/cafebreria/ci/index.html"
+  ],
+  "legacyAdminAliases": {
+    "/god/": "/backoffice/",
+    "/god/crear/": "/backoffice/crear/",
+    "/god/labs/": "/backoffice/labs/",
+    "/god/tool/": "/backoffice/tool/"
+  }
+}

@@ -15,7 +15,7 @@
   var LANG_KEY = 'admiranext_expert_lang';
   var englishHost = /(^|\.)pixeria\.(com|pages\.dev)$/.test(location.hostname);
   var localePath = location.pathname;
-  var translatedPages = ['/', '/index.html', '/audio.html', '/musica.html', '/imagenes.html', '/video.html', '/anonimizador.html', '/publicidad.html', '/stock.html', '/crear/', '/creador/', '/adaptaciones/'];
+  var translatedPages = ['/', '/index.html', '/_cuadopen.html', '/admira-xp.html', '/avatar.html', '/concepto.html', '/director.html', '/plataforma.html', '/privacidad.html', '/privacy.html', '/radar/', '/crear-campana/', '/audio.html', '/musica.html', '/imagenes.html', '/video.html', '/anonimizador.html', '/publicidad.html', '/stock.html', '/crear/', '/creador/', '/adaptaciones/'];
   function langPref() {
     try { var v = localStorage.getItem(LANG_KEY); return v === 'es' || v === 'en' ? v : ''; } catch (_) { return ''; }
   }
@@ -46,8 +46,8 @@
       } catch (_) {}
     }
     if (!isTranslated(p)) return '';
-    if (l === 'en') return isEnPath(p) ? '' : '/en' + (p === '/index.html' ? '/' : p);
-    return isEnPath(p) ? (p.slice(3) || '/') : '';
+    if (l === 'en') return isEnPath(p) ? '' : (p === '/privacidad.html' ? '/en/privacy.html' : '/en' + (p === '/index.html' ? '/' : p));
+    return isEnPath(p) ? (p === '/en/privacy.html' ? '/privacidad.html' : (p.slice(3) || '/')) : '';
   }
   // URL completa para pasar a `l`: conserva el resto del query (cliente=, marca=…) y el hash. En
   // pixeria la ruta ES lleva ?lang=es por si localStorage no está disponible (privado, bloqueado).
@@ -55,23 +55,25 @@
     var path = langPath(l);
     if (!path) return '';
     var q = new URLSearchParams(location.search);
-    q.delete('lang');
-    if (l === 'es' && englishHost) q.set('lang', 'es');
+    q.set('lang', l);
     var qs = q.toString();
     return path + (qs ? '?' + qs : '') + location.hash;
   }
   window.PixeriaIdioma = { clave: LANG_KEY, preferido: langPref, fijar: setLangPref, ruta: langPath, url: langUrl };
   var langRedirect = (function () {
-    if (!isTranslated(localePath)) return '';
     var qLang = new URLSearchParams(location.search).get('lang');
     var want = qLang === 'es' || qLang === 'en' ? qLang : (langPref() || (englishHost ? 'en' : ''));
-    var onEn = isEnPath(localePath);
-    if (want === 'en' && !onEn) return '/en' + (localePath === '/index.html' ? '/' : localePath) + location.search + location.hash;
-    if (want === 'es' && onEn) {
+    if (qLang === 'es' || qLang === 'en') setLangPref(qLang);
+    if (!isTranslated(localePath)) {
+      if (want) document.documentElement.lang = want;
+      return '';
+    }
+    var target = want && langPath(want);
+    if (target) {
       var q = new URLSearchParams(location.search);
-      if (englishHost) q.set('lang', 'es');
+      q.set('lang', want);
       var qs = q.toString();
-      return (localePath.slice(3) || '/') + (qs ? '?' + qs : '') + location.hash;
+      return target + (qs ? '?' + qs : '') + location.hash;
     }
     return '';
   })();
@@ -627,6 +629,7 @@
     installLeadToggle();
     if (isHome()) {
       upgradeFrameControls();
+      syncNavigationLanguage();
       return;
     }
     var english = (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0;
@@ -665,6 +668,48 @@
     if (!document.querySelector('.pf-topbar')) {
       document.querySelectorAll('.site-header, .topnav').forEach(bindStandardControls);
     }
+    syncNavigationLanguage();
+  }
+
+  // Changing language in a running example must update navigation without
+  // replacing its main, draft, player, selection or open panels.
+  function syncNavigationLanguage() {
+    var english = (document.documentElement.lang || '').startsWith('en');
+    var items = english ? EN : ES;
+    document.querySelectorAll('.pf-topbar-nav').forEach(function (nav) { render(nav, items); });
+    document.querySelectorAll('.pf-topbar-brand').forEach(function (brand) {
+      var url = new URL(brand.href, location.href);
+      if (url.origin === location.origin && ['/', '/en/', '/index.html', '/en/index.html'].indexOf(url.pathname) >= 0) brand.href = english ? '/en/' : '/';
+    });
+    document.querySelectorAll('.pf-topbar-lang, .language-switcher a, .mobile-language-switcher a').forEach(function (link) {
+      var language = english ? 'es' : 'en';
+      var target = langUrl(language);
+      if (target) link.href = target;
+    });
+    var sectionLabels = {
+      'Avatar 3D':'Avatar 3D', 'Anonimizador':'Anonymizer', 'Plataforma':'Platform',
+      'Campañas':'Campaigns', 'Demo Clear Channel':'Clear Channel demo'
+    };
+    document.querySelectorAll('.rail-left .rail-nav a').forEach(function (link) {
+      var url = new URL(link.href, location.href);
+      if (url.origin !== location.origin) return;
+      var base = url.pathname.replace(/^\/en(?=\/)/, '');
+      var section = HOME_RAIL_SECTIONS.find(function (s) { return norm(s[0]) === norm(base); });
+      if (!section) return;
+      var navItem = items.find(function (item) { return norm(item[0].replace(/^\/en(?=\/)/, '')) === norm(base); });
+      url.pathname = navItem ? navItem[0] : (english && isTranslated(base) ? '/en' + base : base);
+      link.href = url.pathname + url.search + url.hash;
+      var label = link.querySelector('b');
+      if (label) label.textContent = navItem ? navItem[1] : (english ? (sectionLabels[section[1]] || section[1]) : section[1]);
+      var detail = link.querySelector('small');
+      if (detail) detail.textContent = english && window.AdmiraUILocale ? window.AdmiraUILocale.translate(section[2]) : section[2];
+    });
+    [['menu','Opciones','Options'],['advanced','Avanzado','Advanced'],['expert','Experto','Expert']].forEach(function (role) {
+      document.querySelectorAll('.pf-topbar .pix-nav-icon-' + role[0]).forEach(function (button) {
+        button.setAttribute('aria-label', english ? role[2] : role[1]);
+        button.title = english ? role[2] : role[1];
+      });
+    });
   }
 
   // El sello visible se copia del <meta> canonico, que es el que firma el release
@@ -708,6 +753,12 @@
     normalizeInternalNav();
     syncRailVersion();
     trackTopbarHeight();
+    var languageObserver = new MutationObserver(function () {
+      setLangPref((document.documentElement.lang || '').startsWith('en') ? 'en' : 'es');
+      syncNavigationLanguage();
+    });
+    languageObserver.observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
+    document.addEventListener('admiranext:lang', syncNavigationLanguage);
     // cuadratura.js crea la barra de la home de forma diferida; esta segunda
     // pasada normaliza tambien esa barra cuando se reutiliza en una interior.
     setTimeout(function () {
@@ -721,7 +772,7 @@
       css.rel = 'stylesheet'; css.href = '/assets/expert-cli.css' + (STAMP || '?v=4663');
       document.head.appendChild(css);
       var cli = document.createElement('script');
-      cli.src = '/assets/expert-cli.js?v=creator-full-3';
+      cli.src = '/assets/expert-cli.js' + (STAMP || '?v=creator-full-3');
       document.body.appendChild(cli);
       // ⌘ EXPERTO · CLI con el look de digitalavatar.ai (Carlos, 4-oct-2026): piel compartida de la
       // suite (www.admiranext.com/suite) sobre la consola de expert-cli.js; los comandos no cambian.
@@ -745,6 +796,9 @@
     }, 0);
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  // A deferred script runs with readyState=interactive, before the next
+  // deferred quadratura script has necessarily mounted the header. Wait for
+  // that bootstrap instead of exhausting two passes before the header exists.
+  if (document.readyState === 'loading' || (SELF && SELF.defer && document.readyState === 'interactive')) document.addEventListener('DOMContentLoaded', start, {once:true});
   else start();
 })();

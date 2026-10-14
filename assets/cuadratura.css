@@ -459,6 +459,10 @@ body.pf-bottom-off .rail-bottom {display:none}
 }
 :root:not([data-mb-marca]) body .pf-topbar .pf-topbar-brand{color:#c8ffd0;font-size:15px;text-decoration:none}
 :root:not([data-mb-marca]) body .pf-topbar .pf-brand-name{color:#c8ffd0;font-size:15px;font-weight:800;letter-spacing:.08em}
+/* A horizontal scroll container traps sticky navigation while the document
+   scrolls. Clip overflow without creating that container. */
+body.pix-nav-canonical-header, body.pf-has-frame{overflow-x:clip}
+
 body .pf-topbar .pix-nav-icon{
   margin:0;
   padding:0;

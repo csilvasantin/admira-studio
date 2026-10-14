@@ -1,0 +1,20 @@
+{
+  "idea.html": {"kind":"redirect","target":"/concepto.html"},
+  "privacy.html": {"kind":"redirect","target":"/en/privacy.html"},
+  "god/index.html": {"kind":"redirect","target":"/backoffice/"},
+  "god/crear/index.html": {"kind":"redirect","target":"/backoffice/crear/"},
+  "god/labs/index.html": {"kind":"redirect","target":"/backoffice/labs/"},
+  "god/tool/index.html": {"kind":"redirect","target":"/backoffice/tool/"},
+  "xpacios/index.html": {"kind":"external-redirect","target":"https://www.xpaceos.com/xpacios/"},
+  "xpacios/crear/index.html": {"kind":"external-redirect","target":"https://www.xpaceos.com/xpacios/crear/"},
+  "xpacios/crear/phone.html": {"kind":"external-redirect","target":"https://www.xpaceos.com/xpacios/crear/phone.html"},
+  "xpacios/grok/index.html": {"kind":"external-redirect","target":"https://www.xpaceos.com/xpacios/grok/"},
+  "xpacios/xtanco-barcelona/index.html": {"kind":"external-redirect","target":"https://www.xpaceos.com/xpacios/xtanco-barcelona/"},
+  "xpacios/xtanco-valencia/index.html": {"kind":"external-redirect","target":"https://www.xpaceos.com/xpacios/xtanco-valencia/"},
+  "signage.html": {"kind":"screen-output","reason":"Fullscreen Pixer Feed emission"},
+  "xtore.html": {"kind":"screen-output","reason":"Fullscreen store emission"},
+  "en/signage.html": {"kind":"screen-output","reason":"Fullscreen English Pixer Feed emission"},
+  "en/xtore.html": {"kind":"screen-output","reason":"Fullscreen English store emission"},
+  "campanas/sabiasque-tabaco/bucle.html": {"kind":"screen-output","reason":"Campaign loop embedded by the campaign page"},
+  "campanas/sabiasque-tabaco/slide.html": {"kind":"screen-output","reason":"Media fragment embedded by the loop"}
+}

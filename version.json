@@ -1,6 +1,6 @@
 {
-  "version": "v.14.10.2026.r12.16:00",
-  "deployedAt": "2026-10-14T14:00:57.443144+00:00",
+  "version": "v.14.10.2026.r13.17:15",
+  "deployedAt": "2026-10-14T15:15:04.339126+00:00",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
@@ -11,16 +11,16 @@
   "gitFull": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
   "dirty": false,
   "novedades": [
-    "Campaña inglesa Starbucks verificada en los seis players nativos, con recorrido V-H-V-V-H-V y ciclo común de 32 segundos.",
-    "La campaña conserva cuadratura y navegación Inicio/Stock; Stock mantiene su interfaz al buscar, cambiar formato o abrir Opciones.",
-    "Stock en español e inglés muestra la campaña y sus ocho versiones inglesas mediante filtros enlazables; ayuda y evidencia bilingües."
+    "Cuadratura auditada en todas las rutas de navegación de Studio en español e inglés, con Inicio y Stock visibles incluso después de scroll.",
+    "Demos, cápsulas, ensayos y fichas públicas usan la barra común; alias de administración llegan al backoffice con autorización de servidor.",
+    "Cambiar idioma conserva parámetros y actualiza enlaces; arranque de la portada y accesos desde Creador y Adaptador comprobados en escritorio y móvil."
   ],
   "rollback": {
-    "git": "0c17432c5c5ab8d8876b28406c9f09be1b940cd2"
+    "git": "251bd2f"
   },
   "sourcePatches": [
     "14a886b6407883ed49b25fefdd54a81e00405a95",
     "5c978fa73e8efac8df1b82b623a1e92991e7dae4"
   ],
-  "mission": "DCL-49244df6cfd55264825ad050"
+  "mission": "DCL-581417814c661b6c92810b91"
 }
