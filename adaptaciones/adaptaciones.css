@@ -474,3 +474,10 @@ body.image-source[data-paso="1"] #cuad-avanzado-live .profile-label{display:none
 @media(max-width:680px){.campaign-overview{grid-template-columns:1fr}.campaign-stage-pair{grid-template-columns:1fr}.adaptation-preview-pair{gap:8px}.inline-twin{padding:5px}.campaign-flat canvas{height:150px}}
 
 .twin-photo{font-size:12px;padding:10px 0}.twin-photo img{display:block;max-width:100%;max-height:300px;margin:12px auto;object-fit:contain}.twin-photo[hidden]{display:none}
+
+/* The white-label page keeps its light palette; the 3D viewer has its own dark surface. */
+:root[data-mb-marca] .adapter-twin{color:#e8f1ec!important}
+:root[data-mb-marca] .adapter-twin :is(h2,label,summary,output,.twin-format,.twin-status){color:#e8f1ec!important}
+:root[data-mb-marca] .adapter-twin .pill{background:#1c3025!important;color:#edf7f1!important;border-color:#668975!important}
+:root[data-mb-marca] .adapter-twin .pill:hover{background:#2c4837!important;border-color:#b6d6c3!important}
+:root[data-mb-marca] .adapter-twin footer{background:transparent!important;color:#c6d9cd!important}

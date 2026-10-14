@@ -1,6 +1,6 @@
-import {createFormatTwin,isStarbucksFormat} from './gemelo-factory.mjs?v=starbucks-room-1';
-import {STARBUCKS_PHOTO} from './starbucks-twin-core.mjs?v=starbucks-room-1';
-import {mountInlineTwins} from './gemelo-inline.mjs?v=starbucks-room-1';
+import {createFormatTwin,isStarbucksFormat} from './gemelo-factory.mjs?v=starbucks-room-2';
+import {STARBUCKS_PHOTO} from './starbucks-twin-core.mjs?v=starbucks-room-2';
+import {mountInlineTwins} from './gemelo-inline.mjs?v=starbucks-room-2';
 import {twinGeometry,localizedTwinWarnings} from './gemelo-core.mjs?v=installation-20261009';
 import {TWIN_REFERENCES,recommendedReferenceId,referenceById} from './gemelo-catalog.mjs?v=installation-20261009';
 

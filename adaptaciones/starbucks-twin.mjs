@@ -1,9 +1,9 @@
 import * as T from '../assets/xpaces/engine/premium-three.mjs';
 import {createLifeScene} from '../assets/xpaces/engine/life-scene.mjs?v=px-1';
 import {createLifeRenderer} from '../assets/xpaces/engine/life-renderer.mjs?v=installation-20261009';
-import {previewSize,screenCrop} from './gemelo-core.mjs?v=starbucks-room-1';
+import {previewSize,screenCrop} from './gemelo-core.mjs?v=starbucks-room-2';
 import {observerPoint} from './gemelo-reference.mjs?v=installation-20261009';
-import {STARBUCKS_ROOM,STARBUCKS_PHOTO,starbucksPlacement} from './starbucks-twin-core.mjs?v=starbucks-room-1';
+import {STARBUCKS_ROOM,STARBUCKS_PHOTO,starbucksPlacement} from './starbucks-twin-core.mjs?v=starbucks-room-2';
 
 function release(root){const resources=new Set();root.traverse(n=>{if(n.geometry)resources.add(n.geometry);for(const m of [n.material].flat().filter(Boolean)){resources.add(m);for(const v of Object.values(m))if(v?.isTexture)resources.add(v);}});resources.forEach(r=>r.dispose());root.clear();}
 export async function createStarbucksTwin({canvas,geometry,formatId,quality='best',signal,onCameraChange}={}){

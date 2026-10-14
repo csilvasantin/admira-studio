@@ -14,7 +14,7 @@ test('photo-derived PG103 wall keeps six native crops in wide 2+1+3 physical gro
 });
 test('Gran de Gracia retains H–V–H–H–V–H, centre alignment, pixel aspect and exact native crops',()=>{
  const i=doc.instalaciones.find(i=>i.id==='starbucks-gdg51'),g=geometry(i),p=starbucksPlacement(g,{formatId:i.id}),size=previewSize(g);
- assert.equal(p.pattern,'H–V–H–H–V–H');assert.equal(p.location,'gdg51');assert.equal(p.photoLayout,false);assert.equal(p.pieces.length,6);
+ assert.equal(p.pattern,'H–V–H–H–V–H');assert.equal(p.location,'gdg51');assert.equal(p.photoLayout,false);assert.equal(p.pieces.length,6);for(let n=1;n<p.pieces.length;n++)assert(p.pieces[n].position.x-p.pieces[n].width/2>p.pieces[n-1].position.x+p.pieces[n-1].width/2+.025);
  for(const [n,v] of p.pieces.entries()){const original=g.segments[n].wall;assert(Math.abs(v.width/v.height-original.w/original.h)<1e-10);assert.equal(v.position.y,2.65);assert.deepEqual(screenCrop(v.wall,g.pared,size),screenCrop(original,g.pared,size));}
 });
 test('individual campaigns use their client identity while unrelated formats keep their retail model',()=>{
