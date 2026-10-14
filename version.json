@@ -1,6 +1,6 @@
 {
-  "version": "v.14.10.2026.r8.13:32",
-  "deployedAt": "2026-10-14T11:32:36.804616+00:00",
+  "version": "v.14.10.2026.r9.13:49",
+  "deployedAt": "2026-10-14T11:49:44.760912+00:00",
   "author": "TrinityMBP14",
   "agent": "TrinityMBP14",
   "deployer": "TrinityMBP14",
@@ -11,9 +11,9 @@
   "gitFull": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
   "dirty": false,
   "novedades": [
-    "Stock: Playlist amarilla con barra y porcentaje mientras se descarga en los destinos.",
-    "Verde sólo con confirmación reciente de descarga completa de todos los players; detalle por destino al pasar el cursor.",
-    "Progreso automático, sin refrescar; las respuestas antiguas y los destinos sin confirmación siguen pendientes."
+    "Nueva cápsula en Creador, junto a los idiomas: conocimiento, ¿Sabías que? y Blinkist, con fuente e idioma explícitos.",
+    "Stock filtra por formatos presentes; identifica ancho/alto y mantiene sin confirmar los formatos desconocidos.",
+    "Desplegable de versiones relacionadas en la esquina superior derecha; cada elección usa su archivo, ID y asignaciones reales."
   ],
   "rollback": {
     "git": "8d0c7e3"
@@ -22,5 +22,5 @@
     "14a886b6407883ed49b25fefdd54a81e00405a95",
     "5c978fa73e8efac8df1b82b623a1e92991e7dae4"
   ],
-  "mission": "DCL-c0f33c18572a1cd92da98c2c"
+  "mission": "DCL-3afd369655adc4fbdfee6908"
 }

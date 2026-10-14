@@ -1,0 +1,13 @@
+.creator-capsule-open{white-space:nowrap;margin-left:12px;align-self:center}
+.creator-capsule-modal{box-sizing:border-box;width:min(740px,94vw);max-height:88vh;overflow:auto;border:1px solid var(--matrix,#00ff41);border-radius:12px;background:#031006;color:#caffd7;padding:22px;font:inherit}
+.creator-capsule-modal::backdrop{background:#000b}
+.creator-capsule-modal h2{color:var(--matrix,#00ff41);margin:0 0 10px;font-size:20px}
+.creator-capsule-modal p{font-size:13px;line-height:1.5}
+.creator-capsule-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.creator-capsule-grid label{display:flex;flex-direction:column;gap:5px;font-size:12px}
+.creator-capsule-grid .full{grid-column:1/-1}
+.creator-capsule-grid input,.creator-capsule-grid select,.creator-capsule-grid textarea{box-sizing:border-box;width:100%;padding:9px;border:1px solid #227b36;background:#020a04;color:inherit;font:inherit;border-radius:5px}
+.creator-capsule-modal [hidden]{display:none!important}
+.creator-capsule-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+#cap-status{font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+@media(max-width:600px){.creator-capsule-grid{grid-template-columns:1fr}.creator-capsule-modal{padding:14px}.creator-capsule-open{margin-left:0}}

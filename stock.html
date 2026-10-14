@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r8.1332';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r9.1349';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r8.13:32">
+  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r9.13:49">
   <link rel="canonical" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r8.1332">
+  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r9.1349">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -92,6 +92,8 @@
     #localDropOverlay[hidden]{display:none}
     #localDropOverlay span{font-size:16px}
     .stock-card-media{position:relative}
+    .stock-format-versions{pointer-events:auto;max-width:calc(100% - 52px);cursor:pointer;text-overflow:ellipsis;outline-offset:2px}
+    .stock-format-versions option{background:#031006;color:#caffd7}
     .stock-playlist-badge{position:absolute;right:9px;bottom:9px;z-index:4;border:1px solid var(--matrix);border-radius:7px;background:#001b0bee;color:var(--matrix);padding:5px 8px;font-size:11px;font-weight:700;font-family:inherit;cursor:help;max-width:80%}
     .stock-playlist-badge.is-pending{border-color:#ffe14d;color:#ffe14d;background:#242005f2}
     .stock-playlist-pct{margin-left:5px}
@@ -262,26 +264,7 @@
       white-space:pre-wrap; overflow-wrap:anywhere; text-align:left; }
 
     /* Alta fácil de cápsula Blinkist (Cafebrería) — solo texto, sin DevTools */
-    .capsula-create{ margin:12px 0 18px; border:1px solid var(--line-bright); border-radius:10px;
-      background:rgba(0,255,65,.04); padding:14px 16px; }
-    .capsula-create[hidden]{ display:none; }
-    .capsula-create-head{ display:flex; flex-wrap:wrap; gap:10px; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
-    .capsula-create-head h3{ margin:0; font-size:15px; color:var(--matrix); letter-spacing:.04em; }
-    .capsula-create-head p{ margin:0; font-size:12px; color:var(--muted); max-width:62ch; line-height:1.45; }
-    .capsula-grid{ display:grid; gap:10px 14px; grid-template-columns:repeat(2,minmax(0,1fr)); }
-    .capsula-grid .field{ display:flex; flex-direction:column; gap:4px; }
-    .capsula-grid .field.full{ grid-column:1/-1; }
-    .capsula-grid label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
-    .capsula-grid input,.capsula-grid select,.capsula-grid textarea{
-      font:inherit; font-size:13px; color:var(--ink); background:var(--bg);
-      border:1px solid var(--line-bright); border-radius:6px; padding:8px 10px; }
-    .capsula-grid textarea{ min-height:72px; resize:vertical; line-height:1.45; }
-    .capsula-actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:12px; }
-    .capsula-status{ font-size:12px; color:var(--muted); line-height:1.4; flex:1; min-width:200px; }
-    .capsula-status[data-ok="1"]{ color:var(--matrix); }
-    .capsula-status[data-ok="0"]{ color:#ff8866; }
-    .capsula-toggle{ font-size:12px; }
-    @media (max-width:720px){ .capsula-grid{ grid-template-columns:1fr; } }
+
 
 
     /* Visor de mueble girable en el Stock: 1 cara + flechas para ver las otras */
@@ -370,11 +353,11 @@
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
   </style>
-  <script defer src="/assets/site-nav.js?v=14.10.2026.r8.1332"></script>
-  <script defer src="/assets/descarga-local.js?v=14.10.2026.r8.1332"></script>
-  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r8.1332">
+  <script defer src="/assets/site-nav.js?v=14.10.2026.r9.1349"></script>
+  <script defer src="/assets/descarga-local.js?v=14.10.2026.r9.1349"></script>
+  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r9.1349">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r8.1332">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r9.1349">
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -459,7 +442,7 @@
                  vistas salvo esta, para que el Stock no enseñe piezas rotas. -->
             <option value="fallidos" id="stockFailedOpt" hidden>Importaciones fallidas</option>
           </select>
-          <button type="button" class="stock-pager-btn capsula-toggle" id="capsulaFormToggle" title="Crear cápsula Blinkist (texto → Stock → Cafebrería)" aria-expanded="false" aria-controls="capsulaPanel">📚 Nueva cápsula</button>
+          <select id="stockFormatFilter" title="Filtrar por formato" aria-label="Filtrar por formato"><option value="">Todos los formatos</option></select>
           <button type="button" class="stock-pager-btn" id="tagMgrBtn" title="Gestor de etiquetas: renombrar, fusionar variaciones y borrar en todo el Stock">🏷️ Etiquetas</button>
         </div>
         <div class="stock-pager-sort" id="stockSortBar" role="group" aria-label="Ordenar por">
@@ -481,57 +464,6 @@
     <section>
 
 
-
-    <section class="capsula-create" id="capsulaPanel" hidden aria-label="Nueva cápsula Blinkist">
-      <div class="capsula-create-head">
-        <h3>📚 Cápsula Blinkist → Stock</h3>
-        <p>Publica solo el texto (type <code>capsula</code>, tags <code>blinkist</code>). Cafebrería la recoge del índice. El vídeo 9:16 se compone aparte con <code>capsula.sh</code> — este formulario no pide Grok Video.</p>
-      </div>
-      <form id="capsulaForm" autocomplete="off">
-        <div class="capsula-grid">
-          <div class="field full">
-            <label for="cap-url">URL Blinkist <small style="text-transform:none;letter-spacing:0;font-weight:400">(o deja vacío y rellena título + autor)</small></label>
-            <input id="cap-url" name="url" type="url" placeholder="https://www.blinkist.com/en/books/…" spellcheck="false">
-          </div>
-          <div class="field">
-            <label for="cap-libro">Título del libro</label>
-            <input id="cap-libro" name="libro" type="text" placeholder="This Is Marketing">
-          </div>
-          <div class="field">
-            <label for="cap-autor">Autor</label>
-            <input id="cap-autor" name="autor" type="text" placeholder="Seth Godin">
-          </div>
-          <div class="field full">
-            <label for="cap-tesis">Tesis / título de la cápsula</label>
-            <input id="cap-tesis" name="tesis" type="text" required placeholder="This Is Marketing: no persuadas a la masa, lidera una tribu">
-          </div>
-          <div class="field">
-            <label for="cap-consejero">Consejero</label>
-            <select id="cap-consejero" name="consejero" required></select>
-          </div>
-          <div class="field">
-            <label for="cap-tema">Tema</label>
-            <select id="cap-tema" name="tema" required></select>
-          </div>
-          <div class="field full">
-            <label for="cap-carbono">PARA CARBONO <small style="text-transform:none;letter-spacing:0;font-weight:400">(resumen para personas, ~450–700 chars)</small></label>
-            <textarea id="cap-carbono" name="carbono" required rows="4" placeholder="La tesis del libro en lenguaje claro…"></textarea>
-          </div>
-          <div class="field">
-            <label for="cap-silicio">PARA SILICIO <small style="text-transform:none;letter-spacing:0;font-weight:400">(opcional · auto si vacío)</small></label>
-            <textarea id="cap-silicio" name="silicio" rows="3" placeholder="Instrucciones operativas para un agente…"></textarea>
-          </div>
-          <div class="field">
-            <label for="cap-aplicacion">APLICACIÓN <small style="text-transform:none;letter-spacing:0;font-weight:400">(opcional · auto si vacío)</small></label>
-            <textarea id="cap-aplicacion" name="aplicacion" rows="3" placeholder="Experimento concreto siguiente…"></textarea>
-          </div>
-        </div>
-        <div class="capsula-actions">
-          <button type="submit" class="btn primary">📌 Publicar cápsula</button>
-          <span class="capsula-status" id="cap-status" role="status"></span>
-        </div>
-      </form>
-    </section>
 
       <!-- Vista Catálogos (Yokup #3183): piezas creadas desde catálogos, agrupadas, y asignación a circuito -->
       <section id="catSection" hidden aria-label="Catálogos">
@@ -792,12 +724,13 @@
     </form>
   </dialog>
 
-  <script defer src="/matrix-rain.js?v=14.10.2026.r8.1332"></script>
-  <script src="app.js?v=14.10.2026.r8.1332"></script>
-  <script src="assets/stock-search.js?v=14.10.2026.r8.1332"></script>
-  <script src="/assets/stock-destinations.js?v=14.10.2026.r8.1332"></script>
-  <script src="/assets/stock-playlist-progress.js?v=14.10.2026.r8.1332"></script>
-  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r8.1332"></script>
+  <script defer src="/matrix-rain.js?v=14.10.2026.r9.1349"></script>
+  <script src="app.js?v=14.10.2026.r9.1349"></script>
+  <script src="assets/stock-search.js?v=14.10.2026.r9.1349"></script>
+  <script src="/assets/stock-formats.js?v=14.10.2026.r9.1349"></script>
+  <script src="/assets/stock-destinations.js?v=14.10.2026.r9.1349"></script>
+  <script src="/assets/stock-playlist-progress.js?v=14.10.2026.r9.1349"></script>
+  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r9.1349"></script>
   <script type="module">
   import {isXpace, blendFor, xpacePoster} from "./assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "./assets/furniture/catalog.mjs";
@@ -807,6 +740,9 @@
     const empty = document.getElementById('stockEmpty');
     const search = document.getElementById('stockSearch');
     const typeFilter = document.getElementById('stockTypeFilter');
+    const formatFilter = document.getElementById('stockFormatFilter');
+    let formatIndex=StockFormats.index([]);
+    const selectedVersions=new Map();
     const motorFilter = document.getElementById('stockMotorFilter');
     const sortBar = document.getElementById('stockSortBar');
     const lightbox = document.getElementById('stockLightbox');
@@ -856,7 +792,7 @@
     const verMotor = m => /suno/i.test(String(m || '')) ? 'Admira Studio Music' : String(m || '');
     const verTag = t => /^suno/i.test(String(t)) ? 'pixeria-music' : String(t);
     let currentView = []; // lista filtrada+ordenada actual (para navegar el lightbox)
-    let filters = { origen: (new URLSearchParams(location.search).get('origen') || '').replace(/[^A-Za-z0-9-]/g, ''), type: 'video', motor: '', q: '', tags: [], tagMode: 'or', dateQuick: '', dateFrom: '', dateTo: '' };
+    let filters = { format:new URLSearchParams(location.search).get('format')||'', origen: (new URLSearchParams(location.search).get('origen') || '').replace(/[^A-Za-z0-9-]/g, ''), type: 'video', motor: '', q: '', tags: [], tagMode: 'or', dateQuick: '', dateFrom: '', dateTo: '' };
     let sortMode = 'date-desc';
     let pageSize = 10; // 0 = mostrar todos
     let currentPage = 1;
@@ -926,25 +862,14 @@
     function displayType(it) {
       return isXpace(it) ? 'xpaces' : isFurni(it) ? 'furni' : (isCapsule(it) ? 'capsula' : it.type);
     }
-    function mediaOrientation(it) {
-      const width = Number(it && (it.width || it._mediaWidth)) || 0;
-      const height = Number(it && (it.height || it._mediaHeight)) || 0;
-      let ratio = width > 0 && height > 0 ? width / height : 0;
-      if (!ratio && it && typeof it.aspectRatio === 'string') {
-        const bits = it.aspectRatio.split(':').map(Number);
-        if (bits.length === 2 && bits[0] > 0 && bits[1] > 0) ratio = bits[0] / bits[1];
-      }
-      // Los Shorts se identifican de inmediato mientras llega loadedmetadata.
-      if (!ratio && /(?:youtube\.com\/shorts\/|youtu\.be\/shorts\/)/i.test(String((it && it.prompt) || ''))) ratio = 9 / 16;
-      if (!ratio) return { key: 'unknown', icon: '◇', label: 'detectando formato…' };
-      if (ratio < 0.9) return { key: 'portrait', icon: '↕', label: 'vertical' };
-      if (ratio > 1.1) return { key: 'landscape', icon: '↔', label: 'horizontal' };
-      return { key: 'square', icon: '□', label: 'cuadrado' };
-    }
+    function mediaOrientation(it) { return StockFormats.format(it)||{key:'unknown',icon:'◇',label:'Sin formato visual'}; }
+    function versionLabel(it){const f=mediaOrientation(it),d=StockFormats.dimensions(it);return f.icon+' '+f.label+(d?' · '+Math.round(d.width)+'×'+Math.round(d.height):'')+(it.num?' · #'+it.num:'')+' · '+String(it.title||it.id).slice(0,80);}
     function orientationBadgeHtml(it) {
-      const o = mediaOrientation(it);
-      return `<span class="stock-orientation ${o.key}" data-role="orientation" title="Formato del contenido">${o.icon} ${o.label}</span>`;
+      const o=mediaOrientation(it),versions=formatIndex.versions(it),css=['portrait','landscape','square','anamorphic','unknown'].includes(o.key)?o.key:'custom';
+      if(versions.length>1)return `<select class="stock-orientation stock-format-versions ${css}" data-role="orientation" data-act="format-version" aria-label="Elegir versión de formato" title="${escAttr(versions.length+' versiones disponibles · '+o.label)}">${versions.map(v=>`<option value="${escAttr(v.id)}" ${v.id===it.id?'selected':''}>${escText(versionLabel(v))}</option>`).join('')}</select>`;
+      return `<span class="stock-orientation ${css}" data-role="orientation" title="Formato del contenido">${o.icon} ${escText(o.label)}</span>`;
     }
+    function refreshFormatOptions(){const value=filters.format,options=StockFormats.options([...formatIndex.byId.values()]);if(value&&!options.some(f=>f.key===value))options.push({key:value,label:formatFilter.selectedOptions[0]?.textContent||value});formatFilter.replaceChildren(new Option('Todos los formatos',''),...options.map(f=>new Option(f.label,f.key)));formatFilter.value=value;}
     // Estilo de UN frame de un sprite-sheet horizontal (frames>1) en una caja.
     function frameStyle(url, frames, idx) {
       const n = Math.max(1, frames | 0);
@@ -1032,28 +957,23 @@
       if (!card) return;
       const it = allItems.find(x => String(x.id) === card.dataset.id);
       if (it) { it._mediaWidth = width; it._mediaHeight = height; }
-      const o = mediaOrientation({ width, height });
+      const o = mediaOrientation(it);
       card.dataset.orientation = o.key;
-      const badge = card.querySelector('[data-role="orientation"]');
-      if (badge) {
-        badge.className = `stock-orientation ${o.key}`;
-        badge.textContent = `${o.icon} ${o.label}`;
-        badge.title = `${o.label} · ${Math.round(width)}×${Math.round(height)} px`;
-      }
+      const badge=card.querySelector('[data-role="orientation"]');if(badge)badge.outerHTML=orientationBadgeHtml(it);
+      refreshFormatOptions();
+      if(filters.format&&filters.format!==o.key)setTimeout(()=>applyFilters(false),0);
     }
     function hydrateMediaOrientations() {
       grid.querySelectorAll('[data-orientation-media]').forEach(media => {
+        const card=media.closest('.stock-card'),it=card&&allItems.find(x=>String(x.id)===card.dataset.id);
         const read = () => {
           const isVideo = media.tagName === 'VIDEO';
-          setMediaOrientation(media,
-            isVideo ? media.videoWidth : media.naturalWidth,
-            isVideo ? media.videoHeight : media.naturalHeight);
+          if(!isVideo && (media.classList.contains('stock-video-poster') || !it || media.getAttribute('src')!==it.url))return;
+          setMediaOrientation(media,isVideo ? media.videoWidth : media.naturalWidth,isVideo ? media.videoHeight : media.naturalHeight);
         };
         if (media.tagName === 'VIDEO') media.addEventListener('loadedmetadata', read, { once: true });
         else if (media.complete) read();
         else media.addEventListener('load', read, { once: true });
-        const card = media.closest('.stock-card');
-        const it = card && allItems.find(x => String(x.id) === card.dataset.id);
         if (card && it) card.dataset.orientation = mediaOrientation(it).key;
       });
     }
@@ -1525,16 +1445,19 @@
       // saber cuál es no se pinta nada, para que no asome lo de otro; a los 4 s se enseña todo.
       const PC = window.PixeriaCliente, clienteListo = !!(PC && PC.listo && PC.listo());
       if (!clienteListo && clientePendiente() && !clienteEsperaAgotada) { grid.innerHTML = ''; return; }
+      formatIndex=StockFormats.index(allItems.filter(it=>!clienteListo||PC.visible(it)));
+      refreshFormatOptions();
       ADAPT = new Map();
       for (const it of allItems) if (isAdaptacion(it)) ADAPT.set(it.externalRef, (ADAPT.get(it.externalRef) || 0) + 1);
       renderOrigenBar();
       const items = allItems.filter(it => {
         if (clienteListo && !PC.visible(it)) return false;
+        if(filters.format&&mediaOrientation(it).key!==filters.format)return false;
         if (filters.origen) return it.id === filters.origen || (isAdaptacion(it) && it.externalRef === filters.origen);
         if (!matchesType(it, filters.type)) return false;
         if (filters.motor && verMotor(it.motor) !== verMotor(filters.motor)) return false;
         if (filters.tags && filters.tags.length) {
-          const tags = Array.isArray(it.tags) ? it.tags.map(t => String(t).toLowerCase()) : [];
+          const tags=Array.isArray(it.tags)?it.tags.map(t=>String(t).toLowerCase()):[];
           const ok = filters.tagMode === 'and'
             ? filters.tags.every(ft => tags.includes(ft))
             : filters.tags.some(ft => tags.includes(ft));
@@ -1543,7 +1466,8 @@
         if (filters.q && !window.AdmiraStockSearch.matches(it,filters.q)) return false;
         return true;
       });
-      const sorted = sortItems(items, sortMode);
+      const rawSorted = sortItems(items, sortMode);
+      const sorted = filters.origen?rawSorted:StockFormats.representatives(rawSorted,formatIndex,selectedVersions);
       if (filters.origen) sorted.sort((a, b) => (b.id === filters.origen) - (a.id === filters.origen));
       currentView = sorted; // las flechas del lightbox recorren esta lista (cruza páginas)
 
@@ -1912,6 +1836,7 @@
       }
       // Botones de acciones (max/del/open) — el "open" es un <a> y deja burbujear,
       // pero detenemos para no abrir también el lightbox.
+      if(e.target.closest('[data-act="format-version"]')){e.stopPropagation();return;}
       if(e.target.closest('.stock-playlist-badge')){e.preventDefault();e.stopPropagation();return;}
       const btn = e.target.closest('.stock-card-btn');
       if (btn) {
@@ -2161,10 +2086,20 @@
     });
     document.addEventListener('stock:local-view',()=>{
       if(filters.type==='catalogo')CATALOGO.leave();
-      filters.q='';search.value='';filters.type='';typeFilter.value='';filters.tags=[];filters.origen='';sortMode='date-desc';applyFilters(true);
-      const u=new URL(location.href);u.searchParams.delete('type');u.searchParams.delete('origen');history.replaceState({},'',u);
+      filters.q='';search.value='';filters.type='';typeFilter.value='';filters.format='';filters.tags=[];filters.origen='';sortMode='date-desc';applyFilters(true);
+      const u=new URL(location.href);u.searchParams.delete('type');u.searchParams.delete('origen');u.searchParams.delete('format');history.replaceState({},'',u);
     });
     { const tp = new URLSearchParams(location.search).get('type'); if (tp === 'xpaces' || tp === 'capsula') { filters.type = tp; typeFilter.value = tp; } } // ?type=capsula: enlace «Cápsulas de Conocimiento» del Adaptador
+    formatFilter.addEventListener('change',()=>{filters.format=formatFilter.value;const u=new URL(location.href);if(filters.format)u.searchParams.set('format',filters.format);else u.searchParams.delete('format');history.replaceState({},'',u);applyFilters(true);});
+    grid.addEventListener('change',e=>{
+      const select=e.target.closest('[data-act="format-version"]');if(!select)return;e.stopPropagation();const it=formatIndex.byId.get(select.value);if(!it)return;
+      selectedVersions.set(formatIndex.keys.get(it.id),it.id);const cleared=[];
+      if(filters.q&&!window.AdmiraStockSearch.matches(it,filters.q)){filters.q='';search.value='';cleared.push('búsqueda');}
+      const tags=(it.tags||[]).map(t=>String(t).toLowerCase());if(filters.tags.length&&!(filters.tagMode==='and'?filters.tags.every(t=>tags.includes(t)):filters.tags.some(t=>tags.includes(t)))){filters.tags=[];renderActiveTagBanner();cleared.push('etiquetas');}
+      if(filters.format){filters.format=mediaOrientation(it).key;const u=new URL(location.href);u.searchParams.set('format',filters.format);history.replaceState({},'',u);}
+      if(filters.motor&&verMotor(it.motor)!==verMotor(filters.motor)){filters.motor='';if(motorFilter)motorFilter.value='';cleared.push('motor');}
+      applyFilters(false);if(cleared.length)status.textContent='Versión '+(it.num?'#'+it.num:it.id)+' elegida. Se quitaron los filtros de '+cleared.join(', ')+' para mostrarla.';
+    });
     typeFilter.addEventListener('change', () => {
       const was = filters.type === 'catalogo';
       filters.type = typeFilter.value;
@@ -3218,9 +3153,10 @@
         if (!isActive()) return;
         const c = selected && byId(selected);
         if (!c) { grid.innerHTML = ''; currentView = []; empty.hidden = true; renderHead(); return; }
-        currentView = piezas;
+        formatIndex=StockFormats.index(allItems);refreshFormatOptions();
+        currentView = piezas.filter(it=>!filters.format||mediaOrientation(it).key===filters.format);
         grid.classList.remove('stock-grid-grouped');
-        grid.innerHTML = piezas.map(renderCard).join('');
+        grid.innerHTML = currentView.map(renderCard).join('');
         if (typeof hydrateMediaOrientations === 'function') hydrateMediaOrientations();
         if (typeof observeLazyVideos === 'function') observeLazyVideos();
         empty.hidden = true;
@@ -3455,7 +3391,7 @@
       .catch(()=>{});
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=14.10.2026.r8.1332"></script>
+  <script defer src="/assets/cuadratura.js?v=14.10.2026.r9.1349"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>

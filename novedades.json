@@ -146,5 +146,10 @@
     "Stock: Playlist amarilla con barra y porcentaje mientras se descarga en los destinos.",
     "Verde sólo con confirmación reciente de descarga completa de todos los players; detalle por destino al pasar el cursor.",
     "Progreso automático, sin refrescar; las respuestas antiguas y los destinos sin confirmación siguen pendientes."
+  ],
+  "v.14.10.2026.r9.13:49": [
+    "Nueva cápsula en Creador, junto a los idiomas: conocimiento, ¿Sabías que? y Blinkist, con fuente e idioma explícitos.",
+    "Stock filtra por formatos presentes; identifica ancho/alto y mantiene sin confirmar los formatos desconocidos.",
+    "Desplegable de versiones relacionadas en la esquina superior derecha; cada elección usa su archivo, ID y asignaciones reales."
   ]
 }

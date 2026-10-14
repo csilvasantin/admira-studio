@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r8.1332';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r9.1349';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -36,18 +36,18 @@
 <meta charset="utf-8">
 
 <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r8.13:32">
+  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r9.13:49">
 <link rel="icon" href="/favicon.ico?v=20260522-r2" sizes="any">
 <link rel="icon" type="image/png" href="/favicon.png?v=20260522-r2" sizes="64x64">
   <title>Adapter · One piece of content, every format | Admira Studio</title>
   <meta name="description" content="Adaptaciones de Admira Studio: coge un vídeo y lo adapta a vertical 9:16, horizontal 16:9, cuadrado 1:1 y 4:5 con encuadre ajustable, listo para cada pantalla del circuito.">
   <link rel="canonical" href="https://www.admira.studio/adaptaciones/">
   <!-- Tema Matrix compartido con /video.html y el resto del sitio (tokens, mono, CRT y lluvia) -->
-  <link rel="stylesheet" href="/workspace.css?v=14.10.2026.r8.1332">
-  <link rel="stylesheet" href="/adaptaciones/adaptaciones.css?v=14.10.2026.r8.1332">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r8.1332">
-  <script defer src="/assets/site-nav.js?v=14.10.2026.r8.1332"></script>
-  <script src="/assets/ui-locale.js?v=14.10.2026.r8.1332"></script>
+  <link rel="stylesheet" href="/workspace.css?v=14.10.2026.r9.1349">
+  <link rel="stylesheet" href="/adaptaciones/adaptaciones.css?v=14.10.2026.r9.1349">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r9.1349">
+  <script defer src="/assets/site-nav.js?v=14.10.2026.r9.1349"></script>
+  <script src="/assets/ui-locale.js?v=14.10.2026.r9.1349"></script>
 </head>
 <body class="adapt-page">
   <script>document.body.classList.add('pf-left-off','pf-right-off','pf-bottom-off');</script>
@@ -72,7 +72,7 @@
             <select id="src-select" aria-label="Stock" hidden tabindex="-1"><option value="">Loading the Stock…</option></select>
             <p id="stock-status" class="muted" role="status"></p></div>
           <div class="src-opt src-importar"><span class="n">2</span><h3>Upload / Import</h3><form id="imp-form" class="stk-tag imp-form" novalidate><input id="imp-url" type="url" inputmode="url" autocomplete="off" spellcheck="false" placeholder="Paste a URL · YouTube, Instagram, TikTok, X, mp4…" aria-label="URL of the video to import"><button type="submit" id="imp-go" class="stk-tag-clear imp-go" aria-label="Import the URL" title="Import the URL">↵</button></form><div id="imp-prog" class="imp-prog" hidden><div id="imp-bar" class="imp-bar is-indet"><span></span></div><p id="imp-status" class="imp-status" role="status" aria-live="polite"></p></div><label class="imp-file"><input type="file" id="src-file" accept="video/*,image/jpeg,image/png,image/webp,image/gif,image/svg+xml,image/heic,image/heif,image/avif,.heic,.heif,.avif,.svg,.gif"><span aria-hidden="true">⤒</span> Upload from your computer <small title="Video or JPG, PNG, WebP, GIF, SVG, HEIC or AVIF image, up to 100 MB">video or image · 100 MB</small></label><p class="paste-hint">or paste an image with <kbd class="paste-key">⌘V</kbd> <small>· screenshot, copied image or file · or drop it here</small></p><p id="paste-status" class="paste-status" role="status" aria-live="polite"></p></div>
-          <div class="src-opt src-crear"><span class="n">3</span><h3>Create it</h3><ul class="crear-ops"><li><a href="/en/musica.html"><b>Music Capsules</b><small>Admira Studio Music</small></a></li><li><a href="/stock.html?type=capsula"><b>Knowledge Capsules</b><small>Did you know? and Stock capsules</small></a></li></ul><a class="pill" href="/en/video.html">Open the video creator →</a></div>
+          <div class="src-opt src-crear"><span class="n">3</span><h3>Create it</h3><ul class="crear-ops"><li><a href="/en/musica.html"><b>Music Capsules</b><small>Admira Studio Music</small></a></li><li><a href="/en/creador/?capsula=new"><b>Knowledge Capsules</b><small>Did you know? and Stock capsules</small></a></li></ul><a class="pill" href="/en/video.html">Open the video creator →</a></div>
         </div>
         <p id="src-msg" class="muted" role="status"></p>
         <div id="src-preview" class="src-preview" hidden>
@@ -157,14 +157,14 @@
       <details class="plan"><summary>Encoding plan by format (resolution, H.264, bitrate and ffmpeg command)</summary><div id="plan-tecnico"></div></details>
     </div>
   </main>
-  <script defer src="/adaptaciones/formatos-entrada.js?v=14.10.2026.r8.1332"></script>
-  <script defer src="/adaptaciones/stock-fuentes.js?v=14.10.2026.r8.1332"></script>
-  <script defer src="/adaptaciones/stock-select.js?v=14.10.2026.r8.1332"></script>
-  <script defer src="/adaptaciones/ficha-tecnica.js?v=14.10.2026.r8.1332"></script>
-  <script defer src="/adaptaciones/importar.js?v=14.10.2026.r8.1332"></script>
-  <script type="module" src="/adaptaciones/adaptaciones.js?v=14.10.2026.r8.1332"></script>
-  <script defer src="/matrix-rain.js?v=14.10.2026.r8.1332"></script>
-  <script defer src="/assets/cuadratura.js?v=14.10.2026.r8.1332"></script>
+  <script defer src="/adaptaciones/formatos-entrada.js?v=14.10.2026.r9.1349"></script>
+  <script defer src="/adaptaciones/stock-fuentes.js?v=14.10.2026.r9.1349"></script>
+  <script defer src="/adaptaciones/stock-select.js?v=14.10.2026.r9.1349"></script>
+  <script defer src="/adaptaciones/ficha-tecnica.js?v=14.10.2026.r9.1349"></script>
+  <script defer src="/adaptaciones/importar.js?v=14.10.2026.r9.1349"></script>
+  <script type="module" src="/adaptaciones/adaptaciones.js?v=14.10.2026.r9.1349"></script>
+  <script defer src="/matrix-rain.js?v=14.10.2026.r9.1349"></script>
+  <script defer src="/assets/cuadratura.js?v=14.10.2026.r9.1349"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>
