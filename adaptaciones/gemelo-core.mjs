@@ -1,4 +1,4 @@
-import {validateInstallation} from './campaign-core.mjs?v=campaign-1';
+import {validateInstallation} from './campaign-core.mjs?v=starbucks-story-1';
 import {geometry} from './especiales-core.mjs?v=adapter-detail-1';
 
 // Preview geometry is the PHYSICAL wall, never the delivery atlas. Standard

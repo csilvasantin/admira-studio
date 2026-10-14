@@ -30,3 +30,12 @@ Review every included composition, then export 14 native files for both location
 ## Catálogo compartido / Shared catalogue
 
 `adaptaciones/proyectos/pixeria-alsea.json` es la ficha común a Creador y Adaptador; `instalaciones` admite nuevos montajes sin duplicar la interfaz. Sus mapas se conservan en el contrato portable de campaña. / This shared file supplies Creator and Adapter; additional layouts can be registered without duplicating UI. Edited maps remain in the portable campaign contract.
+
+
+## Relato bilingüe / Bilingual story
+
+En Editar contenido, **Relato bilingüe de Starbucks · mitad ES / mitad EN** sustituye la repetición por tres momentos de ocho segundos. Las primeras tres pantallas cuentan el relato en castellano; las últimas tres lo hacen en inglés. En PG103 el reparto coincide con los grupos 2+1 y 3; en GdG51 cada idioma conserva H–V–H. Los textos entran y salen en direcciones alternas con un desplazamiento suave durante la lectura. Ambos bloques de tres momentos son editables.
+
+Horizontal y vertical alternan castellano e inglés, cuatro segundos por idioma. Se conservan las 14 salidas nativas; las etiquetas y nombres identifican el idioma real de cada pantalla. El programa bilingüe mantiene el mural en bucle de 24 segundos para conservar el reparto simultáneo 3+3. Las piezas individuales se entregan por separado.
+
+**Starbucks bilingual story · half ES / half EN** replaces repetition with three eight-second acts: first three screens in Spanish, last three in English. PG103 follows groups 2+1 and 3; GdG51 keeps H–V–H for each language. Alternate entrance/exit directions and gentle movement preserve reading time. Both three-act scripts are editable. Individual landscape and portrait videos alternate Spanish and English, four seconds each. The same 14 native outputs retain their actual language metadata; the bilingual wall programme loops 24 seconds to preserve the simultaneous split.

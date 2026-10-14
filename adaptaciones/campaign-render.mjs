@@ -1,5 +1,6 @@
-import {COFFEE_STYLE,entrance,integratedBackground,integratedLayers,integratedLayerCanvas,integratedProductCanvas} from './campaign-integrated.mjs?v=content-language-2';
-import {travelPosition} from './campaign-travel.mjs?v=content-language-2';
+import {layerMotion} from './campaign-story.mjs?v=starbucks-story-1';
+import {COFFEE_STYLE,entrance,integratedBackground,integratedLayers,integratedLayerCanvas,integratedProductCanvas} from './campaign-integrated.mjs?v=starbucks-story-1';
+import {travelPosition} from './campaign-travel.mjs?v=starbucks-story-1';
 const integratedCaches=new WeakMap();
 function cachedCanvas(assets,key,create){let map=integratedCaches.get(assets);if(!map){map=new Map();integratedCaches.set(assets,map);}if(map.size>100)map.clear();if(!map.has(key))map.set(key,create());return map.get(key);}
 export function drawCampaign(canvas,c,i,plan,assets,{guides=false,time,backgroundOnly=false}={}){
@@ -10,7 +11,7 @@ export function drawCampaign(canvas,c,i,plan,assets,{guides=false,time,backgroun
   if(!backgroundOnly){
    const t=time??2;
    if(i.phase!=='unit'&&assets.product){const r=travelPosition(c,i,t),p=cachedCanvas(assets,`photo:${r.w}:${r.h}`,()=>integratedProductCanvas(c,i,assets,r));x.drawImage(p,r.x,r.y,r.w,r.h);}
-   if(assets.logo)for(const l of integratedLayers(plan)){const m=entrance(t,l.start,l.duration),cv=cachedCanvas(assets,JSON.stringify([l.role,l.text,l.w,l.h,l.px,c.foreground,c.accent]),()=>integratedLayerCanvas(l,c,assets));x.globalAlpha=m.alpha;x.drawImage(cv,l.x,l.y+m.slide);}x.globalAlpha=1;
+   if(assets.logo)for(const l of integratedLayers(plan)){const m=layerMotion(l,t),cv=cachedCanvas(assets,JSON.stringify([l.role,l.text,l.w,l.h,l.px,c.foreground,c.accent]),()=>integratedLayerCanvas(l,c,assets));x.globalAlpha=m.alpha;x.drawImage(cv,l.x+m.x,l.y+m.y);}x.globalAlpha=1;
   }
   x.restore();if(guides){x.strokeStyle='#74ffb7';x.lineWidth=2/scale;i.screens.forEach(s=>x.strokeRect(s.x,s.y,s.w,s.h));}
   x.restore();return canvas;

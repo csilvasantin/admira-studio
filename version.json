@@ -1,25 +1,26 @@
 {
-  "version": "v.14.10.2026.r15.17:39",
-  "deployedAt": "2026-10-14T15:39:26.054469+00:00",
+  "version": "v.14.10.2026.r16.17:56",
+  "deployedAt": "2026-10-14T15:56:46.116151+00:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "88b670ba5e4e07befee263ecef30eec46bab7641",
-  "gitFull": "88b670ba5e4e07befee263ecef30eec46bab7641",
-  "gitShort": "88b670b",
+  "git": "e9486b9d9000fcb89d67abb2ff8a7448d249b1c9",
+  "gitFull": "e9486b9d9000fcb89d67abb2ff8a7448d249b1c9",
+  "gitShort": "e9486b9",
   "dirty": false,
   "novedades": [
-    "El gemelo digital reproduce las campañas animadas con el mismo recorrido y 25 fps de los MP4.",
-    "Controles de pausa, reproducción, reinicio y momento; cambiar de formato inicia su duración individual o mural.",
-    "Starbucks conserva los dos montajes nominales y sus 14 salidas nativas. La perspectiva y sincronización física requieren comprobación en tienda."
+    "Starbucks cuenta un relato en tres momentos: tres pantallas en castellano y tres en inglés, con frases diferentes por panel.",
+    "Textos con entradas y salidas en direcciones alternas y movimiento suave; el relato se edita en Creador y se reproduce en el gemelo.",
+    "Horizontal y vertical alternan ES/EN. Se mantienen 14 MP4 nativos y un programa de mural bilingüe continuo por local."
   ],
   "rollback": {
-    "git": "88b670ba5e4e07befee263ecef30eec46bab7641"
+    "git": "e9486b9d9000fcb89d67abb2ff8a7448d249b1c9"
   },
   "sourcePatches": [
     ".source-patches/starbucks-creation-formats.json",
-    ".source-patches/starbucks-video-twin.json"
+    ".source-patches/starbucks-video-twin.json",
+    ".source-patches/starbucks-bilingual-story.json"
   ]
 }

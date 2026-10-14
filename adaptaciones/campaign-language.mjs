@@ -40,7 +40,7 @@ export function selectContentLanguage(value,target,{allowDraft=false}={}){
  if(c.contentLanguages&&!c.contentLanguages.includes(target))c.contentLanguages=[target];Object.assign(c,next);c.translationDraft=draft;c.revision=(c.revision||1)+1;return rememberLanguageCopy(c);
 }
 export function languageVariant(value,target,{allowDraft=false}={}){const c=selectContentLanguage(value,target,{allowDraft});c.revision=value.revision;if(c.translationDraft&&!allowDraft)throw Error('campaign-copy-language-required');return c;}
-export function campaignVariants(c,{allowDraft=false}={}){return contentLanguages(c).map(lang=>languageVariant(c,lang,{allowDraft}));}
+export function campaignVariants(c,{allowDraft=false}={}){return (c.wallStory&&c.direction==='travel'&&c.visualStyle==='coffee-integrated'?[contentLanguage(c)]:contentLanguages(c)).map(lang=>languageVariant(c,lang,{allowDraft}));}
 export function setContentLanguages(value,values,{allowDraft=false}={}){
  const langs=validateLanguages(values),c=rememberLanguageCopy(clone(value));c.contentLanguages=langs;
  for(const lang of langs){const variant=languageVariant(c,lang,{allowDraft});c.copyByLanguage[lang]=campaignCopy(variant);}
