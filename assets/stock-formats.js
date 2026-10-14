@@ -34,14 +34,14 @@
     return 'asset:'+it.id;
   }
   function index(items){
-    const byId=new Map(items.map(it=>[String(it.id),it])),groups=new Map(),keys=new Map();
-    for(const it of items){let key=family(it,byId);key=key.replace(/(?:\|lang:)+$/,''); // Unlabelled original and its direct adaptations share a family.
+    const byId=new Map(items.map(it=>[String(it.id),it])),groups=new Map(),keys=new Map(),membership=root.StockSync?.membership(items)||new Map();
+    for(const it of items){let key=root.StockSync?.get(it)?'sync:'+it.id:membership.has(it.id)?'sync:'+membership.get(it.id):family(it,byId);key=key.replace(/(?:\|lang:)+$/,''); // Unlabelled original and its direct adaptations share a family.
       keys.set(it.id,key);const list=groups.get(key)||[];list.push(it);groups.set(key,list);}
     return {byId,groups,keys,versions:it=>visual(it)?(groups.get(keys.get(it.id))||[it]).filter(x=>visual(x)&&x.type===it.type):[it]};
   }
   function representatives(items,idx,chosen=new Map()){
-    const groups=new Map();for(const it of items){const key=idx.keys.get(it.id)+'|type:'+it.type;const list=groups.get(key)||[];list.push(it);groups.set(key,list);}
-    return [...groups.values()].map(list=>list.find(x=>x.id===chosen.get(idx.keys.get(x.id)))||list.find(x=>'asset:'+x.id===idx.keys.get(x.id)?.replace(/\|lang:.*$/,''))||list[0]);
+    const groups=new Map();for(const it of items){const family=idx.keys.get(it.id),key=family?.startsWith('sync:')?family:family+'|type:'+it.type;const list=groups.get(key)||[];list.push(it);groups.set(key,list);}
+    return [...groups.values()].map(list=>(idx.keys.get(list[0].id)?.startsWith('sync:')?idx.byId.get(idx.keys.get(list[0].id).slice(5)):null)||list.find(x=>x.id===chosen.get(idx.keys.get(x.id)))||list.find(x=>'asset:'+x.id===idx.keys.get(x.id)?.replace(/\|lang:.*$/,''))||list[0]);
   }
   function options(items){const found=new Map();for(const it of items){const f=format(it);if(f)found.set(f.key,f);}const order=['landscape','portrait','square','anamorphic','unknown'];return [...found.values()].sort((a,b)=>{const ai=order.indexOf(a.key),bi=order.indexOf(b.key);return (ai<0?4:ai)-(bi<0?4:bi)||a.label.localeCompare(b.label,'es');});}
   const api={format,dimensions,index,representatives,options,visual};root.StockFormats=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;

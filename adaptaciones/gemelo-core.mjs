@@ -5,6 +5,7 @@ import {geometry} from './especiales-core.mjs?v=adapter-detail-1';
 // names are demo grid hints, not installed-hardware metadata. 2X3 H has an
 // inconsistent name/aspect in the PDF: retain the named grid and flag it.
 export function twinGeometry(f, size) {
+  if(f.syncCreative&&f.syncGeometry)return f.syncGeometry;
   if(f.installation){const i=f.installation;if(validateInstallation(i).length)throw Error('invalid-installation');return{pared:{ancho:i.width,alto:i.height},segments:i.screens.map((s,n)=>({n:n+1,N:i.screens.length,wall:{x:s.x,y:s.y,w:s.w,h:s.h}})),source:'installation_layout',allowGaps:true,warnings:['Installation trial / Ensayo de instalación: geometría aproximada, no medidas verificadas.']};}
   if(f.layout){const g=geometry(f.layout);return {...g,source:'physical_wall',warnings:f.layout.ambiguedades||[]};}
   const {ancho,alto}=size;

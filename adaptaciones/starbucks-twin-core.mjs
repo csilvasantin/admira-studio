@@ -5,7 +5,7 @@ export const STARBUCKS_ROOM=Object.freeze({width:12.2,depth:3.1,height:3.75});
 export function isStarbucksFormat(f){return /starbucks|alsea/i.test([f?.id,f?.nombre,f?.client?.id,f?.installation?.catalogClient].filter(Boolean).join(' '));}
 export function starbucksPlacement(g,{formatId=''}={}){
  const {ancho:W,alto:H}=g?.pared||{},segments=g?.segments;
- if(!Number.isFinite(W)||!Number.isFinite(H)||W<=0||H<=0||!Array.isArray(segments)||!segments.length||segments.length>64)throw Error('invalid-starbucks-geometry');
+ if(!Number.isFinite(W)||!Number.isFinite(H)||W<=0||H<=0||!Array.isArray(segments)||!segments.length)throw Error('invalid-starbucks-geometry');
  for(const {wall:r} of segments)if(!r||![r.x,r.y,r.w,r.h].every(Number.isFinite)||r.x<0||r.y<0||r.w<=0||r.h<=0||r.x+r.w>W+.01||r.y+r.h>H+.01)throw Error('invalid-starbucks-screen');
  const pg=/pg103/.test(formatId),gdg=/gdg51/.test(formatId),scale=Math.min(1.65/H,10.8/W);
  // Six equally sized verticals, separated into the photo's wide 2+1+3 groups.
