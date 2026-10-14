@@ -1,0 +1,23 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "f3e6db0d6b7d7e3dda957f108ea2192f53535af0",
+  "reason": "Carlos autoriza publicar en Studio las cartelas Suno H/V y verificar que aparecen sólo en Música en español e inglés.",
+  "files": [
+    "app.js",
+    "assets/music/cards.mjs",
+    "assets/music/cards.css",
+    "stock.html",
+    "en/stock.html",
+    "musica.html",
+    "en/musica.html",
+    "docs/cartelas-musica.md",
+    "test/music-cards.test.mjs",
+    "scripts/test-music-cards-browser.mjs"
+  ],
+  "limits": {
+    "stockBucketMigration": false,
+    "providerGenerationRequired": false,
+    "otherDomainsChanged": false
+  }
+}

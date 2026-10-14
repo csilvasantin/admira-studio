@@ -1197,7 +1197,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
   const musicCardItems = new Map();
   let musicCardModule;
   async function musicCardSupport() {
-    if (!musicCardModule) musicCardModule = import('/assets/music/cards.mjs').then(m => {
+    if (!musicCardModule) musicCardModule = import('/assets/music/cards.mjs?v=14.10.2026.r20.1913').then(m => {
       m.bindMusicCards(document.getElementById('player') || document.body, id => musicCardItems.get(id));
       return m;
     });
