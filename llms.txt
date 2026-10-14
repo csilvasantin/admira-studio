@@ -74,7 +74,7 @@ Seis players r2 en reproducción, ciclo físico verificado / Six r2 players runn
 
 ## Idioma del contenido / Content language
 
-Creador → Idioma del contenido: Castellano por defecto / Spanish by default; Inglés / English. Menús independientes, variantes conservadas, nueva revisión al cambiar / independent UI, retained copy variants, renewed review on changes.
+Creador → Idiomas a crear: Castellano e Inglés seleccionables juntos; idioma de interfaz marcado en nuevas campañas / Languages to create: Spanish and English may both be checked; new campaigns select the UI language. Revisión y exportación por idioma; textos conservados / Per-language review and export; retained copy.
 MCP: `campana_instalacion({demo:"starbucks-six",content_language:"en"})`.
 Tutorial ES/EN: https://admira.studio/docs/creator-content-language.md
 Ocho vídeos ingleses / Eight English movies: https://admira.studio/campanas/starbucks-six/?content=en

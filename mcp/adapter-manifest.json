@@ -1135,10 +1135,11 @@
         "es",
         "en"
       ],
-      "defaultContentLanguage": "es",
+      "defaultContentLanguage": "ui_language",
       "englishCreator": "/creador/?demo=starbucks-six&content=en",
       "englishDelivery": "/assets/demos/starbucks-six/en/playlist-mixta.json",
-      "languageGuide": "/docs/creator-content-language.md"
+      "languageGuide": "/docs/creator-content-language.md",
+      "multipleContentLanguages": true
     }
   },
   "content_workflows": {

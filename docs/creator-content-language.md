@@ -43,3 +43,11 @@ ES/EN: El ciclo físico permanece 24s de mural y 8s individual, seis pantallas V
 CLI: `/creador`, `/creator`, `open creator` → **Idiomas a crear / Languages to create**. Existing demo commands retained; no new CLI verb.
 
 Additive fields under `pixeria.installation-campaign.v1`: `contentLanguages: [es|en]` (one or both, unique), `contentLanguage` (active, included in selection), `copyByLanguage` (headline/CTA/price and optional translationDraft per language). Active authored copy remains authoritative. Creation/review UI is in `adaptaciones/campaign-language.mjs`; the actual MCP at `https://mcp-pixeria.admira.store/mcp` mirrors its validation and provides `languagePlans` for every selected language. Cloud/history retain these fields without replacing IDs or older versions.
+
+## Estado físico fechado / Dated physical state · 14-oct-2026
+
+ES: Inglés asignado a las seis fuentes de tema y por defecto. Arranque nativo y ambas fases observados en seis pantallas; medición parcial 25.4s, reloj máximo59ms. Esc desde Mac Mini cerró ambos grupos a07:59 y Carlos ordenó mantenerlos parados. No se da por completada la comprobación continua32s; no se han vuelto a arrancar. Protección contra inactividad instalada y bloqueo manual conservado.
+
+EN: English assigned to all six theme/default sources. Both phases observed natively on six screens over a partial 25.4s sample, maximum clock spread59ms. Escape on Mac Mini closed both groups at07:59; Carlos instructed to keep them stopped. Uninterrupted32s verification did not complete; no restart followed. Idle protection is installed and manual lock remains available.
+
+Proof: https://admira.studio/assets/demos/starbucks-six/en/hardware-attempt-r3.json

@@ -136,6 +136,7 @@
     }
   ],
   "visualStyle": "coffee-integrated",
-  "playersState": "published_not_hardware_verified",
-  "fullCycleVerified": false
+  "playersState": "stopped_by_user",
+  "fullCycleVerified": false,
+  "nativeAttempt": "https://admira.studio/assets/demos/starbucks-six/en/hardware-attempt-r3.json"
 }
