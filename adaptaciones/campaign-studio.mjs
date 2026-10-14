@@ -1,3 +1,4 @@
+import {createCampaignPlayback} from './campaign-playback.mjs?v=starbucks-video-twin-1';
 import {mountCreatorFormats} from './client-format-controls.mjs?v=starbucks-formats-1';
 import {clientReference,clientEntry} from './client-installations.mjs?v=starbucks-formats-1';
 import {contentLanguage,contentLanguages,languageVariant,campaignVariants,setContentLanguages,selectContentLanguage,rememberLanguageCopy,contentLanguageControl} from './campaign-language.mjs?v=starbucks-formats-1';
@@ -65,6 +66,7 @@ export function mountCampaign({t,queue,openTwin,clientCatalog=[]}){
  function persist(){try{localStorage.setItem(storageKey,JSON.stringify(c));return true;}catch{say(t('No cabe en el almacenamiento del navegador. Guarda la campaña JSON para conservarla.','Browser storage is full. Save the campaign JSON to keep it.'));return false;}}
  function changed(){rememberLanguageCopy(c);c.revision++;approvals={};exportItems=[];persist();render();}
  function fill(){languageControl.update({value:contentLanguage(c),values:contentLanguages(c),disabled:busy});root.querySelectorAll('.campaign-tools a[href*="demo=creador"]').forEach(link=>{const u=new URL(link.href);u.searchParams.set('content',contentLanguage(c));u.searchParams.set('contents',contentLanguages(c).join(','));link.href=u.href;});options.querySelectorAll('[data-field]').forEach(el=>el.value=c[el.dataset.field]??(el.dataset.field==='visualStyle'?'classic':''));historyMenu();}
+ const playback=createCampaignPlayback();
  const image=async url=>{const im=new Image();im.crossOrigin='anonymous';im.src=url;await im.decode();if(!im.naturalWidth||im.naturalWidth*im.naturalHeight>40000000)throw Error('asset-size');return im;};
  async function loadAssets(){const turn=++loadTurn;ready=false;render();try{const [product,logo,portraitPhoto]=await Promise.all([image(c.product),image(c.logo),c.portraitPhoto?image(c.portraitPhoto):Promise.resolve(null),font.load()]);if(turn!==loadTurn)return;assets={product,logo,portraitPhoto};ready=true;render();}catch{if(turn===loadTurn){ready=false;say(t('No se pudo cargar el producto, el logo o la fuente. Revisa los archivos; exportación bloqueada.','Product, logo or font could not load. Check the files; export is blocked.'));render();}}}
  function reason(code){if(code==='campaign-copy-language-required')return t('Completa el texto en el idioma elegido antes de revisar y exportar.','Complete copy in the selected language before review and export.');if(code.startsWith('text-overflow'))return t('El texto completo no cabe legible. Ajusta el mensaje o la instalación.','The complete copy cannot fit legibly. Adjust the message or installation.');return t('Revisa el mapa: medidas, solapes y zonas seguras.','Review the map: dimensions, overlaps and safe areas.');}
@@ -162,5 +164,8 @@ export function mountCampaign({t,queue,openTwin,clientCatalog=[]}){
  if(creator||params.get('taller')==='sneakers-store'){open();if(creator){persist();if(params.get('demo')==='sneakers-store'||params.has('nuevo')){params.delete('demo');params.delete('nuevo');window.history.replaceState(null,'',location.pathname+(params.size?'?'+params.toString():''));}}}
  function formats(){return c.installations.map(i=>({id:i.id,nombre:label(i.name),custom:[i.width,i.height],installation:i}));}
  $('#campaign-twin').onclick=()=>{if(ready)openTwin?.(formats().find(f=>f.id===selected));};
- return{open,exportChanged,active:()=>!root.hidden,ready:()=>ready,formats,draw:(cv,f)=>{if(!f.installation)return false;drawCampaign(cv,c,f.installation,planCampaign(c,f.installation,c.direction,measure),assets);return true;}};
+ return{open,exportChanged,active:()=>!root.hidden,ready:()=>ready,formats,
+  startTwin:f=>{if(f?.installation&&c.direction==='travel')playback.start(f.installation,c);},endTwin:()=>playback.stop(),
+  twinPlayback:{available:()=>!root.hidden&&c.direction==='travel',snapshot:f=>playback.snapshot(f.installation,c),toggle:()=>playback.toggle(),seek:value=>playback.seek(value)},
+  draw:(cv,f)=>{if(!f.installation)return false;drawCampaign(cv,c,f.installation,planCampaign(c,f.installation,c.direction,measure),assets,{time:playback.active?playback.snapshot(f.installation,c).time:undefined});return true;}};
 }

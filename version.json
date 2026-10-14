@@ -1,24 +1,25 @@
 {
-  "version": "v.14.10.2026.r14.17:22",
-  "deployedAt": "2026-10-14T15:22:53.651881+00:00",
+  "version": "v.14.10.2026.r15.17:39",
+  "deployedAt": "2026-10-14T15:39:26.054469+00:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "bce8127e04af27445c2815203da67689756696ab",
-  "gitFull": "bce8127e04af27445c2815203da67689756696ab",
-  "gitShort": "bce8127",
+  "git": "88b670ba5e4e07befee263ecef30eec46bab7641",
+  "gitFull": "88b670ba5e4e07befee263ecef30eec46bab7641",
+  "gitShort": "88b670b",
   "dirty": false,
   "novedades": [
-    "Starbucks ofrece horizontal, vertical y dos montajes: Paseo de Gracia 103 (2V–1V–3V) y AdmiraNeXT Gran de Gracia 51 (H–V–H–H–V–H).",
-    "Creador y Adaptador comparten imagen, borrador y formatos de cliente; se conservan textos y mapas al continuar la campaña.",
-    "Con ambos locales se preparan 14 archivos nativos y un programa temporal por ubicación. La anamorfosis requiere calibración física."
+    "El gemelo digital reproduce las campañas animadas con el mismo recorrido y 25 fps de los MP4.",
+    "Controles de pausa, reproducción, reinicio y momento; cambiar de formato inicia su duración individual o mural.",
+    "Starbucks conserva los dos montajes nominales y sus 14 salidas nativas. La perspectiva y sincronización física requieren comprobación en tienda."
   ],
   "rollback": {
-    "git": "bce8127e04af27445c2815203da67689756696ab"
+    "git": "88b670ba5e4e07befee263ecef30eec46bab7641"
   },
   "sourcePatches": [
-    ".source-patches/starbucks-creation-formats.json"
+    ".source-patches/starbucks-creation-formats.json",
+    ".source-patches/starbucks-video-twin.json"
   ]
 }
