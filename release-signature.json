@@ -1,11 +1,8 @@
 {
-  "version": "v.14.10.2026.r5.11:23",
+  "version": "v.14.10.2026.r6.12:48",
   "agent": "TrinityMBP14",
   "deployer": "TrinityMBP14",
   "machine": "MacBookProNegro14",
   "signature": "TrinityMBP14 · MacBookProNegro14",
-  "git": "0118e881eb5f97eda2c8cf02ce6c18ac96d39864",
-  "gitFull": "0118e881eb5f97eda2c8cf02ce6c18ac96d39864",
-  "gitShort": "0118e88",
-  "dirty": false
+  "mission": "DCL-eb5b864d621419c46d512a89"
 }
