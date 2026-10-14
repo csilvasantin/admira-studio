@@ -1,5 +1,5 @@
-import {COFFEE_STYLE,entrance,integratedBackground,integratedLayers,integratedLayerCanvas,integratedProductCanvas} from './campaign-integrated.mjs?v=content-language-1';
-import {travelPosition} from './campaign-travel.mjs?v=content-language-1';
+import {COFFEE_STYLE,entrance,integratedBackground,integratedLayers,integratedLayerCanvas,integratedProductCanvas} from './campaign-integrated.mjs?v=content-language-2';
+import {travelPosition} from './campaign-travel.mjs?v=content-language-2';
 const integratedCaches=new WeakMap();
 function cachedCanvas(assets,key,create){let map=integratedCaches.get(assets);if(!map){map=new Map();integratedCaches.set(assets,map);}if(map.size>100)map.clear();if(!map.has(key))map.set(key,create());return map.get(key);}
 export function drawCampaign(canvas,c,i,plan,assets,{guides=false,time,backgroundOnly=false}={}){

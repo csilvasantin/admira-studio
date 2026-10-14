@@ -4,6 +4,10 @@
 (function () {
   'use strict';
   const COPY = {
+  "Creador: Castellano e Inglés seleccionables juntos; idioma de interfaz por defecto": "Creator: Spanish and English together; UI language selected by default",
+  "Exportación bilingüe: ocho piezas por idioma y dos programas mixtos": "Bilingual export: eight pieces per language and two mixed programs",
+  "Starbucks inglés: reproducción nativa y protección contra apagado por inactividad": "English Starbucks: native playback and protection against idle display sleep",
+
   "Creador: Castellano por defecto e Inglés para vídeos y adaptaciones": "Creator: Spanish by default and English for videos and adaptations",
   "Variantes de texto conservadas; idioma del contenido separado de los menús": "Retained copy variants; content language separate from menu language",
   "Starbucks: ocho vídeos ingleses publicados con fotografías y animaciones originales": "Starbucks: eight published English movies retain original photography and animation",

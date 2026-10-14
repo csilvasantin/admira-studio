@@ -1,48 +1,45 @@
-# Creator · idioma del contenido / Content language
+# Creator · idiomas a crear / Languages to create
 
-ES: **Idioma del contenido** permite escoger **Castellano** (por defecto) o **Inglés** en Creador, Demo Creador y Creador completo. Cambia el idioma de titular, CTA y textos de las piezas; conserva producto, logo, fotos, colores, mapas, tiempos y movimiento. Los menús conservan su idioma. `lang` elige la interfaz; `content` elige el contenido.
+ES: **Idiomas a crear** muestra casillas **Castellano** e **Inglés**. Pueden seleccionarse juntas. Una creación nueva marca el idioma de la interfaz: castellano en ESP e inglés en ENG. Añadir otro idioma conserva el primero y prepara otra versión de sus textos. Cambiar los menús no reescribe campañas guardadas.
 
-EN: **Content language** selects **Spanish** (default) or **English** in Creator, Creator demo and full Creator. It controls the authored copy in previews, videos and adaptations while retaining artwork, brand, colours, maps, timing and motion. Interface language remains independent: `lang` selects the UI; `content` selects content.
+EN: **Languages to create** offers **Spanish** and **English** checkboxes that may both be checked. New campaigns select the interface language: Spanish on ESP, English on ENG. Adding another language retains the first and prepares a separate copy version. Changing UI language never rewrites saved campaigns.
 
 ## Tutorial ES
 
-1. Abre Creador y elige **Idioma del contenido** antes de escribir el anuncio o abrir una demo. Un Creador nuevo empieza en castellano incluso si los menús están en inglés.
-2. Las campañas preparadas guardan las dos versiones. Starbucks usa «Tu café sigue contigo.» / «Your coffee goes with you.» y «Disfruta el momento.» / «Enjoy the moment.».
-3. Puedes editar cada versión y volver a la otra sin perder los cambios. En campañas propias sin variante traducida, Creador conserva el original y abre un borrador del idioma elegido: completa el titular y CTA en **Editar contenido**. No declara que el texto castellano sea una traducción inglesa. Las demos con textos personalizados requieren escoger el idioma antes de personalizarlos.
-4. Al cambiar idioma, se anulan las aprobaciones y exportaciones pendientes de esa versión. Revisa el mural y los dos formatos, aprueba y exporta. Las piezas se componen y ajustan de nuevo con sus textos reales; no se recorta una imagen que lleva textos del otro idioma.
-5. Guardar/abrir JSON, historial y versiones privadas conservan `contentLanguage`, `copyByLanguage` y la copia activa. Los contratos antiguos siguen siendo válidos; sin idioma explícito usan castellano. Los borradores sin titular quedan bloqueados para exportar.
-6. PNG, MP4, ZIP y metadatos conservan idioma; los nombres ingleses incluyen `-en-` para no sustituir los archivos castellanos. Esto cambia textos: los vídeos Starbucks siguen sin audio.
+1. Abre Creador. El idioma de los menús ya está marcado. Marca también el otro idioma para crear ambos.
+2. Con ambos marcados, **Idioma que estás revisando** cambia la versión del editor y sus vistas previas; mantiene ambas casillas. Edita titular y CTA de cada idioma. Fotos, logo, colores, mapas, tiempos y animaciones siguen compartidos.
+3. Starbucks contiene las dos copias: «Tu café sigue contigo.» / «Your coffee goes with you.» y «Disfruta el momento.» / «Enjoy the moment.». Textos propios sin traducción guardada abren un borrador para completar; no se exporta castellano como si fuera inglés.
+4. Revisa y aprueba cada pieza en cada idioma. Cambiar sólo la versión que estás mirando conserva las aprobaciones de la otra; editar contenido o idiomas a crear exige revisar de nuevo.
+5. **Preparar MP4**, PNG y publicación preparan todos los idiomas marcados. Starbucks: ocho archivos por idioma, dieciséis con ambos. El ZIP mixto incluye `playlist-mixta-es.json`, `playlist-mixta-en.json`, `programs.json` y el contrato común. Un idioma conserva `playlist-mixta.json` para compatibilidad.
+6. Guardar/abrir JSON, historial y versiones privadas conservan los idiomas seleccionados, la versión activa y las dos copias. Desmarcar un idioma lo excluye de la próxima exportación y conserva sus textos. Los contratos antiguos sin selección conservan su idioma activo, o castellano si tampoco lo declaran.
+7. Demo local y Creador completo usan las mismas casillas. Full genera una imagen/vídeo base sin letras y reutiliza ese material para los idiomas seleccionados; cambiar idiomas no solicita nueva IA. Las exportaciones animadas full preparan cada versión y evitan nombres repetidos.
+8. Los nombres ingleses incluyen `-en-`. Los vídeos Starbucks siguen sin audio. Elegir idiomas y exportar no arranca pantallas físicas.
 
 ## English tutorial
 
-1. Choose **Content language** before writing an ad or starting a demo. New campaigns default to Spanish even on the English interface.
-2. Prepared campaigns carry both copy versions. Starbucks uses “Your coffee goes with you.” and “Enjoy the moment.” in English.
-3. Edit either language and return without losing its changes. For custom copy without a saved translation, the workshop retains the original and opens a draft: enter the selected-language headline and CTA under **Edit content**. It never presents unchanged Spanish as translated English. In demos, choose language before customizing copy.
-4. Changing language invalidates reviews and pending exports. Review/approve every destination again. Copy is re-typeset to each native composition rather than cropping a finished ad in the other language.
-5. Portable JSON, history and private cloud versions retain active copy and both variants. Legacy contracts default to Spanish and retain their original copy. Incomplete drafts cannot export.
-6. English media filenames include `-en-`; language is retained in packages and Stock tags. Starbucks videos remain silent: this feature chooses text language.
+1. Open Creator: the UI language is already checked. Check the other language to create both.
+2. **Language under review** changes the editor and previews without unchecking either target. Edit each language’s headline and CTA. Artwork, logo, colours, timing, maps and animation remain shared.
+3. Starbucks includes “Your coffee goes with you.” / “Enjoy the moment.” and its Spanish originals. Custom copy with no saved translation needs a completed draft; untranslated copy is never exported under a false language label.
+4. Review and approve every destination in each language. Preview switching retains the other language’s approvals; copy or selection edits require renewed review.
+5. PNG, **Prepare MP4** and publication cover all checked languages. Starbucks creates eight outputs per language, sixteen for both. Bilingual ZIPs include `playlist-mixta-es.json`, `playlist-mixta-en.json`, `programs.json` and a shared campaign. Single-language packages retain `playlist-mixta.json`.
+6. JSON, history and private cloud versions retain selection, active language and both copies. Unchecking excludes a language from the next export but retains its copy. Legacy contracts retain their active language, falling back to Spanish only when absent.
+7. Local demo and full Creator offer the same checkboxes. Full reuses the generated text-free image/video for both copy versions; language selection does not trigger new AI generation. Animated exports and filenames preserve each language separately.
+8. Starbucks keeps silent video and existing artwork. Native screen startup is a separate explicit action.
 
-## Starbucks aplicado / Applied Starbucks campaign
+## Campaign and proof / Campaña y prueba
 
-- [Creador inglés / English content in Creator](https://admira.studio/creador/?demo=starbucks-six&content=en).
-- [Ver los ocho vídeos ingleses / Watch eight English movies](https://admira.studio/campanas/starbucks-six/?content=en).
-- [Descargar paquete inglés / English package](https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-en-playlist-mixta.zip?content=en-r3).
-- [Contrato inglés / English contract](https://admira.studio/adaptaciones/campanas/starbucks-six-en.json).
-- [Programa inglés / English program](https://admira.studio/assets/demos/starbucks-six/en/playlist-mixta.json).
-- [Versión castellana conservada / Spanish version retained](https://admira.studio/campanas/starbucks-six/?content=es).
+- [Editar ambos / Edit both](https://admira.studio/creador/?demo=starbucks-six&content=es&contents=es,en).
+- [Ver inglés / Watch English](https://admira.studio/campanas/starbucks-six/?content=en).
+- [Paquete inglés / English delivery](https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-en-playlist-mixta.zip?content=en-r3).
+- [Versión castellana conservada / Retained Spanish](https://admira.studio/campanas/starbucks-six/?content=es).
+- [Prueba de galería inglesa / English gallery proof](https://admira.studio/assets/demos/starbucks-six/en/browser-proof.json).
 
-ES/EN: Ocho MP4 ingleses: seis recortes de mural24s y adaptaciones horizontal/vertical8s, 25fps, H264, sin audio; orden V–H–V–V–H–V y ciclo32s conservados / Eight English native movies retain the shared 24+8-second cycle and screen order. English physical playback is verified separately; the prior Spanish hardware proof does not certify English playback.
+ES/EN: El ciclo físico permanece 24s de mural y 8s individual, seis pantallas V-H-V-V-H-V, 25fps y sin audio / The physical cycle retains six native screens, a shared 24+8 seconds, 25fps and no audio. The browser proof certifies the gallery; physical playback has a separate dated hardware proof.
 
-## MCP / CLI / Contrato
+## MCP, CLI and schema
 
-`campana_instalacion({demo:"starbucks-six",content_language:"en"})` devuelve textos ingleses, ocho planes nativos y seis programas de dos entradas; no genera, renderiza, publica ni arranca hardware / returns actual English copy and native plans without generation, rendering, publication or hardware startup. `content_language:"es"` is the default for a new demo. Imported campaigns retain their selected language when this argument is omitted. Custom copy without a stored target variant returns `campaign-translation-required`: complete it in the web workshop.
+`campana_instalacion({demo:"starbucks-six",ui_language:"en",content_languages:["es","en"]})` devuelve las dos versiones, dieciséis planes y dos programas de seis pantallas / returns both copies, sixteen native plans and two six-screen programs. `content_language` is the active review version; `content_languages` is the export selection. New requests default to `ui_language`, or `es` when omitted. Imported campaigns keep saved choices unless explicitly changed. The actual tool remains read-only: no render, AI spend, publication or hardware startup. Custom missing translations return `campaign-translation-required`.
 
-CLI: `/creador`, `/creator`, `open creator` → **Idioma del contenido / Content language**. Demos keep their existing commands and have the same selector. No new CLI verb. No provider generation is triggered by language selection.
+CLI: `/creador`, `/creator`, `open creator` → **Idiomas a crear / Languages to create**. Existing demo commands retained; no new CLI verb.
 
-Schema remains `pixeria.installation-campaign.v1`; additive fields `contentLanguage: es|en`, `copyByLanguage:{es?:{headline,cta,price},en?:{headline,cta,price}}`, `translationDraft?:boolean`. Active authored copy is authoritative. Language change preserves campaign ID and increments revision. Source: `adaptaciones/campaign-language.mjs`; actual MCP at `https://mcp-pixeria.admira.store/mcp` mirrors the same validator and selection rules.
-
-## Comprobación pública / Public verification
-
-ES: Creator comprobado en ambas interfaces: castellano por defecto, selección inglesa, conservación de ediciones y recuperación del historial. Los ocho MP4 y el ZIP publicados coinciden por SHA256 con la entrega; sus dimensiones, 25fps, 24/8s y ausencia de audio se comprobaron con ffprobe. El mural inglés completó las dos fases en navegador público: 35 muestras, seis vídeos decodificados, desfase máximo 37ms. Esto verifica la galería; la reproducción física inglesa conserva `hardwareVerified:false`. Prueba / proof: https://admira.studio/assets/demos/starbucks-six/en/browser-proof.json. Stock accepts twelve tags; the English language tag is included within that limit, together with campaign, brand, style and orientation tags. Original photography provenance remains in the contract/comment.
-
-EN: Public Creator checks cover both UI languages, Spanish default, English selection, retained edits and restored history. All eight public MP4s and the ZIP match the delivery hashes. Native resolution, 25fps, 24/8s and no audio were verified with ffprobe. The English public gallery completed both phases over 35 samples with six decoded videos and a maximum 37ms clock spread. This is browser playback; English physical playback remains unverified. Stock language tags fit its twelve-tag limit.
+Additive fields under `pixeria.installation-campaign.v1`: `contentLanguages: [es|en]` (one or both, unique), `contentLanguage` (active, included in selection), `copyByLanguage` (headline/CTA/price and optional translationDraft per language). Active authored copy remains authoritative. Creation/review UI is in `adaptaciones/campaign-language.mjs`; the actual MCP at `https://mcp-pixeria.admira.store/mcp` mirrors its validation and provides `languagePlans` for every selected language. Cloud/history retain these fields without replacing IDs or older versions.

@@ -457,3 +457,4 @@ body.image-source[data-paso="1"] #cuad-avanzado-live .profile-label{display:none
 .campaign-travel-controls{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin:1rem 0}.campaign-travel-controls[hidden]{display:none}.campaign-travel-controls input{width:min(480px,40vw)}
 
 .campaign-content-language{display:flex;align-items:center;gap:.7rem;margin:1rem 0;font-weight:650}.campaign-content-language select{font:inherit;color:inherit;background:var(--panel,#17211e);border:1px solid var(--line,#53605b);border-radius:999px;padding:.5rem .9rem}.campaign-content-language select:focus-visible{outline:2px solid var(--accent,#8cddbd);outline-offset:3px}
+.campaign-content-language{border:0;padding:0;flex-wrap:wrap}.campaign-content-language legend{padding:0;margin-bottom:.5rem}.campaign-content-language label{display:inline-flex;align-items:center;gap:.4rem}

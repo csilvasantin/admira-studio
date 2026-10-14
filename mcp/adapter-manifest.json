@@ -1288,5 +1288,17 @@
         "clip_estado"
       ]
     }
+  },
+  "creator_content_languages": {
+    "default": "interface language for new campaigns",
+    "choices": [
+      "es",
+      "en"
+    ],
+    "multiple": true,
+    "field": "contentLanguages",
+    "active": "contentLanguage",
+    "guide": "https://admira.studio/docs/creator-content-language.md",
+    "mcp": "campana_instalacion content_languages + ui_language"
   }
 }

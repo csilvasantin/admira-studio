@@ -69,3 +69,11 @@ Creador → Idioma del contenido: Castellano por defecto / Spanish by default; I
 MCP: `campana_instalacion({demo:"starbucks-six",content_language:"en"})`.
 Tutorial ES/EN: https://admira.studio/docs/creator-content-language.md
 Ocho vídeos ingleses / Eight English movies: https://admira.studio/campanas/starbucks-six/?content=en
+
+ES/EN: Idiomas a crear / Languages to create uses multiple checkboxes, defaults to the UI language for new campaigns, and exports all selected languages; tutorial: https://admira.studio/docs/creator-content-language.md
+
+## Protección de reproducción / Playback idle protection
+
+ES: El registro del Mac Studio del 14-oct-2026 a las00:48 muestra `kLWLockFromDisplayDim`: el bloqueo vino del apagado de pantalla. Tenía apagado por inactividad10min y bloqueo con demora300s. Se conserva la autenticación y el bloqueo manual. `tv.admira.signage.mac.starbucks-awake` ejecuta `scripts/starbucks-awake.sh`: mantiene una protección de reposo de pantalla/sistema únicamente mientras existe un player nativo Starbucks; termina su protección al cerrar el grupo y no reinicia los players. El salvapantallas automático del usuario queda con idleTime0; el Mac Mini ya lo tenía así. Preferencias anteriores guardadas en `~/Library/Application Support/AdmiraSignage/awake-policy-before.json`. Script instalado en esa carpeta y LaunchAgent en `~/Library/LaunchAgents/tv.admira.signage.mac.starbucks-awake.plist` en ambos Mac.
+
+EN: Mac Studio logs at00:48 on14-Oct show `kLWLockFromDisplayDim`: display sleep triggered locking. Its idle display timeout was10min with a300s lock grace period. Authentication and manual lock remain available. The `starbucks-awake` LaunchAgent runs the published script and inhibits idle display/system sleep only while a Starbucks native player exists. It releases its assertion when that group closes and never restarts players. User automatic screensaver idleTime is0 (already0 on Mac Mini); prior preferences are backed up at the paths above. Native window layout is unchanged.

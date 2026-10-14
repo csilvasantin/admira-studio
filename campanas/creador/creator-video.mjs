@@ -3,7 +3,7 @@ import {loadCreatorMedia} from './creator-media.mjs?v=creator-tools-4';
 import {createEngine} from '../../adaptaciones/adapter-export.js?v=creator-tools-4';
 export function animatedJob(c,i){
  if(i.screens.some(s=>s.w%2||s.h%2||s.rotation))throw Error('video-screen-geometry');
- const outputs=i.screens.map((s,n)=>({file:'screen-'+n+'.mp4',filename:`${c.id}-${s.id}-${s.w}x${s.h}.mp4`,W:s.w,H:s.h,screen:s.id}));
+ const outputs=i.screens.map((s,n)=>({file:'screen-'+n+'.mp4',filename:`${c.id}-${s.id}${(c.contentLanguage||c.language)==="en"?"-en":""}-${s.w}x${s.h}.mp4`,W:s.w,H:s.h,screen:s.id}));
  // Browser recordings can alternate full/limited range between walls. Convert
  // pixel values as well as signalling so native displays receive consistent 4:2:0.
  const args=['-i','input','-filter_complex',i.screens.map((s,n)=>`[0:v]crop=${s.w}:${s.h}:${s.x}:${s.y},fps=25,tpad=stop_mode=clone:stop_duration=1,scale=iw:ih:in_range=auto:out_range=tv,setsar=1[v${n}]`).join(';')];

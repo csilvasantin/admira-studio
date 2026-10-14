@@ -135,3 +135,5 @@ Creador → Idioma del contenido: Castellano por defecto / Spanish by default; I
 MCP: `campana_instalacion({demo:"starbucks-six",content_language:"en"})`.
 Tutorial ES/EN: https://admira.studio/docs/creator-content-language.md
 Ocho vídeos ingleses / Eight English movies: https://admira.studio/campanas/starbucks-six/?content=en
+
+ES/EN: Idiomas a crear / Languages to create uses multiple checkboxes, defaults to the UI language for new campaigns, and exports all selected languages; tutorial: https://admira.studio/docs/creator-content-language.md

@@ -1,6 +1,6 @@
-import {restoreLanguage} from './campaign-language.mjs?v=content-language-1';
-import {COFFEE_STYLE,integratedPlan,integratedJob} from './campaign-integrated.mjs?v=content-language-1';
-import {travelPlan,travelJob,travelGeometry} from './campaign-travel.mjs?v=content-language-1';
+import {restoreLanguage} from './campaign-language.mjs?v=content-language-2';
+import {COFFEE_STYLE,integratedPlan,integratedJob} from './campaign-integrated.mjs?v=content-language-2';
+import {travelPlan,travelJob,travelGeometry} from './campaign-travel.mjs?v=content-language-2';
 // Installation-aware, deterministic campaign layouts. No generative API calls.
 export const CAMPAIGN_SCHEMA='pixeria.installation-campaign.v1';
 export const DIRECTIONS=[{id:'hero',es:'Producto protagonista',en:'Product hero'},{id:'editorial',es:'Composición editorial',en:'Editorial composition'},{id:'sequence',es:'Relato entre pantallas',en:'Story across screens'},{id:'travel',es:'Recorrido animado',en:'Animated journey'}];
@@ -116,7 +116,7 @@ export function planCampaign(c,i,direction=c.direction,measure=(s,px)=>s.length*
 }
 export function campaignContract(c,approvals={}){
  const campaign=restoreCampaign(c);
- return{schema:CAMPAIGN_SCHEMA,campaign,delivery:{contentLanguage:campaign.contentLanguage,fps:25,gopFrames:25,audio:false,kind:campaign.visualStyle===COFFEE_STYLE&&campaign.direction==='travel'?'animated-integrated':campaign.direction==='travel'?'animated-travel':'still-composition',visualStyle:campaign.visualStyle||'classic',copyAnimation:campaign.visualStyle===COFFEE_STYLE&&campaign.direction==='travel'?{lineStaggerSeconds:.12,headlineSeconds:.6,ctaStartSeconds:1,ctaSeconds:.5,slidePixels:24,easing:'easeOutCubic',stableAfterSeconds:1.5}:null,hardwareVerified:false},approvals:clone(approvals),limits:{measuredGeometry:false,anamorphicExport:false,automaticVideoLayerExtraction:false},derived:campaign.installations.filter(i=>i.enabled!==false).flatMap(i=>i.screens.map(s=>({installation:i.id,screen:s.id,width:s.rotation%180?s.h:s.w,height:s.rotation%180?s.w:s.h,rotation:s.rotation||0,tags:['campaign:'+campaign.id,'installation:'+i.id,'screen:'+s.id,'direction:'+campaign.direction,'content-language:'+campaign.contentLanguage]})))};
+ return{schema:CAMPAIGN_SCHEMA,campaign,delivery:{contentLanguages:campaign.contentLanguages,contentLanguage:campaign.contentLanguage,fps:25,gopFrames:25,audio:false,kind:campaign.visualStyle===COFFEE_STYLE&&campaign.direction==='travel'?'animated-integrated':campaign.direction==='travel'?'animated-travel':'still-composition',visualStyle:campaign.visualStyle||'classic',copyAnimation:campaign.visualStyle===COFFEE_STYLE&&campaign.direction==='travel'?{lineStaggerSeconds:.12,headlineSeconds:.6,ctaStartSeconds:1,ctaSeconds:.5,slidePixels:24,easing:'easeOutCubic',stableAfterSeconds:1.5}:null,hardwareVerified:false},approvals:clone(approvals),limits:{measuredGeometry:false,anamorphicExport:false,automaticVideoLayerExtraction:false},derived:campaign.installations.filter(i=>i.enabled!==false).flatMap(i=>i.screens.map(s=>({installation:i.id,screen:s.id,width:s.rotation%180?s.h:s.w,height:s.rotation%180?s.w:s.h,rotation:s.rotation||0,tags:['campaign:'+campaign.id,'installation:'+i.id,'screen:'+s.id,'direction:'+campaign.direction,'content-language:'+campaign.contentLanguage]})))};
 }
 export function campaignJob(c,i,s,plan){
  if(c.translationDraft)throw Error('campaign-copy-language-required');if(validateInstallation(i).length)throw Error('campaign-installations');
