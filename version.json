@@ -1,6 +1,6 @@
 {
-  "version": "v.14.10.2026.r7.13:07",
-  "deployedAt": "2026-10-14T11:07:26.292709+00:00",
+  "version": "v.14.10.2026.r8.13:32",
+  "deployedAt": "2026-10-14T11:32:36.804616+00:00",
   "author": "TrinityMBP14",
   "agent": "TrinityMBP14",
   "deployer": "TrinityMBP14",
@@ -11,9 +11,9 @@
   "gitFull": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
   "dirty": false,
   "novedades": [
-    "Stock: Subir archivos desde el equipo o arrastrándolos sobre la galería.",
-    "Hasta 5 archivos por carga y 100 MB por archivo; cola con estados y reintento sólo de pendientes.",
-    "Los contenidos confirmados aparecen sin refrescar y se elimina la barra vacía."
+    "Stock: Playlist amarilla con barra y porcentaje mientras se descarga en los destinos.",
+    "Verde sólo con confirmación reciente de descarga completa de todos los players; detalle por destino al pasar el cursor.",
+    "Progreso automático, sin refrescar; las respuestas antiguas y los destinos sin confirmación siguen pendientes."
   ],
   "rollback": {
     "git": "8d0c7e3"
@@ -22,5 +22,5 @@
     "14a886b6407883ed49b25fefdd54a81e00405a95",
     "5c978fa73e8efac8df1b82b623a1e92991e7dae4"
   ],
-  "mission": "DCL-e7f8d7a1475deccb28e1551f"
+  "mission": "DCL-c0f33c18572a1cd92da98c2c"
 }
