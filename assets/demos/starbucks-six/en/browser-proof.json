@@ -1,0 +1,18 @@
+{
+  "campaign": "starbucks-six",
+  "contentLanguage": "en",
+  "verifiedAt": "2026-10-14T05:35:57.846Z",
+  "url": "https://admira.studio/campanas/starbucks-six/?content=en",
+  "surface": "headless browser gallery",
+  "physicalPlaybackVerified": false,
+  "samples": 35,
+  "decodedVideos": 6,
+  "phases": [
+    "mural",
+    "unit"
+  ],
+  "cycleSeconds": 32,
+  "maxVideoClockSpreadSeconds": 0.03670500000000132,
+  "languageSwitchVerified": true,
+  "uiEnglishVerified": true
+}
