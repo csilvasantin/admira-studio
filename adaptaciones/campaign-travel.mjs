@@ -25,7 +25,7 @@ export function travelPlan(c,i,measure,fit){
 export function travelJob(c,i,s){
  const g=travelGeometry(i,c),W=s.w,H=s.h;
  if(W%2||H%2||s.rotation)throw Error('travel-native-geometry');
- const filename=`${c.id}-${i.id}-travel-${s.id}-r${c.revision}-${W}x${H}.mp4`;
+ const filename=`${c.id}-${i.id}-travel-${s.id}-r${c.revision}${c.contentLanguage==='en'?'-en':''}-${W}x${H}.mp4`;
  // Output-only crop: each worker composites at the panel's resolution, never 8K.
  const x=`${g.x0-s.x}+${g.x1-g.x0}*min(t/${c.seconds},1)`;
  const vf=`[1:v]scale=${Math.round(g.w)}:${Math.round(g.h)}:force_original_aspect_ratio=decrease,pad=${Math.round(g.w)}:${Math.round(g.h)}:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba[p];[0:v][p]overlay=x='${x}':y=${g.y-s.y}:eval=frame:shortest=1,format=yuv420p,setsar=1[out]`;
@@ -34,7 +34,7 @@ export function travelJob(c,i,s){
 export function mixedProgram(c,files=[]){
  const mural=c.installations.find(i=>i.phase==='mural');if(!mural)throw Error('mixed-mural-required');
  const units=c.installations.filter(i=>i.phase==='unit');
- return {schema:'admira.mixed-screen-program.v1',campaign:c.id,revision:c.revision,clock:'https://brain.digitalavatar.ai/sync/state',fps:25,totalSeconds:c.seconds+(c.unitSeconds||8),hardwareVerified:false,screens:mural.screens.map(s=>{
+ return {schema:'admira.mixed-screen-program.v1',campaign:c.id,revision:c.revision,contentLanguage:c.contentLanguage||'es',clock:'https://brain.digitalavatar.ai/sync/state',fps:25,totalSeconds:c.seconds+(c.unitSeconds||8),hardwareVerified:false,screens:mural.screens.map(s=>{
   const unit=units.find(i=>i.width/i.height===s.w/s.h);if(!unit)throw Error('mixed-orientation-required');
   const file=(installation,screen)=>files.find(f=>f.installation===installation&&f.screen===screen)?.filename||null;
   return {screen:s.id,format:{width:s.w,height:s.h},items:[{kind:'mural',seconds:c.seconds,file:file(mural.id,s.id)},{kind:'individual',seconds:c.unitSeconds||8,file:file(unit.id,unit.screens[0].id)}]};

@@ -4,6 +4,10 @@
 (function () {
   'use strict';
   const COPY = {
+  "Creador: Castellano por defecto e Inglés para vídeos y adaptaciones": "Creator: Spanish by default and English for videos and adaptations",
+  "Variantes de texto conservadas; idioma del contenido separado de los menús": "Retained copy variants; content language separate from menu language",
+  "Starbucks: ocho vídeos ingleses publicados con fotografías y animaciones originales": "Starbucks: eight published English movies retain original photography and animation",
+
   "Starbucks: fotografías de taza y granos con metaestilo integrado de Trinity": "Starbucks: cup and bean photography with Trinity’s integrated visual style",
   "Textos animados en los seis murales y las adaptaciones horizontal y vertical": "Animated copy in six wall movies and both landscape and portrait adaptations",
   "Revisión anterior conservada; ocho vídeos publicados; players parados por Carlos": "Earlier revision preserved; eight published movies; players stopped by Carlos",

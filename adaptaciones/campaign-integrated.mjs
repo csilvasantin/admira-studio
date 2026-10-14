@@ -14,8 +14,8 @@ export function integratedPlan(c,i,measure,fit){
   const box={x:s.x+p,y:s.y+(portrait?s.h*.142:s.h*.28),w:s.w*(portrait?.86:.47),h:s.h*(portrait?.245:.39)};
   const max=Math.min(s.w,s.h)*(portrait?.1:.095);
   let type;
-  if(c.headline==='Tu café sigue contigo.'){
-   const lines=portrait?['Tu café','sigue','contigo.']:['Tu café','sigue contigo.'];
+  if(['Tu café sigue contigo.','Your coffee goes with you.'].includes(c.headline)){
+   const lines=c.headline==='Your coffee goes with you.'?(portrait?['Your coffee','goes with','you.']:['Your coffee','goes with you.']):(portrait?['Tu café','sigue','contigo.']:['Tu café','sigue contigo.']);
    let px=max;while(px>24&&lines.some(t=>measure(t,px)>box.w))px--;
    type={px,lines,lineHeight:px*1.14};
   }else type=fit(c.headline,box,24,max,measure);
@@ -84,5 +84,5 @@ export function integratedJob(c,i,s,plan,geometry){
  }
  filters.push(`[${previous}]format=yuv420p,setsar=1[out]`);
  args.push('-filter_complex',filters.join(';'),'-map','[out]','-frames:v',String(seconds*25),'-an','-c:v','libx264','-preset','veryfast','-threads','1','-profile:v','high','-pix_fmt','yuv420p','-r','25','-g','25','-crf','19','-movflags','+faststart','output.mp4');
- return {filename:`${c.id}-${i.id}-${c.direction}-${s.id}-r${c.revision}-${W}x${H}.mp4`,W,H,input:'input.png',durationSeconds:seconds,kind:'animated-integrated',visualStyle:COFFEE_STYLE,layers,files,mural,args};
+ return {filename:`${c.id}-${i.id}-${c.direction}-${s.id}-r${c.revision}${c.contentLanguage==='en'?'-en':''}-${W}x${H}.mp4`,W,H,input:'input.png',durationSeconds:seconds,kind:'animated-integrated',visualStyle:COFFEE_STYLE,layers,files,mural,args};
 }

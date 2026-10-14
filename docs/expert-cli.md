@@ -127,3 +127,11 @@ Starbucks r2 · Metaestilo / Visual style: coffee-integrated; fotos de café y g
 CLI: /creador, /creator, open creator → Ejemplo Starbucks → Editar contenido / Edit content → Metaestilo / Visual style. Sin nuevo comando / no new command.
 Vídeos / Movies: https://admira.studio/campanas/starbucks-six/ · R1: https://admira.studio/creador/?demo=starbucks-six&version=1
 Seis players r2 en reproducción, ciclo físico verificado / Six r2 players running, native cycle verified. Evidence: https://admira.studio/assets/demos/starbucks-six/hardware-proof.json
+
+
+## Idioma del contenido / Content language
+
+Creador → Idioma del contenido: Castellano por defecto / Spanish by default; Inglés / English. Menús independientes, variantes conservadas, nueva revisión al cambiar / independent UI, retained copy variants, renewed review on changes.
+MCP: `campana_instalacion({demo:"starbucks-six",content_language:"en"})`.
+Tutorial ES/EN: https://admira.studio/docs/creator-content-language.md
+Ocho vídeos ingleses / Eight English movies: https://admira.studio/campanas/starbucks-six/?content=en

@@ -1,0 +1,141 @@
+{
+  "schema": "admira.mixed-screen-program.v1",
+  "campaign": "starbucks-six",
+  "revision": 3,
+  "contentLanguage": "en",
+  "clock": "https://brain.digitalavatar.ai/sync/state",
+  "fps": 25,
+  "totalSeconds": 32,
+  "hardwareVerified": false,
+  "screens": [
+    {
+      "screen": "macstudio-starbucks-vertical",
+      "format": {
+        "width": 1080,
+        "height": 1920
+      },
+      "items": [
+        {
+          "kind": "mural",
+          "seconds": 24,
+          "file": "starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-r3-en-1080x1920.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-r3-en-1080x1920.mp4?content=en-r3"
+        },
+        {
+          "kind": "individual",
+          "seconds": 8,
+          "file": "starbucks-six-portrait-travel-portrait-r3-en-1080x1920.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-portrait-travel-portrait-r3-en-1080x1920.mp4?content=en-r3"
+        }
+      ]
+    },
+    {
+      "screen": "macstudio-starbucks-horizontal",
+      "format": {
+        "width": 1920,
+        "height": 1080
+      },
+      "items": [
+        {
+          "kind": "mural",
+          "seconds": 24,
+          "file": "starbucks-six-starbucks-six-travel-macstudio-starbucks-horizontal-r3-en-1920x1080.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-starbucks-six-travel-macstudio-starbucks-horizontal-r3-en-1920x1080.mp4?content=en-r3"
+        },
+        {
+          "kind": "individual",
+          "seconds": 8,
+          "file": "starbucks-six-landscape-travel-landscape-r3-en-1920x1080.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-landscape-travel-landscape-r3-en-1920x1080.mp4?content=en-r3"
+        }
+      ]
+    },
+    {
+      "screen": "macstudio-starbucks-vertical-right",
+      "format": {
+        "width": 1080,
+        "height": 1920
+      },
+      "items": [
+        {
+          "kind": "mural",
+          "seconds": 24,
+          "file": "starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-right-r3-en-1080x1920.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-right-r3-en-1080x1920.mp4?content=en-r3"
+        },
+        {
+          "kind": "individual",
+          "seconds": 8,
+          "file": "starbucks-six-portrait-travel-portrait-r3-en-1080x1920.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-portrait-travel-portrait-r3-en-1080x1920.mp4?content=en-r3"
+        }
+      ]
+    },
+    {
+      "screen": "macmini-starbucks-vertical",
+      "format": {
+        "width": 1080,
+        "height": 1920
+      },
+      "items": [
+        {
+          "kind": "mural",
+          "seconds": 24,
+          "file": "starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-r3-en-1080x1920.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-r3-en-1080x1920.mp4?content=en-r3"
+        },
+        {
+          "kind": "individual",
+          "seconds": 8,
+          "file": "starbucks-six-portrait-travel-portrait-r3-en-1080x1920.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-portrait-travel-portrait-r3-en-1080x1920.mp4?content=en-r3"
+        }
+      ]
+    },
+    {
+      "screen": "macmini-starbucks-horizontal",
+      "format": {
+        "width": 1920,
+        "height": 1080
+      },
+      "items": [
+        {
+          "kind": "mural",
+          "seconds": 24,
+          "file": "starbucks-six-starbucks-six-travel-macmini-starbucks-horizontal-r3-en-1920x1080.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-starbucks-six-travel-macmini-starbucks-horizontal-r3-en-1920x1080.mp4?content=en-r3"
+        },
+        {
+          "kind": "individual",
+          "seconds": 8,
+          "file": "starbucks-six-landscape-travel-landscape-r3-en-1920x1080.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-landscape-travel-landscape-r3-en-1920x1080.mp4?content=en-r3"
+        }
+      ]
+    },
+    {
+      "screen": "macmini-starbucks-vertical-right",
+      "format": {
+        "width": 1080,
+        "height": 1920
+      },
+      "items": [
+        {
+          "kind": "mural",
+          "seconds": 24,
+          "file": "starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-right-r3-en-1080x1920.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-right-r3-en-1080x1920.mp4?content=en-r3"
+        },
+        {
+          "kind": "individual",
+          "seconds": 8,
+          "file": "starbucks-six-portrait-travel-portrait-r3-en-1080x1920.mp4",
+          "url": "https://admira.studio/assets/demos/starbucks-six/en/starbucks-six-portrait-travel-portrait-r3-en-1080x1920.mp4?content=en-r3"
+        }
+      ]
+    }
+  ],
+  "visualStyle": "coffee-integrated",
+  "playersState": "published_not_hardware_verified",
+  "fullCycleVerified": false
+}

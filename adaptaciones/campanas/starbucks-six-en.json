@@ -1,0 +1,138 @@
+{
+  "schema": "pixeria.installation-campaign.v1",
+  "id": "starbucks-six",
+  "revision": 3,
+  "name": "Starbucks · Un café, seis pantallas",
+  "headline": "Your coffee goes with you.",
+  "cta": "Enjoy the moment.",
+  "price": "",
+  "background": "#003e2e",
+  "accent": "#e8e5c9",
+  "foreground": "#fffaf0",
+  "direction": "travel",
+  "placements": {},
+  "seconds": 24,
+  "product": "/adaptaciones/campanas/coffee/coffee-beans.jpg",
+  "logo": "/adaptaciones/campanas/coffee/starbucks-siren.svg",
+  "productLabel": "Fotografía de café y granos · Trinity · Stock",
+  "installations": [
+    {
+      "id": "starbucks-six",
+      "name": {
+        "es": "Mural · 6 pantallas V–H–V–V–H–V",
+        "en": "Wall · 6 screens P–L–P–P–L–P"
+      },
+      "width": 8160,
+      "height": 1920,
+      "phase": "mural",
+      "approximate": true,
+      "screens": [
+        {
+          "id": "macstudio-starbucks-vertical",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0
+        },
+        {
+          "id": "macstudio-starbucks-horizontal",
+          "x": 1080,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0
+        },
+        {
+          "id": "macstudio-starbucks-vertical-right",
+          "x": 3000,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0
+        },
+        {
+          "id": "macmini-starbucks-vertical",
+          "x": 4080,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0
+        },
+        {
+          "id": "macmini-starbucks-horizontal",
+          "x": 5160,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0
+        },
+        {
+          "id": "macmini-starbucks-vertical-right",
+          "x": 7080,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0
+        }
+      ]
+    },
+    {
+      "id": "landscape",
+      "name": {
+        "es": "Individual · Horizontal",
+        "en": "Individual · Landscape"
+      },
+      "width": 1920,
+      "height": 1080,
+      "phase": "unit",
+      "screens": [
+        {
+          "id": "landscape",
+          "x": 0,
+          "y": 0,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0
+        }
+      ]
+    },
+    {
+      "id": "portrait",
+      "name": {
+        "es": "Individual · Vertical",
+        "en": "Individual · Portrait"
+      },
+      "width": 1080,
+      "height": 1920,
+      "phase": "unit",
+      "screens": [
+        {
+          "id": "portrait",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0
+        }
+      ]
+    }
+  ],
+  "visualStyle": "coffee-integrated",
+  "portraitPhoto": "/adaptaciones/campanas/coffee/coffee-pause.jpg",
+  "unitSeconds": 8,
+  "contentLanguage": "en",
+  "translationDraft": false,
+  "copyByLanguage": {
+    "es": {
+      "headline": "Tu café sigue contigo.",
+      "cta": "Disfruta el momento.",
+      "price": ""
+    },
+    "en": {
+      "headline": "Your coffee goes with you.",
+      "cta": "Enjoy the moment.",
+      "price": ""
+    }
+  }
+}

@@ -1130,7 +1130,15 @@
       "provenance": "/assets/demos/starbucks-six/style-provenance.json",
       "previous": "/adaptaciones/campanas/starbucks-six-r1.json",
       "playersState": "playing",
-      "nativePlaybackProof": "/assets/demos/starbucks-six/hardware-proof.json"
+      "nativePlaybackProof": "/assets/demos/starbucks-six/hardware-proof.json",
+      "contentLanguages": [
+        "es",
+        "en"
+      ],
+      "defaultContentLanguage": "es",
+      "englishCreator": "/creador/?demo=starbucks-six&content=en",
+      "englishDelivery": "/assets/demos/starbucks-six/en/playlist-mixta.json",
+      "languageGuide": "/docs/creator-content-language.md"
     }
   },
   "content_workflows": {

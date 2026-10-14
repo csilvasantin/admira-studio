@@ -14,5 +14,5 @@ export function cloudIdentity(value){
 }
 export function compareCampaigns(a,b){
  const left=a.campaign||a,right=b.campaign||b;
- return ['name','headline','cta','price','accent','secondary','background','foreground','direction','seconds','titleScale','backgroundAsset','image','video','product','logo','placements','installations'].filter(k=>JSON.stringify(left[k])!==JSON.stringify(right[k])).map(field=>({field,before:left[field]??null,after:right[field]??null}));
+ return ['contentLanguage','copyByLanguage','translationDraft','language','name','headline','cta','price','accent','secondary','background','foreground','direction','seconds','titleScale','backgroundAsset','image','video','product','logo','placements','installations'].filter(k=>JSON.stringify(left[k])!==JSON.stringify(right[k])).map(field=>({field,before:left[field]??null,after:right[field]??null}));
 }

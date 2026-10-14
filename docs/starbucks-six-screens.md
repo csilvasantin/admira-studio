@@ -61,3 +61,11 @@ EN: Six sources update to r2 while retaining the 24+8-second clock and order. Ca
 
 
 ES/EN: Verificación física r2 / Native r2 verification: 35 muestras durante 45.506 s; diferencia máxima de reloj / maximum clock offset spread 23 ms; error máximo vídeo–timeline en fase estable / maximum stable video-to-timeline error 0.033 s. Todos los vídeos con resolución nativa, fotogramas decodificados y reproducción activa / All videos have native resolution, decoded frames and active playback. La medición es del software de los players; no es una prueba de genlock óptico ni de separaciones físicas medidas / Player software timing, not optical genlock or measured physical gaps. [Prueba / Proof](https://admira.studio/assets/demos/starbucks-six/hardware-proof.json).
+
+
+## Idioma del contenido / Content language
+
+Creador → Idioma del contenido: Castellano por defecto / Spanish by default; Inglés / English. Menús independientes, variantes conservadas, nueva revisión al cambiar / independent UI, retained copy variants, renewed review on changes.
+MCP: `campana_instalacion({demo:"starbucks-six",content_language:"en"})`.
+Tutorial ES/EN: https://admira.studio/docs/creator-content-language.md
+Ocho vídeos ingleses / Eight English movies: https://admira.studio/campanas/starbucks-six/?content=en

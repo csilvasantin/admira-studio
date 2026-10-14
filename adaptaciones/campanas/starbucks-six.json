@@ -120,5 +120,18 @@
     }
   ],
   "visualStyle": "coffee-integrated",
-  "portraitPhoto": "/adaptaciones/campanas/coffee/coffee-pause.jpg"
+  "portraitPhoto": "/adaptaciones/campanas/coffee/coffee-pause.jpg",
+  "contentLanguage": "es",
+  "copyByLanguage": {
+    "es": {
+      "headline": "Tu café sigue contigo.",
+      "cta": "Disfruta el momento.",
+      "price": ""
+    },
+    "en": {
+      "headline": "Your coffee goes with you.",
+      "cta": "Enjoy the moment.",
+      "price": ""
+    }
+  }
 }
