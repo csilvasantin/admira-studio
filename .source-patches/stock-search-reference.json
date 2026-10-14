@@ -1,0 +1,12 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "d82bec880024e5f0028829dbdb493ed7e617bea1",
+  "reason": "Carlos pide corregir la búsqueda por hashtag del número de la canción 1549 antes de retomar los turnos.",
+  "files": [
+    "assets/stock-search.js",
+    "test/stock-search-reference.test.mjs",
+    "docs/busqueda-stock.md"
+  ],
+  "preservesFiltersAndAccess": true
+}
