@@ -1,0 +1,19 @@
+{
+  "kind": "canonical-domain-change",
+  "canonicalBase": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
+  "domain": "admira.studio",
+  "mission": "DCL-e7f8d7a1475deccb28e1551f",
+  "reason": "Carlos pide carga local. Se implementa en el dominio Admira; clones congelados, sin réplica ni publicación en pixeria.com. Conserva deltas anteriores y Creator/campañas.",
+  "files": [
+    "stock.html",
+    "app.js",
+    "functions/stock-upload/[accion].js",
+    "assets/stock-local-files.mjs",
+    "assets/stock-local-publish.mjs",
+    "assets/stock-local-upload.mjs"
+  ],
+  "limits": {
+    "maxFiles": 5,
+    "maxBytesPerFile": 100000000
+  }
+}

@@ -3823,7 +3823,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     localBtn.textContent = '📂 Archivos locales → Stock';
     localBtn.title = 'Sube uno o varios archivos de este dispositivo directo al Stock (no depende del Mac Mini)';
     document.querySelector('#importModal .keys-actions')?.appendChild(localBtn);
-    localBtn.addEventListener('click', () => localInput.click());
+    localBtn.addEventListener('click', () => {if(window.StockLocalUpload){dlg.close();window.StockLocalUpload.open();}else localInput.click();});
     localInput.addEventListener('change', () => {
       const files = Array.from(localInput.files || []);
       if (files.length) publishLocalFiles(files);
@@ -3833,8 +3833,8 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     // Publica UN archivo del dispositivo directo al Stock, sin pasar por el Mac.
     // Devuelve {ok, id, error}; no navega (de eso se encarga el lote).
     async function publicarUnLocal(file, stat, prefijo) {
-      const mt = file.type || '';
-      const type = mt.startsWith('video') ? 'video' : mt.startsWith('image') ? 'image' : 'audio';
+      const {localMedia}=await import('/assets/stock-local-files.mjs');
+      const {mime:mt,type}=localMedia(file);
       const progress = importProgressStart(type === 'video' ? 'video' : 'audio');
       try {
         const sizeMB = (file.size / 1024 / 1024).toFixed(2);
@@ -3896,6 +3896,8 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       retryBtn.hidden = true;
       importInFlight = true;
       try {
+        const {validateLocalFiles}=await import('/assets/stock-local-files.mjs');
+        const invalid=validateLocalFiles(files);if(invalid){stat.textContent=invalid;return;}
         const total = files.length;
         const hechos = [];
         for (let i = 0; i < total; i++) {

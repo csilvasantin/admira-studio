@@ -1,19 +1,19 @@
 {
-  "version": "v.14.10.2026.r6.12:48",
-  "deployedAt": "2026-10-14T10:48:52.573087+00:00",
+  "version": "v.14.10.2026.r7.13:07",
+  "deployedAt": "2026-10-14T11:07:26.292709+00:00",
   "author": "TrinityMBP14",
   "agent": "TrinityMBP14",
   "deployer": "TrinityMBP14",
   "machine": "MacBookProNegro14",
   "signature": "TrinityMBP14 · MacBookProNegro14",
-  "git": "be85d7860ccd9f877f88a211e4c48ea621b2365a",
-  "gitShort": "be85d78",
-  "gitFull": "be85d7860ccd9f877f88a211e4c48ea621b2365a",
+  "git": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
+  "gitShort": "e409c20",
+  "gitFull": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
   "dirty": false,
   "novedades": [
-    "Stock: Proyecto → Circuito → Ubicación → Dispositivo, con destinos reales.",
-    "Guardar y distribuir añade a la playlist actual conservando las piezas y evitando duplicados.",
-    "Las tarjetas muestran Playlist y sus destinos al pasar el cursor."
+    "Stock: Subir archivos desde el equipo o arrastrándolos sobre la galería.",
+    "Hasta 5 archivos por carga y 100 MB por archivo; cola con estados y reintento sólo de pendientes.",
+    "Los contenidos confirmados aparecen sin refrescar y se elimina la barra vacía."
   ],
   "rollback": {
     "git": "8d0c7e3"
@@ -22,5 +22,5 @@
     "14a886b6407883ed49b25fefdd54a81e00405a95",
     "5c978fa73e8efac8df1b82b623a1e92991e7dae4"
   ],
-  "mission": "DCL-eb5b864d621419c46d512a89"
+  "mission": "DCL-e7f8d7a1475deccb28e1551f"
 }

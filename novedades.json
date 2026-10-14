@@ -136,5 +136,10 @@
     "Stock: Proyecto → Circuito → Ubicación → Dispositivo, con destinos reales.",
     "Guardar y distribuir añade a la playlist actual conservando las piezas y evitando duplicados.",
     "Las tarjetas muestran Playlist y sus destinos al pasar el cursor."
+  ],
+  "v.14.10.2026.r7.13:07": [
+    "Stock: Subir archivos desde el equipo o arrastrándolos sobre la galería.",
+    "Hasta 5 archivos por carga y 100 MB por archivo; cola con estados y reintento sólo de pendientes.",
+    "Los contenidos confirmados aparecen sin refrescar y se elimina la barra vacía."
   ]
 }
