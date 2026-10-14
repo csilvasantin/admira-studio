@@ -19,3 +19,5 @@
 .music-card-tools[data-music-format=portrait] .music-cartela>svg{width:100%;height:auto;max-height:600px}
 #stockLightboxInner:has(.music-card-tools){overflow:auto}
 #stockLightboxInner .music-cartela>svg{max-height:min(50vh,520px)}
+/* Tall portrait artwork must not stretch the metadata grid or its tag pills. */
+.stock-grid.view-list .stock-card:has(.music-card-tools) .stock-card-body{align-content:start}
