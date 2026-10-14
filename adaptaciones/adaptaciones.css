@@ -472,3 +472,5 @@ body.image-source[data-paso="1"] #cuad-avanzado-live .profile-label{display:none
 .campaign-stage-pair{grid-template-columns:minmax(0,3fr) minmax(240px,2fr)}.campaign-stage-pair>#campaign-canvas{width:100%;max-height:55vh}
 .fmt:has(>.adaptation-preview-pair){min-width:0}.fmt>.adaptation-preview-pair>.stage{min-width:0}.fmt>.adaptation-preview-pair .esp-views{min-width:0;overflow:hidden}
 @media(max-width:680px){.campaign-overview{grid-template-columns:1fr}.campaign-stage-pair{grid-template-columns:1fr}.adaptation-preview-pair{gap:8px}.inline-twin{padding:5px}.campaign-flat canvas{height:150px}}
+
+.twin-photo{font-size:12px;padding:10px 0}.twin-photo img{display:block;max-width:100%;max-height:300px;margin:12px auto;object-fit:contain}.twin-photo[hidden]{display:none}
