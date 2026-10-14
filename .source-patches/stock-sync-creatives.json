@@ -1,0 +1,33 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "5979c0646df18e2c764e49bff00bba9912186145",
+  "reason": "Carlos autoriza agrupar Cada café tiene una historia en una única ficha de Stock con adaptaciones y previo sincronizado 3D, admitiendo cualquier número de pantallas.",
+  "files": [
+    "assets/stock-sync-core.js",
+    "assets/stock-sync-preview.mjs",
+    "assets/stock-sync-creative.css",
+    "assets/stock-formats.js",
+    "functions/stock-creatives.js",
+    "adaptaciones/gemelo-core.mjs",
+    "adaptaciones/gemelo-digital.mjs",
+    "adaptaciones/gemelo-inline.mjs",
+    "adaptaciones/starbucks-twin-core.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/campaign-sync-stock.mjs",
+    "stock.html",
+    "en/stock.html",
+    "docs/creatividades-sincronizadas.md",
+    "test/stock-sync-creative.test.mjs",
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/client-format-controls.mjs",
+    "adaptaciones/gemelo-factory.mjs",
+    "adaptaciones/starbucks-twin.mjs"
+  ],
+  "limits": {
+    "measuredGeometry": false,
+    "gdg51PhotoAvailable": false,
+    "anamorphicCalibration": false,
+    "hardwareSyncVerified": false
+  }
+}
