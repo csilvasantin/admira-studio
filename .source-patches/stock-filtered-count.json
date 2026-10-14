@@ -1,0 +1,15 @@
+{
+  "kind": "canonical-domain-change",
+  "canonicalBase": "e2c28984a840e0b8e3dd3064e115424bf439196e",
+  "domain": "admira.studio",
+  "mission": "DCL-2a121fa6354b6fa5be104815",
+  "files": [
+    "stock.html",
+    "en/stock.html",
+    "workspace.css",
+    "assets/stock-counts.js",
+    "test/stock-counts.test.mjs"
+  ],
+  "reason": "Carlos pide contador reactivo a búsqueda y filtros con contenidos; sólo canonical Admira, sin réplica a Pixeria.",
+  "semantics": "found and total count content families using existing format grouping, before pagination, scoped to available account catalog; tooltip exposes raw file counts."
+}
