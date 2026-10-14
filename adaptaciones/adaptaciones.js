@@ -3,9 +3,9 @@ import {readHandoff} from './campaign-handoff.mjs?v=starbucks-story-1';
 import {classicTargets,isClassicFormat,extraFormats} from './classic-step.mjs?v=20261009-classic-step-1';
 import {mountAdvertisement} from './anuncio-studio.mjs?v=classic-auto-6';
 import {compositionFromStock} from '../assets/content-composition.mjs?v=composition-1';
-import {mountCampaign} from './campaign-studio.mjs?v=starbucks-story-1';
+import {mountCampaign} from './campaign-studio.mjs?v=inline-twin-1';
 let campaignWorkshop=null;
-import {mountTwin} from './gemelo-digital.mjs?v=starbucks-video-twin-1';
+import {mountTwin} from './gemelo-digital.mjs?v=inline-twin-1';
 import {aiJob} from './ia-core.mjs?v=adapter-detail-1';
 import {APPLICATION_KEY,restoreApplications,applyApplications} from './aplicaciones-core.mjs';
 import {mountStudio} from './studio-adaptaciones.mjs';
@@ -450,7 +450,9 @@ function buildGrid() {
     el.querySelector('.export-one').onclick=(e)=>{e.stopPropagation();exportFormats([f]);};
     // Display (no print) from a still image: JPG as well, lighter for ad networks.
     if(f.category==='display'&&f.output==='png'){const j=document.createElement('button');j.type='button';j.className='pill export-one export-jpg';j.textContent='JPG';j.hidden=!isPicture();j.title=t('JPG calidad 90, más ligero para redes de display','JPG quality 90, lighter for display networks');j.onclick=(e)=>{e.stopPropagation();exportFormats([f],'jpg');};el.querySelector('.export-one').after(j);}
-    if(twin&&!classicActive())el.append(twin.button(f));
+    if(twin&&!classicActive()){
+      const source=el.querySelector('.esp-views')||el.querySelector('.stage'),pair=document.createElement('div');pair.className='adaptation-preview-pair';source.before(pair);pair.append(source,twin.button(f));
+    }
     selectable(el, f);
     g.appendChild(el);
   });
@@ -526,7 +528,9 @@ function especialCard(f) {
   el.querySelector('.export-atlas').onclick = (e) => { e.stopPropagation(); exportFormats([f], 'atlas'); };
   el.querySelector('.export-segments').onclick = (e) => { e.stopPropagation(); exportFormats([f], 'segments'); };
   el.querySelector('.esp-actions').before(crearControls(f));
-  if(twin&&!classicActive())el.append(twin.button(f));
+  if(twin&&!classicActive()){
+      const source=el.querySelector('.esp-views')||el.querySelector('.stage'),pair=document.createElement('div');pair.className='adaptation-preview-pair';source.before(pair);pair.append(source,twin.button(f));
+    }
   selectable(el, f);
   return el;
 }
@@ -1960,7 +1964,7 @@ if (savedList.length) { yokupSource = 'saved'; yokupDate = String(yokupJSON.actu
 PROJECTS = mergeProjects(savedList, INDEX);
 // Altadis preferences saved before the fichas move to their project once; nothing is deleted.
 let migratedTo = null; try { migratedTo = migrateStorage(localStorage, STORAGE_KEY); } catch (_) {}
-campaignWorkshop=mountCampaign({t,queue,openTwin:f=>twin?.open(f),clientCatalog:INDEX});
+campaignWorkshop=mountCampaign({t,queue,openTwin:f=>twin?.open(f),previewTwin:(f,draw,stamp)=>twin?.preview(f,{draw,stamp}),clientCatalog:INDEX});
 let query = null, lastProject = null;
 try { query = new URLSearchParams(location.search).get('proyecto'); } catch (_) {}
 try { lastProject = localStorage.getItem(PROJECT_KEY) || migratedTo; } catch (_) { lastProject = migratedTo; }

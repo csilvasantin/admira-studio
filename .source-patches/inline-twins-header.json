@@ -1,0 +1,22 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "b701e7943aff84c29bc4986f547fcef49991552d",
+  "reason": "Carlos solicita un previo 3D al lado de cada adaptación y cabecera con logo como Inicio y tres controles un 10% menores. Autoriza esos cambios de cabecera también en todos los productos y clones.",
+  "files": [
+    "adaptaciones/gemelo-inline.mjs",
+    "adaptaciones/gemelo-digital.mjs",
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/adaptaciones.css",
+    "adaptaciones/campaign-studio.mjs",
+    "assets/site-nav.js",
+    "docs/starbucks-formatos.md",
+    "docs/campanas-instalacion.md",
+    "mcp/index.html"
+  ],
+  "limits": {
+    "measuredGeometry": false,
+    "anamorphicCalibration": false,
+    "hardwareSyncVerified": false
+  }
+}
