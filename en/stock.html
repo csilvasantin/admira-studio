@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r10.1400';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r11.1436';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r10.14:00">
+  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r11.14:36">
   <link rel="canonical" href="https://www.admira.studio/en/stock.html">
   <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="../workspace.css?v=14.10.2026.r10.1400">
+  <link rel="stylesheet" href="../workspace.css?v=14.10.2026.r11.1436">
   <style>
     .stock-lightbox-nav{position:fixed;top:50%;transform:translateY(-50%);z-index:30;width:54px;height:84px;display:flex;align-items:center;justify-content:center;
       border:1px solid rgba(118,185,0,.4);border-radius:12px;background:rgba(8,16,8,.72);color:#b8e577;font-size:34px;line-height:1;cursor:pointer;
@@ -103,12 +103,12 @@
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
   </style>
-  <script defer src="/assets/site-nav.js?v=14.10.2026.r10.1400"></script>
-  <script defer src="/assets/descarga-local.js?v=14.10.2026.r10.1400"></script>
-  <link rel="stylesheet" href="../assets/xpaces/viewer.css?v=14.10.2026.r10.1400">
+  <script defer src="/assets/site-nav.js?v=14.10.2026.r11.1436"></script>
+  <script defer src="/assets/descarga-local.js?v=14.10.2026.r11.1436"></script>
+  <link rel="stylesheet" href="../assets/xpaces/viewer.css?v=14.10.2026.r11.1436">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r10.1400">
-  <script src="/assets/ui-locale.js?v=14.10.2026.r10.1400"></script>
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r11.1436">
+  <script src="/assets/ui-locale.js?v=14.10.2026.r11.1436"></script>
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -154,7 +154,7 @@
   </header>
 
   <header class="page-head">
-    <h1>Stock <span id="stockCount">…</span></h1>
+    <h1>Stock <span id="stockCount" role="status" aria-live="polite" aria-atomic="true">…</span></h1>
   </header>
 
   <main>
@@ -297,9 +297,11 @@
     </form>
   </dialog>
 
-  <script defer src="/matrix-rain.js?v=14.10.2026.r10.1400"></script>
-  <script src="../app.js?v=14.10.2026.r10.1400"></script>
-  <script src="../assets/stock-search.js?v=14.10.2026.r10.1400"></script>
+  <script defer src="/matrix-rain.js?v=14.10.2026.r11.1436"></script>
+  <script src="../app.js?v=14.10.2026.r11.1436"></script>
+  <script src="/assets/stock-formats.js?v=14.10.2026.r11.1436"></script>
+  <script src="/assets/stock-counts.js?v=14.10.2026.r11.1436"></script>
+  <script src="../assets/stock-search.js?v=14.10.2026.r11.1436"></script>
   <script type="module">
   import {isXpace, blendFor, xpacePoster} from "../assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "../assets/furniture/catalog.mjs";
@@ -640,13 +642,27 @@
         const id = String(q != null ? q : (g && g.id) || '').toLowerCase(); return !!id && !/^(admira|todos|todas|all|off|ninguno)$/.test(id); } catch (_) { return false; } }
     setTimeout(() => { clienteEsperaAgotada = true; if (allItems.length) applyFilters(); }, 4000);
     document.addEventListener('pixeria:cliente', () => { allItems = soloMio(allItemsTodo); applyFilters(true); });
+    function countCatalog(){const PC=window.PixeriaCliente;return allItems.filter(it=>!(PC?.listo?.())||PC.visible(it));}
+    function includeCatalogItems(items){
+      const PC=window.PixeriaCliente,ready=!!PC?.listo?.();
+      const allowed=(items||[]).filter(it=>it?.id&&it.url&&(ready?PC.visible(it):!clientePendiente()));
+      allItems=soloMio([...new Map([...allItemsTodo,...allowed].map(it=>[it.id,it])).values()]);
+      return allowed;
+    }
+    function updateStockCount(matching){
+      const el=document.getElementById('stockCount');if(!el)return;
+      if(matching===null){el.textContent='… contents';el.title='';delete el.dataset.found;delete el.dataset.total;return;}
+      const catalog=countCatalog(),count=StockCounts.measure(catalog,matching),text=StockCounts.label(count,true);
+      if(el.textContent!==text)el.textContent=text;el.dataset.found=count.found;el.dataset.total=count.total;
+      el.title=count.found+' matching contents across all pages · '+count.total+' contents available to this account. Related versions are counted once per content, media type, language and revision. '+count.foundVersions+' matching files / '+count.totalVersions+' total files.';
+    }
     function applyFilters(resetPage) {
       // Vista Catálogos: la rejilla la pinta CATALOGO (piezas del catálogo elegido).
       if (filters.type === 'catalogo') { if (window.CATALOGO) window.CATALOGO.repaint(); return; }
       // Cliente activo (/marca en la CLI): Admira lo ve todo. Si se pidió otro cliente, hasta
       // saber cuál es no se pinta nada, para que no asome lo de otro; a los 4 s se enseña todo.
       const PC = window.PixeriaCliente, clienteListo = !!(PC && PC.listo && PC.listo());
-      if (!clienteListo && clientePendiente() && !clienteEsperaAgotada) { grid.innerHTML = ''; return; }
+      if (!clienteListo && clientePendiente() && !clienteEsperaAgotada) { grid.innerHTML = ''; updateStockCount(null); return; }
       ADAPT = new Map();
       for (const it of allItems) if (isAdaptacion(it)) ADAPT.set(it.externalRef, (ADAPT.get(it.externalRef) || 0) + 1);
       renderOrigenBar();
@@ -664,8 +680,7 @@
       });
       const sorted = sortItems(items, sortMode);
       if (filters.origen) sorted.sort((a, b) => (b.id === filters.origen) - (a.id === filters.origen));
-      const stockCount=document.getElementById('stockCount'),playable=allItems.filter(i=>i&&['video','animation','image','digital-twin','audio','music','locucion'].includes(i.type)&&i.url).length;
-      stockCount.textContent=playable+' of '+allItems.length;stockCount.title=playable+' playable · '+allItems.length+' total assets';
+      updateStockCount(sorted);
       currentView = sorted;
 
       // Paginación (0 = todos)
@@ -1202,7 +1217,7 @@
       const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
       const isActive = () => filters.type === 'catalogo';
       const tagsLc = it => Array.isArray(it && it.tags) ? it.tags.map(t => String(t).toLowerCase()) : [];
-      const metaCat = it => (it && it.meta && it.meta.catalogo && typeof it.meta.catalogo === 'object') ? it.meta.catalogo : null;
+      const metaCat=it=>{const m=it?.catalogo||it?.meta?.catalogo;return m&&typeof m==='object'?m:null;};
       const catIdOf = it => { const m = metaCat(it); if (m && m.id) return String(m.id); return tagsLc(it).find(t => CAT_ID_RE.test(t)) || ''; };
       const fmtDay = d => { if (!d) return ''; const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d)); return m ? `${m[3]}/${m[2]}/${m[1]}` : String(d); };
       const hashtags = c => { const out = ['catalogo']; if (c.cliente) out.push(String(c.cliente).toLowerCase()); if (c.id) out.push(c.id); const ym = /^(\d{4}-\d{2})/.exec(c.desde || c.id.slice(-10)); if (ym) out.push(ym[1]); return Array.from(new Set(out)); };
@@ -1256,7 +1271,7 @@
           items = allItems.filter(it => it && (ids.has(it.id) || catIdOf(it) === c.id));
         }
         if (token !== loadingPiezas) return; // llegó otra selección mientras tanto
-        piezas = sortPiezas(items.filter(it => it && it.url));
+        piezas = sortPiezas(includeCatalogItems(items));
         renderPiezas();
       }
 
@@ -1277,10 +1292,10 @@
           <footer>${statusHtml(c)}</footer>
         </article>`;
       }
+      function filteredCatalogs(){const q=(filters.q||'').toLowerCase();return catalogos.filter(c=>!q||`${c.id} ${c.cliente} ${c.nombre} ${hashtags(c).join(' ')}`.toLowerCase().includes(q));}
       function renderList() {
         const box = $('catList'); if (!box) return;
-        const q = (filters.q || '').toLowerCase();
-        const lst = catalogos.filter(c => !q || `${c.id} ${c.cliente} ${c.nombre} ${hashtags(c).join(' ')}`.toLowerCase().includes(q));
+        const lst=filteredCatalogs();
         box.innerHTML = lst.length ? lst.map(cardHtml).join('') : `<p class="cat-empty">${catalogos.length ? T.sinResultados : T.sinCatalogos}</p>`;
         const src = $('catSource'); if (src) src.textContent = catalogos.length ? (catalogos[0].derivado ? T.fuenteIndice : T.fuenteApi) : '';
       }
@@ -1306,8 +1321,10 @@
       function renderPiezas() {
         if (!isActive()) return;
         const c = selected && byId(selected);
-        if (!c) { grid.innerHTML = ''; currentView = []; empty.hidden = true; renderHead(); return; }
+        if(c)piezas=includeCatalogItems(piezas);
+        if (!c) { grid.innerHTML = ''; currentView = []; empty.hidden = true; renderHead();const matches=filteredCatalogs(),catalogIds=new Set(matches.map(c=>c.id)),stockIds=new Set(matches.flatMap(c=>c.ids||[]));updateStockCount(countCatalog().filter(it=>(stockIds.has(it.id)||catalogIds.has(catIdOf(it)))));return; }
         currentView = piezas;
+        updateStockCount(currentView);
         grid.classList.remove('stock-grid-grouped');
         grid.innerHTML = piezas.map(renderCard).join('');
         if (typeof hydrateMediaOrientations === 'function') hydrateMediaOrientations();
@@ -1324,6 +1341,7 @@
         const sec = $('catSection'); if (sec) sec.hidden = false;
         grid.innerHTML = ''; empty.hidden = true;
         status.textContent = T.cargando;
+        updateStockCount(null);
         await loadCatalogos(true);
         status.textContent = catalogos.length ? '' : T.sinCatalogos;
         repaint();
@@ -1486,6 +1504,6 @@
     })();
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=14.10.2026.r10.1400"></script>
+  <script defer src="/assets/cuadratura.js?v=14.10.2026.r11.1436"></script>
 </body>
 </html>

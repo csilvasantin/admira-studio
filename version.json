@@ -1,6 +1,6 @@
 {
-  "version": "v.14.10.2026.r10.14:00",
-  "deployedAt": "2026-10-14T12:00:42.605630+00:00",
+  "version": "v.14.10.2026.r11.14:36",
+  "deployedAt": "2026-10-14T12:36:29.237792+00:00",
   "author": "TrinityMBP14",
   "agent": "TrinityMBP14",
   "deployer": "TrinityMBP14",
@@ -11,9 +11,9 @@
   "gitFull": "e409c203826845b9cdc5762ec4e0e0e3c0863dd8",
   "dirty": false,
   "novedades": [
-    "Stock muestra el contador en una sola línea y elimina el texto adicional de cabecera.",
-    "Menos espacio entre filtros y contenidos para aprovechar mejor la pantalla.",
-    "Play y Playlist son un30% más pequeños sobre el previo; conservan sus funciones y detalles."
+    "Stock actualiza encontrados de total contenidos al buscar o filtrar, incluyendo todas las páginas.",
+    "Ambas cifras cuentan contenidos agrupando sus versiones y respetando el catálogo disponible para la cuenta.",
+    "El detalle del contador muestra archivos coincidentes y totales; la cabecera mantiene una sola línea."
   ],
   "rollback": {
     "git": "8d0c7e3"
@@ -22,5 +22,5 @@
     "14a886b6407883ed49b25fefdd54a81e00405a95",
     "5c978fa73e8efac8df1b82b623a1e92991e7dae4"
   ],
-  "mission": "DCL-0ef858b34f732529e36fe7ed"
+  "mission": "DCL-2a121fa6354b6fa5be104815"
 }

@@ -3104,3 +3104,5 @@ body[data-page="stock"] main>.stock-toolbar+section{padding-top:0}
 body[data-page="stock"] .stock-media-play{transform:scale(.7);transform-origin:left bottom}
 body[data-page="stock"] .stock-media-play:hover{transform:scale(.756)}
 body[data-page="stock"] .stock-playlist-badge{transform:scale(.7);transform-origin:right bottom}
+
+@media(max-width:380px){body[data-page="stock"] .page-head h1{font-size:16px}}
