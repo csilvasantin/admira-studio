@@ -1,0 +1,14 @@
+{
+  "kind": "canonical-domain-change",
+  "canonicalBase": "4c29fed073c6988f243b8cf25436338181851a35",
+  "domain": "admira.studio",
+  "mission": "DCL-0ef858b34f732529e36fe7ed",
+  "files": [
+    "stock.html",
+    "en/stock.html",
+    "workspace.css"
+  ],
+  "reason": "Cabecera compacta y controles de previo30% menores a petición de Carlos. Sólo canonicalAdmira, sin réplica a Pixeria.",
+  "previewControlScale": 0.7,
+  "toolbarToCardsGapPx": 8
+}

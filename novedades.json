@@ -151,5 +151,10 @@
     "Nueva cápsula en Creador, junto a los idiomas: conocimiento, ¿Sabías que? y Blinkist, con fuente e idioma explícitos.",
     "Stock filtra por formatos presentes; identifica ancho/alto y mantiene sin confirmar los formatos desconocidos.",
     "Desplegable de versiones relacionadas en la esquina superior derecha; cada elección usa su archivo, ID y asignaciones reales."
+  ],
+  "v.14.10.2026.r10.14:00": [
+    "Stock muestra el contador en una sola línea y elimina el texto adicional de cabecera.",
+    "Menos espacio entre filtros y contenidos para aprovechar mejor la pantalla.",
+    "Play y Playlist son un30% más pequeños sobre el previo; conservan sus funciones y detalles."
   ]
 }
