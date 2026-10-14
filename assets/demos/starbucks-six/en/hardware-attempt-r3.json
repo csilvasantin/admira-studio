@@ -189,7 +189,10 @@
       "cause": "kLWLockFromDisplayDim",
       "previousDisplayIdleMinutes": 10,
       "lockGraceSeconds": 300
-    }
+    },
+    "macStudioAlwaysAwakeAgent": "tv.admira.signage.mac.idle-awake",
+    "macStudioWhileStopped": true,
+    "globalDisplayTimeoutPreferenceUnchanged": true
   },
   "measurements": [
     {

@@ -85,3 +85,7 @@ ES: Inglés asignado a las seis fuentes de tema y por defecto. Arranque nativo y
 EN: English assigned to all six theme/default sources. Both phases observed natively on six screens over a partial 25.4s sample, maximum clock spread59ms. Escape on Mac Mini closed both groups at07:59; Carlos instructed to keep them stopped. Uninterrupted32s verification did not complete; no restart followed. Idle protection is installed and manual lock remains available.
 
 Proof: https://admira.studio/assets/demos/starbucks-six/en/hardware-attempt-r3.json
+
+ES: Por la indicación de Carlos de bloquear sólo bajo orden, Mac Studio tiene además `tv.admira.signage.mac.idle-awake`: una protección permanente contra apagado/reposo por inactividad, incluso con los players parados. Es un LaunchAgent de usuario con `caffeinate -di`; no cambia la contraseña, la autenticación, ni el bloqueo/reposo manual. El ajuste de energía displaysleep10 permanece sin modificar; su temporizador se inhibe por esta protección. Configuración publicada en `scripts/tv.admira.signage.mac.idle-awake.plist`.
+
+EN: Carlos requested locking only on explicit command. Mac Studio additionally runs a persistent user `idle-awake` LaunchAgent that inhibits idle display/system sleep even while the players are stopped. It retains authentication and manual lock/sleep. The display timeout preference remains10min; its idle action is inhibited by the assertion. The published plist documents the installed configuration.
