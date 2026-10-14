@@ -1,24 +1,26 @@
 {
-  "version": "v.14.10.2026.r5.11:23",
-  "deployedAt": "2026-10-14T09:23:57.017267+00:00",
+  "version": "v.14.10.2026.r6.12:48",
+  "deployedAt": "2026-10-14T10:48:52.573087+00:00",
   "author": "TrinityMBP14",
   "agent": "TrinityMBP14",
   "deployer": "TrinityMBP14",
   "machine": "MacBookProNegro14",
   "signature": "TrinityMBP14 · MacBookProNegro14",
-  "git": "0118e881eb5f97eda2c8cf02ce6c18ac96d39864",
-  "gitShort": "0118e88",
-  "gitFull": "0118e881eb5f97eda2c8cf02ce6c18ac96d39864",
+  "git": "be85d7860ccd9f877f88a211e4c48ea621b2365a",
+  "gitShort": "be85d78",
+  "gitFull": "be85d7860ccd9f877f88a211e4c48ea621b2365a",
   "dirty": false,
   "novedades": [
-    "Importar URL selecciona vídeo por defecto.",
-    "Comentarios naturales y fotogramas generan etiquetas de búsqueda revisables.",
-    "La búsqueda combina términos y equivalencias music/música."
+    "Stock: Proyecto → Circuito → Ubicación → Dispositivo, con destinos reales.",
+    "Guardar y distribuir añade a la playlist actual conservando las piezas y evitando duplicados.",
+    "Las tarjetas muestran Playlist y sus destinos al pasar el cursor."
   ],
   "rollback": {
     "git": "8d0c7e3"
   },
   "sourcePatches": [
-    "14a886b6407883ed49b25fefdd54a81e00405a95"
-  ]
+    "14a886b6407883ed49b25fefdd54a81e00405a95",
+    "5c978fa73e8efac8df1b82b623a1e92991e7dae4"
+  ],
+  "mission": "DCL-eb5b864d621419c46d512a89"
 }

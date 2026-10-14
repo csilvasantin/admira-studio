@@ -131,5 +131,10 @@
     "Creador Starbucks: café animado que recorre seis pantallas V–H–V–V–H–V",
     "Ocho MP4 nativos y playlist mixta de 24+8 segundos",
     "Exportación del navegador verificada, tutorial y MCP ES/EN actualizados"
+  ],
+  "v.14.10.2026.r6.12:48": [
+    "Stock: Proyecto → Circuito → Ubicación → Dispositivo, con destinos reales.",
+    "Guardar y distribuir añade a la playlist actual conservando las piezas y evitando duplicados.",
+    "Las tarjetas muestran Playlist y sus destinos al pasar el cursor."
   ]
 }

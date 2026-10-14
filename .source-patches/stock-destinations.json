@@ -1,0 +1,15 @@
+{
+  "kind": "reviewed-source-delta",
+  "sourceCommit": "5c978fa73e8efac8df1b82b623a1e92991e7dae4",
+  "sourceBaseline": "14a886b6407883ed49b25fefdd54a81e00405a95",
+  "canonicalBase": "be85d7860ccd9f877f88a211e4c48ea621b2365a",
+  "patchSHA256": "3fbd7734949d2560dd34e080045bc396598730e8301506178dfb80f61560d42e",
+  "files": [
+    "stock.html",
+    "assets/stock-destinations.js",
+    "assets/stock-playlist-data.js",
+    "functions/stock-playlists.js"
+  ],
+  "preservesCanonicalFeatures": true,
+  "reason": "Aplicación sólo del delta revisado para conservar Creator/campañas canónicos. Sin publicación del clon."
+}
