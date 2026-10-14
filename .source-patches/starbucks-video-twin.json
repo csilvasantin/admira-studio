@@ -1,0 +1,19 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "88b670ba5e4e07befee263ecef30eec46bab7641",
+  "reason": "Carlos solicita generar la campaña Cada café tiene una historia en los cuatro destinos y verla animada en el gemelo. Se conserva la congelación de clones.",
+  "files": [
+    "adaptaciones/campaign-playback.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/gemelo-digital.mjs",
+    "docs/starbucks-formatos.md",
+    "test/campaign-playback.test.mjs"
+  ],
+  "limits": {
+    "measuredGeometry": false,
+    "anamorphicCalibration": false,
+    "hardwareSyncVerified": false
+  }
+}

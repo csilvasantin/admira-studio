@@ -11,6 +11,8 @@ Carga la imagen de campaña o producto, el logo y los textos en **Editar conteni
 
 Revisa y aprueba las cuatro composiciones antes de exportar. Con ambas ubicaciones incluidas se entregan **14 archivos nativos**: dos individuales y seis por cada local. Los vídeos animados comparten 25 fps y el mismo origen temporal. Cada ubicación tiene su propio programa mixto: 24 segundos de mural y 8 de pieza individual por defecto. Si excluyes una orientación individual necesaria, ese local recibe un programa de mural continuo, sin referencias a archivos excluidos. Cambiar medidas, contenido o idioma exige revisar de nuevo. Publicar en Stock es un paso explícito; conserva las etiquetas de cliente, campaña, ubicación y pantalla.
 
+**Ver en gemelo digital** reproduce el recorrido con la misma línea temporal de los MP4. Permite pausar, reiniciar y elegir un momento a pasos de 1/25 s. Al cambiar de formato empieza su duración individual o mural. El interior es una referencia de ensayo, no un levantamiento de las cafeterías.
+
 Los mapas son nominales: las separaciones entre grupos son editables y no son un levantamiento físico. **Ajustar instalación** permite corregir medidas y giros. La sincronización de reproducción se comprueba en los players. La perspectiva anamórfica requiere la geometría real y el punto de vista; estas fichas no declaran una anamorfosis calibrada.
 
 ## English
@@ -22,6 +24,8 @@ Upload campaign artwork or product imagery, logo and copy through **Edit content
 **Continue in Adapter** keeps the source and campaign locally. Under **Special formats**, Create this layout returns to Creator with the chosen location. The local transfer expires after 24 hours and does not publish artwork. Selecting another source in Adapter starts from that source.
 
 Review every included composition, then export 14 native files for both locations and the two individual orientations. Animated outputs share 25 fps and one authored timeline; each location receives its own 24+8-second mixed programme. Stock publication remains explicit and retains client/campaign/installation/screen metadata. Nominal geometry and group spacing are editable; hardware sync and anamorphic viewpoint calibration require on-site verification.
+
+**View in digital twin** plays the same authored MP4 timeline, with pause, restart and 1/25-second seeking. Changing layout restarts its individual or mural duration. The interior remains a trial reference, not a surveyed café.
 
 ## Catálogo compartido / Shared catalogue
 
