@@ -775,10 +775,10 @@
       // ⌘ EXPERTO · CLI con el look de digitalavatar.ai (Carlos, 4-oct-2026): piel compartida de la
       // suite (www.admiranext.com/suite) sobre la consola de expert-cli.js; los comandos no cambian.
       var axCss = document.createElement('link');
-      axCss.rel = 'stylesheet'; axCss.href = 'https://www.admiranext.com/suite/experto.css?v=20261005-experto-idioma-2';
+      axCss.rel = 'stylesheet'; axCss.href = 'https://www.admiranext.com/suite/experto.css?v=20261014-compact-bugito-1';
       document.head.appendChild(axCss);
       var ax = document.createElement('script');
-      ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261012-unified-1';
+      ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261014-compact-bugito-1';
       ax.setAttribute('data-panel', '.pf-cli');
       ax.setAttribute('data-body', '');
       ax.setAttribute('data-form', '.pf-cli-form');
@@ -787,8 +787,8 @@
       ax.setAttribute('data-extras', '');
       ax.setAttribute('data-chrome', '');
       ax.setAttribute('data-engine', 'ADMIRA STUDIO ENGINE');
-      // Modo Experto: el icono lo muestra completo o lo oculta DEL TODO (Carlos, 5-oct-2026), sin la
-      // línea mínima «› /help»; el estado se recuerda en la pestaña.
+      // Modo Experto: el icono muestra la línea mínima o lo oculta DEL TODO (Carlos, 14-oct-2026); la
+      // altura se amplía con el tirador compartido; el estado se recuerda en la pestaña.
       ax.setAttribute('data-min', 'hide');
       document.body.appendChild(ax);
     }, 0);
