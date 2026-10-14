@@ -1455,6 +1455,8 @@
       const items = allItems.filter(it => {
         if (clienteListo && !PC.visible(it)) return false;
         if(filters.format&&(hasMusicCards(it)?!['landscape','portrait'].includes(filters.format):mediaOrientation(it).key!==filters.format))return false;
+        // A source/adaptation deep link must not bypass the music category filter.
+        if (isMusic(it) && !matchesMusicType(it, filters.type)) return false;
         if (filters.origen) return it.id === filters.origen || (isAdaptacion(it) && it.externalRef === filters.origen);
         if (!matchesType(it, filters.type)) return false;
         if (filters.motor && verMotor(it.motor) !== verMotor(filters.motor)) return false;

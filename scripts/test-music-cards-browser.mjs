@@ -78,6 +78,13 @@ try{
   assert.equal(await page.locator('#stockLightbox .music-card-tools').count(),1);
   const modal=page.locator('#stockLightbox .music-card-tools');await modal.locator('[data-format=portrait]').click();const md=page.waitForEvent('download');await modal.locator('[data-music-action=download]').click();const mf=path.join(out,`lightbox-${lang}.png`);await (await md).saveAs(mf);assert.equal((await readFile(mf)).readUInt32BE(16),1080);
   checks.push(`${lang}: no music cards or Suno tracks in image/video; filter survives reload; lightbox retains music controls`);
+  for(const type of ['image','video']){
+   await page.goto(`https://admira.studio/${lang==='en'?'en/':''}stock.html?type=${type}&origen=${fixture[0].id}&lang=${lang}`,{waitUntil:'domcontentloaded'});
+   await page.waitForFunction(()=>!document.querySelector('#stockEmpty').hidden);
+   assert.equal(await page.locator('.music-card-tools').count(),0,'Source deep link cannot bypass music-only filtering');
+   assert.equal(await page.locator('.stock-card').count(),0);
+  }
+  checks.push(`${lang}: source deep links also exclude music from image/video filters`);
   await page.close();
  }
  for(const lang of ['es','en']){
