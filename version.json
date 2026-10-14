@@ -1,23 +1,22 @@
 {
-  "version": "v.14.10.2026.r21.19:20",
+  "version": "v.14.10.2026.r22.19:28",
   "deployedAt": "2026-10-14T15:56:46.116151+00:00",
   "author": "OraculoMacMini",
   "agent": "OraculoMacMini",
   "deployer": "OraculoMacMini",
   "machine": "MacMini",
   "signature": "OraculoMacMini · MacMini",
-  "git": "d84926ffe7676b9bd3d20771789ff8bb02f16929",
-  "gitFull": "d84926ffe7676b9bd3d20771789ff8bb02f16929",
-  "gitShort": "d84926f",
+  "git": "d82bec880024e5f0028829dbdb493ed7e617bea1",
+  "gitFull": "d82bec880024e5f0028829dbdb493ed7e617bea1",
+  "gitShort": "d82bec8",
   "dirty": false,
   "novedades": [
-    "Cartelas para las piezas musicales Suno: horizontal 1920×1080 y vertical 1080×1920, con descarga PNG.",
-    "Las cartelas se vinculan a Música y se excluyen de Imágenes y Vídeos, en español e inglés.",
-    "Stock conserva los originales, la navegación y los cambios recientes de Studio.",
-    "Las etiquetas de Stock conservan su tamaño junto a las cartelas verticales."
+    "Stock encuentra el número de ficha con o sin hashtag: 1549 y #1549.",
+    "Las referencias se combinan con títulos y etiquetas, conservando filtros y permisos.",
+    "Búsqueda comprobada en español e inglés, con coincidencia exacta del hashtag numérico."
   ],
   "rollback": {
-    "git": "d84926ffe7676b9bd3d20771789ff8bb02f16929"
+    "git": "d82bec880024e5f0028829dbdb493ed7e617bea1"
   },
   "sourcePatches": [
     ".source-patches/import-search-tags.json",
@@ -34,6 +33,7 @@
     ".source-patches/stock-filtered-count.json",
     ".source-patches/stock-formats-capsules.json",
     ".source-patches/stock-local-upload.json",
+    ".source-patches/stock-search-reference.json",
     ".source-patches/studio-universal-navigation.json"
   ]
 }

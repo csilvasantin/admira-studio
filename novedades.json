@@ -202,5 +202,10 @@
     "Las cartelas se vinculan a Música y se excluyen de Imágenes y Vídeos, en español e inglés.",
     "Stock conserva los originales, la navegación y los cambios recientes de Studio.",
     "Las etiquetas de Stock conservan su tamaño junto a las cartelas verticales."
+  ],
+  "v.14.10.2026.r22.19:28": [
+    "Stock encuentra el número de ficha con o sin hashtag: 1549 y #1549.",
+    "Las referencias se combinan con títulos y etiquetas, conservando filtros y permisos.",
+    "Búsqueda comprobada en español e inglés, con coincidencia exacta del hashtag numérico."
   ]
 }
