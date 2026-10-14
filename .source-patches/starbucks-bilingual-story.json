@@ -1,0 +1,28 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "e9486b9d9000fcb89d67abb2ff8a7448d249b1c9",
+  "reason": "Carlos solicita más movimiento, menos repetición y mitad inglés / mitad castellano en los videowalls. Se conservan los clones congelados.",
+  "files": [
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/campaign-core.mjs",
+    "adaptaciones/campaign-entry.mjs",
+    "adaptaciones/campaign-handoff.mjs",
+    "adaptaciones/campaign-integrated.mjs",
+    "adaptaciones/campaign-language.mjs",
+    "adaptaciones/campaign-render.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/campaign-travel.mjs",
+    "adaptaciones/client-format-controls.mjs",
+    "adaptaciones/client-installations.mjs",
+    "adaptaciones/gemelo-core.mjs",
+    "docs/starbucks-formatos.md",
+    "adaptaciones/campaign-story.mjs",
+    "test/campaign-story.test.mjs"
+  ],
+  "limits": {
+    "measuredGeometry": false,
+    "anamorphicCalibration": false,
+    "hardwareSyncVerified": false
+  }
+}
