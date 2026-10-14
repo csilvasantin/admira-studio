@@ -1170,10 +1170,14 @@
       const first = clips.find(c => c && c.audio_url) || clips[0] || {};
       if (first.audio_url) {
         try { setMusicCover(first.image_url || first.image_large_url || ''); } catch {}
+        const cards = await musicCardSupport();
+        const cardItem = {id:first.id || clipIds[0], type:'music', motor:'suno-web', title:first.title || titleHint || 'Admira Studio Music', url:first.audio_url, audioUrl:first.audio_url, mime:'audio/mpeg', thumbnail:first.image_large_url || first.image_url || '', duration:first.metadata?.duration, clipId:first.id || clipIds[0], tags:['pixeria-music'], prompt:fullPrompt.slice(0,200)};
+        musicCardItems.set(cardItem.id,cardItem);
         showPlayer(`
           <div class="player-card">
             <div class="player-head">▶ SUNO · listo · ${jobId}</div>
-            <audio controls src="${first.audio_url}" style="width:100%;margin:8px 0"></audio>
+            ${cards.cardHtml(cardItem,{lang:document.documentElement.lang==='en'?'en':'es'})}
+            ${publishBtnHTML(cardItem)}
             <pre class="player-body">langs: ${langLabel}
 clips: ${clipIds.join(', ')}
 title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
@@ -1188,6 +1192,16 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       stop(false);
       showPlayer(`<div class="player-card"><div class="player-head">▶ SUNO · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
     }
+  }
+
+  const musicCardItems = new Map();
+  let musicCardModule;
+  async function musicCardSupport() {
+    if (!musicCardModule) musicCardModule = import('/assets/music/cards.mjs?v=14.10.2026.r20.1913').then(m => {
+      m.bindMusicCards(document.getElementById('player') || document.body, id => musicCardItems.get(id));
+      return m;
+    });
+    return musicCardModule;
   }
 
   async function playSunoLocal(s, model) {
@@ -1267,6 +1281,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
           setMusicCover(ready.map(c => c.image_large_url || c.image_url).find(Boolean) || '');
           const briefTitle = deriveAssetTitle('musica', loadStore());
           const modelLabel = model.replace('chirp-', '');
+          const cards = await musicCardSupport();
           showPlayer(`
             <div class="player-card music-result-card">
               <div class="player-head music-result-head">
@@ -1294,13 +1309,9 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
                   clipId: c.id,
                   quality: 'best',
                 };
-                // Suno devuelve video_url (mp4 con cover estatico + audio embebido):
-                // lo preferimos porque al enviarlo a Pixer Feed lleva caratula sin
-                // depender del worker. Si solo hay audio_url, fallback a audio + img.
-                const media = c.video_url
-                  ? `<video controls src="${c.video_url}"${cover ? ` poster="${escAttr(cover)}"` : ''} data-pixer-title="${escAttr(cTitle)}"${cover ? ` data-pixer-cover="${escAttr(cover)}"` : ''}${c.audio_url ? ` data-pixer-audio="${escAttr(c.audio_url)}"` : ''}></video>`
-                  : `${cover ? `<img src="${escAttr(cover)}" alt="" class="music-result-cover">` : ''}
-                     <audio controls src="${c.audio_url}" data-pixer-title="${escAttr(cTitle)}"${cover ? ` data-pixer-cover="${escAttr(cover)}"` : ''}></audio>`;
+                const cardItem = {...pubMeta, id:c.id, duration:c.metadata?.duration || dur, audioUrl:c.audio_url || ''};
+                musicCardItems.set(cardItem.id, cardItem);
+                const media = cards.cardHtml(cardItem,{lang:document.documentElement.lang==='en'?'en':'es'});
                 return `
                 <article class="music-result-item">
                   <header>

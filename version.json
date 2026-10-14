@@ -1,27 +1,27 @@
 {
-  "version": "v.14.10.2026.r19.18:59",
+  "version": "v.14.10.2026.r20.19:13",
   "deployedAt": "2026-10-14T15:56:46.116151+00:00",
-  "author": "TrinityMacStudio",
-  "agent": "TrinityMacStudio",
-  "deployer": "TrinityMacStudio",
-  "machine": "MacStudio",
-  "signature": "TrinityMacStudio · MacStudio",
-  "git": "493fc5286d8ec9656f3bc8e4db293121dc3ad9f3",
-  "gitFull": "493fc5286d8ec9656f3bc8e4db293121dc3ad9f3",
-  "gitShort": "493fc52",
+  "author": "OraculoMacMini",
+  "agent": "OraculoMacMini",
+  "deployer": "OraculoMacMini",
+  "machine": "MacMini",
+  "signature": "OraculoMacMini · MacMini",
+  "git": "1fb96d845b20e5e8836a43d97762dddb4a1c6a75",
+  "gitFull": "1fb96d845b20e5e8836a43d97762dddb4a1c6a75",
+  "gitShort": "1fb96d8",
   "dirty": false,
   "novedades": [
-    "Contraste del visor 3D con marca blanca y separación visual de los biseles de pantalla.",
-    "Starbucks: modelo 3D de la barra y la pared de PG103 basado en la fotografía, con sus grupos 2+1+3.",
-    "Nuevo montaje GdG51 V–H–V–V–H–V, junto al H–V–H–H–V–H existente; cinco destinos y 20 salidas nativas.",
-    "Opciones abre a la izquierda y Avanzado a la derecha, con redimensionado corregido."
+    "Cartelas para las piezas musicales Suno: horizontal 1920×1080 y vertical 1080×1920, con descarga PNG.",
+    "Las cartelas se vinculan a Música y se excluyen de Imágenes y Vídeos, en español e inglés.",
+    "Stock conserva los originales, la navegación y los cambios recientes de Studio."
   ],
   "rollback": {
-    "git": "493fc5286d8ec9656f3bc8e4db293121dc3ad9f3"
+    "git": "f3e6db0d6b7d7e3dda957f108ea2192f53535af0"
   },
   "sourcePatches": [
     ".source-patches/import-search-tags.json",
     ".source-patches/inline-twins-header.json",
+    ".source-patches/music-cards.json",
     ".source-patches/playlist-download-progress.json",
     ".source-patches/starbucks-bilingual-story.json",
     ".source-patches/starbucks-creation-formats.json",
