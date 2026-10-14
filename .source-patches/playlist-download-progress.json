@@ -1,0 +1,15 @@
+{
+  "kind": "canonical-domain-change",
+  "canonicalBase": "feaf50597b3414d8af915b7d95f617f9367a3bca",
+  "domain": "admira.studio",
+  "mission": "DCL-c0f33c18572a1cd92da98c2c",
+  "reason": "Confirmación de descarga real en badge Playlist. Sólo dominio Admira; clones congelados, sin réplica en pixeria.com.",
+  "files": [
+    "stock.html",
+    "assets/stock-playlist-progress.js",
+    "assets/stock-playlist-data.js",
+    "functions/stock-playlist-progress.js",
+    "test/stock-playlist-progress.test.mjs"
+  ],
+  "receiptContract": "default:<stockId> en cache.ready reciente, sin downloading activo; todos los players destino. Vigencia diez minutos acorde a TTL600s y renovación estable cada siete minutos."
+}

@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r7.1307';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r8.1332';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r7.13:07">
+  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r8.13:32">
   <link rel="canonical" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r7.1307">
+  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r8.1332">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -93,6 +93,10 @@
     #localDropOverlay span{font-size:16px}
     .stock-card-media{position:relative}
     .stock-playlist-badge{position:absolute;right:9px;bottom:9px;z-index:4;border:1px solid var(--matrix);border-radius:7px;background:#001b0bee;color:var(--matrix);padding:5px 8px;font-size:11px;font-weight:700;font-family:inherit;cursor:help;max-width:80%}
+    .stock-playlist-badge.is-pending{border-color:#ffe14d;color:#ffe14d;background:#242005f2}
+    .stock-playlist-pct{margin-left:5px}
+    .stock-playlist-track{display:block;height:4px;min-width:85px;margin-top:4px;border-radius:3px;background:#ffffff26;overflow:hidden}
+    .stock-playlist-track>span{display:block;height:100%;background:currentColor;transition:width .25s ease}
     .stock-playlist-badge:focus-visible{outline:2px solid #fff;outline-offset:2px}
     #plModal .pl-row{grid-template-columns:repeat(auto-fit,minmax(185px,1fr))}
     #plModal select{width:100%;background:var(--bg);border:1px solid var(--line-bright);color:var(--matrix);border-radius:6px;padding:7px;font-size:12px;font-family:inherit}
@@ -366,11 +370,11 @@
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
   </style>
-  <script defer src="/assets/site-nav.js?v=14.10.2026.r7.1307"></script>
-  <script defer src="/assets/descarga-local.js?v=14.10.2026.r7.1307"></script>
-  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r7.1307">
+  <script defer src="/assets/site-nav.js?v=14.10.2026.r8.1332"></script>
+  <script defer src="/assets/descarga-local.js?v=14.10.2026.r8.1332"></script>
+  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r8.1332">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r7.1307">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r8.1332">
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -788,11 +792,12 @@
     </form>
   </dialog>
 
-  <script defer src="/matrix-rain.js?v=14.10.2026.r7.1307"></script>
-  <script src="app.js?v=14.10.2026.r7.1307"></script>
-  <script src="assets/stock-search.js?v=14.10.2026.r7.1307"></script>
-  <script src="/assets/stock-destinations.js?v=14.10.2026.r7.1307"></script>
-  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r7.1307"></script>
+  <script defer src="/matrix-rain.js?v=14.10.2026.r8.1332"></script>
+  <script src="app.js?v=14.10.2026.r8.1332"></script>
+  <script src="assets/stock-search.js?v=14.10.2026.r8.1332"></script>
+  <script src="/assets/stock-destinations.js?v=14.10.2026.r8.1332"></script>
+  <script src="/assets/stock-playlist-progress.js?v=14.10.2026.r8.1332"></script>
+  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r8.1332"></script>
   <script type="module">
   import {isXpace, blendFor, xpacePoster} from "./assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "./assets/furniture/catalog.mjs";
@@ -2921,6 +2926,7 @@
           const d=await r.json();
           if(!Array.isArray(d.results)||!d.results.length)throw Error(errors[d.error]||d.error||'No se pudo añadir el contenido');
           report(d.results.map(x=>x.ok?'✓ '+x.added+' añadido(s) a «'+x.name+'» · '+x.screen:'✕ '+x.screen+': '+(errors[x.error]||x.error||'No se guardó')).join('\n'));
+          StockPlaylistData.markAssigned(items.map(i=>i.id),d.results,p.destination);
           if(r.ok&&d.ok){const dlg=$('plModal');if(dlg.open)dlg.close();}
           // Una respuesta parcial puede haber guardado varios destinos. Actualizar
           // sus marcas también en ese caso, sin convertir un fallo de refresco en
@@ -3449,7 +3455,7 @@
       .catch(()=>{});
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=14.10.2026.r7.1307"></script>
+  <script defer src="/assets/cuadratura.js?v=14.10.2026.r8.1332"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>
