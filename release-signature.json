@@ -1,10 +1,6 @@
 {
-  "version": "v.14.10.2026.r22.19:28",
-  "deployer": "OraculoMacMini",
-  "machine": "MacMini",
-  "signature": "OraculoMacMini · MacMini",
-  "git": "d82bec880024e5f0028829dbdb493ed7e617bea1",
-  "gitFull": "d82bec880024e5f0028829dbdb493ed7e617bea1",
-  "gitShort": "d82bec8",
-  "dirty": false
+  "version": "v.14.10.2026.r23.19:34",
+  "deployer": "TrinityMacStudio",
+  "machine": "MacStudio",
+  "signature": "TrinityMacStudio · MacStudio"
 }

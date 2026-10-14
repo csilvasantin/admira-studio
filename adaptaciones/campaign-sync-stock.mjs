@@ -3,6 +3,7 @@ import {publishAdaptation} from './stock-publish.mjs?v=sync-creative-1';
 const S=globalThis.StockSync;
 const nativeUrl=id=>'https://stock.admira.store/stock/'+encodeURIComponent(id)+'/asset.mp4';
 export async function publishCampaignCreative({campaign,items,poster,fetch:f=fetch}){
+ if(!Array.isArray(items)||!items.length)throw Error('creative-empty');
  if(!campaign.client?.id)throw Error('creative-client-required');
  const adaptations=[];
  for(const item of items){

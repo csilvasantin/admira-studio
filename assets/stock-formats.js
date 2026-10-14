@@ -9,6 +9,7 @@
     return null;
   }
   function format(it){
+    if(root.StockSync?.get(it))return {key:'sync-creative',icon:'▦',label:'Multipantalla'};
     if(!visual(it))return null;
     const tags=(it.tags||[]).map(clean),explicit=[it.presentationFormat,it.displayFormat,...tags.filter(t=>/^(?:formato|format):/.test(t)).map(t=>t.slice(t.indexOf(':')+1))].map(clean).find(Boolean);
     if(explicit&&!['video','image','audio'].includes(explicit)){const key=aliases[explicit]||'custom:'+explicit.slice(0,60);return defs[key]||{key,icon:'◈',label:explicit.slice(0,60)};}
