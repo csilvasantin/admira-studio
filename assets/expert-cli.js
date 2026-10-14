@@ -159,7 +159,7 @@
     grip.setAttribute('aria-valuemax', String(maxHeight()));
     grip.setAttribute('aria-valuenow', String(height));
   }
-  // Modo Experto = mostrar el panel completo u ocultarlo del todo (Carlos, 5-oct-2026). Con la piel
+  // Modo Experto = mostrar una línea mínima u ocultarlo del todo (Carlos, 14-oct-2026). Con la piel
   // anclada de la suite (suite/experto.js, data-min="hide") manda su estado (.ax-min) y el panel nativo
   // de la página (raíl, cuadrante o capa) lo sigue; sin piel, manda el nativo. Se recuerda en la pestaña.
   var OPEN_KEY = 'ax-experto-abierto';
@@ -177,13 +177,14 @@
     else if (!docked() && open !== wasOpen) { try { sessionStorage.setItem(OPEN_KEY, open ? '1' : '0'); } catch (_) {} }
     if (panel.dataset.cliOpen !== String(open)) panel.dataset.cliOpen = String(open);
     document.querySelectorAll('.pix-nav-icon-expert').forEach(function (b) { if (b.getAttribute('aria-expanded') !== String(open)) b.setAttribute('aria-expanded', String(open)); });
-    // Al abrirse, desplegado: ficha + registro + orden (nunca la barra mínima).
-    if (open && !wasOpen) resize(document.documentElement.hasAttribute('data-ax-experto') ? Math.max(expanded, 300) : expanded, false);
+    // Al abrirse, una línea escribible. Con la piel compartida, su altura manda.
+    if(open&&!wasOpen&&!docked())resize(MIN,false);
+    if(docked()&&window.AdmiraExperto&&window.AdmiraExperto.height){height=window.AdmiraExperto.height();log.hidden=false;}
     wasOpen = open;
     if (document.body.classList.contains('pf-cli-open') !== open) document.body.classList.toggle('pf-cli-open', open);
     var vv = window.visualViewport;
     document.documentElement.style.setProperty('--pf-cli-keyboard', (vv ? Math.max(0, innerHeight - vv.height - vv.offsetTop) : 0) + 'px');
-    resize(height, false);
+    if(!docked())resize(height, false);
   }
   function fold() { resize(height > MIN ? MIN : expanded, false); }
   toggle.addEventListener('click', fold);
@@ -449,7 +450,7 @@
       if (!c.options.length) return;
       ev.preventDefault();
       input.value = c.value;
-      if (c.options.length > 1) { if (height === MIN) resize(expanded, false); write(c.options.join('  ')); }
+      if (c.options.length > 1) { if (height === MIN&&!docked()) resize(expanded, false); write(c.options.join('  ')); }
       // Con /marca se trae el catálogo real para el siguiente Tab (solo al usar /marca).
       if (/^\s*\/?(?:marca|brand|marcablanca)\s/i.test(input.value)) marca().then(function (M) { if (M) M.listar().catch(function () {}); });
       return;

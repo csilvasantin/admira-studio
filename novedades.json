@@ -212,5 +212,9 @@
     "Stock: una ficha por creatividad multipantalla, con adaptaciones, idiomas y salidas técnicas dentro.",
     "Gemelo 3D sincronizado: un reloj de reproducción por montaje, con vídeos publicados y número de pantallas definido por el mapa.",
     "Creador publica la unidad completa en Stock y conserva los identificadores de los archivos nativos."
+  ],
+  "v.14.10.2026.r24.19:51": [
+    "Experto abre con una línea de escritura mínima y permite ampliar o reducir el panel desde su borde superior.",
+    "Bugito aparece flotando con /bugito; /bugito full o /bugito avanzado abre el banco de pruebas."
   ]
 }

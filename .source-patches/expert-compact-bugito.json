@@ -1,0 +1,13 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "1df04efe8a08a6b2550a87e39d946f1c99b308bd",
+  "reason": "Carlos solicita que Experto inicie con el grosor mínimo escribible, permita redimensionar con el tirador y que /bugito flote; el banco de pruebas queda para full o avanzado. Publicación autorizada en la conversación.",
+  "files": [
+    "assets/expert-cli.js",
+    "assets/site-nav.js",
+    "assets/avatar-digital.js",
+    "functions/_avatar-loader.js"
+  ],
+  "rollback": "1df04efe8a08a6b2550a87e39d946f1c99b308bd"
+}
