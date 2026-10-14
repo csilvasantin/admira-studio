@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r9.1349';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=14.10.2026.r10.1400';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r9.13:49">
+  <meta name="admiranext-version" content="Admira Studio v.14.10.2026.r10.14:00">
   <link rel="canonical" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r9.1349">
+  <link rel="stylesheet" href="workspace.css?v=14.10.2026.r10.1400">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -353,11 +353,11 @@
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
   </style>
-  <script defer src="/assets/site-nav.js?v=14.10.2026.r9.1349"></script>
-  <script defer src="/assets/descarga-local.js?v=14.10.2026.r9.1349"></script>
-  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r9.1349">
+  <script defer src="/assets/site-nav.js?v=14.10.2026.r10.1400"></script>
+  <script defer src="/assets/descarga-local.js?v=14.10.2026.r10.1400"></script>
+  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=14.10.2026.r10.1400">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r9.1349">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=14.10.2026.r10.1400">
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -404,9 +404,7 @@
   </header>
 
   <header class="page-head">
-    <p class="eyebrow stock">Galería pública</p>
-    <h1>Stock · <span id="stockCount" class="stock-count" data-n="0">…</span> assets, desde <span id="stockMotores">…</span> motores.</h1>
-    <p class="lead">Todo lo que se publica desde el botón <strong>📌 Publicar en Stock</strong> en audio, música, imágenes o video aparece aquí. Filtros por tipo y motor; búsqueda por prompt.</p>
+    <h1>Stock <span id="stockCount" class="stock-count" data-n="0">…</span></h1>
   </header>
 
   <main>
@@ -724,13 +722,13 @@
     </form>
   </dialog>
 
-  <script defer src="/matrix-rain.js?v=14.10.2026.r9.1349"></script>
-  <script src="app.js?v=14.10.2026.r9.1349"></script>
-  <script src="assets/stock-search.js?v=14.10.2026.r9.1349"></script>
-  <script src="/assets/stock-formats.js?v=14.10.2026.r9.1349"></script>
-  <script src="/assets/stock-destinations.js?v=14.10.2026.r9.1349"></script>
-  <script src="/assets/stock-playlist-progress.js?v=14.10.2026.r9.1349"></script>
-  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r9.1349"></script>
+  <script defer src="/matrix-rain.js?v=14.10.2026.r10.1400"></script>
+  <script src="app.js?v=14.10.2026.r10.1400"></script>
+  <script src="assets/stock-search.js?v=14.10.2026.r10.1400"></script>
+  <script src="/assets/stock-formats.js?v=14.10.2026.r10.1400"></script>
+  <script src="/assets/stock-destinations.js?v=14.10.2026.r10.1400"></script>
+  <script src="/assets/stock-playlist-progress.js?v=14.10.2026.r10.1400"></script>
+  <script src="/assets/stock-playlist-data.js?v=14.10.2026.r10.1400"></script>
   <script type="module">
   import {isXpace, blendFor, xpacePoster} from "./assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "./assets/furniture/catalog.mjs";
@@ -1371,16 +1369,12 @@
       const total = allItems.length;
       const playable = allItems.filter(i => i && ADMIRATV_MEDIA.has(i.type) && i.url).length;
       const prev = parseInt(el.dataset.p || '0', 10);
-      // «661 reproducibles de 820»: a secas «661 de 820» parecía un fallo de carga
-      // (Carlos, 4-sep-2026). Y los motores se cuentan, no se fijan en 4: hay 35.
-      el.textContent = playable + ' reproducibles de ' + total;
+      // Cabecera compacta pedida por Carlos: el tooltip conserva el significado de ambos totales.
+      el.textContent = playable + ' de ' + total;
       const failed = allItems.filter(isFailedImport).length;
       const fo = document.getElementById('stockFailedOpt');
       if (fo) { fo.hidden = failed === 0 && typeFilter.value !== 'fallidos'; fo.textContent = 'Importaciones fallidas (' + failed + ')'; }
       el.dataset.p = playable;
-      const motores = new Set(allItems.map(i => i && i.motor).filter(Boolean).map(verMotor));
-      const em = document.getElementById('stockMotores');
-      if (em) { em.textContent = String(motores.size); em.title = Array.from(motores).sort().join(' · '); }
       el.title = playable + ' reproducibles (= los que ves en admira.tv) · ' + total +
         ' en stock' + (total > playable ? ' (incluye ' + (total - playable) +
         ' no reproducibles: cápsulas, enlaces, mobiliario y NPCs)' : '');
@@ -3391,7 +3385,7 @@
       .catch(()=>{});
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=14.10.2026.r9.1349"></script>
+  <script defer src="/assets/cuadratura.js?v=14.10.2026.r10.1400"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>

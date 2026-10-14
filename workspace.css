@@ -3093,3 +3093,14 @@ body.quad-ui footer {
   .image-stage { position: static; }
   .image-prompt-field textarea { min-height: 180px; }
 }
+
+/* Stock: compact heading and controls leave more of each preview visible. */
+body[data-page="stock"] header.page-head{padding:14px 0 10px}
+body[data-page="stock"] .page-head h1{display:flex;align-items:baseline;gap:.3em;white-space:nowrap;font-size:clamp(20px,2.4vw,32px);line-height:1.2;max-width:100%}
+body[data-page="stock"] .page-head h1::after{display:none}
+body[data-page="stock"] .stock-toolbar{padding:8px 12px;gap:6px;margin-bottom:8px}
+body[data-page="stock"] .stock-toolbar .stock-pager-top{padding-top:0;border-top:0}
+body[data-page="stock"] main>.stock-toolbar+section{padding-top:0}
+body[data-page="stock"] .stock-media-play{transform:scale(.7);transform-origin:left bottom}
+body[data-page="stock"] .stock-media-play:hover{transform:scale(.756)}
+body[data-page="stock"] .stock-playlist-badge{transform:scale(.7);transform-origin:right bottom}
