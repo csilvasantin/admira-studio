@@ -104,29 +104,34 @@ test('vista temporal: el filtro no pisa la selección guardada y la recupera al 
   state.fmt['cliente-06'] = {...defaults(), zoom: 1.5};
   const ajuste = guardadoEnVista(foto(), vista);
   assert.equal(ajuste.fin, false); assert.deepEqual(ajuste.snap.selected, ['9:16', 'cliente-03']); assert.equal(ajuste.snap.fmt['cliente-06'].zoom, 1.5);
-  // Si el usuario marca otro formato, la vista termina y su marca se suma a la selección previa.
+  // Si el usuario marca otro formato, la vista termina: lo previo más lo marcado ahora, perfil actual.
   formatos.find(f => f.id === 'cliente-10').on = true;
   const suya = guardadoEnVista(foto(), vista);
   assert.equal(suya.fin, true); assert.equal(suya.snap, null);
-  assert.deepEqual(suya.seleccion, {selected: ['9:16', 'cliente-03', 'cliente-10'], profile: 'proyecto'});
+  assert.deepEqual(suya.seleccion, {selected: ['9:16', 'cliente-03', 'cliente-06', 'cliente-10'], profile: 'proyecto'});
   // Sin vista, se guarda tal cual.
   assert.equal(guardadoEnVista(antes, null).snap, antes);
 });
 
-test('al terminar la vista por una marca manual, el cambio se aplica sobre la selección previa', () => {
+test('al terminar la vista por una acción del usuario, se suma a lo previo y se mantiene el perfil actual', () => {
   // Repro de la re-revisión: guardado en «standard» con formatos del proyecto y de la biblioteca.
   const previa = ['9:16', '16:9', 'cliente-01', 'cliente-02', 'cliente-03', 'cliente-esp-1'];
   const vista = abrirVista({profile: 'standard', selected: previa}, ['cliente-06']);
-  // La × de cliente-06: no se pierde nada de lo previo y el perfil vuelve a «standard».
-  assert.deepEqual(seleccionAlTerminar(vista, [], 'proyecto'), {selected: previa, profile: 'standard'});
-  // Marcar cliente-10: previa + cliente-10.
-  assert.deepEqual(seleccionAlTerminar(vista, ['cliente-06', 'cliente-10'], 'proyecto'), {selected: [...previa, 'cliente-10'], profile: 'standard'});
+  // La × de cliente-06: no se pierde nada de lo previo y el perfil sigue siendo el actual.
+  assert.deepEqual(seleccionAlTerminar(vista, [], 'proyecto'), {selected: previa, profile: 'proyecto'});
+  // Marcar cliente-10: previa + cliente-06 (sigue marcado) + cliente-10.
+  assert.deepEqual(seleccionAlTerminar(vista, ['cliente-06', 'cliente-10'], 'proyecto'), {selected: [...previa, 'cliente-06', 'cliente-10'], profile: 'proyecto'});
   // Desmarcar un formato del filtro que ya estaba en la previa lo quita también de ella.
   const conSeis = abrirVista({profile: 'proyecto', selected: ['cliente-03', 'cliente-06']}, ['cliente-06', 'cliente-10']);
-  assert.deepEqual(seleccionAlTerminar(conSeis, ['cliente-10'], 'proyecto').selected, ['cliente-03']);
-  // Si el usuario cambió el perfil a mano durante la vista, se respeta.
+  assert.deepEqual(seleccionAlTerminar(conSeis, ['cliente-10'], 'proyecto').selected, ['cliente-03', 'cliente-10']);
+  // Si el usuario cambió el perfil a mano, se mantiene ese.
   assert.equal(seleccionAlTerminar(vista, ['cliente-06', 'cliente-10'], 'especiales').profile, 'especiales');
-  // guardadoEnVista lo devuelve así al detectar la marca.
+  // La campaña «altadis» durante la vista: lo previo más los 29 formatos del proyecto (31), perfil «proyecto».
+  const altadis = propios;
+  const campana = seleccionAlTerminar(vista, altadis, 'proyecto');
+  assert.equal(altadis.length, 29); assert.equal(campana.selected.length, 31); assert.equal(campana.profile, 'proyecto');
+  assert(previa.every(id => campana.selected.includes(id)));
+  // guardadoEnVista lo devuelve así al detectar el cambio.
   const fin = guardadoEnVista({profile: 'proyecto', selected: []}, vista);
-  assert.deepEqual(fin, {snap: null, fin: true, seleccion: {selected: previa, profile: 'standard'}});
+  assert.deepEqual(fin, {snap: null, fin: true, seleccion: {selected: previa, profile: 'proyecto'}});
 });

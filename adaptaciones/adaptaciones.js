@@ -9,7 +9,7 @@ import {mountTwin} from './gemelo-digital.mjs?v=stock-sync-1';
 import {aiJob} from './ia-core.mjs?v=adapter-detail-1';
 import {APPLICATION_KEY,restoreApplications,applyApplications} from './aplicaciones-core.mjs';
 import {mountStudio} from './studio-adaptaciones.mjs';
-import {formatosPedidos, proyectoPorFormatos, encenderSolo, enlacesEspacio, esPaginaAdaptador, abrirVista, guardadoEnVista, PROYECTO_ALTADIS} from './formato-url.mjs?v=altadis-18-3';
+import {formatosPedidos, proyectoPorFormatos, encenderSolo, enlacesEspacio, esPaginaAdaptador, abrirVista, guardadoEnVista, PROYECTO_ALTADIS} from './formato-url.mjs?v=altadis-18-4';
 let studio = null, twin = null, advertisement = null;
 // Admira Studio · Adaptaciones (FLT-101349, 2-oct-2026): un vídeo → todas las pantallas.
 // Render en vivo en canvas; las reglas son las del motor de signage de Admira Studio.
@@ -1951,8 +1951,9 @@ function syncURL() {
 // tarjeta, con su previo y su gemelo 3D. La tarjeta y el aviso enlazan de vuelta a su espacio.
 // Es una VISTA TEMPORAL: no guarda la selección filtrada ni el último proyecto. Se suelta al cerrar
 // el aviso, al elegir otro proyecto o al recargar sin parámetro, y vuelve la selección del usuario.
-// Si el usuario marca o desmarca formatos durante la vista, la vista termina y su cambio se aplica
-// sobre la selección previa (previa ∪ marcados − desmarcados), con su perfil de antes.
+// Si el usuario cambia los formatos durante la vista (marcar, la ×, una campaña, estancos…), la vista
+// termina y su cambio se aplica sobre la selección previa (previa ∪ marcado ahora − desmarcado), con el
+// perfil actual.
 function enlacesEspacioNodo(id) {
   const enlaces = enlacesEspacio(id); if (!enlaces.length) return null;
   const box = document.createElement('div'); box.className = 'espacio-links';

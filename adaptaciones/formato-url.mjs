@@ -69,15 +69,15 @@ export const esPaginaAdaptador = pathname => /^\/(?:en\/)?adaptaciones(?:\/(?:in
 // El filtro de ?formato= no es una decisión del usuario: no pisa la selección que tenía guardada.
 // `antes` es lo que se guardaría justo antes de aplicar el filtro (la selección del usuario).
 export function abrirVista(antes, ids) {
-  return {ids: [...ids], perfil: 'proyecto', previo: {profile: antes.profile, selected: [...antes.selected]}, base: JSON.stringify(antes)};
+  return {ids: [...ids], previo: {profile: antes.profile, selected: [...antes.selected]}, base: JSON.stringify(antes)};
 }
-// Una marca manual termina la vista y se aplica SOBRE la selección previa: previa ∪ marcados −
-// desmarcados, contados respecto al filtro. El perfil vuelve al previo, salvo que el usuario lo
-// haya cambiado a mano durante la vista.
+// Una acción del usuario (marcar, la ×, una campaña, preparar estancos…) termina la vista y se aplica
+// SOBRE la selección previa: previa ∪ lo marcado ahora − lo desmarcado del filtro. Nada de lo previo
+// se pierde y el perfil es el actual, así que se ve lo mismo que dejó la acción.
 export function seleccionAlTerminar(vista, actual, perfil) {
-  const marcados = actual.filter(id => !vista.ids.includes(id)), desmarcados = vista.ids.filter(id => !actual.includes(id));
-  const selected = [...new Set([...vista.previo.selected, ...marcados])].filter(id => !desmarcados.includes(id));
-  return {selected, profile: perfil !== vista.perfil ? perfil : vista.previo.profile};
+  const desmarcados = vista.ids.filter(id => !actual.includes(id));
+  const selected = [...new Set([...vista.previo.selected, ...actual])].filter(id => !desmarcados.includes(id));
+  return {selected, profile: perfil};
 }
 // Qué se guarda mientras hay vista. Devuelve {snap, fin}: snap null = no se escribe nada.
 // - Vista aún sin aplicar (solo {ids}): no se escribe nada.
