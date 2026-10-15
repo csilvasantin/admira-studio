@@ -1,6 +1,6 @@
 {
-  "version": "v.15.10.2026.r4.21:52",
-  "deployedAt": "2026-10-15T19:52:25Z",
+  "version": "v.15.10.2026.r5.22:16",
+  "deployedAt": "2026-10-15T20:16:56Z",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
@@ -11,8 +11,8 @@
   "gitShort": "a8fe9a6",
   "dirty": false,
   "novedades": [
-    "/crear contenido en Experto: póster / etiqueta digital PNG y pantallas vertical/horizontal MP4, con revisión y Stock.",
-    "Solicitud anamórfica opcional con geometría y observador; se identifica como encargo pendiente de render y calibración."
+    "El ejemplo Crear contenido conserva el cliente Starbucks al generar, adaptar y publicar su ficha en Stock.",
+    "La publicación genérica confirma los archivos guardados aunque no tenga cliente para agrupar."
   ],
   "rollback": {
     "git": "8aeab5c3c476db52db2f6aa803acf1322238f8f3"

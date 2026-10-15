@@ -2,7 +2,7 @@
   "kind": "canonical-domain-change",
   "domain": "admira.studio",
   "canonicalBase": "2fe5d9ab62c65e3fb59de856d82cf9400cb5111d",
-  "reason": "Carlos solicita /crear contenido en Experto para la demo: póster/etiqueta digital y pantalla vertical/horizontal, con solicitud anamórfica opcional. Se sigue el patrón de cambios canónicos de Studio sin regenerar los clones congelados.",
+  "reason": "Carlos solicita /crear contenido en Experto para la demo: póster/etiqueta digital y pantalla vertical/horizontal, con solicitud anamórfica opcional. Se sigue el patrón de cambios canónicos de Studio sin regenerar los clones congelados. Corrección verificada en demo IA: el ejemplo conserva client=Starbucks y la publicación genérica comunica los archivos guardados sin fallo de agrupación.",
   "files": [
     "adaptaciones/adaptaciones.js",
     "adaptaciones/campaign-core.mjs",
