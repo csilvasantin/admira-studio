@@ -3,7 +3,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {formatosPedidos, proyectoPorFormatos, encenderSolo, enlacesEspacio, ALTADIS_18, PROYECTO_ALTADIS} from '../adaptaciones/formato-url.mjs';
+import {formatosPedidos, proyectoPorFormatos, encenderSolo, enlacesEspacio, esPaginaAdaptador, abrirVista, guardadoEnVista, ALTADIS_18, PROYECTO_ALTADIS} from '../adaptaciones/formato-url.mjs';
+import {snapshot, defaults} from '../adaptaciones/adapter-core.mjs';
 import {projectFormats, initialProject, mergeProjects} from '../adaptaciones/proyectos-core.mjs';
 import {createCatalog} from '../adaptaciones/format-catalog.mjs';
 import {onRequest} from '../functions/_middleware.js';
@@ -80,4 +81,33 @@ test('el parámetro sobrevive a la verja: return_to lleva la query entera', asyn
   const login = await handleAuth(new Request('https://admira.studio' + response.headers.get('location')), {AUTH_DB, PIXERIA_SIGNING_KEY: 'test-signing-key'});
   assert.equal(login.status, 401);
   assert.deepEqual(guardado, ['/adaptaciones/?formato=cliente-06,cliente-10']);
+});
+
+test('?formato= solo actúa en la página del Adaptador, no en Creador', () => {
+  for (const path of ['/adaptaciones/', '/adaptaciones', '/adaptaciones/index.html', '/en/adaptaciones/', '/en/adaptaciones/index.html']) assert.equal(esPaginaAdaptador(path), true, path);
+  for (const path of ['/creador/', '/en/creador/', '/creador/index.html', '/adaptaciones/ensayos/2026-10-08/', '/', '', null, undefined]) assert.equal(esPaginaAdaptador(path), false, String(path));
+});
+
+test('vista temporal: el filtro no pisa la selección guardada y la recupera al soltar', () => {
+  const formatos = catalogo(), state = {profile: 'proyecto', compat: 'uhd', modoGlobal: 'auto', fmt: Object.fromEntries(formatos.map(f => [f.id, defaults()]))};
+  formatos.forEach(f => { f.on = ['9:16', 'cliente-03'].includes(f.id); });
+  const foto = () => ({...snapshot(state, formatos), crear: {}});
+  const antes = foto(), vista = abrirVista(antes, ['cliente-06']);
+  encenderSolo(formatos, ['cliente-06']);
+  // Pendiente (aún sin aplicar): no se escribe nada.
+  assert.deepEqual(guardadoEnVista(foto(), {ids: ['cliente-06']}), {snap: null, fin: false});
+  // Con el filtro puesto y nada más cambiado: no se escribe nada.
+  assert.deepEqual(guardadoEnVista(foto(), vista), {snap: null, fin: false});
+  // Cambiar el perfil durante la vista tampoco se guarda.
+  state.profile = 'standard'; assert.deepEqual(guardadoEnVista(foto(), vista), {snap: null, fin: false}); state.profile = 'proyecto';
+  // Un ajuste (zoom) sí se guarda, pero con la selección de antes del enlace.
+  state.fmt['cliente-06'] = {...defaults(), zoom: 1.5};
+  const ajuste = guardadoEnVista(foto(), vista);
+  assert.equal(ajuste.fin, false); assert.deepEqual(ajuste.snap.selected, ['9:16', 'cliente-03']); assert.equal(ajuste.snap.fmt['cliente-06'].zoom, 1.5);
+  // Si el usuario marca otro formato, la vista termina y se guarda su selección.
+  formatos.find(f => f.id === 'cliente-10').on = true;
+  const suya = guardadoEnVista(foto(), vista);
+  assert.equal(suya.fin, true); assert.deepEqual(suya.snap.selected, ['cliente-06', 'cliente-10']);
+  // Sin vista, se guarda tal cual.
+  assert.equal(guardadoEnVista(antes, null).snap, antes);
 });

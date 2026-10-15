@@ -9,7 +9,7 @@ import {mountTwin} from './gemelo-digital.mjs?v=stock-sync-1';
 import {aiJob} from './ia-core.mjs?v=adapter-detail-1';
 import {APPLICATION_KEY,restoreApplications,applyApplications} from './aplicaciones-core.mjs';
 import {mountStudio} from './studio-adaptaciones.mjs';
-import {formatosPedidos, proyectoPorFormatos, encenderSolo, enlacesEspacio} from './formato-url.mjs?v=altadis-18-1';
+import {formatosPedidos, proyectoPorFormatos, encenderSolo, enlacesEspacio, esPaginaAdaptador, abrirVista, guardadoEnVista, PROYECTO_ALTADIS} from './formato-url.mjs?v=altadis-18-2';
 let studio = null, twin = null, advertisement = null;
 // Admira Studio · Adaptaciones (FLT-101349, 2-oct-2026): un vídeo → todas las pantallas.
 // Render en vivo en canvas; las reglas son las del motor de signage de Admira Studio.
@@ -76,6 +76,8 @@ let stillSec = STILL.default;
 try { stillSec = stillSeconds(localStorage.getItem(STILL_KEY)); } catch (_) {}
 let srcExt = 'png';
 let initialized = false;
+// ?formato=cliente-NN (gemelos de admira.store): vista temporal que no pisa lo guardado (formato-url.mjs).
+let vistaFormato = null, formatoEnfocar = '';
 // [CLASSIC-SELECTION-START]
 let classicTargetId = '', specialSelectedId = '', currentStep = 1, specialStepVisited = false;
 const classicActive = () => isImage() && currentStep === 1 && !!classicTargetId;
@@ -92,11 +94,17 @@ const syncCompat = () => { $('#compat').disabled = !classicActive() && state.pro
 const keyFor = id => projectStorageKey(STORAGE_KEY, id);
 const readJSON = key => { try { return JSON.parse(localStorage.getItem(key)); } catch (_) { return null; } };
 const RATIOS = ['9:16', '16:9', '1:1', '4:5'];
+function settingsSnapshot() {
+  const snap = snapshot(state, FORMATOS);
+  snap.crear = Object.fromEntries(FORMATOS.filter(f => state.crear[f.id] && JSON.stringify(state.crear[f.id]) !== JSON.stringify(crearBase(f))).map(f => [f.id, state.crear[f.id]]));
+  return snap;
+}
 function saveSettings() {
   if (!initialized) return;
   try {
-    const snap = snapshot(state, FORMATOS);
-    snap.crear = Object.fromEntries(FORMATOS.filter(f => state.crear[f.id] && JSON.stringify(state.crear[f.id]) !== JSON.stringify(crearBase(f))).map(f => [f.id, state.crear[f.id]]));
+    let snap = settingsSnapshot();
+    // Vista de ?formato=: se guarda la selección de antes del enlace; si el usuario cambia los formatos, ya es la suya.
+    if (vistaFormato) { const vista = guardadoEnVista(snap, vistaFormato); if (vista.fin) { vistaFormato = null; quitarFormatoURL(); syncURL(); } else if (!vista.snap) return; snap = vista.snap; }
     localStorage.setItem(keyFor(state.proyecto), JSON.stringify(snap));
     if (state.proyecto !== GENERAL) {
       const general = readJSON(STORAGE_KEY);
@@ -1929,13 +1937,16 @@ function syncURL() {
     if (state.proyecto === GENERAL) u.searchParams.delete('proyecto'); else u.searchParams.set('proyecto', state.proyecto);
     if (u.href !== location.href) history.replaceState(history.state, '', u.href);
   } catch (_) {}
+  if (vistaFormato) return; // la vista de ?formato= tampoco cambia el último proyecto elegido
   try { if (state.proyecto === GENERAL) localStorage.removeItem(PROJECT_KEY); else localStorage.setItem(PROJECT_KEY, state.proyecto); } catch (_) {}
 }
 // ── Gemelos de admira.store (15-oct-2026): ?formato=cliente-NN ──────────────────────────────
 // Cada espacio tipo de admira.store/xpacios/altadis-18/ abre esta página con su formato. Se carga la
 // ficha de Altadis, queda encendido solo ese formato (o esos) y, al pasar al paso 2, se enfoca su
 // tarjeta, con su previo y su gemelo 3D. La tarjeta y el aviso enlazan de vuelta a su espacio.
-let formatoEnfocar = '';
+// Es una VISTA TEMPORAL: no guarda la selección filtrada ni el último proyecto. Se suelta al cerrar
+// el aviso, al elegir otro proyecto o al recargar sin parámetro, y vuelve la selección del usuario.
+// Si el usuario marca o desmarca formatos durante la vista, esa selección es suya y se guarda.
 function enlacesEspacioNodo(id) {
   const enlaces = enlacesEspacio(id); if (!enlaces.length) return null;
   const box = document.createElement('div'); box.className = 'espacio-links';
@@ -1947,8 +1958,11 @@ function enlacesEspacioNodo(id) {
   return box;
 }
 function aplicarFormatosURL() {
-  const ids = encenderSolo(FORMATOS, formatosPedidos(location.search, FORMATOS.filter(isProjectFormat).map(f => f.id)));
-  if (!ids.length) return;
+  if (!vistaFormato) return;
+  const ids = formatosPedidos(location.search, FORMATOS.filter(isProjectFormat).map(f => f.id));
+  // Ninguno existe en el proyecto pedido con ?proyecto=: no hay vista, la página sigue como siempre.
+  if (!ids.length) { vistaFormato = null; syncURL(); saveSettings(); return; }
+  vistaFormato = abrirVista(settingsSnapshot(), ids); encenderSolo(FORMATOS, ids);
   state.profile = 'proyecto'; state.sel = formatoEnfocar = ids[0]; syncControls(); buildGrid();
   const box = document.createElement('div'); box.id = 'formato-url'; box.className = 'formato-url'; box.setAttribute('role', 'status');
   for (const f of ids.map(id => FORMATOS.find(x => x.id === id))) {
@@ -1958,11 +1972,18 @@ function aplicarFormatosURL() {
   }
   const hint = document.createElement('p'); hint.className = 'muted';
   hint.textContent = t('Elige un contenido y pasa a «2 Formatos especiales»: ahí está su tarjeta, con su previo y su gemelo 3D.', 'Choose content and go to «2 Special formats»: its card is there, with its preview and 3D twin.');
-  box.append(hint); document.querySelector('#sec-adapt .steps')?.after(box);
+  const cerrar = document.createElement('button'); cerrar.type = 'button'; cerrar.className = 'pill formato-url-cerrar';
+  cerrar.textContent = t('Volver a mis formatos', 'Back to my formats');
+  cerrar.onclick = () => { soltarFormatosURL(); buildGrid(); syncURL(); };
+  hint.append(' ', cerrar); box.append(hint); document.querySelector('#sec-adapt .steps')?.after(box);
 }
-// Elegir otro proyecto a mano da el enlace por usado: fuera el aviso y el parámetro.
+// Soltar la vista (cerrar el aviso o elegir otro proyecto): vuelve la selección de antes del enlace,
+// fuera el aviso y el parámetro.
 function soltarFormatosURL() {
-  formatoEnfocar = ''; document.querySelector('#formato-url')?.remove();
+  if (vistaFormato?.previo) { const {profile, selected} = vistaFormato.previo; FORMATOS.forEach(f => { f.on = selected.includes(f.id); }); state.profile = profile; syncControls(); }
+  vistaFormato = null; formatoEnfocar = ''; document.querySelector('#formato-url')?.remove(); quitarFormatoURL();
+}
+function quitarFormatoURL() {
   try { const u = new URL(location.href); if (u.searchParams.has('formato')) { u.searchParams.delete('formato'); history.replaceState(history.state, '', u.href); } } catch (_) {}
 }
 function enfocarFormatoURL() {
@@ -2010,7 +2031,15 @@ let migratedTo = null; try { migratedTo = migrateStorage(localStorage, STORAGE_K
 campaignWorkshop=mountCampaign({t,queue,openTwin:f=>twin?.open(f),previewTwin:(f,draw,stamp)=>twin?.preview(f,{draw,stamp}),clientCatalog:INDEX});
 let query = null, lastProject = null;
 try { query = new URLSearchParams(location.search).get('proyecto'); } catch (_) {}
-query = proyectoPorFormatos(query, formatosPedidos(location.search));
+// ?formato= solo en /adaptaciones/ (no en /creador/). Sin ?proyecto=, se comprueba contra la ficha de
+// Altadis ANTES de cambiar de proyecto: un id que no existe no toca ni el proyecto ni lo guardado.
+let formatosURL = esPaginaAdaptador(location.pathname) ? formatosPedidos(location.search) : [];
+if (formatosURL.length && !(query && String(query).trim())) {
+  let ids = [];
+  try { const entry = INDEX.find(x => x.id === PROYECTO_ALTADIS); if (entry) { const {ficha, lists} = await loadFicha(entry); ids = projectLibrary([], ficha, lists, EN).map(f => f.id); } } catch (_) {}
+  formatosURL = formatosPedidos(location.search, ids); query = proyectoPorFormatos(query, formatosURL);
+}
+if (formatosURL.length) vistaFormato = {ids: formatosURL}; // pendiente: nada se guarda hasta aplicarla
 try { lastProject = localStorage.getItem(PROJECT_KEY) || migratedTo; } catch (_) { lastProject = migratedTo; }
 const live = fetchYokup();
 let start = initialProject({query, saved: lastProject, projects: PROJECTS, index: INDEX});

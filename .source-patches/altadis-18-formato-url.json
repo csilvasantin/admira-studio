@@ -8,8 +8,10 @@
     "adaptaciones/adaptaciones.js",
     "adaptaciones/adaptaciones.css",
     "docs/adaptador.md",
-    "test/altadis-18-formato.test.mjs"
+    "test/altadis-18-formato.test.mjs",
+    "test/altadis-18-formato.e2e.test.mjs"
   ],
   "preservesFiltersAndAccess": true,
-  "rollback": "184f079e71d8d5e05ba4962d313fa9d773d4d2fb"
+  "rollback": "184f079e71d8d5e05ba4962d313fa9d773d4d2fb",
+  "review": "Revisión del PR #51: ?formato= es una vista temporal que no pisa lo guardado; ids validados contra la ficha antes de cambiar de proyecto; solo en /adaptaciones/."
 }

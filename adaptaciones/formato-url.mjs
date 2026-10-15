@@ -60,3 +60,29 @@ export function enlacesEspacio(id) {
     {tipo: 'cafe', href: href('cafe'), es: 'Ver en su espacio en Starbucks', en: 'View in its Starbucks space'},
   ];
 }
+
+// Solo la página del Adaptador lee ?formato= (/adaptaciones/ y /en/adaptaciones/). Creador carga el
+// mismo adaptaciones.js y no debe actuar.
+export const esPaginaAdaptador = pathname => /^\/(?:en\/)?adaptaciones(?:\/(?:index\.html)?)?$/.test(String(pathname ?? ''));
+
+// ── Vista temporal (revisión del PR #51) ────────────────────────────────────────────────────
+// El filtro de ?formato= no es una decisión del usuario: no pisa la selección que tenía guardada.
+// `antes` es lo que se guardaría justo antes de aplicar el filtro (la selección del usuario).
+export function abrirVista(antes, ids) {
+  return {ids: [...ids], previo: {profile: antes.profile, selected: [...antes.selected]}, base: JSON.stringify(antes)};
+}
+// Qué se guarda mientras hay vista. Devuelve {snap, fin}: snap null = no se escribe nada.
+// - Vista aún sin aplicar (solo {ids}): no se escribe nada.
+// - Si la selección ya no es la del filtro, el usuario ha marcado o desmarcado formatos a mano: la
+//   vista termina (fin) y se guarda su selección tal cual, porque ya es una decisión suya.
+// - Si sigue siendo la del filtro, se guarda con la selección y el perfil de antes del enlace, y solo
+//   si algo más ha cambiado (un ajuste de método, foco o zoom, por ejemplo). Cambiar el desplegable
+//   de perfil durante la vista no se guarda: es parte de mirar.
+export function guardadoEnVista(snap, vista) {
+  if (!vista) return {snap, fin: false};
+  if (!vista.previo) return {snap: null, fin: false};
+  const mismos = (a, b) => a.length === b.length && a.every(x => b.includes(x));
+  if (!mismos(snap.selected, vista.ids)) return {snap, fin: true};
+  const previo = {...snap, profile: vista.previo.profile, selected: [...vista.previo.selected]};
+  return {snap: JSON.stringify(previo) === vista.base ? null : previo, fin: false};
+}
