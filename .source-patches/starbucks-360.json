@@ -1,0 +1,11 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "reason": "Carlos pide /contenido starbucks 360 desde las cinco aplicaciones. Studio hospeda el visor común con el programa real de Stock y activación de sus siete players autorizada para el propietario.",
+  "files": [
+    "campanas/starbucks-360",
+    "functions/starbucks-360.js",
+    "test/starbucks360-control.test.mjs",
+    "docs/starbucks-360.md"
+  ]
+}
