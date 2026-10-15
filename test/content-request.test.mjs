@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {contentRequestURL,CONTENT_REQUEST_SCHEMA,contentCampaign,restoreContentRequest,deliveryInstallations,anamorphicRequest,validateAnamorphicGeometry} from '../adaptaciones/content-request-core.mjs';
+import {contentRequestURL,starbucksContentExample,CONTENT_REQUEST_SCHEMA,contentCampaign,restoreContentRequest,deliveryInstallations,anamorphicRequest,validateAnamorphicGeometry} from '../adaptaciones/content-request-core.mjs';
 import {newCampaign} from '../adaptaciones/campaign-entry.mjs';
 import {restoreCampaign,campaignContract,campaignJob,planCampaign} from '../adaptaciones/campaign-core.mjs';
 const request=(overrides={})=>({schema:CONTENT_REQUEST_SCHEMA,brief:'Una pausa en la Diagonal',destinations:['poster','portrait','landscape'],anamorphicRequested:false,geometry:null,...overrides});
@@ -37,4 +37,12 @@ test('anamorphic request never claims a render or calibration, even when geometr
 test('the existing coffee renderer plans all three requested surfaces without copy conflicts',()=>{
  const c=contentCampaign({...newCampaign(),headline:'Una pausa en la Diagonal.',cta:'Tu momento. Diagonal 634.',visualStyle:'coffee-integrated',direction:'travel',seconds:12},request());
  for(const i of c.installations){const p=planCampaign(c,i);assert.equal(p.valid,true,JSON.stringify(p.errors));}
+});
+
+test('Starbucks example carries the client through image replacement, reload and Stock output tags',()=>{
+ const example=starbucksContentExample(newCampaign());
+ const c=restoreCampaign(contentCampaign({...example,product:'https://example.com/new-ai.png',portraitPhoto:'https://example.com/new-ai.png'},request()));
+ assert.deepEqual(c.client,{id:'starbucks',name:'Starbucks'});
+ for(const output of campaignContract(c).derived)assert.ok(output.tags.includes('starbucks'));
+ assert.equal(contentCampaign(newCampaign(),request()).client,undefined);
 });

@@ -47,3 +47,8 @@ export function anamorphicRequest(campaign){
  if(!r.anamorphicRequested)throw Error('anamorphic-not-requested');
  return {schema:'admira.anamorphic-request.v1',campaignId:campaign.id,revision:campaign.revision,brief:r.brief,geometry:r.geometry,status:r.geometry?'geometry-supplied-awaiting-calibration':'awaiting-geometry',mediaRendered:false,calibrationVerified:false};
 }
+
+// The branded example sets explicit client metadata before generation and export.
+export function starbucksContentExample(base,en=false){
+ return {...base,client:{id:'starbucks',name:'Starbucks'},name:'Starbucks · Diagonal · Demo contenido',headline:en?'A pause on Diagonal.':'Una pausa en la Diagonal.',cta:en?'Your moment. Diagonal 634.':'Tu momento. Diagonal 634.',product:'/adaptaciones/campanas/coffee/coffee-beans.jpg',portraitPhoto:'/adaptaciones/campanas/coffee/coffee-pause.jpg',logo:'/adaptaciones/campanas/coffee/starbucks-siren.svg',productLabel:en?'Existing coffee photograph · example':'Fotografía de café existente · ejemplo',background:'#003e2e',accent:'#e8e5c9',foreground:'#fffaf0',visualStyle:'coffee-integrated',direction:'travel',seconds:12};
+}
