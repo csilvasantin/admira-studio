@@ -1,21 +1,21 @@
 {
-  "version": "v.15.10.2026.r1.11:34",
-  "deployedAt": "2026-10-15T07:47:33Z",
-  "author": "SubNeoMBP14",
-  "agent": "SubNeoMBP14",
-  "deployer": "SubNeoMBP14",
-  "machine": "MBP14",
-  "signature": "SubNeoMBP14 · MBP14",
-  "git": "184f079e71d8d5e05ba4962d313fa9d773d4d2fb",
-  "gitFull": "184f079e71d8d5e05ba4962d313fa9d773d4d2fb",
-  "gitShort": "184f079",
+  "version": "v.15.10.2026.r2.21:00",
+  "deployedAt": "2026-10-15T19:00:41Z",
+  "author": "NeoMacStudio",
+  "agent": "NeoMacStudio",
+  "deployer": "NeoMacStudio",
+  "machine": "MacStudio",
+  "signature": "NeoMacStudio · MacStudio",
+  "git": "cccf33d36afd4991117466ca67a3b8965097adde",
+  "gitFull": "cccf33d36afd4991117466ca67a3b8965097adde",
+  "gitShort": "cccf33d",
   "dirty": false,
   "novedades": [
-    "Adaptador: ?formato=cliente-NN abre Altadis con solo ese formato y enfoca su tarjeta, con su previo y su gemelo 3D.",
-    "Cada formato tipo cliente-01 a cliente-18 enlaza a su espacio en admira.store: Xtanco y cafetería Starbucks."
+    "La portada ya no tiene modo Experto: en el sitio de ⌘, la pastilla de idioma ENG/ESP con la caja de ▤.",
+    "ENG lleva a la portada en inglés y ESP vuelve al castellano; las demás páginas conservan ⌘."
   ],
   "rollback": {
-    "git": "184f079e71d8d5e05ba4962d313fa9d773d4d2fb"
+    "git": "1e325b07fbdf949c2fc3fae0bc6fe6c5bb72cc97"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -24,6 +24,7 @@
     ".source-patches/inline-twins-header.json",
     ".source-patches/music-cards.json",
     ".source-patches/playlist-download-progress.json",
+    ".source-patches/portada-sin-experto.json",
     ".source-patches/starbucks-bilingual-story.json",
     ".source-patches/starbucks-creation-formats.json",
     ".source-patches/starbucks-photo-twin.json",

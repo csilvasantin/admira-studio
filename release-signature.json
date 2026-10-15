@@ -1,6 +1,12 @@
 {
-  "version": "v.15.10.2026.r1.11:34",
-  "deployer": "SubNeoMBP14",
-  "machine": "MBP14",
-  "signature": "SubNeoMBP14 · MBP14"
+  "version": "v.15.10.2026.r2.21:00",
+  "author": "NeoMacStudio",
+  "agent": "NeoMacStudio",
+  "deployer": "NeoMacStudio",
+  "machine": "MacStudio",
+  "signature": "NeoMacStudio · MacStudio",
+  "git": "cccf33d36afd4991117466ca67a3b8965097adde",
+  "gitShort": "cccf33d",
+  "gitFull": "cccf33d36afd4991117466ca67a3b8965097adde",
+  "dirty": false
 }
