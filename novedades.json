@@ -216,5 +216,9 @@
   "v.14.10.2026.r24.19:51": [
     "Experto abre con una línea de escritura mínima y permite ampliar o reducir el panel desde su borde superior.",
     "Bugito aparece flotando con /bugito; /bugito full o /bugito avanzado abre el banco de pruebas."
+  ],
+  "v.15.10.2026.r1.11:34": [
+    "Adaptador: ?formato=cliente-NN abre Altadis con solo ese formato y enfoca su tarjeta, con su previo y su gemelo 3D.",
+    "Cada formato tipo cliente-01 a cliente-18 enlaza a su espacio en admira.store: Xtanco y cafetería Starbucks."
   ]
 }

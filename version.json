@@ -1,23 +1,24 @@
 {
-  "version": "v.14.10.2026.r24.19:51",
-  "deployedAt": "2026-10-14T15:56:46.116151+00:00",
-  "author": "TrinityMacStudio",
-  "agent": "TrinityMacStudio",
-  "deployer": "TrinityMacStudio",
-  "machine": "MacStudio",
-  "signature": "TrinityMacStudio · MacStudio",
-  "git": "1df04efe8a08a6b2550a87e39d946f1c99b308bd",
-  "gitFull": "1df04efe8a08a6b2550a87e39d946f1c99b308bd",
-  "gitShort": "1df04ef",
+  "version": "v.15.10.2026.r1.11:34",
+  "deployedAt": "2026-10-15T07:47:33Z",
+  "author": "SubNeoMBP14",
+  "agent": "SubNeoMBP14",
+  "deployer": "SubNeoMBP14",
+  "machine": "MBP14",
+  "signature": "SubNeoMBP14 · MBP14",
+  "git": "184f079e71d8d5e05ba4962d313fa9d773d4d2fb",
+  "gitFull": "184f079e71d8d5e05ba4962d313fa9d773d4d2fb",
+  "gitShort": "184f079",
   "dirty": false,
   "novedades": [
-    "Experto abre con una línea de escritura mínima y permite ampliar o reducir el panel desde su borde superior.",
-    "Bugito aparece flotando con /bugito; /bugito full o /bugito avanzado abre el banco de pruebas."
+    "Adaptador: ?formato=cliente-NN abre Altadis con solo ese formato y enfoca su tarjeta, con su previo y su gemelo 3D.",
+    "Cada formato tipo cliente-01 a cliente-18 enlaza a su espacio en admira.store: Xtanco y cafetería Starbucks."
   ],
   "rollback": {
-    "git": "1df04efe8a08a6b2550a87e39d946f1c99b308bd"
+    "git": "184f079e71d8d5e05ba4962d313fa9d773d4d2fb"
   },
   "sourcePatches": [
+    ".source-patches/altadis-18-formato-url.json",
     ".source-patches/expert-compact-bugito.json",
     ".source-patches/import-search-tags.json",
     ".source-patches/inline-twins-header.json",

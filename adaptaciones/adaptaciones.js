@@ -9,6 +9,7 @@ import {mountTwin} from './gemelo-digital.mjs?v=stock-sync-1';
 import {aiJob} from './ia-core.mjs?v=adapter-detail-1';
 import {APPLICATION_KEY,restoreApplications,applyApplications} from './aplicaciones-core.mjs';
 import {mountStudio} from './studio-adaptaciones.mjs';
+import {formatosPedidos, proyectoPorFormatos, encenderSolo, enlacesEspacio, esPaginaAdaptador, abrirVista, guardadoEnVista, PROYECTO_ALTADIS} from './formato-url.mjs?v=altadis-18-4';
 let studio = null, twin = null, advertisement = null;
 // Admira Studio · Adaptaciones (FLT-101349, 2-oct-2026): un vídeo → todas las pantallas.
 // Render en vivo en canvas; las reglas son las del motor de signage de Admira Studio.
@@ -75,6 +76,8 @@ let stillSec = STILL.default;
 try { stillSec = stillSeconds(localStorage.getItem(STILL_KEY)); } catch (_) {}
 let srcExt = 'png';
 let initialized = false;
+// ?formato=cliente-NN (gemelos de admira.store): vista temporal que no pisa lo guardado (formato-url.mjs).
+let vistaFormato = null, formatoEnfocar = '';
 // [CLASSIC-SELECTION-START]
 let classicTargetId = '', specialSelectedId = '', currentStep = 1, specialStepVisited = false;
 const classicActive = () => isImage() && currentStep === 1 && !!classicTargetId;
@@ -91,11 +94,22 @@ const syncCompat = () => { $('#compat').disabled = !classicActive() && state.pro
 const keyFor = id => projectStorageKey(STORAGE_KEY, id);
 const readJSON = key => { try { return JSON.parse(localStorage.getItem(key)); } catch (_) { return null; } };
 const RATIOS = ['9:16', '16:9', '1:1', '4:5'];
+function settingsSnapshot() {
+  const snap = snapshot(state, FORMATOS);
+  snap.crear = Object.fromEntries(FORMATOS.filter(f => state.crear[f.id] && JSON.stringify(state.crear[f.id]) !== JSON.stringify(crearBase(f))).map(f => [f.id, state.crear[f.id]]));
+  return snap;
+}
 function saveSettings() {
   if (!initialized) return;
   try {
-    const snap = snapshot(state, FORMATOS);
-    snap.crear = Object.fromEntries(FORMATOS.filter(f => state.crear[f.id] && JSON.stringify(state.crear[f.id]) !== JSON.stringify(crearBase(f))).map(f => [f.id, state.crear[f.id]]));
+    let snap = settingsSnapshot();
+    // Vista de ?formato=: se guarda la selección de antes del enlace. Una marca manual termina la vista y
+    // se aplica sobre esa selección previa: fuera el aviso, se repinta y se guarda.
+    if (vistaFormato) {
+      const vista = guardadoEnVista(snap, vistaFormato);
+      if (vista.fin) { soltarFormatosURL(vista.seleccion); syncURL(); queueMicrotask(buildGrid); snap = settingsSnapshot(); }
+      else if (!vista.snap) return; else snap = vista.snap;
+    }
     localStorage.setItem(keyFor(state.proyecto), JSON.stringify(snap));
     if (state.proyecto !== GENERAL) {
       const general = readJSON(STORAGE_KEY);
@@ -453,6 +467,7 @@ function buildGrid() {
     if(twin&&!classicActive()){
       const source=el.querySelector('.esp-views')||el.querySelector('.stage'),pair=document.createElement('div');pair.className='adaptation-preview-pair';source.before(pair);pair.append(source,twin.button(f));
     }
+    const espacio=enlacesEspacioNodo(f.id);if(espacio)el.append(espacio);
     selectable(el, f);
     g.appendChild(el);
   });
@@ -1505,6 +1520,7 @@ function goStep(n) {
   placeWorkspace();buildGrid();
   if(n===2&&advertisement?.enabled())void advertisement.analyze();
   window.scrollTo({top:0});
+  if(n===2)enfocarFormatoURL();
 }
 function enterClassic(id) {
   if(!classicTargets(classicSource(),mediaReady()).includes(id)||advertisement?.busy())return;
@@ -1926,7 +1942,62 @@ function syncURL() {
     if (state.proyecto === GENERAL) u.searchParams.delete('proyecto'); else u.searchParams.set('proyecto', state.proyecto);
     if (u.href !== location.href) history.replaceState(history.state, '', u.href);
   } catch (_) {}
+  if (vistaFormato) return; // la vista de ?formato= tampoco cambia el último proyecto elegido
   try { if (state.proyecto === GENERAL) localStorage.removeItem(PROJECT_KEY); else localStorage.setItem(PROJECT_KEY, state.proyecto); } catch (_) {}
+}
+// ── Gemelos de admira.store (15-oct-2026): ?formato=cliente-NN ──────────────────────────────
+// Cada espacio tipo de admira.store/xpacios/altadis-18/ abre esta página con su formato. Se carga la
+// ficha de Altadis, queda encendido solo ese formato (o esos) y, al pasar al paso 2, se enfoca su
+// tarjeta, con su previo y su gemelo 3D. La tarjeta y el aviso enlazan de vuelta a su espacio.
+// Es una VISTA TEMPORAL: no guarda la selección filtrada ni el último proyecto. Se suelta al cerrar
+// el aviso, al elegir otro proyecto o al recargar sin parámetro, y vuelve la selección del usuario.
+// Si el usuario cambia los formatos durante la vista (marcar, la ×, una campaña, estancos…), la vista
+// termina y su cambio se aplica sobre la selección previa (previa ∪ marcado ahora − desmarcado), con el
+// perfil actual.
+function enlacesEspacioNodo(id) {
+  const enlaces = enlacesEspacio(id); if (!enlaces.length) return null;
+  const box = document.createElement('div'); box.className = 'espacio-links';
+  for (const e of enlaces) {
+    const a = document.createElement('a'); a.className = 'pill espacio-link'; a.href = e.href; a.target = '_blank'; a.rel = 'noopener';
+    a.dataset.tipo = e.tipo; a.textContent = t(e.es, e.en); a.title = t('Gemelo 3D del espacio en admira.store', 'Space 3D twin on admira.store');
+    a.addEventListener('click', ev => ev.stopPropagation()); box.append(a);
+  }
+  return box;
+}
+function aplicarFormatosURL() {
+  if (!vistaFormato) return;
+  const ids = formatosPedidos(location.search, FORMATOS.filter(isProjectFormat).map(f => f.id));
+  // Ninguno existe en el proyecto pedido con ?proyecto=: no hay vista, la página sigue como siempre.
+  if (!ids.length) { vistaFormato = null; quitarFormatoURL(); syncURL(); saveSettings(); return; }
+  vistaFormato = abrirVista(settingsSnapshot(), ids); encenderSolo(FORMATOS, ids);
+  state.profile = 'proyecto'; state.sel = formatoEnfocar = ids[0]; syncControls(); buildGrid();
+  const box = document.createElement('div'); box.id = 'formato-url'; box.className = 'formato-url'; box.setAttribute('role', 'status');
+  for (const f of ids.map(id => FORMATOS.find(x => x.id === id))) {
+    const p = document.createElement('p'), b = document.createElement('b'), d = perfil(f);
+    b.textContent = f.nombre; p.append(t(ids.length > 1 ? 'Formato pedido · ' : 'Formato pedido desde su espacio · ', ids.length > 1 ? 'Requested format · ' : 'Format requested from its space · '), b, ` · ${f.id} · ${d.ancho}×${d.alto}`);
+    const enlaces = enlacesEspacioNodo(f.id); if (enlaces) p.append(enlaces); box.append(p);
+  }
+  const hint = document.createElement('p'); hint.className = 'muted';
+  hint.textContent = t('Elige un contenido y pasa a «2 Formatos especiales»: ahí está su tarjeta, con su previo y su gemelo 3D.', 'Choose content and go to «2 Special formats»: its card is there, with its preview and 3D twin.');
+  const cerrar = document.createElement('button'); cerrar.type = 'button'; cerrar.className = 'pill formato-url-cerrar';
+  cerrar.textContent = t('Volver a mis formatos', 'Back to my formats');
+  cerrar.onclick = () => { soltarFormatosURL(); buildGrid(); syncURL(); };
+  hint.append(' ', cerrar); box.append(hint); document.querySelector('#sec-adapt .steps')?.after(box);
+}
+// Soltar la vista (cerrar el aviso o elegir otro proyecto): vuelve la selección de antes del enlace (o la
+// que se pase, al terminar por una marca manual), fuera el aviso y el parámetro.
+function soltarFormatosURL(seleccion = vistaFormato?.previo) {
+  if (seleccion) { const {profile, selected} = seleccion; FORMATOS.forEach(f => { f.on = selected.includes(f.id); }); state.profile = profile; syncControls(); }
+  vistaFormato = null; formatoEnfocar = ''; document.querySelector('#formato-url')?.remove(); quitarFormatoURL();
+}
+function quitarFormatoURL() {
+  try { const u = new URL(location.href); if (u.searchParams.has('formato')) { u.searchParams.delete('formato'); history.replaceState(history.state, '', u.href); } } catch (_) {}
+}
+function enfocarFormatoURL() {
+  const card = formatoEnfocar && [...document.querySelectorAll('#grid .fmt[data-f]')].find(el => el.dataset.f === formatoEnfocar);
+  formatoEnfocar = ''; if (!card) return;
+  state.sel = card.dataset.f; markSelected(); buildCardSettings();
+  card.focus({preventScroll: true}); card.scrollIntoView({block: 'nearest', behavior: movimientoReducido ? 'instant' : 'smooth'});
 }
 let sourceHandoff=null;const installationPanel=mountAdapterInstallations({host:document.querySelector('#paso-2'),t,getSource:()=>isImage()&&img.naturalWidth?img:null,getCampaign:()=>sourceHandoff?.campaign,locked:()=>!!pkg?.running});
 let switching = 0;
@@ -1946,7 +2017,7 @@ async function switchProject(id) {
   renderProfiles(); renderCampaigns(); renderProjects(); renderProjectStatus(note); syncURL();
   buildGrid();
 }
-$('#adapter-project').onchange = (e) => { switchProject(e.target.value); };
+$('#adapter-project').onchange = (e) => { soltarFormatosURL(); switchProject(e.target.value); };
 // Yokup en vivo: GET público con CORS *. Si tarda o falla, se queda la copia del repositorio.
 function fetchYokup() {
   const ctl = typeof AbortController === 'function' ? new AbortController() : null;
@@ -1967,6 +2038,16 @@ let migratedTo = null; try { migratedTo = migrateStorage(localStorage, STORAGE_K
 campaignWorkshop=mountCampaign({t,queue,openTwin:f=>twin?.open(f),previewTwin:(f,draw,stamp)=>twin?.preview(f,{draw,stamp}),clientCatalog:INDEX});
 let query = null, lastProject = null;
 try { query = new URLSearchParams(location.search).get('proyecto'); } catch (_) {}
+// ?formato= solo en /adaptaciones/ (no en /creador/). Sin ?proyecto=, se comprueba contra la ficha de
+// Altadis ANTES de cambiar de proyecto: un id que no existe no toca ni el proyecto ni lo guardado.
+let formatosURL = esPaginaAdaptador(location.pathname) ? formatosPedidos(location.search) : [];
+if (formatosURL.length && !(query && String(query).trim())) {
+  let ids = [];
+  try { const entry = INDEX.find(x => x.id === PROYECTO_ALTADIS); if (entry) { const {ficha, lists} = await loadFicha(entry); ids = projectLibrary([], ficha, lists, EN).map(f => f.id); } } catch (_) {}
+  formatosURL = formatosPedidos(location.search, ids); query = proyectoPorFormatos(query, formatosURL);
+}
+if (!formatosURL.length && esPaginaAdaptador(location.pathname)) quitarFormatoURL(); // ninguno vale (cliente-99): fuera de la URL, sin aviso
+if (formatosURL.length) vistaFormato = {ids: formatosURL}; // pendiente: nada se guarda hasta aplicarla
 try { lastProject = localStorage.getItem(PROJECT_KEY) || migratedTo; } catch (_) { lastProject = migratedTo; }
 const live = fetchYokup();
 let start = initialProject({query, saved: lastProject, projects: PROJECTS, index: INDEX});
@@ -1974,6 +2055,7 @@ let start = initialProject({query, saved: lastProject, projects: PROJECTS, index
 if (start.unknown) { await live; start = initialProject({query, saved: lastProject, projects: PROJECTS, index: INDEX}); }
 await switchProject(start.id);
 if (start.unknown) renderProjectStatus(t(`«${start.unknown}» no es un proyecto de Yokup: se usa ${projectName(start.id) === GENERAL ? 'General' : projectName(start.id)}.`, `«${start.unknown}» is not a Yokup project: using ${projectName(start.id) === GENERAL ? 'General' : projectName(start.id)}.`));
+aplicarFormatosURL();
 emptySource(); loop();
 if(!/(?:^|\/)creador(?:\/|$)/.test(location.pathname)&&new URLSearchParams(location.search).has('handoff')){try{sourceHandoff=await readHandoff(new URLSearchParams(location.search).get('handoff'));await cargarFuente({file:new File([sourceHandoff.source.blob],sourceHandoff.source.name||'campaign.png',{type:sourceHandoff.source.blob.type}),nombre:sourceHandoff.source.name||'Campaign',origen:'creador'});}catch{announce(t('No se pudo recuperar la imagen de Creador. Vuelve a abrirla desde la campaña.','Creator image could not restore. Open it again from the campaign.'));}}
 
