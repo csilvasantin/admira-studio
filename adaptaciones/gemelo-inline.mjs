@@ -1,5 +1,5 @@
-import {createFormatTwin,isStarbucksFormat} from './gemelo-factory.mjs?v=stock-sync-1';
-import {twinGeometry} from './gemelo-core.mjs?v=stock-sync-1';
+import {createFormatTwin,isStarbucksFormat} from './gemelo-factory.mjs?v=coffee-journey-1';
+import {twinGeometry} from './gemelo-core.mjs?v=coffee-journey-1';
 
 // One WebGL context for all visible cards. Snapshot previews never own media time.
 export function mountInlineTwins(h){

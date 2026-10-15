@@ -1,0 +1,35 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "3f48f66",
+  "reason": "Carlos pide siete mensajes activados al paso de la taza, vapor animado y una segunda vuelta completa en inglés. El creador exporta el vapor dentro de los MP4 y mantiene independientes las versiones ES y EN.",
+  "files": [
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/campaign-core.mjs",
+    "adaptaciones/campaign-entry.mjs",
+    "adaptaciones/campaign-handoff.mjs",
+    "adaptaciones/campaign-integrated.mjs",
+    "adaptaciones/campaign-journey.mjs",
+    "adaptaciones/campaign-render.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/client-format-controls.mjs",
+    "adaptaciones/client-installations.mjs",
+    "adaptaciones/gemelo-better.mjs",
+    "adaptaciones/gemelo-core.mjs",
+    "adaptaciones/gemelo-digital.mjs",
+    "adaptaciones/gemelo-factory.mjs",
+    "adaptaciones/gemelo-inline.mjs",
+    "adaptaciones/index.html",
+    "adaptaciones/starbucks-twin.mjs",
+    "creador/index.html",
+    "en/adaptaciones/index.html",
+    "en/creador/index.html",
+    "test/campaign-journey.test.mjs",
+    "docs/coffee-journey.md"
+  ],
+  "limits": {
+    "physicalMonitorMapping": "deployment preserves the separately verified physical player bindings",
+    "steamIsProcedural": true,
+    "hardwareVerified": false
+  }
+}

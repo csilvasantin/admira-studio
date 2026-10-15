@@ -1,4 +1,5 @@
 import {screenStory,screenLanguages,motionExpressions} from './campaign-story.mjs?v=starbucks-story-1';
+import {journeyStory,steamGeometry,STEAM} from './campaign-journey.mjs?v=coffee-journey-1';
 // Photography, copy and brand share one composition. Native export and canvas
 // preview use the same layer positions, entrance timing and global journey.
 export const COFFEE_STYLE='coffee-integrated';
@@ -13,7 +14,7 @@ export function integratedPlan(c,i,measure,fit){
   const logoSize=Math.min(s.w,s.h)*.128;
   layers.push({role:'logo',x:s.x+p,y:s.y+p,w:logoSize,h:logoSize,start:0,duration:.4});
   const box={x:s.x+p,y:s.y+(portrait?s.h*.142:s.h*.28),w:s.w*(portrait?.86:.47),h:s.h*(portrait?.245:.39)};
-  const stories=screenStory(c,i,s);
+  const stories=journeyStory(c,i,s)||screenStory(c,i,s);
   const max=Math.min(s.w,s.h)*(stories?(portrait?.13:.115):(portrait?.1:.095));
   const ctaBox={x:s.x+p,y:s.y+s.h*(portrait?.885:.805),w:s.w-2*p,h:s.h*.07};
   for(const segment of stories||[{text:c.headline,cta:c.cta,start:0}]){
@@ -77,10 +78,12 @@ export function integratedJob(c,i,s,plan,geometry){
  const W=s.w,H=s.h;if(W%2||H%2||s.rotation)throw Error('travel-native-geometry');
  const seconds=i.phase==='unit'?(c.unitSeconds||8):c.seconds;
  const layers=integratedLayers(plan).filter(l=>l.x>=s.x&&l.x<s.x+s.w&&l.y>=s.y&&l.y<s.y+s.h),mural=i.phase!=='unit'&&c.direction==='travel';
- const files=[...(mural?['product.png']:[]),...layers.map((l,n)=>`layer-${n}.png`)];
+ const steam=mural&&c.journeyStory?.steam===true;
+ const files=[...(mural?['product.png']:[]),...(steam?['steam.png']:[]),...layers.map((l,n)=>`layer-${n}.png`)];
  const args=['-filter_complex_threads','1','-loop','1','-framerate','25','-threads','1','-i','input.png'];for(const f of files)args.push('-loop','1','-framerate','25','-threads','1','-i',f);
  const filters=[];let previous='0:v',index=1;
  if(mural){const g=geometry;filters.push(`[${index}:v]format=rgba[p]`);filters.push(`[${previous}][p]overlay=x='${g.x0-s.x}+${g.x1-g.x0}*min(t/${c.seconds},1)':y=${g.y-s.y}:eval=frame:shortest=1[base]`);previous='base';index++;}
+ if(steam){const g=geometry,r=steamGeometry(g);filters.push(`[${index++}:v]crop=${STEAM.size}:${STEAM.size}:0:'floor(mod(t*${STEAM.fps},${STEAM.frames}))*${STEAM.size}',scale=${r.w}:${r.h},format=rgba[steam]`);filters.push(`[${previous}][steam]overlay=x='${g.x0-s.x+r.x}+${g.x1-g.x0}*min(t/${c.seconds},1)':y=${r.y-s.y}:eval=frame:shortest=1[steamed]`);previous='steamed';}
  for(const [n,l] of layers.entries()){
   const tag='layer'+n,next='stage'+n,m=motionExpressions(l);
   const exit=l.motion?`,fade=t=out:st=${l.end-.55}:d=0.55:alpha=1`:'';
@@ -90,5 +93,5 @@ export function integratedJob(c,i,s,plan,geometry){
  filters.push(`[${previous}]format=yuv420p,setsar=1[out]`);
  args.push('-filter_complex',filters.join(';'),'-map','[out]','-frames:v',String(seconds*25),'-an','-c:v','libx264','-preset','veryfast','-threads','1','-profile:v','high','-pix_fmt','yuv420p','-r','25','-g','25','-crf','19','-movflags','+faststart','output.mp4');
  const contentLanguages=screenLanguages(c,i,s),suffix=contentLanguages.length===2?'-bilingual':contentLanguages[0]==='en'?'-en':'';
- return {filename:`${c.id}-${i.id}-${c.direction}-${s.id}-r${c.revision}${suffix}-${W}x${H}.mp4`,W,H,input:'input.png',durationSeconds:seconds,kind:'animated-integrated',visualStyle:COFFEE_STYLE,contentLanguages,layers,files,mural,args};
+ return {filename:`${c.id}-${i.id}-${c.direction}-${s.id}-r${c.revision}${suffix}-${W}x${H}.mp4`,W,H,input:'input.png',durationSeconds:seconds,kind:'animated-integrated',visualStyle:COFFEE_STYLE,contentLanguages,layers,files,mural,steam,args};
 }

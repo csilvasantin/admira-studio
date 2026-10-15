@@ -1,12 +1,12 @@
 {
-  "version": "v.15.10.2026.r5.22:16",
+  "version": "v.16.10.2026.r1.00:31",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
   "machine": "Codex desktop",
   "signature": "Codex · Codex desktop",
-  "git": "a8fe9a634e267707c7a3c04de30ea3c4b3092f2d",
-  "gitShort": "a8fe9a6",
-  "gitFull": "a8fe9a634e267707c7a3c04de30ea3c4b3092f2d",
+  "git": "3f48f66c455374d96b2209d0b1b5267b20a21383",
+  "gitShort": "3f48f66",
+  "gitFull": "3f48f66c455374d96b2209d0b1b5267b20a21383",
   "dirty": false
 }
