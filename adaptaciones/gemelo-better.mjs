@@ -6,7 +6,7 @@ import {mergeGeometries} from '../assets/xpaces/engine/vendor/BufferGeometryUtil
 import {TWIN_REFERENCE,observerPoint} from './gemelo-reference.mjs?v=installation-20261009';
 import {TWIN_BEST_REFERENCE} from './gemelo-assets.mjs?v=installation-20261009';
 import {displayPlacementForReference,recommendedReferenceId} from './gemelo-catalog.mjs?v=installation-20261009';
-import {previewSize,screenCrop} from './gemelo-core.mjs?v=installation-20261009';
+import {previewSize,screenCrop} from './gemelo-core.mjs?v=coffee-journey-1';
 
 function resources(root){const set=new Set();root.traverse(n=>{if(n.geometry)set.add(n.geometry);for(const m of [n.material].flat().filter(Boolean)){set.add(m);for(const v of Object.values(m))if(v?.isTexture)set.add(v);}});return set;}
 function release(root){for(const r of resources(root)){r.source?.data?.close?.();r.dispose();}}

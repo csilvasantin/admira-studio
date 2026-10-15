@@ -1,7 +1,7 @@
 import * as T from '../assets/xpaces/engine/premium-three.mjs';
 import {createLifeScene} from '../assets/xpaces/engine/life-scene.mjs?v=px-1';
 import {createLifeRenderer} from '../assets/xpaces/engine/life-renderer.mjs?v=installation-20261009';
-import {previewSize,screenCrop} from './gemelo-core.mjs?v=stock-sync-1';
+import {previewSize,screenCrop} from './gemelo-core.mjs?v=coffee-journey-1';
 import {observerPoint} from './gemelo-reference.mjs?v=installation-20261009';
 import {STARBUCKS_ROOM,STARBUCKS_PHOTO,starbucksPlacement} from './starbucks-twin-core.mjs?v=stock-sync-1';
 
