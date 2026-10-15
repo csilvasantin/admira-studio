@@ -1,23 +1,25 @@
 {
-  "version": "v.15.10.2026.r3.21:47",
-  "deployedAt": "2026-10-15T19:47:16Z",
-  "author": "NeoMacStudio",
-  "agent": "NeoMacStudio",
-  "deployer": "NeoMacStudio",
-  "machine": "MacStudio",
-  "signature": "NeoMacStudio · MacStudio",
-  "git": "2fe5d9ab62c65e3fb59de856d82cf9400cb5111d",
-  "gitFull": "2fe5d9ab62c65e3fb59de856d82cf9400cb5111d",
-  "gitShort": "2fe5d9a",
+  "version": "v.15.10.2026.r4.21:52",
+  "deployedAt": "2026-10-15T19:52:25Z",
+  "author": "Codex",
+  "agent": "Codex",
+  "deployer": "Codex",
+  "machine": "Codex desktop",
+  "signature": "Codex · Codex desktop",
+  "git": "a8fe9a634e267707c7a3c04de30ea3c4b3092f2d",
+  "gitFull": "a8fe9a634e267707c7a3c04de30ea3c4b3092f2d",
+  "gitShort": "a8fe9a6",
   "dirty": false,
   "novedades": [
-    "«alsea» es Starbucks: ?marca=alsea y /marca alsea aplican la marca Starbucks (por si alguien se equivoca)."
+    "/crear contenido en Experto: póster / etiqueta digital PNG y pantallas vertical/horizontal MP4, con revisión y Stock.",
+    "Solicitud anamórfica opcional con geometría y observador; se identifica como encargo pendiente de render y calibración."
   ],
   "rollback": {
-    "git": "2fe5d9ab62c65e3fb59de856d82cf9400cb5111d"
+    "git": "8aeab5c3c476db52db2f6aa803acf1322238f8f3"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
+    ".source-patches/create-content.json",
     ".source-patches/expert-compact-bugito.json",
     ".source-patches/import-search-tags.json",
     ".source-patches/inline-twins-header.json",
