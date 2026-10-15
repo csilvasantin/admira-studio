@@ -25,7 +25,7 @@ export function mountCreatorFormats({root,t,get,begin,newCampaign,select,source,
     if(!transfer.campaign){next.product=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(transfer.source.blob);});next.productLabel=transfer.source.name||next.name;}
     if(entry){pick.value=entry.id;next=applyClientInstallations(next,await ficha(entry),{fresh:!transfer.campaign,only:transfer.installation||params.get('instalacion')});}
     begin(next);select(transfer.installation||params.get('instalacion'));const clean=new URL(location.href);clean.searchParams.delete('handoff');history.replaceState(history.state,'',clean.href);say(t('Campaña e imagen recuperadas del Adaptador. Revisa los formatos y completa los textos si empiezas desde una imagen.','Campaign and image restored from Adapter. Review formats and complete copy when starting from an image.'));
-   }else if(requested&&!hadSaved&&!params.has('demo')){begin(applyClientInstallations(get(),await ficha(requested),{fresh:true,only:params.get('instalacion')}));select(params.get('instalacion'));}
+   }else if(requested&&!hadSaved&&!params.has('demo')&&params.get('flow')!=='contenido'){begin(applyClientInstallations(get(),await ficha(requested),{fresh:true,only:params.get('instalacion')}));select(params.get('instalacion'));}
    if(params.get('instalacion'))select(params.get('instalacion'));
   }catch(e){say(t('No se pudieron cargar los formatos de cliente. La campaña sigue disponible. ','Client formats could not load. Your campaign remains available. ')+e.message);}finally{update();}
  }

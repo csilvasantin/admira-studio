@@ -139,3 +139,17 @@ Tutorial ES/EN: https://admira.studio/docs/creator-content-language.md
 Ocho vídeos ingleses / Eight English movies: https://admira.studio/campanas/starbucks-six/?content=en
 
 ES/EN: Idiomas a crear / Languages to create uses multiple checkboxes, defaults to the UI language for new campaigns, and exports all selected languages; tutorial: https://admira.studio/docs/creator-content-language.md
+
+## Crear contenido · póster y pantallas / Create content · poster and screens
+
+En una página interior, activa **Experto** y escribe `/crear contenido [brief]` (EN: `/create content [brief]`). Abre el Creador con un borrador independiente, recuperable al recargar, y tres salidas seleccionables:
+
+- Póster / etiqueta digital: PNG estático, con resolución nativa editable.
+- Pantalla vertical: MP4 1080×1920.
+- Pantalla horizontal: MP4 1920×1080.
+
+Escribe el brief, prepara los formatos y edita imagen, logo, titular y llamada a la acción. **Generar imagen nueva con IA** reutiliza el servicio autenticado de Studio y consume crédito sólo cuando se pulsa; **Usar ejemplo · Starbucks Diagonal** reutiliza fotografías existentes y no genera medios. Revisa y aprueba cada composición. **Descargar póster PNG** contiene sólo los destinos de imagen; **Preparar pantallas MP4** pone sólo los destinos de vídeo en la cola del Adaptador. Los botones nativos publican las salidas revisadas en Stock. La duración de pantalla es la elegida en Contenido, a 25 fps, sin audio.
+
+`/crear contenido anamórfico [brief]` muestra la solicitud opcional de geometría. Conserva metros, observador y vértices/resolución de cada panel, y permite descargar un contrato `admira.anamorphic-request.v1`. Es un encargo: `mediaRendered:false` y `calibrationVerified:false`. El render anamórfico requiere un motor de proyección y calibración; esta entrada no lo sustituye por un mural plano ni lo anuncia como exportado.
+
+EN: Open an interior page, enable Expert and run `/create content [brief]`. Choose a static PNG digital label with editable native dimensions and/or portrait/landscape full-HD MP4 screens. Explicit AI generation uses the existing authenticated service; the Starbucks example reuses photos. Review each composition, then export PNG images and MP4 videos through separate native deliveries and publish to Stock. `anamorphic` prepares a geometry request; it does not claim a calibrated or rendered anamorphic asset.

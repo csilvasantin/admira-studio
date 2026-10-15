@@ -1,3 +1,4 @@
+import {restoreContentRequest} from './content-request-core.mjs?v=create-content-1';
 import {restoreStory,screenLanguages} from './campaign-story.mjs?v=starbucks-story-1';
 import {restoreLanguage} from './campaign-language.mjs?v=starbucks-story-1';
 import {COFFEE_STYLE,integratedPlan,integratedJob} from './campaign-integrated.mjs?v=starbucks-story-1';
@@ -20,7 +21,7 @@ const inside=(a,b)=>a.x>=b.x-.01&&a.y>=b.y-.01&&a.x+a.w<=b.x+b.w+.01&&a.y+a.h<=b
 const finite=v=>typeof v==='number'&&Number.isFinite(v);
 const identifier=v=>typeof v==='string'&&/^[a-z0-9][a-z0-9_-]{0,79}$/i.test(v);
 export function validateInstallation(i){
- const errors=[];if(i?.phase!==undefined&&!['mural','unit'].includes(i.phase))errors.push('installation-phase');if(i?.enabled!==undefined&&typeof i.enabled!=='boolean')errors.push('installation-enabled');if(!i||!Number.isInteger(i.width)||!Number.isInteger(i.height)||i.width<64||i.height<64||i.width>16384||i.height>16384||i.width*i.height>25165824)errors.push('installation-size');
+ const errors=[];if(i?.mediaType!==undefined&&!['image','video'].includes(i.mediaType))errors.push('installation-media-type');if(i?.phase!==undefined&&!['mural','unit'].includes(i.phase))errors.push('installation-phase');if(i?.enabled!==undefined&&typeof i.enabled!=='boolean')errors.push('installation-enabled');if(!i||!Number.isInteger(i.width)||!Number.isInteger(i.height)||i.width<64||i.height<64||i.width>16384||i.height>16384||i.width*i.height>25165824)errors.push('installation-size');
  if(!identifier(i?.id))errors.push('installation-id');
  if(i?.enabled!==undefined&&typeof i.enabled!=='boolean')errors.push('installation-enabled');
  if(!Array.isArray(i?.screens)||!i.screens.length||i.screens.length>32)errors.push('screens');
@@ -38,6 +39,7 @@ export function validateInstallation(i){
 export function restoreCampaign(value){
  if(!value||value.schema!==CAMPAIGN_SCHEMA)throw Error('campaign-schema');
  const out=clone(DEFAULT_CAMPAIGN);
+ if(value.creationRequest!==undefined)out.creationRequest=restoreContentRequest(value.creationRequest);
  if(value.wallStory!==undefined)out.wallStory=restoreStory(value.wallStory);
  if(value.client!==undefined){if(!value.client||!identifier(value.client.id)||typeof value.client.name!=='string'||!value.client.name.trim()||value.client.name.length>100)throw Error('campaign-client');out.client=clone(value.client);}
  if(!identifier(value.id))throw Error('campaign-id');out.id=value.id;
@@ -119,7 +121,7 @@ export function planCampaign(c,i,direction=c.direction,measure=(s,px)=>s.length*
 }
 export function campaignContract(c,approvals={}){
  const campaign=restoreCampaign(c);
- return{schema:CAMPAIGN_SCHEMA,campaign,delivery:{contentLanguages:campaign.contentLanguages,contentLanguage:campaign.contentLanguage,fps:25,gopFrames:25,audio:false,kind:campaign.visualStyle===COFFEE_STYLE&&campaign.direction==='travel'?'animated-integrated':campaign.direction==='travel'?'animated-travel':'still-composition',visualStyle:campaign.visualStyle||'classic',copyAnimation:campaign.visualStyle===COFFEE_STYLE&&campaign.direction==='travel'?{lineStaggerSeconds:.12,headlineSeconds:.6,ctaStartSeconds:1,ctaSeconds:.5,slidePixels:24,easing:'easeOutCubic',stableAfterSeconds:campaign.wallStory?null:1.5,acts:campaign.wallStory?3:1,screenSplit:campaign.wallStory?{es:3,en:3}:null,exitSeconds:campaign.wallStory?.55:0}:null,hardwareVerified:false,wallStory:campaign.wallStory||null},approvals:clone(approvals),limits:{measuredGeometry:false,anamorphicExport:false,automaticVideoLayerExtraction:false},derived:campaign.installations.filter(i=>i.enabled!==false).flatMap(i=>i.screens.map(s=>({installation:i.id,screen:s.id,width:s.rotation%180?s.h:s.w,height:s.rotation%180?s.w:s.h,rotation:s.rotation||0,contentLanguages:screenLanguages(campaign,i,s),tags:[...(campaign.client?[campaign.client.id]:[]),'campaign:'+campaign.id,'installation:'+i.id,'screen:'+s.id,'direction:'+campaign.direction,...screenLanguages(campaign,i,s).map(lang=>'content-language:'+lang)]})))};
+ return{schema:CAMPAIGN_SCHEMA,campaign,delivery:{contentLanguages:campaign.contentLanguages,contentLanguage:campaign.contentLanguage,fps:25,gopFrames:25,audio:false,kind:campaign.visualStyle===COFFEE_STYLE&&campaign.direction==='travel'?'animated-integrated':campaign.direction==='travel'?'animated-travel':'still-composition',visualStyle:campaign.visualStyle||'classic',copyAnimation:campaign.visualStyle===COFFEE_STYLE&&campaign.direction==='travel'?{lineStaggerSeconds:.12,headlineSeconds:.6,ctaStartSeconds:1,ctaSeconds:.5,slidePixels:24,easing:'easeOutCubic',stableAfterSeconds:campaign.wallStory?null:1.5,acts:campaign.wallStory?3:1,screenSplit:campaign.wallStory?{es:3,en:3}:null,exitSeconds:campaign.wallStory?.55:0}:null,hardwareVerified:false,wallStory:campaign.wallStory||null},approvals:clone(approvals),limits:{measuredGeometry:false,anamorphicExport:false,automaticVideoLayerExtraction:false},derived:campaign.installations.filter(i=>i.enabled!==false).flatMap(i=>i.screens.map(s=>({installation:i.id,screen:s.id,width:s.rotation%180?s.h:s.w,height:s.rotation%180?s.w:s.h,rotation:s.rotation||0,mediaType:i.mediaType||'video',contentLanguages:screenLanguages(campaign,i,s),tags:[...(campaign.client?[campaign.client.id]:[]),'campaign:'+campaign.id,'installation:'+i.id,'screen:'+s.id,'direction:'+campaign.direction,...screenLanguages(campaign,i,s).map(lang=>'content-language:'+lang)]})))};
 }
 export function campaignJob(c,i,s,plan){
  if(c.translationDraft)throw Error('campaign-copy-language-required');if(validateInstallation(i).length)throw Error('campaign-installations');

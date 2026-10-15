@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   // ─── Piezas puras (también se prueban en node: test/marca-blanca.test.cjs) ───
-  var COMMANDS = ['help', 'creador', 'creator', 'campana', 'campaign', 'demo', 'clear', 'echo', 'date', 'status', 'version', 'history', 'open', 'marca', 'idioma', 'language', 'languague', 'avatar', 'avataron', 'avataroff', 'avatardigital', 'digitalavatar', 'admirito'];
+  var COMMANDS = ['help', 'crear', 'create', 'creador', 'creator', 'campana', 'campaign', 'demo', 'clear', 'echo', 'date', 'status', 'version', 'history', 'open', 'marca', 'idioma', 'language', 'languague', 'avatar', 'avataron', 'avataroff', 'avatardigital', 'digitalavatar', 'admirito'];
   var MARCA_VERB = /^\/?(?:marca|brand|marcablanca)$/i;
   // Semilla del catálogo de admiranext.com/marcablanca: vale para el Tab sin red. Con la
   // marca blanca cargada se usa la lista real (AdmiraMarca.conocidas()).
@@ -27,7 +27,7 @@
     if (!a) return {value: text, options: []};
     var verb = a[2].toLowerCase(), part = a[3].toLowerCase();
     var pool = MARCA_VERB.test(verb) ? (brandIds && brandIds.length ? brandIds : BRAND_SEED).concat(['off'])
-      : (verb === 'open' || verb === 'abrir') ? (sections || []) : [];
+      : (verb === 'open' || verb === 'abrir') ? (sections || []) : verb === 'crear' ? ['contenido'] : verb === 'create' ? ['content'] : [];
     var options = pool.filter(function (o, i) { return o.indexOf(part) === 0 && pool.indexOf(o) === i; });
     if (!options.length) return {value: text, options: []};
     if (options.length === 1) return {value: a[1] + options[0], options: options};
@@ -388,9 +388,11 @@
       return;
     }
     switch (name) {
+      case 'crear': case 'create': import('/adaptaciones/content-request-core.mjs?v=create-content-1').then(function(m){location.assign(m.contentRequestURL(arg,en?'en':'es'));}).catch(function(e){write(e.message==='content-brief-size'?t('El brief admite hasta 2000 caracteres.','Brief accepts up to 2000 characters.'):t('Usa /crear contenido [brief]. Prepara póster PNG y pantallas vertical/horizontal MP4. Añade anamórfico para preparar el encargo.','Use /create content [brief]. Prepares a PNG poster and portrait/landscape MP4 screens. Add anamorphic to prepare its request.'));}); break;
       case 'creador': case 'creator': case 'campana': case 'campaign': location.assign((en ? '/en/creador/' : '/creador/') + '?lang=' + (en ? 'en' : 'es')); break;
       case 'demo': if (/^(?:capsula|cápsula|capsule)(?:\s|$)/i.test(arg)) { import('/assets/capsula-good.mjs').then(function(m){return m.runKnowledgeDemo(arg,en?'en':'es');}).then(write).catch(function(e){write(e.message);}); break; } if(/^(?:creador|creator)(?:\s|$)/i.test(arg) || (window.CreatorDemo?.active && /^(?:pausa|pause|reanudar|resume|siguiente|next|estado|status|stop|off)$/.test(arg))){if(window.CreatorDemo)Promise.resolve(window.CreatorDemo.run(arg.replace(/^(?:creador|creator)\s*/i,''))).then(write);else location.assign((en?'/en/creador/':'/creador/')+'?demo=creador&lang='+(en?'en':'es')+(/(?:^|\s)(todo|full)$/.test(arg)?'&mode=full&intent=full':''));break;} if(/^(?:sneakers?|next-step|nextstep)(?:\s|$)/i.test(arg)||(!arg&&/\/creador(?:\/|$)|\/campanas\/next-step/.test(location.pathname))){var demoArgs=arg.replace(/^(?:sneakers?|next-step|nextstep)\s*/i,'');if(window.NextStepDemo)write(window.NextStepDemo.run(demoArgs));else location.assign('/campanas/next-step/?lang='+(en?'en':'es'));break;} import('/assets/taza-demo.mjs?v=1').then(function(m){write(m.runTazaDemo(arg,en?'en':'es'));}).catch(function(){write(t('No se pudo cargar la cámara.','Could not load camera.'));});break;
       case 'help': case 'ayuda':
+        write(t('/crear contenido [brief] — póster / etiqueta digital PNG + pantalla vertical y horizontal MP4; generación IA explícita, revisión y Stock. Añade anamórfico para solicitar geometría y punto de observación.','/create content [brief] — digital label PNG poster + portrait and landscape MP4 screens; explicit AI generation, review and Stock. Add anamorphic to request geometry and viewing point.'));
         write(t('/creador · /campana — Creador: campaña desde cero; ejemplo Sneakers Store; editar elementos → dirección → instalación → revisar/aprobar → exportar; guía /docs/campanas-instalacion.md.','/creator · /campaign — Creator: campaign from scratch; Sneakers Store example; edit elements → direction → installation → review/approve → export; guide /docs/campanas-instalacion.md.'));
         write(t('/demo creador todo — imagen y vídeo IA nuevos hasta el gemelo 360; sesión y crédito del proveedor. /demo creador — campaña nueva para Sneaker Xtore: brief → concepto → creatividades → adaptación → gemelo 360/3D. nueva · pausa · reanudar · siguiente · estado · stop; historial demo separado.','/demo creator full — new AI image and video into the 360 twin; session and provider credit. /demo creator — new Sneaker Xtore campaign: brief → concept → creatives → adaptation → 360/3D twin. new · pause · resume · next · status · stop; separate demo history.'));
         write(t('/demo sneakers — NEXT STEP: campaña de Sneaker Store; en Creador también /demo. pausa · reiniciar · recorrer · parar.','/demo sneakers — NEXT STEP: Sneaker Store campaign; in Creator also /demo. pause · restart · tour · stop.'));
@@ -432,7 +434,7 @@
     }
   }
   function connectCommands(engine) {
-    var actions=['marca','brand','marcablanca','creador','creator','campana','campaign','echo','date','fecha','history','historial','open','abrir'];
+    var actions=['crear','create','marca','brand','marcablanca','creador','creator','campana','campaign','echo','date','fecha','history','historial','open','abrir'];
     engine.registerAdapter({id:'studio',onCommand:function(command){history.push(command);if(history.length>100)history.shift();cursor=history.length;draft='';},
       verbs:actions.map(function(name){return {name:name,desc:[name,name],run:function(args,log,command){return executeAction(command);}};}),
       demos:['capsula','capsule','taza','creador','creator','sneakers','sneaker','next-step','nextstep','pausa','pause','reanudar','resume','siguiente','next','estado','status','stop','off',''].map(function(name){return {name:name,when:function(){return name?(!/^(pausa|pause|reanudar|resume|siguiente|next|estado|status|stop|off)$/.test(name)||!!window.CreatorDemo?.active):/\/creador(?:\/|$)|\/campanas\/next-step/.test(location.pathname);},run:function(args){return executeAction({name:'demo',args:(name?name+' ':'')+args.join(' ')});}};})});

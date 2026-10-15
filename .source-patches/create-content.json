@@ -1,0 +1,32 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "2fe5d9ab62c65e3fb59de856d82cf9400cb5111d",
+  "reason": "Carlos solicita /crear contenido en Experto para la demo: póster/etiqueta digital y pantalla vertical/horizontal, con solicitud anamórfica opcional. Se sigue el patrón de cambios canónicos de Studio sin regenerar los clones congelados.",
+  "files": [
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/campaign-core.mjs",
+    "adaptaciones/campaign-entry.mjs",
+    "adaptaciones/campaign-handoff.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/client-format-controls.mjs",
+    "adaptaciones/client-installations.mjs",
+    "adaptaciones/content-request-core.mjs",
+    "adaptaciones/content-request.mjs",
+    "adaptaciones/gemelo-core.mjs",
+    "adaptaciones/index.html",
+    "assets/expert-cli.js",
+    "assets/site-nav.js",
+    "creador/index.html",
+    "docs/expert-cli.md",
+    "en/adaptaciones/index.html",
+    "en/creador/index.html",
+    "test/content-request.test.mjs"
+  ],
+  "limits": {
+    "anamorphicRendered": false,
+    "anamorphicCalibration": false,
+    "einkHardwareVerified": false,
+    "automaticStockPublication": false
+  }
+}
