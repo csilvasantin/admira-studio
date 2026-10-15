@@ -9,7 +9,7 @@ import {mountTwin} from './gemelo-digital.mjs?v=stock-sync-1';
 import {aiJob} from './ia-core.mjs?v=adapter-detail-1';
 import {APPLICATION_KEY,restoreApplications,applyApplications} from './aplicaciones-core.mjs';
 import {mountStudio} from './studio-adaptaciones.mjs';
-import {formatosPedidos, proyectoPorFormatos, encenderSolo, enlacesEspacio, esPaginaAdaptador, abrirVista, guardadoEnVista, PROYECTO_ALTADIS} from './formato-url.mjs?v=altadis-18-2';
+import {formatosPedidos, proyectoPorFormatos, encenderSolo, enlacesEspacio, esPaginaAdaptador, abrirVista, guardadoEnVista, PROYECTO_ALTADIS} from './formato-url.mjs?v=altadis-18-3';
 let studio = null, twin = null, advertisement = null;
 // Admira Studio · Adaptaciones (FLT-101349, 2-oct-2026): un vídeo → todas las pantallas.
 // Render en vivo en canvas; las reglas son las del motor de signage de Admira Studio.
@@ -103,8 +103,13 @@ function saveSettings() {
   if (!initialized) return;
   try {
     let snap = settingsSnapshot();
-    // Vista de ?formato=: se guarda la selección de antes del enlace; si el usuario cambia los formatos, ya es la suya.
-    if (vistaFormato) { const vista = guardadoEnVista(snap, vistaFormato); if (vista.fin) { vistaFormato = null; quitarFormatoURL(); syncURL(); } else if (!vista.snap) return; snap = vista.snap; }
+    // Vista de ?formato=: se guarda la selección de antes del enlace. Una marca manual termina la vista y
+    // se aplica sobre esa selección previa: fuera el aviso, se repinta y se guarda.
+    if (vistaFormato) {
+      const vista = guardadoEnVista(snap, vistaFormato);
+      if (vista.fin) { soltarFormatosURL(vista.seleccion); syncURL(); queueMicrotask(buildGrid); snap = settingsSnapshot(); }
+      else if (!vista.snap) return; else snap = vista.snap;
+    }
     localStorage.setItem(keyFor(state.proyecto), JSON.stringify(snap));
     if (state.proyecto !== GENERAL) {
       const general = readJSON(STORAGE_KEY);
@@ -1946,7 +1951,8 @@ function syncURL() {
 // tarjeta, con su previo y su gemelo 3D. La tarjeta y el aviso enlazan de vuelta a su espacio.
 // Es una VISTA TEMPORAL: no guarda la selección filtrada ni el último proyecto. Se suelta al cerrar
 // el aviso, al elegir otro proyecto o al recargar sin parámetro, y vuelve la selección del usuario.
-// Si el usuario marca o desmarca formatos durante la vista, esa selección es suya y se guarda.
+// Si el usuario marca o desmarca formatos durante la vista, la vista termina y su cambio se aplica
+// sobre la selección previa (previa ∪ marcados − desmarcados), con su perfil de antes.
 function enlacesEspacioNodo(id) {
   const enlaces = enlacesEspacio(id); if (!enlaces.length) return null;
   const box = document.createElement('div'); box.className = 'espacio-links';
@@ -1961,7 +1967,7 @@ function aplicarFormatosURL() {
   if (!vistaFormato) return;
   const ids = formatosPedidos(location.search, FORMATOS.filter(isProjectFormat).map(f => f.id));
   // Ninguno existe en el proyecto pedido con ?proyecto=: no hay vista, la página sigue como siempre.
-  if (!ids.length) { vistaFormato = null; syncURL(); saveSettings(); return; }
+  if (!ids.length) { vistaFormato = null; quitarFormatoURL(); syncURL(); saveSettings(); return; }
   vistaFormato = abrirVista(settingsSnapshot(), ids); encenderSolo(FORMATOS, ids);
   state.profile = 'proyecto'; state.sel = formatoEnfocar = ids[0]; syncControls(); buildGrid();
   const box = document.createElement('div'); box.id = 'formato-url'; box.className = 'formato-url'; box.setAttribute('role', 'status');
@@ -1977,10 +1983,10 @@ function aplicarFormatosURL() {
   cerrar.onclick = () => { soltarFormatosURL(); buildGrid(); syncURL(); };
   hint.append(' ', cerrar); box.append(hint); document.querySelector('#sec-adapt .steps')?.after(box);
 }
-// Soltar la vista (cerrar el aviso o elegir otro proyecto): vuelve la selección de antes del enlace,
-// fuera el aviso y el parámetro.
-function soltarFormatosURL() {
-  if (vistaFormato?.previo) { const {profile, selected} = vistaFormato.previo; FORMATOS.forEach(f => { f.on = selected.includes(f.id); }); state.profile = profile; syncControls(); }
+// Soltar la vista (cerrar el aviso o elegir otro proyecto): vuelve la selección de antes del enlace (o la
+// que se pase, al terminar por una marca manual), fuera el aviso y el parámetro.
+function soltarFormatosURL(seleccion = vistaFormato?.previo) {
+  if (seleccion) { const {profile, selected} = seleccion; FORMATOS.forEach(f => { f.on = selected.includes(f.id); }); state.profile = profile; syncControls(); }
   vistaFormato = null; formatoEnfocar = ''; document.querySelector('#formato-url')?.remove(); quitarFormatoURL();
 }
 function quitarFormatoURL() {
@@ -2039,6 +2045,7 @@ if (formatosURL.length && !(query && String(query).trim())) {
   try { const entry = INDEX.find(x => x.id === PROYECTO_ALTADIS); if (entry) { const {ficha, lists} = await loadFicha(entry); ids = projectLibrary([], ficha, lists, EN).map(f => f.id); } } catch (_) {}
   formatosURL = formatosPedidos(location.search, ids); query = proyectoPorFormatos(query, formatosURL);
 }
+if (!formatosURL.length && esPaginaAdaptador(location.pathname)) quitarFormatoURL(); // ninguno vale (cliente-99): fuera de la URL, sin aviso
 if (formatosURL.length) vistaFormato = {ids: formatosURL}; // pendiente: nada se guarda hasta aplicarla
 try { lastProject = localStorage.getItem(PROJECT_KEY) || migratedTo; } catch (_) { lastProject = migratedTo; }
 const live = fetchYokup();

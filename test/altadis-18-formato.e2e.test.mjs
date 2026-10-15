@@ -99,21 +99,45 @@ test('?formato= es una vista temporal: no pisa lo guardado, se suelta y no actú
     await ir('/adaptaciones/?formato=cliente-99');
     e = await leer();
     assert.equal(e.proyecto, 'pixeria-alsea'); assert.equal(e.ultimo, 'pixeria-alsea'); assert.equal(e.aviso, false); assert.equal(e.guardado, antes);
+    assert.doesNotMatch(e.url, /formato=/);
 
     // 6. En Creador (mismo adaptaciones.js) el parámetro no actúa.
     await ir('/creador/?formato=cliente-06', {tarjetas: false});
     e = await leer();
     assert.equal(e.aviso, false); assert.notEqual(e.proyecto, 'altadis-estancos-bcn'); assert.equal(e.ultimo, 'pixeria-alsea'); assert.equal(e.guardado, antes);
 
-    // 7. Si durante la vista marca otro formato, esa selección ya es suya y se guarda.
+    // 7. Si durante la vista marca otro formato, la vista termina y la marca se suma a su selección:
+    //    cliente-03 se conserva y el aviso desaparece.
     await ir('/adaptaciones/?formato=cliente-06');
     await page.evaluate(() => document.querySelector('[data-select-key="size:cliente-10"]').click());
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(400);
     e = await leer();
-    assert.deepEqual(JSON.parse(e.guardado).selected.filter(id => id.startsWith('cliente-')), ['cliente-06', 'cliente-10']);
+    assert.deepEqual(JSON.parse(e.guardado).selected, [...seleccion, 'cliente-10']);
+    assert.equal(e.aviso, false); assert.deepEqual(e.tarjetas, ['cliente-03', 'cliente-10']);
     assert.doesNotMatch(e.url, /formato=/); assert.equal(e.ultimo, 'altadis-estancos-bcn');
     await ir('/adaptaciones/');
-    assert.deepEqual((await leer()).tarjetas, ['cliente-06', 'cliente-10']);
+    assert.deepEqual((await leer()).tarjetas, ['cliente-03', 'cliente-10']);
+
+    // 8 y 9. Repro de la re-revisión: guardado en «standard» con formatos del proyecto y de la biblioteca.
+    const previa = ['9:16', '16:9', 'cliente-01', 'cliente-02', 'cliente-03', 'cliente-esp-1'];
+    const sembrar = () => page.evaluate(([key, sel]) => { const r = JSON.parse(localStorage.getItem(key)); localStorage.setItem(key, JSON.stringify({...r, profile: 'standard', selected: sel})); }, [KEY, previa]);
+    const ordenada = list => [...list].sort();
+    // 8. La × de cliente-06 no borra nada de lo previo; perfil «standard» y sin aviso.
+    await sembrar(); await ir('/adaptaciones/?formato=cliente-06');
+    assert.deepEqual((await leer()).tarjetas, ['cliente-06']);
+    await page.evaluate(() => document.querySelector('#grid .fmt[data-f="cliente-06"] .remove-format').click());
+    await page.waitForTimeout(400);
+    e = await leer();
+    assert.deepEqual(ordenada(JSON.parse(e.guardado).selected), ordenada(previa)); assert.equal(JSON.parse(e.guardado).profile, 'standard');
+    assert.equal(e.aviso, false); assert.equal(await page.$('.formato-url-cerrar'), null);
+    assert.deepEqual(e.tarjetas, ['9:16', '16:9']); assert.doesNotMatch(e.url, /formato=/);
+    // 9. Marcar cliente-10: lo previo más cliente-10.
+    await sembrar(); await ir('/adaptaciones/?formato=cliente-06');
+    await page.evaluate(() => document.querySelector('[data-select-key="size:cliente-10"]').click());
+    await page.waitForTimeout(400);
+    e = await leer();
+    assert.deepEqual(ordenada(JSON.parse(e.guardado).selected), ordenada([...previa, 'cliente-10'])); assert.equal(JSON.parse(e.guardado).profile, 'standard');
+    assert.equal(e.aviso, false);
 
     assert.deepEqual(errores, []);
     await context.close();
