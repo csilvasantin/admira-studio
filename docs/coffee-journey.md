@@ -9,3 +9,5 @@ Spanish and English are separate full exports. Select both content languages to 
 `journeyStory` is versioned as `admira.coffee-journey.v1`, validates both language arrays and excludes the previous three-act `wallStory`. Unsupported screen counts and durations produce planning errors. Imported configurations must preserve the real installation geometry and the separately verified physical player bindings; application names do not establish monitor position.
 
 Validation: campaign journey tests cover timed message changes, independent language jobs, steam file/filter integration and invalid contracts. Native render and actual hardware playback require a separate check.
+
+**Lower copy** provides a second editable line per panel and language, entering with its arrival message. `lowerCopy` is optional so earlier saved campaigns retain their general CTA. New stories initialise seven different lower lines; custom panel counts are supported. Imports reject missing language entries, empty lines and lines over 100 characters.

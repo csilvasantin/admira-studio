@@ -19,6 +19,7 @@ test('messages follow the cup centre across all seven panels, regardless of stor
   const arrival=times[n],r=travelPosition(c,i,arrival);
   if(n)assert(Math.abs(r.x+g.w/2-s.x)<.001);
   assert.equal(journeyStory(c,{...i,screens:[...i.screens].reverse()},s).at(-1).text,COFFEE_JOURNEY.copy.es[n]);
+  assert.equal(journeyStory(c,i,s).at(-1).cta,COFFEE_JOURNEY.lowerCopy.es[n]);
   const layers=integratedLayers(planCampaign(c,i)).filter(l=>l.role==='headline'&&l.x>=s.x&&l.x<s.x+s.w);
   const active=layers.filter(l=>layerMotion(l,arrival+.8).alpha>.9);
   assert.equal(active.length,1);assert.equal(active[0].text,COFFEE_JOURNEY.copy.es[n]);
@@ -34,6 +35,7 @@ test('two full language rounds produce 18 distinct native jobs and separate 32-s
      assert(j.files.includes('steam.png'));assert.equal(j.steam,true);
      const filter=j.args[j.args.indexOf('-filter_complex')+1];assert.match(filter,/floor\(mod\(t\*12,24\)\)\*256/);assert.match(filter,/\[steamed\]/);
      assert(j.layers.filter(l=>l.role==='headline').every(l=>l.language===variant.contentLanguage));
+     const slot=i.screens.indexOf(s);assert(j.layers.some(l=>l.role==='cta'&&l.text===COFFEE_JOURNEY.lowerCopy[variant.contentLanguage][slot]));
     }else {assert.equal(j.steam,false);assert(!j.files.includes('steam.png'));assert.equal(j.durationSeconds,8);}
    }
   }
@@ -46,6 +48,8 @@ test('two full language rounds produce 18 distinct native jobs and separate 32-s
 });
 test('invalid imported stories and maps fail validation; disabling steam retains ordinary exports',()=>{
  const c=campaign();assert.deepEqual(restoreCampaign(c).journeyStory,COFFEE_JOURNEY);
+ const legacy=structuredClone(c);delete legacy.journeyStory.lowerCopy;assert.equal(journeyStory(restoreCampaign(legacy),legacy.installations[0],legacy.installations[0].screens[1]).at(-1).cta,legacy.cta);
+ const badFooter=structuredClone(c);badFooter.journeyStory.lowerCopy.en.pop();assert.throws(()=>restoreCampaign(badFooter),/campaign-journey-lower-copy/);
  for(const bad of [null,{...COFFEE_JOURNEY,steam:'true'},{...COFFEE_JOURNEY,copy:{es:['x'],en:['y']}}])assert.throws(()=>restoreCampaign({...c,journeyStory:bad}),/campaign-journey/);
  assert.throws(()=>restoreCampaign({...c,wallStory:{acts:Array.from({length:3},()=>({es:['a','b','c'],en:['a','b','c']}))}}),/campaign-story-mode/);
  assert.equal(planCampaign({...c,seconds:13},c.installations[0]).valid,false);

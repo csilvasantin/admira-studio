@@ -2,7 +2,7 @@
   "kind": "canonical-domain-change",
   "domain": "admira.studio",
   "canonicalBase": "3f48f66",
-  "reason": "Carlos pide siete mensajes activados al paso de la taza, vapor animado y una segunda vuelta completa en inglés. El creador exporta el vapor dentro de los MP4 y mantiene independientes las versiones ES y EN.",
+  "reason": "Carlos pide siete mensajes activados al paso de la taza, vapor animado y una segunda vuelta completa en inglés. El creador exporta el vapor dentro de los MP4 y mantiene independientes las versiones ES y EN. Cada pantalla tiene también un texto inferior editable y localizado, activado con la llegada de la taza; los contratos anteriores conservan su CTA.",
   "files": [
     "adaptaciones/adaptaciones.js",
     "adaptaciones/campaign-core.mjs",

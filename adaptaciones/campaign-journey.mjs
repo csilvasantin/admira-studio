@@ -1,15 +1,19 @@
-import {travelGeometry} from './campaign-travel.mjs?v=coffee-journey-1';
+import {travelGeometry} from './campaign-travel.mjs?v=coffee-footer-1';
 
 export const COFFEE_JOURNEY={schema:'admira.coffee-journey.v1',steam:true,copy:{
  es:['Tu café sigue contigo.','Haz una pausa.','Respira. Saborea.','Cambia de ritmo.','Este momento es tuyo.','Disfruta el camino.','Volvemos a empezar.'],
  en:['Your coffee goes with you.','Take a moment.','Breathe. Savour.','Find your rhythm.','This moment is yours.','Enjoy the journey.',"Let’s go again."]
+},lowerCopy:{
+ es:['Empieza por un buen café.','Baja el ritmo. Sube el ánimo.','Quédate con este instante.','Dale otro sabor a tu día.','Hazlo a tu manera.','La próxima pausa te espera.','Nos vemos en el siguiente sorbo.'],
+ en:['Start with a great coffee.','Slow down. Lift your spirits.','Stay in this moment.','Give your day a new flavour.','Make it your own.','Your next pause awaits.','See you at the next sip.']
 }};
 export function restoreJourney(value){
  if(!value||value.schema!==COFFEE_JOURNEY.schema||!value.copy||typeof value.steam!=='boolean')throw Error('campaign-journey');
  const count=value.copy.es?.length;
  if(!Number.isInteger(count)||count<2||count>30)throw Error('campaign-journey-copy');
  for(const lang of ['es','en'])if(!Array.isArray(value.copy[lang])||value.copy[lang].length!==count||value.copy[lang].some(s=>typeof s!=='string'||!s.trim()||s.length>180))throw Error('campaign-journey-copy');
- return {schema:COFFEE_JOURNEY.schema,steam:value.steam,copy:{es:[...value.copy.es],en:[...value.copy.en]}};
+ if(value.lowerCopy!==undefined)for(const lang of ['es','en'])if(!Array.isArray(value.lowerCopy?.[lang])||value.lowerCopy[lang].length!==count||value.lowerCopy[lang].some(s=>typeof s!=='string'||!s.trim()||s.length>100))throw Error('campaign-journey-lower-copy');
+ return {schema:COFFEE_JOURNEY.schema,steam:value.steam,copy:{es:[...value.copy.es],en:[...value.copy.en]},...(value.lowerCopy?{lowerCopy:{es:[...value.lowerCopy.es],en:[...value.lowerCopy.en]}}:{})};
 }
 export function journeyArrival(c,i,s){
  const g=travelGeometry(i,c),start=g.x0+g.w*.5;
@@ -21,7 +25,7 @@ export function journeyStory(c,i,s){
  if(slot<0||ordered.length!==copy.length)throw Error('journey-screen-count');
  if(c.seconds<copy.length*2)throw Error('journey-duration');
  const arrival=journeyArrival(c,i,s),motion=slot%2?1:-1;
- const after={text:copy[slot],cta:c.cta,language:lang,start:Math.max(0,arrival-.1),end:c.seconds,motion};
+ const after={text:copy[slot],cta:c.journeyStory.lowerCopy?.[lang]?.[slot]||c.cta,language:lang,start:Math.max(0,arrival-.1),end:c.seconds,motion};
  return arrival<.75?[after]:[{text:c.headline,cta:'',language:lang,start:0,end:arrival+.25,motion:-motion},after];
 }
 
