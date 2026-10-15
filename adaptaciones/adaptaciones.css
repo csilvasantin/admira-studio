@@ -481,3 +481,9 @@ body.image-source[data-paso="1"] #cuad-avanzado-live .profile-label{display:none
 :root[data-mb-marca] .adapter-twin .pill{background:#1c3025!important;color:#edf7f1!important;border-color:#668975!important}
 :root[data-mb-marca] .adapter-twin .pill:hover{background:#2c4837!important;border-color:#b6d6c3!important}
 :root[data-mb-marca] .adapter-twin footer{background:transparent!important;color:#c6d9cd!important}
+/* Gemelos de admira.store (?formato=cliente-NN · 15-oct-2026): aviso del formato pedido y enlaces de vuelta a su espacio. */
+.adapt-main .formato-url{border:1px solid var(--ac);border-radius:8px;padding:8px 12px;margin:0 0 12px;font-size:13px;background:color-mix(in srgb,var(--ac) 6%,transparent)}
+.adapt-main .formato-url p{margin:0 0 6px;display:flex;flex-wrap:wrap;align-items:center;gap:6px}.adapt-main .formato-url p:last-child{margin:0}
+.adapt-main .formato-url .espacio-links{margin:0}
+.adapt-main .espacio-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.adapt-main .espacio-links .pill{padding:4px 10px;font-size:11px}

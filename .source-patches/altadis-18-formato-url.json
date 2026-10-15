@@ -1,0 +1,15 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "184f079e71d8d5e05ba4962d313fa9d773d4d2fb",
+  "reason": "Misión DCL-d7966deb02734a6f34beb54e «Hoy #22 · los 18 espacios Altadis»: los gemelos de admira.store/xpacios/altadis-18/ abren el Adaptador con ?formato=cliente-NN y cada tarjeta de cliente-01 a cliente-18 enlaza de vuelta a su espacio en Xtanco y en Starbucks. Pixeria está congelada: el cambio vive solo en admira.studio.",
+  "files": [
+    "adaptaciones/formato-url.mjs",
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/adaptaciones.css",
+    "docs/adaptador.md",
+    "test/altadis-18-formato.test.mjs"
+  ],
+  "preservesFiltersAndAccess": true,
+  "rollback": "184f079e71d8d5e05ba4962d313fa9d773d4d2fb"
+}
