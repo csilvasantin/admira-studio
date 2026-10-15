@@ -1,21 +1,20 @@
 {
-  "version": "v.15.10.2026.r2.21:00",
-  "deployedAt": "2026-10-15T19:00:41Z",
+  "version": "v.15.10.2026.r3.21:47",
+  "deployedAt": "2026-10-15T19:47:16Z",
   "author": "NeoMacStudio",
   "agent": "NeoMacStudio",
   "deployer": "NeoMacStudio",
   "machine": "MacStudio",
   "signature": "NeoMacStudio · MacStudio",
-  "git": "cccf33d36afd4991117466ca67a3b8965097adde",
-  "gitFull": "cccf33d36afd4991117466ca67a3b8965097adde",
-  "gitShort": "cccf33d",
+  "git": "2fe5d9ab62c65e3fb59de856d82cf9400cb5111d",
+  "gitFull": "2fe5d9ab62c65e3fb59de856d82cf9400cb5111d",
+  "gitShort": "2fe5d9a",
   "dirty": false,
   "novedades": [
-    "La portada ya no tiene modo Experto: en el sitio de ⌘, la pastilla de idioma ENG/ESP con la caja de ▤.",
-    "ENG lleva a la portada en inglés y ESP vuelve al castellano; las demás páginas conservan ⌘."
+    "«alsea» es Starbucks: ?marca=alsea y /marca alsea aplican la marca Starbucks (por si alguien se equivoca)."
   ],
   "rollback": {
-    "git": "1e325b07fbdf949c2fc3fae0bc6fe6c5bb72cc97"
+    "git": "2fe5d9ab62c65e3fb59de856d82cf9400cb5111d"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
