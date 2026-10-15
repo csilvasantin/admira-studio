@@ -1,7 +1,7 @@
-import {createFormatTwin,isStarbucksFormat} from './gemelo-factory.mjs?v=coffee-journey-1';
+import {createFormatTwin,isStarbucksFormat} from './gemelo-factory.mjs?v=coffee-footer-1';
 import {STARBUCKS_PHOTO} from './starbucks-twin-core.mjs?v=stock-sync-1';
-import {mountInlineTwins} from './gemelo-inline.mjs?v=coffee-journey-1';
-import {twinGeometry,localizedTwinWarnings} from './gemelo-core.mjs?v=coffee-journey-1';
+import {mountInlineTwins} from './gemelo-inline.mjs?v=coffee-footer-1';
+import {twinGeometry,localizedTwinWarnings} from './gemelo-core.mjs?v=coffee-footer-1';
 import {TWIN_REFERENCES,recommendedReferenceId,referenceById} from './gemelo-catalog.mjs?v=installation-20261009';
 
 // Editor owns media/time. A single loaded model serves all preview formats.

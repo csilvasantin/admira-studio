@@ -1,14 +1,14 @@
 {
-  "version": "v.16.10.2026.r1.00:31",
+  "version": "v.16.10.2026.r2.01:12",
   "deployedAt": "2026-10-15T22:31:47.664257+00:00",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
   "machine": "Codex desktop",
   "signature": "Codex · Codex desktop",
-  "git": "3f48f66c455374d96b2209d0b1b5267b20a21383",
-  "gitFull": "3f48f66c455374d96b2209d0b1b5267b20a21383",
-  "gitShort": "3f48f66",
+  "git": "c2bbda64fd1d08f63da122c5590318fe63d00472",
+  "gitFull": "c2bbda64fd1d08f63da122c5590318fe63d00472",
+  "gitShort": "c2bbda6",
   "dirty": false,
   "novedades": [
     "El creador permite mensajes por pantalla activados al paso de la taza y vapor animado incluido en los MP4.",
