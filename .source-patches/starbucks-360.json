@@ -6,6 +6,8 @@
     "campanas/starbucks-360",
     "functions/starbucks-360.js",
     "test/starbucks360-control.test.mjs",
-    "docs/starbucks-360.md"
+    "docs/starbucks-360.md",
+    "functions/starbucks-360-clock.js",
+    "test/starbucks360-clock.test.mjs"
   ]
 }
