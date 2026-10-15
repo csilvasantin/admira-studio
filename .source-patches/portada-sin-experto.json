@@ -1,0 +1,18 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "1e325b07fbdf949c2fc3fae0bc6fe6c5bb72cc97",
+  "reason": "Carlos pide que la portada (/ y /en/) no tenga modo Experto: en el hueco de ⌘ va la píldora de idioma (ENG en /, ESP en /en/) con la misma caja que ▤ Avanzado. Las interiores conservan ⌘. Pixeria está congelada: el cambio vive solo en admira.studio.",
+  "files": [
+    "assets/cuadratura.js",
+    "assets/cuadratura.css",
+    "assets/site-nav.js",
+    "assets/expert-cli.js",
+    "docs/shell-cuadratico.md",
+    "docs/expert-cli.md",
+    "test/portada-sin-experto.test.mjs",
+    "test/expert-cli.browser.cjs",
+    "test/studio-navigation.browser.cjs"
+  ],
+  "rollback": "1e325b07fbdf949c2fc3fae0bc6fe6c5bb72cc97"
+}

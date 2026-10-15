@@ -6,12 +6,23 @@
 
 La interfaz cuadrática de la portada (`index.html`) en cuatro bandas:
 
-- **Barra superior** (`header.pf-topbar`): a la izquierda ☰ Opciones + «Admira Studio» (enlace al inicio); en el centro las secciones (Audio, Música, Imágenes, Video, TikTok, Publicidad, Anonimizador, Ideas, Assets, Stock); al fondo a la derecha ▤ Avanzado justo antes de ⌘ Experto. El orden lo fijó Carlos (29-sep-2026): no se cambia.
+- **Barra superior** (`header.pf-topbar`): a la izquierda ☰ Opciones + «Admira Studio» (enlace al inicio); en el centro las secciones (Audio, Música, Imágenes, Video, TikTok, Publicidad, Anonimizador, Ideas, Assets, Stock); al fondo a la derecha ▤ Avanzado justo antes de ⌘ Experto. El orden lo fijó Carlos (29-sep-2026): no se cambia. **En la portada (`/` y `/en/`) no hay ⌘**: en su hueco, a la derecha de ▤, va la píldora de idioma (ver «Portada sin Experto»).
 - **☰ Opciones** (raíl `.rail-left`): las secciones de Admira Studio con su descripción y el sello del release.
 - **▤ Avanzado** (raíl `.rail-right`): radar, arquitectura, documentación y concepto.
-- **⌘ Experto** (franja inferior): la consola web (`assets/expert-cli.js`, ver `docs/expert-cli.md`), con `/marca` para la marca blanca (`docs/marca-blanca.md`).
+- **⌘ Experto** (franja inferior): la consola web (`assets/expert-cli.js`, ver `docs/expert-cli.md`), con `/marca` para la marca blanca (`docs/marca-blanca.md`). Solo en las páginas interiores.
 
-En las páginas interiores no hay idioma ni Contacto en la barra (decisión de producto: el contacto sigue en el pie). La portada y `en/` conservan los suyos.
+En las páginas interiores no hay idioma ni Contacto en la barra (decisión de producto: el contacto sigue en el pie). La portada y `en/` conservan el idioma, como píldora en el sitio de ⌘.
+
+## Portada sin Experto (Carlos, 15-oct-2026)
+
+> La primera página no tiene modo Experto. En su lugar, una píldora de idioma del mismo tamaño que el botón Experto.
+
+- **Qué se ve.** En `/` la barra lleva ☰, la marca, las secciones, ▤ y, en el hueco de ⌘, la píldora **ENG** (lleva a `/en/`). En `/en/` la píldora dice **ESP** (vuelve a `/`). El enlace es el de siempre: `site-nav.js` lo reescribe a `/en/?lang=en` o `/?lang=es`.
+- **Mismo tamaño.** La píldora es un `.pix-nav-icon` más (clases `pf-topbar-lang pix-nav-icon pix-nav-icon-lang`): 42×42 px a `zoom:.9` en escritorio y 38×38 px en ≤980 px, como ▤. Lleva `data-admira-compact-control`, la marca con la que `suite/header.js` (lo cargan el avatar y el sello de la suite) reduce sus vecinos a `zoom:.81`, así que escala igual que ellos. `cuadratura.css` (`body .pf-topbar .pix-nav-icon-lang`) solo pone el texto (11 px, peso 800): ni ancho, ni alto, ni relleno propios.
+- **Cómo.** `cuadratura.js` (`buildTopbar`) reconoce la portada con `/^\/(en\/?)?(index\.html)?$/`. Sigue creando ⌘ —sin `.rail-bottom` no habría barra—, pero no lo monta. `site-nav.js` en la portada solo mejora ☰ y ▤ y carga `expert-cli.js`, sin su CSS ni la piel de la suite (`suite/experto.js`). `expert-cli.js` lleva la Biblioteca y el boletín de la franja inferior a la columna central, quita la franja y no monta consola: ⌘ abierto en una interior (`ax-experto-abierto` en la pestaña) no se reabre en la portada.
+- **Atajo de teclado.** No hay ninguno local que abra ⌘. La piel de la suite (`suite/experto.js`, `20261014-compact-bugito-1`) tampoco tiene uno global; se abre con su botón, con `AdmiraExperto.open()` o con el estado de la pestaña, y en la portada ya no se carga.
+- **Interiores, igual que antes**: idioma fuera de la barra, ▤ y ⌘ al fondo a la derecha.
+- **Guardián**: `test/portada-sin-experto.test.mjs` (estático) y `test/studio-navigation.browser.cjs` / `test/expert-cli.browser.cjs` (navegador).
 
 ## Paneles superpuestos (Carlos, 3-oct-2026)
 
@@ -28,9 +39,9 @@ En las páginas interiores no hay idioma ni Contacto en la barra (decisión de p
 
 | Pieza | Papel |
 |---|---|
-| `assets/site-nav.js` | El shell de las interiores. Convierte la cabecera de la página en `.pf-topbar` (`canonicalHeader`), pinta las secciones, inyecta los raíles Opciones/Avanzado (`ensureHomeRails`, clase `body.pix-nav-home-rails`), monta Experto (`#pixNavExpertLayer` + `expert-cli.js`), engancha la marca blanca y publica la altura real de la barra en `--pf-topbar-h`. |
+| `assets/site-nav.js` | El shell de las interiores. Convierte la cabecera de la página en `.pf-topbar` (`canonicalHeader`), pinta las secciones, inyecta los raíles Opciones/Avanzado (`ensureHomeRails`, clase `body.pix-nav-home-rails`), monta Experto (`#pixNavExpertLayer` + `expert-cli.js`; en la portada, solo `expert-cli.js` para rescatar la Biblioteca), engancha la marca blanca y publica la altura real de la barra en `--pf-topbar-h`. |
 | `assets/cuadratura.css` | Estilos de la barra y los raíles, y el bloque **Shell universal**: fija en la barra la tipografía y los colores de la portada y la aísla del CSS de cada página. |
-| `assets/cuadratura.js` | En la portada, `en/` y `_cuadopen` monta la cuadratura artesanal (`.cuad`). En las interiores no hace nada (sale al ver `pix-nav-home-rails`), pero se carga igual para que todas las páginas compartan el mismo código. |
+| `assets/cuadratura.js` | En la portada, `en/` y `_cuadopen` monta la cuadratura artesanal (`.cuad`); en la portada pone la píldora de idioma donde iría ⌘. En las interiores no hace nada (sale al ver `pix-nav-home-rails`), pero se carga igual para que todas las páginas compartan el mismo código. |
 
 ## Cómo adopta el shell una página
 
@@ -72,7 +83,7 @@ Patrón de `admira-xp.html`:
 
 `test/studio-navigation.test.mjs` inspecciona todos los HTML: una página de interfaz tiene main, cabecera montable, scripts comunes diferidos, versiones de assets vigentes y cierre inicial de paneles. `test/studio-page-exceptions.json` documenta exclusivamente alias, documentos de emisión y redirecciones fuera de Studio. Una nueva página sin shell hace fallar la prueba; los alias de administración conservan query/hash y no incluyen lógica local de privilegios.
 
-`test/studio-navigation.browser.cjs` verifica las 76 rutas de navegación, incluidos los seis alias interiores, en español e inglés: una barra, Inicio/Stock del idioma actual, tres controles de panel, superposición sin mover main y barra visible después de scroll. Recorre cambios reales `/language ENG` → `/language ESP` desde Creador, Adaptador y Cápsulas, conserva los parámetros del ejemplo y comprueba accesos a Stock e Inicio en escritorio y móvil. La variante de fuentes locales usa `STUDIO_SOURCE_OVERLAY=1`; la comprobación final usa la web real con autenticación de servidor, sin sustituir API ni acceso.
+`test/studio-navigation.browser.cjs` verifica las 76 rutas de navegación, incluidos los seis alias interiores, en español e inglés: una barra, Inicio/Stock del idioma actual, tres controles de panel (en la portada, ☰ y ▤ más la píldora de idioma con la caja de ▤), superposición sin mover main y barra visible después de scroll. Recorre cambios reales `/language ENG` → `/language ESP` desde Creador, Adaptador y Cápsulas, conserva los parámetros del ejemplo y comprueba accesos a Stock e Inicio en escritorio y móvil. La variante de fuentes locales usa `STUDIO_SOURCE_OVERLAY=1`; la comprobación final usa la web real con autenticación de servidor, sin sustituir API ni acceso.
 
 ## Páginas
 
@@ -132,7 +143,7 @@ Los seis alias interiores (idea, privacy y cuatro rutas god) terminan en una pá
 
 ---
 
-**Rule: every new Admira Studio page uses the shell.** Load `/assets/cuadratura.css` after the page CSS, `/assets/site-nav.js` (defer) and `/assets/cuadratura.js`, give the page a `header.site-header` (or `.topnav`) with a direct `.brand` child and a `nav.nav`, and wrap the content in `<main>`. Use `var(--pf-topbar-h)` for heights and keep own modals above z-index 1300. Panels overlay the content (Carlos, 3 Oct 2026): opening ☰, ▤ or ⌘ never moves or resizes `main`, `.cuad-center`, `.page-head` or `body`, and every page loads with the three panels closed (only their resized size is remembered); `test/studio-navigation.browser.cjs` enforces it. 70 of the 88 pages carry the shell; the 18 exceptions (redirects, full-screen players, an iframe fragment and the migrated administration aliases) are listed above and in `test/studio-page-exceptions.json` of `test/studio-navigation.test.mjs`, which fails when a page skips the shell.
+**Rule: every new Admira Studio page uses the shell.** Load `/assets/cuadratura.css` after the page CSS, `/assets/site-nav.js` (defer) and `/assets/cuadratura.js`, give the page a `header.site-header` (or `.topnav`) with a direct `.brand` child and a `nav.nav`, and wrap the content in `<main>`. Use `var(--pf-topbar-h)` for heights and keep own modals above z-index 1300. The home (`/` and `/en/`) has no Expert mode (Carlos, 15 Oct 2026): an ENG/ESP language pill with the advanced icon's box takes its place. Panels overlay the content (Carlos, 3 Oct 2026): opening ☰, ▤ or ⌘ never moves or resizes `main`, `.cuad-center`, `.page-head` or `body`, and every page loads with the three panels closed (only their resized size is remembered); `test/studio-navigation.browser.cjs` enforces it. 70 of the 88 pages carry the shell; the 18 exceptions (redirects, full-screen players, an iframe fragment and the migrated administration aliases) are listed above and in `test/studio-page-exceptions.json` of `test/studio-navigation.test.mjs`, which fails when a page skips the shell.
 
 
 ## Continuidad ES / EN · 14-oct-2026

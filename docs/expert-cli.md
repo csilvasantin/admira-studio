@@ -2,6 +2,8 @@
 
 El botón Experto abre una entrada de 48 px dentro de la web. No necesita aplicación de escritorio ni instalación.
 
+La portada (`/` y `/en/`) no tiene modo Experto (Carlos, 15-oct-2026): ahí `expert-cli.js` solo lleva la Biblioteca a la columna central y el botón deja su sitio a la píldora de idioma. Ver `docs/shell-cuadratico.md`, «Portada sin Experto».
+
 - Arrastra el borde superior para ajustar la altura (máximo: la mitad del área visible).
 - Doble clic en el borde o el botón ▴/▾ pliega y despliega. El borde también admite flechas, Inicio, Fin y Enter.
 - Cada entrada al modo experto comienza plegada. Al desplegar recupera la última altura arrastrada, guardada en `localStorage` (`pixeria_cli_height`; la réplica adapta el prefijo según marca.json). La preferencia es por navegador y dominio.
