@@ -1,4 +1,4 @@
-import {DEFAULT_CAMPAIGN} from './campaign-core.mjs?v=starbucks-story-1';
+import {DEFAULT_CAMPAIGN} from './campaign-core.mjs?v=create-content-1';
 export const CREATOR_KEY='pixeria.creator-campaign.v1';
 // Reuse existing destinations without changing inclusion, placement or review state.
 export function orientationPair(installations){
