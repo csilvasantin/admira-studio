@@ -97,6 +97,10 @@
   Array.from(panel.children).forEach(function (child) {
     if (!child.matches('.rail-hd,.pf-resize-handle') && center) center.appendChild(child);
   });
+  // Portada (/ y /en/) sin modo Experto (Carlos, 15-oct-2026): solo se rescata su contenido
+  // (arriba). Sin consola ni franja vacía, y sin leer ax-experto-abierto: abrir ⌘ en una
+  // interior no lo reabre aquí. Las demás páginas siguen igual.
+  if (/^\/(en\/?)?(index\.html)?$/.test(location.pathname)) { panel.remove(); return; }
   panel.replaceChildren();
   panel.classList.add('pf-cli');
   panel.setAttribute('aria-label', t('Consola web experta', 'Expert web console'));

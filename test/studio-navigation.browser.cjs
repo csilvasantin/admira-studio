@@ -10,10 +10,19 @@ async function shell(p,language){
  await p.waitForFunction(language=>{const h=document.querySelector('.pf-topbar');return h&&document.documentElement.lang===language&&h.querySelector('.pix-nav-icon-menu')&&[...h.querySelectorAll('a')].some(a=>new URL(a.href).pathname===(language==='en'?'/en/':'/'));},language,{timeout:8000}).catch(async e=>{console.log('Shell not ready',p.url(),await p.locator('html').getAttribute('lang'),await p.locator('.pf-topbar').evaluateAll(headers=>headers.map(h=>({buttons:[...h.querySelectorAll('button')].map(b=>b.className),links:[...h.querySelectorAll('a')].map(a=>({text:a.textContent.trim(),href:a.href}))}))));throw e;});
  assert.equal(await p.locator('.pf-topbar').count(),1);
  assert.equal(await p.locator('html').getAttribute('lang'),language);
- const data=await p.evaluate(()=>{const h=document.querySelector('.pf-topbar');return {links:[...h.querySelectorAll('a')].map(a=>new URL(a.href).pathname),buttons:['menu','advanced','expert'].map(role=>h.querySelectorAll('.pix-nav-icon-'+role).length),height:h.getBoundingClientRect().height};});
+ // Portada sin modo Experto (Carlos, 15-oct-2026): ☰ ▤ y la píldora de idioma, con la caja de ▤.
+ // suite/header.js escala sus controles al vuelo; se espera a que la píldora y ▤ midan igual.
+ const home=await p.evaluate(()=>/^\/(en\/?)?(index\.html)?$/.test(location.pathname));
+ if(home)await p.waitForFunction(()=>{const h=document.querySelector('.pf-topbar'),a=h.querySelector('.pix-nav-icon-advanced'),l=h.querySelector('.pix-nav-icon-lang');if(!a||!l)return false;const x=a.getBoundingClientRect(),y=l.getBoundingClientRect();return Math.abs(x.width-y.width)<.5&&Math.abs(x.height-y.height)<.5;},null,{timeout:8000}).catch(()=>{});
+ const data=await p.evaluate(()=>{const h=document.querySelector('.pf-topbar'),box=e=>{if(!e)return null;const r=e.getBoundingClientRect();return [Math.round(r.width*10)/10,Math.round(r.height*10)/10];};return {links:[...h.querySelectorAll('a')].map(a=>new URL(a.href).pathname),buttons:['menu','advanced','expert'].map(role=>h.querySelectorAll('.pix-nav-icon-'+role).length),lang:h.querySelectorAll('.pix-nav-icon-lang').length,langBox:box(h.querySelector('.pix-nav-icon-lang')),advancedBox:box(h.querySelector('.pix-nav-icon-advanced')),height:h.getBoundingClientRect().height};});
+ data.home=home;
  assert(data.links.includes(language==='en'?'/en/':'/'),'Home points to current UI language');
  assert(data.links.includes(language==='en'?'/en/stock.html':'/stock.html'),'Stock points to current UI language');
- assert.deepEqual(data.buttons,[1,1,1]);
+ if(home){
+  assert.deepEqual(data.buttons,[1,1,0],'home has no Expert');
+  assert.equal(data.lang,1,'home language pill');
+  assert.deepEqual(data.langBox,data.advancedBox,'language pill has the advanced icon box');
+ }else assert.deepEqual(data.buttons,[1,1,1]);
  return data;
 }
 (async()=>{
@@ -40,9 +49,9 @@ async function shell(p,language){
     const record={...job};
     try{
      await p.goto(base+route(job.file)+'?lang='+job.language,{waitUntil:'domcontentloaded',timeout:18000});
-     await shell(p,job.language);await p.waitForTimeout(150);
+     const nav=await shell(p,job.language);await p.waitForTimeout(150);
      const main=p.locator('main').first(),before=await main.boundingBox();
-     for(const role of ['menu','advanced','expert']){
+     for(const role of nav.home?['menu','advanced']:['menu','advanced','expert']){
       const button=p.locator('.pf-topbar .pix-nav-icon-'+role);
       await button.click();
       const after=await main.boundingBox();

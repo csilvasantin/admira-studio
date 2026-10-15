@@ -16,6 +16,8 @@
    NO se guarda. Sí se recuerda el tamaño redimensionado (pixeria_pf_*_w / _h).
    Los paneles se SUPERPONEN: abrirlos no mueve ni redimensiona el contenido
    (Carlos, 3-oct-2026 · docs/shell-cuadratico.md).
+   La PORTADA (/ y /en/) no tiene modo Experto (Carlos, 15-oct-2026): en su
+   lugar va la píldora de idioma ENG/ESP, del mismo tamaño que los iconos.
    ══════════════════════════════════════════════════════════════════════════ */
 (function () {
   // ── Fuente ÚNICA de las secciones del raíl OPCIONES (mismo orden que la home) ──
@@ -256,10 +258,18 @@
     return document.querySelector('.language-switcher a, .topnav-actions .language-switcher a, .mobile-language-switcher a');
   }
 
+  // Portada (/ y /en/, con o sin index.html). Es la única página sin modo Experto.
+  function isHomePath() {
+    return /^\/(en\/?)?(index\.html)?$/.test(location.pathname);
+  }
+
   function buildTopbar() {
     if (document.querySelector('.pf-topbar')) return;
+    var home = isHomePath();
     var leftToggle = makeToggle(PANELS[0]);
     var rightToggle = makeToggle(PANELS[1]);
+    // ⌘ se crea también en la portada: makeToggle devuelve null sin .rail-bottom y entonces
+    // no habría barra. Allí no se monta (ver más abajo).
     var bottomToggle = makeToggle(PANELS[2]);
     if (!leftToggle || !rightToggle || !bottomToggle) return;
 
@@ -274,8 +284,9 @@
     var left = document.createElement('div');
     left.className = 'pf-topbar-left';
     // Barra de 4 bandas (Carlos 29-sep-2026): Opciones a la izquierda y, al
-    // fondo a la derecha, Avanzado justo antes de Experto. Sin la «P» de logo
-    // y sin Contacto en la barra (el contacto sigue en el pie de la página).
+    // fondo a la derecha, Avanzado justo antes de Experto (en la portada, antes
+    // del idioma). Sin la «P» de logo y sin Contacto en la barra (el contacto
+    // sigue en el pie de la página).
     left.appendChild(leftToggle);
 
     var brand = document.createElement('a');
@@ -299,16 +310,31 @@
     var right = document.createElement('div');
     right.className = 'pf-topbar-right';
     var lang = pageLanguageLink();
+    var langLink = null;
     if (lang) {
-      var langLink = document.createElement('a');
+      langLink = document.createElement('a');
       langLink.className = 'pf-topbar-lang';
       langLink.href = lang.getAttribute('href') || lang.href;
       langLink.textContent = lang.textContent.trim() || 'ENG';
       langLink.setAttribute('aria-label', lang.getAttribute('aria-label') || 'Cambiar idioma');
-      right.appendChild(langLink);
     }
-    right.appendChild(rightToggle);
-    right.appendChild(bottomToggle);
+    if (home) {
+      // Portada sin modo Experto (Carlos, 15-oct-2026): en el hueco de ⌘, a la derecha de
+      // ▤ Avanzado, va la píldora de idioma con la MISMA caja que los iconos: ENG en la
+      // española, ESP en /en/. pix-nav-icon le da el tamaño (site-nav.js) y
+      // data-admira-compact-control, la misma escala que suite/header.js pone a sus vecinos.
+      right.appendChild(rightToggle);
+      if (langLink) {
+        langLink.classList.add('pix-nav-icon', 'pix-nav-icon-lang');
+        langLink.setAttribute('data-admira-compact-control', '');
+        langLink.title = langLink.getAttribute('aria-label');
+        right.appendChild(langLink);
+      }
+    } else {
+      if (langLink) right.appendChild(langLink);
+      right.appendChild(rightToggle);
+      right.appendChild(bottomToggle);
+    }
 
     bar.appendChild(left);
     bar.appendChild(nav);

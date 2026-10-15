@@ -626,6 +626,8 @@
     installIconStyles();
     installLeadToggle();
     if (isHome()) {
+      // La portada no lleva ⌘ (cuadratura.js monta ahí la píldora de idioma): aquí solo se
+      // mejoran ☰ y ▤ y se reescribe el enlace de idioma; no se añade ningún botón Experto.
       upgradeFrameControls();
       syncNavigationLanguage();
       return;
@@ -766,11 +768,15 @@
       cliente.src = '/assets/cliente-activo.js' + (STAMP || '');
       document.body.appendChild(cliente);
       if (!document.querySelector('.rail-bottom,.quad-bottom,#pixNavExpertLayer')) return;
+      var cli = document.createElement('script');
+      cli.src = '/assets/expert-cli.js' + (STAMP || '?v=creator-full-3');
+      // Portada sin modo Experto (Carlos, 15-oct-2026): expert-cli.js solo lleva la Biblioteca y
+      // el boletín de la franja inferior a la columna central; ni consola, ni su CSS, ni la piel
+      // de la suite, que reabriría ⌘ con el estado guardado en la pestaña (ax-experto-abierto).
+      if (isHome()) { document.body.appendChild(cli); return; }
       var css = document.createElement('link');
       css.rel = 'stylesheet'; css.href = '/assets/expert-cli.css' + (STAMP || '?v=4663');
       document.head.appendChild(css);
-      var cli = document.createElement('script');
-      cli.src = '/assets/expert-cli.js' + (STAMP || '?v=creator-full-3');
       document.body.appendChild(cli);
       // ⌘ EXPERTO · CLI con el look de digitalavatar.ai (Carlos, 4-oct-2026): piel compartida de la
       // suite (www.admiranext.com/suite) sobre la consola de expert-cli.js; los comandos no cambian.
