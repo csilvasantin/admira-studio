@@ -153,3 +153,15 @@ Escribe el brief, prepara los formatos y edita imagen, logo, titular y llamada a
 `/crear contenido anamórfico [brief]` muestra la solicitud opcional de geometría. Conserva metros, observador y vértices/resolución de cada panel, y permite descargar un contrato `admira.anamorphic-request.v1`. Es un encargo: `mediaRendered:false` y `calibrationVerified:false`. El render anamórfico requiere un motor de proyección y calibración; esta entrada no lo sustituye por un mural plano ni lo anuncia como exportado.
 
 EN: Open an interior page, enable Expert and run `/create content [brief]`. Choose a static PNG digital label with editable native dimensions and/or portrait/landscape full-HD MP4 screens. Explicit AI generation uses the existing authenticated service; the Starbucks example reuses photos. Review each composition, then export PNG images and MP4 videos through separate native deliveries and publish to Stock. `anamorphic` prepares a geometry request; it does not claim a calibrated or rendered anamorphic asset.
+
+## Cartela de tinta electrónica
+
+`/crear cartela tintaelectronica [brief]` abre un borrador independiente de cartela en el Creador. También acepta «tinta electrónica» y `/create poster eink [brief]`. No genera medios ni envía al abrirse.
+
+Los perfiles son Samsung EM13DX de 13 pulgadas (1200×1600 vertical), etiqueta del puente de cuatro colores (480×800 BWRY) y tamaño propio. Conservan PNG estático, fondo blanco, texto negro y el acento de la marca. El perfil BWRY convierte el PNG a su paleta con difusión de error.
+
+Abre el JSON editable de una campaña para conservar sus recursos y mensajes, o elige un vídeo de Stock y un segundo para extraer su fotograma completo. El fotograma conserva el texto rasterizado del vídeo; no se presenta como separación automática de capas. Revisa cada resolución, aprueba y publica con «Publicar cartelas en Stock». El paquete descargado conserva la campaña de origen o el Stock ID y el segundo del fotograma. Las salidas llevan `eink`, `cartela`, perfil y origen; nunca entran en la cola MP4 ni en el hilo musical.
+
+Samsung E-Paper recibe el PNG desde su app iOS; la publicación en Stock no equivale a un envío físico. El panel Samsung debe estar emparejado en la app. Los players de tinta del puente usan su propio screen ID, resolución, paleta y acuse de envío.
+
+Referencia de resolución y control local: https://www.samsung.com/ie/business/smart-signage/others/colour-e-paper-emdx-13-inch-lh13emdibgbxen/ . Perfil solicitado por Carlos: EM13DX 776F, Samsung E-Paper (16-oct-2026).

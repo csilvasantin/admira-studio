@@ -1,18 +1,18 @@
 {
-  "version": "v.16.10.2026.r9.13:42",
-  "deployedAt": "2026-10-16T11:42:09.873010Z",
+  "version": "v.16.10.2026.r10.14:36",
+  "deployedAt": "2026-10-16T12:36:21.415103+00:00",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
   "machine": "MacStudio",
   "signature": "Codex · MacStudio",
-  "git": "13800205e668e90fc7459e8696441f4eb8781961",
-  "gitFull": "13800205e668e90fc7459e8696441f4eb8781961",
-  "gitShort": "1380020",
+  "git": "4c8c2d1b1c861d5b0517f5dc67abd36c8ad15461",
+  "gitFull": "4c8c2d1b1c861d5b0517f5dc67abd36c8ad15461",
+  "gitShort": "4c8c2d1",
   "dirty": false,
   "novedades": [
-    "Paseo de Gracia 103 y Diagonal 634 comparten el formato de seis verticales VV–V–VVV en Creador y Adaptador.",
-    "Stock añade montajes nuevos a la ficha existente y conserva sus archivos y previos."
+    "/crear cartela tintaelectronica abre el Creador para pósters estáticos derivados de campañas o vídeos de Stock.",
+    "Perfiles Samsung EM13DX 1200×1600 y etiqueta 480×800 de cuatro colores, con revisión y publicación nativa en Stock."
   ],
   "rollback": {
     "git": "f09657de38cedea45a0578afd27963ba63f54438"
@@ -43,6 +43,7 @@
     ".source-patches/stock-single-video-preview.json",
     ".source-patches/stock-sync-creatives.json",
     ".source-patches/studio-universal-navigation.json",
-    ".source-patches/starbucks-six-vertical-format.json"
+    ".source-patches/starbucks-six-vertical-format.json",
+    ".source-patches/eink-cartela.json"
   ]
 }

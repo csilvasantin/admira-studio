@@ -1,4 +1,4 @@
-import {CONTENT_REQUEST_SCHEMA,starbucksContentExample,contentCampaign,restoreContentRequest,validateAnamorphicGeometry,anamorphicRequest} from './content-request-core.mjs?v=create-content-2';
+import {CONTENT_REQUEST_SCHEMA,starbucksContentExample,contentCampaign,restoreContentRequest,validateAnamorphicGeometry,anamorphicRequest} from './content-request-core.mjs?v=eink-cartela-1';
 import {creatorRequest} from '../campanas/creador/creator-ai.mjs?v=creator-tools-4';
 export function mountContentRequest({root,get,begin,newCampaign,t,locked,say,setGenerating=()=>{}}){
  const en=document.documentElement.lang==='en',params=new URLSearchParams(location.search);

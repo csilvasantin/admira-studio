@@ -1,3 +1,4 @@
+import {EINK_STYLE,quantizeBWRY} from './eink-core.mjs?v=eink-cartela-1';
 import {layerMotion} from './campaign-story.mjs?v=starbucks-story-1';
 import {steamAtlas,drawSteam} from './campaign-journey.mjs?v=six-verticals-1';
 import {COFFEE_STYLE,entrance,integratedBackground,integratedLayers,integratedLayerCanvas,integratedProductCanvas} from './campaign-integrated.mjs?v=six-verticals-1';
@@ -6,6 +7,12 @@ const integratedCaches=new WeakMap();
 function cachedCanvas(assets,key,create){let map=integratedCaches.get(assets);if(!map){map=new Map();integratedCaches.set(assets,map);}if(map.size>100)map.clear();if(!map.has(key))map.set(key,create());return map.get(key);}
 export function drawCampaign(canvas,c,i,plan,assets,{guides=false,time,backgroundOnly=false}={}){
  const x=canvas.getContext('2d'),scale=canvas.width/i.width;canvas.height=Math.round(i.height*scale);x.save();x.scale(scale,scale);
+ if(c.visualStyle===EINK_STYLE){
+  x.fillStyle='#ffffff';x.fillRect(0,0,i.width,i.height);
+  for(const l of plan.layers){if(l.role==='logo'||l.role==='product'){const image=assets[l.role];if(!image)continue;const k=Math.min(l.w/image.naturalWidth,l.h/image.naturalHeight);x.drawImage(image,l.x+(l.w-image.naturalWidth*k)/2,l.y+(l.h-image.naturalHeight*k)/2,image.naturalWidth*k,image.naturalHeight*k);}else{x.font=`${l.role==='headline'?'900':'600'} ${l.px}px 'Campaign Sans',sans-serif`;x.fillStyle=l.role==='headline'?'#111111':c.accent;x.textBaseline='top';l.lines.forEach((line,n)=>x.fillText(line,l.x,l.y+n*l.lineHeight));}}
+  x.restore();if(i.palette==='bwry'){const pixels=x.getImageData(0,0,canvas.width,canvas.height);x.putImageData(quantizeBWRY(pixels),0,0);}
+  if(guides){x.save();x.scale(scale,scale);x.strokeStyle='#24916c';x.lineWidth=2/scale;plan.layers.forEach(l=>x.strokeRect(l.x,l.y,l.w,l.h));x.restore();}return canvas;
+ }
  if(c.visualStyle===COFFEE_STYLE&&plan.direction==='travel'){
   x.save();x.beginPath();i.screens.forEach(s=>x.rect(s.x,s.y,s.w,s.h));x.clip();
   for(const s of i.screens)integratedBackground(x,c,s,assets,{mural:i.phase!=='unit'});
