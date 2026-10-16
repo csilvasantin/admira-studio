@@ -4,7 +4,7 @@ import {contentRequestURL,restoreContentRequest,deliveryInstallations} from '../
 import {newCampaign} from '../adaptaciones/campaign-entry.mjs';
 import {einkCampaign} from '../adaptaciones/eink-request-core.mjs';
 import {restoreCampaign,planCampaign,campaignContract,campaignJob} from '../adaptaciones/campaign-core.mjs';
-import {quantizeBWRY,BWRY} from '../adaptaciones/eink-core.mjs';
+import {quantizeBWRY,BWRY,einkStockTags} from '../adaptaciones/eink-core.mjs';
 import {campaignComposition} from '../adaptaciones/campaign-composition.mjs';
 const video=()=>({...newCampaign(false,'diagonal-video'),client:{id:'starbucks',name:'Starbucks'},revision:6,name:'Starbucks · Diagonal 634',headline:'Tu próximo horizonte.',cta:'Haz una pausa. Diagonal 634.',visualStyle:'coffee-integrated',direction:'travel'});
 test('expert e-paper command preserves the brief and opens a separate poster draft',()=>{
@@ -31,4 +31,9 @@ test('four-colour conversion uses only opaque BWRY pixels and preserves palette 
  const data=new Uint8ClampedArray([...BWRY.flatMap(p=>[...p,255]),120,160,170,255,80,30,130,255,210,210,190,255,0,0,0,255]);const image=quantizeBWRY({width:4,height:2,data});
  const allowed=new Set(BWRY.map(p=>p.join(',')));for(let n=0;n<8;n++){assert.ok(allowed.has([...image.data.slice(n*4,n*4+3)].join(',')));assert.equal(image.data[n*4+3],255);}
  assert.deepEqual([...image.data.slice(0,16)],BWRY.flatMap(p=>[...p,255]));
+});
+
+test('bounded Stock publication tags retain e-paper identity, native profile and both possible source references',()=>{
+ const c=einkCampaign(video(),{source:{campaignId:'diagonal-video',revision:6,stockId:'stock-source',frameSeconds:2}}),tags=einkStockTags(c,c.installations[0]);
+ assert.ok(tags.length<=9);for(const tag of ['eink','cartela','starbucks','profile:samsung-em13dx','source-campaign:diagonal-video','source-stock:stock-source'])assert.ok(tags.includes(tag));
 });

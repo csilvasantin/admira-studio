@@ -1,4 +1,5 @@
-import {mountEinkRequest} from './eink-request.mjs?v=eink-cartela-1';
+import {einkStockTags} from './eink-core.mjs?v=eink-cartela-2';
+import {mountEinkRequest} from './eink-request.mjs?v=eink-cartela-2';
 import {einkCampaign} from './eink-request-core.mjs?v=eink-cartela-1';
 import {mountContentRequest} from './content-request.mjs?v=create-content-2';
 import {CONTENT_REQUEST_SCHEMA,contentCampaign,deliveryInstallations} from './content-request-core.mjs?v=eink-cartela-1';
@@ -122,7 +123,7 @@ export function mountCampaign({t,queue,openTwin,previewTwin,clientCatalog=[]}){
  function open(){root.hidden=false;base.hidden=true;options.hidden=advanced.hidden=false;document.body.classList.add('campaign-active');fill();mapEditor();render();void loadAssets();}
  function close(){root.hidden=true;base.hidden=false;options.hidden=advanced.hidden=true;document.body.classList.remove('campaign-active');}
  const closeButton=$('#campaign-close');if(closeButton)closeButton.onclick=close;
- function begin(value){if(busy)return;stopTravel();travelOwner='';travelStarted=false;travelTime=value.visualStyle==='coffee-integrated'?2:0;c=value;selected=c.installations[0].id;approvals={};exportItems=[];ready=false;assets={};persist();fill();mapEditor();render();void loadAssets();}
+ function begin(value){if(busy)return;if(creator&&params.get('flow')==='cartela-tinta'&&!value.creationRequest?.eink)value=einkCampaign(value,contentFlow?.settings?.()||{});stopTravel();travelOwner='';travelStarted=false;travelTime=value.visualStyle==='coffee-integrated'?2:0;c=value;selected=c.installations[0].id;approvals={};exportItems=[];ready=false;assets={};persist();fill();mapEditor();render();void loadAssets();}
  $('#campaign-new').onclick=async()=>{if(params.get('demo')==='sneakers-store'||params.has('nuevo')){params.delete('demo');params.delete('nuevo');window.history.replaceState(null,'',location.pathname+(params.size?'?'+params.toString():''));}begin(catalogue?await catalogue.fresh():newCampaign(en));say(t('Campaña nueva. Sube tu producto y tu logo y escribe el mensaje en Editar contenido.','New campaign. Upload your product and logo and write your message in Edit content.'));};
  async function starbucks(){if(busy)return;const r=await fetch('/adaptaciones/campanas/'+(params.get('version')==='1'?'starbucks-six-r1.json':'starbucks-six.json')+'?revision=content-language-2');if(!r.ok){say(t('No se pudo cargar el ejemplo.','Could not load the example.'));return;}let value=restoreCampaign(await r.json());const lang=params.get('content')|| (en?'en':'es');if(contentLanguage(value)!==lang)value=selectContentLanguage(value,lang);value.contentLanguages=[lang];if(params.has('contents'))value=setContentLanguages(value,params.get('contents').split(','),{allowDraft:true});begin(value);}
  $('#campaign-starbucks').onclick=()=>{location.href=(en?'/en/creador/':'/creador/')+'?demo=starbucks-six&lang='+(en?'en':'es');};
@@ -168,7 +169,7 @@ export function mountCampaign({t,queue,openTwin,previewTwin,clientCatalog=[]}){
       const derived=contract.derived.find(d=>d.installation===i.id&&d.screen===s.id),
        composition=campaignComposition(snapshot,i,s,planCampaign(snapshot,i,snapshot.direction,measure),{mediaType:'image'}),
        result=await publishAdaptation(png,{type:'image',title:`${snapshot.name} · ${i.id} · ${s.id} · ${snapshot.direction} · r${snapshot.revision}`,originId:`${snapshot.id}:r${snapshot.revision}`,client:snapshot.client||null,format:i.id,width,height,still:true},{
-        tags:['adaptación','imagen-fija','creador',...derived.tags],externalRef:`${snapshot.id}:r${snapshot.revision}`,composition,
+        tags:snapshot.creationRequest?.eink?einkStockTags(snapshot,i):['adaptación','imagen-fija','creador',...derived.tags],externalRef:`${snapshot.id}:r${snapshot.revision}`,composition,
         comment:JSON.stringify({schema:DEFAULT_CAMPAIGN.schema,campaign:snapshot.id,revision:snapshot.revision,contentLanguage:contentLanguage(snapshot),installation:i.id,screen:s.id,direction:snapshot.direction,...(snapshot.creationRequest?.eink?{eink:snapshot.creationRequest.eink}:{} )})
        });
       if(!result.ok)throw Error(result.error||'stock');
