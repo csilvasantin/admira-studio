@@ -1,0 +1,26 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "reason": "Carlos solicita /demo starbucks 180 únicamente con MacStudio V–H–V y MacBookPro16 horizontal, conservando el MacMini. Reutiliza Creador/Adaptador, Stock y el lanzador protegido con sesión.",
+  "files": [
+    "campanas/starbucks-180/index.html",
+    "campanas/starbucks-180/programa-cuatro.json",
+    "campanas/starbucks-180/campana-editable.json",
+    "campanas/starbucks-360/viewer.mjs",
+    "campanas/starbucks-360/player-control.mjs",
+    "functions/starbucks-180.js",
+    "functions/_starbucks-180-program.js",
+    "functions/_avatar-loader.js",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/adaptaciones.js",
+    "test/starbucks180-control.test.mjs",
+    "test/starbucks180-program.test.mjs",
+    "docs/starbucks-180.md"
+  ],
+  "limits": {
+    "macMiniIncluded": false,
+    "remoteInputChanged": false,
+    "arbitraryPlayerSelection": false,
+    "queuedIsPlayback": false
+  }
+}
