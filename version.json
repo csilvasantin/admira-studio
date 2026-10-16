@@ -1,21 +1,21 @@
 {
-  "version": "v.16.10.2026.r4.01:48",
-  "deployedAt": "2026-10-15T22:31:47.664257+00:00",
+  "version": "v.16.10.2026.r5.02:08",
+  "deployedAt": "2026-10-16T00:00:57.409651+00:00",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
-  "machine": "Codex desktop",
-  "signature": "Codex · Codex desktop",
-  "git": "8b680565f5f62374466208f1f7879824dd8c808f",
-  "gitFull": "8b680565f5f62374466208f1f7879824dd8c808f",
-  "gitShort": "8b68056",
+  "machine": "MacStudio",
+  "signature": "Codex · MacStudio",
+  "git": "6dfd4d36387025e17e369a705684cc8e7b00457d",
+  "gitFull": "6dfd4d36387025e17e369a705684cc8e7b00457d",
+  "gitShort": "6dfd4d3",
   "dirty": false,
   "novedades": [
-    "El creador permite mensajes por pantalla activados al paso de la taza y vapor animado incluido en los MP4.",
-    "Los idiomas seleccionados generan recorridos completos independientes para emitir castellano seguido de inglés."
+    "El previo de Stock reproduce los vídeos de forma continua: los pequeños desfases se corrigen con velocidad, sin reposicionar los siete decodificadores.",
+    "Las esperas de datos conservan el último fotograma y el reloj del conjunto; la cadencia del gemelo mantiene los 25 fps de origen."
   ],
   "rollback": {
-    "git": "8aeab5c3c476db52db2f6aa803acf1322238f8f3"
+    "git": "6dfd4d36387025e17e369a705684cc8e7b00457d"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -27,12 +27,14 @@
     ".source-patches/music-cards.json",
     ".source-patches/playlist-download-progress.json",
     ".source-patches/portada-sin-experto.json",
+    ".source-patches/starbucks-360.json",
     ".source-patches/starbucks-bilingual-story.json",
     ".source-patches/starbucks-creation-formats.json",
     ".source-patches/starbucks-photo-twin.json",
     ".source-patches/starbucks-six-shell-stock.json",
     ".source-patches/starbucks-video-twin.json",
     ".source-patches/stock-compact-layout.json",
+    ".source-patches/stock-continuous-playback.json",
     ".source-patches/stock-destinations.json",
     ".source-patches/stock-filtered-count.json",
     ".source-patches/stock-formats-capsules.json",

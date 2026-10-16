@@ -66,7 +66,7 @@ export function mountTwin(h){
   play.onclick=()=>{h.transport?.toggle();draw(true);};
   $('.twin-restart').onclick=()=>{h.transport?.seek(0);draw(true);};
   timeInput.oninput=()=>{h.transport?.seek(Number(timeInput.value));draw(true);};
-  function draw(force=false){if(!modal.open||!built||!active)return;const now=performance.now();if(!force&&now-last<40)return;last=now;built.draw(cv=>h.draw(cv,active,h.background?.(active)?.el));updateTransport();}
+  function draw(force=false){if(!modal.open||!built||!active)return;const now=performance.now();const cadence=1000/(h.transport?.available?.()?(h.transport.snapshot(active).fps||25):25);if(!force&&now-last<cadence)return;last=force?now:now-(now-last)%cadence;built.draw(cv=>h.draw(cv,active,h.background?.(active)?.el));updateTransport();}
   async function load(){startMedia();const mine=++revision,f=active;clean();ctl=new AbortController();const signal=ctl.signal;status.textContent=(isStarbucksFormat(f)?t('Construyendo Starbucks · foto PG103 · ','Building Starbucks · PG103 photo · '):t('Cargando modelo de Stock · ','Loading Stock model · '))+quality.value;
     try{if(mine!==revision||!modal.open)return;
       const cv=document.createElement('canvas');cv.tabIndex=0;cv.setAttribute('aria-label',t('Local 3D interactivo','Interactive 3D shop'));stage.append(cv);const g=twinGeometry(f,h.destino(f));
