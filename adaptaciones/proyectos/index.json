@@ -32,11 +32,16 @@
         "especiales": 0,
         "myblu": 0
       },
-      "instalaciones": 3,
+      "instalaciones": 4,
       "creador": true,
       "campanas": [
         "starbucks-individuales"
-      ]
+      ],
+      "ultimoContenido": {
+        "campana": "starbucks-gdg51-seven-20261015",
+        "stock": "starbucks-gdg51-seven-20261015-travel",
+        "formatos": 7
+      }
     }
   ]
 }

@@ -1,0 +1,27 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "acba88253dc701a6462ab904b58f08b62989beb7",
+  "reason": "Carlos ve «Starbucks · 3 montajes» en Formatos de cliente y pide que cuente los 7 formatos del último contenido (Gran de Gràcia 51 · Siete mensajes, tarjeta de Stock con 7 adaptaciones ES + EN). Se añade a la ficha el montaje de siete pantallas V–H–V–V–H–V–H de ese contenido.",
+  "files": [
+    "adaptaciones/proyectos/pixeria-alsea.json",
+    "adaptaciones/proyectos/index.json",
+    "adaptaciones/client-format-controls.mjs",
+    "adaptaciones/client-installations.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/adaptaciones.js",
+    "mcp/adapter-manifest.json",
+    "docs/starbucks-formatos.md",
+    "docs/starbucks-gemelo.md",
+    "docs/campanas-instalacion.md",
+    "help/index.html",
+    "mcp/index.html",
+    "test/starbucks-formats.test.mjs",
+    "test/campaign-story.test.mjs"
+  ],
+  "limits": {
+    "measuredGeometry": false,
+    "anamorphicCalibration": false,
+    "hardwareSyncVerified": false
+  }
+}

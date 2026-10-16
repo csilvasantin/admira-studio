@@ -1158,19 +1158,29 @@
       "layouts": [
         "starbucks-pg103",
         "starbucks-gdg51",
-        "starbucks-gdg51-vhvvhv"
+        "starbucks-gdg51-vhvvhv",
+        "starbucks-gdg51-seven"
       ],
       "patterns": [
         "2V-1V-3V",
         "H-V-H-H-V-H",
-        "V-H-V-V-H-V"
+        "V-H-V-V-H-V",
+        "V-H-V-V-H-V-H"
       ],
       "individualOrientations": [
         "landscape",
         "portrait"
       ],
-      "allDestinations": 5,
-      "allNativeFiles": 20,
+      "allDestinations": 6,
+      "allNativeFiles": 27,
+      "latestContent": {
+        "campaign": "starbucks-gdg51-seven-20261015",
+        "formats": 7,
+        "languages": [
+          "es",
+          "en"
+        ]
+      },
       "guide": "/docs/starbucks-gemelo.md"
     }
   },
