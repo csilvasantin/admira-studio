@@ -22,3 +22,7 @@
 /assets/demos/starbucks-six/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=300
+
+# Read-only public Creator contract used by the suite's single command engine.
+/adaptaciones/*
+  Access-Control-Allow-Origin: *

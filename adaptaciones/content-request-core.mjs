@@ -5,7 +5,7 @@ export const CONTENT_DESTINATIONS=['poster','portrait','landscape'];
 export function contentRequestURL(args='',language='es'){
  const text=String(args).trim();
  const cartela=/^(?:cartela|cartel|poster)\s+(?:tinta\s*electr[oó]nica|e-?ink)(?:\s|$)/i;
- if(cartela.test(text)){const brief=text.replace(cartela,'').trim();if(brief.length>2000)throw Error('content-brief-size');const q=new URLSearchParams({flow:'cartela-tinta',nuevo:'1',lang:language==='en'?'en':'es'});if(brief)q.set('brief',brief);return(language==='en'?'/en/creador/':'/creador/')+'?'+q;}
+ if(cartela.test(text)){const brief=text.replace(cartela,'').trim();if(brief.length>2000)throw Error('content-brief-size');const q=new URLSearchParams({flow:'cartela-tinta',nuevo:'1',count:'4',center:'d634',interval:'300',lang:language==='en'?'en':'es'});if(brief)q.set('brief',brief);return(language==='en'?'/en/creador/':'/creador/')+'?'+q;}
  if(!/^(contenido|content)(?:\s|$)/i.test(text))throw Error('content-command');
  let brief=text.replace(/^(contenido|content)\s*/i,'');
  const anamorphic=/(?:^|\s)(?:anam[oó]rfic[oa]s?|anamorphic)(?:\s|$)/i.test(brief);
