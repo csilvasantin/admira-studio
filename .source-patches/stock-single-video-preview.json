@@ -1,0 +1,13 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "reason": "Carlos confirma que el MacMini mejora pero todavía tiene tirones. Se prepara una copia conjunta con el Adaptador nativo, se publica en Stock y se usa un solo decodificador en el previo multipantalla.",
+  "files": [
+    "assets/stock-sync-preview.mjs",
+    "assets/stock-sync-preview-job.mjs",
+    "assets/stock-sync-preview-publish.mjs",
+    "stock.html",
+    "en/stock.html",
+    "test/stock-sync-preview-job.test.mjs"
+  ]
+}

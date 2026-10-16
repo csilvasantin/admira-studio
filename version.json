@@ -1,21 +1,21 @@
 {
-  "version": "v.16.10.2026.r5.02:08",
-  "deployedAt": "2026-10-16T00:00:57.409651+00:00",
+  "version": "v.16.10.2026.r6.08:11",
+  "deployedAt": "2026-10-16T06:11:35.164982+00:00",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
   "machine": "MacStudio",
   "signature": "Codex · MacStudio",
-  "git": "6dfd4d36387025e17e369a705684cc8e7b00457d",
-  "gitFull": "6dfd4d36387025e17e369a705684cc8e7b00457d",
-  "gitShort": "6dfd4d3",
+  "git": "655fad108b035336d16725dd40f75b4d8616c981",
+  "gitFull": "655fad108b035336d16725dd40f75b4d8616c981",
+  "gitShort": "655fad1",
   "dirty": false,
   "novedades": [
-    "El previo de Stock reproduce los vídeos de forma continua: los pequeños desfases se corrigen con velocidad, sin reposicionar los siete decodificadores.",
-    "Las esperas de datos conservan el último fotograma y el reloj del conjunto; la cadencia del gemelo mantiene los 25 fps de origen."
+    "El previo de una creatividad multipantalla puede preparar y guardar en Stock un único vídeo del conjunto con el motor nativo del Adaptador.",
+    "Las siete superficies del gemelo leen el mismo fotograma, con menos carga de decodificación; las salidas nativas y la calidad Best se conservan."
   ],
   "rollback": {
-    "git": "6dfd4d36387025e17e369a705684cc8e7b00457d"
+    "git": "655fad108b035336d16725dd40f75b4d8616c981"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -40,6 +40,7 @@
     ".source-patches/stock-formats-capsules.json",
     ".source-patches/stock-local-upload.json",
     ".source-patches/stock-search-reference.json",
+    ".source-patches/stock-single-video-preview.json",
     ".source-patches/stock-sync-creatives.json",
     ".source-patches/studio-universal-navigation.json"
   ]

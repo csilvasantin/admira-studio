@@ -238,5 +238,9 @@
   "v.16.10.2026.r5.02:08": [
     "El previo de Stock reproduce los vídeos de forma continua: los pequeños desfases se corrigen con velocidad, sin reposicionar los siete decodificadores.",
     "Las esperas de datos conservan el último fotograma y el reloj del conjunto; la cadencia del gemelo mantiene los 25 fps de origen."
+  ],
+  "v.16.10.2026.r6.08:11": [
+    "El previo de una creatividad multipantalla puede preparar y guardar en Stock un único vídeo del conjunto con el motor nativo del Adaptador.",
+    "Las siete superficies del gemelo leen el mismo fotograma, con menos carga de decodificación; las salidas nativas y la calidad Best se conservan."
   ]
 }
