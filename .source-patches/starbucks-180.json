@@ -15,7 +15,8 @@
     "adaptaciones/adaptaciones.js",
     "test/starbucks180-control.test.mjs",
     "test/starbucks180-program.test.mjs",
-    "docs/starbucks-180.md"
+    "docs/starbucks-180.md",
+    "campanas/starbucks-360/floating-panels.mjs"
   ],
   "limits": {
     "macMiniIncluded": false,
