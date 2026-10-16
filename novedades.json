@@ -246,5 +246,8 @@
   "v.16.10.2026.r7.08:25": [
     "El gemelo actualiza su previo conjunto y las versiones ES/EN dentro del diálogo abierto al terminar la preparación.",
     "Se evita cerrar y reabrir el diálogo durante el refresco, para conservar el modelo y sus controles."
+  ],
+  "v.16.10.2026.r8.08:36": [
+    "El acceso con Google enseña las direcciones del pie en lugar de «[email protected]»"
   ]
 }

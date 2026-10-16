@@ -1,18 +1,17 @@
 {
-  "version": "v.16.10.2026.r7.08:25",
-  "deployedAt": "2026-10-16T06:24:42.555430+00:00",
-  "author": "Codex",
-  "agent": "Codex",
-  "deployer": "Codex",
+  "version": "v.16.10.2026.r8.08:36",
+  "deployedAt": "2026-10-16T06:36:24Z",
+  "author": "NeoMacStudio",
+  "agent": "NeoMacStudio",
+  "deployer": "NeoMacStudio",
   "machine": "MacStudio",
-  "signature": "Codex · MacStudio",
-  "git": "f09657de38cedea45a0578afd27963ba63f54438",
-  "gitFull": "f09657de38cedea45a0578afd27963ba63f54438",
-  "gitShort": "f09657d",
+  "signature": "NeoMacStudio · MacStudio",
+  "git": "ad302a1c4fd6f54cea8bd67d1963d27697d1e45c",
+  "gitFull": "ad302a1c4fd6f54cea8bd67d1963d27697d1e45c",
+  "gitShort": "ad302a1",
   "dirty": false,
   "novedades": [
-    "El gemelo actualiza su previo conjunto y las versiones ES/EN dentro del diálogo abierto al terminar la preparación.",
-    "Se evita cerrar y reabrir el diálogo durante el refresco, para conservar el modelo y sus controles."
+    "El acceso con Google enseña las direcciones del pie en lugar de «[email protected]»"
   ],
   "rollback": {
     "git": "f09657de38cedea45a0578afd27963ba63f54438"
