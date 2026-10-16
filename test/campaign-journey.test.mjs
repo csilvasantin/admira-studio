@@ -53,6 +53,16 @@ test('invalid imported stories and maps fail validation; disabling steam retains
  for(const bad of [null,{...COFFEE_JOURNEY,steam:'true'},{...COFFEE_JOURNEY,copy:{es:['x'],en:['y']}}])assert.throws(()=>restoreCampaign({...c,journeyStory:bad}),/campaign-journey/);
  assert.throws(()=>restoreCampaign({...c,wallStory:{acts:Array.from({length:3},()=>({es:['a','b','c'],en:['a','b','c']}))}}),/campaign-story-mode/);
  assert.equal(planCampaign({...c,seconds:13},c.installations[0]).valid,false);
- assert.equal(planCampaign(c,{...c.installations[0],screens:c.installations[0].screens.slice(0,6)}).valid,false);
+ assert.equal(planCampaign(c,{...c.installations[0],screens:c.installations[0].screens.slice(0,6)}).valid,true);
  c.journeyStory.steam=false;const i=c.installations[0],j=campaignJob(c,i,i.screens[0],planCampaign(c,i));assert.equal(j.steam,false);assert(!j.files.includes('steam.png'));
+});
+
+
+test('six portrait 2+1+3 layouts adapt source messages and lower copy while retaining opening, closing and the seven-screen original',()=>{
+ const c=campaign(),before=structuredClone(c),x=[0,1080,2340,3600,4680,5760],i={id:'starbucks-pg103',width:6840,height:1920,phase:'mural',screens:x.map((x,n)=>({id:'pg-'+n,x,y:0,w:1080,h:1920,rotation:0}))};
+ for(const variant of campaignVariants(c)){
+  const indexes=[0,1,2,4,5,6],lang=variant.contentLanguage,p=planCampaign(variant,i);assert.equal(p.valid,true);
+  i.screens.forEach((s,n)=>{const story=journeyStory(variant,i,s).at(-1);assert.equal(story.text,COFFEE_JOURNEY.copy[lang][indexes[n]]);assert.equal(story.cta,COFFEE_JOURNEY.lowerCopy[lang][indexes[n]]);const job=campaignJob(variant,i,s,p);assert.equal(job.W,1080);assert.equal(job.H,1920);assert.equal(job.durationSeconds,24);assert.equal(job.steam,true);});
+ }
+ assert.deepEqual(c,before);assert.throws(()=>journeyStory(c,i,{id:'unknown'}),/journey-screen-count/);
 });

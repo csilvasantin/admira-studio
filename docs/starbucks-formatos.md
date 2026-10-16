@@ -2,7 +2,7 @@
 
 Desde [Creador](https://admira.studio/creador/?cliente=starbucks&proyecto=starbucks), **Formatos de cliente → Starbucks** ofrece Horizontal (1920×1080), Vertical (1080×1920) y tres montajes:
 
-- **Paseo de Gracia 103 · 2V–1V–3V**: seis verticales agrupadas 2+1+3. Orientación confirmada por Carlos el 14 de octubre de 2026.
+- **Paseo de Gracia 103 / Diagonal 634 · VV–V–VVV**: seis verticales agrupadas 2+1+3, con seis salidas nativas de 1080×1920. Configuración confirmada por Carlos el 16 de octubre de 2026.
 - **AdmiraNeXT · Gran de Gracia 51 · H–V–H–H–V–H**: seis pantallas, cuatro horizontales y dos verticales, en ese orden.
 
 - **AdmiraNeXT · Gran de Gracia 51 · V–H–V–V–H–V**: opción adicional con cuatro verticales y dos horizontales, sin sustituir H–V–H–H–V–H.
@@ -53,3 +53,8 @@ La cabecera usa el logo como Inicio/Home; los tres controles Opciones, Avanzado 
 
 
 Modelo Starbucks, tercer montaje y menús corregidos / Starbucks model, third layout and corrected panels: [tutorial ES/EN](starbucks-gemelo.md).
+
+
+## Añadir VV–V–VVV a una creatividad existente
+
+El montaje compartido de Paseo de Gracia 103 y Diagonal 634 está disponible en Creador y Adaptador. El recorrido adapta los mensajes de origen al número de pantallas y conserva el inicio y el cierre. Las coordenadas y separaciones son nominales y editables. Al publicar un montaje nuevo de la misma campaña, Stock añade esa adaptación a la ficha existente y conserva los formatos, archivos y previos ya publicados. El contador del gemelo se calcula con las adaptaciones guardadas; añadir este montaje a la ficha de seis adaptaciones produce siete. La configuración de los players del laboratorio es independiente de este catálogo.

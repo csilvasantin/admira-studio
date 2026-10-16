@@ -1,6 +1,6 @@
 import {layerMotion} from './campaign-story.mjs?v=starbucks-story-1';
-import {steamAtlas,drawSteam} from './campaign-journey.mjs?v=coffee-footer-1';
-import {COFFEE_STYLE,entrance,integratedBackground,integratedLayers,integratedLayerCanvas,integratedProductCanvas} from './campaign-integrated.mjs?v=coffee-footer-1';
+import {steamAtlas,drawSteam} from './campaign-journey.mjs?v=six-verticals-1';
+import {COFFEE_STYLE,entrance,integratedBackground,integratedLayers,integratedLayerCanvas,integratedProductCanvas} from './campaign-integrated.mjs?v=six-verticals-1';
 import {travelPosition} from './campaign-travel.mjs?v=starbucks-story-1';
 const integratedCaches=new WeakMap();
 function cachedCanvas(assets,key,create){let map=integratedCaches.get(assets);if(!map){map=new Map();integratedCaches.set(assets,map);}if(map.size>100)map.clear();if(!map.has(key))map.set(key,create());return map.get(key);}

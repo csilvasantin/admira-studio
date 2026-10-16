@@ -1,5 +1,5 @@
 import {screenStory,screenLanguages,motionExpressions} from './campaign-story.mjs?v=starbucks-story-1';
-import {journeyStory,steamGeometry,STEAM} from './campaign-journey.mjs?v=coffee-footer-1';
+import {journeyStory,steamGeometry,STEAM} from './campaign-journey.mjs?v=six-verticals-1';
 // Photography, copy and brand share one composition. Native export and canvas
 // preview use the same layer positions, entrance timing and global journey.
 export const COFFEE_STYLE='coffee-integrated';
