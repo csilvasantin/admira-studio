@@ -77,5 +77,12 @@ export function mountTwin(h){
     const shops=h.shops()||[];shop.replaceChildren(...(shops.length?shops:[{id:'studio-demo',nombre:t('Estanco · demo','Shop · demo')}]).map(s=>new Option(s.nombre,s.id)));if(shops.some(s=>s.id===h.shop()))shop.value=h.shop();shop.disabled=shops.length<2;load();}
   const inline=mountInlineTwins({...h,open});
   function button(f){return inline.preview(f);}
-  controls(false);return {button,preview:inline.preview,open,draw,close,sync:()=>{inline.sync();document.querySelectorAll('.view-twin').forEach(b=>b.disabled=!h.ready());}};
+  function refreshFormats(preferred=active?.id){
+    if(!modal.open)return;
+    const next=h.formats?.()||[];if(!next.length)return;list=next;
+    formats.replaceChildren(...list.map(f=>new Option(f.nombre,f.id)));
+    const selected=list.find(f=>f.id===preferred)||list[0];
+    if(built)chooseFormat(selected);else{active=selected;load();}
+  }
+  controls(false);return {button,preview:inline.preview,open,draw,close,refreshFormats,sync:()=>{inline.sync();document.querySelectorAll('.view-twin').forEach(b=>b.disabled=!h.ready());}};
 }

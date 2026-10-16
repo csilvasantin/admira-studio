@@ -1,21 +1,21 @@
 {
-  "version": "v.16.10.2026.r6.08:11",
-  "deployedAt": "2026-10-16T06:11:35.164982+00:00",
+  "version": "v.16.10.2026.r7.08:25",
+  "deployedAt": "2026-10-16T06:24:42.555430+00:00",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
   "machine": "MacStudio",
   "signature": "Codex · MacStudio",
-  "git": "655fad108b035336d16725dd40f75b4d8616c981",
-  "gitFull": "655fad108b035336d16725dd40f75b4d8616c981",
-  "gitShort": "655fad1",
+  "git": "f09657de38cedea45a0578afd27963ba63f54438",
+  "gitFull": "f09657de38cedea45a0578afd27963ba63f54438",
+  "gitShort": "f09657d",
   "dirty": false,
   "novedades": [
-    "El previo de una creatividad multipantalla puede preparar y guardar en Stock un único vídeo del conjunto con el motor nativo del Adaptador.",
-    "Las siete superficies del gemelo leen el mismo fotograma, con menos carga de decodificación; las salidas nativas y la calidad Best se conservan."
+    "El gemelo actualiza su previo conjunto y las versiones ES/EN dentro del diálogo abierto al terminar la preparación.",
+    "Se evita cerrar y reabrir el diálogo durante el refresco, para conservar el modelo y sus controles."
   ],
   "rollback": {
-    "git": "655fad108b035336d16725dd40f75b4d8616c981"
+    "git": "f09657de38cedea45a0578afd27963ba63f54438"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",

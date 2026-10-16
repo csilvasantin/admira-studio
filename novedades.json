@@ -242,5 +242,9 @@
   "v.16.10.2026.r6.08:11": [
     "El previo de una creatividad multipantalla puede preparar y guardar en Stock un único vídeo del conjunto con el motor nativo del Adaptador.",
     "Las siete superficies del gemelo leen el mismo fotograma, con menos carga de decodificación; las salidas nativas y la calidad Best se conservan."
+  ],
+  "v.16.10.2026.r7.08:25": [
+    "El gemelo actualiza su previo conjunto y las versiones ES/EN dentro del diálogo abierto al terminar la preparación.",
+    "Se evita cerrar y reabrir el diálogo durante el refresco, para conservar el modelo y sus controles."
   ]
 }
