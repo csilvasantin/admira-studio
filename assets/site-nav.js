@@ -784,7 +784,7 @@
       axCss.rel = 'stylesheet'; axCss.href = 'https://www.admiranext.com/suite/experto.css?v=20261014-compact-bugito-1';
       document.head.appendChild(axCss);
       var ax = document.createElement('script');
-      ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261014-compact-bugito-1';
+      ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261016-dooh-1';
       ax.setAttribute('data-panel', '.pf-cli');
       ax.setAttribute('data-body', '');
       ax.setAttribute('data-form', '.pf-cli-form');
