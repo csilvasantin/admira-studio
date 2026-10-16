@@ -1,3 +1,4 @@
+import {einkStockTags} from './eink-core.mjs?v=eink-cartela-2';
 import {mountEinkRequest} from './eink-request.mjs?v=eink-cartela-2';
 import {einkCampaign} from './eink-request-core.mjs?v=eink-cartela-1';
 import {mountContentRequest} from './content-request.mjs?v=create-content-2';
@@ -168,7 +169,7 @@ export function mountCampaign({t,queue,openTwin,previewTwin,clientCatalog=[]}){
       const derived=contract.derived.find(d=>d.installation===i.id&&d.screen===s.id),
        composition=campaignComposition(snapshot,i,s,planCampaign(snapshot,i,snapshot.direction,measure),{mediaType:'image'}),
        result=await publishAdaptation(png,{type:'image',title:`${snapshot.name} · ${i.id} · ${s.id} · ${snapshot.direction} · r${snapshot.revision}`,originId:`${snapshot.id}:r${snapshot.revision}`,client:snapshot.client||null,format:i.id,width,height,still:true},{
-        tags:['adaptación','imagen-fija','creador',...derived.tags],externalRef:`${snapshot.id}:r${snapshot.revision}`,composition,
+        tags:snapshot.creationRequest?.eink?einkStockTags(snapshot,i):['adaptación','imagen-fija','creador',...derived.tags],externalRef:`${snapshot.id}:r${snapshot.revision}`,composition,
         comment:JSON.stringify({schema:DEFAULT_CAMPAIGN.schema,campaign:snapshot.id,revision:snapshot.revision,contentLanguage:contentLanguage(snapshot),installation:i.id,screen:s.id,direction:snapshot.direction,...(snapshot.creationRequest?.eink?{eink:snapshot.creationRequest.eink}:{} )})
        });
       if(!result.ok)throw Error(result.error||'stock');

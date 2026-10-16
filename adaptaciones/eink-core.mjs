@@ -45,3 +45,9 @@ export function quantizeBWRY(image){
   spread(x+step,y,e,7/16);spread(x-step,y+1,e,3/16);spread(x,y+1,e,5/16);spread(x+step,y+1,e,1/16);
  }}return image;
 }
+
+// Stock publication keeps a bounded authored tag list before adding automatic tags.
+export function einkStockTags(c,i){
+ const source=c.creationRequest.eink.source||{};
+ return ['eink','cartela',c.client?.id,'profile:'+i.einkProfile,source.campaignId?'source-campaign:'+source.campaignId:null,source.stockId?'source-stock:'+source.stockId:null,'campaign:'+c.id,'installation:'+i.id,'content-language:'+(c.contentLanguage||'es')].filter(Boolean);
+}
