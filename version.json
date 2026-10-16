@@ -1,5 +1,5 @@
 {
-  "version": "v.16.10.2026.r12.16:06",
+  "version": "v.16.10.2026.r13.16:25",
   "deployedAt": "2026-10-16T12:36:21.415103+00:00",
   "author": "Codex",
   "agent": "Codex",
@@ -11,8 +11,8 @@
   "gitShort": "4c8c2d1",
   "dirty": false,
   "novedades": [
-    "/crear cartela tintaelectronica: cuatro imágenes IA y cuatro cartelas 3:4 para Diagonal, con revisión y Stock.",
-    "Serie recuperable y playlist compartida: 300 segundos por pieza, ciclo de 20 minutos."
+    "/demo starbucks 180: MacStudio V–H–V → MacBookPro16 H, sin incluir el MacMini.",
+    "Recorrido con vapor y textos en castellano e inglés; previo 3D y Matrix y activación de cuatro players."
   ],
   "rollback": {
     "git": "acba88253dc701a6462ab904b58f08b62989beb7"
