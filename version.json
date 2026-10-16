@@ -1,18 +1,18 @@
 {
-  "version": "v.16.10.2026.r11.15:35",
+  "version": "v.16.10.2026.r12.16:06",
   "deployedAt": "2026-10-16T12:36:21.415103+00:00",
-  "author": "MorfeoMacMini",
-  "agent": "MorfeoMacMini",
-  "deployer": "MorfeoMacMini",
-  "machine": "MacMini",
-  "signature": "MorfeoMacMini · MacMini",
+  "author": "Codex",
+  "agent": "Codex",
+  "deployer": "Codex",
+  "machine": "MacStudio",
+  "signature": "Codex · MacStudio",
   "git": "4c8c2d1b1c861d5b0517f5dc67abd36c8ad15461",
   "gitFull": "4c8c2d1b1c861d5b0517f5dc67abd36c8ad15461",
   "gitShort": "4c8c2d1",
   "dirty": false,
   "novedades": [
-    "Creador: Formatos de cliente → Starbucks indica 7 formatos, los del último contenido de Gran de Gràcia 51 (ES + EN).",
-    "La ficha Starbucks añade el montaje de siete pantallas V–H–V–V–H–V–H; el relato bilingüe de seis pantallas lo deja excluido."
+    "/crear cartela tintaelectronica: cuatro imágenes IA y cuatro cartelas 3:4 para Diagonal, con revisión y Stock.",
+    "Serie recuperable y playlist compartida: 300 segundos por pieza, ciclo de 20 minutos."
   ],
   "rollback": {
     "git": "acba88253dc701a6462ab904b58f08b62989beb7"

@@ -165,3 +165,9 @@ Abre el JSON editable de una campaña para conservar sus recursos y mensajes, o 
 Samsung E-Paper recibe el PNG desde su app iOS; la publicación en Stock no equivale a un envío físico. El panel Samsung debe estar emparejado en la app. Los players de tinta del puente usan su propio screen ID, resolución, paleta y acuse de envío.
 
 Referencia de resolución y control local: https://www.samsung.com/ie/business/smart-signage/others/colour-e-paper-emdx-13-inch-lh13emdibgbxen/ . Perfil solicitado por Carlos: EM13DX 776F, Samsung E-Paper (16-oct-2026).
+
+### Cuatro cartelas de Diagonal
+
+`/crear cartela tintaelectronica` usa el mismo despacho `AdmiraExperto.exec` desde la consola y Admirito. Abre Creador con `count=4`, `center=d634` e `interval=300`. «Generar 4 imágenes y adaptar» crea cuatro fotografías nuevas con IA, las archiva en Stock y compone cuatro PNG verticales 3:4 a 1200×1600, perfil Samsung EM13DX. Las fotografías son recursos internos; la galería muestra las cartelas verticales terminadas.
+
+La serie se conserva en IndexedDB por identificador. Cada POST se marca antes de salir; si se pierde una respuesta, recargar no repite la generación o publicación desconocida. Revisa y aprueba cada cartela antes de publicar las cuatro adaptaciones en Stock. Editar una pieza invalida su aprobación y su publicación de esa versión. La playlist exportada contiene cuatro imágenes de 300 segundos (20 minutos), compartidas por D634-EINK-01 a 04. Samsung E-Paper requiere importar las imágenes y enviar su playlist desde la app; el comando no acredita un envío físico.
