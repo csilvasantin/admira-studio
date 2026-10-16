@@ -26,3 +26,8 @@ test('an interrupted provider call is retained and cannot be retried as another 
 test('unpublished or wrong format series cannot produce an assignable playlist',()=>{
  const job=newEinkSeries({seed});assert.throws(()=>einkSeriesPlaylist(job),/not-published/);job.seconds=30;assert.throws(()=>validateEinkSeries(job),/invalid/);
 });
+
+test('startup URL cleanup retains the recoverable series identity',async()=>{
+ const fs=await import('node:fs');const source=fs.readFileSync(new URL('../adaptaciones/campaign-studio.mjs',import.meta.url),'utf8');
+ assert.ok(source.indexOf("params.set('serie',seed)")<source.indexOf("if(creator||params.get('taller')==='sneakers-store'){open();"));
+});
