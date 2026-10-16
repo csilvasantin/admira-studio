@@ -234,5 +234,9 @@
   ],
   "v.16.10.2026.r4.01:48": [
     "Starbucks 360 comparte el reloj del laboratorio desde cualquier plataforma y desde las vistas 3D y Matrix."
+  ],
+  "v.16.10.2026.r5.02:08": [
+    "El previo de Stock reproduce los vídeos de forma continua: los pequeños desfases se corrigen con velocidad, sin reposicionar los siete decodificadores.",
+    "Las esperas de datos conservan el último fotograma y el reloj del conjunto; la cadencia del gemelo mantiene los 25 fps de origen."
   ]
 }

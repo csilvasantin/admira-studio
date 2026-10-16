@@ -1,12 +1,12 @@
 {
-  "version": "v.16.10.2026.r4.01:48",
+  "version": "v.16.10.2026.r5.02:08",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
-  "machine": "Codex desktop",
-  "signature": "Codex · Codex desktop",
-  "git": "8b680565f5f62374466208f1f7879824dd8c808f",
-  "gitShort": "8b68056",
-  "gitFull": "8b680565f5f62374466208f1f7879824dd8c808f",
+  "machine": "MacStudio",
+  "signature": "Codex · MacStudio",
+  "git": "6dfd4d36387025e17e369a705684cc8e7b00457d",
+  "gitShort": "6dfd4d3",
+  "gitFull": "6dfd4d36387025e17e369a705684cc8e7b00457d",
   "dirty": false
 }

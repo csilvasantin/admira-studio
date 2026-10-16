@@ -1,0 +1,13 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "reason": "Carlos informa de tirones del previo de Stock en MacMini; se elimina la búsqueda de tiempo por fotograma y el reposicionamiento colectivo tras buffering. Se conservan los archivos nativos y Best.",
+  "files": [
+    "assets/stock-sync-preview.mjs",
+    "assets/stock-sync-playback.mjs",
+    "adaptaciones/gemelo-digital.mjs",
+    "stock.html",
+    "en/stock.html",
+    "test/stock-sync-playback.test.mjs"
+  ]
+}
