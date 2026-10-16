@@ -22,10 +22,13 @@ export function journeyArrival(c,i,s){
 export function journeyStory(c,i,s){
  if(!c.journeyStory||i.phase==='unit')return null;
  const ordered=[...i.screens].sort((a,b)=>a.x-b.x||a.y-b.y),slot=ordered.findIndex(v=>v.id===s.id),lang=c.contentLanguage||'es',copy=c.journeyStory.copy[lang];
- if(slot<0||ordered.length!==copy.length)throw Error('journey-screen-count');
- if(c.seconds<copy.length*2)throw Error('journey-duration');
+ if(slot<0)throw Error('journey-screen-count');
+ if(c.seconds<ordered.length*2)throw Error('journey-duration');
+ // Adapt the source message sequence to this installation, keeping its
+ // opening and closing messages when a campaign has different wall layouts.
+ const message=ordered.length===1?0:Math.round(slot*(copy.length-1)/(ordered.length-1));
  const arrival=journeyArrival(c,i,s),motion=slot%2?1:-1;
- const after={text:copy[slot],cta:c.journeyStory.lowerCopy?.[lang]?.[slot]||c.cta,language:lang,start:Math.max(0,arrival-.1),end:c.seconds,motion};
+ const after={text:copy[message],cta:c.journeyStory.lowerCopy?.[lang]?.[message]||c.cta,language:lang,start:Math.max(0,arrival-.1),end:c.seconds,motion};
  return arrival<.75?[after]:[{text:c.headline,cta:'',language:lang,start:0,end:arrival+.25,motion:-motion},after];
 }
 

@@ -1,4 +1,4 @@
-import {restoreCampaign} from './campaign-core.mjs?v=coffee-footer-1';
+import {restoreCampaign} from './campaign-core.mjs?v=six-verticals-1';
 const DB='admira.campaign-handoff.v1',STORE='transfers',TTL=86400000;
 async function database(){return new Promise((resolve,reject)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE,{keyPath:'id'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(Error('handoff-storage'));});}
 export function validateHandoff(value,now=Date.now()){

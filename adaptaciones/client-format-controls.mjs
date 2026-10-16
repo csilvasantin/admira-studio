@@ -1,6 +1,6 @@
 import {clientEntry,clientInstallations,applyClientInstallations} from './client-installations.mjs?v=coffee-footer-1';
 import {saveHandoff,readHandoff,handoffURL} from './campaign-handoff.mjs?v=coffee-footer-1';
-const getJSON=async url=>{const r=await fetch(url+(url.includes("/adaptaciones/proyectos/")?(url.includes("?")?"&":"?")+"v=starbucks-layouts-3":""),{cache:"no-cache"});if(!r.ok)throw Error('catalogue');return r.json();};
+const getJSON=async url=>{const r=await fetch(url+(url.includes("/adaptaciones/proyectos/")?(url.includes("?")?"&":"?")+"v=starbucks-layouts-4":""),{cache:"no-cache"});if(!r.ok)throw Error('catalogue');return r.json();};
 const imageBlob=async image=>{const cv=document.createElement('canvas');cv.width=image.naturalWidth;cv.height=image.naturalHeight;cv.getContext('2d').drawImage(image,0,0);try{const blob=await new Promise(r=>cv.toBlob(r,'image/png'));if(!blob)throw Error('image');return blob;}finally{cv.width=cv.height=0;}};
 export function mountCreatorFormats({root,t,get,begin,newCampaign,select,source,portable,locked,say,hadSaved=false}){
  const en=document.documentElement.lang==='en',params=new URLSearchParams(location.search),panel=document.createElement('section');panel.className='campaign-client-formats';

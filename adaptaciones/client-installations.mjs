@@ -1,4 +1,4 @@
-import {validateInstallation,restoreCampaign,INSTALLATIONS} from './campaign-core.mjs?v=coffee-footer-1';
+import {validateInstallation,restoreCampaign,INSTALLATIONS} from './campaign-core.mjs?v=six-verticals-1';
 const clone=value=>JSON.parse(JSON.stringify(value));
 export function clientInstallations(ficha){
  if(!ficha||!Array.isArray(ficha.instalaciones)||ficha.instalaciones.length>32)throw Error('client-installations');

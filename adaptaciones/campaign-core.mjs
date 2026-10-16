@@ -1,8 +1,8 @@
 import {restoreContentRequest} from './content-request-core.mjs?v=create-content-1';
-import {restoreJourney} from './campaign-journey.mjs?v=coffee-footer-1';
+import {restoreJourney} from './campaign-journey.mjs?v=six-verticals-1';
 import {restoreStory,screenLanguages} from './campaign-story.mjs?v=starbucks-story-1';
 import {restoreLanguage} from './campaign-language.mjs?v=starbucks-story-1';
-import {COFFEE_STYLE,integratedPlan,integratedJob} from './campaign-integrated.mjs?v=coffee-footer-1';
+import {COFFEE_STYLE,integratedPlan,integratedJob} from './campaign-integrated.mjs?v=six-verticals-1';
 import {travelPlan,travelJob,travelGeometry} from './campaign-travel.mjs?v=starbucks-story-1';
 // Installation-aware, deterministic campaign layouts. No generative API calls.
 export const CAMPAIGN_SCHEMA='pixeria.installation-campaign.v1';

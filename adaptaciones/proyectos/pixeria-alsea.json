@@ -9,7 +9,7 @@
   ],
   "hereda": "general",
   "fuente": {
-    "titulo": "Configuraciones indicadas por Carlos · Paseo de Gracia: seis verticales 2+1+3 confirmadas · 14 octubre 2026",
+    "titulo": "Configuración indicada por Carlos · Paseo de Gracia 103 y Diagonal 634: seis verticales VV–V–VVV (2+1+3) · 16 octubre 2026",
     "documentacion": "docs/starbucks-formatos.md"
   },
   "formatos": {
@@ -64,16 +64,16 @@
     {
       "id": "starbucks-pg103",
       "name": {
-        "es": "Paseo de Gracia 103 · 2V–1V–3V",
-        "en": "Paseo de Gracia 103 · 2V–1V–3V"
+        "es": "Paseo de Gracia 103 / Diagonal 634 · 6 verticales VV–V–VVV",
+        "en": "Paseo de Gracia 103 / Diagonal 634 · 6 portraits PP–P–PPP"
       },
-      "address": "Passeig de Gràcia 103 · Barcelona",
+      "address": "Passeig de Gràcia 103 / Av. Diagonal 634 · Barcelona",
       "width": 6840,
       "height": 1920,
       "phase": "mural",
       "approximate": true,
       "catalogClient": "starbucks",
-      "pattern": "2V–1V–3V",
+      "pattern": "VV–V–VVV",
       "groups": [
         2,
         1,
@@ -310,5 +310,5 @@
     "foreground": "#fffaf0",
     "logo": "/adaptaciones/campanas/coffee/starbucks-siren.svg"
   },
-  "revision": 2
+  "revision": 3
 }

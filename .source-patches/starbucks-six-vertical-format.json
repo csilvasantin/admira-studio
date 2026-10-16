@@ -1,0 +1,14 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "reason": "Carlos pide añadir a creación, adaptación y Stock el montaje real de Paseo de Gracia y Diagonal: seis verticales VV–V–VVV (2+1+3), como séptima adaptación de la ficha existente.",
+  "files": [
+    "adaptaciones/proyectos/pixeria-alsea.json",
+    "adaptaciones/campaign-journey.mjs",
+    "adaptaciones/campaign-sync-stock.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/client-format-controls.mjs",
+    "test/campaign-add-format-stock.test.mjs",
+    "test/campaign-journey.test.mjs"
+  ]
+}

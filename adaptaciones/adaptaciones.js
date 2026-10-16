@@ -1,9 +1,9 @@
-import {mountAdapterInstallations} from './client-format-controls.mjs?v=coffee-journey-1';
+import {mountAdapterInstallations} from './client-format-controls.mjs?v=six-verticals-1';
 import {readHandoff} from './campaign-handoff.mjs?v=coffee-journey-1';
 import {classicTargets,isClassicFormat,extraFormats} from './classic-step.mjs?v=20261009-classic-step-1';
 import {mountAdvertisement} from './anuncio-studio.mjs?v=classic-auto-6';
 import {compositionFromStock} from '../assets/content-composition.mjs?v=composition-1';
-import {mountCampaign} from './campaign-studio.mjs?v=coffee-journey-1';
+import {mountCampaign} from './campaign-studio.mjs?v=six-verticals-1';
 let campaignWorkshop=null;
 import {mountTwin} from './gemelo-digital.mjs?v=coffee-journey-1';
 import {aiJob} from './ia-core.mjs?v=adapter-detail-1';
