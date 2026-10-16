@@ -1,8 +1,11 @@
+import {restoreEink,einkInstallations} from './eink-core.mjs?v=eink-cartela-1';
 // One content brief, three explicit media deliveries. No generation on navigation.
 export const CONTENT_REQUEST_SCHEMA='admira.create-content.v1';
 export const CONTENT_DESTINATIONS=['poster','portrait','landscape'];
 export function contentRequestURL(args='',language='es'){
  const text=String(args).trim();
+ const cartela=/^(?:cartela|cartel|poster)\s+(?:tinta\s*electr[oó]nica|e-?ink)(?:\s|$)/i;
+ if(cartela.test(text)){const brief=text.replace(cartela,'').trim();if(brief.length>2000)throw Error('content-brief-size');const q=new URLSearchParams({flow:'cartela-tinta',nuevo:'1',lang:language==='en'?'en':'es'});if(brief)q.set('brief',brief);return(language==='en'?'/en/creador/':'/creador/')+'?'+q;}
  if(!/^(contenido|content)(?:\s|$)/i.test(text))throw Error('content-command');
  let brief=text.replace(/^(contenido|content)\s*/i,'');
  const anamorphic=/(?:^|\s)(?:anam[oó]rfic[oa]s?|anamorphic)(?:\s|$)/i.test(brief);
@@ -27,11 +30,13 @@ export function validateAnamorphicGeometry(value){
 }
 export function restoreContentRequest(raw){
  if(!raw||raw.schema!==CONTENT_REQUEST_SCHEMA||typeof raw.brief!=='string'||raw.brief.length>2000||!Array.isArray(raw.destinations)||!raw.destinations.length||raw.destinations.some(x=>!CONTENT_DESTINATIONS.includes(x))||new Set(raw.destinations).size!==raw.destinations.length||typeof raw.anamorphicRequested!=='boolean')throw Error('content-request');
- return {schema:CONTENT_REQUEST_SCHEMA,brief:raw.brief,destinations:[...raw.destinations],anamorphicRequested:raw.anamorphicRequested,geometry:raw.anamorphicRequested&&raw.geometry?validateAnamorphicGeometry(raw.geometry):null};
+ if(raw.eink&&(raw.destinations.length!==1||raw.destinations[0]!=='poster'||raw.anamorphicRequested))throw Error('eink-image-only');
+ return {schema:CONTENT_REQUEST_SCHEMA,brief:raw.brief,destinations:[...raw.destinations],anamorphicRequested:raw.anamorphicRequested,geometry:raw.anamorphicRequested&&raw.geometry?validateAnamorphicGeometry(raw.geometry):null,...(raw.eink?{eink:restoreEink(raw.eink)}:{})};
 }
 export function contentInstallations(request,{posterWidth=1080,posterHeight=1920}={},en=false){
  const r=restoreContentRequest(request);
  if(![posterWidth,posterHeight].every(n=>Number.isInteger(n)&&n>=64&&n<=8192)||posterWidth*posterHeight>16777216)throw Error('poster-resolution');
+ if(r.eink)return einkInstallations(r.eink,{posterWidth,posterHeight});
  const profiles={poster:{width:posterWidth,height:posterHeight,mediaType:'image',name:{es:'Póster · etiqueta digital',en:'Poster · digital label'}},portrait:{width:1080,height:1920,mediaType:'video',name:{es:'Pantalla vertical',en:'Portrait screen'}},landscape:{width:1920,height:1080,mediaType:'video',name:{es:'Pantalla horizontal',en:'Landscape screen'}}};
  return r.destinations.map(id=>({id,...profiles[id],phase:'unit',screens:[{id:id==='poster'?'label':id==='portrait'?'portrait-screen':'landscape-screen',x:0,y:0,w:profiles[id].width,h:profiles[id].height,rotation:0}]}));
 }

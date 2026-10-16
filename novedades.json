@@ -253,5 +253,9 @@
   "v.16.10.2026.r9.13:42": [
     "Paseo de Gracia 103 y Diagonal 634 comparten el formato de seis verticales VV–V–VVV en Creador y Adaptador.",
     "Stock añade montajes nuevos a la ficha existente y conserva sus archivos y previos."
+  ],
+  "v.16.10.2026.r10.14:36": [
+    "/crear cartela tintaelectronica abre el Creador para pósters estáticos derivados de campañas o vídeos de Stock.",
+    "Perfiles Samsung EM13DX 1200×1600 y etiqueta 480×800 de cuatro colores, con revisión y publicación nativa en Stock."
   ]
 }

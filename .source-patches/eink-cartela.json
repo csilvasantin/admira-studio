@@ -1,0 +1,26 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "4c8c2d1b1c861d5b0517f5dc67abd36c8ad15461",
+  "reason": "Carlos solicita el comando de Admirito /crear cartela tintaelectronica para derivar cartelas de campañas de vídeo, publicarlas en Stock y entregarlas a Samsung EM13DX 776F mediante Samsung E-Paper y a etiquetas de cuatro colores del puente.",
+  "files": [
+    "adaptaciones/eink-core.mjs",
+    "adaptaciones/eink-request-core.mjs",
+    "adaptaciones/eink-request.mjs",
+    "adaptaciones/content-request-core.mjs",
+    "adaptaciones/campaign-core.mjs",
+    "adaptaciones/campaign-render.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/campaign-entry.mjs",
+    "adaptaciones/content-request.mjs",
+    "adaptaciones/adaptaciones.js",
+    "assets/expert-cli.js",
+    "docs/expert-cli.md",
+    "test/eink-cartela.test.mjs"
+  ],
+  "limits": {
+    "automaticPhysicalSend": false,
+    "samsungPairingRequired": true,
+    "musicPlaylistChanged": false
+  }
+}
