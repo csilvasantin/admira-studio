@@ -101,4 +101,4 @@ La cabecera usa el logo como Inicio/Home; los tres controles Opciones, Avanzado 
 
 ### Starbucks · actualización / update
 
-La escena Starbucks usa la fotografía PG103 y ofrece tres montajes, incluidos ambos esquemas de GdG51. Opciones a la izquierda; Avanzado a la derecha. / The Starbucks scene uses the PG103 photo and supplies three layouts, including both GdG51 patterns. Options left; Advanced right. [Guía / Guide](starbucks-gemelo.md).
+La escena Starbucks usa la fotografía PG103 y ofrece cuatro montajes: los tres esquemas de GdG51, incluido el de siete pantallas del último contenido, y PG103. Opciones a la izquierda; Avanzado a la derecha. / The Starbucks scene uses the PG103 photo and supplies four layouts: PG103 and three GdG51 patterns, including the latest content's seven-screen wall. Options left; Advanced right. [Guía / Guide](starbucks-gemelo.md).

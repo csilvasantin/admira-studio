@@ -5,8 +5,9 @@ Creador y Adaptador seleccionan automáticamente la escena Starbucks para los fo
 - `starbucks-pg103`: seis verticales **2V–1V–3V**, con separación visual de los tres grupos basada en la fotografía.
 - `starbucks-gdg51`: **H–V–H–H–V–H**, 9840×1920 px.
 - `starbucks-gdg51-vhvvhv`: **V–H–V–V–H–V**, 8160×1920 px; opción adicional, sin sustituir el montaje anterior.
+- `starbucks-gdg51-seven`: **V–H–V–V–H–V–H**, 10080×1920 px; los siete players del último contenido.
 
-Los tres montajes aparecen en **Formatos de cliente → Starbucks**. En una campaña existente pulsa **Añadir formatos a esta campaña**: añade los destinos nuevos y conserva las imágenes, textos, mapas editados y exclusiones. Horizontal, vertical y los tres montajes suman cinco destinos y 20 archivos nativos si se incluyen todos. Cada montaje tiene su propio programa; son alternativas que se seleccionan antes de entregar.
+Los cuatro montajes aparecen en **Formatos de cliente → Starbucks**. En una campaña existente pulsa **Añadir formatos a esta campaña**: añade los destinos nuevos y conserva las imágenes, textos, mapas editados y exclusiones. Horizontal, vertical y los cuatro montajes suman seis destinos y 27 archivos nativos si se incluyen todos. Cada montaje tiene su propio programa; son alternativas que se seleccionan antes de entregar.
 
 Cada tarjeta muestra la adaptación y el modelo a los 2 s. Pulsar el previo abre el gemelo animado con el mismo reloj de campaña; pausa, reinicio y búsqueda conservan los pasos de 1/25 s. **Foto de referencia** permite comparar con la imagen original. El modelo usa acabados y proporciones visuales aproximados: no hay levantamiento medido. Los dos esquemas de Gran de Gracia usan la ambientación de PG103, porque no se ha aportado una fotografía de ese local. La geometría nativa de exportación, sus giros y sus recortes permanecen separados de la colocación visual 3D.
 
@@ -16,7 +17,7 @@ Cada tarjeta muestra la adaptación y el modelo a los 2 s. Pulsar el previo abre
 
 Creator and Adapter automatically choose a dedicated Starbucks scene for the client's formats. It is based on the supplied PG103 photo: taupe wall, ceiling spotlights, warm LED strip, coffee counter, espresso equipment, cups, pastries and POS. The model supports orbit, zoom, front and observer views.
 
-The catalogue contains PG103 **2V–1V–3V**, GdG51 **H–V–H–H–V–H** (9840×1920), and the additional GdG51 **V–H–V–V–H–V** (8160×1920). Add formats to an existing campaign without resetting its artwork, copy or edited maps. With landscape and portrait, all five destinations produce 20 native files. Each wall has its own programme; choose the required alternatives before delivery.
+The catalogue contains PG103 **2V–1V–3V**, GdG51 **H–V–H–H–V–H** (9840×1920), the additional GdG51 **V–H–V–V–H–V** (8160×1920) and the seven-screen GdG51 **V–H–V–V–H–V–H** (10080×1920) of the latest content. Add formats to an existing campaign without resetting its artwork, copy or edited maps. With landscape and portrait, all six destinations produce 27 native files. Each wall has its own programme; choose the required alternatives before delivery.
 
 Thumbnails use the 2 s review frame. Clicking opens the animated twin with pause, restart and native 25 fps seeking. The Reference photo disclosure shows the source. Finishes and visual proportions are approximate, not surveyed. Both GdG51 layouts use the PG103 setting; a separate GdG51 photo has not been supplied. Native export geometry and crops remain unchanged.
 
@@ -24,7 +25,7 @@ Options opens on the **left**, Advanced on the **right**, Expert below. Interior
 
 ## Resources
 
-- Catalogue: `/adaptaciones/proyectos/pixeria-alsea.json`, schema version 1, catalogue revision 2.
+- Catalogue: `/adaptaciones/proyectos/pixeria-alsea.json`, schema version 1, catalogue revision 4.
 - Photo: `/assets/xpaces/starbucks/pg103-reference.png`.
 - Geometry: `adaptaciones/starbucks-twin-core.mjs`; scene: `adaptaciones/starbucks-twin.mjs`.
 - Client selection: `adaptaciones/gemelo-factory.mjs`; other clients keep their existing retail scene.

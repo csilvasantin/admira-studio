@@ -294,11 +294,97 @@
           "group": 1
         }
       ]
+    },
+    {
+      "id": "starbucks-gdg51-seven",
+      "name": {
+        "es": "AdmiraNeXT · Gran de Gracia 51 · 7 pantallas V–H–V–V–H–V–H",
+        "en": "AdmiraNeXT · Gran de Gracia 51 · 7 screens P–L–P–P–L–P–L"
+      },
+      "address": "Gran de Gràcia 51 · Barcelona",
+      "width": 10080,
+      "height": 1920,
+      "phase": "mural",
+      "approximate": true,
+      "catalogClient": "starbucks",
+      "pattern": "V-H-V-V-H-V-H",
+      "groups": [
+        7
+      ],
+      "geometryStatus": "nominal",
+      "anamorphic": {
+        "calibrated": false
+      },
+      "screens": [
+        {
+          "id": "macstudio-starbucks-vertical",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macstudio-starbucks-horizontal",
+          "x": 1080,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macstudio-starbucks-vertical-right",
+          "x": 3000,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macmini-starbucks-vertical",
+          "x": 4080,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macmini-starbucks-horizontal",
+          "x": 5160,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macmini-starbucks-vertical-right",
+          "x": 7080,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macbookpro16",
+          "x": 8160,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        }
+      ]
     }
   ],
   "notas": {
-    "es": "Tres montajes registrados, con vídeo por pantalla a 25 fps. H = horizontal; V = vertical. Ajusta medidas y separaciones en Creador. La anamorfosis necesita la calibración del punto de vista.",
-    "en": "Three registered layouts, with per-screen video at 25 fps. H = landscape; V = portrait. Adjust dimensions and spacing in Creator. Anamorphosis requires viewpoint calibration."
+    "es": "Cuatro montajes registrados, con vídeo por pantalla a 25 fps; el de siete pantallas es el del último contenido de Gran de Gràcia 51. H = horizontal; V = vertical. Ajusta medidas y separaciones en Creador. La anamorfosis necesita la calibración del punto de vista.",
+    "en": "Four registered layouts, with per-screen video at 25 fps; the seven-screen layout is the one used by the latest Gran de Gràcia 51 content. H = landscape; V = portrait. Adjust dimensions and spacing in Creator. Anamorphosis requires viewpoint calibration."
   },
   "creacion": {
     "visualStyle": "coffee-integrated",
@@ -310,5 +396,5 @@
     "foreground": "#fffaf0",
     "logo": "/adaptaciones/campanas/coffee/starbucks-siren.svg"
   },
-  "revision": 3
+  "revision": 4
 }

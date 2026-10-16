@@ -9,6 +9,7 @@ export function clientInstallations(ficha){
 }
 // Explicitly applying a catalogue retains copy, media, custom maps and inclusion state.
 // Previously saved catalogue maps are never silently reset to the current defaults.
+// The bilingual wall story needs six screens: other walls are added excluded.
 export function applyClientInstallations(c,ficha,{only=null,fresh=false}={}){
  const list=clientInstallations(ficha);if(only&&!list.some(i=>i.id===only))throw Error('client-installation-not-found');
  const next=clone(c);next.client={id:ficha.cliente,name:ficha.nombre};
@@ -17,7 +18,7 @@ export function applyClientInstallations(c,ficha,{only=null,fresh=false}={}){
  for(const unit of INSTALLATIONS.slice(0,2)){const existing=next.installations.find(i=>i.id===unit.id);if(existing)existing.phase='unit';else next.installations.push({...clone(unit),phase:'unit'});}
  if(next.unitSeconds===undefined)next.unitSeconds=next.seconds;
  const ids=new Set(next.installations.map(i=>i.id));
- next.installations.push(...list.filter(i=>!ids.has(i.id)).map(i=>({...i,enabled:!only||i.id===only})));
+ next.installations.push(...list.filter(i=>!ids.has(i.id)).map(i=>({...i,enabled:(!only||i.id===only)&&!(next.wallStory&&i.screens.length!==6)})));
  next.revision++;return restoreCampaign(next);
 }
 export function clientEntry(index,id){return index.find(p=>p.creador&&(p.id===id||p.cliente===id||p.alias?.includes(id)))||null;}

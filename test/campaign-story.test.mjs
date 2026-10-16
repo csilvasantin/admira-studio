@@ -7,9 +7,10 @@ import {integratedLayers} from '../adaptaciones/campaign-integrated.mjs';
 import {campaignVariants} from '../adaptaciones/campaign-language.mjs';
 import {mixedPrograms} from '../adaptaciones/campaign-travel.mjs';
 const ficha=JSON.parse(fs.readFileSync(new URL('../adaptaciones/proyectos/pixeria-alsea.json',import.meta.url)));
-const campaign=()=>({...applyClientInstallations(newCampaign(false,'story-test'),ficha,{fresh:true}),headline:'Cada café tiene una historia.',cta:'Disfruta el momento.',wallStory:structuredClone(STARBUCKS_STORY)});
+const campaign=()=>applyClientInstallations({...newCampaign(false,'story-test'),headline:'Cada café tiene una historia.',cta:'Disfruta el momento.',wallStory:structuredClone(STARBUCKS_STORY)},ficha,{fresh:true});
+const included=c=>c.installations.filter(i=>i.enabled!==false);
 test('each six-screen wall has three Spanish then three English screens and distinct fragments in every act',()=>{
- const c=campaign();for(const i of c.installations.filter(i=>i.phase==='mural')){
+ const c=campaign();assert.equal(included(c).filter(i=>i.phase==='mural').length,3);for(const i of included(c).filter(i=>i.phase==='mural')){
   assert.deepEqual(i.screens.flatMap(s=>screenLanguages(c,i,s)),['es','es','es','en','en','en']);
   for(let n=0;n<3;n++)assert.equal(new Set(i.screens.map(s=>screenStory(c,i,s)[n].text)).size,6);
   assert.equal(screenStory(c,i,i.screens[0])[0].text,'Cada café');assert.equal(screenStory(c,i,i.screens[3])[0].text,'Every coffee');
@@ -23,7 +24,7 @@ test('story has bounded fade/slide entrances and exits, with one readable messag
  }
 });
 test('five destinations yield 20 native jobs, with actual language metadata and two-language individual timelines',()=>{
- const c=campaign(),jobs=c.installations.flatMap(i=>{const p=planCampaign(c,i);assert.equal(p.valid,true);return i.screens.map(s=>campaignJob(c,i,s,p));});
+ const c=campaign(),jobs=included(c).flatMap(i=>{const p=planCampaign(c,i);assert.equal(p.valid,true);return i.screens.map(s=>campaignJob(c,i,s,p));});
  assert.equal(jobs.length,20);assert.equal(new Set(jobs.map(j=>j.filename)).size,20);
  assert.equal(jobs.filter(j=>j.contentLanguages.join(',')==='en').length,9);assert.equal(jobs.filter(j=>j.contentLanguages.length===2).length,2);
  for(const j of jobs){assert.equal(j.args[j.args.indexOf('-frames:v')+1],String(j.durationSeconds*25));assert(j.args[j.args.indexOf('-filter_complex')+1].includes('fade=t=out'));}
@@ -37,4 +38,9 @@ test('story copy round-trips and malformed imports or unsupported geometry canno
  const invalid=structuredClone(c);invalid.wallStory.acts[0].en=['x'];assert.throws(()=>restoreCampaign(invalid),/campaign-story-copy/);
  const i={...c.installations.find(i=>i.phase==='mural'),screens:[c.installations.find(i=>i.phase==='mural').screens[0]]};assert.equal(planCampaign(c,i).valid,false);
  assert.equal(planCampaign({...c,seconds:3},c.installations.find(i=>i.phase==='mural')).valid,false);
+});
+
+test('the seven-screen wall is added excluded to a bilingual story campaign and explains why it cannot carry the story',()=>{
+ const c=campaign(),seven=c.installations.find(i=>i.id==='starbucks-gdg51-seven');assert.equal(seven.enabled,false);assert.deepEqual(planCampaign(c,seven).errors,['story-six-screens']);
+ const plain=applyClientInstallations(newCampaign(false,'story-free'),ficha,{fresh:true});assert.notEqual(plain.installations.find(i=>i.id==='starbucks-gdg51-seven').enabled,false);
 });
