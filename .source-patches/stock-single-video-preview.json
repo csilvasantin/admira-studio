@@ -8,6 +8,7 @@
     "assets/stock-sync-preview-publish.mjs",
     "stock.html",
     "en/stock.html",
-    "test/stock-sync-preview-job.test.mjs"
+    "test/stock-sync-preview-job.test.mjs",
+    "adaptaciones/gemelo-digital.mjs"
   ]
 }
