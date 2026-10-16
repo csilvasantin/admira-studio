@@ -95,3 +95,9 @@ test('canonical login host is selected before issuing a host-only nonce', async 
   assert.equal(response.headers.get('location'), 'https://admira.studio/auth/login?return_to=%2Fbackoffice%2F');
   assert.equal(response.headers.get('set-cookie'), null);
 });
+
+test('el pie del acceso enseña las direcciones: Cloudflare no las cambia por «[email protected]»', async () => {
+  const response = await handleAuth(new Request('https://admira.studio/auth/login?return_to=%2F'), {AUTH_DB:fakeDatabase(), PIXERIA_SIGNING_KEY:'test-signing-key'});
+  const html = await response.text();
+  assert.match(html, /<div class="foot"><!--email_off-->csilva@admira\.com · csilvasantin@gmail\.com<!--\/email_off--><\/div>/);
+});
