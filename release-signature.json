@@ -1,12 +1,12 @@
 {
-  "version": "v.16.10.2026.r5.02:08",
+  "version": "v.16.10.2026.r6.08:11",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
   "machine": "MacStudio",
   "signature": "Codex · MacStudio",
-  "git": "6dfd4d36387025e17e369a705684cc8e7b00457d",
-  "gitShort": "6dfd4d3",
-  "gitFull": "6dfd4d36387025e17e369a705684cc8e7b00457d",
+  "git": "655fad108b035336d16725dd40f75b4d8616c981",
+  "gitShort": "655fad1",
+  "gitFull": "655fad108b035336d16725dd40f75b4d8616c981",
   "dirty": false
 }
