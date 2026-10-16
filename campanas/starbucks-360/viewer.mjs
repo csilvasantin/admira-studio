@@ -1,6 +1,6 @@
 import * as T from './three.mjs';
 import {SurfacePlayer} from './media-player.mjs?v=starbucks360-1';
-import {installFloatingPanels} from './floating-panels.mjs';
+import {installFloatingPanels} from './floating-panels.mjs?v=starbucks180-2';
 const program=await fetch(document.body.dataset.program||'./programa-siete.json',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('Programa no disponible');return r.json()});
 const scene=new T.Scene();scene.background=new T.Color('#14261e');
 const camera=new T.PerspectiveCamera(43,innerWidth/innerHeight,.1,100);
