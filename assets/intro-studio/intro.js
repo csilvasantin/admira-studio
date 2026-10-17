@@ -1,5 +1,6 @@
 /* Admira Studio · intro de la portada / homepage intro (NeoMacStudio, 17-oct-2026).
    La intro «Todo en orden» de xpaceos.com con el look de admira.studio (Matrix): 15 s a pantalla completa.
+   Cierra con su propia frase: «Ahorra dinero creando y adaptando contenidos con IA» / «Save money by creating and adapting content with AI».
    - Solo en la portada (/ y /en/), una vez por sesión y por idioma (sessionStorage 'admirastudio_intro_a' =
      idiomas vistos, «es,en»): al pasar de /en/ a / (castellano) sale en castellano si aún no se ha visto en él.
    - Se salta con «Saltar intro» o Esc; se cierra sola al terminar o si el vídeo no arranca en 4 s.

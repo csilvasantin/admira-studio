@@ -8,7 +8,7 @@ La portada de admira.studio abre con la intro «Todo en orden» de xpaceos.com, 
 - un reloj marca las 09:58;
 - fallan pantallas, música, aroma y wifi;
 - pasa la línea «ADMIRA STUDIO» y todo queda en verde;
-- cierra con «Admira Studio▌» tecleado y la frase de la portada.
+- cierra con «Admira Studio▌» tecleado y su propia frase: «Ahorra dinero creando y adaptando contenidos con IA.» (en inglés, «Save money by creating and adapting content with AI.»). Carlos, 17-oct-2026: «en el studio se ahorra dinero creando y adaptando contenidos con IA».
 
 Lleva lluvia Matrix, JetBrains Mono en verde fósforo (`#00ff41`) y textos de terminal.
 
@@ -37,7 +37,7 @@ The admira.studio homepage opens with xpaceos.com's «All in order» intro, rest
 - a clock shows 09:58;
 - screens, music, scent and wifi fail;
 - the «ADMIRA STUDIO» line sweeps through and everything turns green;
-- it ends with a typed «Admira Studio▌» and the homepage claim.
+- it ends with a typed «Admira Studio▌» and its own claim: «Save money by creating and adapting content with AI.» («Ahorra dinero creando y adaptando contenidos con IA.» in Spanish).
 
 - **Where:** homepage only, `/` (Spanish) and `/en/` (English), following `<html lang>`.
 - **When:** once per browser session and per language: going from `/en/` to `/` plays the Spanish intro if it has not been seen in Spanish. It is skipped with reduced motion. `?intro=0` removes it and `?intro=1` forces it.

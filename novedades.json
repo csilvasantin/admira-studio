@@ -270,5 +270,8 @@
   ],
   "v.17.10.2026.r3.22:06": [
     "Portada: la intro sale una vez por sesión y por idioma. Al pasar a castellano (o a inglés) sale en ese idioma si aún no se ha visto en él; con la intro en marcha, el vídeo cambia de idioma sin perder el segundo."
+  ],
+  "v.17.10.2026.r4.22:37": [
+    "Portada: la intro de Admira Studio cierra con su propia frase, «Ahorra dinero creando y adaptando contenidos con IA» («Save money by creating and adapting content with AI» en inglés), en vez de la de XpaceOS."
   ]
 }
