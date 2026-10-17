@@ -1,6 +1,7 @@
 /* Admira Studio · intro de la portada / homepage intro (NeoMacStudio, 17-oct-2026).
-   La intro «Todo en orden» de xpaceos.com con el look de admira.studio (Matrix): 15 s a pantalla completa.
-   Cierra con su propia frase: «Ahorra dinero creando y adaptando contenidos con IA» / «Save money by creating and adapting content with AI».
+   La intro «Todo en orden» con el look de admira.studio (Matrix) y su propia historia: 15 s a pantalla completa.
+   Antes de publicar fallan imágenes, vídeos, locuciones y canciones; pasa Admira Studio y queda todo listo.
+   Cierra con «Ahorra tiempo y errores con Admira Studio» / «Save time and avoid errors with Admira Studio».
    - Solo en la portada (/ y /en/), una vez por sesión y por idioma (sessionStorage 'admirastudio_intro_a' =
      idiomas vistos, «es,en»): al pasar de /en/ a / (castellano) sale en castellano si aún no se ha visto en él.
    - Se salta con «Saltar intro» o Esc; se cierra sola al terminar o si el vídeo no arranca en 4 s.
@@ -27,8 +28,8 @@
   // .mp4 y no .m4a: Cloudflare no guarda .m4a en caché y entonces no responde por rangos (206), y sin rangos la música no se puede poner en el segundo del vídeo.
   const MUSIC = {campanas: BASE + 'musica-campanas.mp4', pulso: BASE + 'musica-pulso.mp4'};
   const LABELS = {
-    es: {skip: 'Saltar intro', soundOn: 'Activar sonido', soundOff: 'Silenciar', aria: 'Intro de Admira Studio: antes de abrir fallan las pantallas, la música, el aroma y el wifi, y quedan en orden.'},
-    en: {skip: 'Skip intro', soundOn: 'Turn sound on', soundOff: 'Mute', aria: 'Admira Studio intro: before opening, screens, music, scent and wifi fail, and they are put back in order.'}
+    es: {skip: 'Saltar intro', soundOn: 'Activar sonido', soundOff: 'Silenciar', aria: 'Intro de Admira Studio: antes de publicar fallan imágenes, vídeos, locuciones y canciones, y Admira Studio lo deja todo listo. Ahorra tiempo y errores con Admira Studio.'},
+    en: {skip: 'Skip intro', soundOn: 'Turn sound on', soundOff: 'Mute', aria: 'Admira Studio intro: before going live, images, videos, voice-overs and songs fail, and Admira Studio gets everything ready. Save time and avoid errors with Admira Studio.'}
   };
   const has = lang => Object.prototype.hasOwnProperty.call(SOURCES, lang);
 

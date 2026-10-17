@@ -1,17 +1,17 @@
 {
-  "version": "v.17.10.2026.r4.22:37",
-  "deployedAt": "2026-10-17T20:37:08Z",
+  "version": "v.17.10.2026.r5.22:43",
+  "deployedAt": "2026-10-17T20:43:55Z",
   "author": "NeoMacStudio",
   "agent": "NeoMacStudio",
   "deployer": "NeoMacStudio",
   "machine": "MacStudio",
   "signature": "NeoMacStudio · MacStudio",
-  "git": "c76f5fc821c40ad2a56f669e622c4d5955712650",
-  "gitFull": "c76f5fc821c40ad2a56f669e622c4d5955712650",
-  "gitShort": "c76f5fc",
+  "git": "b73748700439e4cafd000d59fa057fa991e25d1b",
+  "gitFull": "b73748700439e4cafd000d59fa057fa991e25d1b",
+  "gitShort": "b737487",
   "dirty": false,
   "novedades": [
-    "Portada: la intro de Admira Studio cierra con su propia frase, «Ahorra dinero creando y adaptando contenidos con IA» («Save money by creating and adapting content with AI» en inglés), en vez de la de XpaceOS."
+    "Portada: la intro de Admira Studio cuenta su propia historia: antes de publicar fallan imágenes, vídeos, locuciones y canciones; pasa Admira Studio y queda todo listo. Cierra con «Ahorra tiempo y errores con Admira Studio» («Save time and avoid errors with Admira Studio» en inglés)."
   ],
   "rollback": {
     "git": "acba88253dc701a6462ab904b58f08b62989beb7"
