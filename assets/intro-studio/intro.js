@@ -8,7 +8,7 @@
    - En el idioma de la página (<html lang>): español en /, inglés en /en/.
    - No sale con «reducir movimiento». ?intro=0 la quita; ?intro=1 la fuerza.
    - 1080p en pantallas grandes, 720p en el resto.
-   - Música: alterna «Tic-tac y campanas» y «Pulso» (localStorage 'admirastudio_intro_musica').
+   - Música: una por idioma (castellano «Tic-tac y campanas», inglés «Pulso»).
      Intenta sonar; si el navegador no deja, queda el botón «Activar sonido». ?musica=campanas|pulso|0.
    Fichero propio de admira.studio: declarado en marca.json («propios» y la última «sustitución»).
    Contrato / contract: assets/intro-studio/LEEME.md */
@@ -19,7 +19,6 @@
 })(typeof window !== 'undefined' ? window : null, function () {
   'use strict';
   const SEEN_KEY = 'admirastudio_intro_a';
-  const MUSIC_KEY = 'admirastudio_intro_musica';
   const BASE = '/assets/intro-studio/';
   const SOURCES = {
     es: {1080: BASE + 'intro-studio-a-es-1080.mp4', 720: BASE + 'intro-studio-a-es-720.mp4'},
@@ -49,11 +48,13 @@
     const set = has(lang) ? SOURCES[lang] : SOURCES.es;
     return (Number(width) || 0) * (Number(dpr) || 1) >= 1600 ? set[1080] : set[720];
   }
-  function pickMusic(search, last) {
+  // Una música por idioma (Carlos, 17-oct-2026): castellano «Tic-tac y campanas», inglés «Pulso».
+  const MUSIC_BY_LANG = {es: 'campanas', en: 'pulso'};
+  function pickMusic(search, lang) {
     const forced = new URLSearchParams(search || '').get('musica');
     if (forced === '0') return '';
     if (forced && Object.prototype.hasOwnProperty.call(MUSIC, forced)) return forced;
-    return last === 'campanas' ? 'pulso' : 'campanas';
+    return MUSIC_BY_LANG[lang] || MUSIC_BY_LANG.es;
   }
 
   const CSS = `
@@ -100,17 +101,13 @@
     const actions = doc.createElement('div');
     actions.className = 'as-intro-actions';
 
-    // Música aparte del vídeo: alterna en cada intro y se ajusta al tiempo del vídeo.
-    const local = storage(win, 'localStorage');
-    let last = '';
-    try { last = (local && local.getItem(MUSIC_KEY)) || ''; } catch (_) {}
-    const track = pickMusic(win.location.search, last);
+    // Música aparte del vídeo: la del idioma, ajustada al tiempo del vídeo.
+    const track = pickMusic(win.location.search, lang);
     let audio = null, soundOn = false, triedAuto = false;
     const sound = doc.createElement('button');
     sound.type = 'button'; sound.className = 'as-intro-sound';
     const paintSound = () => { sound.textContent = soundOn ? '🔇 ' + t.soundOff : '🔊 ' + t.soundOn; sound.setAttribute('aria-pressed', String(soundOn)); };
     if (track) {
-      try { local && local.setItem(MUSIC_KEY, track); } catch (_) {}
       audio = new win.Audio(MUSIC[track]);
       audio.preload = 'auto';
       const syncPlay = () => { try { audio.currentTime = video.currentTime; } catch (_) {} return audio.play(); };
@@ -158,5 +155,5 @@
     if (doc.body && doc.readyState !== 'loading') mount(); else doc.addEventListener('DOMContentLoaded', mount, {once: true});
   }
 
-  return {SEEN_KEY, MUSIC_KEY, SOURCES, MUSIC, parseSeen, isHome, shouldShow, pickSource, pickMusic, start};
+  return {SEEN_KEY, SOURCES, MUSIC, MUSIC_BY_LANG, parseSeen, isHome, shouldShow, pickSource, pickMusic, start};
 });

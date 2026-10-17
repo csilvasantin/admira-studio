@@ -48,12 +48,12 @@ test('vídeo del idioma: 1080p desde 1600 píxeles reales, 720p en el resto', ()
   assert.equal(intro.pickSource(1280, 1, 'en'), intro.SOURCES.en[720]);
 });
 
-test('la música alterna y se puede fijar o quitar', () => {
-  assert.equal(intro.pickMusic('', ''), 'campanas');
-  assert.equal(intro.pickMusic('', 'campanas'), 'pulso');
-  assert.equal(intro.pickMusic('', 'pulso'), 'campanas');
-  assert.equal(intro.pickMusic('?musica=pulso', 'pulso'), 'pulso');
-  assert.equal(intro.pickMusic('?musica=0', 'campanas'), '');
+test('una música por idioma: castellano campanas, inglés pulso; ?musica= la fija o la quita', () => {
+  assert.equal(intro.pickMusic('', 'es'), 'campanas');
+  assert.equal(intro.pickMusic('', 'en'), 'pulso');
+  assert.equal(intro.pickMusic('?musica=pulso', 'es'), 'pulso');
+  assert.equal(intro.pickMusic('?musica=0', 'en'), '');
+  assert.doesNotMatch(read('assets/intro-studio/intro.js'), /MUSIC_KEY/);
 });
 
 test('los vídeos y las músicas existen y pesan lo razonable para la web', () => {

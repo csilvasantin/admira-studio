@@ -16,7 +16,7 @@ Lleva lluvia Matrix, JetBrains Mono en verde fósforo (`#00ff41`) y textos de te
 - **Dónde sale:** solo en la portada, `/` (español) y `/en/` (inglés), según el `<html lang>` de la página. El script también se carga en `_cuadopen` y en el backoffice, porque comparten la cabecera, pero allí no arranca.
 - **Cuándo:** una vez por sesión del navegador **y por idioma** (`sessionStorage`, `admirastudio_intro_a`, con los idiomas vistos). Al pasar de `/en/` a `/` (castellano) sale en castellano si aún no se ha visto en él. No sale con «reducir movimiento». `?intro=0` la quita y `?intro=1` la fuerza.
 - **Cerrar:** «[Saltar intro ✕]», tecla Esc, o sola al terminar. Si el vídeo no arranca en 4 segundos, se quita sola.
-- **Música:** las dos bandas sonoras originales de xpaceos.com, alternas (`localStorage`, `admirastudio_intro_musica`): «Tic-tac y campanas» y «Pulso».
+- **Música:** una por idioma (Carlos, 17-oct-2026): el castellano suena con «Tic-tac y campanas» y el inglés con «Pulso».
   - Intenta sonar. Si el navegador no lo deja, queda el botón «[🔊 Activar sonido]».
   - `?musica=campanas|pulso` fija una y `?musica=0` la quita.
 - **Ficheros (esta carpeta):**
@@ -39,5 +39,5 @@ The admira.studio homepage opens with the «All in order» intro in admira.studi
 - **Where:** homepage only, `/` (Spanish) and `/en/` (English), following `<html lang>`.
 - **When:** once per browser session and per language: going from `/en/` to `/` plays the Spanish intro if it has not been seen in Spanish. It is skipped with reduced motion. `?intro=0` removes it and `?intro=1` forces it.
 - **Close:** «[Skip intro ✕]», the Esc key, or automatically at the end.
-- **Music:** the two original soundtracks alternate. If the browser blocks sound, «[🔊 Turn sound on]» is shown.
+- **Music:** one per language: Spanish plays «Tic-tac y campanas» and English plays «Pulso». If the browser blocks sound, «[🔊 Turn sound on]» is shown.
 - **Mirror:** this folder is listed under `propios` in `marca.json`, and the script tag is the last `sustitución`, so `sync.sh` keeps both.
