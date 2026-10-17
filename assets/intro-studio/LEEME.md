@@ -4,11 +4,12 @@ Admira Studio · NeoMacStudio · MacStudio · 17-oct-2026.
 
 ## Español
 
-La portada de admira.studio abre con la intro «Todo en orden» de xpaceos.com, pero con el look de admira.studio (Matrix). Son 15 segundos:
-- un reloj marca las 09:58;
-- fallan pantallas, música, aroma y wifi;
-- pasa la línea «ADMIRA STUDIO» y todo queda en verde;
-- cierra con «Admira Studio▌» tecleado y su propia frase: «Ahorra dinero creando y adaptando contenidos con IA.» (en inglés, «Save money by creating and adapting content with AI.»). Carlos, 17-oct-2026: «en el studio se ahorra dinero creando y adaptando contenidos con IA».
+La portada de admira.studio abre con la intro «Todo en orden» con el look de admira.studio (Matrix) y su propia historia (Carlos, 17-oct-2026: «Ahorra tiempo y errores con Admira Studio… hablemos de creación de imágenes, vídeos, locuciones y canciones»). Son 15 segundos:
+- un reloj marca las 09:58: «La campaña sale a las 10:00»;
+- fallan imágenes (formato erróneo), vídeos (render fallido), locuciones (sin grabar) y canciones (sin licencia);
+- pasa la línea «ADMIRA STUDIO» y quedan adaptadas, renderizados, grabadas y compuestas: «Listo antes de publicar»;
+- «Imágenes, vídeos, locuciones y canciones. Un solo sitio para crear y adaptar contenidos con IA.»;
+- cierra con «Admira Studio▌» tecleado y «Ahorra tiempo y errores con Admira Studio.» (en inglés, «Save time and avoid errors with Admira Studio.»).
 
 Lleva lluvia Matrix, JetBrains Mono en verde fósforo (`#00ff41`) y textos de terminal.
 
@@ -33,11 +34,7 @@ Lleva lluvia Matrix, JetBrains Mono en verde fósforo (`#00ff41`) y textos de te
 
 ## English
 
-The admira.studio homepage opens with xpaceos.com's «All in order» intro, restyled as admira.studio (Matrix). It runs for 15 seconds:
-- a clock shows 09:58;
-- screens, music, scent and wifi fail;
-- the «ADMIRA STUDIO» line sweeps through and everything turns green;
-- it ends with a typed «Admira Studio▌» and its own claim: «Save money by creating and adapting content with AI.» («Ahorra dinero creando y adaptando contenidos con IA.» in Spanish).
+The admira.studio homepage opens with the «All in order» intro in admira.studio's Matrix look and with its own story: 15 seconds in which images, videos, voice-overs and songs fail before going live, Admira Studio sweeps through and everything is ready; it ends with a typed «Admira Studio▌» and «Save time and avoid errors with Admira Studio.».
 
 - **Where:** homepage only, `/` (Spanish) and `/en/` (English), following `<html lang>`.
 - **When:** once per browser session and per language: going from `/en/` to `/` plays the Spanish intro if it has not been seen in Spanish. It is skipped with reduced motion. `?intro=0` removes it and `?intro=1` forces it.
