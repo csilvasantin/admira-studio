@@ -189,6 +189,10 @@
     [
       "ADMIRA STUDIO_SIGNING_KEY",
       "PIXERIA_SIGNING_KEY"
+    ],
+    [
+      "<h1>Admira Studio</h1>",
+      "<h1>Admira Studio</h1><script defer src=\"/assets/intro-studio/intro.js?v=1\"></script>"
     ]
   ],
   "_no_se_sustituye": [
@@ -239,15 +243,22 @@
   "propios": [
     "god/",
     "privacy.html",
-    "novedades.json"
+    "novedades.json",
+    "assets/intro-studio/"
   ],
   "_por_que_propios": [
     "Existen solo en admira.studio y no tienen equivalente en Pixeria. El sync no los toca",
     "ni los borra.",
-    "privacy.html: desde idioma=es (3-oct-2026) es un puente a /en/privacy.html para no romper enlaces externos (p. ej. la política del acceso Google)."
+    "privacy.html: desde idioma=es (3-oct-2026) es un puente a /en/privacy.html para no romper enlaces externos (p. ej. la política del acceso Google).",
+    "assets/intro-studio/ (17-oct-2026, NeoMacStudio): intro en vídeo de la portada con el look Matrix de admira.studio (script, vídeos ES/EN y música). Solo existe aquí; la carga la inyecta la última «sustitución»."
   ],
   "incluidos": [
     "/assets/xpaces/README.md",
     "/adaptaciones/modelos/xtanco-best/README.md"
+  ],
+  "_intro_studio": [
+    "La última sustitución añade la intro (assets/intro-studio/intro.js) tras el <h1> de la portada.",
+    "El <h1>Admira Studio</h1> también está en _cuadopen y en el backoffice: el script solo arranca en / y /en/.",
+    "Va al final de la lista porque el ancla ya es «Admira Studio» tras sustituir «Pixeria»."
   ]
 }
