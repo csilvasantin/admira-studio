@@ -1,12 +1,12 @@
 {
-  "version": "v.17.10.2026.r5.22:43",
+  "version": "v.17.10.2026.r6.22:55",
   "author": "NeoMacStudio",
   "agent": "NeoMacStudio",
   "deployer": "NeoMacStudio",
   "machine": "MacStudio",
   "signature": "NeoMacStudio · MacStudio",
-  "git": "b73748700439e4cafd000d59fa057fa991e25d1b",
-  "gitShort": "b737487",
-  "gitFull": "b73748700439e4cafd000d59fa057fa991e25d1b",
+  "git": "c852996726412be04d3c4bc8df7cc456f35016b7",
+  "gitShort": "c852996",
+  "gitFull": "c852996726412be04d3c4bc8df7cc456f35016b7",
   "dirty": false
 }
