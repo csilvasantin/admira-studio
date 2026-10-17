@@ -22,7 +22,8 @@
     es: {1080: BASE + 'intro-studio-a-es-1080.mp4', 720: BASE + 'intro-studio-a-es-720.mp4'},
     en: {1080: BASE + 'intro-studio-a-en-1080.mp4', 720: BASE + 'intro-studio-a-en-720.mp4'}
   };
-  const MUSIC = {campanas: BASE + 'musica-campanas.m4a', pulso: BASE + 'musica-pulso.m4a'};
+  // .mp4 y no .m4a: Cloudflare no guarda .m4a en caché y entonces no responde por rangos (206), y sin rangos la música no se puede poner en el segundo del vídeo.
+  const MUSIC = {campanas: BASE + 'musica-campanas.mp4', pulso: BASE + 'musica-pulso.mp4'};
   const LABELS = {
     es: {skip: 'Saltar intro', soundOn: 'Activar sonido', soundOff: 'Silenciar', aria: 'Intro de Admira Studio: antes de abrir fallan las pantallas, la música, el aroma y el wifi, y quedan en orden.'},
     en: {skip: 'Skip intro', soundOn: 'Turn sound on', soundOff: 'Mute', aria: 'Admira Studio intro: before opening, screens, music, scent and wifi fail, and they are put back in order.'}
