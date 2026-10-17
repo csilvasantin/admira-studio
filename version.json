@@ -1,17 +1,17 @@
 {
-  "version": "v.17.10.2026.r2.20:15",
-  "deployedAt": "2026-10-17T18:15:40Z",
+  "version": "v.17.10.2026.r3.22:06",
+  "deployedAt": "2026-10-17T20:06:15Z",
   "author": "NeoMacStudio",
   "agent": "NeoMacStudio",
   "deployer": "NeoMacStudio",
   "machine": "MacStudio",
   "signature": "NeoMacStudio · MacStudio",
-  "git": "4ca12d6d201587549341ce2b18e9bf11e558a59e",
-  "gitFull": "4ca12d6d201587549341ce2b18e9bf11e558a59e",
-  "gitShort": "4ca12d6",
+  "git": "6506a3ae62c552c2a47688fef59e7c78527af552",
+  "gitFull": "6506a3ae62c552c2a47688fef59e7c78527af552",
+  "gitShort": "6506a3a",
   "dirty": false,
   "novedades": [
-    "Portada: la música de la intro va en .mp4 para que Cloudflare la sirva por rangos y entre sincronizada con el vídeo al pulsar «Activar sonido»."
+    "Portada: la intro sale una vez por sesión y por idioma. Al pasar a castellano (o a inglés) sale en ese idioma si aún no se ha visto en él; con la intro en marcha, el vídeo cambia de idioma sin perder el segundo."
   ],
   "rollback": {
     "git": "acba88253dc701a6462ab904b58f08b62989beb7"

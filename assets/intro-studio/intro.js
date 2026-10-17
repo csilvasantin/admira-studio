@@ -1,6 +1,7 @@
 /* Admira Studio · intro de la portada / homepage intro (NeoMacStudio, 17-oct-2026).
    La intro «Todo en orden» de xpaceos.com con el look de admira.studio (Matrix): 15 s a pantalla completa.
-   - Solo en la portada (/ y /en/), una vez por sesión (sessionStorage 'admirastudio_intro_a').
+   - Solo en la portada (/ y /en/), una vez por sesión y por idioma (sessionStorage 'admirastudio_intro_a' =
+     idiomas vistos, «es,en»): al pasar de /en/ a / (castellano) sale en castellano si aún no se ha visto en él.
    - Se salta con «Saltar intro» o Esc; se cierra sola al terminar o si el vídeo no arranca en 4 s.
    - En el idioma de la página (<html lang>): español en /, inglés en /en/.
    - No sale con «reducir movimiento». ?intro=0 la quita; ?intro=1 la fuerza.
@@ -29,6 +30,9 @@
     en: {skip: 'Skip intro', soundOn: 'Turn sound on', soundOff: 'Mute', aria: 'Admira Studio intro: before opening, screens, music, scent and wifi fail, and they are put back in order.'}
   };
   const has = lang => Object.prototype.hasOwnProperty.call(SOURCES, lang);
+
+  // Idiomas ya vistos en la sesión. El «1» antiguo (antes del 17-oct 20:45) no dice el idioma: cuenta como ninguno.
+  function parseSeen(value) { return String(value || '').split(',').map(v => v.trim()).filter(v => has(v)); }
 
   // Solo la portada: el ancla de marca.json también inyecta el script en _cuadopen y en el backoffice.
   function isHome(path) { return /^\/(index\.html)?$|^\/en\/(index\.html)?$/.test(String(path || '')); }
@@ -68,9 +72,10 @@
   function start(win) {
     const doc = win.document;
     const session = storage(win, 'sessionStorage');
-    let seen = false;
-    try { seen = !!(session && session.getItem(SEEN_KEY)); } catch (_) {}
+    let seenLangs = [];
+    try { seenLangs = parseSeen(session && session.getItem(SEEN_KEY)); } catch (_) {}
     const lang = String(doc.documentElement.lang || 'es').slice(0, 2).toLowerCase();
+    const seen = seenLangs.includes(lang);
     const reducedMotion = !!(win.matchMedia && win.matchMedia('(prefers-reduced-motion: reduce)').matches);
     if (!shouldShow({search: win.location.search, path: win.location.pathname, lang, reducedMotion, seen})) return;
     const t = LABELS[lang] || LABELS.es;
@@ -125,7 +130,7 @@
       closed = true;
       clearTimeout(watchdog);
       if (audio) { try { audio.pause(); } catch (_) {} }
-      try { session && session.setItem(SEEN_KEY, '1'); } catch (_) {}
+      try { if (!seenLangs.includes(lang)) seenLangs.push(lang); session && session.setItem(SEEN_KEY, seenLangs.join(',')); } catch (_) {}
       win.removeEventListener('keydown', onKey);
       html.style.overflow = overflow;
       box.classList.add('is-closing');
@@ -151,5 +156,5 @@
     if (doc.body && doc.readyState !== 'loading') mount(); else doc.addEventListener('DOMContentLoaded', mount, {once: true});
   }
 
-  return {SEEN_KEY, MUSIC_KEY, SOURCES, MUSIC, isHome, shouldShow, pickSource, pickMusic, start};
+  return {SEEN_KEY, MUSIC_KEY, SOURCES, MUSIC, parseSeen, isHome, shouldShow, pickSource, pickMusic, start};
 });

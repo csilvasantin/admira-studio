@@ -77,3 +77,12 @@ test('se salta con botón o Esc, el sonido tiene botón en los dos idiomas y se 
   assert.match(src, /if \(audio\) \{ try \{ audio\.pause\(\); \} catch \(_\) \{\} \}/);
   assert.match(src, /#00ff41/, 'verde Matrix de admira.studio');
 });
+
+test('una vez por idioma: al pasar de /en/ a / (castellano) sale en castellano si aún no se ha visto', () => {
+  assert.deepEqual(intro.parseSeen('1'), [], 'el «1» antiguo no dice el idioma');
+  assert.deepEqual(intro.parseSeen('en'), ['en']);
+  assert.deepEqual(intro.parseSeen('es,en'), ['es', 'en']);
+  const src = read('assets/intro-studio/intro.js');
+  assert.match(src, /const seen = seenLangs\.includes\(lang\);/);
+  assert.match(src, /session\.setItem\(SEEN_KEY, seenLangs\.join\(','\)\)/);
+});
