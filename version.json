@@ -1,17 +1,17 @@
 {
-  "version": "v.17.10.2026.r3.22:06",
-  "deployedAt": "2026-10-17T20:06:15Z",
+  "version": "v.17.10.2026.r4.22:37",
+  "deployedAt": "2026-10-17T20:37:08Z",
   "author": "NeoMacStudio",
   "agent": "NeoMacStudio",
   "deployer": "NeoMacStudio",
   "machine": "MacStudio",
   "signature": "NeoMacStudio · MacStudio",
-  "git": "6506a3ae62c552c2a47688fef59e7c78527af552",
-  "gitFull": "6506a3ae62c552c2a47688fef59e7c78527af552",
-  "gitShort": "6506a3a",
+  "git": "c76f5fc821c40ad2a56f669e622c4d5955712650",
+  "gitFull": "c76f5fc821c40ad2a56f669e622c4d5955712650",
+  "gitShort": "c76f5fc",
   "dirty": false,
   "novedades": [
-    "Portada: la intro sale una vez por sesión y por idioma. Al pasar a castellano (o a inglés) sale en ese idioma si aún no se ha visto en él; con la intro en marcha, el vídeo cambia de idioma sin perder el segundo."
+    "Portada: la intro de Admira Studio cierra con su propia frase, «Ahorra dinero creando y adaptando contenidos con IA» («Save money by creating and adapting content with AI» en inglés), en vez de la de XpaceOS."
   ],
   "rollback": {
     "git": "acba88253dc701a6462ab904b58f08b62989beb7"
