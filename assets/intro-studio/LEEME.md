@@ -21,7 +21,7 @@ Lleva lluvia Matrix, JetBrains Mono en verde fósforo (`#00ff41`) y textos de te
 - **Ficheros (esta carpeta):**
   - `intro.js`: lógica y estilo;
   - `intro-studio-a-es-1080.mp4` / `-720.mp4` e `intro-studio-a-en-1080.mp4` / `-720.mp4`: unos 10 MB los de 1080p y unos 5,5 MB los de 720p;
-  - `musica-campanas.m4a` y `musica-pulso.m4a`.
+  - `musica-campanas.mp4` y `musica-pulso.mp4`: solo audio (AAC). Van en `.mp4` porque Cloudflare no guarda `.m4a` en caché y entonces no responde por rangos; sin rangos, la música no se puede poner en el segundo del vídeo.
   - Desde 1600 píxeles reales de ancho se sirve la de 1080p.
 - **Espejo de Pixeria:** esta carpeta está en `propios` de `marca.json`, así que `sync.sh` no la borra. La carga del script es la última `sustitución` de `marca.json`, así que el siguiente sync la vuelve a poner.
 - **Cómo se hizo el vídeo:**

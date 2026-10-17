@@ -264,5 +264,8 @@
   ],
   "v.17.10.2026.r1.20:11": [
     "Portada: intro en vídeo «Todo en orden» con el look Matrix de admira.studio (15 s): sale una vez por sesión en / y /en/, se salta con «Saltar intro» o Esc y lleva dos músicas originales alternas con botón «Activar sonido». ?intro=1 la fuerza; ?musica=campanas|pulso|0."
+  ],
+  "v.17.10.2026.r2.20:15": [
+    "Portada: la música de la intro va en .mp4 para que Cloudflare la sirva por rangos y entre sincronizada con el vídeo al pulsar «Activar sonido»."
   ]
 }

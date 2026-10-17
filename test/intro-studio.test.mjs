@@ -62,6 +62,7 @@ test('los vídeos y las músicas existen y pesan lo razonable para la web', () =
     assert.ok(size > 1_000_000 && size < 12_000_000, src + ' pesa ' + size);
   }
   for (const src of Object.values(intro.MUSIC)) {
+    assert.match(src, /\.mp4$/, 'la música va en .mp4: Cloudflare no sirve .m4a por rangos');
     const size = statSync(new URL('..' + src, import.meta.url)).size;
     assert.ok(size > 50_000 && size < 1_000_000, src + ' pesa ' + size);
   }
