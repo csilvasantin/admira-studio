@@ -261,5 +261,8 @@
   "v.16.10.2026.r11.15:35": [
     "Creador: Formatos de cliente → Starbucks indica 7 formatos, los del último contenido de Gran de Gràcia 51 (ES + EN).",
     "La ficha Starbucks añade el montaje de siete pantallas V–H–V–V–H–V–H; el relato bilingüe de seis pantallas lo deja excluido."
+  ],
+  "v.17.10.2026.r1.20:11": [
+    "Portada: intro en vídeo «Todo en orden» con el look Matrix de admira.studio (15 s): sale una vez por sesión en / y /en/, se salta con «Saltar intro» o Esc y lleva dos músicas originales alternas con botón «Activar sonido». ?intro=1 la fuerza; ?musica=campanas|pulso|0."
   ]
 }

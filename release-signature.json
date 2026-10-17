@@ -1,12 +1,12 @@
 {
-  "version": "v.16.10.2026.r13.16:25",
-  "author": "Codex",
-  "agent": "Codex",
-  "deployer": "Codex",
+  "version": "v.17.10.2026.r1.20:11",
+  "author": "NeoMacStudio",
+  "agent": "NeoMacStudio",
+  "deployer": "NeoMacStudio",
   "machine": "MacStudio",
-  "signature": "Codex · MacStudio",
-  "git": "4c8c2d1b1c861d5b0517f5dc67abd36c8ad15461",
-  "gitShort": "4c8c2d1",
-  "gitFull": "4c8c2d1b1c861d5b0517f5dc67abd36c8ad15461",
+  "signature": "NeoMacStudio · MacStudio",
+  "git": "3b86508a96188c95f15d8825301ef8c981ace442",
+  "gitShort": "3b86508",
+  "gitFull": "3b86508a96188c95f15d8825301ef8c981ace442",
   "dirty": false
 }

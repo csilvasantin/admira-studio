@@ -1,18 +1,17 @@
 {
-  "version": "v.16.10.2026.r13.16:25",
-  "deployedAt": "2026-10-16T12:36:21.415103+00:00",
-  "author": "Codex",
-  "agent": "Codex",
-  "deployer": "Codex",
+  "version": "v.17.10.2026.r1.20:11",
+  "deployedAt": "2026-10-17T18:11:56Z",
+  "author": "NeoMacStudio",
+  "agent": "NeoMacStudio",
+  "deployer": "NeoMacStudio",
   "machine": "MacStudio",
-  "signature": "Codex · MacStudio",
-  "git": "4c8c2d1b1c861d5b0517f5dc67abd36c8ad15461",
-  "gitFull": "4c8c2d1b1c861d5b0517f5dc67abd36c8ad15461",
-  "gitShort": "4c8c2d1",
+  "signature": "NeoMacStudio · MacStudio",
+  "git": "3b86508a96188c95f15d8825301ef8c981ace442",
+  "gitFull": "3b86508a96188c95f15d8825301ef8c981ace442",
+  "gitShort": "3b86508",
   "dirty": false,
   "novedades": [
-    "/demo starbucks 180: MacStudio V–H–V → MacBookPro16 H, sin incluir el MacMini.",
-    "Recorrido con vapor y textos en castellano e inglés; previo 3D y Matrix y activación de cuatro players."
+    "Portada: intro en vídeo «Todo en orden» con el look Matrix de admira.studio (15 s): sale una vez por sesión en / y /en/, se salta con «Saltar intro» o Esc y lleva dos músicas originales alternas con botón «Activar sonido». ?intro=1 la fuerza; ?musica=campanas|pulso|0."
   ],
   "rollback": {
     "git": "acba88253dc701a6462ab904b58f08b62989beb7"
@@ -21,17 +20,21 @@
     ".source-patches/altadis-18-formato-url.json",
     ".source-patches/coffee-journey.json",
     ".source-patches/create-content.json",
+    ".source-patches/eink-cartela.json",
     ".source-patches/expert-compact-bugito.json",
     ".source-patches/import-search-tags.json",
     ".source-patches/inline-twins-header.json",
     ".source-patches/music-cards.json",
     ".source-patches/playlist-download-progress.json",
     ".source-patches/portada-sin-experto.json",
+    ".source-patches/starbucks-180.json",
     ".source-patches/starbucks-360.json",
     ".source-patches/starbucks-bilingual-story.json",
     ".source-patches/starbucks-creation-formats.json",
     ".source-patches/starbucks-photo-twin.json",
+    ".source-patches/starbucks-seven-formats.json",
     ".source-patches/starbucks-six-shell-stock.json",
+    ".source-patches/starbucks-six-vertical-format.json",
     ".source-patches/starbucks-video-twin.json",
     ".source-patches/stock-compact-layout.json",
     ".source-patches/stock-continuous-playback.json",
@@ -42,9 +45,6 @@
     ".source-patches/stock-search-reference.json",
     ".source-patches/stock-single-video-preview.json",
     ".source-patches/stock-sync-creatives.json",
-    ".source-patches/studio-universal-navigation.json",
-    ".source-patches/starbucks-six-vertical-format.json",
-    ".source-patches/eink-cartela.json",
-    ".source-patches/starbucks-seven-formats.json"
+    ".source-patches/studio-universal-navigation.json"
   ]
 }
