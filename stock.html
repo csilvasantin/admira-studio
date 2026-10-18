@@ -1830,7 +1830,7 @@
             v = document.createElement('video');
             v.src = playMini.dataset.url || '';
             v.controls = true; v.autoplay = true; v.playsInline = true;
-            v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;';
+            v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;background:#000;'; // object-fit lo decide workspace.css (cover en horizontal, contain en vertical/cuadrado)
             media.appendChild(v);
           } else {
             if (v.dataset.src && !v.src) v.src = v.dataset.src;
