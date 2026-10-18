@@ -1,0 +1,16 @@
+name = "admira-studio-availability"
+main = "worker.mjs"
+compatibility_date = "2026-10-18"
+workers_dev = true
+preview_urls = false
+
+[triggers]
+crons = ["*/5 * * * *"]
+
+[[durable_objects.bindings]]
+name = "MONITOR"
+class_name = "AvailabilityMonitor"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["AvailabilityMonitor"]

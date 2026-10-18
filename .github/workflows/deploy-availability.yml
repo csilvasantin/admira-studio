@@ -1,0 +1,39 @@
+name: Deploy independent availability monitor
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/availability-worker/**'
+      - 'test/availability-worker.test.mjs'
+      - 'test/availability-reader.test.py'
+      - 'scripts/read-availability.py'
+      - '.github/workflows/deploy-availability.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-studio-availability
+  cancel-in-progress: false
+
+jobs:
+  deploy-monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - name: Validate outage classification and notifications
+        run: |
+          node --test test/availability-worker.test.mjs
+          python3 test/availability-reader.test.py
+      - name: Deploy only the standalone monitor (never Pages)
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: 'false'
+        run: npx --yes wrangler@4.151.1 deploy --config tools/availability-worker/wrangler.toml
