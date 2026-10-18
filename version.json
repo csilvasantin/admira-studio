@@ -1,5 +1,5 @@
 {
-  "version": "v.18.10.2026.r3.13:32",
+  "version": "v.18.10.2026.r4.13:40",
   "deployedAt": "2026-10-18T13:32:42.515031+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
@@ -11,12 +11,12 @@
   "gitShort": "cd8446b",
   "dirty": false,
   "novedades": [
-    "El Creativo: Admirito con gorra y gafas, texto literal y atributos en Detalle.",
-    "/admirito help muestra los asistentes; /admirito creativo abre locuciones y música.",
-    "Sugerencias editables aceptadas con Enter o ↑; los encargos y el audio se conservan al recargar."
+    "El Creativo genera música a través de Studio sin pedir acceso a la red local.",
+    "Locución y música en el asistente; Enter o ↑ aceptan sugerencias editables.",
+    "Los resultados y las referencias se conservan para no repetir generaciones."
   ],
   "rollback": {
-    "git": "1db6b284893e2f6eb452a80fa0681c7713686671"
+    "git": "8b66e7ab520aa68e50480f6b084ecce1cade41c7"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
