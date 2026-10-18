@@ -349,5 +349,10 @@
     "Las importaciones de Stock, Adaptador y Creativo usan primero el Mac Studio.",
     "Mac Mini y MacBook Pro quedan de respaldo si el principal no responde.",
     "Los trabajos anteriores conservan su equipo al recargar; no se reinician ni duplican contenidos."
+  ],
+  "v.18.10.2026.r16.22:19": [
+    "La importación cambia de equipo automáticamente si falla antes de empezar o durante la descarga.",
+    "Solo el fichero completo se guarda en Stock; el relevo no repite la publicación.",
+    "Los trabajos del Creativo conservan su estado al recargar y se coordinan entre pestañas."
   ]
 }
