@@ -3,7 +3,7 @@
   "domain": "admira.studio",
   "canonicalBase": "1db6b284893e2f6eb452a80fa0681c7713686671",
   "sourceRepository": "csilvasantin/pixeria",
-  "sourceCommit": "04fc740699f0084ec83177c6744d97ad733c80c3",
+  "sourceCommit": "d1e6104a3b985c3cecc037e479ef0e529583d143",
   "sourcePullRequest": 112,
   "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después. Carlos añade /importar URL y pegado directo al Stock. Carlos añade /adaptar imagen|video horizontal|vertical y /recrear imagen horizontal|vertical dentro del Creativo. Carlos pide vista previa a la derecha durante la adaptación y Recrear con IA junto a Guardar en Stock, también para vídeo.",
   "files": [
@@ -65,5 +65,5 @@
       "commit": "da280bb9994d4dbbc1ed02797b79bb4e21615f17"
     }
   ],
-  "release": "v.18.10.2026.r11.16:25"
+  "release": "v.18.10.2026.r12.16:29"
 }

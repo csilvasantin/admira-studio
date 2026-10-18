@@ -1,14 +1,14 @@
 {
-  "version": "v.18.10.2026.r11.16:25",
-  "deployedAt": "2026-10-18T16:25:48.561206+02:00",
+  "version": "v.18.10.2026.r12.16:29",
+  "deployedAt": "2026-10-18T16:29:25.604996+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "9c13be42c259c14005d5711cfb89a88eeee7f32f",
-  "gitFull": "9c13be42c259c14005d5711cfb89a88eeee7f32f",
-  "gitShort": "9c13be4",
+  "git": "b6b8befa93f366460ac2c3ef319c1595bdd5914a",
+  "gitFull": "b6b8befa93f366460ac2c3ef319c1595bdd5914a",
+  "gitShort": "b6b8bef",
   "dirty": false,
   "novedades": [
     "El Creativo incorpora GOOD experimental: recreación local de vídeo con movimiento, prueba de 3 segundos a 480p y sin créditos.",
@@ -16,7 +16,7 @@
     "Recargar consulta la misma prueba y recupera el resultado sin duplicar generaciones. GOOD puede generar artefactos en los márgenes."
   ],
   "rollback": {
-    "git": "9c13be42c259c14005d5711cfb89a88eeee7f32f"
+    "git": "b6b8befa93f366460ac2c3ef319c1595bdd5914a"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -54,5 +54,5 @@
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
-  "creativeSource": "04fc740699f0084ec83177c6744d97ad733c80c3"
+  "creativeSource": "d1e6104a3b985c3cecc037e479ef0e529583d143"
 }
