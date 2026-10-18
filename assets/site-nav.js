@@ -769,7 +769,7 @@
       document.body.appendChild(cliente);
       if (!document.querySelector('.rail-bottom,.quad-bottom,#pixNavExpertLayer')) return;
       var cli = document.createElement('script');
-      cli.src = '/assets/expert-cli.js?v=creativo-20261018-4';
+      cli.src = '/assets/expert-cli.js?v=creativo-20261018-5';
       // Portada sin modo Experto (Carlos, 15-oct-2026): expert-cli.js solo lleva la Biblioteca y
       // el boletín de la franja inferior a la columna central; ni consola, ni su CSS, ni la piel
       // de la suite, que reabriría ⌘ con el estado guardado en la pestaña (ax-experto-abierto).
