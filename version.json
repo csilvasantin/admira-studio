@@ -1,5 +1,5 @@
 {
-  "version": "v.18.10.2026.r13.18:28",
+  "version": "v.18.10.2026.r14.19:27",
   "deployedAt": "2026-10-18T18:28:10.525411+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
@@ -11,12 +11,12 @@
   "gitShort": "693fa3a",
   "dirty": false,
   "novedades": [
-    "/admirito creativo help lista todos los comandos del asistente y permite aceptar sugerencias con Enter o la flecha.",
-    "Combos de imagen + locución o música: entrega MP4 de 10 segundos, campos separados en Detalle y componentes guardados sin repetir envíos inciertos.",
-    "MCP del Creativo: ayuda y preparación de combos para el equipo; la generación se confirma en Studio y la música pasa por consejeros/Suno."
+    "La música de los consejeros se entrega como archivo de audio real, con acceso privado al mismo encargo y clip.",
+    "Las fichas de Suno ya no se aceptan como audio. Una entrega repetida conserva los mismos bytes y no vuelve a generar.",
+    "Los combos mantienen imagen, letra, audio y vídeo al recargar; el montaje usa un fragmento revisado de 10 segundos."
   ],
   "rollback": {
-    "git": "693fa3a5e55406db7b19ceae5d7627f93fff98ee"
+    "git": "418524d5e1be2da7803713421292ae71c5326a06"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
