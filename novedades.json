@@ -1,9 +1,9 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "Creador guarda automáticamente campañas y originales en este navegador; Retomar recupera textos, formatos, posiciones y revisiones.",
-    "Las demos recuperan sus avances y reutilizan imagen, vídeo y solicitudes IA existentes; no repiten peticiones con resultado desconocido.",
-    "Protección frente a cambios desde otra ventana; conserva idiomas, formatos de cliente y las mejoras de portada."
+    "Revisión antes de exportar: comprueba texto completo, bordes, juntas y huecos por formato e idioma.",
+    "Visor de pantallas nativas para horizontal, vertical y montajes segmentados, con píxeles reales y momentos de animación.",
+    "Los errores bloquean la exportación; las aprobaciones y los originales se conservan al recargar en este navegador."
   ],
   "v.11.10.2026.r5.16:10": [
     "Cápsula musical GOOD «¿Sabías que…?»: el Disco de Oro de las Voyager, en vídeos verticales ES y EN de 30 segundos.",
@@ -284,5 +284,10 @@
     "Creador guarda automáticamente campañas y originales en este navegador; Retomar recupera textos, formatos, posiciones y revisiones.",
     "Las demos recuperan sus avances y reutilizan imagen, vídeo y solicitudes IA existentes; no repiten peticiones con resultado desconocido.",
     "Protección frente a cambios desde otra ventana; conserva idiomas, formatos de cliente y las mejoras de portada."
+  ],
+  "v.18.10.2026.r2.12:17": [
+    "Revisión antes de exportar: comprueba texto completo, bordes, juntas y huecos por formato e idioma.",
+    "Visor de pantallas nativas para horizontal, vertical y montajes segmentados, con píxeles reales y momentos de animación.",
+    "Los errores bloquean la exportación; las aprobaciones y los originales se conservan al recargar en este navegador."
   ]
 }
