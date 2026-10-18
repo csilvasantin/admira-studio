@@ -2136,6 +2136,8 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 18px;
+  /* Filas mixtas: la tarjeta horizontal no se estira a la altura de la vertical. */
+  align-items: start;
 }
 .stock-card {
   border: 1px solid var(--line-bright);
@@ -2638,6 +2640,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 18px;
+  align-items: start;
 }
 
 /* ── Stock: selector de densidad de vista (lista / compacto / medio) ── */

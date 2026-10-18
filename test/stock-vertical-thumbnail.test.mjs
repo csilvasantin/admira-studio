@@ -13,4 +13,7 @@ assert.match(css, /\.stock-card\[data-orientation="portrait"\] \.stock-card-medi
 assert.match(css, /\.stock-card\[data-orientation="portrait"\] \.stock-card-media img,[^{]*\{\s*object-fit:\s*contain/);
 // El <video> creado al pulsar ▶ no fuerza cover en línea: lo decide la hoja de estilos.
 assert.doesNotMatch(html, /v\.style\.cssText = '[^']*object-fit:cover/);
+// Filas mixtas: las tarjetas no se estiran a la altura de la más alta.
+assert.match(css, /\.stock-grid\s*\{[^}]*align-items:\s*start/);
+assert.match(css, /\.stock-group-grid\s*\{[^}]*align-items:\s*start/);
 console.log('stock-vertical-thumbnail ok');
