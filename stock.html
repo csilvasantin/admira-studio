@@ -92,6 +92,7 @@
     #localDropOverlay[hidden]{display:none}
     #localDropOverlay span{font-size:16px}
     .stock-card-media{position:relative}
+    .stock-format-versions{pointer-events:auto;max-width:calc(100% - 52px);cursor:pointer;text-overflow:ellipsis;outline-offset:2px}
     .stock-format-versions option{background:#031006;color:#caffd7}
     .stock-playlist-badge{position:absolute;right:9px;bottom:9px;z-index:4;border:1px solid var(--matrix);border-radius:7px;background:#001b0bee;color:var(--matrix);padding:5px 8px;font-size:11px;font-weight:700;font-family:inherit;cursor:help;max-width:80%}
     .stock-playlist-badge.is-pending{border-color:#ffe14d;color:#ffe14d;background:#242005f2}
@@ -870,15 +871,10 @@
     }
     function mediaOrientation(it) { return StockFormats.format(it)||{key:'unknown',icon:'◇',label:'Sin formato visual'}; }
     function versionLabel(it){const f=mediaOrientation(it),d=StockFormats.dimensions(it);return f.icon+' '+f.label+(d?' · '+Math.round(d.width)+'×'+Math.round(d.height):'')+(it.num?' · #'+it.num:'')+' · '+String(it.title||it.id).slice(0,80);}
-    // Formato del contenido (↕ vertical · ↔ horizontal · □ cuadrado…) como una etiqueta más de la
-    // fila de tags de la tarjeta (antes era una cartela encima de la miniatura). Misma insignia de
-    // StockFormats (icono + nombre); con varias versiones sigue siendo el selector de versión.
-    const showsFormat = it => ['image', 'digital-twin', 'video', 'animation'].includes(it && it.type);
-    function formatTagHtml(it) {
-      if (!showsFormat(it)) return '';
-      const o=mediaOrientation(it),versions=formatIndex.versions(it),css=['portrait','landscape','square','anamorphic','unknown'].includes(o.key)?o.key:'custom',label=String(o.label).toLocaleLowerCase('es');
-      if(versions.length>1)return `<select class="stock-tag stock-tag-format stock-format-versions ${css}" data-role="orientation" data-format="${escAttr(o.key)}" data-act="format-version" aria-label="Elegir versión de formato" title="${escAttr(versions.length+' versiones disponibles · '+o.label)}">${versions.map(v=>`<option value="${escAttr(v.id)}" ${v.id===it.id?'selected':''}>${escText(versionLabel(v))}</option>`).join('')}</select>`;
-      return `<button type="button" class="stock-tag stock-tag-format ${css}" data-role="orientation" data-format="${escAttr(o.key)}" title="Formato del contenido · clic: filtrar por ${escAttr(o.label)}">${o.icon} ${escText(label)}</button>`;
+    function orientationBadgeHtml(it) {
+      const o=mediaOrientation(it),versions=formatIndex.versions(it),css=['portrait','landscape','square','anamorphic','unknown'].includes(o.key)?o.key:'custom';
+      if(versions.length>1)return `<select class="stock-orientation stock-format-versions ${css}" data-role="orientation" data-act="format-version" aria-label="Elegir versión de formato" title="${escAttr(versions.length+' versiones disponibles · '+o.label)}">${versions.map(v=>`<option value="${escAttr(v.id)}" ${v.id===it.id?'selected':''}>${escText(versionLabel(v))}</option>`).join('')}</select>`;
+      return `<span class="stock-orientation ${css}" data-role="orientation" title="Formato del contenido">${o.icon} ${escText(o.label)}</span>`;
     }
     function refreshFormatOptions(){const value=filters.format,options=StockFormats.options([...formatIndex.byId.values()]);if(allItems.some(hasMusicCards))for(const f of [{key:'landscape',label:'Horizontal'},{key:'portrait',label:'Vertical'}])if(!options.some(x=>x.key===f.key))options.push(f);if(value&&!options.some(f=>f.key===value))options.push({key:value,label:formatFilter.selectedOptions[0]?.textContent||value});formatFilter.replaceChildren(new Option('Todos los formatos',''),...options.map(f=>new Option(f.label,f.key)));formatFilter.value=value;}
     // Estilo de UN frame de un sprite-sheet horizontal (frames>1) en una caja.
@@ -889,23 +885,6 @@
       const pos = (i / (n - 1)) * 100;
       return `background-image:url('${url}');background-repeat:no-repeat;background-size:${n * 100}% 100%;background-position:${pos}% center;image-rendering:pixelated;`;
     }
-    // Póster que se pinta en la miniatura de un vídeo (o '' si aún no hay).
-    const videoPosterUrl = it => /^https?:\/\//.test(String(it.poster || '')) ? it.poster : (/^https?:\/\//.test(String(it.thumbnail || '')) ? it.thumbnail : '');
-    // La caja de miniatura toma la proporción REAL del contenido (--media-ar): la imagen la llena entera
-    // y no queda franja vacía ni recorte. Tope [9:16, 21:9] para que una pieza extrema no deforme la
-    // rejilla; lo que sobre ahí lo rellena el fondo difuminado de la propia imagen (--media-ambient).
-    const mediaRatio = (w, h) => Math.min(21 / 9, Math.max(9 / 16, w / h));
-    function mediaBoxStyle(it) {
-      const d = StockFormats.dimensions(it), src = it.type === 'video' || it.type === 'animation' ? videoPosterUrl(it) : (it.thumbnail || it.url || '');
-      const css = [];
-      if (d) css.push('--media-ar:' + mediaRatio(d.width, d.height).toFixed(4));
-      if (src) css.push("--media-ambient:url('" + String(src).replace(/[\s"'()\\<>]/g, c => '%' + c.charCodeAt(0).toString(16).padStart(2, '0')) + "')");
-      return css.join(';');
-    }
-    function fitMediaBox(media, width, height) {
-      const box = media.closest('.media-fit');
-      if (box && width > 0 && height > 0) box.style.setProperty('--media-ar', mediaRatio(width, height).toFixed(4));
-    }
     function renderPreview(it) {
       if (hasMusicCards(it)) return musicPreview(it);
       if (isFurniture3D(it)) return `<img src="${escAttr(it.poster || it.thumbnail)}" alt="${escAttr(it.title)}" loading="lazy"><span class="xpace-badge">Mueble · 3D</span>`;
@@ -915,7 +894,8 @@
       // externalRef). Si no la tiene —activos antiguos o sin externalRef— se cae al
       // texto con el estilo .stock-capsula.
       if (isCapsule(it) && it.thumbnail) {
-        return `<img class="stock-cover" src="${escAttr(it.thumbnail)}" alt="" loading="lazy">`;
+        return `<img class="stock-cover" src="${escAttr(it.thumbnail)}" alt="" loading="lazy">
+                <span class="stock-orientation landscape" data-role="orientation" title="Cápsula de formación">✦ cápsula</span>`;
       }
       if (isFurni(it)) {
         const fr = it.frames || 1;
@@ -935,7 +915,7 @@
         return `<img src="${it.url}" alt="" loading="lazy" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
       }
       if (it.type === 'image' || it.type === 'digital-twin') {
-        return `<img data-orientation-media src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
+        return `${orientationBadgeHtml(it)}<img data-orientation-media src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
       }
       if (it.type === 'video' || it.type === 'animation') {
         // PREVIEW = el póster del asset cuando lo hay: desde el 4-sep-2026 (FLT
@@ -952,12 +932,12 @@
         // Yokup #3199 (12-sep-2026): meta.poster es la URL estable del póster
         // representativo (GET api.admira.store/stock/poster/<id>, elegido por luma y
         // varianza, nunca el frame 0 negro); thumbnail (R2 directo) queda de respaldo.
-        const poster = videoPosterUrl(it);
+        const poster = /^https?:\/\//.test(String(it.poster || '')) ? it.poster : (/^https?:\/\//.test(String(it.thumbnail || '')) ? it.thumbnail : '');
         if (poster) {
-          return `<img class="stock-cover stock-video-poster" data-orientation-media src="${escAttr(poster)}" alt="" loading="lazy" decoding="async" style="background:#0a0f14;">
+          return `${orientationBadgeHtml(it)}<img class="stock-cover stock-video-poster" data-orientation-media src="${escAttr(poster)}" alt="" loading="lazy" decoding="async" style="background:#0a0f14;">
                 <button type="button" class="stock-media-play" data-act="playmini" data-url="${escAttr(it.url)}" title="Reproducir aquí (pequeño)" aria-label="Reproducir aquí">▶</button>`;
         }
-        return `<video class="stock-cover stock-video-preview" data-orientation-media data-src="${escAttr(it.url)}" preload="metadata" muted playsinline disablepictureinpicture style="background:#0a0f14;"></video>
+        return `${orientationBadgeHtml(it)}<video class="stock-cover stock-video-preview" data-orientation-media data-src="${escAttr(it.url)}" preload="metadata" muted playsinline disablepictureinpicture style="background:#0a0f14;"></video>
                 <button type="button" class="stock-media-play" data-act="playmini" data-url="${escAttr(it.url)}" title="Reproducir aquí (pequeño)" aria-label="Reproducir aquí">▶</button>`;
       }
       if (it.type === 'audio' || it.type === 'locucion' || it.type === 'music') {
@@ -987,12 +967,11 @@
       if (it) { it._mediaWidth = width; it._mediaHeight = height; }
       const o = mediaOrientation(it);
       card.dataset.orientation = o.key;
-      const tagRow=card.querySelector('.stock-tags');if(tagRow&&it&&!tagRow.querySelector('.stock-tag-rename')&&tagRow.querySelector('[data-role="orientation"]')?.dataset.format!==o.key)tagRow.outerHTML=renderTagsHtml(it.tags,it.id,it);
+      const badge=card.querySelector('[data-role="orientation"]');if(badge)badge.outerHTML=orientationBadgeHtml(it);
       refreshFormatOptions();
       if(filters.format&&filters.format!==o.key)setTimeout(()=>applyFilters(false),0);
     }
     function hydrateMediaOrientations() {
-      stopHoverPreview();   // la rejilla se acaba de repintar: cualquier preview anterior ya no existe
       grid.querySelectorAll('[data-orientation-media]').forEach(media => {
         const card=media.closest('.stock-card'),it=card&&allItems.find(x=>String(x.id)===card.dataset.id);
         const read = () => {
@@ -1000,81 +979,12 @@
           if(!isVideo && (media.classList.contains('stock-video-poster') || !it || media.getAttribute('src')!==it.url))return;
           setMediaOrientation(media,isVideo ? media.videoWidth : media.naturalWidth,isVideo ? media.videoHeight : media.naturalHeight);
         };
-        const fit = () => fitMediaBox(media, media.tagName === 'VIDEO' ? media.videoWidth : media.naturalWidth, media.tagName === 'VIDEO' ? media.videoHeight : media.naturalHeight);
-        if (media.tagName === 'VIDEO') { media.addEventListener('loadedmetadata', read, { once: true }); media.addEventListener('loadedmetadata', fit, { once: true }); }
-        else if (media.complete) { fit(); read(); }
-        else { media.addEventListener('load', fit, { once: true }); media.addEventListener('load', read, { once: true }); }
+        if (media.tagName === 'VIDEO') media.addEventListener('loadedmetadata', read, { once: true });
+        else if (media.complete) read();
+        else media.addEventListener('load', read, { once: true });
         if (card && it) card.dataset.orientation = mediaOrientation(it).key;
       });
     }
-
-    // ── Preview al reposar el ratón sobre la miniatura (hover intent) ─────────────────────────────
-    // Vídeo/animación: tras HOVER_INTENT_MS con el puntero quieto sobre la miniatura se reproduce, mudo y en
-    // bucle, un fragmento corto en la propia caja. El <video> se crea (preload none → src) solo entonces; si
-    // la tarjeta ya tenía su <video> perezoso (sin póster) se reutiliza. Mover el puntero (> HOVER_JITTER_PX),
-    // salir, hacer clic, hacer scroll o pulsar ▶ lo detiene y vuelve la miniatura. Un único preview a la vez.
-    // Sin efecto en táctil (sin hover), con prefers-reduced-motion o con ahorro de datos. Audio/imagen: nada.
-    const HOVER_INTENT_MS = 700, HOVER_JITTER_PX = 6, HOVER_CLIP_S = 4;
-    const hover = { media: null, x: 0, y: 0, timer: 0, video: null, owned: false, clipStart: 0, onTime: null };
-    function hoverAllowed(e) {
-      return e.pointerType === 'mouse' && matchMedia('(hover: hover) and (pointer: fine)').matches
-        && !matchMedia('(prefers-reduced-motion: reduce)').matches && !(navigator.connection && navigator.connection.saveData)
-        && document.visibilityState === 'visible' && lightbox.hidden;
-    }
-    function stopHoverPreview() {
-      clearTimeout(hover.timer);
-      const v = hover.video, media = hover.media;
-      if (v) {
-        v.pause();
-        if (hover.onTime) v.removeEventListener('timeupdate', hover.onTime);
-        if (hover.owned) { v.removeAttribute('src'); v.load(); v.remove(); }     // corta la descarga y vuelve el póster
-        else { try { v.currentTime = Math.min(1.2, (isFinite(v.duration) && v.duration > 0 ? v.duration : 10) * 0.12); } catch (_) {} }
-      }
-      if (media) delete media.dataset.preview;
-      hover.media = null; hover.video = null; hover.owned = false; hover.onTime = null;
-    }
-    function startHoverPreview(media) {
-      if (!media.isConnected || hover.media !== media || hover.video) return;
-      const card = media.closest('.stock-card');
-      if (!card || !/^(video|animation)$/.test(card.dataset.type) || media.querySelector('video[controls]')) return;
-      const it = allItems.find(x => String(x.id) === card.dataset.id);
-      if (!it || !it.url) return;
-      let v = media.querySelector('video.stock-video-preview'), owned = false;
-      if (v) { if (!v.src && v.dataset.src) v.src = v.dataset.src; }
-      else {
-        v = document.createElement('video');
-        v.className = 'stock-hover-video'; v.preload = 'none'; v.setAttribute('aria-hidden', 'true');
-        v.playsInline = true; v.disablePictureInPicture = true;
-        media.appendChild(v); owned = true;
-        v.preload = 'auto'; v.src = it.url;
-      }
-      v.muted = true; v.loop = true;
-      hover.video = v; hover.owned = owned; hover.clipStart = 0;
-      const seekClip = () => {
-        const d = isFinite(v.duration) ? v.duration : 0;
-        hover.clipStart = d > HOVER_CLIP_S * 3 ? Math.min(d * 0.12, d - HOVER_CLIP_S) : 0;
-        try { v.currentTime = hover.clipStart; } catch (_) {}
-      };
-      if (v.readyState >= 1) seekClip(); else v.addEventListener('loadedmetadata', seekClip, { once: true });
-      hover.onTime = () => { if (hover.clipStart > 0 && v.currentTime >= hover.clipStart + HOVER_CLIP_S) v.currentTime = hover.clipStart; };
-      v.addEventListener('timeupdate', hover.onTime);
-      v.addEventListener('playing', () => { v.classList.add('is-ready'); media.dataset.preview = 'playing'; }, { once: true });
-      v.addEventListener('error', () => { if (hover.video === v) stopHoverPreview(); }, { once: true });
-      v.play().catch(() => { if (hover.video === v) stopHoverPreview(); });
-    }
-    grid.addEventListener('pointermove', e => {
-      const media = e.target.closest ? e.target.closest('.stock-card-media') : null;
-      if (!media || !hoverAllowed(e)) { stopHoverPreview(); return; }
-      if (media === hover.media && Math.hypot(e.clientX - hover.x, e.clientY - hover.y) < HOVER_JITTER_PX) return;
-      stopHoverPreview();                                  // se movió: vuelve la miniatura y se rearma la espera
-      hover.media = media; hover.x = e.clientX; hover.y = e.clientY;
-      hover.timer = setTimeout(() => startHoverPreview(media), HOVER_INTENT_MS);
-    });
-    grid.addEventListener('pointerout', e => { if (hover.media && !hover.media.contains(e.relatedTarget)) stopHoverPreview(); });
-    grid.addEventListener('pointerdown', stopHoverPreview);
-    window.addEventListener('scroll', stopHoverPreview, { passive: true });
-    window.addEventListener('blur', stopHoverPreview);
-    document.addEventListener('visibilitychange', () => { if (document.visibilityState !== 'visible') stopHoverPreview(); });
 
     // Lazy-load de previews de vídeo: el src (data-src) se asigna cuando la
     // tarjeta se acerca al viewport (margen 600px). Pintado de rejilla
@@ -1137,16 +1047,13 @@
       }
       return `<span title="${escAttr(raw)}">${trunc}</span>`;
     }
-    // `it` (opcional): antepone la etiqueta de formato y oculta las etiquetas de texto que dicen lo mismo
-    // (#vertical/#portrait del importador…) para no duplicarlas; siguen en los datos y en el filtro.
-    function renderTagsHtml(tags, id, it) {
+    function renderTagsHtml(tags, id) {
       const safeId = String(id || '').replace(/[^A-Za-z0-9-]/g, '');
-      const formatTag = it ? formatTagHtml(it) : '', formatKey = formatTag ? mediaOrientation(it).key : '';
-      const chips = formatTag + (Array.isArray(tags) ? tags : []).filter(t => !formatKey || StockFormats.tagFormat(t) !== formatKey).map(t => {
+      const chips = (Array.isArray(tags) ? tags : []).map(t => {
         const safe = verTag(t).replace(/</g, '&lt;');
         return `<button type="button" class="stock-tag" draggable="true" data-drag-tag="${escAttr(t)}" data-tag="${escAttr(t)}" title="Arrastra para copiar #${escAttr(verTag(t))} a otro contenido · Clic: filtrar · Doble-clic: renombrar">#${safe}</button>`;
       }).join('');
-      const dragAll = Array.isArray(tags) && tags.length ? `<button type="button" class="stock-tags-drag" draggable="true" data-act="drag-tags" data-id="${safeId}" title="Arrastra para copiar todas las etiquetas a otro contenido">⇄ tags</button>` : '';
+      const dragAll = chips ? `<button type="button" class="stock-tags-drag" draggable="true" data-act="drag-tags" data-id="${safeId}" title="Arrastra para copiar todas las etiquetas a otro contenido">⇄ tags</button>` : '';
       // "+ más": añade metatags propias para agrupar (a la derecha de las auto-tags).
       // Se muestra SIEMPRE, incluso sin etiquetas, para poder agrupar cualquier asset.
       const more = `<button type="button" class="stock-tag-more" data-act="add-tag-list" data-id="${safeId}" title="Añadir etiquetas propias para agrupar (varias separadas por comas)">+ más</button>`;
@@ -1339,12 +1246,11 @@
       const commentBlock = commentRaw
         ? `<p class="stock-comment" title="${escAttr(commentRaw)}">💬 ${commentSafe.slice(0, 200)}${commentRaw.length > 200 ? '…' : ''}</p>`
         : '';
-      const tagsBlock = renderTagsHtml(it.tags, it.id, it);
-      const mediaFit = showsFormat(it);
+      const tagsBlock = renderTagsHtml(it.tags, it.id);
       const selected = DIST.isSelected(it.id) ? ' is-selected' : '';
       return `<article class="stock-card${selected}" data-type="${typeLabel}" data-motor="${it.motor}" data-id="${idAttr}" tabindex="0" role="button" aria-label="Maximizar ${typeLabel}">
         <button type="button" class="stock-select" data-act="select" title="Seleccionar para distribuir en lote" aria-label="Seleccionar asset" aria-pressed="${DIST.isSelected(it.id) ? 'true' : 'false'}"><span aria-hidden="true">${DIST.isSelected(it.id) ? '✓' : '+'}</span></button>
-        <div class="stock-card-media${mediaFit ? ' media-fit' : ''}"${mediaFit ? ` style="${mediaBoxStyle(it)}"` : ''}>
+        <div class="stock-card-media">
           ${renderPreview(it)}
           ${window.StockPlaylistData ? StockPlaylistData.badge(it.id) : ''}
         </div>
@@ -1897,18 +1803,6 @@
       // Click en chip de tag → filtra por ese tag (no abre lightbox). Se aplaza
       // ~220ms: si llega un doble-clic se cancela y se edita en su lugar (evita
       // que applyFilters re-pinte el chip antes de poder editarlo).
-      // Etiqueta de formato (↕ vertical…): clic = filtrar por ese formato (el filtro «Formato» de arriba).
-      // Si es el selector de versiones, su propio 'change' hace el trabajo.
-      const formatBtn = e.target.closest('.stock-tag-format');
-      if (formatBtn) {
-        e.stopPropagation();
-        if (formatBtn.matches('select')) return;
-        e.preventDefault();
-        const want = filters.format === formatBtn.dataset.format ? '' : formatBtn.dataset.format;
-        formatFilter.value = want;
-        if (formatFilter.value === want) formatFilter.dispatchEvent(new Event('change'));
-        return;
-      }
       const tagBtn = e.target.closest('.stock-tag');
       if (tagBtn) {
         e.preventDefault();
@@ -1928,10 +1822,9 @@
       const playMini = e.target.closest('[data-act="playmini"]');
       if (playMini) {
         e.preventDefault(); e.stopPropagation();
-        stopHoverPreview();   // el preview al reposar el ratón cede el sitio a la reproducción real
         const media = playMini.closest('.stock-card-media');
         if (media) {
-          let v = media.querySelector('video:not(.stock-hover-video)');
+          let v = media.querySelector('video');
           if (!v) {
             // La card solo tenía el póster → creamos el <video> al vuelo.
             v = document.createElement('video');
@@ -1991,7 +1884,7 @@
     // Doble-clic en un chip → renombrar inline (cancela el filtro aplazado).
     grid.addEventListener('dblclick', e => {
       const tagBtn = e.target.closest('.stock-tag');
-      if (!tagBtn || tagBtn.classList.contains('stock-tag-format')) return;
+      if (!tagBtn) return;
       e.preventDefault();
       e.stopPropagation();
       clearTimeout(window.__tagClickTimer);

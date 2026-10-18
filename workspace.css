@@ -2177,69 +2177,65 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   width: 100%; height: 100%; object-fit: cover; display: block;
   background: #000;
 }
-/* Formato (↕ vertical · ↔ horizontal · □ cuadrado): etiqueta normal de la fila de tags, no una
-   cartela encima de la imagen. Hereda el estilo de .stock-tag y solo cambia el color por formato.
-   Con varias versiones es el <select> de versión con el mismo aspecto. */
-.stock-tag-format { text-transform: none; max-width: 100%; }
-.stock-tag-format.portrait { color: #60e8ff; border-color: #60e8ff; background: rgba(96, 232, 255, .08); }
-.stock-tag-format.landscape { color: #d4ff5a; border-color: #d4ff5a; background: rgba(212, 255, 90, .08); }
-.stock-tag-format.square { color: #c8b4ff; border-color: #c8b4ff; background: rgba(200, 180, 255, .1); }
-.stock-tag-format.anamorphic { color: #ffb86b; border-color: #ffb86b; background: rgba(255, 184, 107, .08); }
-.stock-tag-format.unknown { color: var(--muted); border-color: var(--line-bright); background: transparent; }
-.stock-tag-format:hover { color: #fff; }
-select.stock-tag-format {
-  max-width: min(100%, 24em); text-overflow: ellipsis; outline-offset: 2px;
-  padding-right: 18px;
-  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
-  background-position: calc(100% - 10px) 55%, calc(100% - 6px) 55%;
-  background-size: 4px 4px, 4px 4px;
-  background-repeat: no-repeat;
-}
-/* Caja de la miniatura de imagen/vídeo: toma la proporción REAL del contenido (--media-ar, la fija
-   stock.html con las dimensiones y la corrige al cargar la imagen), así la imagen la llena entera
-   —hasta el borde inferior— sin recorte ni franja vacía. object-fit:contain sobre una caja del mismo
-   ratio no recorta nunca (un vertical sigue vertical). Lo poco que sobre (ratio extremo con tope
-   9:16–21:9, o la columna de la vista lista estirada a la altura de la fila) lo cubre el propio
-   fotograma desenfocado (--media-ambient) en vez de un fondo negro muerto.
-   La <img>/<video> se anclan con inset:0: con height:100% sobre una caja de alto solo por
-   aspect-ratio el % se resuelve a auto y overflow:hidden recorta (causa del recorte de #93). */
-.stock-card-media.media-fit {
-  aspect-ratio: var(--media-ar, 16 / 10);
-}
-.stock-card-media.media-fit::before {
-  content: "";
+.stock-orientation {
   position: absolute;
-  inset: -16px;
-  background: var(--media-ambient) center / cover no-repeat;
-  filter: blur(14px) brightness(.5) saturate(1.2);
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 7px;
+  border: 1px solid rgba(220, 255, 225, .52);
+  background: rgba(0, 8, 2, .84);
+  color: #d7ffe0;
+  box-shadow: 0 0 12px rgba(0, 0, 0, .65);
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .1em;
+  text-transform: uppercase;
   pointer-events: none;
+  white-space: nowrap;
 }
-.stock-card-media.media-fit > img,
-.stock-card-media.media-fit > video {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
+.stock-orientation.portrait { color: #60e8ff; border-color: #60e8ff; }
+.stock-orientation.landscape { color: #d4ff5a; border-color: #d4ff5a; }
+.stock-orientation.square { color: #c8b4ff; border-color: #c8b4ff; }
+.stock-orientation.unknown { color: var(--muted); border-color: var(--line-bright); }
+/* Mantiene visible el encuadre real. Un short vertical queda enmarcado como
+   retrato, con bandas laterales, en vez de parecer un vídeo 16:9 recortado. */
+.stock-card[data-orientation="portrait"] .stock-card-media video,
+.stock-card[data-orientation="portrait"] .stock-card-media img,
+.stock-card[data-orientation="square"] .stock-card-media video,
+.stock-card[data-orientation="square"] .stock-card-media img {
   object-fit: contain;
 }
-/* Rejilla: el alto de una pieza vertical no pasa de 440px; la caja se estrecha (centrada) en vez de
-   dejar bandas dentro de ella. */
-.stock-grid:not(.view-list) .stock-card-media.media-fit {
-  width: min(100%, calc(440px * var(--media-ar, 1.6)));
-  margin-inline: auto;
+.stock-card[data-orientation="portrait"] .stock-card-media {
+  background:
+    linear-gradient(90deg, rgba(0,255,65,.05), transparent 22%, transparent 78%, rgba(0,255,65,.05)),
+    #020602;
+}
+/* Rejilla: la caja de una pieza vertical es 9:16 (con tope de alto para no
+   estirar la fila), no la 16/10 de las horizontales. Así el póster 9:16 ocupa
+   toda la caja en vez de verse como una tira pequeña con bandas laterales.
+   La vista lista conserva su caja fija de miniatura. */
+.stock-grid:not(.view-list) .stock-card[data-orientation="portrait"] .stock-card-media {
+  aspect-ratio: 9 / 16;
+  max-height: 440px;
+}
+/* Causa raíz del "recorte horizontal": la caja .stock-card-media solo tiene
+   alto por aspect-ratio (no es un alto definido), así que el height:100% del <img>
+   se resuelve a auto, la imagen vertical sale a todo el ancho con su alto natural y
+   overflow:hidden la corta por el centro. object-fit:contain no puede actuar si la
+   <img> no tiene caja propia: se ancla a la caja con inset:0 (definida). */
+.stock-card[data-orientation="portrait"] .stock-card-media img,
+.stock-card[data-orientation="square"] .stock-card-media img {
+  position: absolute;
+  inset: 0;
 }
 .stock-video-preview {
   pointer-events: none;
 }
-/* Preview al reposar el ratón (stock.html): <video> mudo en bucle encima de la miniatura; aparece
-   al empezar a reproducir para no enseñar un fogonazo negro. */
-.stock-card-media .stock-hover-video {
-  position: absolute; inset: 0; z-index: 2;
-  width: 100%; height: 100%; object-fit: contain;
-  background: #000; pointer-events: none;
-  opacity: 0; transition: opacity .18s ease;
-}
-.stock-card-media .stock-hover-video.is-ready { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .stock-card-media .stock-hover-video { transition: none; } }
 .stock-card[data-type="video"] .stock-card-media,
 .stock-card[data-type="animation"] .stock-card-media {
   /* mismo aspecto 16/10 que el resto para una rejilla uniforme */
@@ -2670,9 +2666,6 @@ select.stock-tag-format {
 .stock-grid.view-compact .stock-comment,
 .stock-grid.view-compact .stock-tags,
 .stock-grid.view-compact .stock-motor { display: none; }
-/* Compacto: de la fila de tags solo queda la de formato (antes la cartela siempre se veía). */
-.stock-grid.view-compact .stock-tags:has(.stock-tag-format) { display: flex; }
-.stock-grid.view-compact .stock-tags > :not(.stock-tag-format) { display: none; }
 .stock-grid.view-compact .stock-title { font-size: 12px; max-height: 2.7em; }
 
 /* Lista: una fila por asset, miniatura a la izquierda */
@@ -2684,17 +2677,6 @@ select.stock-tag-format {
 .stock-grid.view-list .stock-card-media {
   flex: 0 0 200px; width: 200px; aspect-ratio: 16/10;
   align-self: flex-start;
-}
-/* Imagen/vídeo: la columna se estira a la altura de la fila (llega a la línea inferior de la tarjeta,
-   sin franja vacía debajo de la miniatura); la proporción solo marca el alto mínimo. */
-.stock-grid.view-list .stock-card[data-type] .stock-card-media.media-fit {
-  flex: 0 0 220px; width: 220px; margin: 0;
-  aspect-ratio: clamp(1.4, var(--media-ar, 1.7778), 2.4);
-  align-self: stretch;
-}
-.stock-grid.view-list .stock-card[data-orientation="portrait"][data-type] .stock-card-media.media-fit,
-.stock-grid.view-list .stock-card[data-orientation="square"][data-type] .stock-card-media.media-fit {
-  flex-basis: 140px; width: 140px; aspect-ratio: 1;
 }
 .stock-grid.view-list .stock-card[data-type="video"] .stock-card-media,
 .stock-grid.view-list .stock-card[data-type="animation"] .stock-card-media {
@@ -2711,9 +2693,6 @@ select.stock-tag-format {
     flex-basis: 138px;
     width: 138px;
   }
-  .stock-grid.view-list .stock-card[data-type] .stock-card-media.media-fit { flex-basis: 138px; width: 138px; }
-  .stock-grid.view-list .stock-card[data-orientation="portrait"][data-type] .stock-card-media.media-fit,
-  .stock-grid.view-list .stock-card[data-orientation="square"][data-type] .stock-card-media.media-fit { flex-basis: 96px; width: 96px; }
   .stock-media-play {
     width: 26px;
     height: 26px;
