@@ -7,7 +7,10 @@ import {finalize} from '../tools/availability-worker/checks.mjs';
 async function runtime() {
   const data = new Map();
   let calls = 0;
-  const context = vm.createContext({Response,Request,URL,console});
+  const outbound = [];
+  const context = vm.createContext({Response,Request,URL,console,fetch: async (url, options) => {
+    outbound.push({url, options}); return Response.json({});
+  }});
   const module = new vm.SourceTextModule(await readFile(new URL('../tools/availability-worker/worker.mjs',import.meta.url),'utf8'),{context});
   const storage = {
     async get(k){return data.get(k);},
@@ -19,13 +22,13 @@ async function runtime() {
   const ctx={storage,blockConcurrencyWhile(fn){const next=queue.then(fn);queue=next;return next;}};
   const base=new vm.SyntheticModule(['DurableObject'],function(){this.setExport('DurableObject',class{constructor(ctx,env){this.ctx=ctx;this.env=env;}});},{context});
   const checks=new vm.SyntheticModule(['collect','finalize'],function(){
-    this.setExport('collect',async()=>{calls++;return {checks:[],errors:['test coverage unavailable']};});
+    this.setExport('collect',async fetcher=>{calls++;await fetcher('https://api.globalping.io/v1/limits', {headers:{'Content-Type':'application/json'}});return {checks:[],errors:['test coverage unavailable']};});
     this.setExport('finalize',finalize);
   },{context});
   await module.link(name=>name==='cloudflare:workers'?base:checks);await module.evaluate();
   const monitor=new module.namespace.AvailabilityMonitor(ctx,{});
   const env={MONITOR:{idFromName:n=>n,get:()=>monitor}};
-  return {worker:module.namespace.default,env,data,calls:()=>calls};
+  return {worker:module.namespace.default,env,data,outbound,monitor,calls:()=>calls};
 }
 test('public requests cannot trigger probes, including the private tick path',async()=>{
   const r=await runtime();
@@ -35,6 +38,13 @@ test('public requests cannot trigger probes, including the private tick path',as
   assert.equal((await r.worker.fetch(new Request('https://example.test/tick'),r.env)).status,404);
   assert.equal((await r.worker.fetch(new Request('https://example.test/report.json'),r.env)).status,503);
   assert.equal(r.calls(),0);
+});
+test('dedicated measurement token is sent only upstream and never published',async()=>{
+  const r=await runtime();r.monitor.env.GLOBALPING_TOKEN='TEST_ONLY_SECRET';
+  const waits=[];await r.worker.scheduled({scheduledTime:Date.now()},r.env,{waitUntil:p=>waits.push(p)});await Promise.all(waits);
+  assert.equal(r.outbound[0].options.headers.Authorization,'Bearer TEST_ONLY_SECRET');
+  const response=await r.worker.fetch(new Request('https://example.test/report.json'),r.env);
+  assert.equal((await response.text()).includes('TEST_ONLY_SECRET'),false);
 });
 test('scheduled delivery is deduplicated durably and reads do not start work',async()=>{
   const r=await runtime();const waits=[];const ctx={waitUntil:p=>waits.push(p)};

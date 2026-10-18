@@ -1,0 +1,65 @@
+ADMIRA STUDIO — EXTERNAL AVAILABILITY MONITOR
+
+Scheduler: Cloudflare Cron Trigger, every five minutes (UTC), not a Mac timer.
+Worker: admira-studio-availability
+Cloudflare account: 5b14266aa29050f8e5acd442c61b9783
+Public report: https://admira-studio-availability.csilvasantin.workers.dev/report.json
+History: same origin /history.json (seven days of sanitized summaries).
+Compact paginated notifications: /notification.json?after=SEQUENCE
+
+The scheduler calls one Durable Object. The persisted five-minute slot prevents
+repeated platform deliveries from creating duplicate measurements. Public GETs
+only read state; public POSTs and private /tick access are rejected.
+
+Globalping: 18 tests per cycle, 216/hour. ES residential (Telefonica preferred),
+Germany and USA. Six checks per network: version, apex entry redirect, protected
+login, www entry redirect, apex DNS and www DNS. Validate TLS, hostname, expiry,
+public A answers and expected page semantics. This is sampled network coverage,
+not a guarantee for every ISP/country or for content generation/import services.
+
+Cloud anonymous egress can share Globalping's per-IP quota. A dedicated
+GLOBALPING_TOKEN Worker secret is supported. Never put it in this repository,
+reports, logs or a browser URL. Authenticated free allowance is currently 500
+measurements/hour; do not buy credits or enable billing without Carlos's request.
+If quota/API/probe coverage fails, status is UNKNOWN, never website DOWN.
+
+A target check must fail in the same country in two consecutive cycles to open
+an incident. A lone failure is SUSPECT. Preserve last known state across unknown
+coverage, report recovery, warn TLS expiry within 14 days. A 20-minute-old report
+is stale. The reader deduplicates notices and retrieves retained incidents missed
+while the desktop was unavailable.
+
+Cloud observations continue with both Macs off. Chat delivery still needs a Codex
+heartbeat on the desktop. No instant alerts or detection-before-every-visitor
+promise. The active heartbeat is vigilar-admira-studio in Carlos's existing chat.
+
+Reader: python3 scripts/read-availability.py --state PATH
+It reads the compact report directly. If workers.dev is unreachable on the
+residential route, it reads the SAME report through an external HTTPS probe.
+It does not change DNS/hosts or run the website's measurements from the Mac.
+The relay keeps HTTP path and query separate and rejects truncated/untrusted data.
+
+.github/workflows/availability.yml is MANUAL diagnostic only, to avoid duplicate
+measurement quota. validate-availability.yml runs tests and Wrangler dry-run;
+the existing repository Cloudflare token has Pages access, not this Worker, so
+it must not be used or silently broadened for monitor deployment.
+
+Deploy this Worker only, using an existing authorized Wrangler session:
+  npx --yes wrangler@4.151.1 deploy --config tools/availability-worker/wrangler.toml
+Do not run the root deploy.sh for this task (that publishes the website).
+After updates, verify two genuine automatic observations 300 seconds apart,
+with all 18 tests healthy. A manual run is not cadence evidence. No changes to
+website DNS, security, Pages or media are needed.
+
+Tests:
+  node --test test/availability-worker.test.mjs
+  node --experimental-vm-modules --test test/availability-worker-runtime.test.mjs
+  python3 test/availability-reader.test.py
+
+Incident 18 October 2026: GitHub's active schedule had no scheduled runs at all;
+its four early observations were manual. Root cause in GitHub's scheduler is not
+proven. Cloudflare automatic runs at 21:05:12Z and 21:10:12Z prove the replacement
+cadence; their coverage was unknown/partial because of anonymous Globalping quota.
+A separate manual diagnostic at 21:12:12Z passed 18/18 (Telefonica Alicante,
+Germany, USA). Do not describe monitoring as fully healthy until the dedicated
+credential is authorized/installed and two full automatic cycles are verified.
