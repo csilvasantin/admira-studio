@@ -3,7 +3,7 @@
   "domain": "admira.studio",
   "canonicalBase": "1db6b284893e2f6eb452a80fa0681c7713686671",
   "sourceRepository": "csilvasantin/pixeria",
-  "sourceCommit": "a0b45abf92cb448c3a707fe93a165c6795c93930",
+  "sourceCommit": "791c4b1b6e9bd3a9ab5e48c888af84c433d6f845",
   "sourcePullRequest": 112,
   "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después.",
   "files": [
@@ -21,7 +21,10 @@
     "functions/_avatar-loader.js",
     "docs/expert-cli.md",
     "test/creativo.test.mjs",
-    "test/studio-page-exceptions.json"
+    "test/studio-page-exceptions.json",
+    "functions/creativo-music/[action].js",
+    "functions/_middleware.js",
+    "test/creativo-music-relay.test.mjs"
   ],
   "status": "release-authorized",
   "limits": {
@@ -30,15 +33,16 @@
     "otherDomainsChanged": false,
     "automaticStockPublication": false
   },
-  "note": "Integración estrecha sobre Studio canónico. No ejecutar sync completo: preservar campañas, idiomas, formatos, revisión y toda la funcionalidad canónica ya publicada. La página anfitriona conserva su shell; la ventana del asistente tiene excepción documentada. Recargar nunca repite POSTs. Sugerencias editables: clic enfoca al final, Enter o ↑ preparan, Mayús+Enter añade línea; sin generación automática. El namespace usa el motor compartido y su ayuda despliega el log de Experto.",
+  "note": "Integración estrecha sobre Studio canónico. No ejecutar sync completo: preservar campañas, idiomas, formatos, revisión y toda la funcionalidad canónica ya publicada. La página anfitriona conserva su shell; la ventana del asistente tiene excepción documentada. Recargar nunca repite POSTs. Sugerencias editables: clic enfoca al final, Enter o ↑ preparan, Mayús+Enter añade línea; sin generación automática. El namespace usa el motor compartido y su ayuda despliega el log de Experto. La música usa relé autenticado del mismo origen, sin permiso Chrome de red local. Health/status son GET y el POST validado llega sólo al motor fijo. No se envían cookies ni claves al proveedor.",
   "dependencies": [
     {
       "repository": "csilvasantin/admira-next-web",
       "pullRequest": 219,
-      "state": "publication-authorized",
+      "state": "published",
       "promotion": "suite/admirito.mjs + suite/experto.js",
-      "reason": "Promover el espacio de nombres común antes de publicar las llamadas /admirito en toda la suite."
+      "reason": "Promover el espacio de nombres común antes de publicar las llamadas /admirito en toda la suite.",
+      "commit": "da280bb9994d4dbbc1ed02797b79bb4e21615f17"
     }
   ],
-  "release": "v.18.10.2026.r3.13:32"
+  "release": "v.18.10.2026.r4.13:40"
 }
