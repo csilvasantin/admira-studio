@@ -1,12 +1,12 @@
 {
-  "version": "v.18.10.2026.r1.10:03",
+  "version": "v.18.10.2026.r2.12:17",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "0fa4e3fcf7b92cbe1e85ed389c818b80b25075eb",
-  "gitFull": "0fa4e3fcf7b92cbe1e85ed389c818b80b25075eb",
-  "gitShort": "0fa4e3f",
+  "git": "cd8446b6ff36385ee7f927873b2ec0fcdcc05a5c",
+  "gitFull": "cd8446b6ff36385ee7f927873b2ec0fcdcc05a5c",
+  "gitShort": "cd8446b",
   "dirty": false
 }

@@ -3,7 +3,7 @@
   "domain": "admira.studio",
   "canonicalBase": "cd8446b6ff36385ee7f927873b2ec0fcdcc05a5c",
   "sourceRepository": "csilvasantin/pixeria",
-  "sourceCommit": "9241ea3fe85571fc81e17da6e05bbdfbc7ab5475",
+  "sourceCommit": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
   "sourcePullRequest": 111,
   "reason": "Opción B elegida por Carlos: revisar textos completos, encuadre y legibilidad antes de exportar en horizontal, vertical y pantalla segmentada. Integración sobre Studio canónico preservando idiomas, recorrido animado, cartelas y formatos de cliente.",
   "files": [
@@ -19,6 +19,7 @@
     "adaptaciones/campaign-review-ui.mjs",
     "test/campaign-preflight.test.mjs"
   ],
-  "status": "prepared-not-deployed",
-  "note": "Review all included language variants and retain per-language approvals. Native viewer reuses drawCampaign and panelCanvas; no generative API calls."
+  "status": "release-authorized",
+  "note": "Review all included language variants and retain per-language approvals. Native viewer reuses drawCampaign and panelCanvas; no generative API calls.",
+  "release": "v.18.10.2026.r2.12:17"
 }
