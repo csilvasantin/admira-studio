@@ -32,7 +32,7 @@ def read_cloud(source):
         created = get_json(API + '/measurements', timeout=15, payload={
             'type': 'http', 'target': url.hostname, 'locations': [{'country': 'DE', 'limit': 1}],
             'timeout': 10, 'measurementOptions': {'protocol': 'HTTPS',
-                'request': {'method': 'GET', 'path': url.path + ('?' + url.query if url.query else '')}}})
+                'request': {'method': 'GET', 'path': url.path, 'query': url.query}}})
         for _ in range(15):
             time.sleep(2)
             result = get_json(API + '/measurements/' + created['id'], timeout=15)

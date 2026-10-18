@@ -3,6 +3,7 @@ import datetime as dt
 import importlib.util
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('reader', Path(__file__).parents[1] / 'scripts/read-availability.py')
 reader = importlib.util.module_from_spec(spec)
@@ -75,6 +76,26 @@ class ReaderTests(unittest.TestCase):
         out, state = reader.notification(doc, {}, INSTANT)
         self.assertTrue(out['notify'])
         self.assertFalse(reader.notification(doc, state, INSTANT)[0]['notify'])
+
+    def test_relay_keeps_path_and_query_separate(self):
+        requests = []
+        doc = self.doc()
+        def reply(url, timeout=6, payload=None):
+            if url.startswith(reader.SOURCE):
+                raise OSError('test route unavailable')
+            if payload:
+                requests.append(payload)
+                return {'id': 'test-measurement'}
+            return {'status': 'finished', 'results': [{'result': {'status': 'finished',
+                'statusCode': 200, 'tls': {'authorized': True}, 'truncated': False,
+                'rawBody': __import__('json').dumps(doc)}}]}
+        with patch.object(reader, 'get_json', side_effect=reply), patch.object(reader.time, 'sleep'):
+            result, via = reader.read_cloud(reader.SOURCE + '?after=17')
+        self.assertEqual(via, 'external-read-relay')
+        self.assertEqual(result, doc)
+        request = requests[0]['measurementOptions']['request']
+        self.assertEqual(request['path'], '/notification.json')
+        self.assertEqual(request['query'], 'after=17')
 
 
 if __name__ == '__main__':

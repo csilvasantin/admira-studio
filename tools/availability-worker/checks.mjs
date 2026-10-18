@@ -18,7 +18,13 @@ async function api(path, payload, fetcher) {
     ...(payload ? {body: JSON.stringify(payload)} : {}),
     signal: AbortSignal.timeout(20000),
   });
-  if (!response.ok) throw new Error(`Globalping HTTP ${response.status}`);
+  if (!response.ok) {
+    let type = '';
+    try { const body = await response.json(); type = body.error?.type || ''; } catch {}
+    // A public API error type helps distinguish shared-IP quotas from service
+    // failures, without exposing upstream bodies, headers or credentials.
+    throw new Error(`Globalping HTTP ${response.status}` + (/^[a-z_]{1,80}$/.test(type) ? ` (${type})` : ''));
+  }
   return response.json();
 }
 
@@ -114,7 +120,12 @@ export function evaluate(check, item, instant = Date.now()) {
 export async function collect(fetcher = fetch) {
   const attempt = {checked_at: new Date().toISOString(), checks: [], measurements: {}, errors: []};
   try {
-    const selected = await selectLocations(fetcher);
+    // Inventory discovery is optional: explicit API selectors still enforce a
+    // Spanish residential Telefonica probe if the public inventory is unavailable.
+    let selected;
+    try { selected = await selectLocations(fetcher); }
+    catch { selected = [{country: 'ES', asn: 3352, tags: ['eyeball-network'], limit: 1},
+      {country: 'DE', limit: 1}, {country: 'US', limit: 1}]; }
     const seed = await measure(CHECKS[0], selected, fetcher);
     attempt.measurements.version = seed.id;
     attempt.checks.push(...(seed.data.results || []).map(item => evaluate(CHECKS[0], item)));
@@ -139,7 +150,7 @@ export async function collect(fetcher = fetch) {
 function safeError(error) {
   // Never serialize upstream response bodies or arbitrary exception messages.
   const message = String(error?.message || '');
-  if (/^Globalping HTTP \d{3}$/.test(message) || message === 'No Spanish residential probe available' ||
+  if (/^Globalping HTTP \d{3}( \([a-z_]{1,80}\))?$/.test(message) || message === 'No Spanish residential probe available' ||
     /^Measurement [a-z-]+ did not finish$/.test(message)) return message;
   return 'External measurement unavailable';
 }

@@ -20,7 +20,12 @@ export class AvailabilityMonitor extends DurableObject {
       });
       if (!claimed) return json({duplicate: true});
       const previous = await this.ctx.storage.get('latest') || {};
-      const report = finalize(await collect(), previous, scheduledAt);
+      // Optional dedicated Globalping credential avoids anonymous quotas shared
+      // by cloud egress. It is a Worker secret, never a public report/config value.
+      const fetcher = (target, options) => fetch(target, {...options, headers: {...options.headers,
+        ...(this.env.GLOBALPING_TOKEN ? {Authorization: 'Bearer ' + this.env.GLOBALPING_TOKEN} : {}),
+      }});
+      const report = finalize(await collect(fetcher), previous, scheduledAt);
       report.run_url = url.origin + '/report.json?sequence=' + report.sequence;
       const summary = {sequence: report.sequence, checked_at: report.checked_at, scheduled_at: report.scheduled_at,
         availability: report.availability, event: report.event, warnings: report.warnings,
