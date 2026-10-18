@@ -7,6 +7,7 @@ on:
     paths:
       - 'tools/availability-worker/**'
       - 'test/availability-worker.test.mjs'
+      - 'test/availability-worker-runtime.test.mjs'
       - 'test/availability-reader.test.py'
       - 'scripts/read-availability.py'
       - '.github/workflows/deploy-availability.yml'
@@ -30,6 +31,7 @@ jobs:
       - name: Validate outage classification and notifications
         run: |
           node --test test/availability-worker.test.mjs
+          node --experimental-vm-modules --test test/availability-worker-runtime.test.mjs
           python3 test/availability-reader.test.py
       - name: Deploy only the standalone monitor (never Pages)
         env:
