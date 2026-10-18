@@ -1,9 +1,9 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "Controles, desplegables y ayudas en inglés en las ocho secciones.",
-    "Assets conserva la ruta inglesa; opciones y preferencias mantienen sus valores.",
-    "Castellano y contenido de Stock conservados; revisión de menús generados por código."
+    "Creador guarda automáticamente campañas y originales en este navegador; Retomar recupera textos, formatos, posiciones y revisiones.",
+    "Las demos recuperan sus avances y reutilizan imagen, vídeo y solicitudes IA existentes; no repiten peticiones con resultado desconocido.",
+    "Protección frente a cambios desde otra ventana; conserva idiomas, formatos de cliente y las mejoras de portada."
   ],
   "v.11.10.2026.r5.16:10": [
     "Cápsula musical GOOD «¿Sabías que…?»: el Disco de Oro de las Voyager, en vídeos verticales ES y EN de 30 segundos.",
@@ -279,5 +279,10 @@
   ],
   "v.17.10.2026.r6.22:55": [
     "Portada: una música por idioma en la intro (castellano «Tic-tac y campanas», inglés «Pulso»); si el idioma cambia con la intro en marcha, cambia también la música en el mismo segundo."
+  ],
+  "v.18.10.2026.r1.10:03": [
+    "Creador guarda automáticamente campañas y originales en este navegador; Retomar recupera textos, formatos, posiciones y revisiones.",
+    "Las demos recuperan sus avances y reutilizan imagen, vídeo y solicitudes IA existentes; no repiten peticiones con resultado desconocido.",
+    "Protección frente a cambios desde otra ventana; conserva idiomas, formatos de cliente y las mejoras de portada."
   ]
 }

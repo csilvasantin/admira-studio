@@ -1,23 +1,26 @@
 {
-  "version": "v.17.10.2026.r6.22:55",
-  "deployedAt": "2026-10-17T20:55:41Z",
-  "author": "NeoMacStudio",
-  "agent": "NeoMacStudio",
-  "deployer": "NeoMacStudio",
+  "version": "v.18.10.2026.r1.10:03",
+  "deployedAt": "2026-10-18T10:03:28.113557+02:00",
+  "author": "TrinityMacStudio",
+  "agent": "TrinityMacStudio",
+  "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
-  "signature": "NeoMacStudio · MacStudio",
-  "git": "c852996726412be04d3c4bc8df7cc456f35016b7",
-  "gitFull": "c852996726412be04d3c4bc8df7cc456f35016b7",
-  "gitShort": "c852996",
+  "signature": "TrinityMacStudio · MacStudio",
+  "git": "0fa4e3fcf7b92cbe1e85ed389c818b80b25075eb",
+  "gitFull": "0fa4e3fcf7b92cbe1e85ed389c818b80b25075eb",
+  "gitShort": "0fa4e3f",
   "dirty": false,
   "novedades": [
-    "Portada: una música por idioma en la intro (castellano «Tic-tac y campanas», inglés «Pulso»); si el idioma cambia con la intro en marcha, cambia también la música en el mismo segundo."
+    "Creador guarda automáticamente campañas y originales en este navegador; Retomar recupera textos, formatos, posiciones y revisiones.",
+    "Las demos recuperan sus avances y reutilizan imagen, vídeo y solicitudes IA existentes; no repiten peticiones con resultado desconocido.",
+    "Protección frente a cambios desde otra ventana; conserva idiomas, formatos de cliente y las mejoras de portada."
   ],
   "rollback": {
-    "git": "acba88253dc701a6462ab904b58f08b62989beb7"
+    "git": "0fa4e3fcf7b92cbe1e85ed389c818b80b25075eb"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
+    ".source-patches/campaign-recovery.json",
     ".source-patches/coffee-journey.json",
     ".source-patches/create-content.json",
     ".source-patches/eink-cartela.json",
@@ -46,5 +49,6 @@
     ".source-patches/stock-single-video-preview.json",
     ".source-patches/stock-sync-creatives.json",
     ".source-patches/studio-universal-navigation.json"
-  ]
+  ],
+  "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3"
 }
