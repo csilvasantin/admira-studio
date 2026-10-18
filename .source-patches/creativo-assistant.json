@@ -3,7 +3,7 @@
   "domain": "admira.studio",
   "canonicalBase": "1db6b284893e2f6eb452a80fa0681c7713686671",
   "sourceRepository": "csilvasantin/pixeria",
-  "sourceCommit": "7009dc08",
+  "sourceCommit": "a0b45abf92cb448c3a707fe93a165c6795c93930",
   "sourcePullRequest": 112,
   "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después.",
   "files": [
@@ -30,5 +30,14 @@
     "otherDomainsChanged": false,
     "automaticStockPublication": false
   },
-  "note": "Integración estrecha sobre Studio canónico. No ejecutar sync completo: preservar campañas, idiomas, formatos, revisión y toda la funcionalidad canónica ya publicada. La página anfitriona conserva su shell; la ventana del asistente tiene excepción documentada. Recargar nunca repite POSTs."
+  "note": "Integración estrecha sobre Studio canónico. No ejecutar sync completo: preservar campañas, idiomas, formatos, revisión y toda la funcionalidad canónica ya publicada. La página anfitriona conserva su shell; la ventana del asistente tiene excepción documentada. Recargar nunca repite POSTs. Sugerencias editables: clic enfoca al final, Enter o ↑ preparan, Mayús+Enter añade línea; sin generación automática. El namespace usa el motor compartido y su ayuda despliega el log de Experto.",
+  "dependencies": [
+    {
+      "repository": "csilvasantin/admira-next-web",
+      "pullRequest": 219,
+      "state": "draft-under-pruebas",
+      "promotion": "pruebas/admirito/promotion.patch",
+      "reason": "Promover el espacio de nombres común antes de publicar las llamadas /admirito en toda la suite."
+    }
+  ]
 }
