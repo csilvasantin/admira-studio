@@ -1,22 +1,22 @@
 {
-  "version": "v.18.10.2026.r10.16:00",
-  "deployedAt": "2026-10-18T16:00:36.870179+02:00",
+  "version": "v.18.10.2026.r11.16:25",
+  "deployedAt": "2026-10-18T16:25:48.561206+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "edbcd23afefb65a2f6211077e476dea87ca66e7c",
-  "gitFull": "edbcd23afefb65a2f6211077e476dea87ca66e7c",
-  "gitShort": "edbcd23",
+  "git": "9c13be42c259c14005d5711cfb89a88eeee7f32f",
+  "gitFull": "9c13be42c259c14005d5711cfb89a88eeee7f32f",
+  "gitShort": "9c13be4",
   "dirty": false,
   "novedades": [
-    "El original y el resultado del Creativo muestran su resolución en píxeles sobre cada contenido.",
-    "Las vistas previas y los resultados recuperados conservan también las medidas y la proporción de salida.",
-    "Los originales, adaptaciones y fondos IA guardados se conservan sin repetir generaciones."
+    "El Creativo incorpora GOOD experimental: recreación local de vídeo con movimiento, prueba de 3 segundos a 480p y sin créditos.",
+    "El audio original se conserva; las nuevas recreaciones de vídeo ya no utilizan fondos fijos.",
+    "Recargar consulta la misma prueba y recupera el resultado sin duplicar generaciones. GOOD puede generar artefactos en los márgenes."
   ],
   "rollback": {
-    "git": "edbcd23afefb65a2f6211077e476dea87ca66e7c"
+    "git": "9c13be42c259c14005d5711cfb89a88eeee7f32f"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -54,5 +54,5 @@
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
-  "creativeSource": "6e5d824ff6cd79b5e6fc2e84a72c9ff7e15de34f"
+  "creativeSource": "04fc740699f0084ec83177c6744d97ad733c80c3"
 }
