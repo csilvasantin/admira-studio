@@ -1,11 +1,11 @@
-import {bindCreativeTransform} from './creativo-transform.mjs?v=creativo-20261018-7';
-import {parseTransformCommand,transformMessage} from './creativo-transform-core.mjs?v=creativo-20261018-7';
-import {bindCreativeImport} from './creativo-import.mjs?v=creativo-20261018-7';
-import {parseImportCommand} from './creativo-import-core.mjs?v=creativo-20261018-7';
-import {musicTiming} from './creativo-progress.mjs?v=creativo-20261018-7';
-import {TYPES,parseCreative,creativeJob,recoverJob,canGenerate,creativeSuggestion,acceptsCreativeEnter} from './creativo-core.mjs?v=creativo-20261018-7';
-import {openCreativeDB,CreativeRepository} from './creativo-repository.mjs?v=creativo-20261018-7';
-import {mediaPreflight,submitMedia,pollMusic} from './creativo-media.mjs?v=creativo-20261018-7';
+import {bindCreativeTransform} from './creativo-transform.mjs?v=creativo-20261018-8';
+import {parseTransformCommand,transformMessage} from './creativo-transform-core.mjs?v=creativo-20261018-8';
+import {bindCreativeImport} from './creativo-import.mjs?v=creativo-20261018-8';
+import {parseImportCommand} from './creativo-import-core.mjs?v=creativo-20261018-8';
+import {musicTiming} from './creativo-progress.mjs?v=creativo-20261018-8';
+import {TYPES,parseCreative,creativeJob,recoverJob,canGenerate,creativeSuggestion,acceptsCreativeEnter} from './creativo-core.mjs?v=creativo-20261018-8';
+import {openCreativeDB,CreativeRepository} from './creativo-repository.mjs?v=creativo-20261018-8';
+import {mediaPreflight,submitMedia,pollMusic} from './creativo-media.mjs?v=creativo-20261018-8';
 const en=document.documentElement.lang==='en',t=(es,eng)=>en?eng:es,$=id=>document.getElementById(id),DRAFT='admira.creativo.draft.v2';
 const embedded=new URLSearchParams(location.search).get('embed')==='1';if(embedded)document.documentElement.dataset.embedded='true';
 let mediaKey='',importView=false,importUI=null,transformView=false,transformUI=null;
@@ -49,7 +49,7 @@ $('creative-new').onclick=()=>{$('creative-command').value='';active=null;update
 $('creative-history').onchange=async e=>{const job=await repository.get(e.target.value);if(job)await select(job);};
 $('creative-copy').onclick=()=>{const value=active||{schema:'admira.creativo.draft.v2',...draft()},url=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'})),link=document.createElement('a');link.href=url;link.download='creativo-'+(active?.id||'borrador')+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),60000);};
 $('creative-close').onclick=()=>{if(embedded)parent.postMessage({type:'admira:creative:close'},location.origin);else {showDetails(false);say(t('El encargo queda guardado. Puedes cerrar esta pestaña.','Your request is saved. You can close this tab.'));}};
-async function launch(text){try{const transform=parseTransformCommand(text);if(transform){transformUI=transformUI||await transformsReady;if(transformUI)await transformUI.launch(text);return;}const importing=parseImportCommand(text);if(importing){importUI=importUI||await importsReady;if(importUI)await importUI.launch(text);return;}if(importView||transformView){localStorage.removeItem('admira.creativo.transform.active');localStorage.removeItem('admira.creativo.import.active');importView=false;transformView=false;importUI?.hide();transformUI?.hide();$('creative-status').hidden=false;}const parsed=parseCreative(text);if(!parsed.kind){showDetails(false);return;}fill({...draft(),...parsed,style:parsed.kind==='cancion'?(parsed.style||''):''});dirty=true;writeDraft();await review();}catch(error){const message=error.message.startsWith('transform-')?transformMessage(error,en):error.message==='import-url'?t('Usa /importar seguido de una URL pública.','Use /import followed by a public URL.'):errorText(error);if(transformView)$('creative-transform-status').textContent=message;else if(importView)$('creative-import-status').textContent=message;else say(message);}}
+async function launch(text){if(String(text||'').trim()){$('creative-command').value=text;writeDraft();}try{const transform=parseTransformCommand(text);if(transform){transformUI=transformUI||await transformsReady;if(transformUI)await transformUI.launch(text);return;}const importing=parseImportCommand(text);if(importing){importUI=importUI||await importsReady;if(importUI)await importUI.launch(text);return;}if(importView||transformView){localStorage.removeItem('admira.creativo.transform.active');localStorage.removeItem('admira.creativo.import.active');importView=false;transformView=false;importUI?.hide();transformUI?.hide();$('creative-status').hidden=false;}const parsed=parseCreative(text);if(!parsed.kind){showDetails(false);return;}fill({...draft(),...parsed,style:parsed.kind==='cancion'?(parsed.style||''):''});dirty=true;writeDraft();await review();}catch(error){const message=error.message.startsWith('transform-')?transformMessage(error,en):error.message==='import-url'?t('Usa /importar seguido de una URL pública.','Use /import followed by a public URL.'):errorText(error);if(transformView)$('creative-transform-status').textContent=message;else if(importView)$('creative-import-status').textContent=message;else say(message);}}
 $('creative-command').oninput=writeDraft;
 $('creative-command').addEventListener('paste',event=>{const text=event.clipboardData?.getData('text/plain')?.trim()||'';try{const order=parseImportCommand(text);if(order&&!order.help){event.preventDefault();$('creative-command').value=text;writeDraft();void launch(text);}}catch{}});
 document.querySelectorAll('[data-transform]').forEach(button=>button.onclick=()=>{const input=$('creative-command');input.value=button.dataset.transform;writeDraft();input.focus();input.setSelectionRange(input.value.length,input.value.length);});
