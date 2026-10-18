@@ -1,6 +1,6 @@
 {
-  "version": "v.18.10.2026.r4.13:40",
-  "deployedAt": "2026-10-18T13:32:42.515031+02:00",
+  "version": "v.18.10.2026.r5.14:04",
+  "deployedAt": "2026-10-18T14:03:59.373275+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
@@ -11,12 +11,12 @@
   "gitShort": "cd8446b",
   "dirty": false,
   "novedades": [
-    "El Creativo genera música a través de Studio sin pedir acceso a la red local.",
-    "Locución y música en el asistente; Enter o ↑ aceptan sugerencias editables.",
-    "Los resultados y las referencias se conservan para no repetir generaciones."
+    "El Creativo muestra fase, tiempo transcurrido y última noticia del consejero.",
+    "El tiempo restante se estima solo con datos reales y avisa si falta actualización.",
+    "La cola musical conserva un único encargo al recargar; los intentos inciertos se auditan sin volver a generar."
   ],
   "rollback": {
-    "git": "8b66e7ab520aa68e50480f6b084ecce1cade41c7"
+    "git": "f0c5e1ab517400cff7b18e50320dabba3647b7b3"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -54,5 +54,5 @@
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
-  "creativeSource": "a0b45abf92cb448c3a707fe93a165c6795c93930"
+  "creativeSource": "07fad651"
 }

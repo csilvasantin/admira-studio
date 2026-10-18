@@ -3,7 +3,7 @@
   "domain": "admira.studio",
   "canonicalBase": "1db6b284893e2f6eb452a80fa0681c7713686671",
   "sourceRepository": "csilvasantin/pixeria",
-  "sourceCommit": "791c4b1b6e9bd3a9ab5e48c888af84c433d6f845",
+  "sourceCommit": "e19569ecf5bff4eedfd6a697178840c1ebc753b2",
   "sourcePullRequest": 112,
   "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después.",
   "files": [
@@ -24,16 +24,20 @@
     "test/studio-page-exceptions.json",
     "functions/creativo-music/[action].js",
     "functions/_middleware.js",
-    "test/creativo-music-relay.test.mjs"
+    "test/creativo-music-relay.test.mjs",
+    "assets/creativo-progress.mjs",
+    "functions/_creative-music.js",
+    "docs/creativo-musica.md",
+    "test/creativo-progress.test.mjs"
   ],
   "status": "release-authorized",
   "limits": {
     "productionDeployment": true,
-    "paidMediaGenerated": false,
-    "otherDomainsChanged": false,
+    "paidMediaGenerated": true,
+    "otherDomainsChanged": true,
     "automaticStockPublication": false
   },
-  "note": "Integración estrecha sobre Studio canónico. No ejecutar sync completo: preservar campañas, idiomas, formatos, revisión y toda la funcionalidad canónica ya publicada. La página anfitriona conserva su shell; la ventana del asistente tiene excepción documentada. Recargar nunca repite POSTs. Sugerencias editables: clic enfoca al final, Enter o ↑ preparan, Mayús+Enter añade línea; sin generación automática. El namespace usa el motor compartido y su ayuda despliega el log de Experto. La música usa relé autenticado del mismo origen, sin permiso Chrome de red local. Health/status son GET y el POST validado llega sólo al motor fijo. No se envían cookies ni claves al proveedor.",
+  "note": "Integración estrecha. Cola D1 por request_id único y recogida atómica con acceso existente de consejeros; Studio no genera en Suno. Partes por revisión, tiempos de servidor y estimaciones solo con base real. Intentos inciertos se registran como audit_only y nunca se reenvían. No ejecutar sync completo. Namespace compartido publicado previamente; Pixeria no desplegada.",
   "dependencies": [
     {
       "repository": "csilvasantin/admira-next-web",
@@ -44,5 +48,5 @@
       "commit": "da280bb9994d4dbbc1ed02797b79bb4e21615f17"
     }
   ],
-  "release": "v.18.10.2026.r4.13:40"
+  "release": "v.18.10.2026.r5.14:04"
 }
