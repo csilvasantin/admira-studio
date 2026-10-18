@@ -1,14 +1,14 @@
 {
-  "version": "v.18.10.2026.r7.14:40",
-  "deployedAt": "2026-10-18T14:40:35.038898+02:00",
+  "version": "v.18.10.2026.r8.14:43",
+  "deployedAt": "2026-10-18T14:43:47.995052+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "530e3381daaeac27ad5057e6797f85bac426b4ff",
-  "gitFull": "530e3381daaeac27ad5057e6797f85bac426b4ff",
-  "gitShort": "530e338",
+  "git": "f59143dd766ef921f7372ef12320a3a3e1416b8d",
+  "gitFull": "f59143dd766ef921f7372ef12320a3a3e1416b8d",
+  "gitShort": "f59143d",
   "dirty": false,
   "novedades": [
     "El Creativo adapta imágenes y vídeos a horizontal o vertical con fondo difuminado y oscuro, conservando el original y su audio.",
@@ -16,7 +16,7 @@
     "Originales y resultados se recuperan al recargar, sin repetir generaciones ni publicaciones."
   ],
   "rollback": {
-    "git": "530e3381daaeac27ad5057e6797f85bac426b4ff"
+    "git": "f59143dd766ef921f7372ef12320a3a3e1416b8d"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -54,5 +54,5 @@
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
-  "creativeSource": "ca27065f639fb1e9d5e59296fe688841c6dfee8d"
+  "creativeSource": "e93728e63379792971787d583fec458d60368c35"
 }
