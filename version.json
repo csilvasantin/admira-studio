@@ -1,6 +1,6 @@
 {
-  "version": "v.18.10.2026.r2.12:17",
-  "deployedAt": "2026-10-18T12:17:18.063261+02:00",
+  "version": "v.18.10.2026.r3.13:32",
+  "deployedAt": "2026-10-18T13:32:42.515031+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
@@ -11,12 +11,12 @@
   "gitShort": "cd8446b",
   "dirty": false,
   "novedades": [
-    "Revisión antes de exportar: comprueba texto completo, bordes, juntas y huecos por formato e idioma.",
-    "Visor de pantallas nativas para horizontal, vertical y montajes segmentados, con píxeles reales y momentos de animación.",
-    "Los errores bloquean la exportación; las aprobaciones y los originales se conservan al recargar en este navegador."
+    "El Creativo: Admirito con gorra y gafas, texto literal y atributos en Detalle.",
+    "/admirito help muestra los asistentes; /admirito creativo abre locuciones y música.",
+    "Sugerencias editables aceptadas con Enter o ↑; los encargos y el audio se conservan al recargar."
   ],
   "rollback": {
-    "git": "cd8446b6ff36385ee7f927873b2ec0fcdcc05a5c"
+    "git": "1db6b284893e2f6eb452a80fa0681c7713686671"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -24,6 +24,7 @@
     ".source-patches/campaign-recovery.json",
     ".source-patches/coffee-journey.json",
     ".source-patches/create-content.json",
+    ".source-patches/creativo-assistant.json",
     ".source-patches/eink-cartela.json",
     ".source-patches/expert-compact-bugito.json",
     ".source-patches/import-search-tags.json",
@@ -52,5 +53,6 @@
     ".source-patches/studio-universal-navigation.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
-  "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5"
+  "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
+  "creativeSource": "a0b45abf92cb448c3a707fe93a165c6795c93930"
 }

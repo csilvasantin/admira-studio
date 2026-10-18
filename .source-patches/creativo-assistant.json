@@ -1,0 +1,44 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "1db6b284893e2f6eb452a80fa0681c7713686671",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "a0b45abf92cb448c3a707fe93a165c6795c93930",
+  "sourcePullRequest": 112,
+  "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después.",
+  "files": [
+    "assets/creativo-core.mjs",
+    "assets/creativo-launcher.mjs",
+    "assets/creativo-media.mjs",
+    "assets/creativo-repository.mjs",
+    "assets/creativo.css",
+    "assets/creativo.mjs",
+    "assets/creativo/admirito.svg",
+    "assets/expert-cli.js",
+    "assets/site-nav.js",
+    "creativo/index.html",
+    "en/creativo/index.html",
+    "functions/_avatar-loader.js",
+    "docs/expert-cli.md",
+    "test/creativo.test.mjs",
+    "test/studio-page-exceptions.json"
+  ],
+  "status": "release-authorized",
+  "limits": {
+    "productionDeployment": true,
+    "paidMediaGenerated": false,
+    "otherDomainsChanged": false,
+    "automaticStockPublication": false
+  },
+  "note": "Integración estrecha sobre Studio canónico. No ejecutar sync completo: preservar campañas, idiomas, formatos, revisión y toda la funcionalidad canónica ya publicada. La página anfitriona conserva su shell; la ventana del asistente tiene excepción documentada. Recargar nunca repite POSTs. Sugerencias editables: clic enfoca al final, Enter o ↑ preparan, Mayús+Enter añade línea; sin generación automática. El namespace usa el motor compartido y su ayuda despliega el log de Experto.",
+  "dependencies": [
+    {
+      "repository": "csilvasantin/admira-next-web",
+      "pullRequest": 219,
+      "state": "publication-authorized",
+      "promotion": "suite/admirito.mjs + suite/experto.js",
+      "reason": "Promover el espacio de nombres común antes de publicar las llamadas /admirito en toda la suite."
+    }
+  ],
+  "release": "v.18.10.2026.r3.13:32"
+}

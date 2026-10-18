@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   // ─── Piezas puras (también se prueban en node: test/marca-blanca.test.cjs) ───
-  var COMMANDS = ['help', 'crear', 'create', 'creador', 'creator', 'campana', 'campaign', 'demo', 'clear', 'echo', 'date', 'status', 'version', 'history', 'open', 'marca', 'idioma', 'language', 'languague', 'avatar', 'avataron', 'avataroff', 'avatardigital', 'digitalavatar', 'admirito'];
+  var COMMANDS = ['help', 'creativo', 'creative', 'crear', 'create', 'creador', 'creator', 'campana', 'campaign', 'demo', 'clear', 'echo', 'date', 'status', 'version', 'history', 'open', 'marca', 'idioma', 'language', 'languague', 'avatar', 'avataron', 'avataroff', 'avatardigital', 'digitalavatar', 'admirito'];
   var MARCA_VERB = /^\/?(?:marca|brand|marcablanca)$/i;
   // Semilla del catálogo de admiranext.com/marcablanca: vale para el Tab sin red. Con la
   // marca blanca cargada se usa la lista real (AdmiraMarca.conocidas()).
@@ -190,6 +190,7 @@
     document.documentElement.style.setProperty('--pf-cli-keyboard', (vv ? Math.max(0, innerHeight - vv.height - vv.offsetTop) : 0) + 'px');
     if(!docked())resize(height, false);
   }
+  window.addEventListener('admira:assistant-help',function(){setNative(true);if(docked()&&window.AdmiraExperto){window.AdmiraExperto.open();window.AdmiraExperto.resize(Math.max(300,expanded));}resize(Math.max(300,expanded),false);log.hidden=false;});
   function fold() { resize(height > MIN ? MIN : expanded, false); }
   toggle.addEventListener('click', fold);
   grip.addEventListener('dblclick', fold);
@@ -382,7 +383,7 @@
     return l;
   }
   function executeAction(command) {
-    var name=command.name,arg=command.args;en=document.documentElement.lang.indexOf('en')===0;
+    var name=command.name,arg=command.args;if((name==='creativo'||name==='creative')&&command.raw)arg=command.raw.replace(/^\/?\S+\s*/, '');en=document.documentElement.lang.indexOf('en')===0;
     if (MARCA_VERB.test(name)) {
       if (!marcaCliente(arg)) marca().then(function (M) { return runMarca(arg, M, en, write); });
       return;
@@ -390,9 +391,13 @@
     switch (name) {
       // /crear and /create are reserved and dispatched only by AdmiraExperto.exec.
 
+      case 'creativo': case 'creative': {
+        import('/assets/creativo-launcher.mjs?v=creativo-20261018-3').then(function(m){write(m.openCreative(arg,en?'en':'es'));}).catch(function(){write(t('No se pudo abrir el Creativo.','Could not open El Creativo.'));});break;
+      }
       case 'creador': case 'creator': case 'campana': case 'campaign': location.assign((en ? '/en/creador/' : '/creador/') + '?lang=' + (en ? 'en' : 'es')); break;
       case 'demo': if (/^(?:capsula|cápsula|capsule)(?:\s|$)/i.test(arg)) { import('/assets/capsula-good.mjs').then(function(m){return m.runKnowledgeDemo(arg,en?'en':'es');}).then(write).catch(function(e){write(e.message);}); break; } if(/^(?:creador|creator)(?:\s|$)/i.test(arg) || (window.CreatorDemo?.active && /^(?:pausa|pause|reanudar|resume|siguiente|next|estado|status|stop|off)$/.test(arg))){if(window.CreatorDemo)Promise.resolve(window.CreatorDemo.run(arg.replace(/^(?:creador|creator)\s*/i,''))).then(write);else location.assign((en?'/en/creador/':'/creador/')+'?demo=creador&lang='+(en?'en':'es')+(/(?:^|\s)(todo|full)$/.test(arg)?'&mode=full&intent=full':''));break;} if(/^(?:sneakers?|next-step|nextstep)(?:\s|$)/i.test(arg)||(!arg&&/\/creador(?:\/|$)|\/campanas\/next-step/.test(location.pathname))){var demoArgs=arg.replace(/^(?:sneakers?|next-step|nextstep)\s*/i,'');if(window.NextStepDemo)write(window.NextStepDemo.run(demoArgs));else location.assign('/campanas/next-step/?lang='+(en?'en':'es'));break;} import('/assets/taza-demo.mjs?v=1').then(function(m){write(m.runTazaDemo(arg,en?'en':'es'));}).catch(function(){write(t('No se pudo cargar la cámara.','Could not load camera.'));});break;
       case 'help': case 'ayuda':
+        write(t('/admirito creativo — Admirito Creativo. En su ventana: crear locución "texto" chica esp · crear música "letra" chico eng funk. Atributos en Detalle.','/admirito creativo — Admirito Creative. In its window: create voice "text" female eng · create music "lyrics" male eng funk. Attributes in Detail.'));
         write(t('/crear cartela tintaelectronica [brief] — 4 imágenes IA y 4 cartelas verticales 3:4 para Diagonal · Samsung EM13DX · 1200×1600; revisión, Stock y playlist de 5 minutos.','/create poster eink [brief] — 4 AI images and 4 portrait 3:4 Diagonal posters · Samsung EM13DX · 1200×1600; review, Stock and 5-minute playlist.'));
         write(t('/crear contenido [brief] — póster / etiqueta digital PNG + pantalla vertical y horizontal MP4; generación IA explícita, revisión y Stock. Añade anamórfico para solicitar geometría y punto de observación.','/create content [brief] — digital label PNG poster + portrait and landscape MP4 screens; explicit AI generation, review and Stock. Add anamorphic to request geometry and viewing point.'));
         write(t('/creador · /campana — Creador: campaña desde cero; ejemplo Sneakers Store; editar elementos → dirección → instalación → revisar/aprobar → exportar; guía /docs/campanas-instalacion.md.','/creator · /campaign — Creator: campaign from scratch; Sneakers Store example; edit elements → direction → installation → review/approve → export; guide /docs/campanas-instalacion.md.'));
@@ -436,9 +441,9 @@
     }
   }
   function connectCommands(engine) {
-    var actions=['crear','create','marca','brand','marcablanca','creador','creator','campana','campaign','echo','date','fecha','history','historial','open','abrir'];
+    var actions=['creativo','creative','crear','create','marca','brand','marcablanca','creador','creator','campana','campaign','echo','date','fecha','history','historial','open','abrir'];
     engine.registerAdapter({id:'studio',onCommand:function(command){history.push(command);if(history.length>100)history.shift();cursor=history.length;draft='';},
-      verbs:actions.map(function(name){return {name:name,desc:[name,name],run:function(args,log,command){return executeAction(command);}};}),
+      verbs:actions.map(function(name){return {name:name,desc:name==='creativo'||name==='creative'?['Admirito Creativo: locución y música','Admirito Creative: voice-over and music']:[name,name],run:function(args,log,command){return executeAction(command);}};}),
       demos:['capsula','capsule','taza','creador','creator','sneakers','sneaker','next-step','nextstep','pausa','pause','reanudar','resume','siguiente','next','estado','status','stop','off',''].map(function(name){return {name:name,when:function(){return name?(!/^(pausa|pause|reanudar|resume|siguiente|next|estado|status|stop|off)$/.test(name)||!!window.CreatorDemo?.active):/\/creador(?:\/|$)|\/campanas\/next-step/.test(location.pathname);},run:function(args){return executeAction({name:'demo',args:(name?name+' ':'')+args.join(' ')});}};})});
     COMMANDS=engine.list().flatMap(function(action){return [action.name].concat(action.alias || []);});
   }

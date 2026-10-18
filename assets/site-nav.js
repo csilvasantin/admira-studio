@@ -769,7 +769,7 @@
       document.body.appendChild(cliente);
       if (!document.querySelector('.rail-bottom,.quad-bottom,#pixNavExpertLayer')) return;
       var cli = document.createElement('script');
-      cli.src = '/assets/expert-cli.js?v=create-content-1';
+      cli.src = '/assets/expert-cli.js?v=creativo-20261018-3';
       // Portada sin modo Experto (Carlos, 15-oct-2026): expert-cli.js solo lleva la Biblioteca y
       // el boletín de la franja inferior a la columna central; ni consola, ni su CSS, ni la piel
       // de la suite, que reabriría ⌘ con el estado guardado en la pestaña (ax-experto-abierto).
@@ -784,7 +784,7 @@
       axCss.rel = 'stylesheet'; axCss.href = 'https://www.admiranext.com/suite/experto.css?v=20261016-eink-command-1';
       document.head.appendChild(axCss);
       var ax = document.createElement('script');
-      ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261016-eink-command-1';
+      ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261018-admirito-1';
       ax.setAttribute('data-panel', '.pf-cli');
       ax.setAttribute('data-body', '');
       ax.setAttribute('data-form', '.pf-cli-form');
