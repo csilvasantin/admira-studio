@@ -22,6 +22,9 @@
     if(/(?:youtube\.com\/shorts\/|youtu\.be\/shorts\/)/i.test(String(it.prompt||'')))return defs.portrait;
     return defs.unknown;
   }
+  // Clave de formato que declara una etiqueta de texto (#vertical, #portrait, #cuadrado, formato:videowall…) o ''.
+  // Sirve para no repetir como etiqueta lo que ya muestra la insignia de formato de la tarjeta.
+  function tagFormat(tag){const c=clean(String(tag||'').replace(/^#+/,'')),m=/^(?:formato|format):(.*)$/.exec(c),v=m?m[1].trim():c;return aliases[v]||(m&&v&&!['video','image','audio'].includes(v)?'custom:'+v.slice(0,60):'');}
   function language(it){const tag=(it.tags||[]).find(t=>/^content-language:/i.test(t));return tag?clean(tag.split(':')[1]):'';}
   function family(it,byId,seen=new Set()){
     if(!it?.id||seen.has(it.id))return 'asset:'+it?.id;
@@ -45,5 +48,5 @@
     return [...groups.values()].map(list=>(idx.keys.get(list[0].id)?.startsWith('sync:')?idx.byId.get(idx.keys.get(list[0].id).slice(5)):null)||list.find(x=>x.id===chosen.get(idx.keys.get(x.id)))||list.find(x=>'asset:'+x.id===idx.keys.get(x.id)?.replace(/\|lang:.*$/,''))||list[0]);
   }
   function options(items){const found=new Map();for(const it of items){const f=format(it);if(f)found.set(f.key,f);}const order=['landscape','portrait','square','anamorphic','unknown'];return [...found.values()].sort((a,b)=>{const ai=order.indexOf(a.key),bi=order.indexOf(b.key);return (ai<0?4:ai)-(bi<0?4:bi)||a.label.localeCompare(b.label,'es');});}
-  const api={format,dimensions,index,representatives,options,visual};root.StockFormats=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
+  const api={format,tagFormat,dimensions,index,representatives,options,visual};root.StockFormats=api;if(typeof module!=='undefined'&&module.exports)module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
