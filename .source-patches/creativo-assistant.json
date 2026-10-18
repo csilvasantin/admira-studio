@@ -3,7 +3,7 @@
   "domain": "admira.studio",
   "canonicalBase": "1db6b284893e2f6eb452a80fa0681c7713686671",
   "sourceRepository": "csilvasantin/pixeria",
-  "sourceCommit": "8dd3ad0243e044904506afd512c11da5aa5d4641",
+  "sourceCommit": "8e80147cfe1ddf4bede6da91e53ad0e173bfb8f2",
   "sourcePullRequest": 112,
   "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después. Carlos añade /importar URL y pegado directo al Stock. Carlos añade /adaptar imagen|video horizontal|vertical y /recrear imagen horizontal|vertical dentro del Creativo. Carlos pide vista previa a la derecha durante la adaptación y Recrear con IA junto a Guardar en Stock, también para vídeo.",
   "files": [
@@ -56,7 +56,10 @@
     "mcp/creativo.json",
     "mcp/catalogo.json",
     "test/creativo-combo.test.mjs",
-    "test/fixtures/creativo-combo-browser.html"
+    "test/fixtures/creativo-combo-browser.html",
+    "functions/_creative-music-audio.js",
+    "test/creativo-music-delivery.test.mjs",
+    "test/helpers/music-db.mjs"
   ],
   "status": "release-authorized",
   "limits": {
@@ -65,7 +68,7 @@
     "otherDomainsChanged": true,
     "automaticStockPublication": false
   },
-  "note": "Integración estrecha, sin sync completo ni despliegue de Pixeria. Ayuda del Creativo y combos de imagen más locución o canción: MP4 de 10 s, campos literales separados y guardado independiente de imagen y audio. Reclamaciones atómicas por componente, imagen reutilizada al cambiar texto, montaje reanudable sin proveedores. Locución larga bloqueada sin cortar palabras. Canción por consejeros/Suno con indicación 10 s y selección revisada de fragmento cuando es más larga. MCP compartido: consulta y preparación sin generación, render, publicación ni credenciales nuevas. Hook del despacho /crear en el contrato canónico de Studio ya existente (content-request-core); ese módulo de dominio no existe todavía en la rama fuente, por lo que no se copia el contrato completo ni sus funciones e-ink a Pixeria. Prueba real de montaje Chrome con recursos sintéticos: 1920x1080, 10.00 s, audio y silencio verificados; recarga recupera el mismo blob. No se han llamado proveedores de imagen/voz/música durante esta validación.",
+  "note": "Integración estrecha, sin sync completo ni despliegue de Pixeria. Ayuda del Creativo y combos de imagen más locución o canción: MP4 de 10 s, campos literales separados y guardado independiente de imagen y audio. Reclamaciones atómicas por componente, imagen reutilizada al cambiar texto, montaje reanudable sin proveedores. Locución larga bloqueada sin cortar palabras. Canción por consejeros/Suno con indicación 10 s y selección revisada de fragmento cuando es más larga. MCP compartido: consulta y preparación sin generación, render, publicación ni credenciales nuevas. Hook del despacho /crear en el contrato canónico de Studio ya existente (content-request-core); ese módulo de dominio no existe todavía en la rama fuente, por lo que no se copia el contrato completo ni sus funciones e-ink a Pixeria. Prueba real de montaje Chrome con recursos sintéticos: 1920x1080, 10.00 s, audio y silencio verificados; recarga recupera el mismo blob. No se han llamado proveedores de imagen/voz/música durante esta validación. Corrección de entrega musical validada en la prueba real: los enlaces de ficha Suno o streaming no decodificable no son un archivo exportado. El consejero entrega el fichero oficial en privado con su claim existente, mismo request_id/clip_id; hash, límite5MiB, fragmentos y reserva inmutable. La entrega no cambia ni repite la generación, no publica Stock ni crea acceso público.",
   "dependencies": [
     {
       "repository": "csilvasantin/admira-next-web",
@@ -76,7 +79,7 @@
       "commit": "da280bb9994d4dbbc1ed02797b79bb4e21615f17"
     }
   ],
-  "release": "v.18.10.2026.r13.18:28",
+  "release": "v.18.10.2026.r14.19:27",
   "mcp": {
     "repository": "csilvasantin/pixeria-mcp",
     "pullRequest": 5,

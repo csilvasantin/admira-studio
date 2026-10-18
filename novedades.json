@@ -340,9 +340,9 @@
     "El audio original se conserva; las nuevas recreaciones de vídeo ya no utilizan fondos fijos.",
     "Recargar consulta la misma prueba y recupera el resultado sin duplicar generaciones. GOOD puede generar artefactos en los márgenes."
   ],
-  "v.18.10.2026.r13.18:28": [
-    "/admirito creativo help lista todos los comandos del asistente y permite aceptar sugerencias con Enter o la flecha.",
-    "Combos de imagen + locución o música: entrega MP4 de 10 segundos, campos separados en Detalle y componentes guardados sin repetir envíos inciertos.",
-    "MCP del Creativo: ayuda y preparación de combos para el equipo; la generación se confirma en Studio y la música pasa por consejeros/Suno."
+  "v.18.10.2026.r14.19:27": [
+    "La música de los consejeros se entrega como archivo de audio real, con acceso privado al mismo encargo y clip.",
+    "Las fichas de Suno ya no se aceptan como audio. Una entrega repetida conserva los mismos bytes y no vuelve a generar.",
+    "Los combos mantienen imagen, letra, audio y vídeo al recargar; el montaje usa un fragmento revisado de 10 segundos."
   ]
 }
