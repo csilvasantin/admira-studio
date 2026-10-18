@@ -1,22 +1,22 @@
 {
-  "version": "v.18.10.2026.r14.19:27",
+  "version": "v.18.10.2026.r15.22:00",
   "deployedAt": "2026-10-18T18:28:10.525411+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "693fa3a5e55406db7b19ceae5d7627f93fff98ee",
-  "gitFull": "693fa3a5e55406db7b19ceae5d7627f93fff98ee",
-  "gitShort": "693fa3a",
+  "git": "782d27da83343eb3259268587b78de12063c6893",
+  "gitFull": "782d27da83343eb3259268587b78de12063c6893",
+  "gitShort": "782d27d",
   "dirty": false,
   "novedades": [
-    "La música de los consejeros se entrega como archivo de audio real, con acceso privado al mismo encargo y clip.",
-    "Las fichas de Suno ya no se aceptan como audio. Una entrega repetida conserva los mismos bytes y no vuelve a generar.",
-    "Los combos mantienen imagen, letra, audio y vídeo al recargar; el montaje usa un fragmento revisado de 10 segundos."
+    "Las importaciones de Stock, Adaptador y Creativo usan primero el Mac Studio.",
+    "Mac Mini y MacBook Pro quedan de respaldo si el principal no responde.",
+    "Los trabajos anteriores conservan su equipo al recargar; no se reinician ni duplican contenidos."
   ],
   "rollback": {
-    "git": "418524d5e1be2da7803713421292ae71c5326a06"
+    "git": "782d27da83343eb3259268587b78de12063c6893"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -27,6 +27,7 @@
     ".source-patches/creativo-assistant.json",
     ".source-patches/eink-cartela.json",
     ".source-patches/expert-compact-bugito.json",
+    ".source-patches/import-macstudio.json",
     ".source-patches/import-search-tags.json",
     ".source-patches/inline-twins-header.json",
     ".source-patches/music-cards.json",

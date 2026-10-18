@@ -344,5 +344,10 @@
     "La música de los consejeros se entrega como archivo de audio real, con acceso privado al mismo encargo y clip.",
     "Las fichas de Suno ya no se aceptan como audio. Una entrega repetida conserva los mismos bytes y no vuelve a generar.",
     "Los combos mantienen imagen, letra, audio y vídeo al recargar; el montaje usa un fragmento revisado de 10 segundos."
+  ],
+  "v.18.10.2026.r15.22:00": [
+    "Las importaciones de Stock, Adaptador y Creativo usan primero el Mac Studio.",
+    "Mac Mini y MacBook Pro quedan de respaldo si el principal no responde.",
+    "Los trabajos anteriores conservan su equipo al recargar; no se reinician ni duplican contenidos."
   ]
 }
