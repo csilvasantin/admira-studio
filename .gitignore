@@ -1,2 +1,6 @@
 .claude/
 .wrangler/
+
+# Python helpers
+__pycache__/
+*.pyc

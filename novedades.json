@@ -329,5 +329,10 @@
     "El original y el resultado del Creativo muestran su resolución en píxeles sobre cada contenido.",
     "Las vistas previas y los resultados recuperados conservan también las medidas y la proporción de salida.",
     "Los originales, adaptaciones y fondos IA guardados se conservan sin repetir generaciones."
+  ],
+  "v.18.10.2026.r11.16:25": [
+    "El Creativo incorpora GOOD experimental: recreación local de vídeo con movimiento, prueba de 3 segundos a 480p y sin créditos.",
+    "El audio original se conserva; las nuevas recreaciones de vídeo ya no utilizan fondos fijos.",
+    "Recargar consulta la misma prueba y recupera el resultado sin duplicar generaciones. GOOD puede generar artefactos en los márgenes."
   ]
 }
