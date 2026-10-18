@@ -74,5 +74,13 @@
   "campanas/starbucks-360/index.html": {
     "kind": "screen-output",
     "reason": "Fullscreen 3D/Matrix playback with its own movable, resizable, closable panels and H visibility control"
+  },
+  "creativo/index.html": {
+    "kind": "assistant-surface",
+    "reason": "Ventana autónoma del asistente virtual, invocada desde Experto en la página anfitriona. Carlos pide los controles en Detalle dentro del entorno del avatar; una segunda barra o consola duplicaría el entorno."
+  },
+  "en/creativo/index.html": {
+    "kind": "assistant-surface",
+    "reason": "Ventana autónoma del asistente virtual, invocada desde Experto en la página anfitriona. Carlos pide los controles en Detalle dentro del entorno del avatar; una segunda barra o consola duplicaría el entorno."
   }
 }

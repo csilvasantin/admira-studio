@@ -1,0 +1,34 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "1db6b284893e2f6eb452a80fa0681c7713686671",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "7009dc08",
+  "sourcePullRequest": 112,
+  "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después.",
+  "files": [
+    "assets/creativo-core.mjs",
+    "assets/creativo-launcher.mjs",
+    "assets/creativo-media.mjs",
+    "assets/creativo-repository.mjs",
+    "assets/creativo.css",
+    "assets/creativo.mjs",
+    "assets/creativo/admirito.svg",
+    "assets/expert-cli.js",
+    "assets/site-nav.js",
+    "creativo/index.html",
+    "en/creativo/index.html",
+    "functions/_avatar-loader.js",
+    "docs/expert-cli.md",
+    "test/creativo.test.mjs",
+    "test/studio-page-exceptions.json"
+  ],
+  "status": "draft-review",
+  "limits": {
+    "productionDeployment": false,
+    "paidMediaGenerated": false,
+    "otherDomainsChanged": false,
+    "automaticStockPublication": false
+  },
+  "note": "Integración estrecha sobre Studio canónico. No ejecutar sync completo: preservar campañas, idiomas, formatos, revisión y toda la funcionalidad canónica ya publicada. La página anfitriona conserva su shell; la ventana del asistente tiene excepción documentada. Recargar nunca repite POSTs."
+}

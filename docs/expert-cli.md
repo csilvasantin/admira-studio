@@ -171,3 +171,25 @@ Referencia de resolución y control local: https://www.samsung.com/ie/business/s
 `/crear cartela tintaelectronica` usa el mismo despacho `AdmiraExperto.exec` desde la consola y Admirito. Abre Creador con `count=4`, `center=d634` e `interval=300`. «Generar 4 imágenes y adaptar» crea cuatro fotografías nuevas con IA, las archiva en Stock y compone cuatro PNG verticales 3:4 a 1200×1600, perfil Samsung EM13DX. Las fotografías son recursos internos; la galería muestra las cartelas verticales terminadas.
 
 La serie se conserva en IndexedDB por identificador. Cada POST se marca antes de salir; si se pierde una respuesta, recargar no repite la generación o publicación desconocida. Revisa y aprueba cada cartela antes de publicar las cuatro adaptaciones en Stock. Editar una pieza invalida su aprobación y su publicación de esa versión. La playlist exportada contiene cuatro imágenes de 300 segundos (20 minutos), compartidas por D634-EINK-01 a 04. Samsung E-Paper requiere importar las imágenes y enviar su playlist desde la app; el comando no acredita un envío físico.
+
+
+## El Creativo / The Creative
+
+`/creativo` (`/creative`) invoca a Admirito Creativo dentro de una ventana del asistente, sin abandonar la página ni abrir un taller. Su nube conserva la forma de Admirito, con gafas de pasta y gorra bohemia. La acción se registra en `AdmiraExperto.exec`; `/crear` sigue reservado al motor común.
+
+Los controles de texto/letra literal, voz, idioma, estilo e historial están en **Detalle**. Desde la conversación:
+
+- `crear locución "Bienvenido. Tu pausa empieza aquí." chico esp`
+- `crear locución "Welcome. Your break starts here." chica eng`
+- `crear música "Aquí escribimos la letra completa" chica esp flamenco`
+- `crear música "Here comes the morning\nAquí empieza el día" chico esp eng funk`
+
+El texto entre comillas se conserva exactamente, incluidos los saltos de línea. Los atributos van fuera: chico/chica, ESP/ENG, y estilo musical libre (rap, trap, flamenco, funk, soul…). Locución admite un idioma; música uno o ambos. El idioma orienta la interpretación y no traduce ni reescribe la letra. Imágenes y vídeo quedan para la próxima etapa.
+
+Enviar el mensaje **prepara** el encargo. El botón **Crear locución / Crear música** inicia una petición real usando los proveedores existentes de Studio: ElevenLabs multilingüe con las voces ESP/ENG chico/chica del servicio de megafonía; Suno en modo letra personalizada con voz, idioma y estilo en Styles. Detalle informa del consumo de créditos. El reproductor y la descarga aparecen en la misma ventana.
+
+Encargos y MP3 de locución se guardan en IndexedDB en este navegador/perfil/origen; el borrador queda en localStorage. La reserva del encargo es atómica entre pestañas antes de un POST. Recargar no repite la generación: una canción con referencia consulta solo GET /status; una respuesta perdida sin referencia se conserva como desconocida y bloquea repetición. No se declara éxito hasta tener audio real. Si guardar un MP3 falla, se ofrece su descarga inmediata. Los resultados musicales conservan la URL del proveedor (puede caducar); descárgalos para guardar una copia. No se publican a Stock automáticamente.
+
+EN: `/creative` opens Admirito Creative in the current page. **Detail** holds the exact text/lyrics, male/female voice, ESP/ENG (both for music), music style, and saved requests. Example: `create voice "Welcome." female eng` or `create music "Your exact lyrics" male eng soul`. Sending prepares the request; Create submits it. Reload resumes GET status checks for known music references and never repeats an uncertain POST. Audio players and downloads remain inside the assistant. Images and videos follow later.
+
+Standalone: `/creativo/?lang=es` and `/en/creativo/?lang=en`. The launcher embeds that same assistant at `?embed=1`; same-origin/source checks protect its close/command messages. No remote avatar persona support is assumed and the default avatar on other Studio routes stays unchanged.
