@@ -1,22 +1,22 @@
 {
-  "version": "v.18.10.2026.r9.15:07",
-  "deployedAt": "2026-10-18T15:07:52.828403+02:00",
+  "version": "v.18.10.2026.r10.16:00",
+  "deployedAt": "2026-10-18T16:00:36.870179+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "5ba3586f9878c014f3f385a9200e0e854b3cd370",
-  "gitFull": "5ba3586f9878c014f3f385a9200e0e854b3cd370",
-  "gitShort": "5ba3586",
+  "git": "edbcd23afefb65a2f6211077e476dea87ca66e7c",
+  "gitFull": "edbcd23afefb65a2f6211077e476dea87ca66e7c",
+  "gitShort": "edbcd23",
   "dirty": false,
   "novedades": [
-    "El Creativo muestra el original a la izquierda y la adaptación en directo a la derecha mientras exporta.",
-    "Recrear con IA junto a Guardar en Stock amplía una imagen o genera un fondo fijo para vídeo, conservando el original y su audio.",
-    "El fondo IA se guarda antes del montaje y se reutiliza si falla la exportación, sin repetir la generación."
+    "El original y el resultado del Creativo muestran su resolución en píxeles sobre cada contenido.",
+    "Las vistas previas y los resultados recuperados conservan también las medidas y la proporción de salida.",
+    "Los originales, adaptaciones y fondos IA guardados se conservan sin repetir generaciones."
   ],
   "rollback": {
-    "git": "5ba3586f9878c014f3f385a9200e0e854b3cd370"
+    "git": "edbcd23afefb65a2f6211077e476dea87ca66e7c"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -54,5 +54,5 @@
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
-  "creativeSource": "03062454131824b5be735be3f927824706e6a80b"
+  "creativeSource": "6e5d824ff6cd79b5e6fc2e84a72c9ff7e15de34f"
 }

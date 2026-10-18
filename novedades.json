@@ -1,9 +1,9 @@
 {
   "_como": "Novedades del sello (2-4 líneas, español). Clave = sello exacto (v.DD.MM.AAAA.rN.HH:MM); .default si el sello aún no tiene entrada. El deploy las escribe en /version.json.novedades[] y el cargador común https://www.admiranext.com/assets/sello-novedades.js las enseña al pasar el ratón por el sello.",
   "default": [
-    "El Creativo muestra el original a la izquierda y la adaptación en directo a la derecha mientras exporta.",
-    "Recrear con IA junto a Guardar en Stock amplía una imagen o genera un fondo fijo para vídeo, conservando el original y su audio.",
-    "El fondo IA se guarda antes del montaje y se reutiliza si falla la exportación, sin repetir la generación."
+    "El original y el resultado del Creativo muestran su resolución en píxeles sobre cada contenido.",
+    "Las vistas previas y los resultados recuperados conservan también las medidas y la proporción de salida.",
+    "Los originales, adaptaciones y fondos IA guardados se conservan sin repetir generaciones."
   ],
   "v.11.10.2026.r5.16:10": [
     "Cápsula musical GOOD «¿Sabías que…?»: el Disco de Oro de las Voyager, en vídeos verticales ES y EN de 30 segundos.",
@@ -324,5 +324,10 @@
     "El Creativo muestra el original a la izquierda y la adaptación en directo a la derecha mientras exporta.",
     "Recrear con IA junto a Guardar en Stock amplía una imagen o genera un fondo fijo para vídeo, conservando el original y su audio.",
     "El fondo IA se guarda antes del montaje y se reutiliza si falla la exportación, sin repetir la generación."
+  ],
+  "v.18.10.2026.r10.16:00": [
+    "El original y el resultado del Creativo muestran su resolución en píxeles sobre cada contenido.",
+    "Las vistas previas y los resultados recuperados conservan también las medidas y la proporción de salida.",
+    "Los originales, adaptaciones y fondos IA guardados se conservan sin repetir generaciones."
   ]
 }
