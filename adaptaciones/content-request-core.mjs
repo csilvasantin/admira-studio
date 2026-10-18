@@ -1,9 +1,10 @@
+import {parseComboCommand,comboURL} from '../assets/creativo-combo-core.mjs?v=creativo-20261018-13';
 import {restoreEink,einkInstallations} from './eink-core.mjs?v=eink-cartela-1';
 // One content brief, three explicit media deliveries. No generation on navigation.
 export const CONTENT_REQUEST_SCHEMA='admira.create-content.v1';
 export const CONTENT_DESTINATIONS=['poster','portrait','landscape'];
 export function contentRequestURL(args='',language='es'){
- const text=String(args).trim();
+ const text=String(args).trim(),combo=parseComboCommand('/crear '+text);if(combo)return combo.imagePrompt?comboURL(combo,language):(language==='en'?'/en/creativo/':'/creativo/')+'?combo='+combo.kind+'&lang='+(language==='en'?'en':'es');
  const cartela=/^(?:cartela|cartel|poster)\s+(?:tinta\s*electr[oó]nica|e-?ink)(?:\s|$)/i;
  if(cartela.test(text)){const brief=text.replace(cartela,'').trim();if(brief.length>2000)throw Error('content-brief-size');const q=new URLSearchParams({flow:'cartela-tinta',nuevo:'1',count:'4',center:'d634',interval:'300',lang:language==='en'?'en':'es'});if(brief)q.set('brief',brief);return(language==='en'?'/en/creador/':'/creador/')+'?'+q;}
  if(!/^(contenido|content)(?:\s|$)/i.test(text))throw Error('content-command');
