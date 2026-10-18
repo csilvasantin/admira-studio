@@ -23,9 +23,9 @@
     "test/creativo.test.mjs",
     "test/studio-page-exceptions.json"
   ],
-  "status": "draft-review",
+  "status": "release-authorized",
   "limits": {
-    "productionDeployment": false,
+    "productionDeployment": true,
     "paidMediaGenerated": false,
     "otherDomainsChanged": false,
     "automaticStockPublication": false
@@ -35,9 +35,10 @@
     {
       "repository": "csilvasantin/admira-next-web",
       "pullRequest": 219,
-      "state": "draft-under-pruebas",
-      "promotion": "pruebas/admirito/promotion.patch",
+      "state": "publication-authorized",
+      "promotion": "suite/admirito.mjs + suite/experto.js",
       "reason": "Promover el espacio de nombres común antes de publicar las llamadas /admirito en toda la suite."
     }
-  ]
+  ],
+  "release": "v.18.10.2026.r3.13:32"
 }

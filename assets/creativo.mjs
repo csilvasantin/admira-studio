@@ -1,6 +1,6 @@
-import {TYPES,parseCreative,creativeJob,recoverJob,canGenerate,creativeSuggestion,acceptsCreativeEnter} from './creativo-core.mjs?v=creativo-20261018-2';
-import {openCreativeDB,CreativeRepository} from './creativo-repository.mjs?v=creativo-20261018-2';
-import {mediaPreflight,submitMedia,pollMusic} from './creativo-media.mjs?v=creativo-20261018-2';
+import {TYPES,parseCreative,creativeJob,recoverJob,canGenerate,creativeSuggestion,acceptsCreativeEnter} from './creativo-core.mjs?v=creativo-20261018-3';
+import {openCreativeDB,CreativeRepository} from './creativo-repository.mjs?v=creativo-20261018-3';
+import {mediaPreflight,submitMedia,pollMusic} from './creativo-media.mjs?v=creativo-20261018-3';
 const en=document.documentElement.lang==='en',t=(es,eng)=>en?eng:es,$=id=>document.getElementById(id),DRAFT='admira.creativo.draft.v2';
 const embedded=new URLSearchParams(location.search).get('embed')==='1';if(embedded)document.documentElement.dataset.embedded='true';
 let mediaKey='';
