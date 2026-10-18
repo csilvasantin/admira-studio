@@ -3,9 +3,9 @@
   "domain": "admira.studio",
   "canonicalBase": "1db6b284893e2f6eb452a80fa0681c7713686671",
   "sourceRepository": "csilvasantin/pixeria",
-  "sourceCommit": "98c2528d2c134267d37a6ee01c3f997cc3e8a81c",
+  "sourceCommit": "ca27065f639fb1e9d5e59296fe688841c6dfee8d",
   "sourcePullRequest": 112,
-  "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después. Carlos añade /importar URL y pegado directo al Stock.",
+  "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después. Carlos añade /importar URL y pegado directo al Stock. Carlos añade /adaptar imagen|video horizontal|vertical y /recrear imagen horizontal|vertical dentro del Creativo.",
   "files": [
     "assets/creativo-core.mjs",
     "assets/creativo-launcher.mjs",
@@ -33,7 +33,13 @@
     "assets/creativo-import-core.mjs",
     "functions/creativo-import/[action].js",
     "docs/creativo-import.md",
-    "test/creativo-import.test.mjs"
+    "test/creativo-import.test.mjs",
+    "assets/creativo-transform-core.mjs",
+    "assets/creativo-transform-store.mjs",
+    "assets/creativo-transform-render.mjs",
+    "assets/creativo-transform.mjs",
+    "docs/creativo-adaptar-recrear.md",
+    "test/creativo-transform.test.mjs"
   ],
   "status": "release-authorized",
   "limits": {
@@ -42,7 +48,7 @@
     "otherDomainsChanged": true,
     "automaticStockPublication": false
   },
-  "note": "Integración estrecha. Cola D1 por request_id único y recogida atómica con acceso existente de consejeros; Studio no genera en Suno. Partes por revisión, tiempos de servidor y estimaciones solo con base real. Intentos inciertos se registran como audit_only y nunca se reenvían. No ejecutar sync completo. Namespace compartido publicado previamente; Pixeria no desplegada. Importación propia del asistente, persistencia separada y relé autenticado al importador existente; ningún cambio en música ni locuciones.",
+  "note": "Integración estrecha. Cola D1 por request_id único y recogida atómica con acceso existente de consejeros; Studio no genera en Suno. Partes por revisión, tiempos de servidor y estimaciones solo con base real. Intentos inciertos se registran como audit_only y nunca se reenvían. No ejecutar sync completo. Namespace compartido publicado previamente; Pixeria no desplegada. Importación propia del asistente, persistencia separada y relé autenticado al importador existente; ningún cambio en música ni locuciones. Adaptación local sin créditos y recreación de imagen con Gemini existente, referencia encajada y original superpuesto; resultado y publicación de Stock reclamados atómicamente. No se ha ejecutado una recreación pagada nueva durante esta validación.",
   "dependencies": [
     {
       "repository": "csilvasantin/admira-next-web",
@@ -53,5 +59,5 @@
       "commit": "da280bb9994d4dbbc1ed02797b79bb4e21615f17"
     }
   ],
-  "release": "v.18.10.2026.r6.14:21"
+  "release": "v.18.10.2026.r7.14:40"
 }
