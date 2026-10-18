@@ -82,5 +82,13 @@
   "en/creativo/index.html": {
     "kind": "assistant-surface",
     "reason": "Ventana autónoma del asistente virtual, invocada desde Experto en la página anfitriona. Carlos pide los controles en Detalle dentro del entorno del avatar; una segunda barra o consola duplicaría el entorno."
+  },
+  "test/fixtures/creativo-combo-browser.html": {
+    "kind": "test-fixture",
+    "reason": "Isolated browser fixture verifies a synthetic image/audio ten-second MP4 and IndexedDB recovery without providers or a workspace shell."
+  },
+  "campanas/starbucks-180/index.html": {
+    "kind": "screen-output",
+    "reason": "Existing fullscreen four-screen Starbucks playback canvas with its own panels, matching the seven-screen playback surface."
   }
 }

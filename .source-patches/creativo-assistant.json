@@ -3,7 +3,7 @@
   "domain": "admira.studio",
   "canonicalBase": "1db6b284893e2f6eb452a80fa0681c7713686671",
   "sourceRepository": "csilvasantin/pixeria",
-  "sourceCommit": "d1e6104a3b985c3cecc037e479ef0e529583d143",
+  "sourceCommit": "8dd3ad0243e044904506afd512c11da5aa5d4641",
   "sourcePullRequest": 112,
   "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después. Carlos añade /importar URL y pegado directo al Stock. Carlos añade /adaptar imagen|video horizontal|vertical y /recrear imagen horizontal|vertical dentro del Creativo. Carlos pide vista previa a la derecha durante la adaptación y Recrear con IA junto a Guardar en Stock, también para vídeo.",
   "files": [
@@ -45,7 +45,18 @@
     "docs/creativo-good.md",
     "tools/creativo-good/server.py",
     "tools/creativo-good/workflow.py",
-    "tools/creativo-good/install-local.py"
+    "tools/creativo-good/install-local.py",
+    "assets/creativo-combo-core.mjs",
+    "assets/creativo-combo-store.mjs",
+    "assets/creativo-combo-render.mjs",
+    "assets/creativo-combo.mjs",
+    "assets/creativo-help.mjs",
+    "adaptaciones/content-request-core.mjs",
+    "docs/creativo-combos-mcp.md",
+    "mcp/creativo.json",
+    "mcp/catalogo.json",
+    "test/creativo-combo.test.mjs",
+    "test/fixtures/creativo-combo-browser.html"
   ],
   "status": "release-authorized",
   "limits": {
@@ -54,7 +65,7 @@
     "otherDomainsChanged": true,
     "automaticStockPublication": false
   },
-  "note": "Integración estrecha, sin sync completo ni despliegue de Pixeria. GOOD local experimental con Wan VACE genera vídeo en márgenes enmascarados; prueba de 3 s a 480p, audio original copiado y fuente central superpuesta. Se prohíbe la API de imagen para recrear vídeo. Trabajos persistentes por hash, recuperación de consulta al recargar y sin sustitución automática por motores de pago. Las pruebas anteriores de fondo fijo se conservan identificadas. La primera prueba real completada tiene movimiento y artefactos visibles; no se presenta como calidad de producción.",
+  "note": "Integración estrecha, sin sync completo ni despliegue de Pixeria. Ayuda del Creativo y combos de imagen más locución o canción: MP4 de 10 s, campos literales separados y guardado independiente de imagen y audio. Reclamaciones atómicas por componente, imagen reutilizada al cambiar texto, montaje reanudable sin proveedores. Locución larga bloqueada sin cortar palabras. Canción por consejeros/Suno con indicación 10 s y selección revisada de fragmento cuando es más larga. MCP compartido: consulta y preparación sin generación, render, publicación ni credenciales nuevas. Hook del despacho /crear en el contrato canónico de Studio ya existente (content-request-core); ese módulo de dominio no existe todavía en la rama fuente, por lo que no se copia el contrato completo ni sus funciones e-ink a Pixeria. Prueba real de montaje Chrome con recursos sintéticos: 1920x1080, 10.00 s, audio y silencio verificados; recarga recupera el mismo blob. No se han llamado proveedores de imagen/voz/música durante esta validación.",
   "dependencies": [
     {
       "repository": "csilvasantin/admira-next-web",
@@ -65,5 +76,16 @@
       "commit": "da280bb9994d4dbbc1ed02797b79bb4e21615f17"
     }
   ],
-  "release": "v.18.10.2026.r12.16:29"
+  "release": "v.18.10.2026.r13.18:28",
+  "mcp": {
+    "repository": "csilvasantin/pixeria-mcp",
+    "pullRequest": 5,
+    "endpoint": "https://mcp-pixeria.admira.store/mcp",
+    "tools": [
+      "creativo_help",
+      "creativo_combo_preparar"
+    ],
+    "generation": false,
+    "publication": false
+  }
 }

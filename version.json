@@ -1,22 +1,22 @@
 {
-  "version": "v.18.10.2026.r12.16:29",
-  "deployedAt": "2026-10-18T16:29:25.604996+02:00",
+  "version": "v.18.10.2026.r13.18:28",
+  "deployedAt": "2026-10-18T18:28:10.525411+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "b6b8befa93f366460ac2c3ef319c1595bdd5914a",
-  "gitFull": "b6b8befa93f366460ac2c3ef319c1595bdd5914a",
-  "gitShort": "b6b8bef",
+  "git": "693fa3a5e55406db7b19ceae5d7627f93fff98ee",
+  "gitFull": "693fa3a5e55406db7b19ceae5d7627f93fff98ee",
+  "gitShort": "693fa3a",
   "dirty": false,
   "novedades": [
-    "El Creativo incorpora GOOD experimental: recreación local de vídeo con movimiento, prueba de 3 segundos a 480p y sin créditos.",
-    "El audio original se conserva; las nuevas recreaciones de vídeo ya no utilizan fondos fijos.",
-    "Recargar consulta la misma prueba y recupera el resultado sin duplicar generaciones. GOOD puede generar artefactos en los márgenes."
+    "/admirito creativo help lista todos los comandos del asistente y permite aceptar sugerencias con Enter o la flecha.",
+    "Combos de imagen + locución o música: entrega MP4 de 10 segundos, campos separados en Detalle y componentes guardados sin repetir envíos inciertos.",
+    "MCP del Creativo: ayuda y preparación de combos para el equipo; la generación se confirma en Studio y la música pasa por consejeros/Suno."
   ],
   "rollback": {
-    "git": "b6b8befa93f366460ac2c3ef319c1595bdd5914a"
+    "git": "693fa3a5e55406db7b19ceae5d7627f93fff98ee"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -54,5 +54,5 @@
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
-  "creativeSource": "d1e6104a3b985c3cecc037e479ef0e529583d143"
+  "creativeSource": "8dd3ad0243e044904506afd512c11da5aa5d4641"
 }
