@@ -3,9 +3,9 @@
   "domain": "admira.studio",
   "canonicalBase": "1db6b284893e2f6eb452a80fa0681c7713686671",
   "sourceRepository": "csilvasantin/pixeria",
-  "sourceCommit": "e19569ecf5bff4eedfd6a697178840c1ebc753b2",
+  "sourceCommit": "98c2528d2c134267d37a6ee01c3f997cc3e8a81c",
   "sourcePullRequest": 112,
-  "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después.",
+  "reason": "Carlos pide Admirito Creativo bohemio con gorra y gafas de pasta, controles en Detalle dentro del asistente, locución literal y música con letra literal, chico/chica, ESP/ENG y estilo. Imágenes y vídeos quedan para después. Carlos añade /importar URL y pegado directo al Stock.",
   "files": [
     "assets/creativo-core.mjs",
     "assets/creativo-launcher.mjs",
@@ -28,7 +28,12 @@
     "assets/creativo-progress.mjs",
     "functions/_creative-music.js",
     "docs/creativo-musica.md",
-    "test/creativo-progress.test.mjs"
+    "test/creativo-progress.test.mjs",
+    "assets/creativo-import.mjs",
+    "assets/creativo-import-core.mjs",
+    "functions/creativo-import/[action].js",
+    "docs/creativo-import.md",
+    "test/creativo-import.test.mjs"
   ],
   "status": "release-authorized",
   "limits": {
@@ -37,7 +42,7 @@
     "otherDomainsChanged": true,
     "automaticStockPublication": false
   },
-  "note": "Integración estrecha. Cola D1 por request_id único y recogida atómica con acceso existente de consejeros; Studio no genera en Suno. Partes por revisión, tiempos de servidor y estimaciones solo con base real. Intentos inciertos se registran como audit_only y nunca se reenvían. No ejecutar sync completo. Namespace compartido publicado previamente; Pixeria no desplegada.",
+  "note": "Integración estrecha. Cola D1 por request_id único y recogida atómica con acceso existente de consejeros; Studio no genera en Suno. Partes por revisión, tiempos de servidor y estimaciones solo con base real. Intentos inciertos se registran como audit_only y nunca se reenvían. No ejecutar sync completo. Namespace compartido publicado previamente; Pixeria no desplegada. Importación propia del asistente, persistencia separada y relé autenticado al importador existente; ningún cambio en música ni locuciones.",
   "dependencies": [
     {
       "repository": "csilvasantin/admira-next-web",
@@ -48,5 +53,5 @@
       "commit": "da280bb9994d4dbbc1ed02797b79bb4e21615f17"
     }
   ],
-  "release": "v.18.10.2026.r5.14:04"
+  "release": "v.18.10.2026.r6.14:21"
 }

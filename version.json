@@ -1,6 +1,6 @@
 {
-  "version": "v.18.10.2026.r5.14:04",
-  "deployedAt": "2026-10-18T14:03:59.373275+02:00",
+  "version": "v.18.10.2026.r6.14:21",
+  "deployedAt": "2026-10-18T14:21:03.853059+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
@@ -11,12 +11,12 @@
   "gitShort": "cd8446b",
   "dirty": false,
   "novedades": [
-    "El Creativo muestra fase, tiempo transcurrido y última noticia del consejero.",
-    "El tiempo restante se estima solo con datos reales y avisa si falta actualización.",
-    "La cola musical conserva un único encargo al recargar; los intentos inciertos se auditan sin volver a generar."
+    "El Creativo acepta /importar URL o una URL pegada para llevar audio, imagen o vídeo al Stock.",
+    "La importación muestra el avance y recupera el mismo resultado al recargar, sin repetir subidas.",
+    "El seguimiento musical y los encargos anteriores se conservan al importar."
   ],
   "rollback": {
-    "git": "f0c5e1ab517400cff7b18e50320dabba3647b7b3"
+    "git": "fb86da4e28d46fa4d9b3b59c8db758c0f8d3fc5e"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -54,5 +54,5 @@
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
-  "creativeSource": "07fad651"
+  "creativeSource": "98c2528d2c134267d37a6ee01c3f997cc3e8a81c"
 }
