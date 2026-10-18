@@ -2,15 +2,17 @@
   "kind": "canonical-domain-change",
   "domain": "admira.studio",
   "sourceRepository": "csilvasantin/pixeria",
-  "sourceCommit": "a0e9b7569f502c1544c2f98a5ceaf189b9c5770e",
+  "sourceCommit": "cb1d8d895b24a9faf50910820041873e9a39e9df",
   "sourcePullRequest": 112,
-  "reason": "Carlos pide usar Mac Studio como importador principal; conserva respaldos y números de nodo para reanudar trabajos sin duplicación.",
+  "reason": "Carlos pide usar Mac Studio como importador principal; conserva respaldos y números de nodo para reanudar trabajos sin duplicación. Relevo automático también durante el sondeo y la transferencia; solo se publica un archivo completo.",
   "files": [
-    "app.js",
     "adaptaciones/importar.js",
+    "app.js",
     "assets/creativo-import.mjs",
+    "assets/import-failover.mjs",
     "functions/creativo-import/[action].js",
-    "test/creativo-import.test.mjs"
+    "test/creativo-import.test.mjs",
+    "test/import-failover.test.mjs"
   ],
   "status": "release-authorized"
 }

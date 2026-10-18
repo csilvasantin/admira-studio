@@ -1,22 +1,22 @@
 {
-  "version": "v.18.10.2026.r15.22:00",
+  "version": "v.18.10.2026.r16.22:19",
   "deployedAt": "2026-10-18T18:28:10.525411+02:00",
   "author": "TrinityMacStudio",
   "agent": "TrinityMacStudio",
   "deployer": "TrinityMacStudio",
   "machine": "MacStudio",
   "signature": "TrinityMacStudio · MacStudio",
-  "git": "782d27da83343eb3259268587b78de12063c6893",
-  "gitFull": "782d27da83343eb3259268587b78de12063c6893",
-  "gitShort": "782d27d",
+  "git": "6f7928773b2a4f32b0a13f655cf8c595e491b37f",
+  "gitFull": "6f7928773b2a4f32b0a13f655cf8c595e491b37f",
+  "gitShort": "6f79287",
   "dirty": false,
   "novedades": [
-    "Las importaciones de Stock, Adaptador y Creativo usan primero el Mac Studio.",
-    "Mac Mini y MacBook Pro quedan de respaldo si el principal no responde.",
-    "Los trabajos anteriores conservan su equipo al recargar; no se reinician ni duplican contenidos."
+    "La importación cambia de equipo automáticamente si falla antes de empezar o durante la descarga.",
+    "Solo el fichero completo se guarda en Stock; el relevo no repite la publicación.",
+    "Los trabajos del Creativo conservan su estado al recargar y se coordinan entre pestañas."
   ],
   "rollback": {
-    "git": "782d27da83343eb3259268587b78de12063c6893"
+    "git": "6f7928773b2a4f32b0a13f655cf8c595e491b37f"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
