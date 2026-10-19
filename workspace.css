@@ -2278,7 +2278,16 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 }
 .stock-card-body { padding: 12px 14px; display: grid; gap: 8px; min-width: 0; }
 .stock-card-body header {
-  display: flex; gap: 8px; align-items: center; min-width: 0;
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center; min-width: 0;
+}
+/* El formato acompaña al tipo antes del ID, también en tarjetas estrechas. */
+.stock-card-kind {
+  display: inline-flex; align-items: center; gap: 8px; min-width: 0; max-width: 100%;
+}
+.stock-card-kind > .stock-type { flex: 0 0 auto; }
+.stock-card-kind > .stock-orientation {
+  position: static; z-index: auto; min-width: 0;
+  white-space: normal; overflow-wrap: anywhere; box-shadow: none;
 }
 /* Título inline en la cabecera (junto al badge + iconos) */
 .stock-title-inline {
@@ -2288,8 +2297,8 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 }
 /* Meta combinada a la derecha: motor · coste · fecha */
 .stock-head-meta {
-  margin-left: auto; flex: 0 0 auto;
-  color: var(--muted); font-size: 11px; white-space: nowrap;
+  margin-left: auto; flex: 0 1 auto; min-width: 0;
+  color: var(--muted); font-size: 11px; overflow-wrap: anywhere;
 }
 .stock-grid.view-compact .stock-head-meta { display: none; }
 .stock-type {
@@ -2596,7 +2605,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 
 /* ── Botones de maximizar / eliminar sobre cada card ── */
 .stock-card-actions {
-  display: inline-flex; gap: 6px; align-items: center;
+  display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; max-width: 100%;
   z-index: 2;
 }
 .stock-card-btn {
@@ -2699,6 +2708,15 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
     left: 7px;
     bottom: 6px;
     font-size: 12px;
+  }
+}
+@media (max-width: 480px) {
+  /* En móvil la cabecera necesita el ancho de la tarjeta para mostrar el formato. */
+  .stock-grid.view-list .stock-card { flex-direction: column; }
+  .stock-grid.view-list .stock-card-media,
+  .stock-grid.view-list .stock-card[data-type="video"] .stock-card-media,
+  .stock-grid.view-list .stock-card[data-type="animation"] .stock-card-media {
+    flex-basis: auto; width: 100%;
   }
 }
 

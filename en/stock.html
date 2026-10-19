@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="/workspace.css?v=17.10.2026.r6.2255">
+  <link rel="stylesheet" href="/workspace.css?v=stock-format-20261019">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -92,7 +92,7 @@
     #localDropOverlay[hidden]{display:none}
     #localDropOverlay span{font-size:16px}
     .stock-card-media{position:relative}
-    .stock-format-versions{pointer-events:auto;max-width:calc(100% - 52px);cursor:pointer;text-overflow:ellipsis;outline-offset:2px}
+    .stock-format-versions{pointer-events:auto;min-width:0;max-width:100%;cursor:pointer;text-overflow:ellipsis;outline-offset:2px}
     .stock-format-versions option{background:#031006;color:#caffd7}
     .stock-playlist-badge{position:absolute;right:9px;bottom:9px;z-index:4;border:1px solid var(--matrix);border-radius:7px;background:#001b0bee;color:var(--matrix);padding:5px 8px;font-size:11px;font-weight:700;font-family:inherit;cursor:help;max-width:80%}
     .stock-playlist-badge.is-pending{border-color:#ffe14d;color:#ffe14d;background:#242005f2}
@@ -916,7 +916,7 @@
         return `<img src="${it.url}" alt="" loading="lazy" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
       }
       if (it.type === 'image' || it.type === 'digital-twin') {
-        return `${orientationBadgeHtml(it)}<img data-orientation-media src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
+        return `<img data-orientation-media src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
       }
       if (it.type === 'video' || it.type === 'animation') {
         // PREVIEW = el póster del asset cuando lo hay: desde el 4-sep-2026 (FLT
@@ -935,10 +935,10 @@
         // varianza, nunca el frame 0 negro); thumbnail (R2 directo) queda de respaldo.
         const poster = /^https?:\/\//.test(String(it.poster || '')) ? it.poster : (/^https?:\/\//.test(String(it.thumbnail || '')) ? it.thumbnail : '');
         if (poster) {
-          return `${orientationBadgeHtml(it)}<img class="stock-cover stock-video-poster" data-orientation-media src="${escAttr(poster)}" alt="" loading="lazy" decoding="async" style="background:#0a0f14;">
+          return `<img class="stock-cover stock-video-poster" data-orientation-media src="${escAttr(poster)}" alt="" loading="lazy" decoding="async" style="background:#0a0f14;">
                 <button type="button" class="stock-media-play" data-act="playmini" data-url="${escAttr(it.url)}" title="Reproducir aquí (pequeño)" aria-label="Reproducir aquí">▶</button>`;
         }
-        return `${orientationBadgeHtml(it)}<video class="stock-cover stock-video-preview" data-orientation-media data-src="${escAttr(it.url)}" preload="metadata" muted playsinline disablepictureinpicture style="background:#0a0f14;"></video>
+        return `<video class="stock-cover stock-video-preview" data-orientation-media data-src="${escAttr(it.url)}" preload="metadata" muted playsinline disablepictureinpicture style="background:#0a0f14;"></video>
                 <button type="button" class="stock-media-play" data-act="playmini" data-url="${escAttr(it.url)}" title="Reproducir aquí (pequeño)" aria-label="Reproducir aquí">▶</button>`;
       }
       if (it.type === 'audio' || it.type === 'locucion' || it.type === 'music') {
@@ -1257,7 +1257,10 @@
         </div>
         <div class="stock-card-body">
           <header>
-            <span class="stock-type ${typeLabel}">${typeText(typeLabel)}</span>
+            <span class="stock-card-kind">
+              <span class="stock-type ${typeLabel}">${typeText(typeLabel)}</span>
+              ${StockFormats.visual(it) ? orientationBadgeHtml(it) : ''}
+            </span>
             ${it.num ? `<span class="stock-num" title="ID único del asset · llámalo con /play${it.num} en admira.tv">#${it.num}</span>` : ''}
             <div class="stock-card-actions">
               <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Abrir en AINimation" aria-label="Abrir en AINimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>

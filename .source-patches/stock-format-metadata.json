@@ -1,0 +1,17 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "907927c6db2f574c44124ece27dfba0d3f402521",
+  "reason": "Carlos pide mover el formato de imágenes y vídeos a la derecha de la tipología, antes del identificador y fuera de la miniatura, también en móvil. Se conserva el Stock canónico y sus deltas; sin regeneración global desde Pixeria ni réplica de los clones congelados.",
+  "files": [
+    "stock.html",
+    "en/stock.html",
+    "workspace.css"
+  ],
+  "preserves": [
+    "Selección de versiones de formato y actualización por metadatos reales",
+    "Sin formato confirmado cuando faltan dimensiones",
+    "Proporciones, reproducción y controles de las miniaturas",
+    "Badge específico de cápsulas"
+  ]
+}
