@@ -1,0 +1,20 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "2a10df5428941b69ff36a161a3622f36aed27462",
+  "reason": "Tarea A asignada por Carlos a SubTrinity: guardar y recuperar combinaciones de texto, tipo y formato, conservar la navegación al volver del previo y ofrecer Sin resultados con limpieza de filtros. ES/EN y móvil. Cambio preparado sin publicar ni regenerar los clones desde Pixeria.",
+  "files": [
+    "stock.html",
+    "en/stock.html",
+    "workspace.css",
+    "assets/stock-saved-searches.mjs",
+    "assets/stock-navigation-state.mjs",
+    "test/stock-saved-searches.test.mjs",
+    "test/stock-navigation-state.test.mjs"
+  ],
+  "storage": {
+    "savedSearches": "localStorage:admira:stock:saved-searches:v1",
+    "navigation": "sessionStorage:admira:stock:state:v1",
+    "existingData": "Se mantienen las claves y datos previos de Stock, cliente, playlists, preferencias y valoraciones. Las versiones futuras o datos no reconocidos de las claves nuevas no se sobrescriben."
+  }
+}
