@@ -1,0 +1,18 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "89934fa4de0e007b0cfd6939aebe012c5b37176a",
+  "reason": "One complete campaign delivery ZIP, grouped by installation, screen and real content languages; package only fully reviewed, matching-revision native files.",
+  "files": [
+    "adaptaciones/campaign-delivery.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/adaptaciones.css",
+    "creador/index.html",
+    "en/creador/index.html",
+    "adaptaciones/index.html",
+    "en/adaptaciones/index.html",
+    "test/campaign-delivery.test.mjs"
+  ],
+  "verification": "Native three-screen ZIP encoded and downloaded in the browser; ffprobe confirms dimensions, duration and 25fps. Cancelled output retried without repeating two completed outputs. Regression tests cover 20-output bilingual Starbucks, stale revisions, failed/missing/invalid/duplicate files and approvals."
+}
