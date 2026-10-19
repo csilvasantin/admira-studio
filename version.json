@@ -1,5 +1,5 @@
 {
-  "version": "v.19.10.2026.r2.18:38",
+  "version": "v.19.10.2026.r3.18:48",
   "deployedAt": "2026-10-19T18:38:54.355412+02:00",
   "author": "DeepAgentX",
   "agent": "DeepAgentX",
@@ -11,7 +11,7 @@
   "gitShort": "3527f72",
   "dirty": false,
   "novedades": [
-    "Stock muestra el formato a la derecha de VIDEO o IMAGEN, fuera del previo, también en móvil."
+    "Stock: menú y filtros completos en móvil, sin desplazamiento horizontal."
   ],
   "rollback": {
     "git": "3527f72580d90739f843007357ea99c678f942f8"
@@ -51,7 +51,8 @@
     ".source-patches/stock-sync-creatives.json",
     ".source-patches/studio-universal-navigation.json",
     ".source-patches/creator-project-context.json",
-    ".source-patches/stock-format-metadata.json"
+    ".source-patches/stock-format-metadata.json",
+    ".source-patches/stock-mobile-controls.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",

@@ -1,0 +1,11 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "3b712ad558b9fd16dde9714d6cfd3d0ddc779b71",
+  "reason": "Stock mobile navigation and filter controls must fit 320px and 390px viewports without horizontal scrolling.",
+  "files": [
+    "workspace.css",
+    "stock.html",
+    "en/stock.html"
+  ]
+}
