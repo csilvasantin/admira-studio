@@ -3145,3 +3145,36 @@ body[data-page="stock"] .stock-media-play:hover{transform:scale(.756)}
 body[data-page="stock"] .stock-playlist-badge{transform:scale(.7);transform-origin:right bottom}
 
 @media(max-width:380px){body[data-page="stock"] .page-head h1{font-size:16px}}
+
+/* Stock mobile: every navigation and filter control fits the viewport. */
+@media (max-width: 600px) {
+  body[data-page="stock"] .pf-topbar-nav {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px; overflow: visible; width: 100%; min-width: 0;
+  }
+  body[data-page="stock"] .pf-topbar-nav a {
+    min-width: 0; padding: 8px 2px; text-align: center;
+    font-size: 10px; letter-spacing: 0; white-space: normal;
+  }
+  body[data-page="stock"] .page-head h1 { flex-wrap: wrap; white-space: normal; }
+  body[data-page="stock"] .stock-toolbar { position: static; min-width: 0; }
+  body[data-page="stock"] .stock-toolbar .stock-pager-top {
+    display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 8px;
+  }
+  body[data-page="stock"] .stock-toolbar .stock-pager-search {
+    min-width: 0; max-width: none; width: 100%;
+  }
+  body[data-page="stock"] #stockLocalUpload,
+  body[data-page="stock"] .stock-pager-filters,
+  body[data-page="stock"] .stock-pager-sort,
+  body[data-page="stock"] .stock-pager-controls { grid-column: 1 / -1; min-width: 0; }
+  body[data-page="stock"] .stock-pager-filters {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;
+  }
+  body[data-page="stock"] .stock-pager-filters select {
+    width: 100%; min-width: 0; max-width: none; min-height: 36px;
+  }
+  body[data-page="stock"] #tagMgrBtn { grid-column: 1 / -1; }
+  body[data-page="stock"] .stock-toolbar .stock-pager-sort { flex-wrap: wrap; }
+  body[data-page="stock"] .stock-toolbar .stock-pager-btn { min-height: 36px; height: auto; }
+}
