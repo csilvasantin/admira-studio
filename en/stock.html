@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="/workspace.css?v=stock-mobile-20261019-2">
+  <link rel="stylesheet" href="/workspace.css?v=stock-saved-searches-20261019-1">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -458,6 +458,7 @@
           <button type="button" class="stock-pager-btn" data-page="last" title="Última página" aria-label="Última página">»</button>
         </div>
       </nav>
+      <div id="stockSavedSearchControls" class="stock-saved-search-controls"></div>
       <div id="stockStatus" class="stock-status" role="status" aria-live="polite"></div>
     </section>
 
@@ -473,9 +474,10 @@
       </section>
       <div id="stockOrigenBar" class="stock-origen-bar" hidden></div>
       <div id="stockGrid" class="stock-grid"></div>
-      <div id="stockEmpty" class="stock-empty" hidden>
-        <p>// Stock vacío.</p>
-        <p>Genera un asset en Audio/Música/Imágenes/Video — o un gemelo en el <a href="anonimizador.html">Anonimizador</a> (Twin NPCs · Digital Twins) — y pulsa <strong>📌 PUBLICAR EN STOCK</strong>.</p>
+      <div id="stockEmpty" class="stock-empty" role="status" aria-live="polite" hidden>
+        <h2 id="stockEmptyTitle">No results</h2>
+        <p>Try another search or clear the filters to see all content.</p>
+        <button type="button" class="stock-pager-btn" id="stockClearFilters">Clear filters</button>
       </div>
 
       <nav class="stock-pager stock-pager-bottom" hidden aria-label="Paginación (abajo)">
@@ -739,6 +741,8 @@
   import {normalizeMusic,isMusic,hasMusicCards,matchesMusicType,cardHtml,bindMusicCards} from "/assets/music/cards.mjs?v=14.10.2026.r22.1928";
   import {isXpace, blendFor, xpacePoster} from "/assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "/assets/furniture/catalog.mjs";
+  import {readNavigation,normalizeNavigation,navigationUrl,saveNavigation} from "/assets/stock-navigation-state.mjs";
+  import {mountSavedSearches} from "/assets/stock-saved-searches.mjs";
   (function () {
     const grid = document.getElementById('stockGrid');
     const status = document.getElementById('stockStatus');
@@ -772,7 +776,7 @@
     // público no negocia Accept-Encoding y siempre manda el JSON en crudo.
     // Ver functions/stock-index.js. Si falla, se cae al r2.dev de siempre.
     const STOCK_INDEX_COMPRIMIDO = '/stock-index';
-    fetch('/stock-creatives',{credentials:'same-origin',cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{StockSync.register(d.creatives||[]);}).catch(()=>{}).finally(()=>{StockSync.loaded=true;if(typeof allItems!=='undefined'&&allItems.length)applyFilters(true);});
+    fetch('/stock-creatives',{credentials:'same-origin',cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{StockSync.register(d.creatives||[]);}).catch(()=>{}).finally(()=>{StockSync.loaded=true;if(typeof allItems!=='undefined'&&allItems.length)applyFilters();});
     const STOCK_LIST_FALLBACK = STOCK_BASE + '/stock/list?limit=200';
     const TYPE_ORDER = { xpaces: 4, audio: 0, music: 1, image: 2, 'twin-npc': 3, 'digital-twin': 4, furni: 5, video: 6, animation: 7, capsula: 8, guion: 8 };
     // Etiquetas legibles para el badge de tipo (las demás se muestran tal cual).
@@ -799,13 +803,50 @@
     const verMotor = m => /suno/i.test(String(m || '')) ? 'Admira Studio Music' : String(m || '');
     const verTag = t => /^suno/i.test(String(t)) ? 'pixeria-music' : String(t);
     let currentView = []; // lista filtrada+ordenada actual (para navegar el lightbox)
-    let filters = { format:new URLSearchParams(location.search).get('format')||'', origen: (new URLSearchParams(location.search).get('origen') || '').replace(/[^A-Za-z0-9-]/g, ''), type: 'video', motor: '', q: (new URLSearchParams(location.search).get('q') || '').slice(0,200), tags: (new URLSearchParams(location.search).getAll('tag')).filter(t=>/^[a-zA-Z0-9:_-]{1,80}$/.test(t)).map(t=>t.toLowerCase()), tagMode: 'or', dateQuick: '', dateFrom: '', dateTo: '' };
-    search.value = filters.q;
-    let sortMode = 'date-desc';
-    let pageSize = 10; // 0 = mostrar todos
-    let currentPage = 1;
+    const language = document.documentElement.lang === 'en' ? 'en' : 'es';
+    let navigationStorage;
+    try { navigationStorage = sessionStorage; } catch {}
+    const legacyPreference = key => { try { return localStorage.getItem(key); } catch { return null; } };
+    const initialNavigation = readNavigation(location.href, navigationStorage, {
+      sort: legacyPreference('stockSort'), view: legacyPreference('stockView'),
+      pageSize: legacyPreference('stockPageSize') ?? 10
+    });
+    let filters = {q:initialNavigation.q,type:initialNavigation.type,format:initialNavigation.format,
+      origen:initialNavigation.origen,motor:initialNavigation.motor,tags:initialNavigation.tags,
+      tagMode:initialNavigation.tagMode,dateQuick:'',dateFrom:'',dateTo:''};
+    search.value = filters.q; typeFilter.value = filters.type;
+    let sortMode = initialNavigation.sort;
+    let pageSize = initialNavigation.pageSize; // 0 = mostrar todos
+    let currentPage = initialNavigation.page, requestedPage = currentPage, catalogLoaded = false;
+    let savedSearchControls;
     const pagers = Array.from(document.querySelectorAll('.stock-pager'));
     const pageSizeSels = Array.from(document.querySelectorAll('.stock-page-size'));
+    function navigationState() {
+      return {...filters,page:requestedPage,pageSize,sort:sortMode,view:grid.classList.contains('view-compact')?'compact':'list'};
+    }
+    function persistNavigation() {
+      const state = navigationState();
+      try { history.replaceState(history.state, '', navigationUrl(location.href,state)); } catch {}
+      saveNavigation(navigationStorage,location.href,state);
+      savedSearchControls?.refresh();
+    }
+    function restoreStockNavigation(value) {
+      const state = normalizeNavigation(value), wasCatalog = filters.type === 'catalogo';
+      Object.assign(filters,{q:state.q,type:state.type,format:state.format,origen:state.origen,
+        motor:state.motor,tags:state.tags,tagMode:state.tagMode});
+      search.value = filters.q; typeFilter.value = filters.type;
+      if(motorFilter) motorFilter.value = filters.motor;
+      currentPage = requestedPage = state.page; pageSize = state.pageSize; sortMode = state.sort;
+      pageSizeSels.forEach(s=>{s.value=String(pageSize);});
+      musicFormats.clear(); applyStockView(state.view); applySortIndicators(); renderActiveTagBanner();
+      if(filters.type==='catalogo') window.CATALOGO?.enter(); else if(wasCatalog) window.CATALOGO?.leave();
+      applyFilters();
+    }
+    function clearStockFilters() {
+      restoreStockNavigation({...navigationState(),q:'',type:'',format:'',origen:'',motor:'',tags:[],tagMode:'or',page:1});
+      search.focus({preventScroll:true});
+    }
+    window.addEventListener('pagehide',persistNavigation);
 
     function fmtDate(iso) {
       try { return new Date(iso).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }); }
@@ -1444,13 +1485,10 @@
         if (sessionStorage.getItem('pixeria:cliente-fijo')) return true; // cuenta asignada a un cliente
         const id = String(q != null ? q : (g && g.id) || '').toLowerCase(); return !!id && !/^(admira|todos|todas|all|off|ninguno)$/.test(id); } catch (_) { return false; } }
     setTimeout(() => { clienteEsperaAgotada = true; if (allItems.length) applyFilters(); }, 4000);
-    document.addEventListener('pixeria:cliente', () => { allItems = soloMio(allItemsTodo); applyFilters(true); });
+    document.addEventListener('pixeria:cliente', () => { allItems = soloMio(allItemsTodo); applyFilters(); });
     function applyFilters(resetPage) {
-      const filterStateUrl = new URL(location.href);
-      if (filters.q) filterStateUrl.searchParams.set('q',filters.q); else filterStateUrl.searchParams.delete('q');
-      filterStateUrl.searchParams.delete('tag');
-      for (const tag of filters.tags || []) filterStateUrl.searchParams.append('tag',tag);
-      history.replaceState(history.state,'',filterStateUrl);
+      if (resetPage) currentPage = requestedPage = 1;
+      persistNavigation();
 
       // Vista Catálogos: la rejilla la pinta CATALOGO (piezas del catálogo elegido).
       if (filters.type === 'catalogo') { if (window.CATALOGO) window.CATALOGO.repaint(); return; }
@@ -1489,8 +1527,8 @@
 
       // Paginación (0 = todos)
       const totalPages = pageSize > 0 ? Math.max(1, Math.ceil(sorted.length / pageSize)) : 1;
-      if (resetPage) currentPage = 1;
-      if (currentPage > totalPages) currentPage = totalPages;
+      currentPage = Math.min(requestedPage,totalPages);
+      if(catalogLoaded) requestedPage = currentPage;
       const pageItems = pageSize > 0
         ? sorted.slice((currentPage - 1) * pageSize, currentPage * pageSize)
         : sorted;
@@ -1529,12 +1567,25 @@
         if (next) next.disabled = currentPage >= totalPages;
         if (last) last.disabled = currentPage >= totalPages;
       });
+      persistNavigation();
     }
 
-    let xpaceController;
+    let xpaceController, previewReturnState = null;
+    // A preview gets one history entry; moving between assets only replaces it.
+    if(history.state?.admiraStockPreview){const {admiraStockPreview,...rest}=history.state;history.replaceState(rest,'',location.href);}
+    function rememberPreview(it) {
+      if(!previewReturnState) {
+        previewReturnState={navigation:navigationState(),scrollY:window.scrollY,assetId:it.id};
+        persistNavigation();
+        history.pushState({...history.state,admiraStockPreview:{id:it.id,returnState:previewReturnState}},'',location.href);
+      } else if(history.state?.admiraStockPreview) {
+        history.replaceState({...history.state,admiraStockPreview:{id:it.id,returnState:previewReturnState}},'',location.href);
+      }
+    }
     function openLightbox(it) {
       if(window.StockSync?.get(it)){if(window.openSyncCreative)window.openSyncCreative(it);else import('/assets/stock-sync-preview.mjs?v=atlas-2').then(()=>window.openSyncCreative(it)).catch(()=>{status.textContent='No se pudo cargar el previo 3D. Reintenta.';});return;}
       if(isFurniture3D(it)){import('/assets/furniture/editor.mjs').then(m=>m.openFurniture(it));return;}
+      rememberPreview(it);
       xpaceController?.abort();
       xpaceController = null;
       lightbox.classList.toggle('is-xpace', isXpace(it));
@@ -1621,7 +1672,7 @@
       lightboxInner.scrollTop = 0;
       openLightbox(currentView[j]);
     }
-    function closeLightbox() {
+    function finishCloseLightbox() {
       xpaceController?.abort();
       xpaceController = null;
       lightbox.classList.remove('is-xpace');
@@ -1630,7 +1681,26 @@
       lightboxInner.innerHTML = '';
       lightboxMeta.innerHTML = '';
       document.body.classList.remove('stock-lightbox-open');
+      const snapshot=previewReturnState;previewReturnState=null;
+      if(snapshot){
+        restoreStockNavigation(snapshot.navigation);
+        window.scrollTo({top:snapshot.scrollY,behavior:'instant'});
+        Array.from(grid.querySelectorAll('.stock-card')).find(card=>card.dataset.id===snapshot.assetId)?.focus({preventScroll:true});
+      }
     }
+    function closeLightbox() {
+      const owned=!!history.state?.admiraStockPreview;
+      finishCloseLightbox();
+      if(owned)history.back();
+    }
+    window.addEventListener('popstate',()=>{
+      const preview=history.state?.admiraStockPreview;
+      if(preview){
+        const item=allItems.find(it=>it.id===preview.id);
+        if(item){restoreStockNavigation(preview.returnState.navigation);previewReturnState=preview.returnState;openLightbox(item);}
+      } else if(previewReturnState)finishCloseLightbox();
+      else restoreStockNavigation(readNavigation(location.href,navigationStorage,{sort:sortMode,pageSize,view:navigationState().view}));
+    });
     document.getElementById('stockLightboxClose').addEventListener('click', closeLightbox);
     lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
     lightboxPrev.addEventListener('click', e => { e.stopPropagation(); navLightbox(-1); });
@@ -2059,6 +2129,7 @@
         .filter(Boolean);
     }
     async function load() {
+      catalogLoaded = false;
       empty.hidden = true;
       // 1) STALE-WHILE-REVALIDATE: pinta la copia guardada AL INSTANTE (sin esperar
       //    a la red) → la galería aparece ya; luego refresca en segundo plano.
@@ -2086,6 +2157,7 @@
           feedMatrix();
           status.textContent = '// ' + parcial.length + ' cargados · completando…';
         }));
+        catalogLoaded = true;
         writeCache(allItemsTodo);
         buildMotorOptions();
         applyFilters();
@@ -2093,7 +2165,9 @@
         feedMatrix();
       } catch (e) {
         // Fallo de red/worker: NO es pérdida de datos. Mantén la copia ya pintada.
+        catalogLoaded = true;
         if (hadCache) {
+          applyFilters();
           const when = cached.ts ? fmtDate(new Date(cached.ts).toISOString()) : '';
           status.textContent = `// sin conexión con el servidor · mostrando copia guardada${when ? ' (' + when + ')' : ''} · pulsa ↻ para reintentar`;
         } else {
@@ -2111,7 +2185,6 @@
       filters.q='';search.value='';filters.type='';typeFilter.value='';filters.format='';filters.tags=[];filters.origen='';sortMode='date-desc';applyFilters(true);
       const u=new URL(location.href);u.searchParams.delete('type');u.searchParams.delete('origen');u.searchParams.delete('format');u.searchParams.delete('q');u.searchParams.delete('tag');history.replaceState({},'',u);
     });
-    { const tp = new URLSearchParams(location.search).get('type'); if (['xpaces','capsula','music','image','video','audio','locucion'].includes(tp)) { filters.type = tp; typeFilter.value = tp; } } // ?type=capsula: enlace «Cápsulas de Conocimiento» del Adaptador
     formatFilter.addEventListener('change',()=>{filters.format=formatFilter.value;if(['landscape','portrait'].includes(filters.format))musicFormats.clear();const u=new URL(location.href);if(filters.format)u.searchParams.set('format',filters.format);else u.searchParams.delete('format');history.replaceState({},'',u);applyFilters(true);});
     grid.addEventListener('change',e=>{
       const select=e.target.closest('[data-act="format-version"]');if(!select)return;e.stopPropagation();const it=formatIndex.byId.get(select.value);if(!it)return;
@@ -2134,7 +2207,7 @@
     });
     if (motorFilter) motorFilter.addEventListener('change', () => { filters.motor = motorFilter.value; applyFilters(true); });
     search.addEventListener('input', () => {
-      filters.q = search.value.trim().toLowerCase();
+      filters.q = search.value.trim().slice(0,200);
       applyFilters(true);
     });
     // Importar desde el buscador: si hay una URL escrita, la pasa al modal de
@@ -2151,7 +2224,6 @@
     });
     // Cabezales ordenables (Nombre / Fecha / Tipo / Motor) — clic alterna asc/desc
     const SORT_DEFAULT_DIR = { name: 'asc', date: 'desc' };
-    const SORT_VALID = new Set(['name-asc','name-desc','date-asc','date-desc']);
     function applySortIndicators() {
       const [key, dir] = sortMode.split('-');
       sortBar.querySelectorAll('.stock-sort-th').forEach(b => {
@@ -2170,7 +2242,6 @@
       applySortIndicators();
       applyFilters(true);
     }));
-    try { const s = localStorage.getItem('stockSort'); if (s && SORT_VALID.has(s)) sortMode = s; } catch {}
     applySortIndicators();
     document.getElementById('stockRefresh')?.addEventListener('click', load);
 
@@ -2190,10 +2261,9 @@
     if (viewToggle) viewToggle.addEventListener('click', () => {
       const cur = grid.classList.contains('view-list') ? 'list' : 'compact';
       applyStockView(cur === 'list' ? 'compact' : 'list');
+      persistNavigation();
     });
-    let savedView = 'list';
-    try { savedView = localStorage.getItem('stockView') || 'list'; } catch {}
-    applyStockView(savedView === 'compact' ? 'compact' : 'list');
+    applyStockView(initialNavigation.view);
 
     // Pager (arriba y abajo, sincronizados)
     pageSizeSels.forEach(sel => sel.addEventListener('change', () => {
@@ -2202,19 +2272,38 @@
       try { localStorage.setItem('stockPageSize', String(pageSize)); } catch {}
       applyFilters(true);
     }));
-    try {
-      const saved = parseInt(localStorage.getItem('stockPageSize') || '', 10);
-      if (!isNaN(saved)) { pageSize = saved; pageSizeSels.forEach(s => { s.value = String(saved); }); }
-    } catch {}
-    pagers.forEach(p => p.querySelectorAll('.stock-pager-btn').forEach(btn => btn.addEventListener('click', () => {
+    pageSizeSels.forEach(s=>{s.value=String(pageSize);});
+    pagers.forEach(p => p.querySelectorAll('[data-page]').forEach(btn => btn.addEventListener('click', () => {
       const act = btn.dataset.page;
       if (act === 'first') currentPage = 1;
       else if (act === 'prev') currentPage = Math.max(1, currentPage - 1);
       else if (act === 'next') currentPage += 1;
       else if (act === 'last') currentPage = 99999;
+      requestedPage=currentPage;
       applyFilters();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     })));
+
+    const typeNames = {
+      '':['Todos los tipos','All types'],video:['Vídeo','Video'],image:['Imagen','Image'],
+      audio:['Audio','Audio'],locucion:['Megafonía','PA audio'],music:['Música','Music'],
+      'twin-npc':['Twin NPCs','Twin NPCs'],'digital-twin':['Digital Twins','Digital Twins'],
+      xpaces:['Xpaces','Xpaces'],catalogo:['Catálogos','Catalogs'],animation:['Animaciones','Animations'],
+      tiktok:['TikToks','TikToks'],furni:['Mobiliario','Furniture'],capsula:['Cápsulas','Capsules'],
+      fallidos:['Importaciones fallidas','Failed imports']
+    };
+    const formatNames = {'':['Todos los formatos','All formats'],landscape:['Horizontal','Horizontal'],
+      portrait:['Vertical','Vertical'],square:['Cuadrado','Square'],unknown:['Sin formato confirmado','Unconfirmed format'],
+      anamorphic:['Anamórfico','Anamorphic']};
+    const localized = (labels,key) => labels[key]?.[language==='en'?1:0] || String(key).replace(/^custom:/,'');
+    savedSearchControls = mountSavedSearches({
+      element:document.getElementById('stockSavedSearchControls'),language,
+      getSearch:()=>({q:filters.q,type:filters.type,format:filters.format}),
+      applySearch:search=>restoreStockNavigation({...navigationState(),...search,origen:'',motor:'',tags:[],tagMode:'or',page:1}),
+      typeLabel:type=>localized(typeNames,type),formatLabel:format=>localized(formatNames,format)
+    });
+    document.getElementById('stockClearFilters').addEventListener('click',clearStockFilters);
+    renderActiveTagBanner();
 
     // Track de reproducciones: 1 POST por asset + sesión cuando empieza a sonar
     const trackedPlays = new Set();
@@ -2257,8 +2346,8 @@
         card.classList.add('stock-card-flash');
         setTimeout(() => card.classList.remove('stock-card-flash'), 2400);
       }
+      try { const u = new URL(location.href); u.searchParams.delete('highlight'); history.replaceState(history.state, '', u); } catch {}
       openLightbox(item);
-      try { const u = new URL(location.href); u.searchParams.delete('highlight'); history.replaceState({}, '', u); } catch {}
     }
 
     // ── DISTRIBUIDOR DE ASSETS ────────────────────────────────────────────

@@ -1,6 +1,6 @@
 {
-  "version": "v.19.10.2026.r4.19:14",
-  "deployedAt": "2026-10-19T18:38:54.355412+02:00",
+  "version": "v.19.10.2026.r5.20:21",
+  "deployedAt": "2026-10-19T20:21:49.330373+02:00",
   "author": "DeepAgentX",
   "agent": "DeepAgentX",
   "deployer": "DeepAgentX",
@@ -11,10 +11,10 @@
   "gitShort": "3527f72",
   "dirty": false,
   "novedades": [
-    "Creador: entrega completa en un ZIP por instalación, pantalla e idioma, con inventario y reintento de archivos pendientes."
+    "Stock: búsquedas guardadas y conservación de filtros, vista y página al volver del previo, también en móvil."
   ],
   "rollback": {
-    "git": "3527f72580d90739f843007357ea99c678f942f8"
+    "git": "2a10df5428941b69ff36a161a3622f36aed27462"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -53,7 +53,8 @@
     ".source-patches/creator-project-context.json",
     ".source-patches/stock-format-metadata.json",
     ".source-patches/stock-mobile-controls.json",
-    ".source-patches/campaign-delivery-package.json"
+    ".source-patches/campaign-delivery-package.json",
+    ".source-patches/stock-saved-searches.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
