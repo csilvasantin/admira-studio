@@ -3153,8 +3153,9 @@ body[data-page="stock"] .stock-playlist-badge{transform:scale(.7);transform-orig
     gap: 4px; overflow: visible; width: 100%; min-width: 0;
   }
   body[data-page="stock"] .pf-topbar-nav a {
-    min-width: 0; padding: 8px 2px; text-align: center;
-    font-size: 10px; letter-spacing: 0; white-space: normal;
+    min-width: 0; padding: 8px 2px !important; text-align: center;
+    font-size: 10px !important; letter-spacing: 0 !important; white-space: normal;
+    overflow: visible; text-overflow: clip;
   }
   body[data-page="stock"] .page-head h1 { flex-wrap: wrap; white-space: normal; }
   body[data-page="stock"] .stock-toolbar { position: static; min-width: 0; }
@@ -3169,7 +3170,7 @@ body[data-page="stock"] .stock-playlist-badge{transform:scale(.7);transform-orig
   body[data-page="stock"] .stock-pager-sort,
   body[data-page="stock"] .stock-pager-controls { grid-column: 1 / -1; min-width: 0; }
   body[data-page="stock"] .stock-pager-filters {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px;
   }
   body[data-page="stock"] .stock-pager-filters select {
     width: 100%; min-width: 0; max-width: none; min-height: 36px;
