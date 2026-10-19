@@ -193,6 +193,10 @@
     [
       "<h1>Admira Studio</h1>",
       "<h1>Admira Studio</h1><script defer src=\"/assets/intro-studio/intro.js?v=1\"></script>"
+    ],
+    [
+      "function syncURL() {\n  try {",
+      "function syncURL() {\n  // The Creator owns its campaign context; Adapter preferences must not change its recovery scope.\n  if (/(?:^|\\/)creador(?:\\/|$)/.test(location.pathname)) return;\n  try {"
     ]
   ],
   "_no_se_sustituye": [

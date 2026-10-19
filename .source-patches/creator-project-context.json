@@ -1,0 +1,17 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "3527f72580d90739f843007357ea99c678f942f8",
+  "reason": "El Creador conserva su URL y su ámbito de recuperación: el último proyecto del Adaptador no puede sustituir el contexto de la campaña al iniciar o recargar.",
+  "protectedBy": "marca.json.sustituciones",
+  "files": [
+    "adaptaciones/adaptaciones.js",
+    "creador/index.html",
+    "en/creador/index.html",
+    "adaptaciones/index.html",
+    "en/adaptaciones/index.html",
+    "marca.json",
+    "test/creator-project-context.test.mjs"
+  ],
+  "verification": "Reproducción anterior fallida; copia local de Starbucks editada y exportada antes y después de recargar, sin diferencias y conservando Vertical."
+}
