@@ -1937,6 +1937,8 @@ function renderProfiles() {
   const wallNote = document.querySelector('.especiales-note'); if (wallNote) wallNote.hidden = !FORMATOS.some(f => f.especial);
 }
 function syncURL() {
+  // The Creator owns its campaign context; Adapter preferences must not change its recovery scope.
+  if (/(?:^|\/)creador(?:\/|$)/.test(location.pathname)) return;
   try {
     const u = new URL(location.href);
     if (state.proyecto === GENERAL) u.searchParams.delete('proyecto'); else u.searchParams.set('proyecto', state.proyecto);

@@ -1,22 +1,21 @@
 {
-  "version": "v.18.10.2026.r16.22:19",
-  "deployedAt": "2026-10-18T18:28:10.525411+02:00",
-  "author": "TrinityMacStudio",
-  "agent": "TrinityMacStudio",
-  "deployer": "TrinityMacStudio",
+  "version": "v.19.10.2026.r1.15:44",
+  "deployedAt": "2026-10-19T15:44:28.406316+02:00",
+  "author": "DeepAgentX",
+  "agent": "DeepAgentX",
+  "deployer": "DeepAgentX",
   "machine": "MacStudio",
-  "signature": "TrinityMacStudio · MacStudio",
-  "git": "6f7928773b2a4f32b0a13f655cf8c595e491b37f",
-  "gitFull": "6f7928773b2a4f32b0a13f655cf8c595e491b37f",
-  "gitShort": "6f79287",
+  "signature": "DeepAgentX · MacStudio",
+  "git": "3527f72580d90739f843007357ea99c678f942f8",
+  "gitFull": "3527f72580d90739f843007357ea99c678f942f8",
+  "gitShort": "3527f72",
   "dirty": false,
   "novedades": [
-    "La importación cambia de equipo automáticamente si falla antes de empezar o durante la descarga.",
-    "Solo el fichero completo se guarda en Stock; el relevo no repite la publicación.",
-    "Los trabajos del Creativo conservan su estado al recargar y se coordinan entre pestañas."
+    "El Creador conserva la campaña y el proyecto al recargar, sin adoptar el último proyecto del Adaptador.",
+    "Se mantienen los textos, originales, formatos, idioma y revisiones guardados en este navegador."
   ],
   "rollback": {
-    "git": "6f7928773b2a4f32b0a13f655cf8c595e491b37f"
+    "git": "3527f72580d90739f843007357ea99c678f942f8"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -51,7 +50,8 @@
     ".source-patches/stock-search-reference.json",
     ".source-patches/stock-single-video-preview.json",
     ".source-patches/stock-sync-creatives.json",
-    ".source-patches/studio-universal-navigation.json"
+    ".source-patches/studio-universal-navigation.json",
+    ".source-patches/creator-project-context.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
