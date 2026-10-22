@@ -1,20 +1,7 @@
 import React from "react";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
-import { COLORES, FUENTE, MONO } from "./guion";
+import { COLORES, FUENTE, MONO, useLanzamiento } from "./guion";
 import { Pantalla, PosterStock, Rotulo, VideoStock, useEntrada } from "./piezas";
-
-const STOCK = {
-  horizontalEs: "stock/1792161156915-rm01g6.mp4",
-  vertical: "stock/1792161136964-73h41y.mp4",
-  siete: "stock/1792152072921-uk9g2a.mp4",
-  posters: [
-    "stock/1792161156915-rm01g6.poster.jpg",
-    "stock/1792161136964-73h41y.poster.jpg",
-    "stock/1792161240266-ipokef.poster.jpg",
-    "stock/1792152072921-uk9g2a.poster.jpg",
-    "stock/1792161276914-6fzu0g.poster.jpg",
-  ],
-};
 
 const Fondo: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
   <AbsoluteFill
@@ -30,6 +17,7 @@ const Fondo: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
 
 // 1 · Título
 export const Titulo: React.FC = () => {
+  const { marca, titulo } = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const e1 = useEntrada(0.2, 0.9);
@@ -41,27 +29,26 @@ export const Titulo: React.FC = () => {
   return (
     <Fondo>
       <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", opacity: salida }}>
-        <Rotulo style={{ ...e1, marginBottom: 28 }}>admira.studio · admira.store · 22 oct 2026</Rotulo>
+        <Rotulo style={{ ...e1, marginBottom: 28 }}>{`${marca.crea} · ${marca.emite} · ${marca.fecha}`}</Rotulo>
         <div style={{ ...e1, fontSize: 132, fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1 }}>
-          Un prompt.
+          {titulo.linea1}
         </div>
         <div style={{ ...e2, fontSize: 132, fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1, color: COLORES.acento }}>
-          Una tienda.
+          {titulo.linea2}
         </div>
       </AbsoluteFill>
     </Fondo>
   );
 };
 
-// 2 · El prompt, escrito en el Mac Studio
-const PROMPT =
-  "Monta el lanzamiento de otoño para Starbucks · Gran de Gràcia 51. Siete pantallas, español e inglés. Editable.";
+// 2 · El prompt, escrito en admira.studio
 export const Prompt: React.FC = () => {
+  const { prompt } = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const e = useEntrada(0, 0.6);
   const letras = Math.floor(
-    interpolate(frame, [0.4 * fps, 3.6 * fps], [0, PROMPT.length], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
+    interpolate(frame, [0.4 * fps, 3.6 * fps], [0, prompt.texto.length], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }),
   );
   const enviado = frame > 4.2 * fps;
   const cursorVisible = Math.floor(frame / (fps / 2.5)) % 2 === 0;
@@ -84,14 +71,14 @@ export const Prompt: React.FC = () => {
           }}
         >
           <div style={{ fontFamily: FUENTE, fontSize: 26, color: "#8a8378", marginBottom: 22 }}>
-            admira.studio · Crear · ¿Qué montamos hoy?
+            {prompt.cabecera}
           </div>
           <div style={{ fontSize: 40, lineHeight: 1.3, minHeight: 110 }}>
-            {PROMPT.slice(0, letras)}
+            {prompt.texto.slice(0, letras)}
             <span style={{ opacity: enviado ? 0 : cursorVisible ? 1 : 0 }}>▍</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 18 }}>
-            <span style={{ fontFamily: MONO, fontSize: 20, color: "#8a8378" }}>admira.studio · creación y adaptación · Stock</span>
+            <span style={{ fontFamily: MONO, fontSize: 20, color: "#8a8378" }}>{prompt.pie}</span>
             <span
               style={{
                 fontFamily: MONO,
@@ -113,6 +100,7 @@ export const Prompt: React.FC = () => {
 
 // 3 · Las piezas del Stock se organizan en rejilla
 export const Stock: React.FC = () => {
+  const { piezas, rotulos } = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const tam = [
@@ -121,13 +109,16 @@ export const Stock: React.FC = () => {
     { w: 560, h: 315 },
     { w: 820, h: 230 },
     { w: 560, h: 180 },
+    { w: 560, h: 315 },
+    { w: 260, h: 462 },
+    { w: 560, h: 315 },
   ];
   return (
     <Fondo>
       <AbsoluteFill style={{ padding: "70px 90px 150px" }}>
-        <Rotulo style={{ marginBottom: 26 }}>Stock · admira.studio · Starbucks · Gran de Gràcia 51</Rotulo>
+        <Rotulo style={{ marginBottom: 26 }}>{rotulos.stock}</Rotulo>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 26, alignContent: "flex-start" }}>
-          {STOCK.posters.map((p, i) => {
+          {piezas.posters.map((p, i) => {
             const t = interpolate(frame, [i * 0.35 * fps, (i * 0.35 + 0.6) * fps], [0, 1], {
               extrapolateLeft: "clamp",
               extrapolateRight: "clamp",
@@ -149,6 +140,7 @@ export const Stock: React.FC = () => {
 
 // 4 · Las pantallas se encienden con los visuales
 export const Pantallas: React.FC = () => {
+  const { piezas, rotulos } = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const enc = (i: number) =>
@@ -156,19 +148,19 @@ export const Pantallas: React.FC = () => {
   return (
     <Fondo>
       <AbsoluteFill style={{ padding: "70px 90px 150px" }}>
-        <Rotulo style={{ marginBottom: 26 }}>Visuales generados · colocados en cada pantalla</Rotulo>
+        <Rotulo style={{ marginBottom: 26 }}>{rotulos.pantallas}</Rotulo>
         <div style={{ display: "flex", gap: 40, alignItems: "flex-end" }}>
           <div style={{ opacity: enc(0) }}>
             <Pantalla ancho={1130} alto={636}>
-              <VideoStock fichero={STOCK.horizontalEs} desdeSeg={2} />
+              <VideoStock fichero={piezas.horizontal.fichero} desdeSeg={2} />
             </Pantalla>
-            <Rotulo style={{ marginTop: 12, fontSize: 18, color: COLORES.mudo }}>macstudio-starbucks-horizontal · 1920×1080</Rotulo>
+            <Rotulo style={{ marginTop: 12, fontSize: 18, color: COLORES.mudo }}>{rotulos.pantallaHorizontal}</Rotulo>
           </div>
           <div style={{ opacity: enc(1) }}>
             <Pantalla ancho={358} alto={636}>
-              <VideoStock fichero={STOCK.vertical} desdeSeg={2} />
+              <VideoStock fichero={piezas.vertical.fichero} desdeSeg={2} />
             </Pantalla>
-            <Rotulo style={{ marginTop: 12, fontSize: 18, color: COLORES.mudo }}>vertical · 1080×1920</Rotulo>
+            <Rotulo style={{ marginTop: 12, fontSize: 18, color: COLORES.mudo }}>{rotulos.pantallaVertical}</Rotulo>
           </div>
         </div>
       </AbsoluteFill>
@@ -178,6 +170,7 @@ export const Pantallas: React.FC = () => {
 
 // 5 · Curvas de animación y ritmo
 export const Curvas: React.FC = () => {
+  const { rotulos } = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const avance = interpolate(frame, [0, durationInFrames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
@@ -193,7 +186,7 @@ export const Curvas: React.FC = () => {
   return (
     <Fondo>
       <AbsoluteFill style={{ padding: "70px 90px 150px" }}>
-        <Rotulo style={{ marginBottom: 20 }}>admira.studio · adaptación · curva de entrada · fotogramas clave</Rotulo>
+        <Rotulo style={{ marginBottom: 20 }}>{rotulos.curvas}</Rotulo>
         <div style={{ background: COLORES.panel, border: `1px solid ${COLORES.borde}`, borderRadius: 18, padding: 30 }}>
           <svg width={W} height={H} style={{ display: "block", overflow: "visible" }}>
             {[0.25, 0.5, 0.75].map((g) => (
@@ -231,48 +224,51 @@ export const Curvas: React.FC = () => {
 
 // 6 · El anuncio a pantalla completa
 export const Anuncio: React.FC = () => {
+  const { piezas, rotulos } = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const entra = interpolate(frame, [0, 0.6 * fps], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <AbsoluteFill style={{ background: "#000" }}>
       <AbsoluteFill style={{ opacity: entra }}>
-        <VideoStock fichero={STOCK.horizontalEs} desdeSeg={6} />
+        <VideoStock fichero={piezas.horizontal.fichero} desdeSeg={6} />
       </AbsoluteFill>
       <AbsoluteFill style={{ padding: "60px 70px" }}>
-        <Rotulo style={{ opacity: entra }}>admira.store · emitiendo · Starbucks · Gran de Gràcia 51</Rotulo>
+        <Rotulo style={{ opacity: entra }}>{rotulos.anuncio}</Rotulo>
       </AbsoluteFill>
     </AbsoluteFill>
   );
 };
 
-// 7 · Lanzamiento listo: las siete piezas juntas
+// 7 · Lanzamiento listo: las piezas juntas
 export const Listo: React.FC = () => {
+  const { piezas, rotulos } = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const entra = interpolate(frame, [0, 0.6 * fps], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <Fondo>
       <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingBottom: 90, opacity: entra }}>
-        <Rotulo style={{ marginBottom: 22 }}>admira.store · siete mensajes · ES + EN · previo conjunto</Rotulo>
+        <Rotulo style={{ marginBottom: 22 }}>{rotulos.listo}</Rotulo>
         <Pantalla ancho={1760} alto={494}>
-          <VideoStock fichero={STOCK.siete} desdeSeg={3} style={{ objectFit: "contain", background: "#000" }} />
+          <VideoStock fichero={piezas.conjunto.fichero} desdeSeg={3} style={{ objectFit: "contain", background: "#000" }} />
         </Pantalla>
       </AbsoluteFill>
     </Fondo>
   );
 };
 
-// 8 · Tutorial en cuatro pasos
-const PASOS = ["Entra en admira.studio", "Elige el local", "Describe la campaña", "admira.store la emite en tus pantallas"];
+// 8 · Tutorial en pasos
 export const Tutorial: React.FC = () => {
+  const { tutorial, rotulos } = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const ultimo = tutorial.length - 1;
   return (
     <Fondo>
       <AbsoluteFill style={{ padding: "90px 120px 150px" }}>
-        <Rotulo style={{ marginBottom: 36 }}>Cómo se hace</Rotulo>
-        {PASOS.map((p, i) => {
+        <Rotulo style={{ marginBottom: 36 }}>{rotulos.tutorial}</Rotulo>
+        {tutorial.map((p, i) => {
           const t = interpolate(frame, [(0.3 + i * 1.5) * fps, (0.9 + i * 1.5) * fps], [0, 1], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
@@ -285,13 +281,13 @@ export const Tutorial: React.FC = () => {
                   width: 78,
                   height: 78,
                   borderRadius: 20,
-                  background: i === 3 ? COLORES.neo : COLORES.panel,
-                  border: `2px solid ${i === 3 ? COLORES.neo : COLORES.borde}`,
+                  background: i === ultimo ? COLORES.neo : COLORES.panel,
+                  border: `2px solid ${i === ultimo ? COLORES.neo : COLORES.borde}`,
                   display: "grid",
                   placeItems: "center",
                   fontFamily: MONO,
                   fontSize: 36,
-                  color: i === 3 ? "#1a0a03" : COLORES.acento,
+                  color: i === ultimo ? "#1a0a03" : COLORES.acento,
                 }}
               >
                 {i + 1}
@@ -307,6 +303,7 @@ export const Tutorial: React.FC = () => {
 
 // 9 · Cierre
 export const Cierre: React.FC = () => {
+  const { cierre, rotulos } = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const e1 = useEntrada(0.1, 0.8);
@@ -319,11 +316,11 @@ export const Cierre: React.FC = () => {
     <Fondo>
       <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingBottom: 90, opacity: salida }}>
         <div style={{ ...e1, fontSize: 96, fontWeight: 800, letterSpacing: "-0.02em", textAlign: "center", lineHeight: 1.05 }}>
-          Doce ideas en una tarde.
+          {cierre.linea1}
           <br />
-          <span style={{ color: COLORES.acento }}>Emite la que funcione.</span>
+          <span style={{ color: COLORES.acento }}>{cierre.linea2}</span>
         </div>
-        <Rotulo style={{ ...e2, marginTop: 44 }}>admira.studio · admira.store</Rotulo>
+        <Rotulo style={{ ...e2, marginTop: 44 }}>{rotulos.cierre}</Rotulo>
       </AbsoluteFill>
     </Fondo>
   );

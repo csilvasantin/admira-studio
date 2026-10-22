@@ -13,14 +13,21 @@ Es una **herramienta**, no una página: `deploy.sh` la deja fuera de la publicac
 
 Las piezas del Stock (`public/stock/`) no se versionan: se bajan por id (`https://stock.admira.store/stock/<id>/asset.mp4` y `poster.jpg`).
 
+## Paso 2 · los datos mandan (22-oct-2026)
+
+Todo lo que se ve u oye sale de `props/un-prompt-una-tienda.json`, validado por `src/props.ts` (esquema zod): nombre, marca (quién crea y quién emite), local, título, prompt, piezas del Stock, rótulos, pasos del tutorial, cierre, música, volumen de la voz, líneas con sus palabras y tiempos, y la lista de escenas. La duración de cada escena sale de la voz real (`src/guion.ts`, `planificar`). La validación para si aparece una palabra prohibida en pantalla o en voz. Comprobado: la v2 se regenera idéntica desde el JSON (diez fotogramas iguales byte a byte).
+
+Para otra campaña: copia el JSON, cambia textos y piezas, regenera la voz y renderiza.
+
 ## Uso
 
 ```bash
 npm install
 node scripts/voz.mjs                 # regenera la voz y los tiempos
-cp public/voz/lineas.json src/voz.json
+# pega public/voz/lineas.json en "lineas" del props.json (en el paso 4 lo hará el script)
 npx remotion render UnPromptUnaTienda out/frames --frames=60,240,420 --image-format=png   # revisión por fotogramas
 npx remotion render UnPromptUnaTienda out/lanzamiento.mp4 --codec h264
+npm test                             # esquema, palabras prohibidas y plan de escenas
 ```
 
 Subir al Stock: `node ../tools/… ` → ver la skill; nunca sin el sí del humano.
