@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.19.10.2026.r1.15:44">
+  <meta name="admiranext-version" content="Admira Studio v.22.10.2026.r1.11:33">
   <link rel="canonical" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="/workspace.css?v=stock-saved-searches-20261019-1">
+  <link rel="stylesheet" href="/workspace.css?v=stock-capsulas-video-20261022-1">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -1410,7 +1410,10 @@
       // delante todo el vídeo del catálogo. Los distingue su categoría o su
       // etiqueta, que es lo que pone quien los genera.
       if (t === 'tiktok') return it.category === 'tiktoks' || tagsLc.includes('tiktok');
-      if (t === 'capsula') return isCapsule(it);
+      // «Cápsulas» = cápsulas de texto (type capsula/guion) Y cápsulas en vídeo
+      // (type video con etiqueta 'capsula', p. ej. las «¿Sabías que?»). Las de
+      // vídeo siguen pintándose como tarjeta de vídeo reproducible.
+      if (t === 'capsula') return isCapsule(it) || (it.type === 'video' && tagsLc.includes('capsula'));
       if (t === 'furni') return isFurni(it);
       if (t === 'video') return it.type === 'video' && !isAnim;
       if (t === 'image') return it.type === 'image' && !isFurni(it) && !isTwinNpc && !isDigitalTwin;

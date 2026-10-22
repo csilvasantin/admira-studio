@@ -1,0 +1,19 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "cafea7cbec56cba5230587979432d288a392bff2",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "9aae07c40f51853292bff90b7753f78bbbd8e792",
+  "sourcePullRequest": 114,
+  "reason": "Carlos aprueba portar a Studio el arreglo del filtro «Cápsulas» de Stock: incluye también las cápsulas en vídeo (type video + etiqueta capsula). Portado a mano sobre Studio canónico sin sync.sh, preservando búsquedas guardadas y estado de navegación (PR #107).",
+  "files": [
+    "stock.html",
+    "en/stock.html",
+    "test/stock-capsulas-video.test.mjs",
+    "test/stock-capsulas-video-en.test.mjs"
+  ],
+  "preservesFiltersAndAccess": true,
+  "rollback": "cafea7cbec56cba5230587979432d288a392bff2",
+  "status": "release-authorized",
+  "release": "v.22.10.2026.r1.11:33"
+}
