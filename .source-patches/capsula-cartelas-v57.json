@@ -1,0 +1,27 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "studio-first (pendiente de portar a pixeria)",
+  "dependsOn": {
+    "repository": "csilvasantin/pixer-worker",
+    "pullRequest": 41,
+    "version": "v.22.10.2026.r5.22:09",
+    "worker": "d7a706af-712d-4ceb-9470-bddbef305e81"
+  },
+  "reason": "Carlos (cápsulas v5.7): «solo tenemos que poder añadir preroll y postroll si queremos que salga la cartela, por defecto que no salga». El Creador (/creador/?capsula=new) muestra dos interruptores «Preroll» y «Postroll», apagados por defecto, y /creator-capsule-url los reenvía a /capsula/url/encargar.",
+  "files": [
+    "assets/creator-capsule-url.mjs",
+    "creador/index.html",
+    "en/creador/index.html",
+    "functions/creator-capsule-url.js",
+    "test/capsula-cartelas.test.mjs",
+    ".source-patches/capsula-cartelas-v57.json"
+  ],
+  "secrets": "ninguno",
+  "preservesFiltersAndAccess": true,
+  "rollback": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560",
+  "status": "release-authorized",
+  "release": "v.22.10.2026.r10.22:10"
+}

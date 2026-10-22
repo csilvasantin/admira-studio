@@ -1,6 +1,6 @@
 /* /creator-capsule-url — «Crear cápsula desde URL» del Creador (22-oct-2026).
  * POST {accion:'borrador', url, texto?}  → api.admira.store/capsula/url/borrador (extrae + guion Gemini, no escribe)
- * POST {accion:'encargar', url, guion, image?, author?, title?} → /capsula/url/encargar (cola v5, dedup por origen)
+ * POST {accion:'encargar', url, guion, image?, author?, title?, preroll?, postroll?} (cartelas, apagadas por defecto) → /capsula/url/encargar (cola v5, dedup por origen)
  * POST {accion:'borrador-campana', url, texto?} → mismo borrador en modo «campana» (Creador de campañas: marca, titular, CTA, imagen)
  * GET  ?ref=capsula-url:<hash>           → /capsula/url/estado (publicada cuando hay vertical + horizontal)
  * Sesión de admira.studio y mismo origen; el render lo hace el pipeline v5 de GrokBotBox. Sin secretos aquí. */
@@ -25,7 +25,7 @@ export async function onRequestPost({request,env}){
  if(body.accion==='encargar'){
   const g=body.guion&&typeof body.guion==='object'?body.guion:{};
   const guion={objeto:str(g.objeto,90),subtitulo:str(g.subtitulo,60),tema:str(g.tema,24),cifra:{hasta:g.cifra?.hasta??null,unidad:str(g.cifra?.unidad,16)},gancho:str(g.gancho,70),giro:str(g.giro,80),remate:str(g.remate,90),fuente:str(g.fuente,80),idea:str(g.idea,280)};
-  return proxy(env,'/capsula/url/encargar',{method:'POST',headers:cabeceras({'Content-Type':'application/json'}),body:JSON.stringify({url,guion,image:str(body.image,600),author:str(body.author,200),title:str(body.title,300),requestedBy:'Creador admira.studio'})});
+  return proxy(env,'/capsula/url/encargar',{method:'POST',headers:cabeceras({'Content-Type':'application/json'}),body:JSON.stringify({url,guion,image:str(body.image,600),author:str(body.author,200),title:str(body.title,300),requestedBy:'Creador admira.studio',preroll:body.preroll===true,postroll:body.postroll===true})});
  }
  return error(400,'invalid-action');
 }
