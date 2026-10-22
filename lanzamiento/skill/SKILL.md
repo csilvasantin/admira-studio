@@ -20,9 +20,9 @@ No la uses para piezas sin material en el Stock: primero hay que crear o subir l
 
 ## Orden de trabajo (cada paso se puede repetir solo)
 
-1. **Brief.** Anota: local o campaña (etiquetas del Stock), idioma(s), duración orientativa, plantilla («Un prompt. Una tienda.» es la única hoy), piezas concretas si el humano las nombra. Si falta el local o la campaña, pregunta; no inventes.
-2. **Piezas.** Resuelve los ids en el índice del Stock y bájalos a `public/stock/<id>.mp4|.poster.jpg`. Lista en el informe cada id y su título.
-3. **Guion.** Escribe las líneas en `scripts/voz.mjs` (o en el JSON de guion cuando exista): quién habla (`neo` = la máquina, en naranja; `off` = voz en off, en blanco), texto corto, verbos en presente. Comprueba las palabras prohibidas (abajo).
+1. **Brief.** Pide al humano la campaña o instalación (etiquetas del Stock) y el idioma; no inventes nada. Ejecuta `npm run brief -- --campana <id> [--instalacion <id>] [--idioma es|en]`: resuelve y baja las piezas y deja `trabajo/<nombre>/brief.json`. Enseña al humano cliente, local, pantallas, idiomas, piezas elegidas y avisos.
+2. **Guion.** `npm run guion -- <nombre> --idioma es` (y `en` si procede) → `trabajo/<nombre>/guion.<idioma>.json`, validado. Si el humano quiere cambiar un texto, cámbialo en ese JSON (o en `scripts/lib/plantilla.mjs` si es para siempre), nunca en el vídeo a mano. Quién habla: `neo` = la máquina (naranja), `off` = voz en off (blanco).
+3. **Piezas.** Ya están en `public/stock/` tras el brief; si falta alguna, el brief lo avisa.
 4. **Voz.** `node scripts/voz.mjs` → `public/voz/*.mp3` y `lineas.json`; copia `lineas.json` a `src/voz.json`. Los tiempos de las escenas salen de la voz real: no los escribas a mano.
 5. **Montar y revisar.** Renderiza fotogramas clave (`npx remotion render <composición> out/frames --frames=… --image-format=png`), júntalos en una hoja (`ffmpeg … tile=3x3`) y mírala: textos, pósters, subtítulos. Comprueba el audio del render final con `ffmpeg -af volumedetect` (media por encima de −30 dB) y que no hay silencios largos.
 6. **Render.** `npx remotion render <composición> out/lanzamiento.mp4 --codec h264`. Verifica con `ffprobe` duración, tamaño y pistas.

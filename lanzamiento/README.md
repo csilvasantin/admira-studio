@@ -19,6 +19,15 @@ Todo lo que se ve u oye sale de `props/un-prompt-una-tienda.json`, validado por 
 
 Para otra campaña: copia el JSON, cambia textos y piezas, regenera la voz y renderiza.
 
+## Paso 3 · `brief` y `guion` (22-oct-2026)
+
+```bash
+npm run brief -- --campana starbucks-gdg51-seven-20261015 [--instalacion <id>] [--pantalla <id>] [--idioma es|en]
+npm run guion -- starbucks-gdg51-seven-20261015 --idioma es   # y --idioma en
+```
+
+`brief` lee el índice público del Stock, se queda con las piezas de la campaña (acepta variantes `campaign:<id>-…`), elige la instalación principal (la de más piezas) y cuenta sus pantallas (`screen:` reales; `landscape`/`portrait` no son pantallas), lee cliente, local y descripción del título, elige horizontal, vertical y conjunto (panorámico) y hasta ocho pósters, los baja a `public/stock/` y escribe `trabajo/<nombre>/brief.json`. `guion` aplica la plantilla «Un prompt. Una tienda.» en español o inglés y deja `trabajo/<nombre>/guion.<idioma>.json`: un props completo sin tiempos de voz, validado (palabras prohibidas incluidas). Nada se escribe a mano. Probado con la campaña de los siete mensajes de Starbucks · Gran de Gràcia 51.
+
 ## Uso
 
 ```bash
