@@ -1,21 +1,20 @@
 {
-  "version": "v.22.10.2026.r3.17:20",
-  "deployedAt": "2026-10-22T17:18:40.739293+02:00",
+  "version": "v.22.10.2026.r4.17:46",
+  "deployedAt": "2026-10-22T17:46:59.834970+02:00",
   "author": "WozniakGrokBot",
   "agent": "WozniakGrokBot",
   "deployer": "WozniakGrokBot",
   "machine": "GrokBotBox",
   "signature": "WozniakGrokBot · GrokBotBox",
-  "git": "b498907ec57c3eb3fac282e271f22744a73455cf",
-  "gitFull": "b498907ec57c3eb3fac282e271f22744a73455cf",
-  "gitShort": "b498907",
+  "git": "d8a30b96c22a39413602d8b1e59518cebab2d70d",
+  "gitFull": "d8a30b96c22a39413602d8b1e59518cebab2d70d",
+  "gitShort": "d8a30b9",
   "dirty": false,
   "novedades": [
-    "Stock: el filtro «Vídeo» ya no muestra las cápsulas «¿Sabías que?»; siguen en «Cápsulas».",
-    "Stock: botón ▶ «Subir a YouTube» en las tarjetas de vídeo, entre pantalla completa y papelera."
+    "Creador: «🔗 Crear cápsula desde URL» en el panel de cápsulas. Pegas un enlace (LinkedIn, YouTube, X, TikTok o artículo), se redacta un «¿Sabías que?» con gancho, giro y remate, lo editas y se genera con la plantilla v5 en vertical y horizontal en el Stock (#capsula), con enlace a la fuente y sin duplicados."
   ],
   "rollback": {
-    "git": "00ef1e584e82492cb3b9a163ca4be6cf3e7b9813"
+    "git": "d8a30b96c22a39413602d8b1e59518cebab2d70d"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -58,7 +57,8 @@
     ".source-patches/stock-saved-searches.json",
     ".source-patches/stock-capsulas-video.json",
     ".source-patches/studio-creator-home.json",
-    ".source-patches/stock-video-sin-capsulas-youtube.json"
+    ".source-patches/stock-video-sin-capsulas-youtube.json",
+    ".source-patches/creator-capsule-desde-url.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
