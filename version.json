@@ -1,20 +1,20 @@
 {
-  "version": "v.22.10.2026.r4.17:46",
-  "deployedAt": "2026-10-22T17:46:59.834970+02:00",
+  "version": "v.22.10.2026.r5.18:13",
+  "deployedAt": "2026-10-22T18:13:09.024766+02:00",
   "author": "WozniakGrokBot",
   "agent": "WozniakGrokBot",
   "deployer": "WozniakGrokBot",
   "machine": "GrokBotBox",
   "signature": "WozniakGrokBot · GrokBotBox",
-  "git": "d8a30b96c22a39413602d8b1e59518cebab2d70d",
-  "gitFull": "d8a30b96c22a39413602d8b1e59518cebab2d70d",
-  "gitShort": "d8a30b9",
+  "git": "fce299dccb3324e5cb8140f3d7016ee55210cbdc",
+  "gitFull": "fce299dccb3324e5cb8140f3d7016ee55210cbdc",
+  "gitShort": "fce299d",
   "dirty": false,
   "novedades": [
-    "Creador: «🔗 Crear cápsula desde URL» en el panel de cápsulas. Pegas un enlace (LinkedIn, YouTube, X, TikTok o artículo), se redacta un «¿Sabías que?» con gancho, giro y remate, lo editas y se genera con la plantilla v5 en vertical y horizontal en el Stock (#capsula), con enlace a la fuente y sin duplicados."
+    "Stock: en las cápsulas «¿Sabías que?» creadas desde URL, el tramo del vídeo de la fuente es interactivo: muestra «▶ Ver el original» con el autor y abre la fuente en una pestaña nueva."
   ],
   "rollback": {
-    "git": "d8a30b96c22a39413602d8b1e59518cebab2d70d"
+    "git": "fce299dccb3324e5cb8140f3d7016ee55210cbdc"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -58,7 +58,8 @@
     ".source-patches/stock-capsulas-video.json",
     ".source-patches/studio-creator-home.json",
     ".source-patches/stock-video-sin-capsulas-youtube.json",
-    ".source-patches/creator-capsule-desde-url.json"
+    ".source-patches/creator-capsule-desde-url.json",
+    ".source-patches/capsula-fuente-interactiva.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
