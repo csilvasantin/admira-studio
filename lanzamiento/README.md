@@ -4,7 +4,11 @@ De una campaña del Stock a un vídeo de lanzamiento: piezas reales, voz de Admi
 
 Es una **herramienta**, no una página: `deploy.sh` la deja fuera de la publicación web. Se usa desde la terminal o desde la skill `lanzamiento` (`skill/SKILL.md`).
 
-## Qué hay hoy (paso 1 del plan, 22-oct-2026)
+## Estado (23-oct-2026): los siete pasos hechos
+
+`brief → guion → voz → montar → revisar → render → publicar`, en español e inglés, 16:9 y vertical, con parada en cada comprobación y publicación solo con `--si`. `npm test` recorre la cadena entera sin red. Primera campaña hecha de punta a punta: Starbucks · Gran de Gràcia 51 · Siete mensajes (Stock #1818–#1821). Protocolo de estreno en `skill/SKILL.md`.
+
+## Qué hay (paso 1 del plan, 22-oct-2026)
 
 - `src/`: la composición «Un prompt. Una tienda.» (demo v2, Stock #1817) tal como se montó a mano: `guion.ts` (escenas y tiempos a partir de la voz real), `piezas.tsx` (subtítulos, pantallas, vídeo del Stock), `escenas.tsx`, `Composition.tsx`.
 - `scripts/voz.mjs`: voz de Admirito con marcas de tiempo por palabra → `public/voz/*.mp3` + `lineas.json`.
@@ -71,7 +75,7 @@ Subir al Stock: `npm run publicar` (en seco por defecto; `--si` solo con el perm
 
 ## Plan
 
-Siete pasos (uno por PR): sitio y nombre · plantilla parametrizada · `brief` + `guion` · `voz` + `montar` + `revisar` · `render` + vertical · `publicar` · pruebas y skill final. Detalle en `~/Documents/Neo/entregas/2026-10-22-video-lanzamiento/plan-nivel-c.md` (Neo, MacStudio).
+Siete pasos, uno por PR, todos hechos (PR 118–124 de admira-studio): sitio y nombre · plantilla parametrizada · `brief` + `guion` · `voz` + `montar` + `revisar` · `render` + vertical · `publicar` · pruebas y skill final. Detalle en `~/Documents/Neo/entregas/2026-10-22-video-lanzamiento/plan-nivel-c.md` (Neo, MacStudio).
 
 ## Reglas
 

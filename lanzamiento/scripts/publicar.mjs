@@ -41,7 +41,10 @@ for (const s of SALIDAS) {
   const fichero = path.join(raiz, salida.fichero);
   const buffer = fs.readFileSync(fichero);
   const posterRuta = path.join(carpeta, `poster.${idioma}.${s.clave}.jpg`);
-  execFileSync('ffmpeg', ['-v', 'error', '-y', '-ss', String(segPoster), '-i', fichero, '-frames:v', '1', '-vf', `scale=${s.vertical ? '540:-1' : '960:-1'}`, '-q:v', '6', posterRuta]);
+  // El segundo del póster se acota a la duración real del fichero (ffprobe), por si el render es más corto.
+  const duracion = Number(execFileSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', fichero], { encoding: 'utf8' }).trim()) || 0;
+  const seg = duracion > 0 ? Math.min(segPoster, Math.max(0, duracion - 0.5)) : segPoster;
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-ss', String(seg), '-i', fichero, '-frames:v', '1', '-vf', `scale=${s.vertical ? '540:-1' : '960:-1'}`, '-q:v', '6', posterRuta]);
   const poster = fs.readFileSync(posterRuta);
   const ficha = fichaDe(l, brief, { idioma, vertical: s.vertical, version });
   const partes = partesDe(buffer.length, 25 * 1024 * 1024);
