@@ -47,6 +47,8 @@ TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 git archive "$SOURCE_SHA" | tar -x -C "$TMP"
 # Fuera lo que es herramienta del espejo, no activo web.
 rm -rf "$TMP/sync.sh" "$TMP/marca.json" "$TMP/deploy.sh" "$TMP/.fuente" "$TMP/README.md"
+# lanzamiento/ es la herramienta de vídeos de lanzamiento (Node + Remotion), no activo web (22-oct-2026).
+rm -rf "$TMP/lanzamiento"
 
 # La firma del artefacto identifica el SHA archivado, incluso después de merge.
 # Conserva versión, responsable y configuración del propio Studio.
