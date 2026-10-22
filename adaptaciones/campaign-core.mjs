@@ -1,4 +1,4 @@
-import {restoreSource} from './campaign-url.mjs?v=campana-url-1';
+import {restoreSource} from './campaign-url.mjs?v=campana-url-2';
 import {EINK_STYLE,einkPlan} from './eink-core.mjs?v=eink-cartela-1';
 import {restoreContentRequest} from './content-request-core.mjs?v=eink-cartela-1';
 import {restoreJourney} from './campaign-journey.mjs?v=six-verticals-1';
