@@ -103,16 +103,10 @@ export const Stock: React.FC = () => {
   const { piezas, rotulos } = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const tam = [
-    { w: 560, h: 315 },
-    { w: 260, h: 462 },
-    { w: 560, h: 315 },
-    { w: 820, h: 230 },
-    { w: 560, h: 180 },
-    { w: 560, h: 315 },
-    { w: 260, h: 462 },
-    { w: 560, h: 315 },
-  ];
+  // Hasta cinco pósters, cajas grandes (la v2); con más, dos filas de cajas pequeñas.
+  const tam = piezas.posters.length <= 5
+    ? [{ w: 560, h: 315 }, { w: 260, h: 462 }, { w: 560, h: 315 }, { w: 820, h: 230 }, { w: 560, h: 180 }]
+    : [{ w: 409, h: 230 }, { w: 129, h: 230 }, { w: 409, h: 230 }, { w: 409, h: 230 }, { w: 129, h: 230 }, { w: 409, h: 230 }, { w: 409, h: 230 }, { w: 129, h: 230 }];
   return (
     <Fondo>
       <AbsoluteFill style={{ padding: "70px 90px 150px" }}>

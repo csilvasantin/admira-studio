@@ -4,3 +4,6 @@ public/stock/
 trabajo/
 salida/
 .remotion/
+props/*.es.json
+props/*.en.json
+public/voz/*/
