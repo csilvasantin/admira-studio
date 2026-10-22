@@ -1,0 +1,32 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "d8a30b96c22a39413602d8b1e59518cebab2d70d",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "studio-first (pendiente de portar a pixeria)",
+  "dependsOn": {
+    "repository": "csilvasantin/pixer-worker",
+    "pullRequest": 32,
+    "version": "v.22.10.2026.r2.17:42",
+    "endpoints": [
+      "/capsula/url/borrador",
+      "/capsula/url/encargar",
+      "/capsula/url/estado",
+      "/capsula/url/cola"
+    ]
+  },
+  "reason": "Carlos: en el Creador, pegar una URL (LinkedIn, YouTube, X, TikTok o artículo) y crear una cápsula «¿Sabías que?» parecida al contenido. El panel 📚 Nueva cápsula suma «🔗 Crear cápsula desde URL»: extrae título/texto/idea clave y redacta gancho, giro y remate con Gemini (secret existente del worker), Carlos lo edita y se encarga el render con la plantilla v5 (Python + ffmpeg en GrokBotBox, mismo pipeline que #1793/#1794) que publica en Stock vertical + horizontal con #capsula #sabiasque, enlace a la fuente y dedup por origen (externalRef capsula-url:<hash>). Portado a mano sin sync.sh.",
+  "files": [
+    "functions/creator-capsule-url.js",
+    "assets/creator-capsule-url.mjs",
+    "assets/creator-capsule.css",
+    "creador/index.html",
+    "en/creador/index.html",
+    "test/creator-capsule-url.test.mjs"
+  ],
+  "secrets": "ninguno nuevo en Pages; GEMINI_API_KEY ya existente en el worker pixer-eleven",
+  "preservesFiltersAndAccess": true,
+  "rollback": "d8a30b96c22a39413602d8b1e59518cebab2d70d",
+  "status": "release-authorized",
+  "release": "v.22.10.2026.r4.17:46"
+}
