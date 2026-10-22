@@ -1,0 +1,32 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "7a1153709f5e89c0107db738452ce5005cf8519d",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "studio-first (pendiente de portar a pixeria)",
+  "dependsOn": {
+    "repository": "csilvasantin/pixer-worker",
+    "pullRequest": 34,
+    "version": "v.22.10.2026.r4.18:41",
+    "endpoint": "/capsula/url/borrador modo campana"
+  },
+  "reason": "Carlos: creador de contenidos desde URL en la página principal del Creador. Campo «Crear desde URL» justo debajo de «＋ Nueva campaña»: crea una campaña nueva y rellena el paso Contenido (marca/producto, titular, llamada a la acción e imagen de la fuente vía /image/proxy) con el borrador de pixer-worker en modo campaña; las Propuestas salen igual que con producto y texto subidos a mano y se editan en «Editar contenido». La campaña guarda source {url,title,author,kind,idea} (restoreCampaign lo valida) y muestra «↗ Fuente» enlazada en el lienzo. Si la página no se lee, se pega el texto. Portado a mano sin sync.sh.",
+  "files": [
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/campaign-core.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/campaign-url.mjs",
+    "assets/studio-workflow/creator.css",
+    "assets/studio-workflow/creator.mjs",
+    "creador/index.html",
+    "en/creador/index.html",
+    "functions/creator-capsule-url.js",
+    "test/campaign-url.test.mjs",
+    ".source-patches/creador-campana-desde-url.json"
+  ],
+  "secrets": "ninguno",
+  "preservesFiltersAndAccess": true,
+  "rollback": "7a1153709f5e89c0107db738452ce5005cf8519d",
+  "status": "release-authorized",
+  "release": "v.22.10.2026.r6.18:26"
+}

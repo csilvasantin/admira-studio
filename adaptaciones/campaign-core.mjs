@@ -1,3 +1,4 @@
+import {restoreSource} from './campaign-url.mjs?v=campana-url-1';
 import {EINK_STYLE,einkPlan} from './eink-core.mjs?v=eink-cartela-1';
 import {restoreContentRequest} from './content-request-core.mjs?v=eink-cartela-1';
 import {restoreJourney} from './campaign-journey.mjs?v=six-verticals-1';
@@ -42,6 +43,7 @@ export function restoreCampaign(value){
  if(!value||value.schema!==CAMPAIGN_SCHEMA)throw Error('campaign-schema');
  const out=clone(DEFAULT_CAMPAIGN);
  if(value.creationRequest!==undefined)out.creationRequest=restoreContentRequest(value.creationRequest);
+ if(value.source!==undefined)out.source=restoreSource(value.source);
  if(value.wallStory!==undefined)out.wallStory=restoreStory(value.wallStory);
  if(value.journeyStory!==undefined)out.journeyStory=restoreJourney(value.journeyStory);
  if(out.wallStory&&out.journeyStory)throw Error('campaign-story-mode');
