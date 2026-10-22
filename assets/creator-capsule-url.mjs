@@ -1,4 +1,5 @@
 // «Crear cápsula desde URL» (Creador · 22-oct-2026). Se monta dentro del panel 📚 Nueva cápsula.
+// v5.7 (22-oct-2026): interruptores Preroll/Postroll, apagados por defecto (la cápsula empieza y acaba en el cuerpo).
 // URL → extraer + redactar (gancho · giro · remate) → Carlos edita → encargar render v5 → Stock (#capsula).
 export const CAMPOS=[['objeto','Título de la ficha','Card title',90],['subtitulo','Subtítulo de la cartela','Title card subtitle',60],['gancho','Gancho (línea 1)','Hook (line 1)',70],['giro','Giro (línea 2)','Twist (line 2)',80],['remate','Remate (línea 3)','Payoff (line 3)',90],['fuente','Fuente en pantalla','On-screen source',80],['idea','Idea clave','Key idea',280]];
 export function readGuion(get){const g={};for(const [k] of CAMPOS)g[k]=get('capurl-'+k).trim();const h=get('capurl-cifra').trim();g.cifra={hasta:h===''?null:Number(h.replace(/\./g,'').replace(',','.')),unidad:get('capurl-unidad').trim()};g.tema=get('capurl-tema')||'tecnología';return g;}
@@ -13,7 +14,7 @@ if(typeof document!=='undefined'){
 <div class="creator-capsule-actions"><button type="button" class="pill accent" id="capurl-extraer">✍️ ${t('Extraer y redactar guion','Extract and draft script')}</button></div>
 <div id="capurl-editor" hidden><p id="capurl-origen" class="capurl-origen"></p><div class="creator-capsule-grid">${CAMPOS.map(([k,es,eng,max])=>`<label class="full">${t(es,eng)}${k==='idea'?`<textarea id="capurl-${k}" rows="2" maxlength="${max}"></textarea>`:`<input id="capurl-${k}" maxlength="${max}">`}</label>`).join('')}
 <label>${t('Cifra (opcional, solo si está en la fuente)','Figure (optional, only if in source)')}<input id="capurl-cifra" inputmode="decimal" maxlength="14"></label><label>${t('Unidad de la cifra','Figure unit')}<input id="capurl-unidad" maxlength="16"></label>
-<label>${t('Tema','Topic')}<select id="capurl-tema">${['tecnología','ciencia','negocio','creatividad','música','marketing','salud','cultura'].map(x=>`<option>${x}</option>`).join('')}</select></label></div>
+<label>${t('Tema','Topic')}<select id="capurl-tema">${['tecnología','ciencia','negocio','creatividad','música','marketing','salud','cultura'].map(x=>`<option>${x}</option>`).join('')}</select></label><label class="capurl-switch"><input id="capurl-preroll" type="checkbox"> ${t('Preroll','Preroll')} <small>${t('cartela de entrada','opening card')}</small></label><label class="capurl-switch"><input id="capurl-postroll" type="checkbox"> ${t('Postroll','Postroll')} <small>${t('cartela de cierre','closing card')}</small></label></div>
 <div class="creator-capsule-actions"><button type="button" class="pill accent" id="capurl-generar">🎬 ${t('Generar cápsula v5 y guardar en Stock','Render v5 capsule and save to Stock')}</button><a class="pill" id="capurl-ver" hidden>${t('Ver en Stock','View in Stock')} →</a></div></div>
 <p id="capurl-status" role="status" aria-live="polite"></p><hr>`;
   dialog.querySelector('#capsulaForm').before(box);
@@ -32,7 +33,7 @@ if(typeof document!=='undefined'){
     $('capurl-editor').hidden=false;if(d.status==='sin-encargo')say(t('Borrador listo: revisa y edita antes de generar.','Draft ready: review and edit before rendering.'));$('capurl-gancho').focus();
    }catch(e){say(t('No se pudo leer la URL: ','Could not read URL: ')+e.message);}finally{$('capurl-extraer').disabled=false;}};
   $('capurl-generar').onclick=async()=>{if(!borrador)return;$('capurl-generar').disabled=true;say(t('Encargando render v5…','Queuing v5 render…'));
-   try{const d=await call({accion:'encargar',url:val('capurl-url').trim(),guion:readGuion(val),image:borrador.source?.image||'',author:borrador.source?.author||'',title:borrador.source?.title||''});
+   try{const d=await call({accion:'encargar',url:val('capurl-url').trim(),guion:readGuion(val),image:borrador.source?.image||'',author:borrador.source?.author||'',title:borrador.source?.title||'',preroll:$('capurl-preroll').checked,postroll:$('capurl-postroll').checked});
     if(!d.ok)throw Error((d.errors||[]).join(' · ')||d.error);say((d.reused?t('Ya estaba encargada. ','Already queued. '):'')+statusText(d,t));verStock(d);if(d.status!=='publicada')watch(d.ref);
    }catch(e){say(t('No se pudo encargar: ','Could not queue: ')+e.message);}finally{$('capurl-generar').disabled=false;}};
   const q=new URLSearchParams(location.search).get('capsula-url');if(q){$('capurl-url').value=q;}
