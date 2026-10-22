@@ -3,7 +3,9 @@
  * · Mientras el vídeo pasa por el tramo se muestra «▶ Ver el original · Vídeo: <autor>» (enlace, pestaña nueva).
  * · Al ENTRAR en el tramo se intenta abrir la fuente en una pestaña nueva (una vez por apertura del modal;
  *   si el navegador bloquea la ventana emergente queda el enlace).
- * · Pulsar el vídeo dentro del tramo, o el crédito, abre la fuente. Fuera del tramo, el clic es el de siempre. */
+ * · Pulsar el vídeo dentro del tramo, o el crédito, abre la fuente. Fuera del tramo, el clic es el de siempre.
+ * v5.3 (22-oct-2026): el tramo es toda la explicación (2–14 s). En tramos largos (≥ 6 s) no se abre ninguna
+ *   pestaña sola: el enlace se ve todo el tramo y pulsar el vídeo abre la fuente en cualquier momento. */
 (function () {
   'use strict';
   function fuente(it) {
@@ -12,6 +14,8 @@
     return b ? { url: c.sourceUrl, credit: String(c.credit || ''), start: b.start, end: b.end } : null;
   }
   function enTramo(f, t) { return t >= f.start && t < f.end; }
+  const AUTO_MAX = 6; // s: sólo los tramos cortos de v5.1/v5.2 intentan abrir la fuente al entrar
+  function autoAbre(f) { return f.end - f.start < AUTO_MAX; }
   function abrir(url) { try { window.open(url, '_blank', 'noopener'); } catch (_) {} }
   function attach(video, it, opts) {
     const f = fuente(it); if (!video || !f) return null;
@@ -24,8 +28,8 @@
     box.appendChild(a);
     let abierta = false;
     const tick = () => {
-      const dentro = enTramo(f, video.currentTime); a.hidden = !dentro;
-      if (dentro && !abierta && !video.paused) { abierta = true; abrir(f.url); }
+      const dentro = enTramo(f, video.currentTime); a.hidden = !dentro; video.style.cursor = dentro ? 'pointer' : '';
+      if (dentro && autoAbre(f) && !abierta && !video.paused) { abierta = true; abrir(f.url); }
     };
     video.addEventListener('timeupdate', tick); video.addEventListener('seeked', tick);
     video.addEventListener('click', e => {
@@ -36,7 +40,7 @@
     }, true);
     return { fuente: f, link: a };
   }
-  const api = { fuente, enTramo, attach };
+  const api = { fuente, enTramo, attach, autoAbre };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window !== 'undefined') window.AdmiraCapsulaFuente = api;
 })();
