@@ -47,6 +47,15 @@ npm run revisar -- <nombre> --idioma es --vertical    # hoja de fotogramas de la
 
 Saca `salida/<nombre>.<idioma>.mp4` (1920×1080) y `salida/<nombre>.<idioma>.vertical.mp4` (1080×1920, lo que ven las pantallas del local) desde el mismo `props/<nombre>.<idioma>.json`: la composición `UnPromptUnaTiendaVertical` usa la misma plantilla y recoloca las escenas (pieza vertical a pantalla completa en el anuncio, rejilla del Stock en dos columnas, textos adaptados). Comprueba cada mp4 con ffprobe (duración esperada, tamaño, pistas) y con ffmpeg el nivel de audio (media por encima de −30 dB) y silencios largos; informe en `trabajo/<nombre>/render.<idioma>.json`; sale con error si algo falla. Los valores 16:9 no cambian: la v2 sigue regenerándose idéntica.
 
+## Paso 6 · `publicar`, solo con el sí expreso (22-oct-2026)
+
+```bash
+npm run publicar -- <nombre> --idioma es                 # PRUEBA EN SECO: qué subiría (ficheros, partes, título, etiquetas, póster); no toca nada
+npm run publicar -- <nombre> --idioma es --si [--solo vertical] [--version v2] [--handon ~/Documents/Neo/HANDON-AAAA-MM-DD.md]
+```
+
+Cada versión (16:9 y vertical) es una pieza aparte del Stock: subida por partes (`/stock/upload/init` → `part?n=` → `complete`) y alta (`/stock/publish` con `r2Staged`), título «Cliente · Local · Descripción · Lanzamiento ES · 16:9|vertical 9:16 · v1», etiquetas `lanzamiento`, `lanzamiento-horizontal|vertical`, `campaign:<id>`, `installation:<principal>`, `content-language:<idioma>`, cliente y marcas, y póster sacado del propio render (escena del anuncio). Exige que `render.<idioma>.json` esté OK. Deja `trabajo/<nombre>/publicacion.<idioma>.json` y la línea para el HANDON (`--handon` la añade al fichero). Sin `--si` nunca sube.
+
 ## Uso
 
 ```bash
@@ -58,7 +67,7 @@ npx remotion render UnPromptUnaTienda out/lanzamiento.mp4 --codec h264
 npm test                             # esquema, palabras prohibidas y plan de escenas
 ```
 
-Subir al Stock: `node ../tools/… ` → ver la skill; nunca sin el sí del humano.
+Subir al Stock: `npm run publicar` (en seco por defecto; `--si` solo con el permiso del humano).
 
 ## Plan
 
