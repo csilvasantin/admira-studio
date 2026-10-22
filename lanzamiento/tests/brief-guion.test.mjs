@@ -50,9 +50,10 @@ test('el guion sale de la plantilla en español y en inglés, válido y sin pala
     assert.equal(g.lineas.length, 7);
     assert.equal(g.escenas.length, 9);
     assert.match(g.prompt.texto, /Gran de Gràcia 51/);
-    assert.match(g.prompt.texto, idioma === 'es' ? /Siete pantallas, inglés y español/ : /Seven screens, English and Spanish/);
-    assert.match(g.lineas[4].text, idioma === 'es' ? /Siete pantallas, en inglés y español, en Gran de Gràcia 51/ : /Seven screens, in English and Spanish, at Gran de Gràcia 51/);
-    assert.equal(g.rotulos.listo, 'admira.store · Siete mensajes · EN + ES');
+    assert.match(g.prompt.texto, idioma === 'es' ? /Siete pantallas, español e inglés/ : /Seven screens, English and Spanish/);
+    assert.match(g.lineas[4].text, idioma === 'es' ? /Siete pantallas, en español e inglés, en Gran de Gràcia 51/ : /Seven screens, in English and Spanish, at Gran de Gràcia 51/);
+    assert.equal(g.rotulos.listo, idioma === 'es' ? 'admira.store · Siete mensajes · ES + EN' : 'admira.store · Siete mensajes · EN + ES');
+    if (idioma === 'en') assert.ok(g.piezas.vertical.id.endsWith('-p5') || g.piezas.vertical.id.endsWith('-p6') || g.piezas.vertical.id.endsWith('-p7'), 'en inglés, la pieza vertical es una de las inglesas');
     const todo = JSON.stringify(g);
     assert.ok(!PROHIBIDAS.test(todo), 'nada prohibido en el guion');
   }

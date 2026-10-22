@@ -28,8 +28,8 @@ export const PLANTILLAS = {
     rotulos: {
       stock: `Stock · ${x.crea} · ${b.cliente} · ${b.local}`,
       pantallas: 'Visuales generados · colocados en cada pantalla',
-      pantallaHorizontal: `${b.piezas.horizontal.orientacion} · ${b.piezas.horizontal.id}`,
-      pantallaVertical: `${b.piezas.vertical.orientacion} · ${b.piezas.vertical.id}`,
+      pantallaHorizontal: `${x.piezas.horizontal.orientacion} · ${x.piezas.horizontal.id}`,
+      pantallaVertical: `${x.piezas.vertical.orientacion} · ${x.piezas.vertical.id}`,
       curvas: `${x.crea} · adaptación · curva de entrada · fotogramas clave`,
       anuncio: `${x.emite} · emitiendo · ${b.cliente} · ${b.local}`,
       listo: `${x.emite} · ${b.descripcion || 'lanzamiento'} · ${x.idiomasCorto}`,
@@ -58,8 +58,8 @@ export const PLANTILLAS = {
     rotulos: {
       stock: `Stock · ${x.crea} · ${b.cliente} · ${b.local}`,
       pantallas: 'Generated visuals · placed on every screen',
-      pantallaHorizontal: `${b.piezas.horizontal.orientacion} · ${b.piezas.horizontal.id}`,
-      pantallaVertical: `${b.piezas.vertical.orientacion} · ${b.piezas.vertical.id}`,
+      pantallaHorizontal: `${x.piezas.horizontal.orientacion} · ${x.piezas.horizontal.id}`,
+      pantallaVertical: `${x.piezas.vertical.orientacion} · ${x.piezas.vertical.id}`,
       curvas: `${x.crea} · adaptation · entry curve · keyframes`,
       anuncio: `${x.emite} · on air · ${b.cliente} · ${b.local}`,
       listo: `${x.emite} · ${b.descripcion || 'launch'} · ${x.idiomasCorto}`,
@@ -84,9 +84,11 @@ export const PLANTILLAS = {
 export const guionDesdeBrief = (brief, { idioma = 'es', crea = 'admira.studio', emite = 'admira.store', fecha = '' } = {}) => {
   if (!PLANTILLAS[idioma]) throw new Error(`idioma sin plantilla: ${idioma}`);
   const n = brief.pantallas?.length || 0;
-  const idiomas = brief.idiomas || [];
+  // El idioma del guion va primero («español e inglés» en es, «English and Spanish» en en).
+  const idiomas = [...(brief.idiomas || [])].sort((a, b) => (a === idioma ? -1 : b === idioma ? 1 : a.localeCompare(b)));
   const x = {
     crea, emite,
+    piezas: brief.piezasPorIdioma?.[idioma] || brief.piezas,
     pantallasTxt: n ? (idioma === 'es' ? `${num(n, 'es')[0].toUpperCase()}${num(n, 'es').slice(1)} pantalla${n === 1 ? '' : 's'}` : `${num(n, 'en')[0].toUpperCase()}${num(n, 'en').slice(1)} screen${n === 1 ? '' : 's'}`) : (idioma === 'es' ? 'Tus pantallas' : 'Your screens'),
     idiomasTxt: idiomas.length ? `, ${listaIdiomas(idiomas, idioma)}` : '',
     idiomasTxtVoz: idiomas.length ? (idioma === 'es' ? `, en ${listaIdiomas(idiomas, idioma)}` : `, in ${listaIdiomas(idiomas, idioma)}`) : '',
@@ -100,7 +102,7 @@ export const guionDesdeBrief = (brief, { idioma = 'es', crea = 'admira.studio', 
     local: { cliente: brief.cliente, nombre: brief.local, pantallas: brief.pantallas?.join(', ') || '' },
     titulo: t.titulo,
     prompt: t.prompt,
-    piezas: brief.piezas,
+    piezas: brief.piezasPorIdioma?.[idioma] || brief.piezas,
     rotulos: t.rotulos,
     tutorial: t.tutorial,
     cierre: t.cierre,

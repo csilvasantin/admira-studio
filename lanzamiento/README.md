@@ -28,6 +28,16 @@ npm run guion -- starbucks-gdg51-seven-20261015 --idioma es   # y --idioma en
 
 `brief` lee el índice público del Stock, se queda con las piezas de la campaña (acepta variantes `campaign:<id>-…`), elige la instalación principal (la de más piezas) y cuenta sus pantallas (`screen:` reales; `landscape`/`portrait` no son pantallas), lee cliente, local y descripción del título, elige horizontal, vertical y conjunto (panorámico) y hasta ocho pósters, los baja a `public/stock/` y escribe `trabajo/<nombre>/brief.json`. `guion` aplica la plantilla «Un prompt. Una tienda.» en español o inglés y deja `trabajo/<nombre>/guion.<idioma>.json`: un props completo sin tiempos de voz, validado (palabras prohibidas incluidas). Nada se escribe a mano. Probado con la campaña de los siete mensajes de Starbucks · Gran de Gràcia 51.
 
+## Paso 4 · `voz`, `montar` y `revisar` (22-oct-2026)
+
+```bash
+npm run voz -- <nombre> --idioma es      # Admirito con tiempos por palabra → public/voz/<nombre>/es/*.mp3 + trabajo/<nombre>/lanzamiento.es.json
+npm run montar -- <nombre> --idioma es   # valida y deja props/<nombre>.es.json (imprime el plan de escenas y la orden de render)
+npm run revisar -- <nombre> --idioma es  # para si algo falla: datos, ficheros, duración, voz baja, palabras prohibidas; hoja trabajo/<nombre>/revision.es.png
+```
+
+La duración de cada escena sale de la voz real. `revisar` renderiza un fotograma por escena y mide cada línea de voz con ffmpeg (parada por debajo de −30 dB). El brief elige piezas por idioma (`piezasPorIdioma`) y el guion en inglés usa las piezas en inglés. Con más de cinco pósters, la rejilla del Stock pasa a dos filas pequeñas. Probado con la campaña de los siete mensajes en español e inglés.
+
 ## Uso
 
 ```bash

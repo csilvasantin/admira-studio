@@ -44,14 +44,22 @@ export const resolverCampana = (indice, filtro) => {
   const propios = filtrar(items, filtro);
   if (!propios.length) throw new Error(`sin piezas en el Stock para ${JSON.stringify(filtro)}`);
   const videos = propios.filter((i) => i.type === 'video');
-  const porOri = (o) => videos.filter((i) => orientacionDe(i) === o);
-  const horizontales = porOri('horizontal'), verticales = porOri('vertical'), panoramicas = porOri('panoramica');
-  const conjunto = panoramicas[0] || horizontales[0] || verticales[0];
-  const horizontal = horizontales[0] || conjunto;
-  const vertical = verticales[0] || horizontal;
-  // Pósters: primero los vídeos (uno por pantalla), luego imágenes; máximo 8, sin repetir.
-  const conPoster = [...videos, ...propios.filter((i) => i.type === 'image')];
-  const posters = [...new Set(conPoster.map(posterDe))].slice(0, 8);
+  // Elección de piezas; con idioma, primero las de ese idioma (content-language) y luego el resto.
+  const elegir = (idiomaPref) => {
+    const orden = idiomaPref ? [...videos].sort((a, b) => Number(con(b, 'content-language', idiomaPref)) - Number(con(a, 'content-language', idiomaPref))) : videos;
+    const porOri = (o) => orden.filter((i) => orientacionDe(i) === o);
+    const horizontales = porOri('horizontal'), verticales = porOri('vertical'), panoramicas = porOri('panoramica');
+    const conjunto = panoramicas[0] || horizontales[0] || verticales[0];
+    const horizontal = horizontales[0] || conjunto;
+    const vertical = verticales[0] || horizontal;
+    const conPoster = [...orden, ...propios.filter((i) => i.type === 'image')];
+    const posters = [...new Set(conPoster.map(posterDe))].slice(0, 8);
+    return { horizontales, verticales, horizontal, vertical, conjunto, posters };
+  };
+  const base = elegir();
+  const { horizontales, verticales, horizontal, vertical, conjunto, posters } = base;
+  const idiomasPresentes = valoresDe(propios, 'content-language');
+  const piezasPorIdioma = Object.fromEntries(idiomasPresentes.map((idi) => { const e = elegir(idi); return [idi, { horizontal: pieza(e.horizontal), vertical: pieza(e.vertical), conjunto: pieza(e.conjunto), posters: e.posters }]; }));
   const primero = propios[0];
   const { cliente, local, descripcion } = partesDelTitulo(primero.title);
   // Instalación principal: la que más piezas tiene; las pantallas se cuentan solo en ella.
@@ -68,13 +76,18 @@ export const resolverCampana = (indice, filtro) => {
     instalaciones,
     instalacionPrincipal,
     piezas: { horizontal: pieza(horizontal), vertical: pieza(vertical), conjunto: pieza(conjunto), posters },
+    piezasPorIdioma,
     avisos: [
       ...(horizontales.length ? [] : ['sin pieza horizontal: se usa el conjunto o la vertical en su lugar']),
       ...(verticales.length ? [] : ['sin pieza vertical: se usa la horizontal en su lugar']),
     ],
     todas: propios.map((i) => ({ id: i.id, type: i.type, titulo: String(i.title || '').slice(0, 120), orientacion: orientacionDe(i), tags: ETIQ(i) })),
-    descargas: [...new Map(
-      [horizontal, vertical, conjunto].filter(Boolean).map((i) => [i.id, { id: i.id, fichero: ficheroDe(i), url: `https://stock.admira.store/stock/${i.id}/asset.${ficheroDe(i).split('.').pop()}` }]),
-    ).values()].concat(posters.map((p) => ({ id: p.split('/')[1].replace('.poster.jpg', ''), fichero: p, url: `https://stock.admira.store/stock/${p.split('/')[1].replace('.poster.jpg', '')}/poster.jpg` }))),
+    descargas: (() => {
+      const vids = new Map(), pos = new Set([...posters]);
+      const anota = (i) => i && vids.set(i.id, { id: i.id, fichero: ficheroDe(i), url: `https://stock.admira.store/stock/${i.id}/asset.${ficheroDe(i).split('.').pop()}` });
+      [horizontal, vertical, conjunto].forEach(anota);
+      for (const idi of idiomasPresentes) { const e = elegir(idi); [e.horizontal, e.vertical, e.conjunto].forEach(anota); e.posters.forEach((x) => pos.add(x)); }
+      return [...vids.values()].concat([...pos].map((p) => ({ id: p.split('/')[1].replace('.poster.jpg', ''), fichero: p, url: `https://stock.admira.store/stock/${p.split('/')[1].replace('.poster.jpg', '')}/poster.jpg` })));
+    })(),
   };
 };
