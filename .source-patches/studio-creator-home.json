@@ -1,0 +1,20 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "b498907e",
+  "reason": "Prioritize campaign creation on the home page and compact Creator controls, especially on mobile, preserving the existing campaign engine. Studio-specific changes are declared in marca.json for future regeneration.",
+  "files": [
+    "index.html",
+    "en/index.html",
+    "creador/index.html",
+    "en/creador/index.html",
+    "assets/studio-workflow/creator.mjs",
+    "assets/studio-workflow/creator.css",
+    "marca.json"
+  ],
+  "verification": {
+    "browser": "Authenticated read-only headless Chrome; local overlay; ES/EN at 1440, 390 and 320 px. Home links, visible and expanded controls, keyboard navigation, edit/reload recovery; no JavaScript errors.",
+    "regeneration": "Four generated documents reproduced by the six new marca.json substitutions; replay is idempotent.",
+    "regressions": "32 passing tests: campaign recovery, delivery, Creator project context, homepage intro and deploy contract."
+  }
+}
