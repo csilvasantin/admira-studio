@@ -1,0 +1,28 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "5b97c84afc5536ad0c74ea201d143aa3f5cb4a45",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "studio-first (pendiente de portar a pixeria)",
+  "dependsOn": {
+    "repository": "csilvasantin/admira-studio",
+    "patch": ".source-patches/creador-campana-desde-url.json"
+  },
+  "reason": "Carlos probó «Crear desde URL» en producción con sesión: pegaba la URL y no pasaba nada. Causa: sólo el envío del formulario (botón o Enter) lanzaba la acción; pegar no disparaba nada y el estado era una línea gris discreta. Además begin() podía salir en silencio (busy/initializing) y se anunciaba «creada». Ahora pegar una URL https lanza la acción sola, hay botón «Crear», franja de estado con color (Leyendo la fuente… → Redactando con IA… → Campaña creada), errores claros (sin sesión con enlace a iniciar sesión, URL no válida, fuente ilegible abriendo la caja de texto, error de red), botón e input bloqueados mientras trabaja y begin() devuelve si abrió la campaña.",
+  "files": [
+    "adaptaciones/adaptaciones.js",
+    "adaptaciones/campaign-core.mjs",
+    "adaptaciones/campaign-studio.mjs",
+    "adaptaciones/campaign-url.mjs",
+    "assets/studio-workflow/creator.css",
+    "creador/index.html",
+    "en/creador/index.html",
+    "test/campaign-url.test.mjs",
+    ".source-patches/creador-url-feedback.json"
+  ],
+  "secrets": "ninguno",
+  "preservesFiltersAndAccess": true,
+  "rollback": "5b97c84afc5536ad0c74ea201d143aa3f5cb4a45",
+  "status": "release-authorized",
+  "release": "v.22.10.2026.r7.19:32"
+}

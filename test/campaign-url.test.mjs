@@ -27,3 +27,19 @@ test('el campo «Crear desde URL» va justo debajo de «＋ Nueva campaña» y e
  const s=readFileSync(new URL('../adaptaciones/campaign-studio.mjs',import.meta.url),'utf8');const a=s.indexOf('id="campaign-new"'),b=s.indexOf('id="campaign-url-form"');assert.ok(a>0&&b>a&&b-a<200);assert.match(s,/mountUrlCampaign\(/);
  const w=readFileSync(new URL('../assets/studio-workflow/creator.mjs',import.meta.url),'utf8');assert.match(w,/primary\.append\(newCampaign, \.\.\.\(fromUrl \? \[fromUrl\] : \[\]\)/);
 });
+
+import {isCampaignUrl,urlError} from '../adaptaciones/campaign-url.mjs';
+const tt=(es)=>es;
+test('isCampaignUrl acepta https completas y rechaza el resto',()=>{
+ assert.equal(isCampaignUrl('https://lnkd.in/p/e9zXSPkK'),true);
+ for(const v of ['','hola','http://a.com','https://localhost','https://u:p@a.com','javascript:alert(1)'])assert.equal(isCampaignUrl(v),false,v);
+});
+test('urlError distingue sesión, URL, fuente ilegible y red',()=>{
+ assert.equal(urlError(401,'session-required',tt).kind,'session');
+ assert.equal(urlError(400,'invalid-url',tt).kind,'url');
+ assert.equal(urlError(422,'source-has-no-readable-content',tt).kind,'source');
+ assert.equal(urlError(502,'source-unreachable',tt).kind,'source');
+ assert.equal(urlError(502,'stock-unreachable',tt).kind,'network');
+ assert.equal(urlError(0,'network',tt).kind,'network');
+ assert.equal(urlError(500,'campaign-synthesis-failed',tt).kind,'error');
+});
