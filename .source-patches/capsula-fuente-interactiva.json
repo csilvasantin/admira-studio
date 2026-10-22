@@ -1,0 +1,25 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "fce299dccb3324e5cb8140f3d7016ee55210cbdc",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "studio-first (pendiente de portar a pixeria)",
+  "dependsOn": {
+    "repository": "csilvasantin/pixer-worker",
+    "pullRequest": 33,
+    "version": "v.22.10.2026.r3.18:12",
+    "field": "capsuleSource {sourceUrl, credit, broll{start,end}, version}"
+  },
+  "reason": "Carlos tras revisar #1798/#1799: el vídeo de la fuente incrustado en una cápsula desde URL debe ser interactivo. En el modal de vídeo del Stock (ES/EN), durante el tramo del b-roll se muestra «▶ Ver el original · Vídeo: <autor>» y se intenta abrir la fuente en pestaña nueva; pulsar el vídeo en ese tramo o el crédito también la abre. Lee capsuleSource de la ficha, no el prompt. Portado a mano sin sync.sh.",
+  "files": [
+    "assets/capsula-fuente-interactiva.js",
+    "stock.html",
+    "en/stock.html",
+    "test/capsula-fuente-interactiva.test.mjs"
+  ],
+  "secrets": "ninguno",
+  "preservesFiltersAndAccess": true,
+  "rollback": "fce299dccb3324e5cb8140f3d7016ee55210cbdc",
+  "status": "release-authorized",
+  "release": "v.22.10.2026.r5.18:13"
+}

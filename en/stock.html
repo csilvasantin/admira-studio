@@ -356,6 +356,7 @@
   <script defer src="/assets/site-nav.js?v=18.10.2026.r16.2219"></script>
   <script defer src="/assets/descarga-local.js?v=17.10.2026.r6.2255"></script>
   <script defer src="/assets/youtube-compartir.js?v=22.10.2026.r3.1730"></script>
+  <script defer src="/assets/capsula-fuente-interactiva.js?v=22.10.2026.r5"></script>
   <link rel="stylesheet" href="/assets/xpaces/viewer.css?v=17.10.2026.r6.2255">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
   <link rel="stylesheet" href="/assets/cuadratura.css?v=18.10.2026.r16.2219">
@@ -1621,6 +1622,8 @@
         media = `<pre>${JSON.stringify(it, null, 2)}</pre>`;
       }
       lightboxInner.innerHTML = media;
+      // Cápsula desde URL: el tramo del b-roll y el crédito llevan a la fuente (assets/capsula-fuente-interactiva.js).
+      try { window.AdmiraCapsulaFuente?.attach(lightboxInner.querySelector('video'), it); } catch (_) {}
       const titleRaw = (it.title || '').trim();
       const titleBlock = titleRaw ? `<p class="stock-title">${titleRaw.replace(/</g,'&lt;')}</p>` : '';
       const commentRaw = (it.comment || '').trim();
