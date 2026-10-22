@@ -17,3 +17,12 @@ test('v5.3: tramo de toda la explicación sin pestaña automática; v5.1 conserv
  assert.equal(enTramo(f53,2),true);assert.equal(enTramo(f53,13.9),true);assert.equal(enTramo(f53,14),false);assert.equal(enTramo(f53,1.9),false);
  assert.equal(autoAbre(f53),false);assert.equal(autoAbre(fuente(it)),true);
 });
+
+test('v5.6: sin pastilla sobre el vídeo; el clic en la imagen dentro del tramo abre la fuente',()=>{
+ const opened=[];const L={};const parent={appendChild(){throw Error('no debe pintar nada');},style:{}};
+ const video={parentElement:parent,currentTime:5,paused:false,style:{},title:'',addEventListener:(k,fn)=>{L[k]=fn;},getBoundingClientRect:()=>({bottom:500})};
+ globalThis.window=Object.assign(globalThis.window||{},{open:(u)=>opened.push(u)});globalThis.document={documentElement:{lang:'es'}};globalThis.getComputedStyle=()=>({position:'relative'});
+ const it53={capsuleSource:{sourceUrl:'https://www.youtube.com/shorts/MgKUv4ZV1Mc',credit:'Vídeo: FILMAZIQ',broll:{start:2,end:14},version:7}};
+ const r=attach(video,it53);assert.equal(r.link,null);L.timeupdate();assert.equal(video.style.cursor,'pointer');assert.equal(opened.length,0);
+ let prevented=false;L.click({clientY:200,preventDefault(){prevented=true;},stopPropagation(){}});assert.equal(prevented,true);assert.deepEqual(opened,['https://www.youtube.com/shorts/MgKUv4ZV1Mc']);
+});
