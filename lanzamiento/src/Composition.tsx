@@ -73,18 +73,38 @@ const calculateMetadata: CalculateMetadataFunction<Lanzamiento> = ({ props }) =>
   return { durationInFrames: total, fps: l.fps, width: l.ancho, height: l.alto };
 };
 
+// Vertical (9:16): misma plantilla y mismos datos; solo cambia el lienzo y las escenas se recolocan.
+const calculateMetadataVertical: CalculateMetadataFunction<Lanzamiento> = ({ props }) => {
+  const l = validarLanzamiento(props);
+  const { total } = planificar(l);
+  return { durationInFrames: total, fps: l.fps, width: 1080, height: 1920 };
+};
+
 export const MyComposition = () => {
   return (
-    <Composition
-      id="UnPromptUnaTienda"
-      component={Lanzamiento_}
-      schema={LanzamientoSchema}
-      defaultProps={LanzamientoSchema.parse(datosV2)}
-      calculateMetadata={calculateMetadata}
-      durationInFrames={1}
-      fps={30}
-      width={1920}
-      height={1080}
-    />
+    <>
+      <Composition
+        id="UnPromptUnaTienda"
+        component={Lanzamiento_}
+        schema={LanzamientoSchema}
+        defaultProps={LanzamientoSchema.parse(datosV2)}
+        calculateMetadata={calculateMetadata}
+        durationInFrames={1}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="UnPromptUnaTiendaVertical"
+        component={Lanzamiento_}
+        schema={LanzamientoSchema}
+        defaultProps={LanzamientoSchema.parse(datosV2)}
+        calculateMetadata={calculateMetadataVertical}
+        durationInFrames={1}
+        fps={30}
+        width={1080}
+        height={1920}
+      />
+    </>
   );
 };

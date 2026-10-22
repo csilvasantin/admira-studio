@@ -1,6 +1,6 @@
 import React from "react";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
-import { COLORES, FUENTE, MONO, useLanzamiento } from "./guion";
+import { COLORES, FUENTE, MONO, useLanzamiento, useVertical } from "./guion";
 import { Pantalla, PosterStock, Rotulo, VideoStock, useEntrada } from "./piezas";
 
 const Fondo: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
@@ -18,6 +18,7 @@ const Fondo: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
 // 1 · Título
 export const Titulo: React.FC = () => {
   const { marca, titulo } = useLanzamiento();
+  const vertical = useVertical();
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const e1 = useEntrada(0.2, 0.9);
@@ -30,10 +31,10 @@ export const Titulo: React.FC = () => {
     <Fondo>
       <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", opacity: salida }}>
         <Rotulo style={{ ...e1, marginBottom: 28 }}>{`${marca.crea} · ${marca.emite} · ${marca.fecha}`}</Rotulo>
-        <div style={{ ...e1, fontSize: 132, fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1 }}>
+        <div style={{ ...e1, fontSize: vertical ? 104 : 132, fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1, textAlign: "center" }}>
           {titulo.linea1}
         </div>
-        <div style={{ ...e2, fontSize: 132, fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1, color: COLORES.acento }}>
+        <div style={{ ...e2, fontSize: vertical ? 104 : 132, fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1, color: COLORES.acento, textAlign: "center" }}>
           {titulo.linea2}
         </div>
       </AbsoluteFill>
@@ -44,6 +45,7 @@ export const Titulo: React.FC = () => {
 // 2 · El prompt, escrito en admira.studio
 export const Prompt: React.FC = () => {
   const { prompt } = useLanzamiento();
+  const vertical = useVertical();
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const e = useEntrada(0, 0.6);
@@ -62,7 +64,7 @@ export const Prompt: React.FC = () => {
         <div
           style={{
             ...e,
-            width: 1240,
+            width: vertical ? 960 : 1240,
             borderRadius: 22,
             background: "#f7f4ee",
             color: "#1c1c1c",
@@ -73,7 +75,7 @@ export const Prompt: React.FC = () => {
           <div style={{ fontFamily: FUENTE, fontSize: 26, color: "#8a8378", marginBottom: 22 }}>
             {prompt.cabecera}
           </div>
-          <div style={{ fontSize: 40, lineHeight: 1.3, minHeight: 110 }}>
+          <div style={{ fontSize: vertical ? 38 : 40, lineHeight: 1.3, minHeight: 110 }}>
             {prompt.texto.slice(0, letras)}
             <span style={{ opacity: enviado ? 0 : cursorVisible ? 1 : 0 }}>▍</span>
           </div>
@@ -101,15 +103,18 @@ export const Prompt: React.FC = () => {
 // 3 · Las piezas del Stock se organizan en rejilla
 export const Stock: React.FC = () => {
   const { piezas, rotulos } = useLanzamiento();
+  const vertical = useVertical();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  // Hasta cinco pósters, cajas grandes (la v2); con más, dos filas de cajas pequeñas.
-  const tam = piezas.posters.length <= 5
+  // Hasta cinco pósters, cajas grandes (la v2); con más, dos filas de cajas pequeñas. En vertical, dos columnas.
+  const tam = vertical
+    ? Array.from({ length: 8 }, () => ({ w: 460, h: 259 }))
+    : piezas.posters.length <= 5
     ? [{ w: 560, h: 315 }, { w: 260, h: 462 }, { w: 560, h: 315 }, { w: 820, h: 230 }, { w: 560, h: 180 }]
     : [{ w: 409, h: 230 }, { w: 129, h: 230 }, { w: 409, h: 230 }, { w: 409, h: 230 }, { w: 129, h: 230 }, { w: 409, h: 230 }, { w: 409, h: 230 }, { w: 129, h: 230 }];
   return (
     <Fondo>
-      <AbsoluteFill style={{ padding: "70px 90px 150px" }}>
+      <AbsoluteFill style={{ padding: vertical ? "110px 60px 260px" : "70px 90px 150px" }}>
         <Rotulo style={{ marginBottom: 26 }}>{rotulos.stock}</Rotulo>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 26, alignContent: "flex-start" }}>
           {piezas.posters.map((p, i) => {
@@ -135,23 +140,24 @@ export const Stock: React.FC = () => {
 // 4 · Las pantallas se encienden con los visuales
 export const Pantallas: React.FC = () => {
   const { piezas, rotulos } = useLanzamiento();
+  const vertical = useVertical();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const enc = (i: number) =>
     interpolate(frame, [i * 0.4 * fps, (i * 0.4 + 0.5) * fps], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <Fondo>
-      <AbsoluteFill style={{ padding: "70px 90px 150px" }}>
+      <AbsoluteFill style={{ padding: vertical ? "110px 60px 260px" : "70px 90px 150px" }}>
         <Rotulo style={{ marginBottom: 26 }}>{rotulos.pantallas}</Rotulo>
-        <div style={{ display: "flex", gap: 40, alignItems: "flex-end" }}>
-          <div style={{ opacity: enc(0) }}>
-            <Pantalla ancho={1130} alto={636}>
+        <div style={{ display: "flex", flexDirection: vertical ? "column" : "row", gap: 40, alignItems: vertical ? "center" : "flex-end" }}>
+          <div style={{ opacity: enc(vertical ? 1 : 0) }}>
+            <Pantalla ancho={vertical ? 960 : 1130} alto={vertical ? 540 : 636}>
               <VideoStock fichero={piezas.horizontal.fichero} desdeSeg={2} />
             </Pantalla>
             <Rotulo style={{ marginTop: 12, fontSize: 18, color: COLORES.mudo }}>{rotulos.pantallaHorizontal}</Rotulo>
           </div>
-          <div style={{ opacity: enc(1) }}>
-            <Pantalla ancho={358} alto={636}>
+          <div style={{ opacity: enc(vertical ? 0 : 1), order: vertical ? -1 : 0 }}>
+            <Pantalla ancho={vertical ? 420 : 358} alto={vertical ? 747 : 636}>
               <VideoStock fichero={piezas.vertical.fichero} desdeSeg={2} />
             </Pantalla>
             <Rotulo style={{ marginTop: 12, fontSize: 18, color: COLORES.mudo }}>{rotulos.pantallaVertical}</Rotulo>
@@ -165,11 +171,12 @@ export const Pantallas: React.FC = () => {
 // 5 · Curvas de animación y ritmo
 export const Curvas: React.FC = () => {
   const { rotulos } = useLanzamiento();
+  const vertical = useVertical();
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const avance = interpolate(frame, [0, durationInFrames], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
-  const W = 1500;
-  const H = 520;
+  const W = vertical ? 900 : 1500;
+  const H = vertical ? 620 : 520;
   const puntos = Array.from({ length: 61 }, (_, i) => {
     const x = i / 60;
     const y = Easing.bezier(0.16, 1, 0.3, 1)(x);
@@ -179,7 +186,7 @@ export const Curvas: React.FC = () => {
   const marcas = [0.12, 0.3, 0.55, 0.8];
   return (
     <Fondo>
-      <AbsoluteFill style={{ padding: "70px 90px 150px" }}>
+      <AbsoluteFill style={{ padding: vertical ? "110px 60px 260px" : "70px 90px 150px" }}>
         <Rotulo style={{ marginBottom: 20 }}>{rotulos.curvas}</Rotulo>
         <div style={{ background: COLORES.panel, border: `1px solid ${COLORES.borde}`, borderRadius: 18, padding: 30 }}>
           <svg width={W} height={H} style={{ display: "block", overflow: "visible" }}>
@@ -219,13 +226,14 @@ export const Curvas: React.FC = () => {
 // 6 · El anuncio a pantalla completa
 export const Anuncio: React.FC = () => {
   const { piezas, rotulos } = useLanzamiento();
+  const vertical = useVertical();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const entra = interpolate(frame, [0, 0.6 * fps], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <AbsoluteFill style={{ background: "#000" }}>
       <AbsoluteFill style={{ opacity: entra }}>
-        <VideoStock fichero={piezas.horizontal.fichero} desdeSeg={6} />
+        <VideoStock fichero={vertical ? piezas.vertical.fichero : piezas.horizontal.fichero} desdeSeg={6} />
       </AbsoluteFill>
       <AbsoluteFill style={{ padding: "60px 70px" }}>
         <Rotulo style={{ opacity: entra }}>{rotulos.anuncio}</Rotulo>
@@ -237,14 +245,15 @@ export const Anuncio: React.FC = () => {
 // 7 · Lanzamiento listo: las piezas juntas
 export const Listo: React.FC = () => {
   const { piezas, rotulos } = useLanzamiento();
+  const vertical = useVertical();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const entra = interpolate(frame, [0, 0.6 * fps], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   return (
     <Fondo>
-      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingBottom: 90, opacity: entra }}>
-        <Rotulo style={{ marginBottom: 22 }}>{rotulos.listo}</Rotulo>
-        <Pantalla ancho={1760} alto={494}>
+      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingBottom: vertical ? 200 : 90, opacity: entra }}>
+        <Rotulo style={{ marginBottom: 22, textAlign: "center", padding: vertical ? "0 40px" : 0 }}>{rotulos.listo}</Rotulo>
+        <Pantalla ancho={vertical ? 1000 : 1760} alto={vertical ? 281 : 494}>
           <VideoStock fichero={piezas.conjunto.fichero} desdeSeg={3} style={{ objectFit: "contain", background: "#000" }} />
         </Pantalla>
       </AbsoluteFill>
@@ -255,12 +264,13 @@ export const Listo: React.FC = () => {
 // 8 · Tutorial en pasos
 export const Tutorial: React.FC = () => {
   const { tutorial, rotulos } = useLanzamiento();
+  const vertical = useVertical();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const ultimo = tutorial.length - 1;
   return (
     <Fondo>
-      <AbsoluteFill style={{ padding: "90px 120px 150px" }}>
+      <AbsoluteFill style={{ padding: vertical ? "160px 70px 260px" : "90px 120px 150px" }}>
         <Rotulo style={{ marginBottom: 36 }}>{rotulos.tutorial}</Rotulo>
         {tutorial.map((p, i) => {
           const t = interpolate(frame, [(0.3 + i * 1.5) * fps, (0.9 + i * 1.5) * fps], [0, 1], {
@@ -286,7 +296,7 @@ export const Tutorial: React.FC = () => {
               >
                 {i + 1}
               </div>
-              <div style={{ fontSize: 56, fontWeight: 700 }}>{p}</div>
+              <div style={{ fontSize: vertical ? 48 : 56, fontWeight: 700 }}>{p}</div>
             </div>
           );
         })}
@@ -298,6 +308,7 @@ export const Tutorial: React.FC = () => {
 // 9 · Cierre
 export const Cierre: React.FC = () => {
   const { cierre, rotulos } = useLanzamiento();
+  const vertical = useVertical();
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
   const e1 = useEntrada(0.1, 0.8);
@@ -308,8 +319,8 @@ export const Cierre: React.FC = () => {
   });
   return (
     <Fondo>
-      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingBottom: 90, opacity: salida }}>
-        <div style={{ ...e1, fontSize: 96, fontWeight: 800, letterSpacing: "-0.02em", textAlign: "center", lineHeight: 1.05 }}>
+      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingBottom: vertical ? 200 : 90, paddingLeft: vertical ? 60 : 0, paddingRight: vertical ? 60 : 0, opacity: salida }}>
+        <div style={{ ...e1, fontSize: vertical ? 76 : 96, fontWeight: 800, letterSpacing: "-0.02em", textAlign: "center", lineHeight: 1.05 }}>
           {cierre.linea1}
           <br />
           <span style={{ color: COLORES.acento }}>{cierre.linea2}</span>

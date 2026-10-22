@@ -1,6 +1,7 @@
 // El plan de escenas sale de los datos del lanzamiento (props.json): cada escena con voz dura
 // lo que dura su línea más un respiro; las mudas, sus segundos. Nada se teclea a mano.
 import React, { useContext } from "react";
+import { useVideoConfig } from "remotion";
 import type { Lanzamiento, Linea } from "./props";
 
 export type EscenaPlan = { id: string; desde: number; frames: number; voz?: string };
@@ -47,4 +48,10 @@ export const useLinea = (id: string): Linea => {
   const x = l.lineas.find((y) => y.id === id);
   if (!x) throw new Error(`línea ${id} no existe`);
   return x;
+};
+
+// Vertical (9:16, las pantallas del local) frente a horizontal (16:9). Los valores 16:9 no cambian nunca.
+export const useVertical = (): boolean => {
+  const { width, height } = useVideoConfig();
+  return height > width;
 };

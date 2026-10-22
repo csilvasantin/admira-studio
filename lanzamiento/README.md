@@ -38,6 +38,15 @@ npm run revisar -- <nombre> --idioma es  # para si algo falla: datos, ficheros, 
 
 La duración de cada escena sale de la voz real. `revisar` renderiza un fotograma por escena y mide cada línea de voz con ffmpeg (parada por debajo de −30 dB). El brief elige piezas por idioma (`piezasPorIdioma`) y el guion en inglés usa las piezas en inglés. Con más de cinco pósters, la rejilla del Stock pasa a dos filas pequeñas. Probado con la campaña de los siete mensajes en español e inglés.
 
+## Paso 5 · `render` 16:9 y 9:16 (22-oct-2026)
+
+```bash
+npm run render -- <nombre> --idioma es [--solo horizontal|vertical]
+npm run revisar -- <nombre> --idioma es --vertical    # hoja de fotogramas de la versión vertical
+```
+
+Saca `salida/<nombre>.<idioma>.mp4` (1920×1080) y `salida/<nombre>.<idioma>.vertical.mp4` (1080×1920, lo que ven las pantallas del local) desde el mismo `props/<nombre>.<idioma>.json`: la composición `UnPromptUnaTiendaVertical` usa la misma plantilla y recoloca las escenas (pieza vertical a pantalla completa en el anuncio, rejilla del Stock en dos columnas, textos adaptados). Comprueba cada mp4 con ffprobe (duración esperada, tamaño, pistas) y con ffmpeg el nivel de audio (media por encima de −30 dB) y silencios largos; informe en `trabajo/<nombre>/render.<idioma>.json`; sale con error si algo falla. Los valores 16:9 no cambian: la v2 sigue regenerándose idéntica.
+
 ## Uso
 
 ```bash

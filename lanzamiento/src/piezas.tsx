@@ -10,7 +10,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { COLORES, FUENTE, MONO, useLanzamiento, useLinea } from "./guion";
+import { COLORES, FUENTE, MONO, useLanzamiento, useLinea, useVertical } from "./guion";
 
 // Entrada suave reutilizable: opacidad + desplazamiento vertical.
 export const useEntrada = (retrasoSeg = 0, duracionSeg = 0.7) => {
@@ -31,22 +31,23 @@ export const Subtitulo: React.FC<{ id: string }> = ({ id }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { voz } = useLanzamiento();
+  const vertical = useVertical();
   const l = useLinea(id);
   const ms = (frame / fps) * 1000;
   const esNeo = l.quien === "neo";
   return (
     <>
       <Audio src={staticFile(l.fichero)} volume={voz.volumen} />
-      <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 72 }}>
+      <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: vertical ? 160 : 72 }}>
         <div
           style={{
-            maxWidth: 1400,
+            maxWidth: vertical ? 960 : 1400,
             padding: "14px 26px",
             borderRadius: 14,
             background: esNeo ? "rgba(255,122,61,.92)" : "rgba(2,8,13,.78)",
             color: esNeo ? "#1a0a03" : COLORES.texto,
             fontFamily: FUENTE,
-            fontSize: 40,
+            fontSize: vertical ? 44 : 40,
             lineHeight: 1.25,
             textAlign: "center",
             fontWeight: 600,

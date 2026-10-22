@@ -25,7 +25,7 @@ No la uses para piezas sin material en el Stock: primero hay que crear o subir l
 3. **Piezas.** Ya están en `public/stock/` tras el brief; si falta alguna, el brief lo avisa.
 4. **Voz.** `npm run voz -- <nombre> --idioma es` (y `en`): Admirito con tiempos por palabra; deja `trabajo/<nombre>/lanzamiento.<idioma>.json`. Los tiempos de las escenas salen de la voz real: no los escribas a mano.
 5. **Montar y revisar.** `npm run montar -- <nombre> --idioma es` deja `props/<nombre>.es.json` e imprime el plan de escenas. `npm run revisar -- <nombre> --idioma es` para si falta un fichero, la duración se sale, una voz está baja o hay una palabra prohibida, y deja la hoja `trabajo/<nombre>/revision.es.png`: mírala (textos, pósters, subtítulos) antes de seguir. Si algo no te convence, cambia el JSON del guion y repite desde `voz`.
-6. **Render.** `npx remotion render UnPromptUnaTienda out/<nombre>.<idioma>.mp4 --codec h264 --props=props/<nombre>.<idioma>.json`. Verifica con `ffprobe` duración, tamaño y pistas, y con `ffmpeg -af volumedetect` el nivel (media por encima de −30 dB).
+6. **Render.** `npm run render -- <nombre> --idioma es` saca el 16:9 y el 9:16 (`salida/<nombre>.<idioma>.mp4` y `.vertical.mp4`) y los comprueba solo (duración, tamaño, pistas, nivel de audio, silencios); para si algo falla. Antes, mira también la hoja vertical: `npm run revisar -- <nombre> --idioma es --vertical`.
 7. **Entregar.** Manda el mp4 y la hoja de revisión al humano. **No subas al Stock ni emitas sin su sí.** Con el sí: subida por partes + alta (`/stock/upload/init` → `/stock/upload/part?n=` → `/stock/upload/complete` → `/stock/publish` con `r2Staged`, título, etiquetas y póster). Anota el número de pieza en el HANDON.
 
 ## Palabras prohibidas en pantalla y en voz
