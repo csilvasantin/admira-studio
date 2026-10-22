@@ -1,6 +1,7 @@
 /* /creator-capsule-url — «Crear cápsula desde URL» del Creador (22-oct-2026).
  * POST {accion:'borrador', url, texto?}  → api.admira.store/capsula/url/borrador (extrae + guion Gemini, no escribe)
  * POST {accion:'encargar', url, guion, image?, author?, title?} → /capsula/url/encargar (cola v5, dedup por origen)
+ * POST {accion:'borrador-campana', url, texto?} → mismo borrador en modo «campana» (Creador de campañas: marca, titular, CTA, imagen)
  * GET  ?ref=capsula-url:<hash>           → /capsula/url/estado (publicada cuando hay vertical + horizontal)
  * Sesión de admira.studio y mismo origen; el render lo hace el pipeline v5 de GrokBotBox. Sin secretos aquí. */
 import {sessionInfo} from './_auth.js';
@@ -19,6 +20,7 @@ export async function onRequestPost({request,env}){
  if(!/^application\/json(?:;|$)/i.test(request.headers.get('Content-Type')||''))return error(415,'json-required');
  let body;try{const raw=await request.text();if(raw.length>16000)return error(413,'too-big');body=JSON.parse(raw);}catch{return error(400,'bad-json');}
  const url=str(body?.url,2000);if(!/^https:\/\/[^\s"'<>]+$/.test(url))return error(400,'invalid-url');
+ if(body.accion==='borrador-campana')return proxy(env,'/capsula/url/borrador',{method:'POST',headers:cabeceras({'Content-Type':'application/json'}),body:JSON.stringify({url,texto:str(body.texto,12000),modo:'campana'})});
  if(body.accion==='borrador')return proxy(env,'/capsula/url/borrador',{method:'POST',headers:cabeceras({'Content-Type':'application/json'}),body:JSON.stringify({url,texto:str(body.texto,12000)})});
  if(body.accion==='encargar'){
   const g=body.guion&&typeof body.guion==='object'?body.guion:{};

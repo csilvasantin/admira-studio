@@ -1,20 +1,20 @@
 {
-  "version": "v.22.10.2026.r5.18:13",
-  "deployedAt": "2026-10-22T18:13:09.024766+02:00",
+  "version": "v.22.10.2026.r6.18:26",
+  "deployedAt": "2026-10-22T18:26:54.239115+02:00",
   "author": "WozniakGrokBot",
   "agent": "WozniakGrokBot",
   "deployer": "WozniakGrokBot",
   "machine": "GrokBotBox",
   "signature": "WozniakGrokBot · GrokBotBox",
-  "git": "fce299dccb3324e5cb8140f3d7016ee55210cbdc",
-  "gitFull": "fce299dccb3324e5cb8140f3d7016ee55210cbdc",
-  "gitShort": "fce299d",
+  "git": "7a1153709f5e89c0107db738452ce5005cf8519d",
+  "gitFull": "7a1153709f5e89c0107db738452ce5005cf8519d",
+  "gitShort": "7a11537",
   "dirty": false,
   "novedades": [
-    "Stock: en las cápsulas «¿Sabías que?» creadas desde URL, el tramo del vídeo de la fuente es interactivo: muestra «▶ Ver el original» con el autor y abre la fuente en una pestaña nueva."
+    "Creador: «Crear desde URL» bajo «＋ Nueva campaña». Pegas un enlace (LinkedIn, YouTube, X, TikTok o artículo) y se crea una campaña con marca, titular, llamada a la acción e imagen de la fuente; las cuatro propuestas salen en horizontal y vertical y la fuente queda enlazada."
   ],
   "rollback": {
-    "git": "fce299dccb3324e5cb8140f3d7016ee55210cbdc"
+    "git": "7a1153709f5e89c0107db738452ce5005cf8519d"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -59,7 +59,8 @@
     ".source-patches/studio-creator-home.json",
     ".source-patches/stock-video-sin-capsulas-youtube.json",
     ".source-patches/creator-capsule-desde-url.json",
-    ".source-patches/capsula-fuente-interactiva.json"
+    ".source-patches/capsula-fuente-interactiva.json",
+    ".source-patches/creador-campana-desde-url.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
