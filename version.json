@@ -1,20 +1,20 @@
 {
-  "version": "v.22.10.2026.r8.21:14",
-  "deployedAt": "2026-10-22T21:14:49.411421+02:00",
+  "version": "v.22.10.2026.r9.22:02",
+  "deployedAt": "2026-10-22T22:02:23.939178+02:00",
   "author": "WozniakGrokBot",
   "agent": "WozniakGrokBot",
   "deployer": "WozniakGrokBot",
   "machine": "GrokBotBox",
   "signature": "WozniakGrokBot · GrokBotBox",
-  "git": "a0f414ba11475bb70ec3285af759fd097345fd41",
-  "gitFull": "a0f414ba11475bb70ec3285af759fd097345fd41",
-  "gitShort": "a0f414b",
+  "git": "195ebbde7a0bfd8e640f991894e016d600f946f1",
+  "gitFull": "195ebbde7a0bfd8e640f991894e016d600f946f1",
+  "gitShort": "195ebbd",
   "dirty": false,
   "novedades": [
-    "Stock · cápsulas «¿Sabías que?» v5.3: el vídeo de la fuente acompaña toda la explicación y pulsarlo en cualquier momento de ese tramo abre el original (sin abrir pestañas solas)."
+    "Stock · cápsulas «¿Sabías que?»: fuera la pastilla «Ver el original» sobre el vídeo; pulsar la imagen sigue abriendo la fuente (cursor de mano)."
   ],
   "rollback": {
-    "git": "a0f414ba11475bb70ec3285af759fd097345fd41"
+    "git": "195ebbde7a0bfd8e640f991894e016d600f946f1"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -62,7 +62,8 @@
     ".source-patches/capsula-fuente-interactiva.json",
     ".source-patches/creador-campana-desde-url.json",
     ".source-patches/creador-url-feedback.json",
-    ".source-patches/capsula-fuente-v53.json"
+    ".source-patches/capsula-fuente-v53.json",
+    ".source-patches/capsula-fuente-v56.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",

@@ -1,0 +1,25 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "195ebbde7a0bfd8e640f991894e016d600f946f1",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "studio-first (pendiente de portar a pixeria)",
+  "dependsOn": {
+    "repository": "csilvasantin/pixer-worker",
+    "pullRequest": 40,
+    "tools": "tools/capsulas-sabiasque v5.6"
+  },
+  "reason": "Carlos (cápsulas v5.6): quitar la pastilla «Ver el original · Vídeo: <autor>» que el modal del Stock pintaba al pie del vídeo. Ya no se añade nada al contenedor; dentro del tramo el vídeo lleva cursor de mano y title accesible, y pulsar la imagen sigue abriendo la fuente.",
+  "files": [
+    "assets/capsula-fuente-interactiva.js",
+    "en/stock.html",
+    "stock.html",
+    "test/capsula-fuente-interactiva.test.mjs",
+    ".source-patches/capsula-fuente-v56.json"
+  ],
+  "secrets": "ninguno",
+  "preservesFiltersAndAccess": true,
+  "rollback": "195ebbde7a0bfd8e640f991894e016d600f946f1",
+  "status": "release-authorized",
+  "release": "v.22.10.2026.r9.22:02"
+}

@@ -5,7 +5,9 @@
  *   si el navegador bloquea la ventana emergente queda el enlace).
  * · Pulsar el vídeo dentro del tramo, o el crédito, abre la fuente. Fuera del tramo, el clic es el de siempre.
  * v5.3 (22-oct-2026): el tramo es toda la explicación (2–14 s). En tramos largos (≥ 6 s) no se abre ninguna
- *   pestaña sola: el enlace se ve todo el tramo y pulsar el vídeo abre la fuente en cualquier momento. */
+ *   pestaña sola: el enlace se ve todo el tramo y pulsar el vídeo abre la fuente en cualquier momento.
+ * v5.6 (22-oct-2026, Carlos): sin pastilla «Ver el original» sobre el vídeo. La pista es sólo el cursor de mano
+ *   y el título accesible del vídeo; pulsar la imagen dentro del tramo sigue abriendo la fuente. */
 (function () {
   'use strict';
   function fuente(it) {
@@ -20,15 +22,12 @@
   function attach(video, it, opts) {
     const f = fuente(it); if (!video || !f) return null;
     const en = (opts && opts.lang === 'en') || document.documentElement.lang.startsWith('en');
-    const box = video.parentElement; if (getComputedStyle(box).position === 'static') box.style.position = 'relative';
-    const a = document.createElement('a');
-    a.className = 'capsula-fuente-link'; a.href = f.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.hidden = true;
-    a.textContent = '▶ ' + (en ? 'Watch the original' : 'Ver el original') + (f.credit ? ' · ' + f.credit : '');
-    a.style.cssText = 'position:absolute;left:50%;bottom:18%;transform:translateX(-50%);z-index:5;background:rgba(20,20,24,.82);color:#fff;padding:.55em 1em;border-radius:999px;font:600 15px/1.2 system-ui,sans-serif;text-decoration:none;box-shadow:0 4px 18px rgba(0,0,0,.35)';
-    box.appendChild(a);
+    // v5.6: nada se añade al contenedor del vídeo.
+    const label = (en ? 'Watch the original' : 'Ver el original') + (f.credit ? ' · ' + f.credit : '');
+    const a = null; // v5.6: sin pastilla visible
     let abierta = false;
     const tick = () => {
-      const dentro = enTramo(f, video.currentTime); a.hidden = !dentro; video.style.cursor = dentro ? 'pointer' : '';
+      const dentro = enTramo(f, video.currentTime); video.style.cursor = dentro ? 'pointer' : ''; video.title = dentro ? label : '';
       if (dentro && autoAbre(f) && !abierta && !video.paused) { abierta = true; abrir(f.url); }
     };
     video.addEventListener('timeupdate', tick); video.addEventListener('seeked', tick);
