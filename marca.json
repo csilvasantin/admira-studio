@@ -197,6 +197,30 @@
     [
       "function syncURL() {\n  try {",
       "function syncURL() {\n  // The Creator owns its campaign context; Adapter preferences must not change its recovery scope.\n  if (/(?:^|\\/)creador(?:\\/|$)/.test(location.pathname)) return;\n  try {"
+    ],
+    [
+      "        <div class=\"hero-actions\">\n          <a class=\"button primary\" href=\"#radar\">Explorar radar</a>\n          <a class=\"button secondary\" href=\"#metodo\">Ver metodo</a>\n          <a class=\"button secondary\" href=\"/creador/\">Abrir Creador</a>\n        </div>",
+      "        <div class=\"hero-actions\">\n          <a class=\"button primary\" href=\"/creador/\">Crear campaña</a>\n          <a class=\"button secondary\" href=\"/adaptaciones/\">Adaptar contenido</a>\n          <a class=\"button secondary\" href=\"/stock.html\">Abrir Stock</a>\n        </div>\n        <nav class=\"topbar hero-terminal-bar\" aria-label=\"Recursos de Studio\">\n          <a href=\"#radar\">Explorar radar →</a>\n          <span aria-hidden=\"true\">·</span>\n          <a href=\"#metodo\">Ver método →</a>\n        </nav>"
+    ],
+    [
+      "<span class=\"pill\">Radar julio 2026</span>",
+      "<span class=\"pill\">Campañas para tus pantallas</span>"
+    ],
+    [
+      "        <div class=\"hero-actions\">\n          <a class=\"button primary\" href=\"#radar\">Explore radar</a>\n          <a class=\"button secondary\" href=\"#method\">See method</a>\n          <a class=\"button secondary\" href=\"/en/creador/\">Open Creator</a>\n        </div>",
+      "        <div class=\"hero-actions\">\n          <a class=\"button primary\" href=\"/en/creador/\">Create campaign</a>\n          <a class=\"button secondary\" href=\"/en/adaptaciones/\">Adapt content</a>\n          <a class=\"button secondary\" href=\"/en/stock.html\">Open Stock</a>\n        </div>\n        <nav class=\"topbar hero-terminal-bar\" aria-label=\"Studio resources\">\n          <a href=\"#radar\">Explore radar →</a>\n          <span aria-hidden=\"true\">·</span>\n          <a href=\"#method\">See method →</a>\n        </nav>"
+    ],
+    [
+      "<span class=\"pill\">July 2026 radar</span>",
+      "<span class=\"pill\">Campaigns for your screens</span>"
+    ],
+    [
+      "  <title>Creador · Campañas para pantallas | Admira Studio</title>\n  <meta name=\"description\"",
+      "  <title>Creador · Campañas para pantallas | Admira Studio</title>\n  <link rel=\"stylesheet\" href=\"/assets/studio-workflow/creator.css?v=20261022-1\">\n  <script type=\"module\" src=\"/assets/studio-workflow/creator.mjs?v=20261022-1\"></script>\n  <meta name=\"description\""
+    ],
+    [
+      "  <title>Creator · Campaigns for screens | Admira Studio</title>\n  <meta name=\"description\"",
+      "  <title>Creator · Campaigns for screens | Admira Studio</title>\n  <link rel=\"stylesheet\" href=\"/assets/studio-workflow/creator.css?v=20261022-1\">\n  <script type=\"module\" src=\"/assets/studio-workflow/creator.mjs?v=20261022-1\"></script>\n  <meta name=\"description\""
     ]
   ],
   "_no_se_sustituye": [
@@ -248,13 +272,15 @@
     "god/",
     "privacy.html",
     "novedades.json",
-    "assets/intro-studio/"
+    "assets/intro-studio/",
+    "assets/studio-workflow/"
   ],
   "_por_que_propios": [
     "Existen solo en admira.studio y no tienen equivalente en Pixeria. El sync no los toca",
     "ni los borra.",
     "privacy.html: desde idioma=es (3-oct-2026) es un puente a /en/privacy.html para no romper enlaces externos (p. ej. la política del acceso Google).",
-    "assets/intro-studio/ (17-oct-2026, NeoMacStudio): intro en vídeo de la portada con el look Matrix de admira.studio (script, vídeos ES/EN y música). Solo existe aquí; la carga la inyecta la última «sustitución»."
+    "assets/intro-studio/ (17-oct-2026, NeoMacStudio): intro en vídeo de la portada con el look Matrix de admira.studio (script, vídeos ES/EN y música). Solo existe aquí; la carga la inyecta la última «sustitución».",
+    "assets/studio-workflow/ (22-oct-2026): presentación compacta propia del Creador de Studio; marca.json inyecta sus recursos y declara las acciones de la portada ES/EN. No cambia el motor compartido de campañas."
   ],
   "incluidos": [
     "/assets/xpaces/README.md",

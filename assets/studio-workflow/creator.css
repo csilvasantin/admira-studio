@@ -1,0 +1,45 @@
+/* Scope to Studio's Creator; the Adapter keeps its existing workspace. */
+#campaign-workshop.studio-creator .studio-creator-toolbar { display: block; }
+.studio-creator-primary { display: flex; align-items: flex-start; flex-wrap: wrap; gap: 10px; }
+.studio-creator-primary > .pill,
+.studio-creator-group > summary { min-height: 44px; }
+.studio-creator-primary > #campaign-edit { margin-left: auto; }
+.studio-creator-group { min-width: 0; }
+.studio-creator-group > summary {
+  padding: 10px 12px;
+  color: var(--ink);
+  border: 1px solid var(--line-bright);
+  background: var(--bg);
+  font-size: 13px;
+  cursor: pointer;
+}
+.studio-creator-group > summary:focus-visible { outline: 2px solid var(--matrix); outline-offset: 3px; }
+.studio-creator-group[open] > summary { border-color: var(--matrix); }
+.studio-creator-group-body { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 0; }
+.studio-creator-group-body > .pill { white-space: normal; }
+.studio-creator-secondary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.studio-creator-secondary > details[open] { grid-column: 1 / -1; }
+.studio-creator-secondary > details[open] > summary { width: fit-content; }
+.studio-creator #studio-creator-formats .campaign-client-formats { width: 100%; margin: 0; }
+.studio-creator #studio-creator-formats .campaign-content-language { margin: 0; width: 100%; }
+.studio-creator #studio-creator-resume .campaign-tools { align-items: flex-end; }
+.studio-creator #studio-creator-resume label { display: grid; gap: 6px; min-width: 0; max-width: 100%; }
+.studio-creator #studio-creator-resume select { max-width: 100%; min-width: 0; }
+.studio-creator #campaign-save-status { margin: 12px 0 4px; font-size: 12px; }
+.studio-creator #campaign-status:empty { display: none; }
+@media (max-width: 680px) {
+  #campaign-workshop.studio-creator { padding-top: 10px; }
+  .studio-creator .campaign-heading .campaign-kicker { margin-bottom: 6px; }
+  .studio-creator .campaign-heading h1 { margin: 6px 0 10px; }
+  .studio-creator .campaign-heading p { margin-top: 0; }
+  .studio-creator .campaign-flow { gap: 8px 14px; margin: 12px 0; padding: 10px 0; }
+  .studio-creator-primary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .studio-creator-primary > #campaign-edit { margin: 0; grid-column: 1 / -1; }
+  .studio-creator-primary > #campaign-new { align-self: start; white-space: normal; }
+  .studio-creator-primary > details[open] { grid-column: 1 / -1; }
+  .studio-creator-secondary { gap: 8px; }
+  .studio-creator-secondary > details > summary { padding: 8px; font-size: 12px; }
+  .studio-creator #studio-creator-resume .campaign-tools { width: 100%; }
+  .studio-creator #studio-creator-resume label { width: 100%; }
+  .studio-creator-group-body { padding-bottom: 4px; }
+}
