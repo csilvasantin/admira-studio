@@ -1,8 +1,10 @@
-import React from "react";
-import { AbsoluteFill, Audio, Composition, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { ESCENAS, FPS, TOTAL_FRAMES } from "./guion";
+import React, { useMemo } from "react";
+import { AbsoluteFill, Audio, CalculateMetadataFunction, Composition, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { LanzamientoContext, planificar, useLanzamiento } from "./guion";
+import { Lanzamiento, LanzamientoSchema, validarLanzamiento } from "./props";
 import { Subtitulo } from "./piezas";
 import { Anuncio, Cierre, Curvas, Listo, Pantallas, Prompt, Stock, Titulo, Tutorial } from "./escenas";
+import datosV2 from "../props/un-prompt-una-tienda.json";
 
 const COMPONENTES: Record<string, React.FC> = {
   titulo: Titulo,
@@ -16,27 +18,29 @@ const COMPONENTES: Record<string, React.FC> = {
   cierre: Cierre,
 };
 
-// Música de las intros («Tic-tac y campanas», original de la casa, 15 s): en bucle,
-// más baja cuando habla Admirito, y se apaga al final.
+// Música de la casa en bucle: más baja cuando hay voz, y se apaga al final.
 const Musica: React.FC = () => {
+  const l = useLanzamiento();
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
-  const hablando = ESCENAS.some((e) => e.voz && frame >= e.desde && frame < e.desde + e.frames - 0.5 * fps);
-  const base = hablando ? 0.16 : 0.34;
+  const { escenas } = useMemo(() => planificar(l), [l]);
+  const hablando = escenas.some((e) => e.voz && frame >= e.desde && frame < e.desde + e.frames - 0.5 * fps);
+  const base = hablando ? l.musica.volumenHablando : l.musica.volumen;
   const envolvente = interpolate(
     frame,
     [0, 1.5 * fps, durationInFrames - 1.5 * fps, durationInFrames],
     [0, base, base, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
-  return <Audio src={staticFile("musica/campanas.mp4")} loop volume={envolvente} />;
+  return <Audio src={staticFile(l.musica.fichero)} loop volume={envolvente} />;
 };
 
-export const UnPromptUnaTienda: React.FC = () => {
+const Escenas: React.FC = () => {
+  const l = useLanzamiento();
+  const { escenas } = useMemo(() => planificar(l), [l]);
   return (
-    <AbsoluteFill style={{ background: "#02080d" }}>
-      <Musica />
-      {ESCENAS.map((e) => {
+    <>
+      {escenas.map((e) => {
         const C = COMPONENTES[e.id];
         return (
           <Sequence key={e.id} name={e.id} from={e.desde} durationInFrames={e.frames}>
@@ -45,17 +49,40 @@ export const UnPromptUnaTienda: React.FC = () => {
           </Sequence>
         );
       })}
-    </AbsoluteFill>
+    </>
   );
+};
+
+// La composición recibe los datos validados y los reparte por contexto.
+export const Lanzamiento_: React.FC<Lanzamiento> = (props) => {
+  const l = useMemo(() => validarLanzamiento(props), [props]);
+  return (
+    <LanzamientoContext.Provider value={l}>
+      <AbsoluteFill style={{ background: "#02080d" }}>
+        <Musica />
+        <Escenas />
+      </AbsoluteFill>
+    </LanzamientoContext.Provider>
+  );
+};
+
+// Duración y tamaño salen de los datos: la voz real manda.
+const calculateMetadata: CalculateMetadataFunction<Lanzamiento> = ({ props }) => {
+  const l = validarLanzamiento(props);
+  const { total } = planificar(l);
+  return { durationInFrames: total, fps: l.fps, width: l.ancho, height: l.alto };
 };
 
 export const MyComposition = () => {
   return (
     <Composition
       id="UnPromptUnaTienda"
-      component={UnPromptUnaTienda}
-      durationInFrames={TOTAL_FRAMES}
-      fps={FPS}
+      component={Lanzamiento_}
+      schema={LanzamientoSchema}
+      defaultProps={LanzamientoSchema.parse(datosV2)}
+      calculateMetadata={calculateMetadata}
+      durationInFrames={1}
+      fps={30}
       width={1920}
       height={1080}
     />

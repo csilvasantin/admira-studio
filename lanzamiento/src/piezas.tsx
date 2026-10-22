@@ -10,7 +10,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { COLORES, FUENTE, MONO, linea } from "./guion";
+import { COLORES, FUENTE, MONO, useLanzamiento, useLinea } from "./guion";
 
 // Entrada suave reutilizable: opacidad + desplazamiento vertical.
 export const useEntrada = (retrasoSeg = 0, duracionSeg = 0.7) => {
@@ -25,17 +25,18 @@ export const useEntrada = (retrasoSeg = 0, duracionSeg = 0.7) => {
   return { opacity: t, translate: `0px ${(1 - t) * 24}px` };
 };
 
-// Subtítulo palabra a palabra, sincronizado con la voz de Admirito.
-// Naranja cuando habla Neo (la máquina), blanco cuando es la voz en off.
+// Subtítulo palabra a palabra, sincronizado con la voz.
+// Naranja cuando habla la máquina (admira.studio), blanco cuando es la voz en off.
 export const Subtitulo: React.FC<{ id: string }> = ({ id }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const l = linea(id);
+  const { voz } = useLanzamiento();
+  const l = useLinea(id);
   const ms = (frame / fps) * 1000;
   const esNeo = l.quien === "neo";
   return (
     <>
-      <Audio src={staticFile(l.fichero)} volume={1.3} />
+      <Audio src={staticFile(l.fichero)} volume={voz.volumen} />
       <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 72 }}>
         <div
           style={{

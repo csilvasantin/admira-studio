@@ -1,54 +1,26 @@
-// Guion de «Un prompt. Una tienda.» (nivel B, 22-oct-2026).
-// Los tiempos salen de la duración real de cada línea de voz (public/voz/lineas.json).
-import voz from "./voz.json";
+// El plan de escenas sale de los datos del lanzamiento (props.json): cada escena con voz dura
+// lo que dura su línea más un respiro; las mudas, sus segundos. Nada se teclea a mano.
+import React, { useContext } from "react";
+import type { Lanzamiento, Linea } from "./props";
 
-export type Palabra = { text: string; startMs: number; endMs: number };
-export type Linea = {
-  id: string;
-  quien: "neo" | "off";
-  text: string;
-  fichero: string;
-  durMs: number;
-  palabras: Palabra[];
+export type EscenaPlan = { id: string; desde: number; frames: number; voz?: string };
+
+export const planificar = (l: Lanzamiento): { escenas: EscenaPlan[]; total: number } => {
+  const seg = (s: number) => Math.round(s * l.fps);
+  const linea = (id: string): Linea => {
+    const x = l.lineas.find((y) => y.id === id);
+    if (!x) throw new Error(`línea ${id} no existe`);
+    return x;
+  };
+  let acum = 0;
+  const escenas = l.escenas.map((e) => {
+    const frames = e.voz ? seg(linea(e.voz).durMs / 1000 + e.respiro) : seg(e.segundos ?? 0);
+    const plan = { id: e.id, desde: acum, frames, voz: e.voz };
+    acum += frames;
+    return plan;
+  });
+  return { escenas, total: acum + seg(1) };
 };
-
-export const LINEAS: Linea[] = voz as Linea[];
-export const linea = (id: string): Linea => {
-  const l = LINEAS.find((x) => x.id === id);
-  if (!l) throw new Error(`línea ${id} no existe`);
-  return l;
-};
-
-export const FPS = 30;
-const seg = (s: number) => Math.round(s * FPS);
-// Cada escena dura su voz más un respiro; las mudas, un tiempo fijo.
-const RESPIRO = 0.6;
-const dur = (id: string, extra = RESPIRO) => seg(linea(id).durMs / 1000 + extra);
-
-type Escena = { id: string; desde: number; frames: number; voz?: string };
-const orden: Array<[string, number, string?]> = [
-  ["titulo", seg(4.5)],
-  ["prompt", seg(6)],
-  ["stock", dur("v1"), "v1"],
-  ["pantallas", dur("v2"), "v2"],
-  ["curvas", dur("v3"), "v3"],
-  ["anuncio", dur("v4", 0.9), "v4"],
-  ["listo", dur("v5", 0.9), "v5"],
-  ["tutorial", dur("v6", 0.9), "v6"],
-  ["cierre", dur("v7", 1.6), "v7"],
-];
-let acum = 0;
-export const ESCENAS: Escena[] = orden.map(([id, frames, voz]) => {
-  const e = { id, desde: acum, frames, voz };
-  acum += frames;
-  return e;
-});
-export const escena = (id: string): Escena => {
-  const e = ESCENAS.find((x) => x.id === id);
-  if (!e) throw new Error(`escena ${id} no existe`);
-  return e;
-};
-export const TOTAL_FRAMES = acum + seg(1);
 
 export const COLORES = {
   fondo: "#02080d",
@@ -62,3 +34,17 @@ export const COLORES = {
 export const FUENTE =
   '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif';
 export const MONO = '"SF Mono", Menlo, Consolas, monospace';
+
+// Los datos validados del lanzamiento llegan a las escenas por contexto.
+export const LanzamientoContext = React.createContext<Lanzamiento | null>(null);
+export const useLanzamiento = (): Lanzamiento => {
+  const l = useContext(LanzamientoContext);
+  if (!l) throw new Error("falta el LanzamientoContext");
+  return l;
+};
+export const useLinea = (id: string): Linea => {
+  const l = useLanzamiento();
+  const x = l.lineas.find((y) => y.id === id);
+  if (!x) throw new Error(`línea ${id} no existe`);
+  return x;
+};

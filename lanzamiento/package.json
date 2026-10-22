@@ -12,7 +12,8 @@
     "@remotion/cli": "4.0.538",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "remotion": "4.0.538"
+    "remotion": "4.0.538",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.538",
@@ -29,7 +30,8 @@
     "lint": "eslint src && tsc",
     "voz": "node scripts/voz.mjs",
     "revisar": "node scripts/revisar.mjs",
-    "render": "remotion render UnPromptUnaTienda out/lanzamiento.mp4 --codec h264"
+    "render": "remotion render UnPromptUnaTienda out/lanzamiento.mp4 --codec h264",
+    "test": "node --test tests/*.test.mjs"
   },
   "allowScripts": {
     "esbuild": false
