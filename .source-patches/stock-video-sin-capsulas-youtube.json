@@ -1,0 +1,25 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "00ef1e584e82492cb3b9a163ca4be6cf3e7b9813",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "pending-see-PR",
+  "sourcePullRequest": 116,
+  "reason": "Carlos: el filtro «Vídeo» del Stock mostraba las cápsulas «¿Sabías que?» (vídeos con etiqueta capsula/sabiasque). Causa: el filtro Vídeo nunca las excluía y el port de PR #114 (9bc0b86) fijó en test que siguieran en Vídeo. Ahora solo salen en «Cápsulas». Además, botón ▶ «Subir a YouTube» entre ⛶ y 🗑 conectado al flujo /api/youtube/upload portado de pixeria #115. Portado a mano sin sync.sh.",
+  "files": [
+    "stock.html",
+    "en/stock.html",
+    "assets/youtube-compartir.js",
+    "functions/_youtube.js",
+    "functions/api/youtube/upload.js",
+    "docs/youtube-compartir.md",
+    "test/stock-capsulas-video.test.mjs",
+    "test/stock-capsulas-video-en.test.mjs",
+    "test/youtube-compartir.test.mjs"
+  ],
+  "secrets": "YOUTUBE_CLIENT_ID, YOUTUBE_CLIENT_SECRET, YOUTUBE_REFRESH_TOKEN en el proyecto Pages admira-studio (sin ellos el endpoint responde 503 youtube-no-conectado)",
+  "preservesFiltersAndAccess": true,
+  "rollback": "00ef1e584e82492cb3b9a163ca4be6cf3e7b9813",
+  "status": "release-authorized",
+  "release": "v.22.10.2026.r3.17:20"
+}

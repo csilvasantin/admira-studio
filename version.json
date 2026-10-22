@@ -1,22 +1,21 @@
 {
-  "version": "v.22.10.2026.r2.13:06",
-  "deployedAt": "2026-10-22T13:06:26.311052+02:00",
-  "author": "DeepAgent Trinity",
-  "agent": "TrinityMBP16",
-  "deployer": "TrinityMBP16",
-  "machine": "MacBookPro16",
-  "signature": "DeepAgent Trinity · MacBookPro16",
+  "version": "v.22.10.2026.r3.17:20",
+  "deployedAt": "2026-10-22T17:18:40.739293+02:00",
+  "author": "WozniakGrokBot",
+  "agent": "WozniakGrokBot",
+  "deployer": "WozniakGrokBot",
+  "machine": "GrokBotBox",
+  "signature": "WozniakGrokBot · GrokBotBox",
   "git": "b498907ec57c3eb3fac282e271f22744a73455cf",
   "gitFull": "b498907ec57c3eb3fac282e271f22744a73455cf",
   "gitShort": "b498907",
   "dirty": false,
   "novedades": [
-    "La portada da acceso directo a Crear campaña, Adaptar contenido y Stock.",
-    "El Creador agrupa ejemplos, formatos e idiomas y herramientas para mostrar antes las piezas, también en móvil.",
-    "La edición, recuperación, revisión y entrega de campañas conservan sus controles actuales."
+    "Stock: el filtro «Vídeo» ya no muestra las cápsulas «¿Sabías que?»; siguen en «Cápsulas».",
+    "Stock: botón ▶ «Subir a YouTube» en las tarjetas de vídeo, entre pantalla completa y papelera."
   ],
   "rollback": {
-    "git": "b498907ec57c3eb3fac282e271f22744a73455cf"
+    "git": "00ef1e584e82492cb3b9a163ca4be6cf3e7b9813"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -58,7 +57,8 @@
     ".source-patches/campaign-delivery-package.json",
     ".source-patches/stock-saved-searches.json",
     ".source-patches/stock-capsulas-video.json",
-    ".source-patches/studio-creator-home.json"
+    ".source-patches/studio-creator-home.json",
+    ".source-patches/stock-video-sin-capsulas-youtube.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
