@@ -34,7 +34,8 @@
     "brief": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/brief.mjs",
     "guion": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/guion.mjs",
     "montar": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/montar.mjs",
-    "render": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/render.mjs"
+    "render": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/render.mjs",
+    "publicar": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/publicar.mjs"
   },
   "allowScripts": {
     "esbuild": false
