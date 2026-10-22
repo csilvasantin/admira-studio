@@ -1,20 +1,20 @@
 {
-  "version": "v.22.10.2026.r7.19:32",
-  "deployedAt": "2026-10-22T19:32:10.222362+02:00",
+  "version": "v.22.10.2026.r8.21:14",
+  "deployedAt": "2026-10-22T21:14:49.411421+02:00",
   "author": "WozniakGrokBot",
   "agent": "WozniakGrokBot",
   "deployer": "WozniakGrokBot",
   "machine": "GrokBotBox",
   "signature": "WozniakGrokBot · GrokBotBox",
-  "git": "5b97c84afc5536ad0c74ea201d143aa3f5cb4a45",
-  "gitFull": "5b97c84afc5536ad0c74ea201d143aa3f5cb4a45",
-  "gitShort": "5b97c84",
+  "git": "a0f414ba11475bb70ec3285af759fd097345fd41",
+  "gitFull": "a0f414ba11475bb70ec3285af759fd097345fd41",
+  "gitShort": "a0f414b",
   "dirty": false,
   "novedades": [
-    "Creador · «Crear desde URL»: al pegar el enlace se lanza solo (y hay botón «Crear»); se ve en todo momento «Leyendo la fuente…», «Redactando con IA…» y «Campaña creada», y los errores (sin sesión, URL no válida, fuente ilegible con opción de pegar el texto, red) salen en rojo."
+    "Stock · cápsulas «¿Sabías que?» v5.3: el vídeo de la fuente acompaña toda la explicación y pulsarlo en cualquier momento de ese tramo abre el original (sin abrir pestañas solas)."
   ],
   "rollback": {
-    "git": "5b97c84afc5536ad0c74ea201d143aa3f5cb4a45"
+    "git": "a0f414ba11475bb70ec3285af759fd097345fd41"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -61,7 +61,8 @@
     ".source-patches/creator-capsule-desde-url.json",
     ".source-patches/capsula-fuente-interactiva.json",
     ".source-patches/creador-campana-desde-url.json",
-    ".source-patches/creador-url-feedback.json"
+    ".source-patches/creador-url-feedback.json",
+    ".source-patches/capsula-fuente-v53.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
