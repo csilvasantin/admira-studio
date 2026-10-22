@@ -83,6 +83,14 @@ export const LanzamientoSchema = z.object({
   alto: z.number().int().positive().default(1080),
 });
 
+// Guion: lo mismo sin tiempos de voz (los pone `voz`). `fichero` queda previsto.
+export const LineaGuionSchema = LineaSchema.omit({ durMs: true, palabras: true });
+export const GuionSchema = LanzamientoSchema.extend({
+  idioma: z.enum(["es", "en"]).default("es"),
+  lineas: z.array(LineaGuionSchema).min(1),
+});
+export type Guion = z.infer<typeof GuionSchema>;
+
 export type Lanzamiento = z.infer<typeof LanzamientoSchema>;
 export type Linea = z.infer<typeof LineaSchema>;
 export type Pieza = z.infer<typeof PiezaSchema>;
@@ -92,8 +100,8 @@ export const PROHIBIDAS = /\b(claude|codex|remotion|anthropic|openai|gpt)\b/i;
 
 // Valida el JSON y comprueba las reglas de la casa que el esquema no expresa:
 // cada escena con voz apunta a una línea existente, y nada prohibido en pantalla ni en voz.
-export const validarLanzamiento = (datos: unknown): Lanzamiento => {
-  const l = LanzamientoSchema.parse(datos);
+type Comun = Pick<Lanzamiento, "nombre" | "titulo" | "prompt" | "rotulos" | "tutorial" | "cierre" | "marca" | "escenas"> & { lineas: Array<{ id: string; text: string }> };
+const comprobarReglas = (l: Comun) => {
   const ids = new Set(l.lineas.map((x) => x.id));
   for (const e of l.escenas) {
     if (e.voz && !ids.has(e.voz)) throw new Error(`escena ${e.id}: la línea de voz ${e.voz} no existe`);
@@ -106,5 +114,16 @@ export const validarLanzamiento = (datos: unknown): Lanzamiento => {
   ];
   const malo = visibles.find((t) => PROHIBIDAS.test(t));
   if (malo) throw new Error(`palabra prohibida en pantalla o en voz: «${malo}»`);
+};
+
+export const validarLanzamiento = (datos: unknown): Lanzamiento => {
+  const l = LanzamientoSchema.parse(datos);
+  comprobarReglas(l);
   return l;
+};
+
+export const validarGuion = (datos: unknown): Guion => {
+  const g = GuionSchema.parse(datos);
+  comprobarReglas(g);
+  return g;
 };
