@@ -10,10 +10,13 @@ const nombre = process.argv[2];
 const arg = (k, d) => { const i = process.argv.indexOf(`--${k}`); return i > -1 ? process.argv[i + 1] : d; };
 if (!nombre || nombre.startsWith('--')) { console.error('uso: node scripts/revisar.mjs <nombre> [--idioma es|en]'); process.exit(2); }
 const idioma = arg('idioma', 'es');
+const vertical = process.argv.includes('--vertical');
+const composicion = vertical ? 'UnPromptUnaTiendaVertical' : 'UnPromptUnaTienda';
+const sufijo = vertical ? `${idioma}.vertical` : idioma;
 const props = `props/${nombre}.${idioma}.json`;
 const datos = JSON.parse(fs.readFileSync(path.join(raiz, props), 'utf8'));
 const r = comprobar(datos, { existe: (f) => fs.existsSync(path.join(raiz, 'public', f)) });
-const informe = { nombre, idioma, props, duracionSeg: Number(r.duracionSeg.toFixed(2)), problemas: r.problemas, avisos: r.avisos, voz: {}, hoja: null };
+const informe = { nombre, idioma, vertical, props, duracionSeg: Number(r.duracionSeg.toFixed(2)), problemas: r.problemas, avisos: r.avisos, voz: {}, hoja: null };
 const carpeta = path.join(raiz, 'trabajo', nombre);
 
 // Nivel de la voz: media de cada línea con ffmpeg (parada si alguna queda por debajo de -30 dB).
@@ -32,17 +35,18 @@ try {
 // Hoja de fotogramas: uno por escena.
 if (!process.argv.includes('--sin-fotogramas') && r.fotogramas.length) {
   const frames = r.fotogramas.map((f) => f.frame).join(',');
-  const dir = path.join(raiz, 'out', `revision-${nombre}-${idioma}`);
+  // Remotion toma un punto en el nombre de la carpeta como extensión: fuera puntos.
+  const dir = path.join(raiz, 'out', `revision-${nombre}-${sufijo.replace(/\./g, '-')}`);
   fs.rmSync(dir, { recursive: true, force: true });
-  execFileSync('npx', ['remotion', 'render', 'UnPromptUnaTienda', dir, `--frames=${frames}`, '--image-format=png', '--log=error', `--props=${props}`], { cwd: raiz, stdio: 'inherit' });
-  const hoja = path.join(carpeta, `revision.${idioma}.png`);
+  execFileSync('npx', ['remotion', 'render', composicion, dir, `--frames=${frames}`, '--image-format=png', '--log=error', `--props=${props}`], { cwd: raiz, stdio: 'inherit' });
+  const hoja = path.join(carpeta, `revision.${sufijo}.png`);
   const n = r.fotogramas.length, cols = 3, filas = Math.ceil(n / cols);
-  execFileSync('ffmpeg', ['-v', 'error', '-y', '-pattern_type', 'glob', '-i', path.join(dir, '*.png'), '-vf', `scale=640:-1,tile=${cols}x${filas}:margin=4:padding=4`, hoja]);
+  execFileSync('ffmpeg', ['-v', 'error', '-y', '-pattern_type', 'glob', '-i', path.join(dir, '*.png'), '-vf', `scale=${vertical ? 360 : 640}:-1,tile=${cols}x${filas}:margin=4:padding=4`, hoja]);
   informe.hoja = path.relative(raiz, hoja);
 }
 informe.problemas = r.problemas;
 informe.ok = r.problemas.length === 0;
-fs.writeFileSync(path.join(carpeta, `revision.${idioma}.json`), JSON.stringify(informe, null, 1) + '\n');
+fs.writeFileSync(path.join(carpeta, `revision.${sufijo}.json`), JSON.stringify(informe, null, 1) + '\n');
 console.log(`revisión ${informe.ok ? 'OK' : 'CON PROBLEMAS'} · ${informe.duracionSeg} s · voz media ${Object.values(informe.voz).map((v) => v.toFixed(1)).join('/')} dB${informe.hoja ? ' · hoja ' + informe.hoja : ''}`);
 for (const a of r.avisos) console.log('aviso:', a);
 for (const p of r.problemas) console.error('problema:', p);
