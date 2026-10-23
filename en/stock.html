@@ -362,6 +362,7 @@
   <link rel="stylesheet" href="/assets/cuadratura.css?v=18.10.2026.r16.2219">
 <script defer src="/assets/ui-locale.js?v=17.10.2026.r6.2255"></script>
   <link rel="stylesheet" href="/assets/music/cards.css?v=17.10.2026.r6.2255">
+<link rel="stylesheet" href="/assets/stock-capsule-editor.css?v=capsule-inline-1">
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -1070,6 +1071,21 @@
         else { seekToPreviewFrame(v); v.src = v.dataset.src; } // fallback sin IO
       });
     }
+    let capsuleEditorAbort = null;
+    function resetCapsuleEditor() { capsuleEditorAbort?.abort(); capsuleEditorAbort = null; }
+    async function editCapsuleInDetail(it, button) {
+      if (capsuleEditorAbort && button.getAttribute('aria-expanded') === 'true' && !button.disabled) { resetCapsuleEditor(); return; }
+      resetCapsuleEditor();
+      const controller = capsuleEditorAbort = new AbortController();
+      button.disabled = true;
+      try {
+        const {openStockCapsuleEditor} = await import('/assets/stock-capsule-editor.mjs?v=capsule-inline-1');
+        if (controller.signal.aborted) return;
+        await openStockCapsuleEditor({item:it,mediaHost:lightboxInner,detailRoot:lightbox,button,signal:controller.signal});
+      } catch (error) {
+        if (!controller.signal.aborted) { button.disabled=false; button.setAttribute('aria-expanded','false'); status.textContent="Could not open the editor. Please retry."; }
+      }
+    }
     function ainimationImportHref(it) {
       const params = new URLSearchParams();
       params.set('admiraStockUrl', it.url || '');
@@ -1593,6 +1609,7 @@
       }
     }
     function openLightbox(it) {
+      resetCapsuleEditor();
       if(window.StockSync?.get(it)){if(window.openSyncCreative)window.openSyncCreative(it);else import('/assets/stock-sync-preview.mjs?v=atlas-2').then(()=>window.openSyncCreative(it)).catch(()=>{status.textContent='No se pudo cargar el previo 3D. Reintenta.';});return;}
       if(isFurniture3D(it)){import('/assets/furniture/editor.mjs').then(m=>m.openFurniture(it));return;}
       rememberPreview(it);
@@ -1643,6 +1660,7 @@
         <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
         ${commentBlock}
         <div class="stock-lightbox-actions">
+          ${/^capsula-url:[a-f0-9]{16}$/.test(it.externalRef || '') ? '<button type="button" class="btn" data-act="edit-capsule" aria-expanded="false">Edit with Ainimation</button>' : ''}
           <a class="btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener">AI Abrir en AINimation</a>
           <button type="button" class="btn" data-act="descargar" title="Guarda el fichero en este ordenador con un nombre legible">⬇ Descargar a este ordenador</button>
           <button type="button" class="btn prio0-btn" data-act="prio0" title="Envía este asset AHORA al destino que elijas e interrumpe lo que se esté emitiendo">⚠ Prioridad 0 · interrumpir</button>
@@ -1685,6 +1703,7 @@
       openLightbox(currentView[j]);
     }
     function finishCloseLightbox() {
+      resetCapsuleEditor();
       xpaceController?.abort();
       xpaceController = null;
       lightbox.classList.remove('is-xpace');
@@ -1726,6 +1745,9 @@
 
     // Edición de tags dentro del lightbox (quitar / añadir)
     lightboxMeta.addEventListener('click', async e => {
+      const editCapsuleBtn = e.target.closest('[data-act="edit-capsule"]');
+      if (editCapsuleBtn) { e.preventDefault(); e.stopPropagation(); const it = currentItemInLightbox(); if(it) await editCapsuleInDetail(it, editCapsuleBtn); return; }
+
       const ratingBtn = e.target.closest('[data-act="rate-capsule"]');
       if (ratingBtn) {
         e.preventDefault(); e.stopPropagation();
