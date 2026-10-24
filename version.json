@@ -1,21 +1,20 @@
 {
-  "version": "v.24.10.2026.r4.14:16",
-  "deployedAt": "2026-10-24T12:16:16.665836+00:00",
-  "author": "TrinityMBA16",
-  "agent": "TrinityMBA16",
-  "deployer": "TrinityMBA16",
-  "machine": "MacBookAir16plata",
-  "signature": "TrinityMBA16 · MacBookAir16plata",
-  "git": "948def255c7845c3b75b04a5c76621b5e9b0e21e",
-  "gitFull": "948def255c7845c3b75b04a5c76621b5e9b0e21e",
-  "gitShort": "948def2",
+  "version": "v.24.10.2026.r2.20:09",
+  "deployedAt": "2026-10-24T20:09:18.151682+02:00",
+  "author": "GrokBot",
+  "agent": "GrokBot",
+  "deployer": "GrokBot",
+  "machine": "GrokBotBox",
+  "signature": "GrokBot · GrokBotBox",
+  "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
+  "gitFull": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
+  "gitShort": "89955e0",
   "dirty": false,
   "novedades": [
-    "Selecciona varios recursos del catálogo y crea un vídeo o interactivo en AInimation.",
-    "Elige horizontal, vertical o cuadrado y conserva los recursos de origen."
+    "Stock · Cápsulas: al subir o etiquetar una cápsula con #capsula + #negocio/#creatividad/#tecnologia (también en inglés: #capsule #business/#creativity/#technology) se genera sola la versión en la otra orientación (16:9 ⇄ 9:16, encuadre centrado + fondo desenfocado) y se guarda en Cápsulas enlazada al original."
   ],
   "rollback": {
-    "git": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560"
+    "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -65,7 +64,8 @@
     ".source-patches/creador-url-feedback.json",
     ".source-patches/capsula-fuente-v53.json",
     ".source-patches/capsula-fuente-v56.json",
-    ".source-patches/capsula-cartelas-v57.json"
+    ".source-patches/capsula-cartelas-v57.json",
+    ".source-patches/capsula-formato-alterno.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",

@@ -1149,6 +1149,7 @@
         // Actualiza el item local
         const it = allItems.find(x => x.id === id);
         if (it) it.tags = d.tags || [];
+        if (it) document.dispatchEvent(new CustomEvent('stock:tags-saved', {detail: {item: it}}));
         return d.tags || [];
       } catch (e) {
         if (!(opts && opts.silent)) alert('Error guardando etiquetas: ' + e.message);
@@ -1428,7 +1429,9 @@
       const tagsLc = Array.isArray(it.tags) ? it.tags.map(x => String(x).toLowerCase()) : [];
       // Cápsula en vídeo («¿Sabías que?», plantilla v5): vídeo con etiqueta capsula o sabiasque.
       // Solo sale en «Cápsulas»; «Vídeo» la excluye.
-      const isVideoCapsule = it.type === 'video' && tagsLc.some(x => /^#?(capsula|sabias-?que)$/.test(x.trim()));
+      const isVideoCapsule = (it.type === 'video' && tagsLc.some(x => /^#?(capsulas?|capsules?|sabias-?que)$/.test(x.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))))
+        // Imagen con #capsula/#cápsula/#capsule (p. ej. la versión alterna de una cápsula-imagen) también es cápsula.
+        || (it.type === 'image' && tagsLc.some(x => /^#?(capsulas?|capsules?)$/.test(x.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))));
       // Gemelos del Anonimizador: NPC pixel-art (twin-npc) y persona sintética (digital-twin).
       const isTwinNpc = it.type === 'twin-npc' || tagsLc.includes('twin-npc');
       const isDigitalTwin = it.type === 'digital-twin' || tagsLc.includes('digital-twin');
@@ -2238,6 +2241,16 @@
       const it=e.detail?.item;if(!it?.id||!it.url)return;
       localPublished.set(it.id,it);allItems=soloMio([it,...allItemsTodo.filter(x=>x.id!==it.id)]);writeCache(allItemsTodo);buildMotorOptions();applyFilters(true);feedMatrix();
     });
+    // Cápsula #capsula + pilar (#negocio/#creatividad/#tecnologia, ES/EN) → versión en la otra orientación (assets/capsula-alterna.mjs).
+    function capsulaAlterna(it){
+      if(!it||!['video','image'].includes(it.type))return;
+      import('/assets/capsula-alterna.mjs?v=20261024-1').then(m=>m.maybeGenerateAlternate(it,{items:allItemsTodo,saveTags:(id,t,o)=>saveTags(id,t,o),
+        onStatus:t=>{status.textContent=t;},
+        onCreated:async id=>{try{const r=await fetch(`${STOCK_BASE}/stock/list?limit=30`,{cache:'no-store'});const d=await r.json();const nuevo=(d.items||[]).find(x=>x.id===id);if(nuevo)document.dispatchEvent(new CustomEvent('stock:local-published',{detail:{item:nuevo}}));}catch(_){}}
+      })).catch(()=>{});
+    }
+    document.addEventListener('stock:local-published',e=>capsulaAlterna(e.detail?.item));
+    document.addEventListener('stock:tags-saved',e=>capsulaAlterna(e.detail?.item));
     document.addEventListener('stock:local-view',()=>{
       if(filters.type==='catalogo')CATALOGO.leave();
       filters.q='';search.value='';filters.type='';typeFilter.value='';filters.format='';filters.tags=[];filters.origen='';sortMode='date-desc';applyFilters(true);
@@ -2406,6 +2419,7 @@
       }
       try { const u = new URL(location.href); u.searchParams.delete('highlight'); history.replaceState(history.state, '', u); } catch {}
       openLightbox(item);
+      capsulaAlterna(item);
     }
 
     // ── DISTRIBUIDOR DE ASSETS ────────────────────────────────────────────
