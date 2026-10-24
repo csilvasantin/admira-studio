@@ -62,7 +62,7 @@ export function createEngine() {
           await engine.writeFile(name,bytes);inputURL=sourceURL;inputName=name;
         }
         // Crear (6-oct-2026): extra inputs of a recipe (the ticker strip PNG), written for this job only.
-        for(const x of job.extraFiles||[]){const bytes=await readSource(x.url,signal);alive();await engine.writeFile(x.name,bytes);}
+        for(const x of job.extraFiles||[]){const bytes=await readSource(x.url,signal);alive();if(x.name.includes('/'))await engine.createDir(x.name.split('/')[0]).catch(()=>{});await engine.writeFile(x.name,bytes);}
         const progress=({progress})=>{if(mine===generation)onStatus({phase:'encoding',progress:Math.min(.99,Math.max(0,progress))});};
         // Looping still inputs report unknown duration to FFmpeg; use its encoded clock
         // against the explicit output duration so campaign progress does not stay at 0%.

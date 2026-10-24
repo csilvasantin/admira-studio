@@ -77,13 +77,20 @@ async function renderImage(it, t) {
   g.drawImage(img, (t.W - sw * fit) / 2, (t.H - sh * fit) / 2, sw * fit, sh * fit);
   return await new Promise((res, rej) => c.toBlob(b => b ? res(b) : rej(new Error('encoding')), 'image/png'));
 }
-let engine = null;
+// Un solo motor FFmpeg WASM para cápsula alterna y subtítulos (capsula-traduce.mjs): engine.encode
+// cancela el trabajo anterior si se le llama en paralelo, así que todo pasa por esta cola.
+let engine = null, tail = Promise.resolve();
+export async function sharedEngine() {
+  const {createEngine} = await import('/adaptaciones/adapter-export.js');
+  return (engine ||= createEngine());
+}
+export function ffmpegQueue(fn) { const run = tail.then(fn, fn); tail = run.catch(() => {}); return run; }
 async function renderVideo(it, t, size, onStatus) {
-  const [{exportJob}, {createEngine}] = await Promise.all([import('/adaptaciones/adapter-core.mjs'), import('/adaptaciones/adapter-export.js')]);
-  engine ||= createEngine();
+  const {exportJob} = await import('/adaptaciones/adapter-core.mjs');
+  await sharedEngine();
   const job = exportJob({ancho: size.w, alto: size.h}, {ancho: t.W, alto: t.H, techoKbps: 6000, h264: 'high@4.1'}, {fps: 25, bitrateKbps: 6000}, 'blur', {fx: .5, fy: .5, zoom: 1}, it.title || 'capsula', t.format.replace(':', 'x'));
   let out = null;
-  await engine.encode(it.url, job, onStatus || (() => {}), (_, blob) => { out = blob; });
+  await ffmpegQueue(() => engine.encode(it.url, job, onStatus || (() => {}), (_, blob) => { out = blob; }));
   if (!out) throw new Error('encoding');
   return out;
 }

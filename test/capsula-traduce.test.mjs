@@ -28,7 +28,7 @@ test('SRT ida y vuelta', async () => {
   const c = parseSrt(srt);
   assert.equal(c.length, 2); assert.equal(c[0].start, 0.32);
   assert.equal(toSrt(c), srt);
-  assert.deepEqual((await maybeSubtitle({id: 'x', type: 'video', tags: ['translate']})), {pending: true, from: 'es', to: 'en'});
+  assert.deepEqual((await maybeSubtitle({id: 'x', type: 'video', tags: ['translate']})), {skipped: 'sin-url'});
 });
 import {tagsOf, langOf, pendingInfo} from '../assets/capsula-traduce.mjs';
 test('alias de importación: #traducir/#traducción/#traducir-es → ES; #translate-en → EN', () => {

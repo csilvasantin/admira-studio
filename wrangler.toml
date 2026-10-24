@@ -14,6 +14,13 @@ binding = "AUTH_DB"
 database_name = "AUTH_DB"
 database_id = "1568f825-4dfb-40a9-ac40-c6776ee62b3e"
 
+# Workers AI: /stock-subtitles (whisper + m2m100) para #traduce/#translate.
+[ai]
+binding = "AI"
+
+[env.production.ai]
+binding = "AI"
+
 [env.production.vars]
 YOUTUBE_CHANNEL_NAME = "Carlos Silva Santin"
 YOUTUBE_CHANNEL_HANDLE = "@csilvasantin"
