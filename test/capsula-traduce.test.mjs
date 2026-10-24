@@ -30,3 +30,23 @@ test('SRT ida y vuelta', async () => {
   assert.equal(toSrt(c), srt);
   assert.deepEqual((await maybeSubtitle({id: 'x', type: 'video', tags: ['translate']})), {pending: true, from: 'es', to: 'en'});
 });
+import {tagsOf, langOf, pendingInfo} from '../assets/capsula-traduce.mjs';
+test('alias de importación: #traducir/#traducción/#traducir-es → ES; #translate-en → EN', () => {
+  for (const t of ['#traducir', 'Traducción', 'traducir-es', 'TRADUCE']) assert.deepEqual(directionOf([t]), {from: 'en', to: 'es'}, t);
+  for (const t of ['#translate', 'translation', 'translate-en']) assert.deepEqual(directionOf([t]), {from: 'es', to: 'en'}, t);
+});
+test('hashtags escritos en Comentarios al importar cuentan', () => {
+  const it = {id: 'u1', type: 'video', tags: null, comment: 'cápsula de negocio #traducir'};
+  assert.ok(tagsOf(it).includes('#traducir'));
+  assert.ok(qualifiesTranslation(it));
+});
+test('el idioma real manda si se conoce', () => {
+  assert.deepEqual(directionOf(['traducir'], 'es'), {from: 'es', to: 'en'});
+  assert.deepEqual(directionOf(['translate'], 'en'), {from: 'en', to: 'es'});
+  assert.equal(langOf({lang: 'es-ES'}), 'es');
+});
+test('insignia pendiente y desaparece cuando existe la subtitulada', () => {
+  const it = {id: 'o9', type: 'video', tags: ['capsula', 'traducir']};
+  assert.match(pendingInfo(it, [it]).label, /ES pendientes/);
+  assert.equal(pendingInfo(it, [it, {id: 's9', tags: ['subtitulado-es', 'par-o9']}]), null);
+});

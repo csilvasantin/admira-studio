@@ -352,6 +352,8 @@
     .cat-result.bad{ color:#ff8866; border-color:#7a3a2a; }
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
+      .stock-traduce-badge{display:inline-block;margin:4px 0;padding:3px 8px;border:1px solid #f5b400;border-radius:6px;background:rgba(245,180,0,.14);color:#f5b400;font:inherit;font-size:12px;cursor:pointer}
+    .stock-traduce-aviso{color:#f5b400}
   </style>
   <script defer src="/assets/site-nav.js?v=18.10.2026.r16.2219"></script>
   <script defer src="/assets/descarga-local.js?v=17.10.2026.r6.2255"></script>
@@ -1343,6 +1345,7 @@
             <span class="stock-head-meta">${headMeta}</span>
           </header>
           ${tagsBlock}
+          ${traduceBadge(it)}
           ${adaptChip(it)}
           <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
           ${commentBlock}
@@ -2249,11 +2252,24 @@
         onCreated:async id=>{try{const r=await fetch(`${STOCK_BASE}/stock/list?limit=30`,{cache:'no-store'});const d=await r.json();const nuevo=(d.items||[]).find(x=>x.id===id);if(nuevo)document.dispatchEvent(new CustomEvent('stock:local-published',{detail:{item:nuevo}}));}catch(_){}}
       })).catch(()=>{});
     }
+    function traduceBadge(it){
+      const p=window.CapsulaTraduce?.pendingInfo?.(it,allItemsTodo);if(!p)return '';
+      return `<button type="button" class="stock-traduce-badge" data-act="traduce-pendiente" data-encargo="${escAttr(p.encargo)}" title="Etiqueta de traducción detectada (${p.from.toUpperCase()}→${p.to.toUpperCase()}). Los subtítulos se generan fuera del navegador. Clic: copiar el encargo.">${p.label} · copiar encargo</button>`;
+    }
     // #traduce (EN→subtítulos ES) / #translate (ES→subtítulos EN) · assets/capsula-traduce.mjs (sin bucle: subtitulado-*).
     function capsulaTraduce(it){
       if(!it||it.type!=='video')return;
-      import('/assets/capsula-traduce.mjs?v=20261024-1').then(m=>m.maybeSubtitle(it,{items:allItemsTodo,onStatus:t=>{status.textContent=t;}})).catch(()=>{});
+      import('/assets/capsula-traduce.mjs?v=20261024-2').then(m=>m.maybeSubtitle(it,{items:allItemsTodo,onStatus:t=>{status.textContent=t;traducePendiente=t;
+        try{status.classList.add('stock-traduce-aviso');}catch(_){}}})).catch(()=>{});
     }
+    let traducePendiente='';
+    // Carga el módulo una vez para pintar la insignia «subtítulos XX pendientes» en las tarjetas.
+    import('/assets/capsula-traduce.mjs?v=20261024-2').then(m=>{window.CapsulaTraduce=m;try{applyFilters();}catch(_){}}).catch(()=>{});
+    grid.addEventListener('click',e=>{
+      const b=e.target.closest('[data-act="traduce-pendiente"]');if(!b)return;e.preventDefault();e.stopPropagation();
+      const txt=b.dataset.encargo||'';try{navigator.clipboard.writeText(txt);}catch(_){}
+      status.textContent='// 🈯 encargo copiado: '+txt+' · pégalo a GrokBot / la caja (la transcripción automática en Studio aún no está activa)';
+    },true);
     document.addEventListener('stock:local-published',e=>{capsulaAlterna(e.detail?.item);capsulaTraduce(e.detail?.item);});
     document.addEventListener('stock:tags-saved',e=>{capsulaAlterna(e.detail?.item);capsulaTraduce(e.detail?.item);});
     document.addEventListener('stock:local-view',()=>{
@@ -2425,6 +2441,7 @@
       try { const u = new URL(location.href); u.searchParams.delete('highlight'); history.replaceState(history.state, '', u); } catch {}
       openLightbox(item);
       capsulaAlterna(item);
+      capsulaTraduce(item); // tras importar por URL/subida se llega aquí con ?highlight (antes no se comprobaba #traducir)
     }
 
     // ── DISTRIBUIDOR DE ASSETS ────────────────────────────────────────────
