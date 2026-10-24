@@ -1,17 +1,18 @@
 {
-  "version": "v.24.10.2026.r3.13:55",
-  "deployedAt": "2026-10-24T11:55:41.045351+00:00",
+  "version": "v.24.10.2026.r4.14:16",
+  "deployedAt": "2026-10-24T12:16:16.665836+00:00",
   "author": "TrinityMBA16",
   "agent": "TrinityMBA16",
   "deployer": "TrinityMBA16",
   "machine": "MacBookAir16plata",
   "signature": "TrinityMBA16 · MacBookAir16plata",
-  "git": "5dd4dac3ddeb860b61b283757b44190e5915dd0a",
-  "gitFull": "5dd4dac3ddeb860b61b283757b44190e5915dd0a",
-  "gitShort": "5dd4dac",
+  "git": "948def255c7845c3b75b04a5c76621b5e9b0e21e",
+  "gitFull": "948def255c7845c3b75b04a5c76621b5e9b0e21e",
+  "gitShort": "948def2",
   "dirty": false,
   "novedades": [
-    "Editar piezas del catálogo en AInimation y guardar nuevas versiones vinculadas con su proyecto editable."
+    "Selecciona varios recursos del catálogo y crea un vídeo o interactivo en AInimation.",
+    "Elige horizontal, vertical o cuadrado y conserva los recursos de origen."
   ],
   "rollback": {
     "git": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560"
