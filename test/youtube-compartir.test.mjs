@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {metadatosYoutube, esVideoCompartible, youtubeConectado} from '../functions/_youtube.js';
+import {metadatosYoutube, esVideoCompartible, youtubeConectado, canalYoutube} from '../functions/_youtube.js';
 import {onRequestPost, onRequestGet} from '../functions/api/youtube/upload.js';
 
 const IT = {id: 'abc-1', type: 'video', mime: 'video/mp4', url: 'https://stock.admira.store/stock/abc-1.mp4', title: 'Cápsula X', comment: 'Resumen', tags: ['capsula', 'formacion', 'capsula']};
@@ -29,7 +29,17 @@ test('sin secretos: 503 YouTube no conectado', async () => {
   const r = await onRequestPost({request: req({id: 'abc-1'}), env: {}, data: {sessionInfo: superU}});
   assert.equal(r.status, 503);
   assert.equal((await r.json()).mensaje, 'YouTube no conectado');
-  assert.deepEqual(await (await onRequestGet({env: {}})).json(), {ok: true, conectado: false});
+  assert.deepEqual(await (await onRequestGet({env: {}})).json(), {ok: true, conectado: false, canal: null});
+});
+
+test('GET identifica el canal de destino conectado', async () => {
+  const fetchImpl = async url => {
+    if (String(url).startsWith('https://oauth2')) return Response.json({access_token: 'tok'});
+    return Response.json({items: [{id: 'UCADMIRA', snippet: {title: 'Admira', thumbnails: {default: {url: 'https://img.example/admira.jpg'}}}}]});
+  };
+  assert.deepEqual(await canalYoutube(ENV, fetchImpl), {id: 'UCADMIRA', nombre: 'Admira', avatar: 'https://img.example/admira.jpg', url: 'https://www.youtube.com/channel/UCADMIRA'});
+  const body = await (await onRequestGet({env: ENV, data: {fetchImpl}})).json();
+  assert.equal(body.canal.nombre, 'Admira');
 });
 
 test('sin sesión 401, no superusuario 403, otro origen 403', async () => {
@@ -79,9 +89,10 @@ for (const path of ['stock.html', 'en/stock.html']) {
     const html = readFileSync(new URL('../' + path, import.meta.url), 'utf8');
     assert.match(html, /<script[^>]+src="\/assets\/youtube-compartir\.js/);
     const max = html.indexOf('class="stock-card-btn" data-act="max"');
-    const yt = html.indexOf('class="stock-card-btn" data-act="compartir" title="Subir a YouTube"');
+    const yt = html.indexOf('class="stock-card-btn" data-act="compartir"');
     const del = html.indexOf('class="stock-card-btn danger" data-act="del"');
     assert.ok(max > 0 && max < yt && yt < del, 'orden ⛶ · YouTube · 🗑');
     assert.match(html, /btn\.dataset\.act === 'compartir'\) \{ e\.preventDefault\(\); window\.YTCompartir\?\.abrir\(item\)/);
+    assert.match(html, /<svg viewBox="0 0 28 20"[^>]*>.*fill="#ff0033".*fill="#fff"/);
   });
 }

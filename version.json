@@ -1,17 +1,17 @@
 {
-  "version": "v.24.10.2026.r2.20:09",
+  "version": "v.24.10.2026.r3.19:21",
   "deployedAt": "2026-10-24T20:09:18.151682+02:00",
-  "author": "GrokBot",
-  "agent": "GrokBot",
-  "deployer": "GrokBot",
-  "machine": "GrokBotBox",
-  "signature": "GrokBot · GrokBotBox",
+  "author": "Codex",
+  "agent": "Codex",
+  "deployer": "Codex",
+  "machine": "Codex Desktop",
+  "signature": "Codex · Codex Desktop",
   "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
   "gitFull": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
   "gitShort": "89955e0",
   "dirty": false,
   "novedades": [
-    "Stock · Cápsulas: al subir o etiquetar una cápsula con #capsula + #negocio/#creatividad/#tecnologia (también en inglés: #capsule #business/#creativity/#technology) se genera sola la versión en la otra orientación (16:9 ⇄ 9:16, encuadre centrado + fondo desenfocado) y se guarda en Cápsulas enlazada al original."
+    "Stock · YouTube: logotipo oficial reconocible, canal de destino visible antes y durante la publicación, y feedback continuo con progreso y tiempo transcurrido."
   ],
   "rollback": {
     "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b"
@@ -65,7 +65,8 @@
     ".source-patches/capsula-fuente-v53.json",
     ".source-patches/capsula-fuente-v56.json",
     ".source-patches/capsula-cartelas-v57.json",
-    ".source-patches/capsula-formato-alterno.json"
+    ".source-patches/capsula-formato-alterno.json",
+    ".source-patches/youtube-canal-feedback.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",

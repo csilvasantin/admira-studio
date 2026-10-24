@@ -52,6 +52,18 @@ export async function accessToken(env, fetchImpl = fetch) {
   return j.access_token;
 }
 
+export async function canalYoutube(env, fetchImpl = fetch) {
+  const token = await accessToken(env, fetchImpl);
+  const r = await fetchImpl('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true', {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+  const j = await r.json().catch(() => ({}));
+  const canal = j?.items?.[0];
+  if (!r.ok || !canal?.id) throw Object.assign(new Error('channel'), {codigo: 'youtube-canal', status: 502});
+  return {id: canal.id, nombre: canal.snippet?.title || canal.id,
+    avatar: canal.snippet?.thumbnails?.default?.url || '', url: `https://www.youtube.com/channel/${canal.id}`};
+}
+
 // Sube el vídeo: abre la sesión reanudable y le pasa el MP4 del Stock en streaming (sin cargarlo en memoria).
 export async function subirAYoutube(env, it, meta, fetchImpl = fetch) {
   const token = await accessToken(env, fetchImpl);
