@@ -3,7 +3,7 @@
 // sitios gemelos: https://www.admiranext.com/assets/avatar.js decide si se ve
 // (elección del usuario > interruptor del proyecto en admiranext.com > apagado).
 // data-brain="/avatar-ask": las preguntas van al relé de este mismo origen.
-export const AVATAR_LOADER = 'https://www.admiranext.com/assets/avatar.js?v=20261016-eink-command-2';
+export const AVATAR_LOADER = 'https://www.admiranext.com/assets/avatar.js?v=20261014-personajes-2';
 const TAG = '<script defer src="' + AVATAR_LOADER + '" data-brain="/avatar-ask" data-admira-avatar></script>';
 // Sello de versión con novedades (Merovingio, 06-10-2026): mismo mecanismo, mismo origen.
 export const SELLO_LOADER = 'https://www.admiranext.com/assets/sello-novedades.js';
@@ -14,7 +14,7 @@ export function wantsAvatar(response, url) {
   if (!response || response.status !== 200) return false;
   if (!String(response.headers.get('content-type') || '').includes('text/html')) return false;
   const path = url ? url.pathname : '/';
-  return !path.startsWith('/auth/') && !/^\/(?:en\/)?creativo(?:\/|$)/.test(path);           // Creativo owns its assistant; auth pages have no avatar.
+  return !path.startsWith('/auth/');           // ni en la verja ni en el login
 }
 
 export function withAvatar(response, url) {

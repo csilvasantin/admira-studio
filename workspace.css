@@ -2099,34 +2099,6 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 }
 .stock-refresh-icon { flex: 0 0 auto; padding: 6px 11px; }
 .stock-status:empty { display: none; }
-.stock-saved-search-controls {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0;
-  border-top: 1px solid var(--line); padding-top: 10px;
-}
-.stock-saved-searches-title { color: var(--muted); font-size: 12px; }
-.stock-toolbar .stock-saved-search-controls .stock-pager-btn { height: auto; }
-.stock-save-search { min-height: 36px; font: inherit; font-size: 12px; }
-.stock-saved-searches {
-  display: flex; flex-wrap: wrap; gap: 6px; width: 100%; min-width: 0;
-  max-height: 140px; overflow-y: auto;
-}
-.stock-saved-searches:empty, .stock-saved-search-status:empty { display: none; }
-.stock-saved-search-item { display: inline-flex; align-items: stretch; min-width: 0; max-width: 100%; }
-.stock-saved-search, .stock-remove-saved-search {
-  border: 1px solid var(--line-bright); background: transparent; color: var(--matrix);
-  font: inherit; font-size: 12px; cursor: pointer; min-height: 36px; padding: 6px 9px;
-}
-.stock-saved-search { min-width: 0; white-space: normal; overflow-wrap: anywhere; text-align: left; }
-.stock-saved-search[aria-pressed="true"] { background: rgba(0,255,65,.12); border-color: var(--matrix); }
-.stock-remove-saved-search { flex: 0 0 auto; border-left: 0; }
-.stock-saved-search:focus-visible, .stock-remove-saved-search:focus-visible {
-  outline: 2px solid var(--matrix); outline-offset: 2px;
-}
-.stock-saved-search-status { margin: 0; width: 100%; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
-@media (max-width: 480px) {
-  .stock-save-search, .stock-saved-search, .stock-remove-saved-search { min-height: 44px; }
-  .stock-saved-searches { max-height: 120px; }
-}
 .stock-toolbar input[type="text"] {
   width: 100%;
   background: var(--bg);
@@ -2164,8 +2136,6 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 18px;
-  /* Filas mixtas: la tarjeta horizontal no se estira a la altura de la vertical. */
-  align-items: start;
 }
 .stock-card {
   border: 1px solid var(--line-bright);
@@ -2243,24 +2213,6 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
     linear-gradient(90deg, rgba(0,255,65,.05), transparent 22%, transparent 78%, rgba(0,255,65,.05)),
     #020602;
 }
-/* Rejilla: la caja de una pieza vertical es 9:16 (con tope de alto para no
-   estirar la fila), no la 16/10 de las horizontales. Así el póster 9:16 ocupa
-   toda la caja en vez de verse como una tira pequeña con bandas laterales.
-   La vista lista conserva su caja fija de miniatura. */
-.stock-grid:not(.view-list) .stock-card[data-orientation="portrait"] .stock-card-media {
-  aspect-ratio: 9 / 16;
-  max-height: 440px;
-}
-/* Causa raíz del "recorte horizontal": la caja .stock-card-media solo tiene
-   alto por aspect-ratio (no es un alto definido), así que el height:100% del <img>
-   se resuelve a auto, la imagen vertical sale a todo el ancho con su alto natural y
-   overflow:hidden la corta por el centro. object-fit:contain no puede actuar si la
-   <img> no tiene caja propia: se ancla a la caja con inset:0 (definida). */
-.stock-card[data-orientation="portrait"] .stock-card-media img,
-.stock-card[data-orientation="square"] .stock-card-media img {
-  position: absolute;
-  inset: 0;
-}
 .stock-video-preview {
   pointer-events: none;
 }
@@ -2306,16 +2258,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 }
 .stock-card-body { padding: 12px 14px; display: grid; gap: 8px; min-width: 0; }
 .stock-card-body header {
-  display: flex; flex-wrap: wrap; gap: 8px; align-items: center; min-width: 0;
-}
-/* El formato acompaña al tipo antes del ID, también en tarjetas estrechas. */
-.stock-card-kind {
-  display: inline-flex; align-items: center; gap: 8px; min-width: 0; max-width: 100%;
-}
-.stock-card-kind > .stock-type { flex: 0 0 auto; }
-.stock-card-kind > .stock-orientation {
-  position: static; z-index: auto; min-width: 0;
-  white-space: normal; overflow-wrap: anywhere; box-shadow: none;
+  display: flex; gap: 8px; align-items: center; min-width: 0;
 }
 /* Título inline en la cabecera (junto al badge + iconos) */
 .stock-title-inline {
@@ -2325,8 +2268,8 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 }
 /* Meta combinada a la derecha: motor · coste · fecha */
 .stock-head-meta {
-  margin-left: auto; flex: 0 1 auto; min-width: 0;
-  color: var(--muted); font-size: 11px; overflow-wrap: anywhere;
+  margin-left: auto; flex: 0 0 auto;
+  color: var(--muted); font-size: 11px; white-space: nowrap;
 }
 .stock-grid.view-compact .stock-head-meta { display: none; }
 .stock-type {
@@ -2633,7 +2576,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 
 /* ── Botones de maximizar / eliminar sobre cada card ── */
 .stock-card-actions {
-  display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; max-width: 100%;
+  display: inline-flex; gap: 6px; align-items: center;
   z-index: 2;
 }
 .stock-card-btn {
@@ -2677,7 +2620,6 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 18px;
-  align-items: start;
 }
 
 /* ── Stock: selector de densidad de vista (lista / compacto / medio) ── */
@@ -2736,15 +2678,6 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
     left: 7px;
     bottom: 6px;
     font-size: 12px;
-  }
-}
-@media (max-width: 480px) {
-  /* En móvil la cabecera necesita el ancho de la tarjeta para mostrar el formato. */
-  .stock-grid.view-list .stock-card { flex-direction: column; }
-  .stock-grid.view-list .stock-card-media,
-  .stock-grid.view-list .stock-card[data-type="video"] .stock-card-media,
-  .stock-grid.view-list .stock-card[data-type="animation"] .stock-card-media {
-    flex-basis: auto; width: 100%;
   }
 }
 
@@ -3159,51 +3092,4 @@ body.quad-ui footer {
   .image-create-grid { grid-template-columns: 1fr; }
   .image-stage { position: static; }
   .image-prompt-field textarea { min-height: 180px; }
-}
-
-/* Stock: compact heading and controls leave more of each preview visible. */
-body[data-page="stock"] header.page-head{padding:14px 0 10px}
-body[data-page="stock"] .page-head h1{display:flex;align-items:baseline;gap:.3em;white-space:nowrap;font-size:clamp(20px,2.4vw,32px);line-height:1.2;max-width:100%}
-body[data-page="stock"] .page-head h1::after{display:none}
-body[data-page="stock"] .stock-toolbar{padding:8px 12px;gap:6px;margin-bottom:8px}
-body[data-page="stock"] .stock-toolbar .stock-pager-top{padding-top:0;border-top:0}
-body[data-page="stock"] main>.stock-toolbar+section{padding-top:0}
-body[data-page="stock"] .stock-media-play{transform:scale(.7);transform-origin:left bottom}
-body[data-page="stock"] .stock-media-play:hover{transform:scale(.756)}
-body[data-page="stock"] .stock-playlist-badge{transform:scale(.7);transform-origin:right bottom}
-
-@media(max-width:380px){body[data-page="stock"] .page-head h1{font-size:16px}}
-
-/* Stock mobile: every navigation and filter control fits the viewport. */
-@media (max-width: 600px) {
-  body[data-page="stock"] .pf-topbar-nav {
-    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 4px; overflow: visible; width: 100%; min-width: 0;
-  }
-  body[data-page="stock"] .pf-topbar-nav a {
-    min-width: 0; padding: 8px 2px !important; text-align: center;
-    font-size: 10px !important; letter-spacing: 0 !important; white-space: normal;
-    overflow: visible; text-overflow: clip;
-  }
-  body[data-page="stock"] .page-head h1 { flex-wrap: wrap; white-space: normal; }
-  body[data-page="stock"] .stock-toolbar { position: static; min-width: 0; }
-  body[data-page="stock"] .stock-toolbar .stock-pager-top {
-    display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 8px;
-  }
-  body[data-page="stock"] .stock-toolbar .stock-pager-search {
-    min-width: 0; max-width: none; width: 100%;
-  }
-  body[data-page="stock"] #stockLocalUpload,
-  body[data-page="stock"] .stock-pager-filters,
-  body[data-page="stock"] .stock-pager-sort,
-  body[data-page="stock"] .stock-pager-controls { grid-column: 1 / -1; min-width: 0; }
-  body[data-page="stock"] .stock-pager-filters {
-    display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px;
-  }
-  body[data-page="stock"] .stock-pager-filters select {
-    width: 100%; min-width: 0; max-width: none; min-height: 36px;
-  }
-  body[data-page="stock"] #tagMgrBtn { grid-column: 1 / -1; }
-  body[data-page="stock"] .stock-toolbar .stock-pager-sort { flex-wrap: wrap; }
-  body[data-page="stock"] .stock-toolbar .stock-pager-btn { min-height: 36px; height: auto; }
 }

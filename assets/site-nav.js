@@ -15,7 +15,7 @@
   var LANG_KEY = 'admiranext_expert_lang';
   var englishHost = /(^|\.)pixeria\.(com|pages\.dev)$/.test(location.hostname);
   var localePath = location.pathname;
-  var translatedPages = ['/', '/index.html', '/_cuadopen.html', '/admira-xp.html', '/avatar.html', '/concepto.html', '/director.html', '/plataforma.html', '/privacidad.html', '/privacy.html', '/radar/', '/crear-campana/', '/audio.html', '/musica.html', '/imagenes.html', '/video.html', '/anonimizador.html', '/publicidad.html', '/stock.html', '/crear/', '/creador/', '/adaptaciones/'];
+  var translatedPages = ['/', '/index.html', '/audio.html', '/musica.html', '/imagenes.html', '/video.html', '/anonimizador.html', '/publicidad.html', '/stock.html', '/crear/', '/creador/', '/adaptaciones/'];
   function langPref() {
     try { var v = localStorage.getItem(LANG_KEY); return v === 'es' || v === 'en' ? v : ''; } catch (_) { return ''; }
   }
@@ -46,8 +46,8 @@
       } catch (_) {}
     }
     if (!isTranslated(p)) return '';
-    if (l === 'en') return isEnPath(p) ? '' : (p === '/privacidad.html' ? '/en/privacy.html' : '/en' + (p === '/index.html' ? '/' : p));
-    return isEnPath(p) ? (p === '/en/privacy.html' ? '/privacidad.html' : (p.slice(3) || '/')) : '';
+    if (l === 'en') return isEnPath(p) ? '' : '/en' + (p === '/index.html' ? '/' : p);
+    return isEnPath(p) ? (p.slice(3) || '/') : '';
   }
   // URL completa para pasar a `l`: conserva el resto del query (cliente=, marca=…) y el hash. En
   // pixeria la ruta ES lleva ?lang=es por si localStorage no está disponible (privado, bloqueado).
@@ -55,25 +55,23 @@
     var path = langPath(l);
     if (!path) return '';
     var q = new URLSearchParams(location.search);
-    q.set('lang', l);
+    q.delete('lang');
+    if (l === 'es' && englishHost) q.set('lang', 'es');
     var qs = q.toString();
     return path + (qs ? '?' + qs : '') + location.hash;
   }
   window.PixeriaIdioma = { clave: LANG_KEY, preferido: langPref, fijar: setLangPref, ruta: langPath, url: langUrl };
   var langRedirect = (function () {
+    if (!isTranslated(localePath)) return '';
     var qLang = new URLSearchParams(location.search).get('lang');
     var want = qLang === 'es' || qLang === 'en' ? qLang : (langPref() || (englishHost ? 'en' : ''));
-    if (qLang === 'es' || qLang === 'en') setLangPref(qLang);
-    if (!isTranslated(localePath)) {
-      if (want) document.documentElement.lang = want;
-      return '';
-    }
-    var target = want && langPath(want);
-    if (target) {
+    var onEn = isEnPath(localePath);
+    if (want === 'en' && !onEn) return '/en' + (localePath === '/index.html' ? '/' : localePath) + location.search + location.hash;
+    if (want === 'es' && onEn) {
       var q = new URLSearchParams(location.search);
-      q.set('lang', want);
+      if (englishHost) q.set('lang', 'es');
       var qs = q.toString();
-      return target + (qs ? '?' + qs : '') + location.hash;
+      return (localePath.slice(3) || '/') + (qs ? '?' + qs : '') + location.hash;
     }
     return '';
   })();
@@ -243,7 +241,7 @@
       '.quad-ui.pix-nav-canonical-header{padding:0!important}' +
       '.pix-nav-home-rails.quad-ui:not(.pix-nav-canonical-header){padding:70px 0 0!important}.pix-nav-home-rails .quad-top{top:0;left:0;right:0;width:auto;height:70px;min-height:70px;box-sizing:border-box;padding:0 28px;border:0;border-bottom:1px solid rgba(26,74,34,.95);box-shadow:0 0 24px rgba(0,255,65,.08);z-index:180}' +
       '.pix-nav-home-rails .rail{position:fixed;top:var(--pf-topbar-h,70px);bottom:0;z-index:160;width:var(--pf-left-w,300px);max-height:none;overflow:auto;border:1px solid rgba(140,160,150,.30);border-radius:0;background:rgba(2,10,5,.96);box-shadow:0 0 34px rgba(0,255,65,.10);backdrop-filter:blur(8px)}' +
-      '.pix-nav-home-rails .rail-left{left:0;right:auto;display:flex;flex-direction:column;border-left:0;border-top:2px solid #68dce9;border-right-color:#68dce9}.pix-nav-home-rails .rail-right{right:0;left:auto;width:var(--pf-right-w,330px);border-right:0;border-top:2px solid #e8c268;border-left-color:#e8c268}' +
+      '.pix-nav-home-rails .rail-left{left:0;display:flex;flex-direction:column;border-left:0;border-top:2px solid #68dce9;border-right-color:#68dce9}.pix-nav-home-rails .rail-right{right:0;width:var(--pf-right-w,330px);border-right:0;border-top:2px solid #e8c268;border-left-color:#e8c268}' +
       '.pix-nav-home-rails .rail-hd{position:sticky;top:0;z-index:3;margin:0;padding:13px 16px 11px;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#9ab0a4;background:rgba(8,14,10,.78);border-bottom:1px solid rgba(140,160,150,.30)}.pix-nav-home-rails .rail-left .rail-hd{color:#68dce9}.pix-nav-home-rails .rail-right .rail-hd{color:#e8c268}' +
       '.pix-nav-home-rails .rail-nav{display:flex;flex-direction:column;padding:8px}.pix-nav-home-rails .rail-nav a{display:block;padding:10px 12px;border:1px solid transparent;color:#c8ffd0;text-decoration:none}.pix-nav-home-rails .rail-nav a:hover,.pix-nav-home-rails .rail-nav a[aria-current="page"]{border-color:#00ff41;background:rgba(0,255,65,.07)}.pix-nav-home-rails .rail-nav b{display:block;font-weight:760;font-size:14px;color:#e8f2ec}.pix-nav-home-rails .rail-nav small{display:block;margin-top:2px;font-size:11.5px;color:#7fae8c;line-height:1.3}.pix-nav-home-rails .rail-options-meta{margin-top:auto;padding:12px 16px 16px;border-top:1px solid rgba(140,160,150,.30)}.pix-nav-home-rails .rail-ver{display:block;padding:6px 9px;border:1px solid #68dce9;color:#68dce9;font-size:11px;font-weight:800;letter-spacing:.04em;text-align:center}.pix-nav-home-rails .rail-extra{padding:4px 16px 18px}.pix-nav-home-rails .rail-sub{margin:6px 0 8px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#9ab0a4}.pix-nav-home-rails .rail-doc{display:block;padding:9px 0;font-size:13.5px;color:#e8f2ec;border-bottom:1px solid rgba(140,160,150,.30);text-decoration:none}' +
       // Los raíles se SUPERPONEN (Carlos, 3-oct-2026): el <main> conserva sus márgenes
@@ -259,7 +257,7 @@
       'padding:0;text-shadow:none;box-shadow:none}'+
       '.lead-toggle:hover,.lead-toggle:focus-visible{opacity:1;background:rgba(0,255,65,.14);outline:none}'+
       '.page-head .lead[hidden]{display:none}'+
-      '.pix-nav-icon{zoom:.9;width:42px;height:42px;display:inline-grid;place-items:center;flex:0 0 42px;padding:0;border:1px solid rgba(0,255,65,.42);border-radius:0;background:rgba(0,255,65,.04);color:#00ff41;cursor:pointer;box-shadow:inset 0 0 16px rgba(0,255,65,.04)}' +
+      '.pix-nav-icon{width:42px;height:42px;display:inline-grid;place-items:center;flex:0 0 42px;padding:0;border:1px solid rgba(0,255,65,.42);border-radius:0;background:rgba(0,255,65,.04);color:#00ff41;cursor:pointer;box-shadow:inset 0 0 16px rgba(0,255,65,.04)}' +
       '.pix-nav-icon:hover,.pix-nav-icon[aria-expanded="true"]{background:rgba(0,255,65,.12);box-shadow:0 0 16px rgba(0,255,65,.18),inset 0 0 16px rgba(0,255,65,.08)}' +
       '.pix-nav-icon svg{width:21px;height:19px;display:block}' +
       '.pix-nav-icon .frame{fill:none;stroke:#8bd49f;stroke-width:1.4}' +
@@ -370,7 +368,6 @@
   }
 
   var HOME_RAIL_SECTIONS = [
-    ['/', 'Inicio', 'Volver al inicio de Admira Studio'],
     ['/creador/', 'Creador', 'Crea campañas desde cero para tus pantallas'],
     ['/adaptaciones/', 'Adaptador', 'Adapta contenidos existentes a cada pantalla'],
     ['/audio.html', 'Audio · Megafonía', 'Voces, locución y megafonía de marca'],
@@ -402,12 +399,7 @@
     left.className = 'rail rail-left';
     left.setAttribute('aria-label', 'Opciones · secciones de Admira Studio');
     left.innerHTML = '<div class="rail-hd">🔍 Opciones</div><nav class="rail-nav" aria-label="Secciones de Admira Studio">' +
-      HOME_RAIL_SECTIONS.map(function (section) {
-        var s = section.slice();
-        if ((document.documentElement.lang || '').startsWith('en')) {
-          var navItem = EN.find(function (item) { return norm(item[0].replace(/^\/en(?=\/)/, '')) === norm(s[0]); });
-          if (navItem) { s[0] = navItem[0]; s[1] = navItem[1]; }
-        }
+      HOME_RAIL_SECTIONS.map(function (s) {
         var current = norm(s[0]) === here;
         return '<a href="' + s[0] + '"' + (current ? ' aria-current="page"' : '') + '><b>' + s[1] + '</b><small>' + s[2] + '</small></a>';
       }).join('') + '</nav><div class="rail-options-meta" aria-label="Release de Admira Studio">' +
@@ -626,10 +618,7 @@
     installIconStyles();
     installLeadToggle();
     if (isHome()) {
-      // La portada no lleva ⌘ (cuadratura.js monta ahí la píldora de idioma): aquí solo se
-      // mejoran ☰ y ▤ y se reescribe el enlace de idioma; no se añade ningún botón Experto.
       upgradeFrameControls();
-      syncNavigationLanguage();
       return;
     }
     var english = (document.documentElement.lang || '').toLowerCase().indexOf('en') === 0;
@@ -668,48 +657,6 @@
     if (!document.querySelector('.pf-topbar')) {
       document.querySelectorAll('.site-header, .topnav').forEach(bindStandardControls);
     }
-    syncNavigationLanguage();
-  }
-
-  // Changing language in a running example must update navigation without
-  // replacing its main, draft, player, selection or open panels.
-  function syncNavigationLanguage() {
-    var english = (document.documentElement.lang || '').startsWith('en');
-    var items = english ? EN : ES;
-    document.querySelectorAll('.pf-topbar-nav').forEach(function (nav) { render(nav, items); });
-    document.querySelectorAll('.pf-topbar-brand').forEach(function (brand) {
-      var url = new URL(brand.href, location.href);
-      if (url.origin === location.origin && ['/', '/en/', '/index.html', '/en/index.html'].indexOf(url.pathname) >= 0) brand.href = english ? '/en/' : '/';
-    });
-    document.querySelectorAll('.pf-topbar-lang, .language-switcher a, .mobile-language-switcher a').forEach(function (link) {
-      var language = english ? 'es' : 'en';
-      var target = langUrl(language);
-      if (target) link.href = target;
-    });
-    var sectionLabels = {
-      'Avatar 3D':'Avatar 3D', 'Anonimizador':'Anonymizer', 'Plataforma':'Platform',
-      'Campañas':'Campaigns', 'Demo Clear Channel':'Clear Channel demo'
-    };
-    document.querySelectorAll('.rail-left .rail-nav a').forEach(function (link) {
-      var url = new URL(link.href, location.href);
-      if (url.origin !== location.origin) return;
-      var base = url.pathname.replace(/^\/en(?=\/)/, '');
-      var section = HOME_RAIL_SECTIONS.find(function (s) { return norm(s[0]) === norm(base); });
-      if (!section) return;
-      var navItem = items.find(function (item) { return norm(item[0].replace(/^\/en(?=\/)/, '')) === norm(base); });
-      url.pathname = navItem ? navItem[0] : (english && isTranslated(base) ? '/en' + base : base);
-      link.href = url.pathname + url.search + url.hash;
-      var label = link.querySelector('b');
-      if (label) label.textContent = navItem ? navItem[1] : (english ? (sectionLabels[section[1]] || section[1]) : section[1]);
-      var detail = link.querySelector('small');
-      if (detail) detail.textContent = english && window.AdmiraUILocale ? window.AdmiraUILocale.translate(section[2]) : section[2];
-    });
-    [['menu','Opciones','Options'],['advanced','Avanzado','Advanced'],['expert','Experto','Expert']].forEach(function (role) {
-      document.querySelectorAll('.pf-topbar .pix-nav-icon-' + role[0]).forEach(function (button) {
-        button.setAttribute('aria-label', english ? role[2] : role[1]);
-        button.title = english ? role[2] : role[1];
-      });
-    });
   }
 
   // El sello visible se copia del <meta> canonico, que es el que firma el release
@@ -753,12 +700,6 @@
     normalizeInternalNav();
     syncRailVersion();
     trackTopbarHeight();
-    var languageObserver = new MutationObserver(function () {
-      setLangPref((document.documentElement.lang || '').startsWith('en') ? 'en' : 'es');
-      syncNavigationLanguage();
-    });
-    languageObserver.observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
-    document.addEventListener('admiranext:lang', syncNavigationLanguage);
     // cuadratura.js crea la barra de la home de forma diferida; esta segunda
     // pasada normaliza tambien esa barra cuando se reutiliza en una interior.
     setTimeout(function () {
@@ -768,23 +709,19 @@
       cliente.src = '/assets/cliente-activo.js' + (STAMP || '');
       document.body.appendChild(cliente);
       if (!document.querySelector('.rail-bottom,.quad-bottom,#pixNavExpertLayer')) return;
-      var cli = document.createElement('script');
-      cli.src = '/assets/expert-cli.js?v=creativo-20261018-16';
-      // Portada sin modo Experto (Carlos, 15-oct-2026): expert-cli.js solo lleva la Biblioteca y
-      // el boletín de la franja inferior a la columna central; ni consola, ni su CSS, ni la piel
-      // de la suite, que reabriría ⌘ con el estado guardado en la pestaña (ax-experto-abierto).
-      if (isHome()) { document.body.appendChild(cli); return; }
       var css = document.createElement('link');
       css.rel = 'stylesheet'; css.href = '/assets/expert-cli.css' + (STAMP || '?v=4663');
       document.head.appendChild(css);
+      var cli = document.createElement('script');
+      cli.src = '/assets/expert-cli.js?v=creator-full-3';
       document.body.appendChild(cli);
       // ⌘ EXPERTO · CLI con el look de digitalavatar.ai (Carlos, 4-oct-2026): piel compartida de la
       // suite (www.admiranext.com/suite) sobre la consola de expert-cli.js; los comandos no cambian.
       var axCss = document.createElement('link');
-      axCss.rel = 'stylesheet'; axCss.href = 'https://www.admiranext.com/suite/experto.css?v=20261016-eink-command-1';
+      axCss.rel = 'stylesheet'; axCss.href = 'https://www.admiranext.com/suite/experto.css?v=20261005-experto-idioma-2';
       document.head.appendChild(axCss);
       var ax = document.createElement('script');
-      ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261018-admirito-1';
+      ax.src = 'https://www.admiranext.com/suite/experto.js?v=20261014-personajes-2';
       ax.setAttribute('data-panel', '.pf-cli');
       ax.setAttribute('data-body', '');
       ax.setAttribute('data-form', '.pf-cli-form');
@@ -793,16 +730,13 @@
       ax.setAttribute('data-extras', '');
       ax.setAttribute('data-chrome', '');
       ax.setAttribute('data-engine', 'ADMIRA STUDIO ENGINE');
-      // Modo Experto: el icono muestra la línea mínima o lo oculta DEL TODO (Carlos, 14-oct-2026); la
-      // altura se amplía con el tirador compartido; el estado se recuerda en la pestaña.
+      // Modo Experto: el icono lo muestra completo o lo oculta DEL TODO (Carlos, 5-oct-2026), sin la
+      // línea mínima «› /help»; el estado se recuerda en la pestaña.
       ax.setAttribute('data-min', 'hide');
       document.body.appendChild(ax);
     }, 0);
   }
 
-  // A deferred script runs with readyState=interactive, before the next
-  // deferred quadratura script has necessarily mounted the header. Wait for
-  // that bootstrap instead of exhausting two passes before the header exists.
-  if (document.readyState === 'loading' || (SELF && SELF.defer && document.readyState === 'interactive')) document.addEventListener('DOMContentLoaded', start, {once:true});
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();

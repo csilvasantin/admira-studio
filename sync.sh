@@ -24,7 +24,7 @@ DRY=1; [ "${1:-}" = "--aplicar" ] && DRY=0
 command -v jq >/dev/null || { echo "hace falta jq"; exit 1; }
 
 ORIGEN="$(jq -r .origen marca.json)"
-[ -d "$ORIGEN/.git" ] || { echo "✖ no encuentro el origen en $ORIGEN"; exit 1; }
+git -C "$ORIGEN" rev-parse --git-dir >/dev/null 2>&1 || { echo "✖ no encuentro el origen en $ORIGEN"; exit 1; }
 
 # La fuente es origin/main, NO el clon local. Dos razones, las dos aprendidas el
 # 4-ago-2026:

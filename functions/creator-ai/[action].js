@@ -13,9 +13,6 @@ export async function onRequest({request,env,params}){
   const prompt=String(d.prompt||'').trim();if(prompt.length>6000)return json({error:'prompt-too-long'},400);
   if(action==='image'&&prompt){path='/xai/image';body={prompt,model:'grok-imagine-image-pro',n:1,b64:true};}
   else if(action==='video'&&prompt&&/^[a-zA-Z0-9_-]{6,100}$/.test(d.stock_id||'')){path='/xai/video';body={prompt,stock_id:d.stock_id,aspect_ratio:'16:9',duration:5,resolution:'720p'};}
-  else if(action==='archive-eink'&&/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(d.image||'')&&d.image.length<23000000&&/^[a-f0-9]{32}$/.test(d.seed||'')){
-   const m=/^data:([^;]+);base64,(.+)$/.exec(d.image);path='/stock/publish';body={type:'image',motor:'grok-imagine-image-pro',mime:m[1],base64:m[2],prompt,title:String(d.title||'Starbucks Diagonal · imagen IA').slice(0,120),externalRef:'eink-source:'+d.seed,comment:'Creador · cartelas Diagonal · '+d.seed,tags:['creador','starbucks','diagonal-634','eink-source'],quality:'better'};
-  }
   else if(action==='archive'&&/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(d.image||'')&&d.image.length<23000000&&/^[a-f0-9]{32}$/.test(d.seed||'')){
    const m=/^data:([^;]+);base64,(.+)$/.exec(d.image);path='/stock/publish';body={type:'image',motor:'grok-imagine-image-pro',mime:m[1],base64:m[2],prompt,title:String(d.title||'Sneaker Xtore').slice(0,120),comment:'Demo Creator full · '+d.seed,tags:['demo','sneakers','creator'],quality:'better'};
   }else return json({error:'invalid-input'},400);

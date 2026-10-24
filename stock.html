@@ -20,7 +20,7 @@
       if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
     }catch(e){}
     if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
-    var s=document.createElement('script'); s.src='/auth-gate.js?v=17.10.2026.r6.2255';
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=24.10.2026.r2.1353';
     (document.head||document.documentElement).appendChild(s);
     // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
     // origen aún no esté autorizado en Google → mensaje claro en pantalla.
@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.22.10.2026.r1.11:33">
+  <meta name="admiranext-version" content="Admira Studio v.24.10.2026.r2.13:53">
   <link rel="canonical" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=stock-capsulas-video-20261022-1">
+  <link rel="stylesheet" href="workspace.css?v=24.10.2026.r2.1353">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -72,33 +72,8 @@
     /* ── Distribuidor de assets ───────────────────────────────── */
     /* Casilla de selección en lote sobre cada tarjeta */
     .stock-card{ position:relative; }
-    .stock-origen-bar[hidden]{display:none!important}
-    #localUploadModal{width:min(660px,95vw);max-width:660px;max-height:90vh;overflow:hidden}
-    #localUploadModal [hidden]{display:none!important}
-    #localUploadModal .keys-form{display:flex;flex-direction:column;box-sizing:border-box;max-height:calc(90vh - 2px);overflow:hidden}
-    #localUploadModal h3,#localUploadStatus,.local-upload-actions{flex-shrink:0}
-    .local-upload-content{display:grid;gap:14px;overflow-y:auto;min-height:0}
-    #localUploadModal textarea,#localUploadModal input{width:100%;box-sizing:border-box;font:inherit;padding:8px;background:var(--bg);border:1px solid var(--line-bright);color:var(--ink)}
-    .local-drop-zone{border:2px dashed var(--line-bright);border-radius:10px;padding:24px 12px;text-align:center}
-    .local-drop-zone p{margin:0 0 12px}
-    .local-upload-queue{margin:0;padding:0;list-style:none;display:grid;gap:8px}
-    .local-upload-queue li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;padding:10px;border:1px solid var(--line-bright);border-radius:8px}
-    .local-file-name,.local-file-state{overflow-wrap:anywhere}
-    .local-file-state{grid-column:1;color:var(--muted);font-size:12px}
-    .local-upload-queue button{grid-column:2;grid-row:1/3;background:transparent;border:1px solid var(--line-bright);color:var(--ink);cursor:pointer}
-    #localUploadStatus{white-space:pre-line;overflow-wrap:anywhere;min-height:1.5em}
-    .local-upload-actions{display:flex;flex-wrap:wrap;gap:8px}
-    #localDropOverlay{position:fixed;inset:12px;z-index:10000;border:3px dashed var(--matrix);background:#001509ee;display:grid;place-content:center;text-align:center;pointer-events:none;color:var(--matrix);padding:20px;font-size:24px}
-    #localDropOverlay[hidden]{display:none}
-    #localDropOverlay span{font-size:16px}
     .stock-card-media{position:relative}
-    .stock-format-versions{pointer-events:auto;min-width:0;max-width:100%;cursor:pointer;text-overflow:ellipsis;outline-offset:2px}
-    .stock-format-versions option{background:#031006;color:#caffd7}
     .stock-playlist-badge{position:absolute;right:9px;bottom:9px;z-index:4;border:1px solid var(--matrix);border-radius:7px;background:#001b0bee;color:var(--matrix);padding:5px 8px;font-size:11px;font-weight:700;font-family:inherit;cursor:help;max-width:80%}
-    .stock-playlist-badge.is-pending{border-color:#ffe14d;color:#ffe14d;background:#242005f2}
-    .stock-playlist-pct{margin-left:5px}
-    .stock-playlist-track{display:block;height:4px;min-width:85px;margin-top:4px;border-radius:3px;background:#ffffff26;overflow:hidden}
-    .stock-playlist-track>span{display:block;height:100%;background:currentColor;transition:width .25s ease}
     .stock-playlist-badge:focus-visible{outline:2px solid #fff;outline-offset:2px}
     #plModal .pl-row{grid-template-columns:repeat(auto-fit,minmax(185px,1fr))}
     #plModal select{width:100%;background:var(--bg);border:1px solid var(--line-bright);color:var(--matrix);border-radius:6px;padding:7px;font-size:12px;font-family:inherit}
@@ -264,7 +239,26 @@
       white-space:pre-wrap; overflow-wrap:anywhere; text-align:left; }
 
     /* Alta fácil de cápsula Blinkist (Cafebrería) — solo texto, sin DevTools */
-
+    .capsula-create{ margin:12px 0 18px; border:1px solid var(--line-bright); border-radius:10px;
+      background:rgba(0,255,65,.04); padding:14px 16px; }
+    .capsula-create[hidden]{ display:none; }
+    .capsula-create-head{ display:flex; flex-wrap:wrap; gap:10px; align-items:baseline; justify-content:space-between; margin-bottom:10px; }
+    .capsula-create-head h3{ margin:0; font-size:15px; color:var(--matrix); letter-spacing:.04em; }
+    .capsula-create-head p{ margin:0; font-size:12px; color:var(--muted); max-width:62ch; line-height:1.45; }
+    .capsula-grid{ display:grid; gap:10px 14px; grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .capsula-grid .field{ display:flex; flex-direction:column; gap:4px; }
+    .capsula-grid .field.full{ grid-column:1/-1; }
+    .capsula-grid label{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; }
+    .capsula-grid input,.capsula-grid select,.capsula-grid textarea{
+      font:inherit; font-size:13px; color:var(--ink); background:var(--bg);
+      border:1px solid var(--line-bright); border-radius:6px; padding:8px 10px; }
+    .capsula-grid textarea{ min-height:72px; resize:vertical; line-height:1.45; }
+    .capsula-actions{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:12px; }
+    .capsula-status{ font-size:12px; color:var(--muted); line-height:1.4; flex:1; min-width:200px; }
+    .capsula-status[data-ok="1"]{ color:var(--matrix); }
+    .capsula-status[data-ok="0"]{ color:#ff8866; }
+    .capsula-toggle{ font-size:12px; }
+    @media (max-width:720px){ .capsula-grid{ grid-template-columns:1fr; } }
 
 
     /* Visor de mueble girable en el Stock: 1 cara + flechas para ver las otras */
@@ -353,16 +347,14 @@
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
   </style>
-  <script defer src="/assets/site-nav.js?v=18.10.2026.r16.2219"></script>
-  <script defer src="/assets/descarga-local.js?v=17.10.2026.r6.2255"></script>
-  <script defer src="/assets/youtube-compartir.js?v=22.10.2026.r3.1730"></script>
-  <script defer src="/assets/capsula-fuente-interactiva.js?v=22.10.2026.r9"></script>
-  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=17.10.2026.r6.2255">
+  <script defer src="/assets/site-nav.js?v=24.10.2026.r2.1353"></script>
+  <script defer src="/assets/descarga-local.js?v=24.10.2026.r2.1353"></script>
+  <script defer src="/assets/youtube-compartir.js?v=24.10.2026.r2.1353"></script>
+  <link rel="stylesheet" href="assets/xpaces/viewer.css?v=24.10.2026.r2.1353">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=18.10.2026.r16.2219">
-  <link rel="stylesheet" href="/assets/music/cards.css?v=17.10.2026.r6.2255">
-<link rel="stylesheet" href="/assets/stock-capsule-editor.css?v=capsule-inline-1">
-<link rel="stylesheet" href="/assets/stock-detail-shell.css?v=capsule-inline-1">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=24.10.2026.r2.1353">
+<link rel="stylesheet" href="/assets/stock-capsule-editor.css?v=24.10.2026.r2.1353">
+<link rel="stylesheet" href="/assets/stock-detail-shell.css?v=24.10.2026.r2.1353">
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -409,7 +401,9 @@
   </header>
 
   <header class="page-head">
-    <h1>Stock <span id="stockCount" role="status" aria-live="polite" aria-atomic="true" class="stock-count" data-n="0">…</span></h1>
+    <p class="eyebrow stock">Galería pública</p>
+    <h1>Stock · <span id="stockCount" class="stock-count" data-n="0">…</span> assets, desde <span id="stockMotores">…</span> motores.</h1>
+    <p class="lead">Todo lo que se publica desde el botón <strong>📌 Publicar en Stock</strong> en audio, música, imágenes o video aparece aquí. Filtros por tipo y motor; búsqueda por prompt.</p>
   </header>
 
   <main>
@@ -423,7 +417,6 @@
           <input id="stockSearch" type="text" placeholder="🔍 buscar… o pega una URL e importa →" autocomplete="off">
           <button type="button" class="btn primary stock-import-btn" id="stockImportFromSearch" title="Importar la URL del buscador (yt-dlp · igual que en AdmiraXP de Telegram)" aria-label="Importar URL">📥</button>
         </div>
-        <button type="button" class="stock-pager-btn" id="stockLocalUpload" title="Busca archivos en tu equipo o arrástralos sobre Stock. Hasta 5 archivos, 100 MB por archivo.">📂 Subir archivos</button>
         <div class="stock-pager-filters">
           <select id="stockTypeFilter" title="Filtrar por tipo" aria-label="Filtrar por tipo">
             <option value="">Todos los tipos</option>
@@ -445,7 +438,7 @@
                  vistas salvo esta, para que el Stock no enseñe piezas rotas. -->
             <option value="fallidos" id="stockFailedOpt" hidden>Importaciones fallidas</option>
           </select>
-          <select id="stockFormatFilter" title="Filtrar por formato" aria-label="Filtrar por formato"><option value="">Todos los formatos</option></select>
+          <button type="button" class="stock-pager-btn capsula-toggle" id="capsulaFormToggle" title="Crear cápsula Blinkist (texto → Stock → Cafebrería)" aria-expanded="false" aria-controls="capsulaPanel">📚 Nueva cápsula</button>
           <button type="button" class="stock-pager-btn" id="tagMgrBtn" title="Gestor de etiquetas: renombrar, fusionar variaciones y borrar en todo el Stock">🏷️ Etiquetas</button>
         </div>
         <div class="stock-pager-sort" id="stockSortBar" role="group" aria-label="Ordenar por">
@@ -461,13 +454,63 @@
           <button type="button" class="stock-pager-btn" data-page="last" title="Última página" aria-label="Última página">»</button>
         </div>
       </nav>
-      <div id="stockSavedSearchControls" class="stock-saved-search-controls"></div>
       <div id="stockStatus" class="stock-status" role="status" aria-live="polite"></div>
     </section>
 
     <section>
 
 
+
+    <section class="capsula-create" id="capsulaPanel" hidden aria-label="Nueva cápsula Blinkist">
+      <div class="capsula-create-head">
+        <h3>📚 Cápsula Blinkist → Stock</h3>
+        <p>Publica solo el texto (type <code>capsula</code>, tags <code>blinkist</code>). Cafebrería la recoge del índice. El vídeo 9:16 se compone aparte con <code>capsula.sh</code> — este formulario no pide Grok Video.</p>
+      </div>
+      <form id="capsulaForm" autocomplete="off">
+        <div class="capsula-grid">
+          <div class="field full">
+            <label for="cap-url">URL Blinkist <small style="text-transform:none;letter-spacing:0;font-weight:400">(o deja vacío y rellena título + autor)</small></label>
+            <input id="cap-url" name="url" type="url" placeholder="https://www.blinkist.com/en/books/…" spellcheck="false">
+          </div>
+          <div class="field">
+            <label for="cap-libro">Título del libro</label>
+            <input id="cap-libro" name="libro" type="text" placeholder="This Is Marketing">
+          </div>
+          <div class="field">
+            <label for="cap-autor">Autor</label>
+            <input id="cap-autor" name="autor" type="text" placeholder="Seth Godin">
+          </div>
+          <div class="field full">
+            <label for="cap-tesis">Tesis / título de la cápsula</label>
+            <input id="cap-tesis" name="tesis" type="text" required placeholder="This Is Marketing: no persuadas a la masa, lidera una tribu">
+          </div>
+          <div class="field">
+            <label for="cap-consejero">Consejero</label>
+            <select id="cap-consejero" name="consejero" required></select>
+          </div>
+          <div class="field">
+            <label for="cap-tema">Tema</label>
+            <select id="cap-tema" name="tema" required></select>
+          </div>
+          <div class="field full">
+            <label for="cap-carbono">PARA CARBONO <small style="text-transform:none;letter-spacing:0;font-weight:400">(resumen para personas, ~450–700 chars)</small></label>
+            <textarea id="cap-carbono" name="carbono" required rows="4" placeholder="La tesis del libro en lenguaje claro…"></textarea>
+          </div>
+          <div class="field">
+            <label for="cap-silicio">PARA SILICIO <small style="text-transform:none;letter-spacing:0;font-weight:400">(opcional · auto si vacío)</small></label>
+            <textarea id="cap-silicio" name="silicio" rows="3" placeholder="Instrucciones operativas para un agente…"></textarea>
+          </div>
+          <div class="field">
+            <label for="cap-aplicacion">APLICACIÓN <small style="text-transform:none;letter-spacing:0;font-weight:400">(opcional · auto si vacío)</small></label>
+            <textarea id="cap-aplicacion" name="aplicacion" rows="3" placeholder="Experimento concreto siguiente…"></textarea>
+          </div>
+        </div>
+        <div class="capsula-actions">
+          <button type="submit" class="btn primary">📌 Publicar cápsula</button>
+          <span class="capsula-status" id="cap-status" role="status"></span>
+        </div>
+      </form>
+    </section>
 
       <!-- Vista Catálogos (Yokup #3183): piezas creadas desde catálogos, agrupadas, y asignación a circuito -->
       <section id="catSection" hidden aria-label="Catálogos">
@@ -477,10 +520,9 @@
       </section>
       <div id="stockOrigenBar" class="stock-origen-bar" hidden></div>
       <div id="stockGrid" class="stock-grid"></div>
-      <div id="stockEmpty" class="stock-empty" role="status" aria-live="polite" hidden>
-        <h2 id="stockEmptyTitle">Sin resultados</h2>
-        <p>Prueba otra búsqueda o limpia los filtros para ver todos los contenidos.</p>
-        <button type="button" class="stock-pager-btn" id="stockClearFilters">Limpiar filtros</button>
+      <div id="stockEmpty" class="stock-empty" hidden>
+        <p>// Stock vacío.</p>
+        <p>Genera un asset en Audio/Música/Imágenes/Video — o un gemelo en el <a href="anonimizador.html">Anonimizador</a> (Twin NPCs · Digital Twins) — y pulsa <strong>📌 PUBLICAR EN STOCK</strong>.</p>
       </div>
 
       <nav class="stock-pager stock-pager-bottom" hidden aria-label="Paginación (abajo)">
@@ -524,28 +566,10 @@
     </form>
   </dialog>
 
-  <div id="localDropOverlay" hidden aria-hidden="true"><strong>Suelta los archivos para añadirlos</strong><span>Hasta 5 archivos · 100 MB por archivo</span></div>
-  <dialog id="localUploadModal" class="keys-modal" aria-labelledby="localUploadTitle">
-    <form method="dialog" class="keys-form">
-      <h3 id="localUploadTitle">📂 SUBIR ARCHIVOS LOCALES</h3>
-      <div class="local-upload-content">
-      <p class="keys-warn">Vídeos, imágenes y audio. Hasta <strong>5 archivos por carga</strong>, con un máximo de <strong>100 MB por archivo</strong>.</p>
-      <div class="local-drop-zone"><p>Arrastra los archivos aquí o búscalos en tu equipo.</p><button type="button" class="btn" id="localUploadBrowse">Buscar en el equipo</button></div>
-      <input id="localUploadInput" type="file" accept="video/*,audio/*,image/*,.mp4,.mov,.m4v,.webm,.mkv,.avi,.mp3,.m4a,.aac,.wav,.ogg,.flac,.jpg,.jpeg,.png,.gif,.webp,.avif,.heic,.heif,.svg" multiple hidden>
-      <ul id="localUploadQueue" class="local-upload-queue" aria-label="Archivos de esta carga"></ul>
-      <label for="localUploadComment">Comentarios (opcional · genera etiquetas de búsqueda)</label><textarea id="localUploadComment" rows="2" maxlength="4000" placeholder="Describe el contenido para encontrarlo después"></textarea>
-      <label for="localUploadTags">Etiquetas (opcional · cliente, espacio o dispositivo)</label><input id="localUploadTags" type="text" maxlength="2000" placeholder="#starbucks #hilomusical">
-      </div>
-      <div id="localUploadStatus" role="status" aria-live="polite"></div>
-      <div class="local-upload-actions"><button type="button" class="btn primary" id="localUploadSend" disabled>Subir archivos</button><button type="button" class="btn" id="localUploadView" hidden>Ver en Stock</button><button type="button" class="btn" id="localUploadClear">Nueva carga</button><button type="button" class="btn" id="localUploadClose">Cerrar</button></div>
-    </form>
-  </dialog>
-  <script type="module" src="/assets/stock-local-upload.mjs?v=14.10.2026.r22.1928"></script>
-
   <dialog id="importModal" class="keys-modal">
     <form method="dialog" class="keys-form import-form">
       <h3>📥 IMPORTAR DESDE URL</h3>
-      <p class="keys-warn">Importador en Mac Studio, con respaldo (audio mp3 + video mp4). Hosts permitidos: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn, Telegram (t.me). Se pueden pegar VARIAS URLs a la vez, una por línea.</p>
+      <p class="keys-warn">yt-dlp en Mac Studio / Mac Mini (audio mp3 + video mp4). Hosts permitidos: YouTube, Vimeo, Twitter/X, TikTok, Instagram, LinkedIn, Telegram (t.me). Se pueden pegar VARIAS URLs a la vez, una por línea.</p>
       <div class="field"><label for="import-url">URL <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(una o varias, una por línea)</small></label><textarea id="import-url" rows="2" autocomplete="off" spellcheck="false" placeholder="https://www.youtube.com/watch?v=…&#10;https://t.me/canal/123"></textarea></div>
       <div class="field">
         <label for="import-comment">Comentarios <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(opcional · indexable por búsqueda en Stock)</small></label>
@@ -729,33 +753,20 @@
     </form>
   </dialog>
 
-  <script defer src="/matrix-rain.js?v=17.10.2026.r6.2255"></script>
-  <script src="app.js?v=import-ha-20261018-16-clock"></script>
-  <script src="assets/stock-search.js?v=17.10.2026.r6.2255"></script>
-  <link rel="stylesheet" href="/assets/stock-sync-creative.css?v=17.10.2026.r6.2255">
-  <script src="/assets/stock-sync-core.js?v=17.10.2026.r6.2255"></script>
-  <script type="module" src="/assets/stock-sync-preview.mjs?v=atlas-2"></script>
-  <script src="/assets/stock-formats.js?v=17.10.2026.r6.2255"></script>
-  <script src="/assets/stock-counts.js?v=17.10.2026.r6.2255"></script>
-  <script src="/assets/stock-destinations.js?v=17.10.2026.r6.2255"></script>
-  <script src="/assets/stock-playlist-progress.js?v=17.10.2026.r6.2255"></script>
-  <script src="/assets/stock-playlist-data.js?v=17.10.2026.r6.2255"></script>
+  <script defer src="/matrix-rain.js?v=24.10.2026.r2.1353"></script>
+  <script src="app.js?v=24.10.2026.r2.1353"></script>
+  <script src="assets/stock-search.js?v=24.10.2026.r2.1353"></script>
+  <script src="/assets/stock-destinations.js?v=24.10.2026.r2.1353"></script>
+  <script src="/assets/stock-playlist-data.js?v=24.10.2026.r2.1353"></script>
   <script type="module">
-  import {normalizeMusic,isMusic,hasMusicCards,matchesMusicType,cardHtml,bindMusicCards} from "/assets/music/cards.mjs?v=14.10.2026.r22.1928";
   import {isXpace, blendFor, xpacePoster} from "./assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "./assets/furniture/catalog.mjs";
-  import {readNavigation,normalizeNavigation,navigationUrl,saveNavigation} from "/assets/stock-navigation-state.mjs";
-  import {mountSavedSearches} from "/assets/stock-saved-searches.mjs";
   (function () {
     const grid = document.getElementById('stockGrid');
     const status = document.getElementById('stockStatus');
     const empty = document.getElementById('stockEmpty');
     const search = document.getElementById('stockSearch');
     const typeFilter = document.getElementById('stockTypeFilter');
-    const formatFilter = document.getElementById('stockFormatFilter');
-    let formatIndex=StockFormats.index([]);
-    const selectedVersions=new Map(), musicFormats=new Map();
-    const musicPreview=it=>cardHtml(it,{format:musicFormats.get(it.id)||(['landscape','portrait'].includes(filters.format)?filters.format:'landscape'),lang:document.documentElement.lang==='en'?'en':'es'});
     const motorFilter = document.getElementById('stockMotorFilter');
     const sortBar = document.getElementById('stockSortBar');
     const lightbox = document.getElementById('stockLightbox');
@@ -779,7 +790,6 @@
     // público no negocia Accept-Encoding y siempre manda el JSON en crudo.
     // Ver functions/stock-index.js. Si falla, se cae al r2.dev de siempre.
     const STOCK_INDEX_COMPRIMIDO = '/stock-index';
-    fetch('/stock-creatives',{credentials:'same-origin',cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{StockSync.register(d.creatives||[]);}).catch(()=>{}).finally(()=>{StockSync.loaded=true;if(typeof allItems!=='undefined'&&allItems.length)applyFilters();});
     const STOCK_LIST_FALLBACK = STOCK_BASE + '/stock/list?limit=200';
     const TYPE_ORDER = { xpaces: 4, audio: 0, music: 1, image: 2, 'twin-npc': 3, 'digital-twin': 4, furni: 5, video: 6, animation: 7, capsula: 8, guion: 8 };
     // Etiquetas legibles para el badge de tipo (las demás se muestran tal cual).
@@ -789,14 +799,11 @@
     const RATING_VOTES_KEY = 'pixeria-stock-ratings-v1';
     const CONSUMPTION_SESSION_KEY = 'pixeria-stock-consumption-session-v1';
     let allItems = [], allItemsTodo = [];
-    // Sólo entradas confirmadas por /stock-publish: visibles al terminar aunque
-    // el índice esté todavía reconstruyéndose. El índice las sustituye al llegar.
-    const localPublished = new Map();
     // Cuenta asignada a un cliente (identidad central de AdmiraNeXT → /auth/session): lo que no es suyo ni genérico
     // no entra en la página, así ninguna vista —rejilla, catálogos, etiquetas, contadores, enlace directo— lo enseña.
     // Es una vista, no una barrera: el índice del Stock sigue siendo público por dirección.
     function soloMio(list) {
-      allItemsTodo = Array.isArray(list) ? list.map(normalizeMusic) : [];
+      allItemsTodo = Array.isArray(list) ? list : [];
       const PC = window.PixeriaCliente;
       if (PC && PC.restringido) return PC.restringido() ? allItemsTodo.filter(it => PC.visible(it)) : allItemsTodo;
       let fijo = null; try { fijo = sessionStorage.getItem('pixeria:cliente-fijo'); } catch (_) {}
@@ -806,50 +813,12 @@
     const verMotor = m => /suno/i.test(String(m || '')) ? 'Admira Studio Music' : String(m || '');
     const verTag = t => /^suno/i.test(String(t)) ? 'pixeria-music' : String(t);
     let currentView = []; // lista filtrada+ordenada actual (para navegar el lightbox)
-    const language = document.documentElement.lang === 'en' ? 'en' : 'es';
-    let navigationStorage;
-    try { navigationStorage = sessionStorage; } catch {}
-    const legacyPreference = key => { try { return localStorage.getItem(key); } catch { return null; } };
-    const initialNavigation = readNavigation(location.href, navigationStorage, {
-      sort: legacyPreference('stockSort'), view: legacyPreference('stockView'),
-      pageSize: legacyPreference('stockPageSize') ?? 10
-    });
-    let filters = {q:initialNavigation.q,type:initialNavigation.type,format:initialNavigation.format,
-      origen:initialNavigation.origen,motor:initialNavigation.motor,tags:initialNavigation.tags,
-      tagMode:initialNavigation.tagMode,dateQuick:'',dateFrom:'',dateTo:''};
-    search.value = filters.q; typeFilter.value = filters.type;
-    let sortMode = initialNavigation.sort;
-    let pageSize = initialNavigation.pageSize; // 0 = mostrar todos
-    let currentPage = initialNavigation.page, requestedPage = currentPage, catalogLoaded = false;
-    let savedSearchControls;
+    let filters = { origen: (new URLSearchParams(location.search).get('origen') || '').replace(/[^A-Za-z0-9-]/g, ''), type: 'video', motor: '', q: '', tags: [], tagMode: 'or', dateQuick: '', dateFrom: '', dateTo: '' };
+    let sortMode = 'date-desc';
+    let pageSize = 10; // 0 = mostrar todos
+    let currentPage = 1;
     const pagers = Array.from(document.querySelectorAll('.stock-pager'));
     const pageSizeSels = Array.from(document.querySelectorAll('.stock-page-size'));
-    function navigationState() {
-      return {...filters,page:requestedPage,pageSize,sort:sortMode,view:grid.classList.contains('view-compact')?'compact':'list'};
-    }
-    function persistNavigation() {
-      const state = navigationState();
-      try { history.replaceState(history.state, '', navigationUrl(location.href,state)); } catch {}
-      saveNavigation(navigationStorage,location.href,state);
-      savedSearchControls?.refresh();
-    }
-    function restoreStockNavigation(value) {
-      const state = normalizeNavigation(value), wasCatalog = filters.type === 'catalogo';
-      Object.assign(filters,{q:state.q,type:state.type,format:state.format,origen:state.origen,
-        motor:state.motor,tags:state.tags,tagMode:state.tagMode});
-      search.value = filters.q; typeFilter.value = filters.type;
-      if(motorFilter) motorFilter.value = filters.motor;
-      currentPage = requestedPage = state.page; pageSize = state.pageSize; sortMode = state.sort;
-      pageSizeSels.forEach(s=>{s.value=String(pageSize);});
-      musicFormats.clear(); applyStockView(state.view); applySortIndicators(); renderActiveTagBanner();
-      if(filters.type==='catalogo') window.CATALOGO?.enter(); else if(wasCatalog) window.CATALOGO?.leave();
-      applyFilters();
-    }
-    function clearStockFilters() {
-      restoreStockNavigation({...navigationState(),q:'',type:'',format:'',origen:'',motor:'',tags:[],tagMode:'or',page:1});
-      search.focus({preventScroll:true});
-    }
-    window.addEventListener('pagehide',persistNavigation);
 
     function fmtDate(iso) {
       try { return new Date(iso).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }); }
@@ -912,16 +881,27 @@
       } catch {}
     }
     function displayType(it) {
-      return isMusic(it) ? 'music' : isXpace(it) ? 'xpaces' : isFurni(it) ? 'furni' : (isCapsule(it) ? 'capsula' : it.type);
+      return isXpace(it) ? 'xpaces' : isFurni(it) ? 'furni' : (isCapsule(it) ? 'capsula' : it.type);
     }
-    function mediaOrientation(it) { return StockFormats.format(it)||{key:'unknown',icon:'◇',label:'Sin formato visual'}; }
-    function versionLabel(it){const f=mediaOrientation(it),d=StockFormats.dimensions(it);return f.icon+' '+f.label+(d?' · '+Math.round(d.width)+'×'+Math.round(d.height):'')+(it.num?' · #'+it.num:'')+' · '+String(it.title||it.id).slice(0,80);}
+    function mediaOrientation(it) {
+      const width = Number(it && (it.width || it._mediaWidth)) || 0;
+      const height = Number(it && (it.height || it._mediaHeight)) || 0;
+      let ratio = width > 0 && height > 0 ? width / height : 0;
+      if (!ratio && it && typeof it.aspectRatio === 'string') {
+        const bits = it.aspectRatio.split(':').map(Number);
+        if (bits.length === 2 && bits[0] > 0 && bits[1] > 0) ratio = bits[0] / bits[1];
+      }
+      // Los Shorts se identifican de inmediato mientras llega loadedmetadata.
+      if (!ratio && /(?:youtube\.com\/shorts\/|youtu\.be\/shorts\/)/i.test(String((it && it.prompt) || ''))) ratio = 9 / 16;
+      if (!ratio) return { key: 'unknown', icon: '◇', label: 'detectando formato…' };
+      if (ratio < 0.9) return { key: 'portrait', icon: '↕', label: 'vertical' };
+      if (ratio > 1.1) return { key: 'landscape', icon: '↔', label: 'horizontal' };
+      return { key: 'square', icon: '□', label: 'cuadrado' };
+    }
     function orientationBadgeHtml(it) {
-      const o=mediaOrientation(it),versions=formatIndex.versions(it),css=['portrait','landscape','square','anamorphic','unknown'].includes(o.key)?o.key:'custom';
-      if(versions.length>1)return `<select class="stock-orientation stock-format-versions ${css}" data-role="orientation" data-act="format-version" aria-label="Elegir versión de formato" title="${escAttr(versions.length+' versiones disponibles · '+o.label)}">${versions.map(v=>`<option value="${escAttr(v.id)}" ${v.id===it.id?'selected':''}>${escText(versionLabel(v))}</option>`).join('')}</select>`;
-      return `<span class="stock-orientation ${css}" data-role="orientation" title="Formato del contenido">${o.icon} ${escText(o.label)}</span>`;
+      const o = mediaOrientation(it);
+      return `<span class="stock-orientation ${o.key}" data-role="orientation" title="Formato del contenido">${o.icon} ${o.label}</span>`;
     }
-    function refreshFormatOptions(){const value=filters.format,options=StockFormats.options([...formatIndex.byId.values()]);if(allItems.some(hasMusicCards))for(const f of [{key:'landscape',label:'Horizontal'},{key:'portrait',label:'Vertical'}])if(!options.some(x=>x.key===f.key))options.push(f);if(value&&!options.some(f=>f.key===value))options.push({key:value,label:formatFilter.selectedOptions[0]?.textContent||value});formatFilter.replaceChildren(new Option('Todos los formatos',''),...options.map(f=>new Option(f.label,f.key)));formatFilter.value=value;}
     // Estilo de UN frame de un sprite-sheet horizontal (frames>1) en una caja.
     function frameStyle(url, frames, idx) {
       const n = Math.max(1, frames | 0);
@@ -931,7 +911,6 @@
       return `background-image:url('${url}');background-repeat:no-repeat;background-size:${n * 100}% 100%;background-position:${pos}% center;image-rendering:pixelated;`;
     }
     function renderPreview(it) {
-      if (hasMusicCards(it)) return musicPreview(it);
       if (isFurniture3D(it)) return `<img src="${escAttr(it.poster || it.thumbnail)}" alt="${escAttr(it.title)}" loading="lazy"><span class="xpace-badge">Mueble · 3D</span>`;
       if (isXpace(it)) return `<img src="${escAttr(xpacePoster(it, allItems))}" alt="${escAttr(it.title)}" loading="lazy"><span class="xpace-badge">◈ Xpaces · 3D</span>`;
       // CÁPSULA: la columna enseña la CARA DEL VÍDEO que explica. La miniatura la
@@ -960,7 +939,7 @@
         return `<img src="${it.url}" alt="" loading="lazy" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
       }
       if (it.type === 'image' || it.type === 'digital-twin') {
-        return `<img data-orientation-media src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
+        return `${orientationBadgeHtml(it)}<img data-orientation-media src="${it.thumbnail || it.url}" alt="" loading="lazy">`;
       }
       if (it.type === 'video' || it.type === 'animation') {
         // PREVIEW = el póster del asset cuando lo hay: desde el 4-sep-2026 (FLT
@@ -979,10 +958,10 @@
         // varianza, nunca el frame 0 negro); thumbnail (R2 directo) queda de respaldo.
         const poster = /^https?:\/\//.test(String(it.poster || '')) ? it.poster : (/^https?:\/\//.test(String(it.thumbnail || '')) ? it.thumbnail : '');
         if (poster) {
-          return `<img class="stock-cover stock-video-poster" data-orientation-media src="${escAttr(poster)}" alt="" loading="lazy" decoding="async" style="background:#0a0f14;">
+          return `${orientationBadgeHtml(it)}<img class="stock-cover stock-video-poster" data-orientation-media src="${escAttr(poster)}" alt="" loading="lazy" decoding="async" style="background:#0a0f14;">
                 <button type="button" class="stock-media-play" data-act="playmini" data-url="${escAttr(it.url)}" title="Reproducir aquí (pequeño)" aria-label="Reproducir aquí">▶</button>`;
         }
-        return `<video class="stock-cover stock-video-preview" data-orientation-media data-src="${escAttr(it.url)}" preload="metadata" muted playsinline disablepictureinpicture style="background:#0a0f14;"></video>
+        return `${orientationBadgeHtml(it)}<video class="stock-cover stock-video-preview" data-orientation-media data-src="${escAttr(it.url)}" preload="metadata" muted playsinline disablepictureinpicture style="background:#0a0f14;"></video>
                 <button type="button" class="stock-media-play" data-act="playmini" data-url="${escAttr(it.url)}" title="Reproducir aquí (pequeño)" aria-label="Reproducir aquí">▶</button>`;
       }
       if (it.type === 'audio' || it.type === 'locucion' || it.type === 'music') {
@@ -1010,23 +989,28 @@
       if (!card) return;
       const it = allItems.find(x => String(x.id) === card.dataset.id);
       if (it) { it._mediaWidth = width; it._mediaHeight = height; }
-      const o = mediaOrientation(it);
+      const o = mediaOrientation({ width, height });
       card.dataset.orientation = o.key;
-      const badge=card.querySelector('[data-role="orientation"]');if(badge)badge.outerHTML=orientationBadgeHtml(it);
-      refreshFormatOptions();
-      if(filters.format&&filters.format!==o.key)setTimeout(()=>applyFilters(false),0);
+      const badge = card.querySelector('[data-role="orientation"]');
+      if (badge) {
+        badge.className = `stock-orientation ${o.key}`;
+        badge.textContent = `${o.icon} ${o.label}`;
+        badge.title = `${o.label} · ${Math.round(width)}×${Math.round(height)} px`;
+      }
     }
     function hydrateMediaOrientations() {
       grid.querySelectorAll('[data-orientation-media]').forEach(media => {
-        const card=media.closest('.stock-card'),it=card&&allItems.find(x=>String(x.id)===card.dataset.id);
         const read = () => {
           const isVideo = media.tagName === 'VIDEO';
-          if(!isVideo && (media.classList.contains('stock-video-poster') || !it || media.getAttribute('src')!==it.url))return;
-          setMediaOrientation(media,isVideo ? media.videoWidth : media.naturalWidth,isVideo ? media.videoHeight : media.naturalHeight);
+          setMediaOrientation(media,
+            isVideo ? media.videoWidth : media.naturalWidth,
+            isVideo ? media.videoHeight : media.naturalHeight);
         };
         if (media.tagName === 'VIDEO') media.addEventListener('loadedmetadata', read, { once: true });
         else if (media.complete) read();
         else media.addEventListener('load', read, { once: true });
+        const card = media.closest('.stock-card');
+        const it = card && allItems.find(x => String(x.id) === card.dataset.id);
         if (card && it) card.dataset.orientation = mediaOrientation(it).key;
       });
     }
@@ -1089,6 +1073,11 @@
     function ainimationImportHref(it) {
       const params = new URLSearchParams();
       params.set('admiraStockUrl', it.url || '');
+      const returnUrl = new URL(location.href);
+      returnUrl.searchParams.delete('highlight');returnUrl.searchParams.delete('origen');
+      params.set('admiraReturnUrl', returnUrl.href);
+      if (it.mime) params.set('admiraStockMime', it.mime);
+      if (it.editorKind) params.set('admiraEditable', it.editorKind);
       params.set('admiraStockType', it.type || '');
       params.set('admiraStockTitle', it.title || it.prompt || 'Admira Stock asset');
       if (it.id) params.set('admiraStockId', it.id);
@@ -1098,7 +1087,7 @@
       if (it.width) params.set('admiraStockWidth', it.width);
       if (it.height) params.set('admiraStockHeight', it.height);
       if (it.duration) params.set('admiraStockDuration', it.duration);
-      return `https://ainimation.studio/studio.html?${params.toString()}`;
+      return `https://ainimation.studio/${it.editorKind === 'interactive' ? 'interactivos/' : 'studio.html'}?${params.toString()}`;
     }
     function renderPromptHtml(raw) {
       const safe = String(raw || '').replace(/</g,'&lt;');
@@ -1289,9 +1278,6 @@
     }
 
     function renderCard(it) {
-      const creative=window.StockSync?.get(it);
-      if(creative){const a=creative.adaptations.find(a=>a.id===creative.defaultAdaptation)||creative.adaptations[0],languages=[...new Set(a.screens.flatMap(s=>s.languages))].join(' / ').toUpperCase();return `<article class="stock-card sync-card" data-id="${escAttr(it.id)}" data-type="sync-creative"><div class="stock-card-media"><img src="${escAttr(it.url)}" alt="${escAttr(creative.title)}"><span class="sync-badge">CREATIVIDAD SINCRONIZADA</span></div><div class="sync-card-body"><h3>${escAttr(creative.title)}</h3><p>${escAttr(a.name)} · ${a.screens.length} pantallas · ${a.seconds} s · ${languages}</p><p>${creative.adaptations.length} adaptaciones · un reloj por montaje</p><button type="button" data-sync-open="${escAttr(it.id)}">Ver conjunto · Gemelo 3D</button></div></article>`;}
-
       const idAttr = String(it.id || '').replace(/[^A-Za-z0-9-]/g, '');
       const assetUrl = escAttr(it.url || '');
       const typeLabel = displayType(it);
@@ -1304,7 +1290,9 @@
         .filter(Boolean).map(s => String(s).replace(/</g, '&lt;')).join(' · ');
       const commentRaw = (it.comment || '').trim();
       const commentSafe = commentRaw.replace(/</g, '&lt;');
-      const commentBlock = commentRaw
+      // 💬 oculto en las tarjetas «¿Sabías que…?» (tag sabiasque / sabias-que).
+      const esSabiasQue = (Array.isArray(it.tags) ? it.tags : []).some(t => /^#?sabias-?que$/i.test(String(t).trim()));
+      const commentBlock = commentRaw && !esSabiasQue
         ? `<p class="stock-comment" title="${escAttr(commentRaw)}">💬 ${commentSafe.slice(0, 200)}${commentRaw.length > 200 ? '…' : ''}</p>`
         : '';
       const tagsBlock = renderTagsHtml(it.tags, it.id);
@@ -1317,13 +1305,10 @@
         </div>
         <div class="stock-card-body">
           <header>
-            <span class="stock-card-kind">
-              <span class="stock-type ${typeLabel}">${typeText(typeLabel)}</span>
-              ${StockFormats.visual(it) ? orientationBadgeHtml(it) : ''}
-            </span>
+            <span class="stock-type ${typeLabel}">${typeText(typeLabel)}</span>
             ${it.num ? `<span class="stock-num" title="ID único del asset · llámalo con /play${it.num} en admira.tv">#${it.num}</span>` : ''}
             <div class="stock-card-actions">
-              <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Abrir en AINimation" aria-label="Abrir en AINimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>
+              <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Editar en AInimation" aria-label="Editar en AInimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>
               <button type="button" class="stock-card-btn" data-act="playlist" title="Añadir a una playlist" aria-label="Añadir a playlist"><span aria-hidden="true">🎵</span></button>
               <button type="button" class="stock-card-btn" data-act="feed" title="Distribuir a pantallas (elegir destino, ahora o programado)" aria-label="Distribuir a pantallas"><span aria-hidden="true">📡</span></button>
               <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Abrir asset en pestaña nueva" aria-label="Abrir asset en pestaña nueva" data-act="open"><span aria-hidden="true">↗</span></a>
@@ -1403,10 +1388,8 @@
       return !!it && it.type === 'link' && (it.state === 'failed' || /^Enlace pendiente/i.test(String(it.title || '')));
     }
     function matchesType(it, t) {
-      if(window.StockSync?.get(it))return !t||['video','sync-creative'].includes(t);
       if (t === 'fallidos') return isFailedImport(it);
       if (isFailedImport(it)) return false;
-      const musicMatch=matchesMusicType(it,t);if(musicMatch!==null)return musicMatch;
       if (!t) return true;
       if (t === 'xpaces') return isXpace(it);
       // Animación = la categoría 'animaciones' del catálogo (donde viven los
@@ -1445,26 +1428,36 @@
       // importada (canciones), que no son megafonía.
       return displayType(it) === t;
     }
-    function countCatalog(){const PC=window.PixeriaCliente;return allItems.filter(it=>!(PC?.listo?.())||PC.visible(it));}
-    function includeCatalogItems(items){
-      const PC=window.PixeriaCliente,ready=!!PC?.listo?.();
-      const allowed=(items||[]).filter(it=>it?.id&&it.url&&(ready?PC.visible(it):!clientePendiente()));
-      allItems=soloMio([...new Map([...allItemsTodo,...allowed].map(it=>[it.id,it])).values()]);
-      return allowed;
-    }
-    function updateStockCount(matching){
-      const el=document.getElementById('stockCount');if(!el)return;
-      if(matching===null){el.textContent=document.documentElement.lang==='en'?'… contents':'… contenidos';el.title='';delete el.dataset.found;delete el.dataset.total;return;}
-      const catalog=countCatalog(),count=StockCounts.measure(catalog,matching),text=StockCounts.label(count,document.documentElement.lang==='en');
-      if(el.textContent!==text)el.textContent=text;el.dataset.found=count.found;el.dataset.total=count.total;
-      el.title=document.documentElement.lang==='en'?count.found+' contents found across all pages · '+count.total+' contents available to this account. Related versions count once per content, medium, language and revision. '+count.foundVersions+' matching files / '+count.totalVersions+' total files.':count.found+' contenidos encontrados en todas las páginas · '+count.total+' contenidos disponibles para esta cuenta. Las versiones relacionadas cuentan una vez por contenido, medio, idioma y revisión. '+count.foundVersions+' archivos encontrados / '+count.totalVersions+' archivos totales.';
-      const failed=catalog.filter(isFailedImport).length,fo=document.getElementById('stockFailedOpt');if(fo){fo.hidden=failed===0&&typeFilter.value!=='fallidos';fo.textContent='Importaciones fallidas'+' ('+failed+')';}
+    // Contador "X de Y" en el título (en vivo): X = reproducibles (misma definición
+    // que admira.tv → coincide), Y = TODO lo que hay en stock (incl. enlaces que no
+    // se pudieron descargar). Mismo set MEDIA + url que canal.html de admira.tv.
+    const ADMIRATV_MEDIA = new Set(['video', 'animation', 'image', 'digital-twin', 'audio', 'music', 'locucion']);
+    function updateStockCount() {
+      const el = document.getElementById('stockCount');
+      if (!el) return;
+      const total = allItems.length;
+      const playable = allItems.filter(i => i && ADMIRATV_MEDIA.has(i.type) && i.url).length;
+      const prev = parseInt(el.dataset.p || '0', 10);
+      // «661 reproducibles de 820»: a secas «661 de 820» parecía un fallo de carga
+      // (Carlos, 4-sep-2026). Y los motores se cuentan, no se fijan en 4: hay 35.
+      el.textContent = playable + ' reproducibles de ' + total;
+      const failed = allItems.filter(isFailedImport).length;
+      const fo = document.getElementById('stockFailedOpt');
+      if (fo) { fo.hidden = failed === 0 && typeFilter.value !== 'fallidos'; fo.textContent = 'Importaciones fallidas (' + failed + ')'; }
+      el.dataset.p = playable;
+      const motores = new Set(allItems.map(i => i && i.motor).filter(Boolean).map(verMotor));
+      const em = document.getElementById('stockMotores');
+      if (em) { em.textContent = String(motores.size); em.title = Array.from(motores).sort().join(' · '); }
+      el.title = playable + ' reproducibles (= los que ves en admira.tv) · ' + total +
+        ' en stock' + (total > playable ? ' (incluye ' + (total - playable) +
+        ' no reproducibles: cápsulas, enlaces, mobiliario y NPCs)' : '');
+      if (playable > prev && prev > 0) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
     }
 
     // Adaptaciones del Adaptador de Admira Studio: vídeos nuevos con motor «adaptador» y
     // externalRef = id del vídeo original. Se agrupan bajo su original con el filtro
     // «origen» (?origen=<id>): el original primero y detrás sus adaptaciones.
-    const isAdaptacion = it => !!(it && it.motor === 'adaptador' && it.externalRef);
+    const isAdaptacion = it => !!(it && (it.motor === 'adaptador' || String(it.motor || '').toLowerCase().startsWith('ainimation')) && it.externalRef);
     let ADAPT = new Map();
     (function () {
       const st = document.createElement('style');
@@ -1482,12 +1475,12 @@
     function adaptChip(it) {
       if (isAdaptacion(it)) {
         const orig = allItems.find(x => x.id === it.externalRef);
-        const label = orig ? `↳ adaptación de «${escTxt((orig.title || orig.id).slice(0, 60))}»` : '↳ adaptación';
-        return `<button type="button" class="stock-adapt-chip" data-act="origen" data-origen="${escTxt(it.externalRef)}" title="Ver el original y sus adaptaciones">${label}</button>`;
+        const label = orig ? `↳ versión de «${escTxt((orig.title || orig.id).slice(0, 60))}»` : '↳ versión';
+        return `<button type="button" class="stock-adapt-chip" data-act="origen" data-origen="${escTxt(it.externalRef)}" title="Ver el original y sus versiones">${label}</button>`;
       }
       const n = ADAPT.get(it.id) || 0;
       if (!n || filters.origen === it.id) return '';
-      return `<button type="button" class="stock-adapt-chip" data-act="origen" data-origen="${escTxt(it.id)}" title="Ver el original y sus adaptaciones">▸ ${n} ${n === 1 ? 'adaptación' : 'adaptaciones'}</button>`;
+      return `<button type="button" class="stock-adapt-chip" data-act="origen" data-origen="${escTxt(it.id)}" title="Ver el original y sus versiones">▸ ${n} ${n === 1 ? 'versión' : 'versiones'}</button>`;
     }
     function renderOrigenBar() {
       const bar = document.getElementById('stockOrigenBar');
@@ -1496,7 +1489,7 @@
       if (!filters.origen) { bar.innerHTML = ''; return; }
       const orig = allItems.find(x => x.id === filters.origen);
       const n = ADAPT.get(filters.origen) || 0;
-      bar.innerHTML = `<span>Original «${escTxt(orig ? (orig.title || orig.id) : filters.origen)}» · ${n} ${n === 1 ? 'adaptación' : 'adaptaciones'}</span><button type="button" data-act="origen" data-origen="">✕ Ver todo el Stock</button>`;
+      bar.innerHTML = `<span>Original «${escTxt(orig ? (orig.title || orig.id) : filters.origen)}» · ${n} ${n === 1 ? 'versión' : 'versiones'}</span><button type="button" data-act="origen" data-origen="">✕ Ver todo el Stock</button>`;
     }
     document.addEventListener('click', e => {
       const b = e.target.closest && e.target.closest('[data-act="origen"]');
@@ -1511,33 +1504,40 @@
         if (sessionStorage.getItem('pixeria:cliente-fijo')) return true; // cuenta asignada a un cliente
         const id = String(q != null ? q : (g && g.id) || '').toLowerCase(); return !!id && !/^(admira|todos|todas|all|off|ninguno)$/.test(id); } catch (_) { return false; } }
     setTimeout(() => { clienteEsperaAgotada = true; if (allItems.length) applyFilters(); }, 4000);
-    document.addEventListener('pixeria:cliente', () => { allItems = soloMio(allItemsTodo); applyFilters(); });
+    document.addEventListener('pixeria:cliente', () => { allItems = soloMio(allItemsTodo); applyFilters(true); });
     function applyFilters(resetPage) {
-      if (resetPage) currentPage = requestedPage = 1;
-      persistNavigation();
-
       // Vista Catálogos: la rejilla la pinta CATALOGO (piezas del catálogo elegido).
       if (filters.type === 'catalogo') { if (window.CATALOGO) window.CATALOGO.repaint(); return; }
       // Cliente activo (/marca en la CLI): Admira lo ve todo. Si se pidió otro cliente, hasta
       // saber cuál es no se pinta nada, para que no asome lo de otro; a los 4 s se enseña todo.
       const PC = window.PixeriaCliente, clienteListo = !!(PC && PC.listo && PC.listo());
-      if (!clienteListo && clientePendiente() && !clienteEsperaAgotada) { grid.innerHTML = ''; updateStockCount(null); return; }
-      if(!window.StockSync.loaded){grid.innerHTML='<p>Cargando creatividades…</p>';return;}
-      formatIndex=StockFormats.index(allItems.filter(it=>!clienteListo||PC.visible(it)));
-      refreshFormatOptions();
+      if (!clienteListo && clientePendiente() && !clienteEsperaAgotada) { grid.innerHTML = ''; return; }
       ADAPT = new Map();
-      for (const it of allItems) if (isAdaptacion(it)) ADAPT.set(it.externalRef, (ADAPT.get(it.externalRef) || 0) + 1);
+      for (const it of allItems) {
+        const seen = new Set(); let child = it;
+        while (isAdaptacion(child) && !seen.has(child.id)) {
+          seen.add(child.id);
+          ADAPT.set(child.externalRef, (ADAPT.get(child.externalRef) || 0) + 1);
+          child = allItems.find(x => x.id === child.externalRef);
+        }
+      }
       renderOrigenBar();
       const items = allItems.filter(it => {
         if (clienteListo && !PC.visible(it)) return false;
-        if(filters.format&&(hasMusicCards(it)?!['landscape','portrait'].includes(filters.format):mediaOrientation(it).key!==filters.format))return false;
-        // A source/adaptation deep link must not bypass the music category filter.
-        if (isMusic(it) && !matchesMusicType(it, filters.type)) return false;
-        if (filters.origen) return it.id === filters.origen || (isAdaptacion(it) && it.externalRef === filters.origen);
+        if (filters.origen) {
+          if (it.id === filters.origen) return true;
+          const seen = new Set(); let parent = it;
+          while (isAdaptacion(parent) && !seen.has(parent.id)) {
+            seen.add(parent.id);
+            if (parent.externalRef === filters.origen) return true;
+            parent = allItems.find(x => x.id === parent.externalRef);
+          }
+          return false;
+        }
         if (!matchesType(it, filters.type)) return false;
         if (filters.motor && verMotor(it.motor) !== verMotor(filters.motor)) return false;
         if (filters.tags && filters.tags.length) {
-          const tags=Array.isArray(it.tags)?it.tags.map(t=>String(t).toLowerCase()):[];
+          const tags = Array.isArray(it.tags) ? it.tags.map(t => String(t).toLowerCase()) : [];
           const ok = filters.tagMode === 'and'
             ? filters.tags.every(ft => tags.includes(ft))
             : filters.tags.some(ft => tags.includes(ft));
@@ -1546,15 +1546,14 @@
         if (filters.q && !window.AdmiraStockSearch.matches(it,filters.q)) return false;
         return true;
       });
-      const rawSorted = sortItems(items, sortMode);
-      const sorted = filters.origen?rawSorted:StockFormats.representatives(rawSorted,formatIndex,selectedVersions);
+      const sorted = sortItems(items, sortMode);
       if (filters.origen) sorted.sort((a, b) => (b.id === filters.origen) - (a.id === filters.origen));
       currentView = sorted; // las flechas del lightbox recorren esta lista (cruza páginas)
 
       // Paginación (0 = todos)
       const totalPages = pageSize > 0 ? Math.max(1, Math.ceil(sorted.length / pageSize)) : 1;
-      currentPage = Math.min(requestedPage,totalPages);
-      if(catalogLoaded) requestedPage = currentPage;
+      if (resetPage) currentPage = 1;
+      if (currentPage > totalPages) currentPage = totalPages;
       const pageItems = pageSize > 0
         ? sorted.slice((currentPage - 1) * pageSize, currentPage * pageSize)
         : sorted;
@@ -1564,7 +1563,7 @@
       hydrateMediaOrientations();
       observeLazyVideos();
       empty.hidden = items.length > 0;
-      updateStockCount(rawSorted);
+      updateStockCount();
 
       // Pager UI. El superior lleva el orden integrado, así que no se oculta del
       // todo: solo escondemos sus flechas cuando hay una única página. El inferior
@@ -1593,33 +1592,17 @@
         if (next) next.disabled = currentPage >= totalPages;
         if (last) last.disabled = currentPage >= totalPages;
       });
-      persistNavigation();
     }
 
-    let xpaceController, previewReturnState = null;
-    // A preview gets one history entry; moving between assets only replaces it.
-    if(history.state?.admiraStockPreview){const {admiraStockPreview,...rest}=history.state;history.replaceState(rest,'',location.href);}
-    function rememberPreview(it) {
-      if(!previewReturnState) {
-        previewReturnState={navigation:navigationState(),scrollY:window.scrollY,assetId:it.id};
-        persistNavigation();
-        history.pushState({...history.state,admiraStockPreview:{id:it.id,returnState:previewReturnState}},'',location.href);
-      } else if(history.state?.admiraStockPreview) {
-        history.replaceState({...history.state,admiraStockPreview:{id:it.id,returnState:previewReturnState}},'',location.href);
-      }
-    }
+    let xpaceController;
     function openLightbox(it) {
       resetCapsuleEditor();
-      if(window.StockSync?.get(it)){if(window.openSyncCreative)window.openSyncCreative(it);else import('/assets/stock-sync-preview.mjs?v=atlas-2').then(()=>window.openSyncCreative(it)).catch(()=>{status.textContent='No se pudo cargar el previo 3D. Reintenta.';});return;}
       if(isFurniture3D(it)){import('./assets/furniture/editor.mjs').then(m=>m.openFurniture(it));return;}
-      rememberPreview(it);
       xpaceController?.abort();
       xpaceController = null;
       lightbox.classList.toggle('is-xpace', isXpace(it));
       let media = '';
-      if (hasMusicCards(it)) {
-        media = musicPreview(it);
-      } else if (isXpace(it)) {
+      if (isXpace(it)) {
         media = '<div class="xpace-viewer"></div>';
       } else if (isFurni(it)) {
         media = `<img src="${it.url}" alt="" style="image-rendering:pixelated;object-fit:contain;background:#0a140a;">`;
@@ -1640,8 +1623,6 @@
         media = `<pre>${JSON.stringify(it, null, 2)}</pre>`;
       }
       lightboxInner.innerHTML = media;
-      // Cápsula desde URL: el tramo del b-roll y el crédito llevan a la fuente (assets/capsula-fuente-interactiva.js).
-      try { window.AdmiraCapsulaFuente?.attach(lightboxInner.querySelector('video'), it); } catch (_) {}
       const titleRaw = (it.title || '').trim();
       const titleBlock = titleRaw ? `<p class="stock-title">${titleRaw.replace(/</g,'&lt;')}</p>` : '';
       const commentRaw = (it.comment || '').trim();
@@ -1661,8 +1642,9 @@
         ${commentBlock}
         <div class="stock-lightbox-actions">
           ${/^capsula-url:[a-f0-9]{16}$/.test(it.externalRef || '') ? '<button type="button" class="btn" data-act="edit-capsule" aria-expanded="false">Editar con Ainimation</button>' : ''}
-          <a class="btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener">AI Abrir en AINimation</a>
+          <a class="btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener">AI Editar en AInimation</a>
           <button type="button" class="btn" data-act="descargar" title="Guarda el fichero en este ordenador con un nombre legible">⬇ Descargar a este ordenador</button>
+          ${typeLabel === 'video' ? `<button type="button" class="btn" data-act="compartir" title="Compartir (YouTube o enlace)">📤 Compartir</button>` : ''}
           <button type="button" class="btn prio0-btn" data-act="prio0" title="Envía este asset AHORA al destino que elijas e interrumpe lo que se esté emitiendo">⚠ Prioridad 0 · interrumpir</button>
         </div>`;
       if (isXpace(it)) {
@@ -1675,7 +1657,7 @@
         actions.querySelector('[data-xpace-download="blend"]').onclick = () => blend && descargarAsset({...blend, mime:'application/x-blender'});
         const controller = xpaceController = new AbortController();
         const host = lightboxInner.querySelector('.xpace-viewer');
-        import('./assets/xpaces/viewer.mjs?v=14.10.2026.r22.1928').then(m => {if (!controller.signal.aborted) return m.mountXpace(host, it, {signal:controller.signal});}).catch(() => {if (!controller.signal.aborted) host.textContent = 'No se ha podido cargar el 3D. Cierra y vuelve a abrir para reintentar.';});
+        import('./assets/xpaces/viewer.mjs?v=itil-capa-2').then(m => {if (!controller.signal.aborted) return m.mountXpace(host, it, {signal:controller.signal});}).catch(() => {if (!controller.signal.aborted) host.textContent = 'No se ha podido cargar el 3D. Cierra y vuelve a abrir para reintentar.';});
       }
       window.__lightboxItemId = it.id || null;
       lightbox.hidden = false;
@@ -1702,7 +1684,7 @@
       lightboxInner.scrollTop = 0;
       openLightbox(currentView[j]);
     }
-    function finishCloseLightbox() {
+    function closeLightbox() {
       resetCapsuleEditor();
       xpaceController?.abort();
       xpaceController = null;
@@ -1712,26 +1694,7 @@
       lightboxInner.innerHTML = '';
       lightboxMeta.innerHTML = '';
       document.body.classList.remove('stock-lightbox-open');
-      const snapshot=previewReturnState;previewReturnState=null;
-      if(snapshot){
-        restoreStockNavigation(snapshot.navigation);
-        window.scrollTo({top:snapshot.scrollY,behavior:'instant'});
-        Array.from(grid.querySelectorAll('.stock-card')).find(card=>card.dataset.id===snapshot.assetId)?.focus({preventScroll:true});
-      }
     }
-    function closeLightbox() {
-      const owned=!!history.state?.admiraStockPreview;
-      finishCloseLightbox();
-      if(owned)history.back();
-    }
-    window.addEventListener('popstate',()=>{
-      const preview=history.state?.admiraStockPreview;
-      if(preview){
-        const item=allItems.find(it=>it.id===preview.id);
-        if(item){restoreStockNavigation(preview.returnState.navigation);previewReturnState=preview.returnState;openLightbox(item);}
-      } else if(previewReturnState)finishCloseLightbox();
-      else restoreStockNavigation(readNavigation(location.href,navigationStorage,{sort:sortMode,pageSize,view:navigationState().view}));
-    });
     document.getElementById('stockLightboxClose').addEventListener('click', closeLightbox);
     lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
     lightboxPrev.addEventListener('click', e => { e.stopPropagation(); navLightbox(-1); });
@@ -1769,6 +1732,13 @@
       // ⬇ Descargar: guarda el fichero EN EL DISCO. El <a download> de antes no
       // servía (href de otro origen → el navegador ignora el atributo y abre el
       // asset en una pestaña); ahora lo hace descarga-local.js vía blob.
+      const shareBtn = e.target.closest('.stock-lightbox-actions [data-act="compartir"]');
+      if (shareBtn) {
+        e.preventDefault(); e.stopPropagation();
+        const it = currentItemInLightbox();
+        if (it) window.YTCompartir?.abrir(it);
+        return;
+      }
       const dlBtn = e.target.closest('[data-act="descargar"]');
       if (dlBtn) {
         e.preventDefault(); e.stopPropagation();
@@ -1870,10 +1840,7 @@
     // (El antiguo "broadcast ciego" sendToPixerFeed quedó sustituido por DIST,
     //  el distribuidor con destino por pantalla, lote y programación — más abajo.)
 
-    bindMusicCards(grid,id=>allItems.find(it=>it.id===id),{onFormat:(id,format)=>musicFormats.set(id,format)});
-    bindMusicCards(lightboxInner,id=>allItems.find(it=>it.id===id),{onFormat:(id,format)=>musicFormats.set(id,format)});
     grid.addEventListener('click', async e => {
-      if(e.target.closest('[data-music-action]'))return;
       const dragTagsBtn = e.target.closest('[data-act="drag-tags"]');
       if (dragTagsBtn) { e.preventDefault(); e.stopPropagation(); return; }
       // "+ más": añadir metatags propias a este asset desde la lista (agrupar sin abrir
@@ -1938,7 +1905,7 @@
             v = document.createElement('video');
             v.src = playMini.dataset.url || '';
             v.controls = true; v.autoplay = true; v.playsInline = true;
-            v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;background:#000;'; // object-fit lo decide workspace.css (cover en horizontal, contain en vertical/cuadrado)
+            v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;';
             media.appendChild(v);
           } else {
             if (v.dataset.src && !v.src) v.src = v.dataset.src;
@@ -1962,7 +1929,6 @@
       }
       // Botones de acciones (max/del/open) — el "open" es un <a> y deja burbujear,
       // pero detenemos para no abrir también el lightbox.
-      if(e.target.closest('[data-act="format-version"]')){e.stopPropagation();return;}
       if(e.target.closest('.stock-playlist-badge')){e.preventDefault();e.stopPropagation();return;}
       const btn = e.target.closest('.stock-card-btn');
       if (btn) {
@@ -2120,10 +2086,8 @@
         const absorber = (lista, mandaEnElDedupe) => {
           for (const it of lista) {
             if (!it || !it.id) continue;
-            if(mandaEnElDedupe)localPublished.delete(it.id);
             if (mandaEnElDedupe || !byId.has(it.id)) byId.set(it.id, it);
           }
-          for(const [id,item] of localPublished)if(!byId.has(id))byId.set(id,item);
           hubo = true;
           if (onParcial) { try { onParcial(Array.from(byId.values())); } catch (e) {} }
         };
@@ -2144,7 +2108,8 @@
           absorber(indice, true);
         } catch (e) { lastErr = e; }
         const edadMin = (indice && indice.builtAt) ? (Date.now() - Date.parse(indice.builtAt)) / 60000 : Infinity;
-        if (!indice || !(edadMin < 20)) {
+        const highlighted = new URLSearchParams(location.search).get('highlight');
+        if (!indice || !(edadMin < 20) || (highlighted && !indice.some(it => it.id === highlighted))) {
           // 15 s para el worker: tarda 4-9 s medidos; con timeout de 9000 se
           // abortaba a sí mismo casi siempre.
           try { absorber(await fetchSource(STOCK_LIST_FALLBACK, 15000), false); } catch (e) { lastErr = e; }
@@ -2164,7 +2129,6 @@
         .filter(Boolean);
     }
     async function load() {
-      catalogLoaded = false;
       empty.hidden = true;
       // 1) STALE-WHILE-REVALIDATE: pinta la copia guardada AL INSTANTE (sin esperar
       //    a la red) → la galería aparece ya; luego refresca en segundo plano.
@@ -2192,7 +2156,6 @@
           feedMatrix();
           status.textContent = '// ' + parcial.length + ' cargados · completando…';
         }));
-        catalogLoaded = true;
         writeCache(allItemsTodo);
         buildMotorOptions();
         applyFilters();
@@ -2200,9 +2163,7 @@
         feedMatrix();
       } catch (e) {
         // Fallo de red/worker: NO es pérdida de datos. Mantén la copia ya pintada.
-        catalogLoaded = true;
         if (hadCache) {
-          applyFilters();
           const when = cached.ts ? fmtDate(new Date(cached.ts).toISOString()) : '';
           status.textContent = `// sin conexión con el servidor · mostrando copia guardada${when ? ' (' + when + ')' : ''} · pulsa ↻ para reintentar`;
         } else {
@@ -2211,30 +2172,12 @@
         }
       }
     }
-    document.addEventListener('stock:local-published',e=>{
-      const it=e.detail?.item;if(!it?.id||!it.url)return;
-      localPublished.set(it.id,it);allItems=soloMio([it,...allItemsTodo.filter(x=>x.id!==it.id)]);writeCache(allItemsTodo);buildMotorOptions();applyFilters(true);feedMatrix();
-    });
-    document.addEventListener('stock:local-view',()=>{
-      if(filters.type==='catalogo')CATALOGO.leave();
-      filters.q='';search.value='';filters.type='';typeFilter.value='';filters.format='';filters.tags=[];filters.origen='';sortMode='date-desc';applyFilters(true);
-      const u=new URL(location.href);u.searchParams.delete('type');u.searchParams.delete('origen');u.searchParams.delete('format');u.searchParams.delete('q');u.searchParams.delete('tag');history.replaceState({},'',u);
-    });
-    formatFilter.addEventListener('change',()=>{filters.format=formatFilter.value;if(['landscape','portrait'].includes(filters.format))musicFormats.clear();const u=new URL(location.href);if(filters.format)u.searchParams.set('format',filters.format);else u.searchParams.delete('format');history.replaceState({},'',u);applyFilters(true);});
-    grid.addEventListener('change',e=>{
-      const select=e.target.closest('[data-act="format-version"]');if(!select)return;e.stopPropagation();const it=formatIndex.byId.get(select.value);if(!it)return;
-      selectedVersions.set(formatIndex.keys.get(it.id),it.id);const cleared=[];
-      if(filters.q&&!window.AdmiraStockSearch.matches(it,filters.q)){filters.q='';search.value='';cleared.push('búsqueda');}
-      const tags=(it.tags||[]).map(t=>String(t).toLowerCase());if(filters.tags.length&&!(filters.tagMode==='and'?filters.tags.every(t=>tags.includes(t)):filters.tags.some(t=>tags.includes(t)))){filters.tags=[];renderActiveTagBanner();cleared.push('etiquetas');}
-      if(filters.format){filters.format=mediaOrientation(it).key;const u=new URL(location.href);u.searchParams.set('format',filters.format);history.replaceState({},'',u);}
-      if(filters.motor&&verMotor(it.motor)!==verMotor(filters.motor)){filters.motor='';if(motorFilter)motorFilter.value='';cleared.push('motor');}
-      applyFilters(false);if(cleared.length)status.textContent='Versión '+(it.num?'#'+it.num:it.id)+' elegida. Se quitaron los filtros de '+cleared.join(', ')+' para mostrarla.';
-    });
+    { const tp = new URLSearchParams(location.search).get('type'); if (tp === 'xpaces' || tp === 'capsula') { filters.type = tp; typeFilter.value = tp; } } // ?type=capsula: enlace «Cápsulas de Conocimiento» del Adaptador
     typeFilter.addEventListener('change', () => {
       const was = filters.type === 'catalogo';
       filters.type = typeFilter.value;
       const filterUrl = new URL(location.href);
-      if (filters.type) filterUrl.searchParams.set('type',filters.type); else filterUrl.searchParams.delete('type');
+      if (filters.type === 'xpaces') filterUrl.searchParams.set('type','xpaces'); else filterUrl.searchParams.delete('type');
       history.replaceState({}, '', filterUrl);
       if (filters.type === 'catalogo') { CATALOGO.enter(); return; }
       if (was) CATALOGO.leave();
@@ -2242,7 +2185,7 @@
     });
     if (motorFilter) motorFilter.addEventListener('change', () => { filters.motor = motorFilter.value; applyFilters(true); });
     search.addEventListener('input', () => {
-      filters.q = search.value.trim().slice(0,200);
+      filters.q = search.value.trim().toLowerCase();
       applyFilters(true);
     });
     // Importar desde el buscador: si hay una URL escrita, la pasa al modal de
@@ -2259,6 +2202,7 @@
     });
     // Cabezales ordenables (Nombre / Fecha / Tipo / Motor) — clic alterna asc/desc
     const SORT_DEFAULT_DIR = { name: 'asc', date: 'desc' };
+    const SORT_VALID = new Set(['name-asc','name-desc','date-asc','date-desc']);
     function applySortIndicators() {
       const [key, dir] = sortMode.split('-');
       sortBar.querySelectorAll('.stock-sort-th').forEach(b => {
@@ -2277,6 +2221,7 @@
       applySortIndicators();
       applyFilters(true);
     }));
+    try { const s = localStorage.getItem('stockSort'); if (s && SORT_VALID.has(s)) sortMode = s; } catch {}
     applySortIndicators();
     document.getElementById('stockRefresh')?.addEventListener('click', load);
 
@@ -2296,9 +2241,10 @@
     if (viewToggle) viewToggle.addEventListener('click', () => {
       const cur = grid.classList.contains('view-list') ? 'list' : 'compact';
       applyStockView(cur === 'list' ? 'compact' : 'list');
-      persistNavigation();
     });
-    applyStockView(initialNavigation.view);
+    let savedView = 'list';
+    try { savedView = localStorage.getItem('stockView') || 'list'; } catch {}
+    applyStockView(savedView === 'compact' ? 'compact' : 'list');
 
     // Pager (arriba y abajo, sincronizados)
     pageSizeSels.forEach(sel => sel.addEventListener('change', () => {
@@ -2307,38 +2253,19 @@
       try { localStorage.setItem('stockPageSize', String(pageSize)); } catch {}
       applyFilters(true);
     }));
-    pageSizeSels.forEach(s=>{s.value=String(pageSize);});
-    pagers.forEach(p => p.querySelectorAll('[data-page]').forEach(btn => btn.addEventListener('click', () => {
+    try {
+      const saved = parseInt(localStorage.getItem('stockPageSize') || '', 10);
+      if (!isNaN(saved)) { pageSize = saved; pageSizeSels.forEach(s => { s.value = String(saved); }); }
+    } catch {}
+    pagers.forEach(p => p.querySelectorAll('.stock-pager-btn').forEach(btn => btn.addEventListener('click', () => {
       const act = btn.dataset.page;
       if (act === 'first') currentPage = 1;
       else if (act === 'prev') currentPage = Math.max(1, currentPage - 1);
       else if (act === 'next') currentPage += 1;
       else if (act === 'last') currentPage = 99999;
-      requestedPage=currentPage;
       applyFilters();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     })));
-
-    const typeNames = {
-      '':['Todos los tipos','All types'],video:['Vídeo','Video'],image:['Imagen','Image'],
-      audio:['Audio','Audio'],locucion:['Megafonía','PA audio'],music:['Música','Music'],
-      'twin-npc':['Twin NPCs','Twin NPCs'],'digital-twin':['Digital Twins','Digital Twins'],
-      xpaces:['Xpaces','Xpaces'],catalogo:['Catálogos','Catalogs'],animation:['Animaciones','Animations'],
-      tiktok:['TikToks','TikToks'],furni:['Mobiliario','Furniture'],capsula:['Cápsulas','Capsules'],
-      fallidos:['Importaciones fallidas','Failed imports']
-    };
-    const formatNames = {'':['Todos los formatos','All formats'],landscape:['Horizontal','Horizontal'],
-      portrait:['Vertical','Vertical'],square:['Cuadrado','Square'],unknown:['Sin formato confirmado','Unconfirmed format'],
-      anamorphic:['Anamórfico','Anamorphic']};
-    const localized = (labels,key) => labels[key]?.[language==='en'?1:0] || String(key).replace(/^custom:/,'');
-    savedSearchControls = mountSavedSearches({
-      element:document.getElementById('stockSavedSearchControls'),language,
-      getSearch:()=>({q:filters.q,type:filters.type,format:filters.format}),
-      applySearch:search=>restoreStockNavigation({...navigationState(),...search,origen:'',motor:'',tags:[],tagMode:'or',page:1}),
-      typeLabel:type=>localized(typeNames,type),formatLabel:format=>localized(formatNames,format)
-    });
-    document.getElementById('stockClearFilters').addEventListener('click',clearStockFilters);
-    renderActiveTagBanner();
 
     // Track de reproducciones: 1 POST por asset + sesión cuando empieza a sonar
     const trackedPlays = new Set();
@@ -2375,14 +2302,14 @@
       if (!safeId || safeId !== id) return;
       const item = allItems.find(it => it && it.id === safeId);
       if (!item) return;
-      if (isMusic(item) || item.type === 'locucion') { filters.type = isMusic(item)?'music':'locucion'; typeFilter.value = filters.type; applyFilters(true); }
+      if (item.type === 'locucion') { filters.type = 'locucion'; typeFilter.value = 'locucion'; applyFilters(true); }
       const card = grid.querySelector(`.stock-card[data-id="${safeId}"]`);
       if (card) {
         card.classList.add('stock-card-flash');
         setTimeout(() => card.classList.remove('stock-card-flash'), 2400);
       }
-      try { const u = new URL(location.href); u.searchParams.delete('highlight'); history.replaceState(history.state, '', u); } catch {}
       openLightbox(item);
+      try { const u = new URL(location.href); u.searchParams.delete('highlight'); history.replaceState({}, '', u); } catch {}
     }
 
     // ── DISTRIBUIDOR DE ASSETS ────────────────────────────────────────────
@@ -3007,7 +2934,6 @@
           const d=await r.json();
           if(!Array.isArray(d.results)||!d.results.length)throw Error(errors[d.error]||d.error||'No se pudo añadir el contenido');
           report(d.results.map(x=>x.ok?'✓ '+x.added+' añadido(s) a «'+x.name+'» · '+x.screen:'✕ '+x.screen+': '+(errors[x.error]||x.error||'No se guardó')).join('\n'));
-          StockPlaylistData.markAssigned(items.map(i=>i.id),d.results,p.destination);
           if(r.ok&&d.ok){const dlg=$('plModal');if(dlg.open)dlg.close();}
           // Una respuesta parcial puede haber guardado varios destinos. Actualizar
           // sus marcas también en ese caso, sin convertir un fallo de refresco en
@@ -3194,7 +3120,7 @@
       const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
       const isActive = () => filters.type === 'catalogo';
       const tagsLc = it => Array.isArray(it && it.tags) ? it.tags.map(t => String(t).toLowerCase()) : [];
-      const metaCat=it=>{const m=it?.catalogo||it?.meta?.catalogo;return m&&typeof m==='object'?m:null;};
+      const metaCat = it => (it && it.meta && it.meta.catalogo && typeof it.meta.catalogo === 'object') ? it.meta.catalogo : null;
       const catIdOf = it => { const m = metaCat(it); if (m && m.id) return String(m.id); return tagsLc(it).find(t => CAT_ID_RE.test(t)) || ''; };
       const fmtDay = d => { if (!d) return ''; const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d)); return m ? `${m[3]}/${m[2]}/${m[1]}` : String(d); };
       const hashtags = c => { const out = ['catalogo']; if (c.cliente) out.push(String(c.cliente).toLowerCase()); if (c.id) out.push(c.id); const ym = /^(\d{4}-\d{2})/.exec(c.desde || c.id.slice(-10)); if (ym) out.push(ym[1]); return Array.from(new Set(out)); };
@@ -3248,7 +3174,7 @@
           items = allItems.filter(it => it && (ids.has(it.id) || catIdOf(it) === c.id));
         }
         if (token !== loadingPiezas) return; // llegó otra selección mientras tanto
-        piezas = sortPiezas(includeCatalogItems(items));
+        piezas = sortPiezas(items.filter(it => it && it.url));
         renderPiezas();
       }
 
@@ -3269,10 +3195,10 @@
           <footer>${statusHtml(c)}</footer>
         </article>`;
       }
-      function filteredCatalogs(){const q=(filters.q||'').toLowerCase();return catalogos.filter(c=>!q||`${c.id} ${c.cliente} ${c.nombre} ${hashtags(c).join(' ')}`.toLowerCase().includes(q));}
       function renderList() {
         const box = $('catList'); if (!box) return;
-        const lst=filteredCatalogs();
+        const q = (filters.q || '').toLowerCase();
+        const lst = catalogos.filter(c => !q || `${c.id} ${c.cliente} ${c.nombre} ${hashtags(c).join(' ')}`.toLowerCase().includes(q));
         box.innerHTML = lst.length ? lst.map(cardHtml).join('') : `<p class="cat-empty">${catalogos.length ? T.sinResultados : T.sinCatalogos}</p>`;
         const src = $('catSource'); if (src) src.textContent = catalogos.length ? (catalogos[0].derivado ? T.fuenteIndice : T.fuenteApi) : '';
       }
@@ -3298,13 +3224,10 @@
       function renderPiezas() {
         if (!isActive()) return;
         const c = selected && byId(selected);
-        if(c)piezas=includeCatalogItems(piezas);
-        if (!c) { grid.innerHTML = ''; currentView = []; empty.hidden = true; renderHead();const matches=filteredCatalogs(),catalogIds=new Set(matches.map(c=>c.id)),stockIds=new Set(matches.flatMap(c=>c.ids||[]));updateStockCount(countCatalog().filter(it=>(stockIds.has(it.id)||catalogIds.has(catIdOf(it)))&&(!filters.format||mediaOrientation(it).key===filters.format)));return; }
-        formatIndex=StockFormats.index(allItems);refreshFormatOptions();
-        currentView = piezas.filter(it=>!filters.format||mediaOrientation(it).key===filters.format);
-        updateStockCount(currentView);
+        if (!c) { grid.innerHTML = ''; currentView = []; empty.hidden = true; renderHead(); return; }
+        currentView = piezas;
         grid.classList.remove('stock-grid-grouped');
-        grid.innerHTML = currentView.map(renderCard).join('');
+        grid.innerHTML = piezas.map(renderCard).join('');
         if (typeof hydrateMediaOrientations === 'function') hydrateMediaOrientations();
         if (typeof observeLazyVideos === 'function') observeLazyVideos();
         empty.hidden = true;
@@ -3319,7 +3242,6 @@
         const sec = $('catSection'); if (sec) sec.hidden = false;
         grid.innerHTML = ''; empty.hidden = true;
         status.textContent = T.cargando;
-        updateStockCount(null);
         await loadCatalogos(true);
         status.textContent = catalogos.length ? '' : T.sinCatalogos;
         repaint();
@@ -3540,7 +3462,7 @@
       .catch(()=>{});
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=18.10.2026.r16.2219"></script>
+  <script defer src="/assets/cuadratura.js?v=24.10.2026.r2.1353"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>
