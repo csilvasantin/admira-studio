@@ -1,0 +1,26 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "studio-first (pendiente de portar a pixeria)",
+  "reason": "Carlos (24-oct-2026, noche, aprobó el coste de Workers AI): A) #traduce/#translate y alias generan solos los subtítulos: FFmpeg WASM extrae el audio → /stock-subtitles (Pages Function, binding AI: whisper-large-v3-turbo + Llama 3.3 70B, respaldo m2m100) → quemado con libass y fuente empaquetada (assets/fonts/DejaVuSans-Bold.ttf) → /stock-publish con subtitulado-xx + par-<id>. Máx. 3 min, solo con sesión, cola única de FFmpeg compartida con la cápsula alterna. B) Etiquetas que hacen algo (traducir, cápsula, pilares, clasificadores) en negrita con title explicativo; lista única en assets/etiquetas-funcionales.mjs; marcas automáticas (par-, formato-alterno, subtitulado-) en cursiva.",
+  "files": [
+    "functions/stock-subtitles.js",
+    "wrangler.toml",
+    "assets/capsula-traduce.mjs",
+    "assets/capsula-alterna.mjs",
+    "assets/etiquetas-funcionales.mjs",
+    "assets/fonts/DejaVuSans-Bold.ttf",
+    "adaptaciones/adapter-export.js",
+    "stock.html",
+    "en/stock.html",
+    "app.js",
+    "test/etiquetas-funcionales.test.mjs",
+    "test/stock-subtitles.test.mjs",
+    "test/capsula-traduce.test.mjs",
+    ".source-patches/subtitulos-auto-etiquetas-negrita.json"
+  ],
+  "secrets": "ninguno (binding AI de la cuenta)",
+  "preservesFiltersAndAccess": true,
+  "status": "release-authorized"
+}

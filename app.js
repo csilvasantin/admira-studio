@@ -3102,6 +3102,15 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       caja.innerHTML = `<label for="import-tags">${ETIQ_EN ? 'Tags' : 'Etiquetas'} <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(${ETIQ_EN ? 'optional · client, venue or screen' : 'opcional · cliente, centro o pantalla'})</small></label><input type="text" id="import-tags" maxlength="400" autocomplete="off" spellcheck="false" placeholder="${escAttr(ETIQ_PISTA)}" title="${escAttr(ETIQ_AYUDA)}">`;
       (comentario.closest('.field') || comentario).insertAdjacentElement('afterend', caja);
       campo = caja.querySelector('input');
+      // Vista previa: las etiquetas que hacen algo (traducir, cápsula, pilar, clasificar) salen en negrita.
+      const vista = document.createElement('div');
+      vista.className = 'imp-tags-preview'; vista.style.cssText = 'margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;font-size:12px';
+      campo.insertAdjacentElement('afterend', vista);
+      const pinta = () => import('/assets/etiquetas-funcionales.mjs?v=20261024-1').then(m => {
+        vista.innerHTML = parseEtiquetas(campo.value).map(t => { const c = m.tagChip(t);
+          return `<span class="stock-tag${c.cls ? ' ' + c.cls : ''}"${c.title ? ` title="${escAttr(c.title)}"` : ''} style="${c.cls === 'stock-tag-fn' ? 'font-weight:700' : ''}">#${escAttr(t)}</span>`; }).join('');
+      }).catch(() => {});
+      campo.addEventListener('input', pinta);
     }
     return campo;
   }

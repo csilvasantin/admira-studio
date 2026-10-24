@@ -309,6 +309,7 @@
     /* Etiquetas arrastrables entre assets. */
     .stock-tag[draggable="true"],.stock-tags-drag{cursor:grab}.stock-tag[draggable="true"]:active,.stock-tags-drag:active{cursor:grabbing}
     .stock-tags-drag{border:1px dashed var(--matrix);background:rgba(0,255,65,.06);color:var(--matrix);border-radius:999px;padding:2px 8px;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:.04em}
+    .stock-tag-fn,.stock-tagf.stock-tag-fn,.imp-tag-fn{font-weight:700}.stock-tag-sys{font-style:italic;opacity:.8}
     .stock-card.tag-drop-target{outline:2px dashed var(--matrix);outline-offset:3px;background:rgba(0,255,65,.08)}
     body.tag-dragging .stock-card:not(.tag-drop-target){transition:opacity .15s,outline .15s}.stock-tag.tag-drag-source,.stock-tags-drag.tag-drag-source{opacity:.45}
 
@@ -737,7 +738,7 @@
   </dialog>
 
   <script defer src="/matrix-rain.js?v=17.10.2026.r6.2255"></script>
-  <script src="app.js?v=import-ha-20261018-16-clock"></script>
+  <script src="app.js?v=etiq-fn-20261024"></script>
   <script src="assets/stock-search.js?v=17.10.2026.r6.2255"></script>
   <link rel="stylesheet" href="/assets/stock-sync-creative.css?v=17.10.2026.r6.2255">
   <script src="/assets/stock-sync-core.js?v=17.10.2026.r6.2255"></script>
@@ -1120,11 +1121,18 @@
       }
       return `<span title="${escAttr(raw)}">${trunc}</span>`;
     }
+    // Etiquetas que HACEN algo (traducir, cápsula+pilar, clasificar) en negrita · assets/etiquetas-funcionales.mjs.
+    function tagFx(t) {
+      const c = window.EtiquetasFuncionales?.tagChip?.(t);
+      return c && c.title ? {cls: c.cls ? ' ' + c.cls : '', pre: escAttr(c.title) + ' · '} : {cls: '', pre: ''};
+    }
+    import('/assets/etiquetas-funcionales.mjs?v=20261024-1').then(m => { window.EtiquetasFuncionales = m; try { applyFilters(); } catch (_) {} }).catch(() => {});
     function renderTagsHtml(tags, id) {
       const safeId = String(id || '').replace(/[^A-Za-z0-9-]/g, '');
       const chips = (Array.isArray(tags) ? tags : []).map(t => {
         const safe = verTag(t).replace(/</g, '&lt;');
-        return `<button type="button" class="stock-tag" draggable="true" data-drag-tag="${escAttr(t)}" data-tag="${escAttr(t)}" title="Arrastra para copiar #${escAttr(verTag(t))} a otro contenido · Clic: filtrar · Doble-clic: renombrar">#${safe}</button>`;
+        const fx = tagFx(t);
+        return `<button type="button" class="stock-tag${fx.cls}" draggable="true" data-drag-tag="${escAttr(t)}" data-tag="${escAttr(t)}" title="${fx.pre}Arrastra para copiar #${escAttr(verTag(t))} a otro contenido · Clic: filtrar · Doble-clic: renombrar">#${safe}</button>`;
       }).join('');
       const dragAll = chips ? `<button type="button" class="stock-tags-drag" draggable="true" data-act="drag-tags" data-id="${safeId}" title="Arrastra para copiar todas las etiquetas a otro contenido">⇄ tags</button>` : '';
       // "+ más": añade metatags propias para agrupar (a la derecha de las auto-tags).
@@ -1136,7 +1144,7 @@
       const safeId = String(id || '').replace(/[^A-Za-z0-9-]/g, '');
       const chips = (Array.isArray(tags) ? tags : []).map(t => {
         const safe = verTag(t).replace(/</g, '&lt;');
-        return `<span class="stock-tag-edit"><button type="button" class="stock-tag" data-tag="${escAttr(t)}" title="Filtrar por #${escAttr(verTag(t))}">#${safe}</button><button type="button" class="stock-tag-x" data-act="remove-tag" data-tag="${escAttr(t)}" title="Quitar etiqueta" aria-label="Quitar #${escAttr(verTag(t))}">✕</button></span>`;
+        return `<span class="stock-tag-edit"><button type="button" class="stock-tag${tagFx(t).cls}" data-tag="${escAttr(t)}" title="${tagFx(t).pre}Filtrar por #${escAttr(verTag(t))}">#${safe}</button><button type="button" class="stock-tag-x" data-act="remove-tag" data-tag="${escAttr(t)}" title="Quitar etiqueta" aria-label="Quitar #${escAttr(verTag(t))}">✕</button></span>`;
       }).join('');
       return `<div class="stock-tags-editor" data-edit-id="${safeId}">
         ${chips}
@@ -1403,7 +1411,7 @@
       }
       const matching = matchItemsByTags(filters.tags, filters.tagMode);
       const joiner = filters.tagMode === 'and' ? ' Y ' : ' O ';
-      const chips = filters.tags.map(t => `<button type="button" class="stock-tagf" data-tagf="${escAttr(t)}" title="Quitar #${escAttr(verTag(t))}">#${String(t).replace(/</g, '&lt;')} ✕</button>`).join(`<span class="stock-tagf-join">${joiner}</span>`);
+      const chips = filters.tags.map(t => `<button type="button" class="stock-tagf${tagFx(t).cls}" data-tagf="${escAttr(t)}" title="${tagFx(t).pre}Quitar #${escAttr(verTag(t))}">#${String(t).replace(/</g, '&lt;')} ✕</button>`).join(`<span class="stock-tagf-join">${joiner}</span>`);
       const modeBtn = filters.tags.length >= 2 ? `<button type="button" class="stock-tagmode" title="Alternar Y (todas) / O (cualquiera)">${filters.tagMode === 'and' ? 'Y · todas' : 'O · cualquiera'}</button>` : '';
       const critName = filters.tags.join(filters.tagMode === 'and' ? ' + ' : ' / ');
       banner.innerHTML = `<span class="stock-tagf-wrap">Filtrando: ${chips} ${modeBtn}</span><button type="button" class="stock-tag-playlist" title="Crear playlist con los ${matching.length} assets del criterio">🎵 Playlist (${matching.length})</button><button type="button" class="stock-tag-clear">✕ limpiar</button>`;
@@ -2260,28 +2268,29 @@
     // Cápsula #capsula + pilar (#negocio/#creatividad/#tecnologia, ES/EN) → versión en la otra orientación (assets/capsula-alterna.mjs).
     function capsulaAlterna(it){
       if(!it||!['video','image'].includes(it.type))return;
-      import('/assets/capsula-alterna.mjs?v=20261024-1').then(m=>m.maybeGenerateAlternate(it,{items:allItemsTodo,saveTags:(id,t,o)=>saveTags(id,t,o),
+      import('/assets/capsula-alterna.mjs?v=20261024-3').then(m=>m.maybeGenerateAlternate(it,{items:allItemsTodo,saveTags:(id,t,o)=>saveTags(id,t,o),
         onStatus:t=>{status.textContent=t;},
         onCreated:async id=>{try{const r=await fetch(`${STOCK_BASE}/stock/list?limit=30`,{cache:'no-store'});const d=await r.json();const nuevo=(d.items||[]).find(x=>x.id===id);if(nuevo)document.dispatchEvent(new CustomEvent('stock:local-published',{detail:{item:nuevo}}));}catch(_){}}
       })).catch(()=>{});
     }
     function traduceBadge(it){
       const p=window.CapsulaTraduce?.pendingInfo?.(it,allItemsTodo);if(!p)return '';
-      return `<button type="button" class="stock-traduce-badge" data-act="traduce-pendiente" data-encargo="${escAttr(p.encargo)}" title="Etiqueta de traducción detectada (${p.from.toUpperCase()}→${p.to.toUpperCase()}). Los subtítulos se generan fuera del navegador. Clic: copiar el encargo.">${p.label} · copiar encargo</button>`;
+      return `<button type="button" class="stock-traduce-badge" data-act="traduce-pendiente" data-encargo="${escAttr(p.encargo)}" title="Etiqueta de traducción detectada (${p.from.toUpperCase()}→${p.to.toUpperCase()}). Se generan solos (Workers AI + FFmpeg en el navegador, máx. 3 min). Si fallan, clic: copiar el encargo para la caja.">${p.label} · copiar encargo</button>`;
     }
     // #traduce (EN→subtítulos ES) / #translate (ES→subtítulos EN) · assets/capsula-traduce.mjs (sin bucle: subtitulado-*).
     function capsulaTraduce(it){
       if(!it||it.type!=='video')return;
-      import('/assets/capsula-traduce.mjs?v=20261024-2').then(m=>m.maybeSubtitle(it,{items:allItemsTodo,onStatus:t=>{status.textContent=t;traducePendiente=t;
-        try{status.classList.add('stock-traduce-aviso');}catch(_){}}})).catch(()=>{});
+      import('/assets/capsula-traduce.mjs?v=20261024-3').then(m=>m.maybeSubtitle(it,{items:allItemsTodo,onStatus:t=>{status.textContent=t;traducePendiente=t;
+        try{status.classList.add('stock-traduce-aviso');applyFilters();}catch(_){}},
+        onCreated:async id=>{try{const r=await fetch(`${STOCK_BASE}/stock/list?limit=30`,{cache:'no-store'});const d=await r.json();const nuevo=(d.items||[]).find(x=>x.id===id);if(nuevo)document.dispatchEvent(new CustomEvent('stock:local-published',{detail:{item:nuevo}}));}catch(_){}}})).catch(()=>{});
     }
     let traducePendiente='';
     // Carga el módulo una vez para pintar la insignia «subtítulos XX pendientes» en las tarjetas.
-    import('/assets/capsula-traduce.mjs?v=20261024-2').then(m=>{window.CapsulaTraduce=m;try{applyFilters();}catch(_){}}).catch(()=>{});
+    import('/assets/capsula-traduce.mjs?v=20261024-3').then(m=>{window.CapsulaTraduce=m;try{applyFilters();}catch(_){}}).catch(()=>{});
     grid.addEventListener('click',e=>{
       const b=e.target.closest('[data-act="traduce-pendiente"]');if(!b)return;e.preventDefault();e.stopPropagation();
       const txt=b.dataset.encargo||'';try{navigator.clipboard.writeText(txt);}catch(_){}
-      status.textContent='// 🈯 encargo copiado: '+txt+' · pégalo a GrokBot / la caja (la transcripción automática en Studio aún no está activa)';
+      status.textContent='// 🈯 encargo copiado: '+txt+' · pégalo a GrokBot / la caja si el automático no lo ha generado';
     },true);
     document.addEventListener('stock:local-published',e=>{capsulaAlterna(e.detail?.item);capsulaTraduce(e.detail?.item);});
     document.addEventListener('stock:tags-saved',e=>{capsulaAlterna(e.detail?.item);capsulaTraduce(e.detail?.item);});

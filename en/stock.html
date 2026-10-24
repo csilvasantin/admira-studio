@@ -309,6 +309,7 @@
     /* Etiquetas arrastrables entre assets. */
     .stock-tag[draggable="true"],.stock-tags-drag{cursor:grab}.stock-tag[draggable="true"]:active,.stock-tags-drag:active{cursor:grabbing}
     .stock-tags-drag{border:1px dashed var(--matrix);background:rgba(0,255,65,.06);color:var(--matrix);border-radius:999px;padding:2px 8px;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:.04em}
+    .stock-tag-fn,.stock-tagf.stock-tag-fn,.imp-tag-fn{font-weight:700}.stock-tag-sys{font-style:italic;opacity:.8}
     .stock-card.tag-drop-target{outline:2px dashed var(--matrix);outline-offset:3px;background:rgba(0,255,65,.08)}
     body.tag-dragging .stock-card:not(.tag-drop-target){transition:opacity .15s,outline .15s}.stock-tag.tag-drag-source,.stock-tags-drag.tag-drag-source{opacity:.45}
 
@@ -1119,11 +1120,18 @@
       }
       return `<span title="${escAttr(raw)}">${trunc}</span>`;
     }
+    // Tags that DO something (translate, capsule+pillar, classify) in bold · assets/etiquetas-funcionales.mjs.
+    function tagFx(t) {
+      const c = window.EtiquetasFuncionales?.tagChip?.(t);
+      return c && c.title ? {cls: c.cls ? ' ' + c.cls : '', pre: escAttr(c.title) + ' · '} : {cls: '', pre: ''};
+    }
+    import('/assets/etiquetas-funcionales.mjs?v=20261024-1').then(m => { window.EtiquetasFuncionales = m; try { applyFilters(); } catch (_) {} }).catch(() => {});
     function renderTagsHtml(tags, id) {
       const safeId = String(id || '').replace(/[^A-Za-z0-9-]/g, '');
       const chips = (Array.isArray(tags) ? tags : []).map(t => {
         const safe = verTag(t).replace(/</g, '&lt;');
-        return `<button type="button" class="stock-tag" draggable="true" data-drag-tag="${escAttr(t)}" data-tag="${escAttr(t)}" title="Arrastra para copiar #${escAttr(verTag(t))} a otro contenido · Clic: filtrar · Doble-clic: renombrar">#${safe}</button>`;
+        const fx = tagFx(t);
+        return `<button type="button" class="stock-tag${fx.cls}" draggable="true" data-drag-tag="${escAttr(t)}" data-tag="${escAttr(t)}" title="${fx.pre}Arrastra para copiar #${escAttr(verTag(t))} a otro contenido · Clic: filtrar · Doble-clic: renombrar">#${safe}</button>`;
       }).join('');
       const dragAll = chips ? `<button type="button" class="stock-tags-drag" draggable="true" data-act="drag-tags" data-id="${safeId}" title="Arrastra para copiar todas las etiquetas a otro contenido">⇄ tags</button>` : '';
       // "+ más": añade metatags propias para agrupar (a la derecha de las auto-tags).
@@ -1135,7 +1143,7 @@
       const safeId = String(id || '').replace(/[^A-Za-z0-9-]/g, '');
       const chips = (Array.isArray(tags) ? tags : []).map(t => {
         const safe = verTag(t).replace(/</g, '&lt;');
-        return `<span class="stock-tag-edit"><button type="button" class="stock-tag" data-tag="${escAttr(t)}" title="Filtrar por #${escAttr(verTag(t))}">#${safe}</button><button type="button" class="stock-tag-x" data-act="remove-tag" data-tag="${escAttr(t)}" title="Quitar etiqueta" aria-label="Quitar #${escAttr(verTag(t))}">✕</button></span>`;
+        return `<span class="stock-tag-edit"><button type="button" class="stock-tag${tagFx(t).cls}" data-tag="${escAttr(t)}" title="${tagFx(t).pre}Filtrar por #${escAttr(verTag(t))}">#${safe}</button><button type="button" class="stock-tag-x" data-act="remove-tag" data-tag="${escAttr(t)}" title="Quitar etiqueta" aria-label="Quitar #${escAttr(verTag(t))}">✕</button></span>`;
       }).join('');
       return `<div class="stock-tags-editor" data-edit-id="${safeId}">
         ${chips}

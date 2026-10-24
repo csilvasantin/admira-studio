@@ -8,10 +8,9 @@
  * `subtitulado-es` / `subtitulado-en` + `par-<id original>` y externalRef = id del original.
  * Anti-bucle: un vídeo con `subtitulado-*` nunca vuelve a pedir subtítulos. Se salta si ya existe.
  *
- * HUECO (24-oct-2026): Studio no tiene motor de transcripción/traducción (ni binding Workers AI
- * ni ruta de servidor), y en el navegador no es realista. Por eso aquí vive la detección, las
- * etiquetas y el formato SRT; si hay SRT (ctx.srt) se publica junto al vídeo, y si no, el Stock
- * avisa de que los subtítulos quedan pendientes y se generan fuera (caja: ffmpeg + libass).
+ * Automático desde el 24-oct-2026 (noche): audio con FFmpeg WASM → /stock-subtitles (Workers AI
+ * whisper-large-v3-turbo + m2m100-1.2b) → quemado con libass en el navegador → /stock-publish.
+ * Si algo falla, la insignia «subtítulos XX pendientes» sigue ahí y copia el encargo para la caja.
  */
 import {norm, pairTag, isCapsuleTag, PILLARS, ALT_TAG, MAX_TAGS} from './capsula-alterna.mjs';
 
@@ -71,22 +70,79 @@ export function parseSrt(text) {
 }
 export const toSrt = cues => cues.map((c, n) => `${n + 1}\n${fmt(c.start)} --> ${fmt(c.end)}\n${c.text}\n`).join('\n');
 // Estilo del quemado (caja: ffmpeg subtitles=…:force_style=…): blanco, caja oscura, márgenes seguros.
-export const BURN_STYLE = 'FontName=DejaVu Sans,Bold=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BackColour=&H99000000,BorderStyle=3,Outline=2,Shadow=0,Alignment=2';
+export const BURN_STYLE = 'FontName=DejaVu Sans,Bold=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H60000000,BackColour=&H99000000,BorderStyle=3,Outline=2,Shadow=0,Alignment=2';
 
 // ── Navegador ───────────────────────────────────────────────────────────────
-// ctx: {items, onStatus(text)}. Hoy solo avisa (no hay motor de voz→texto en Studio).
+// Automático (24-oct-2026, tarde): FFmpeg WASM extrae el audio → /stock-subtitles (Workers AI:
+// whisper + m2m100) devuelve el SRT traducido → FFmpeg WASM lo quema (libass, fuente empaquetada
+// /assets/fonts/DejaVuSans-Bold.ttf) → /stock-publish con subtitulado-xx + par-<id>.
+export const MAX_SECONDS = 180;
+export const SUBTITLES_URL = '/stock-subtitles';
+export const FONT_URL = '/assets/fonts/DejaVuSans-Bold.ttf';
+export const audioArgs = () => ['-i', 'input', '-vn', '-ac', '1', '-ar', '16000', '-b:a', '48k', '-t', String(MAX_SECONDS), '-y', 'audio.mp3'];
+// Tamaño relativo a PlayRes 384×288 de libass: legible en 16:9 y en 9:16 sin tapar el centro.
+export function burnArgs(w, h) {
+  const vertical = h > w, size = vertical ? 11 : 16, margin = vertical ? 38 : 22;
+  const style = `${BURN_STYLE},Fontsize=${size},MarginV=${margin},MarginL=18,MarginR=18`;
+  return ['-i', 'input', '-vf', `subtitles=subs.srt:fontsdir=fonts:force_style='${style}'`, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '22',
+    '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', '-y', 'output.mp4'];
+}
+const b64 = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).replace(/^data:[^,]*,/, '')); r.onerror = () => rej(r.error); r.readAsDataURL(blob); });
+function videoMeta(it) {
+  return new Promise((resolve, reject) => { const v = document.createElement('video'); v.preload = 'metadata'; v.crossOrigin = 'anonymous';
+    v.onloadedmetadata = () => resolve({w: v.videoWidth, h: v.videoHeight, d: v.duration}); v.onerror = () => reject(new Error('media')); v.src = it.url; });
+}
+const running = new Set();
+// ctx: {items, onStatus(text), onCreated(id), fetch}. Devuelve {ok,id} | {skipped} | {ok:false,error}.
 export async function maybeSubtitle(it, ctx = {}) {
   if (!qualifiesTranslation(it)) return {skipped: 'no-aplica'};
   if (alreadySubtitled(it, ctx.items)) return {skipped: 'ya-existe'};
+  if (!it.url) return {skipped: 'sin-url'};
+  if (running.has(it.id)) return {skipped: 'en-curso'};
   const dir = directionOf(tagsOf(it), langOf(it));
-  try { ctx.onStatus?.(`// #${dir.to === 'es' ? 'traduce' : 'translate'}: subtítulos ${dir.to.toUpperCase()} pendientes · se generan fuera del navegador y se guardan con ${subTag(dir.to)} + ${pairTag(it.id)}`); } catch (_) {}
-  return {pending: true, from: dir.from, to: dir.to};
+  const say = s => { try { ctx.onStatus?.(s); } catch (_) {} };
+  const f = ctx.fetch || ((...a) => fetch(...a));
+  running.add(it.id);
+  try {
+    const meta = await videoMeta(it);
+    if (meta.d > MAX_SECONDS + 1) { say(`// 🈯 subtítulos: el vídeo dura ${Math.round(meta.d)} s; el automático llega hasta ${MAX_SECONDS} s`); return {skipped: 'largo'}; }
+    const {sharedEngine, ffmpegQueue} = await import('./capsula-alterna.mjs');
+    const engine = await sharedEngine();
+    say(`🈯 subtítulos ${dir.to.toUpperCase()}: extrayendo audio…`);
+    let audio = null;
+    await ffmpegQueue(() => engine.encode(it.url, {args: audioArgs(), outputs: [{file: 'audio.mp3'}]}, () => {}, (_, b) => { audio = b; }));
+    if (!audio?.size) throw new Error('audio');
+    say(`🈯 subtítulos ${dir.to.toUpperCase()}: transcribiendo y traduciendo…`);
+    const r = await f(SUBTITLES_URL, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({audio: await b64(audio), from: dir.from, to: dir.to})});
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.ok) throw new Error(d.error || ('HTTP ' + r.status));
+    if (!d.cues?.length) { say('// 🈯 subtítulos: no se ha detectado voz en el vídeo'); return {skipped: 'sin-voz'}; }
+    const srtURL = URL.createObjectURL(new Blob([d.srt], {type: 'text/plain'}));
+    let out = null;
+    try {
+      await ffmpegQueue(() => engine.encode(it.url, {args: burnArgs(meta.w, meta.h), durationSeconds: meta.d,
+        extraFiles: [{name: 'subs.srt', url: srtURL}, {name: 'fonts/DejaVuSans-Bold.ttf', url: FONT_URL}]},
+        s => s.phase === 'encoding' && say(`🈯 subtítulos ${dir.to.toUpperCase()}: quemando ${Math.round((s.progress || 0) * 100)} %`), (_, b) => { out = b; }));
+    } finally { URL.revokeObjectURL(srtURL); }
+    if (!out) throw new Error('encoding');
+    const {publishAdaptation} = await import('/adaptaciones/stock-publish.mjs');
+    const title = [String(it.title || '').trim() || 'Vídeo', `subtítulos ${dir.to.toUpperCase()}`].join(' · ').slice(0, 300);
+    const p = await publishAdaptation(out, {title, originId: it.id, format: `subtitulado-${dir.to}`, width: meta.w, height: meta.h, duration: meta.d, type: 'video'},
+      {tags: subtitledTags(it.tags, dir, it.id), externalRef: it.id, comment: `Subtítulos ${d.from.toUpperCase()}→${dir.to.toUpperCase()} (Workers AI) de ${it.id}\n\n${d.srt}`.slice(0, 4000)});
+    if (!p.ok) throw new Error(p.error || 'publish');
+    say(`✓ subtítulos ${dir.to.toUpperCase()} quemados y guardados (${d.cues.length} frases)`);
+    try { ctx.onCreated?.(p.id); } catch (_) {}
+    return {ok: true, id: p.id, cues: d.cues.length};
+  } catch (e) {
+    say(`// 🈯 subtítulos ${dir.to.toUpperCase()}: no se pudieron generar (${String(e?.message || e).slice(0, 60)}) · clic en la insignia para copiar el encargo`);
+    return {ok: false, error: String(e?.message || e)};
+  } finally { running.delete(it.id); }
 }
 
 // Insignia visible en la tarjeta mientras falten los subtítulos (clic = copiar el encargo para la caja).
 export function pendingInfo(it, items) {
   if (!qualifiesTranslation(it) || alreadySubtitled(it, items)) return null;
   const dir = directionOf(tagsOf(it), langOf(it));
-  return {...dir, label: `🈯 subtítulos ${dir.to.toUpperCase()} pendientes`,
+  return {...dir, running: running.has(it.id), label: `🈯 subtítulos ${dir.to.toUpperCase()} ${running.has(it.id) ? 'en curso' : 'pendientes'}`,
     encargo: `Subtitular ${dir.from.toUpperCase()}→${dir.to.toUpperCase()} el vídeo ${it.id} del Stock (${it.prompt || it.url || ''}): transcribir, traducir, quemar abajo y publicar con ${subTag(dir.to)} + ${pairTag(it.id)}`};
 }
