@@ -1,0 +1,267 @@
+{
+  "schema": "admira.campaign-publication-proof.v1",
+  "campaign": "starbucks-six",
+  "revision": 2,
+  "site": "Gran de Gràcia 51",
+  "checkedAt": "2026-10-13T22:46:59.830853+00:00",
+  "sourceCommit": "bbe2571",
+  "mcpCommit": "080d7b9",
+  "publicFiles": [
+    {
+      "screen": "macstudio-starbucks-vertical",
+      "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-r2-1080x1920.mp4?revision=2",
+      "sha256": "1865eb725509e2458f6baa16bab30c5a11ca027fdf456e0e97264385900c1c3f",
+      "bytes": 2741844
+    },
+    {
+      "screen": "macstudio-starbucks-horizontal",
+      "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macstudio-starbucks-horizontal-r2-1920x1080.mp4?revision=2",
+      "sha256": "4016a3fb7daf9dc13ee604646df310467938e77a52711b6a7086f68b40d08c0e",
+      "bytes": 4837977
+    },
+    {
+      "screen": "macstudio-starbucks-vertical-right",
+      "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-right-r2-1080x1920.mp4?revision=2",
+      "sha256": "646d8d87c1f2db6353988ca5966dccf7801a198bbbb007ec805dd3ad5a82c947",
+      "bytes": 3547159
+    },
+    {
+      "screen": "macmini-starbucks-vertical",
+      "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-r2-1080x1920.mp4?revision=2",
+      "sha256": "f32d7e413571f22fe8742447d1574918c92390de47f0a9edec687a8fdda230d9",
+      "bytes": 3258916
+    },
+    {
+      "screen": "macmini-starbucks-horizontal",
+      "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macmini-starbucks-horizontal-r2-1920x1080.mp4?revision=2",
+      "sha256": "f9118de385670beb9b9ea05419fbfe27418a13c6093741535e91f3e57b233211",
+      "bytes": 4892158
+    },
+    {
+      "screen": "macmini-starbucks-vertical-right",
+      "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-right-r2-1080x1920.mp4?revision=2",
+      "sha256": "7fad5f98cfd32d5bc11f1f77d321b4c3e28dae64b12760ccd19c39f348eac444",
+      "bytes": 2789001
+    },
+    {
+      "screen": "landscape",
+      "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-landscape-travel-landscape-r2-1920x1080.mp4?revision=2",
+      "sha256": "0eca016e7c8d5d55b2e1e18632995d79e959d13066c294f6985cda4a93235c75",
+      "bytes": 1572698
+    },
+    {
+      "screen": "portrait",
+      "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-portrait-travel-portrait-r2-1080x1920.mp4?revision=2",
+      "sha256": "2b4acc5dafbed63f499c1cca8842436eb273abc80e429e58fa6ec920a0852cb0",
+      "bytes": 1000779
+    }
+  ],
+  "sources": [
+    {
+      "screen": "macstudio-starbucks-vertical",
+      "theme": {
+        "ok": true,
+        "ts": 1791930660093,
+        "items": [
+          {
+            "id": "starbucks-six-r2-macstudio-starbucks-vertical-mural",
+            "title": "Starbucks · Café y granos · metaestilo en seis pantallas",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-r2-1080x1920.mp4?revision=2",
+            "thumb": "",
+            "dur": 24,
+            "num": null,
+            "perfil": null
+          },
+          {
+            "id": "starbucks-six-r2-macstudio-starbucks-vertical-individual",
+            "title": "Starbucks · Tu café sigue contigo · individual",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-portrait-travel-portrait-r2-1080x1920.mp4?revision=2",
+            "thumb": "",
+            "dur": 8,
+            "num": null,
+            "perfil": null
+          }
+        ]
+      },
+      "defaultRev": 1791930660323
+    },
+    {
+      "screen": "macstudio-starbucks-horizontal",
+      "theme": {
+        "ok": true,
+        "ts": 1791930663943,
+        "items": [
+          {
+            "id": "starbucks-six-r2-macstudio-starbucks-horizontal-mural",
+            "title": "Starbucks · Café y granos · metaestilo en seis pantallas",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macstudio-starbucks-horizontal-r2-1920x1080.mp4?revision=2",
+            "thumb": "",
+            "dur": 24,
+            "num": null,
+            "perfil": null
+          },
+          {
+            "id": "starbucks-six-r2-macstudio-starbucks-horizontal-individual",
+            "title": "Starbucks · Tu café sigue contigo · individual",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-landscape-travel-landscape-r2-1920x1080.mp4?revision=2",
+            "thumb": "",
+            "dur": 8,
+            "num": null,
+            "perfil": null
+          }
+        ]
+      },
+      "defaultRev": 1791930664131
+    },
+    {
+      "screen": "macstudio-starbucks-vertical-right",
+      "theme": {
+        "ok": true,
+        "ts": 1791930664704,
+        "items": [
+          {
+            "id": "starbucks-six-r2-macstudio-starbucks-vertical-right-mural",
+            "title": "Starbucks · Café y granos · metaestilo en seis pantallas",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macstudio-starbucks-vertical-right-r2-1080x1920.mp4?revision=2",
+            "thumb": "",
+            "dur": 24,
+            "num": null,
+            "perfil": null
+          },
+          {
+            "id": "starbucks-six-r2-macstudio-starbucks-vertical-right-individual",
+            "title": "Starbucks · Tu café sigue contigo · individual",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-portrait-travel-portrait-r2-1080x1920.mp4?revision=2",
+            "thumb": "",
+            "dur": 8,
+            "num": null,
+            "perfil": null
+          }
+        ]
+      },
+      "defaultRev": 1791930665042
+    },
+    {
+      "screen": "macmini-starbucks-vertical",
+      "theme": {
+        "ok": true,
+        "ts": 1791930665651,
+        "items": [
+          {
+            "id": "starbucks-six-r2-macmini-starbucks-vertical-mural",
+            "title": "Starbucks · Café y granos · metaestilo en seis pantallas",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-r2-1080x1920.mp4?revision=2",
+            "thumb": "",
+            "dur": 24,
+            "num": null,
+            "perfil": null
+          },
+          {
+            "id": "starbucks-six-r2-macmini-starbucks-vertical-individual",
+            "title": "Starbucks · Tu café sigue contigo · individual",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-portrait-travel-portrait-r2-1080x1920.mp4?revision=2",
+            "thumb": "",
+            "dur": 8,
+            "num": null,
+            "perfil": null
+          }
+        ]
+      },
+      "defaultRev": 1791930665924
+    },
+    {
+      "screen": "macmini-starbucks-horizontal",
+      "theme": {
+        "ok": true,
+        "ts": 1791930666427,
+        "items": [
+          {
+            "id": "starbucks-six-r2-macmini-starbucks-horizontal-mural",
+            "title": "Starbucks · Café y granos · metaestilo en seis pantallas",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macmini-starbucks-horizontal-r2-1920x1080.mp4?revision=2",
+            "thumb": "",
+            "dur": 24,
+            "num": null,
+            "perfil": null
+          },
+          {
+            "id": "starbucks-six-r2-macmini-starbucks-horizontal-individual",
+            "title": "Starbucks · Tu café sigue contigo · individual",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-landscape-travel-landscape-r2-1920x1080.mp4?revision=2",
+            "thumb": "",
+            "dur": 8,
+            "num": null,
+            "perfil": null
+          }
+        ]
+      },
+      "defaultRev": 1791930666658
+    },
+    {
+      "screen": "macmini-starbucks-vertical-right",
+      "theme": {
+        "ok": true,
+        "ts": 1791930667195,
+        "items": [
+          {
+            "id": "starbucks-six-r2-macmini-starbucks-vertical-right-mural",
+            "title": "Starbucks · Café y granos · metaestilo en seis pantallas",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-starbucks-six-travel-macmini-starbucks-vertical-right-r2-1080x1920.mp4?revision=2",
+            "thumb": "",
+            "dur": 24,
+            "num": null,
+            "perfil": null
+          },
+          {
+            "id": "starbucks-six-r2-macmini-starbucks-vertical-right-individual",
+            "title": "Starbucks · Tu café sigue contigo · individual",
+            "type": "video",
+            "url": "https://admira.studio/assets/demos/starbucks-six/starbucks-six-portrait-travel-portrait-r2-1080x1920.mp4?revision=2",
+            "thumb": "",
+            "dur": 8,
+            "num": null,
+            "perfil": null
+          }
+        ]
+      },
+      "defaultRev": 1791930667507
+    }
+  ],
+  "browser": {
+    "sixDecoded": true,
+    "phasesObserved": [
+      24,
+      8
+    ],
+    "maxVideoSpreadSeconds": 0.013,
+    "physicalHardware": false,
+    "environment": "https://admira.studio/campanas/starbucks-six/",
+    "full32SecondCycleVerified": true,
+    "languages": [
+      "es",
+      "en"
+    ],
+    "pauseVerified": true,
+    "checkedAt": "2026-10-13T22:37:40.294523+00:00"
+  },
+  "players": {
+    "MacMini": "playing",
+    "MacStudio": "playing",
+    "reason": "Carlos authorized starting all six with revision 2 and leaving playback running",
+    "currentRevisionPhysicallyVerified": true,
+    "proof": "/assets/demos/starbucks-six/hardware-proof.json"
+  },
+  "previousRevisionPreserved": true,
+  "stock": "/assets/demos/starbucks-six/stock-publication-r2.json"
+}

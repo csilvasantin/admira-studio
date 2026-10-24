@@ -430,11 +430,11 @@ body.pf-bottom-off .rail-bottom {display:none}
 .rail-nav a.rail-cur{border-color:var(--cyan, #68dce9);background:rgba(104,220,233,0.10)}
 .rail-nav a.rail-cur b{color:var(--cyan, #68dce9)}
 
-/* Canonical quadratura: advanced on the left, options on the right. */
-.cuad .rail-left { left:auto; right:0; }
-.cuad .rail-right { right:auto; left:0; }
-.cuad .rail-left .pf-resize-left { right:auto; left:-9px; }
-.cuad .rail-right .pf-resize-right { left:auto; right:-9px; }
+/* Opciones a la izquierda; Avanzado a la derecha, con sus bordes interiores. */
+.cuad .rail-left { left:0; right:auto; }
+.cuad .rail-right { right:0; left:auto; }
+.cuad .rail-left .pf-resize-left { left:auto; right:-9px; }
+.cuad .rail-right .pf-resize-right { right:auto; left:-9px; }
 
 /* ══ Shell universal (FLT-101334) ═══════════════════════════════════════════
    La barra de 4 bandas es la MISMA en todas las páginas, traigan la tipografía o
@@ -459,6 +459,10 @@ body.pf-bottom-off .rail-bottom {display:none}
 }
 :root:not([data-mb-marca]) body .pf-topbar .pf-topbar-brand{color:#c8ffd0;font-size:15px;text-decoration:none}
 :root:not([data-mb-marca]) body .pf-topbar .pf-brand-name{color:#c8ffd0;font-size:15px;font-weight:800;letter-spacing:.08em}
+/* A horizontal scroll container traps sticky navigation while the document
+   scrolls. Clip overflow without creating that container. */
+body.pix-nav-canonical-header, body.pf-has-frame{overflow-x:clip}
+
 body .pf-topbar .pix-nav-icon{
   margin:0;
   padding:0;
@@ -472,3 +476,20 @@ body .pf-topbar .pix-nav-icon{
 }
 :root:not([data-mb-marca]) body .pf-topbar .pix-nav-icon[aria-pressed]{background:rgba(0,255,65,.04);color:#00ff41;font-weight:inherit}
 :root:not([data-mb-marca]) body .pf-topbar .pix-nav-icon[aria-pressed]:hover{background:rgba(0,255,65,.12)}
+
+/* ── Portada sin Experto (Carlos, 15-oct-2026) ─────────────────────────────
+   En / y /en/ la píldora de idioma (ENG/ESP) ocupa el hueco de ⌘ y es un
+   .pix-nav-icon más: la caja (42×42 a zoom .9; 38×38 en ≤980px; zoom .81 con
+   data-admira-compact-control de suite/header.js) es la de ▤ Avanzado. Aquí
+   solo se pone el texto: sin ancho, alto ni relleno propios, para que la caja
+   no dependa de la palabra. Va DESPUÉS de la regla anterior, que resetea font. */
+body .pf-topbar .pix-nav-icon-lang{
+  box-sizing:border-box;
+  overflow:hidden;
+  white-space:nowrap;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-decoration:none;
+  color:inherit;
+}

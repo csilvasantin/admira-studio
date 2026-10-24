@@ -1170,10 +1170,14 @@
       const first = clips.find(c => c && c.audio_url) || clips[0] || {};
       if (first.audio_url) {
         try { setMusicCover(first.image_url || first.image_large_url || ''); } catch {}
+        const cards = await musicCardSupport();
+        const cardItem = {id:first.id || clipIds[0], type:'music', motor:'suno-web', title:first.title || titleHint || 'Admira Studio Music', url:first.audio_url, audioUrl:first.audio_url, mime:'audio/mpeg', thumbnail:first.image_large_url || first.image_url || '', duration:first.metadata?.duration, clipId:first.id || clipIds[0], tags:['pixeria-music'], prompt:fullPrompt.slice(0,200)};
+        musicCardItems.set(cardItem.id,cardItem);
         showPlayer(`
           <div class="player-card">
             <div class="player-head">▶ SUNO · listo · ${jobId}</div>
-            <audio controls src="${first.audio_url}" style="width:100%;margin:8px 0"></audio>
+            ${cards.cardHtml(cardItem,{lang:document.documentElement.lang==='en'?'en':'es'})}
+            ${publishBtnHTML(cardItem)}
             <pre class="player-body">langs: ${langLabel}
 clips: ${clipIds.join(', ')}
 title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
@@ -1188,6 +1192,16 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       stop(false);
       showPlayer(`<div class="player-card"><div class="player-head">▶ SUNO · ERROR</div><pre class="player-body">${String(e)}</pre></div>`);
     }
+  }
+
+  const musicCardItems = new Map();
+  let musicCardModule;
+  async function musicCardSupport() {
+    if (!musicCardModule) musicCardModule = import('/assets/music/cards.mjs?v=14.10.2026.r22.1928').then(m => {
+      m.bindMusicCards(document.getElementById('player') || document.body, id => musicCardItems.get(id));
+      return m;
+    });
+    return musicCardModule;
   }
 
   async function playSunoLocal(s, model) {
@@ -1267,6 +1281,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
           setMusicCover(ready.map(c => c.image_large_url || c.image_url).find(Boolean) || '');
           const briefTitle = deriveAssetTitle('musica', loadStore());
           const modelLabel = model.replace('chirp-', '');
+          const cards = await musicCardSupport();
           showPlayer(`
             <div class="player-card music-result-card">
               <div class="player-head music-result-head">
@@ -1294,13 +1309,9 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
                   clipId: c.id,
                   quality: 'best',
                 };
-                // Suno devuelve video_url (mp4 con cover estatico + audio embebido):
-                // lo preferimos porque al enviarlo a Pixer Feed lleva caratula sin
-                // depender del worker. Si solo hay audio_url, fallback a audio + img.
-                const media = c.video_url
-                  ? `<video controls src="${c.video_url}"${cover ? ` poster="${escAttr(cover)}"` : ''} data-pixer-title="${escAttr(cTitle)}"${cover ? ` data-pixer-cover="${escAttr(cover)}"` : ''}${c.audio_url ? ` data-pixer-audio="${escAttr(c.audio_url)}"` : ''}></video>`
-                  : `${cover ? `<img src="${escAttr(cover)}" alt="" class="music-result-cover">` : ''}
-                     <audio controls src="${c.audio_url}" data-pixer-title="${escAttr(cTitle)}"${cover ? ` data-pixer-cover="${escAttr(cover)}"` : ''}></audio>`;
+                const cardItem = {...pubMeta, id:c.id, duration:c.metadata?.duration || dur, audioUrl:c.audio_url || ''};
+                musicCardItems.set(cardItem.id, cardItem);
+                const media = cards.cardHtml(cardItem,{lang:document.documentElement.lang==='en'?'en':'es'});
                 return `
                 <article class="music-result-item">
                   <header>
@@ -3656,9 +3667,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       healthUrl: 'http://127.0.0.1:3777/healthz',
       bodyFor: (u, fmt) => ({ url: u, format: fmt }),
     };
-    // Orden de preferencia (Carlos, 18-oct-2026): el Mac Studio es el importador por defecto;
-    // el Mac Mini queda de respaldo (sobrecargado, a veces available:false). pickHealthyEndpoint()
-    // elige el primero cuyo /health responda sano. El MacBook Pro 16 ya no tiene servicio.
+    // Mac Studio primero; Mini y portátil conservan sus trabajos y sirven de respaldo.
     const admiraTubeStudio = {
       kind: 'admira-tube-studio',
       url: 'https://macstudio.tail48b61c.ts.net/admira/tube/download',
@@ -3673,7 +3682,16 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       jobBase: 'https://macmini.tail48b61c.ts.net/admira/tube',
       bodyFor: (u, fmt) => ({ url: u, format: fmt }),
     };
-    return isLocalOrigin ? [sunoLocal, admiraTubeStudio, admiraTube] : [admiraTubeStudio, admiraTube];
+    // Backup/failover: si el Mac Mini no responde al health-check, pickHealthyEndpoint()
+    // cae automáticamente a este nodo (MacBook Pro 16) expuesto por su propio Funnel.
+    const admiraTubeBackup = {
+      kind: 'admira-tube-backup',
+      url: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube/download',
+      healthUrl: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube/health',
+      jobBase: 'https://macbook-pro-16.tail48b61c.ts.net/admira/tube',
+      bodyFor: (u, fmt) => ({ url: u, format: fmt }),
+    };
+    return isLocalOrigin ? [sunoLocal, admiraTubeStudio, admiraTube, admiraTubeBackup] : [admiraTubeStudio, admiraTube, admiraTubeBackup];
   }
 
   function bindImportModal() {
@@ -3809,7 +3827,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
 
     // Plan B (fallback degradado): subir un archivo local directo al Stock.
     // El Stock (worker pixer-eleven en Cloudflare) está siempre encendido, así que
-    // esto funciona aunque el importador yt-dlp (Mac Studio / Mac Mini) esté dormido o apagado.
+    // esto funciona aunque el Mac Mini (importador yt-dlp) esté dormido o apagado.
     const localInput = document.createElement('input');
     localInput.type = 'file';
     localInput.accept = 'audio/*,video/*,image/*';
@@ -3822,9 +3840,9 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     localBtn.className = 'btn';
     localBtn.id = 'importLocalBtn';
     localBtn.textContent = '📂 Archivos locales → Stock';
-    localBtn.title = 'Sube uno o varios archivos de este dispositivo directo al Stock (no depende del importador)';
+    localBtn.title = 'Sube uno o varios archivos de este dispositivo directo al Stock (no depende del Mac Mini)';
     document.querySelector('#importModal .keys-actions')?.appendChild(localBtn);
-    localBtn.addEventListener('click', () => localInput.click());
+    localBtn.addEventListener('click', () => {if(window.StockLocalUpload){dlg.close();window.StockLocalUpload.open();}else localInput.click();});
     localInput.addEventListener('change', () => {
       const files = Array.from(localInput.files || []);
       if (files.length) publishLocalFiles(files);
@@ -3834,8 +3852,8 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     // Publica UN archivo del dispositivo directo al Stock, sin pasar por el Mac.
     // Devuelve {ok, id, error}; no navega (de eso se encarga el lote).
     async function publicarUnLocal(file, stat, prefijo) {
-      const mt = file.type || '';
-      const type = mt.startsWith('video') ? 'video' : mt.startsWith('image') ? 'image' : 'audio';
+      const {localMedia}=await import('/assets/stock-local-files.mjs');
+      const {mime:mt,type}=localMedia(file);
       const progress = importProgressStart(type === 'video' ? 'video' : 'audio');
       try {
         const sizeMB = (file.size / 1024 / 1024).toFixed(2);
@@ -3897,6 +3915,8 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       retryBtn.hidden = true;
       importInFlight = true;
       try {
+        const {validateLocalFiles}=await import('/assets/stock-local-files.mjs');
+        const invalid=validateLocalFiles(files);if(invalid){stat.textContent=invalid;return;}
         const total = files.length;
         const hechos = [];
         for (let i = 0; i < total; i++) {
@@ -3948,50 +3968,14 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     // el timeout del Funnel con descargas largas. Devuelve {blob, title}, o el
     // string 'fallback' si el server aún no tiene los endpoints nuevos (404).
     async function importViaJob(ep, url, fmt, progress, stat) {
-      const startR = await fetch(ep.jobBase + '/start', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url, format: fmt }),
-      });
-      // 404 (o cuerpo no-JSON) ⇒ el server no tiene los endpoints nuevos ⇒ al
-      // POST único de siempre. Pero un 400 con JSON es el server DICIENDO que no
-      // (host no permitido, post de Telegram sin media): repetirlo por la otra
-      // ruta solo hace esperar más para el mismo «no». Se corta aquí.
-      if (!startR.ok) {
-        if (startR.status === 404) return 'fallback';
-        const msg = await errorLegible(startR.clone ? startR.clone() : startR);
-        if (/^HTTP \d+: <|^HTTP \d+: $/.test(msg)) return 'fallback';   // HTML estático
-        throw new Error(msg);
-      }
-      let jobId;
-      try { jobId = (await startR.json()).jobId; } catch { return 'fallback'; }
-      if (!jobId) return 'fallback';
-      const tPoll = Date.now();
-      const MAX_MS = 6 * 60 * 1000;
-      let sourceDescription = '';
-      while (true) {
-        await new Promise(r => setTimeout(r, 1500));
-        if (Date.now() - tPoll > MAX_MS) throw new Error('timeout esperando al proxy (>6 min)');
-        let st;
-        try { st = await (await fetch(`${ep.jobBase}/status?id=${encodeURIComponent(jobId)}`, { cache: 'no-store' })).json(); }
-        catch { continue; } // un poll fallido no aborta; reintenta en el siguiente ciclo
-        if (st.state === 'running') {
-          const mb = (st.size || 0) / 1024 / 1024;
-          if (stat) stat.textContent = `// ${ep.kind} · descargando ${fmt}… ${mb.toFixed(1)} MB`;
-          progress?.update(st.size || 0, 0, (Date.now() - tPoll) / 1000);
-          continue;
-        }
-        if (st.state === 'done') { sourceDescription = typeof st.description === 'string' ? st.description.slice(0,4000) : ''; break; }
-        throw new Error(st.error || st.state || 'estado desconocido del proxy');
-      }
-      const getR = await fetch(`${ep.jobBase}/get?id=${encodeURIComponent(jobId)}`, { cache: 'no-store' });
-      if (!getR.ok) {
-        let err = ''; try { err = JSON.stringify(await getR.json()); } catch { err = await getR.text(); }
-        throw new Error(`get ${getR.status}: ${err.slice(0, 200)}`);
-      }
-      let title = ''; try { title = decodeURIComponent(getR.headers.get('X-Tube-Title') || ''); } catch {}
-      const { blob } = await fetchWithProgress(getR, (received, total, sec) => progress?.update(received, total, sec));
-      return { blob, title, description:sourceDescription };
+      const began = Date.now();
+      const {downloadWithFailover,IMPORT_NODES}=await import('/assets/import-failover.mjs?v=import-ha-20261018-16');
+      const selected=IMPORT_NODES.find(n=>n.base===ep.jobBase);
+      const nodes=selected?[selected,...IMPORT_NODES.filter(n=>n.id!==selected.id)]:IMPORT_NODES;
+      return downloadWithFailover({url,format:fmt,nodes,maxBytes:300*1024*1024,onProgress:state=>{
+        if(stat)stat.textContent=state.phase==='switching'?(ETIQ_EN?'// Continuing the import automatically…':'// Continuando la importación automáticamente…'):(ETIQ_EN?'// Importing media…':'// Importando contenido…')+(state.bytes?' '+(state.bytes/1048576).toFixed(1)+' MB':'');
+        progress?.update(state.bytes||0,state.total||0,(Date.now()-began)/1000);
+      }});
     }
 
     // Flujo de un solo POST (suno-local, o admira-tube antiguo como fallback).
@@ -4032,12 +4016,12 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
         const progress = importProgressStart(fmt);
         const t0 = Date.now();
         try {
-          // admira-tube: flujo asíncrono (start→status→get) que evita el timeout
-          // del Funnel. Si el server aún no tiene esos endpoints (404), cae al
-          // POST único de siempre. suno-local usa siempre el POST único.
+          // El relevo solo repite descargas. La subida y publicación quedan fuera.
+          // suno-local conserva el POST único de su API local.
           let out = ep.jobBase ? await importViaJob(ep, url, fmt, progress, stat) : 'fallback';
           if (out === 'fallback') out = await importOneShot(ep, url, fmt, progress);
           const blob = out.blob;
+          const actualKind = out.kind || ep.kind;
           const importedTitle = out.title || '';
           const sec = ((Date.now() - t0) / 1000).toFixed(1);
           const sizeMB = (blob.size / 1024 / 1024).toFixed(2);
@@ -4066,12 +4050,12 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
             player.hidden = false;
             player.innerHTML = `
               <div class="player-card">
-                <div class="player-head">📥 IMPORTADO · ${kind.toUpperCase()} · ${sizeMB} MB · ${sec}s · ${ep.kind}</div>
+                <div class="player-head">📥 IMPORTADO · ${kind.toUpperCase()} · ${sizeMB} MB · ${sec}s · ${actualKind}</div>
                 <${elTag} controls autoplay src="${blobUrl}" style="width:100%;${kind === 'video' ? 'max-height:55vh;' : ''}"></${elTag}>
                 <pre class="player-body">${url.replace(/</g, '&lt;')}</pre>
                 ${downloadBtnHTML(importMeta, 'Descargar')}
                 ${publishBtnHTML(importMeta)}
-                <small class="player-foot">// vía yt-dlp (${ep.kind}) · publicando en Stock automáticamente...</small>
+                <small class="player-foot">// vía yt-dlp (${actualKind}) · publicando en Stock automáticamente...</small>
               </div>`;
           }
           stat.textContent = `${prefijo}✓ Importado (${sizeMB} MB en ${sec}s) · subiendo a Stock…`;
@@ -4091,17 +4075,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
         } catch (e) {
           const msg = String(e && e.message || e);
           progress?.error(msg.slice(0, 80));
-          const isNetwork = /Failed to fetch|NetworkError|ERR_|load failed/i.test(msg);
-          if (isNetwork && fmt === 'video') {
-            stat.textContent = `${prefijo}ERROR: ${msg}\n`
-              + `// ${ep.kind} respondió al health-check → el proxy NO está caído.\n`
-              + `// Probable timeout del Funnel con la descarga de vídeo.\n`
-              + `// Reintenta (↻) o importa como AUDIO.`;
-          } else if (isNetwork) {
-            stat.textContent = `${prefijo}ERROR: ${msg}\n// La conexión con ${ep.kind} se cortó. Reintenta (↻).`;
-          } else {
-            stat.textContent = `${prefijo}${msg}`;
-          }
+          stat.textContent = `${prefijo}No se ha podido completar la importación. La URL queda preparada para reintentar.\n// ${msg}`;
           return { ok: false, error: msg };
         }
       }
@@ -4129,7 +4103,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
         // Pre-chequeo: ¿hay backend vivo? Evita esperar a un timeout largo.
         const ep = await pickHealthyEndpoint(stat);
         if (!ep) {
-          stat.textContent = `// El importador (Mac Studio / Mac Mini) está dormido o apagado ahora mismo.\n`
+          stat.textContent = `// Los importadores no responden ahora mismo.\n`
             + `// PLAN B: pulsa «📂 Archivo local → Stock» para subir un archivo\n`
             + `//   desde este dispositivo directo al Stock (funciona sin el Mac).\n`
             + `// O reintenta (↻) en unos segundos por si el Mac despierta.`;
@@ -4215,87 +4189,6 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
         setTimeout(() => { try { playImagenes(); } catch (e) { console.warn('[Admira Studio] consejo autoplay', e); } }, 500);
       }
     }
-  }
-
-
-  // ─── Cápsula Blinkist (Stock · Cafebrería) ───────────────────────
-  // Formulario simple en stock.html → POST /stock/publish type:capsula.
-  // Sin vídeo en este flujo: solo el texto; la composición 9:16 es aparte
-  // (tools/capsulas/capsula.sh). El worker puede pedir Grok Video solo si
-  // tiene ADMIRANEXT_INGEST_TOKEN (comportamiento previo del puente).
-  async function bindCapsulaForm() {
-    const form = document.getElementById('capsulaForm');
-    if (!form) return;
-    const { CONSEJEROS, TEMAS, buildCapsulaPayload } = await import('/assets/capsula-publicar.mjs');
-    const consEl = document.getElementById('cap-consejero');
-    const temaEl = document.getElementById('cap-tema');
-    if (consEl && !consEl.options.length) {
-      consEl.innerHTML = CONSEJEROS.map(c => `<option value="${c.id}">${c.label}</option>`).join('');
-    }
-    if (temaEl && !temaEl.options.length) {
-      temaEl.innerHTML = TEMAS.map(t => `<option value="${t.id}">${t.label}</option>`).join('');
-    }
-    const status = document.getElementById('cap-status');
-    const setStatus = (msg, ok) => {
-      if (!status) return;
-      status.textContent = msg || '';
-      status.dataset.ok = ok ? '1' : '0';
-    };
-    const toggle = document.getElementById('capsulaFormToggle');
-    const panel = document.getElementById('capsulaPanel');
-    if (toggle && panel) {
-      toggle.addEventListener('click', () => {
-        const open = panel.hasAttribute('hidden');
-        if (open) panel.removeAttribute('hidden'); else panel.setAttribute('hidden', '');
-        toggle.setAttribute('aria-expanded', String(open));
-      });
-    }
-    const typeFilter = document.getElementById('stockTypeFilter');
-    if (typeFilter && panel && toggle) {
-      const sync = () => {
-        if (typeFilter.value === 'capsula') {
-          panel.removeAttribute('hidden');
-          toggle.setAttribute('aria-expanded', 'true');
-        }
-      };
-      typeFilter.addEventListener('change', sync);
-      sync();
-    }
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = form.querySelector('[type="submit"]');
-      const raw = {
-        url: document.getElementById('cap-url')?.value,
-        libro: document.getElementById('cap-libro')?.value,
-        autor: document.getElementById('cap-autor')?.value,
-        tesis: document.getElementById('cap-tesis')?.value,
-        consejeroId: document.getElementById('cap-consejero')?.value,
-        tema: document.getElementById('cap-tema')?.value,
-        carbono: document.getElementById('cap-carbono')?.value,
-        silicio: document.getElementById('cap-silicio')?.value,
-        aplicacion: document.getElementById('cap-aplicacion')?.value,
-      };
-      const built = buildCapsulaPayload(raw);
-      if (!built.ok) {
-        setStatus('⚠ ' + built.errors.join(' · '), false);
-        showToast('Completa el formulario: ' + built.errors[0]);
-        return;
-      }
-      if (btn) { btn.disabled = true; btn.textContent = '⏳ Publicando…'; }
-      setStatus('Publicando cápsula de texto en Stock…', true);
-      const result = await publishToStock(built.payload, btn);
-      if (result && result.ok) {
-        setStatus('✅ En Stock · id ' + (result.id || '') + ' · Cafebrería la verá con tag blinkist (índice ~1–5 min). Vídeo 9:16: capsula.sh aparte.', true);
-        showToast('Cápsula publicada · ' + (result.id || 'ok'));
-        try {
-          const tf = document.getElementById('stockTypeFilter');
-          if (tf) { tf.value = 'capsula'; tf.dispatchEvent(new Event('change')); }
-        } catch (_) {}
-      } else {
-        setStatus('❌ ' + ((result && result.error) || 'falló la publicación'), false);
-        if (btn) { btn.disabled = false; btn.textContent = '📌 Publicar cápsula'; }
-      }
-    });
   }
 
 
@@ -4446,7 +4339,6 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     bindSettingsModal();
     renderMotorSelectors();
     renderMotorCatalog();
-    bindCapsulaForm();
     const form = document.getElementById('briefForm');
     if (form) {
       hydrate(form);

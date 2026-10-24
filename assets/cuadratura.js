@@ -16,6 +16,8 @@
    NO se guarda. Sí se recuerda el tamaño redimensionado (pixeria_pf_*_w / _h).
    Los paneles se SUPERPONEN: abrirlos no mueve ni redimensiona el contenido
    (Carlos, 3-oct-2026 · docs/shell-cuadratico.md).
+   La PORTADA (/ y /en/) no tiene modo Experto (Carlos, 15-oct-2026): en su
+   lugar va la píldora de idioma ENG/ESP, del mismo tamaño que los iconos.
    ══════════════════════════════════════════════════════════════════════════ */
 (function () {
   // ── Fuente ÚNICA de las secciones del raíl OPCIONES (mismo orden que la home) ──
@@ -43,10 +45,10 @@
 
   var PANELS = [
     { sel: '.rail-left', cls: 'pf-left-off', id: 'left',
-      title: 'Opciones · panel derecho',
+      title: 'Opciones · panel izquierdo',
       svg: '<rect class="frame" x="1" y="1" width="14" height="12" rx="1.5"/><rect class="panel" x="1.6" y="1.6" width="4.4" height="10.8" rx="1"/>' },
     { sel: '.rail-right', cls: 'pf-right-off', id: 'right',
-      title: 'Avanzado · panel izquierdo',
+      title: 'Avanzado · panel derecho',
       svg: '<rect class="frame" x="1" y="1" width="14" height="12" rx="1.5"/><rect class="panel" x="10" y="1.6" width="4.4" height="10.8" rx="1"/>' },
     { sel: '.rail-bottom', cls: 'pf-bottom-off', id: 'bottom',
       title: 'Experto · panel inferior',
@@ -148,11 +150,11 @@
       var move = function (e) {
         var root = document.documentElement;
         if (kind === 'left') {
-          var lw = clamp(window.innerWidth - e.clientX, 220, Math.min(560, window.innerWidth - 260));
+          var lw = clamp(e.clientX, 220, Math.min(560, window.innerWidth - 260));
           root.style.setProperty('--pf-left-w', lw + 'px');
           try { localStorage.setItem('pixeria_pf_left_w', String(Math.round(lw))); } catch (err) {}
         } else if (kind === 'right') {
-          var rw = clamp(e.clientX, 240, Math.min(600, window.innerWidth - 260));
+          var rw = clamp(window.innerWidth - e.clientX, 240, Math.min(600, window.innerWidth - 260));
           root.style.setProperty('--pf-right-w', rw + 'px');
           try { localStorage.setItem('pixeria_pf_right_w', String(Math.round(rw))); } catch (err2) {}
         } else {
@@ -186,13 +188,13 @@
       if (kind === 'left' && (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight')) {
         ev.preventDefault();
         current = parseInt(getComputedStyle(root).getPropertyValue('--pf-left-w'), 10) || 300;
-        current = clamp(current + (ev.key === 'ArrowLeft' ? delta : -delta), 220, 520);
+        current = clamp(current + (ev.key === 'ArrowRight' ? delta : -delta), 220, 520);
         root.style.setProperty('--pf-left-w', current + 'px');
         try { localStorage.setItem('pixeria_pf_left_w', String(current)); } catch (e) {}
       } else if (kind === 'right' && (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight')) {
         ev.preventDefault();
         current = parseInt(getComputedStyle(root).getPropertyValue('--pf-right-w'), 10) || 330;
-        current = clamp(current + (ev.key === 'ArrowRight' ? delta : -delta), 240, 560);
+        current = clamp(current + (ev.key === 'ArrowLeft' ? delta : -delta), 240, 560);
         root.style.setProperty('--pf-right-w', current + 'px');
         try { localStorage.setItem('pixeria_pf_right_w', String(current)); } catch (e2) {}
       } else if (kind === 'bottom' && (ev.key === 'ArrowUp' || ev.key === 'ArrowDown')) {
@@ -215,7 +217,7 @@
 
   // ── Toggles (look SCUMM, tematizados en cuadratura.css) ───────────────────
   function makeToggle(p) {
-    if (document.documentElement.lang.indexOf('en') === 0) p.title = p.id === 'left' ? 'Options · right panel' : p.id === 'right' ? 'Advanced · left panel' : 'Expert · web console';
+    if (document.documentElement.lang.indexOf('en') === 0) p.title = p.id === 'left' ? 'Options · left panel' : p.id === 'right' ? 'Advanced · right panel' : 'Expert · web console';
     if (!document.querySelector(p.sel)) return null;
     var on = !document.body.classList.contains(p.cls);
     var b = document.createElement('button');
@@ -256,10 +258,18 @@
     return document.querySelector('.language-switcher a, .topnav-actions .language-switcher a, .mobile-language-switcher a');
   }
 
+  // Portada (/ y /en/, con o sin index.html). Es la única página sin modo Experto.
+  function isHomePath() {
+    return /^\/(en\/?)?(index\.html)?$/.test(location.pathname);
+  }
+
   function buildTopbar() {
     if (document.querySelector('.pf-topbar')) return;
+    var home = isHomePath();
     var leftToggle = makeToggle(PANELS[0]);
     var rightToggle = makeToggle(PANELS[1]);
+    // ⌘ se crea también en la portada: makeToggle devuelve null sin .rail-bottom y entonces
+    // no habría barra. Allí no se monta (ver más abajo).
     var bottomToggle = makeToggle(PANELS[2]);
     if (!leftToggle || !rightToggle || !bottomToggle) return;
 
@@ -274,8 +284,9 @@
     var left = document.createElement('div');
     left.className = 'pf-topbar-left';
     // Barra de 4 bandas (Carlos 29-sep-2026): Opciones a la izquierda y, al
-    // fondo a la derecha, Avanzado justo antes de Experto. Sin la «P» de logo
-    // y sin Contacto en la barra (el contacto sigue en el pie de la página).
+    // fondo a la derecha, Avanzado justo antes de Experto (en la portada, antes
+    // del idioma). Sin la «P» de logo y sin Contacto en la barra (el contacto
+    // sigue en el pie de la página).
     left.appendChild(leftToggle);
 
     var brand = document.createElement('a');
@@ -299,16 +310,31 @@
     var right = document.createElement('div');
     right.className = 'pf-topbar-right';
     var lang = pageLanguageLink();
+    var langLink = null;
     if (lang) {
-      var langLink = document.createElement('a');
+      langLink = document.createElement('a');
       langLink.className = 'pf-topbar-lang';
       langLink.href = lang.getAttribute('href') || lang.href;
       langLink.textContent = lang.textContent.trim() || 'ENG';
       langLink.setAttribute('aria-label', lang.getAttribute('aria-label') || 'Cambiar idioma');
-      right.appendChild(langLink);
     }
-    right.appendChild(rightToggle);
-    right.appendChild(bottomToggle);
+    if (home) {
+      // Portada sin modo Experto (Carlos, 15-oct-2026): en el hueco de ⌘, a la derecha de
+      // ▤ Avanzado, va la píldora de idioma con la MISMA caja que los iconos: ENG en la
+      // española, ESP en /en/. pix-nav-icon le da el tamaño (site-nav.js) y
+      // data-admira-compact-control, la misma escala que suite/header.js pone a sus vecinos.
+      right.appendChild(rightToggle);
+      if (langLink) {
+        langLink.classList.add('pix-nav-icon', 'pix-nav-icon-lang');
+        langLink.setAttribute('data-admira-compact-control', '');
+        langLink.title = langLink.getAttribute('aria-label');
+        right.appendChild(langLink);
+      }
+    } else {
+      if (langLink) right.appendChild(langLink);
+      right.appendChild(rightToggle);
+      right.appendChild(bottomToggle);
+    }
 
     bar.appendChild(left);
     bar.appendChild(nav);

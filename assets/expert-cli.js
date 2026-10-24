@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   // ─── Piezas puras (también se prueban en node: test/marca-blanca.test.cjs) ───
-  var COMMANDS = ['help', 'creador', 'creator', 'campana', 'campaign', 'demo', 'clear', 'echo', 'date', 'status', 'version', 'history', 'open', 'marca', 'idioma', 'language', 'languague', 'avatar', 'avataron', 'avataroff', 'avatardigital', 'digitalavatar', 'admirito'];
+  var COMMANDS = ['help', 'adaptar', 'recrear', 'importar', 'import', 'creativo', 'creative', 'crear', 'create', 'creador', 'creator', 'campana', 'campaign', 'demo', 'clear', 'echo', 'date', 'status', 'version', 'history', 'open', 'marca', 'idioma', 'language', 'languague', 'avatar', 'avataron', 'avataroff', 'avatardigital', 'digitalavatar', 'admirito'];
   var MARCA_VERB = /^\/?(?:marca|brand|marcablanca)$/i;
   // Semilla del catálogo de admiranext.com/marcablanca: vale para el Tab sin red. Con la
   // marca blanca cargada se usa la lista real (AdmiraMarca.conocidas()).
@@ -27,7 +27,7 @@
     if (!a) return {value: text, options: []};
     var verb = a[2].toLowerCase(), part = a[3].toLowerCase();
     var pool = MARCA_VERB.test(verb) ? (brandIds && brandIds.length ? brandIds : BRAND_SEED).concat(['off'])
-      : (verb === 'open' || verb === 'abrir') ? (sections || []) : [];
+      : (verb === 'open' || verb === 'abrir') ? (sections || []) : verb === 'crear' ? ['contenido'] : verb === 'create' ? ['content'] : [];
     var options = pool.filter(function (o, i) { return o.indexOf(part) === 0 && pool.indexOf(o) === i; });
     if (!options.length) return {value: text, options: []};
     if (options.length === 1) return {value: a[1] + options[0], options: options};
@@ -97,6 +97,10 @@
   Array.from(panel.children).forEach(function (child) {
     if (!child.matches('.rail-hd,.pf-resize-handle') && center) center.appendChild(child);
   });
+  // Portada (/ y /en/) sin modo Experto (Carlos, 15-oct-2026): solo se rescata su contenido
+  // (arriba). Sin consola ni franja vacía, y sin leer ax-experto-abierto: abrir ⌘ en una
+  // interior no lo reabre aquí. Las demás páginas siguen igual.
+  if (/^\/(en\/?)?(index\.html)?$/.test(location.pathname)) { panel.remove(); return; }
   panel.replaceChildren();
   panel.classList.add('pf-cli');
   panel.setAttribute('aria-label', t('Consola web experta', 'Expert web console'));
@@ -159,7 +163,7 @@
     grip.setAttribute('aria-valuemax', String(maxHeight()));
     grip.setAttribute('aria-valuenow', String(height));
   }
-  // Modo Experto = mostrar el panel completo u ocultarlo del todo (Carlos, 5-oct-2026). Con la piel
+  // Modo Experto = mostrar una línea mínima u ocultarlo del todo (Carlos, 14-oct-2026). Con la piel
   // anclada de la suite (suite/experto.js, data-min="hide") manda su estado (.ax-min) y el panel nativo
   // de la página (raíl, cuadrante o capa) lo sigue; sin piel, manda el nativo. Se recuerda en la pestaña.
   var OPEN_KEY = 'ax-experto-abierto';
@@ -177,14 +181,16 @@
     else if (!docked() && open !== wasOpen) { try { sessionStorage.setItem(OPEN_KEY, open ? '1' : '0'); } catch (_) {} }
     if (panel.dataset.cliOpen !== String(open)) panel.dataset.cliOpen = String(open);
     document.querySelectorAll('.pix-nav-icon-expert').forEach(function (b) { if (b.getAttribute('aria-expanded') !== String(open)) b.setAttribute('aria-expanded', String(open)); });
-    // Al abrirse, desplegado: ficha + registro + orden (nunca la barra mínima).
-    if (open && !wasOpen) resize(document.documentElement.hasAttribute('data-ax-experto') ? Math.max(expanded, 300) : expanded, false);
+    // Al abrirse, una línea escribible. Con la piel compartida, su altura manda.
+    if(open&&!wasOpen&&!docked())resize(MIN,false);
+    if(docked()&&window.AdmiraExperto&&window.AdmiraExperto.height){height=window.AdmiraExperto.height();log.hidden=false;}
     wasOpen = open;
     if (document.body.classList.contains('pf-cli-open') !== open) document.body.classList.toggle('pf-cli-open', open);
     var vv = window.visualViewport;
     document.documentElement.style.setProperty('--pf-cli-keyboard', (vv ? Math.max(0, innerHeight - vv.height - vv.offsetTop) : 0) + 'px');
-    resize(height, false);
+    if(!docked())resize(height, false);
   }
+  window.addEventListener('admira:assistant-help',function(){setNative(true);if(docked()&&window.AdmiraExperto){window.AdmiraExperto.open();window.AdmiraExperto.resize(Math.max(300,expanded));}resize(Math.max(300,expanded),false);log.hidden=false;});
   function fold() { resize(height > MIN ? MIN : expanded, false); }
   toggle.addEventListener('click', fold);
   grip.addEventListener('dblclick', fold);
@@ -357,6 +363,13 @@
   function applyExpertLang(next) {
     var l = next === 'en' ? 'en' : 'es';
     try { localStorage.setItem(LANG_KEY, l); } catch (_) {}
+    // The explicit URL preference must follow the control too, including
+    // examples that change language in place instead of reloading a draft.
+    try {
+      var query = new URLSearchParams(location.search);
+      query.set('lang', l);
+      history.replaceState(history.state, '', location.pathname + '?' + query.toString() + location.hash);
+    } catch (_) {}
     document.documentElement.lang = l;
     // La suite (si está) aplica el idioma y puede navegar ella misma, a la misma URL que calculamos aquí.
     try { if (typeof window.AdmiraSetLanguage === 'function') window.AdmiraSetLanguage(l); } catch (_) {}
@@ -370,18 +383,28 @@
     return l;
   }
   function executeAction(command) {
-    var name=command.name,arg=command.args;en=document.documentElement.lang.indexOf('en')===0;
+    var name=command.name,arg=command.args;if(['creativo','creative','importar','import','adaptar','recrear'].includes(name)&&command.raw)arg=command.raw.replace(/^\/?\S+\s*/, '');en=document.documentElement.lang.indexOf('en')===0;
     if (MARCA_VERB.test(name)) {
       if (!marcaCliente(arg)) marca().then(function (M) { return runMarca(arg, M, en, write); });
       return;
     }
     switch (name) {
+      // /crear and /create are reserved and dispatched only by AdmiraExperto.exec.
+
+      case 'creativo': case 'creative': case 'importar': case 'import': case 'adaptar': case 'recrear': {
+        import('/assets/creativo-launcher.mjs?v=creativo-20261018-16').then(async function(m){if(name==='creativo'||name==='creative'){const h=await import('/assets/creativo-help.mjs?v=creativo-20261018-16');if(h.isCreativeHelp(arg))write(h.creativeHelp(en?'en':'es').commands.map(x=>x.command+' — '+x.description).join('\n'));}write(m.openCreative(name==='importar'||name==='import'?'/importar '+arg:name==='adaptar'||name==='recrear'?'/'+name+' '+arg:arg,en?'en':'es'));}).catch(function(){write(t('No se pudo abrir el Creativo.','Could not open El Creativo.'));});break;
+      }
       case 'creador': case 'creator': case 'campana': case 'campaign': location.assign((en ? '/en/creador/' : '/creador/') + '?lang=' + (en ? 'en' : 'es')); break;
-      case 'demo': if(/^(?:creador|creator)(?:\s|$)/i.test(arg) || (window.CreatorDemo?.active && /^(?:pausa|pause|reanudar|resume|siguiente|next|estado|status|stop|off)$/.test(arg))){if(window.CreatorDemo)Promise.resolve(window.CreatorDemo.run(arg.replace(/^(?:creador|creator)\s*/i,''))).then(write);else location.assign((en?'/en/creador/':'/creador/')+'?demo=creador&lang='+(en?'en':'es')+(/(?:^|\s)(todo|full)$/.test(arg)?'&mode=full&intent=full':''));break;} if(/^(?:sneakers?|next-step|nextstep)(?:\s|$)/i.test(arg)||(!arg&&/\/creador(?:\/|$)|\/campanas\/next-step/.test(location.pathname))){var demoArgs=arg.replace(/^(?:sneakers?|next-step|nextstep)\s*/i,'');if(window.NextStepDemo)write(window.NextStepDemo.run(demoArgs));else location.assign('/campanas/next-step/?lang='+(en?'en':'es'));break;} import('/assets/taza-demo.mjs?v=1').then(function(m){write(m.runTazaDemo(arg,en?'en':'es'));}).catch(function(){write(t('No se pudo cargar la cámara.','Could not load camera.'));});break;
+      case 'demo': if (/^(?:capsula|cápsula|capsule)(?:\s|$)/i.test(arg)) { import('/assets/capsula-good.mjs').then(function(m){return m.runKnowledgeDemo(arg,en?'en':'es');}).then(write).catch(function(e){write(e.message);}); break; } if(/^(?:creador|creator)(?:\s|$)/i.test(arg) || (window.CreatorDemo?.active && /^(?:pausa|pause|reanudar|resume|siguiente|next|estado|status|stop|off)$/.test(arg))){if(window.CreatorDemo)Promise.resolve(window.CreatorDemo.run(arg.replace(/^(?:creador|creator)\s*/i,''))).then(write);else location.assign((en?'/en/creador/':'/creador/')+'?demo=creador&lang='+(en?'en':'es')+(/(?:^|\s)(todo|full)$/.test(arg)?'&mode=full&intent=full':''));break;} if(/^(?:sneakers?|next-step|nextstep)(?:\s|$)/i.test(arg)||(!arg&&/\/creador(?:\/|$)|\/campanas\/next-step/.test(location.pathname))){var demoArgs=arg.replace(/^(?:sneakers?|next-step|nextstep)\s*/i,'');if(window.NextStepDemo)write(window.NextStepDemo.run(demoArgs));else location.assign('/campanas/next-step/?lang='+(en?'en':'es'));break;} import('/assets/taza-demo.mjs?v=1').then(function(m){write(m.runTazaDemo(arg,en?'en':'es'));}).catch(function(){write(t('No se pudo cargar la cámara.','Could not load camera.'));});break;
       case 'help': case 'ayuda':
+        write(t('/admirito creativo — Admirito Creativo. En su ventana: crear locución "texto" chica esp · crear música "letra" chico eng funk. Atributos en Detalle. /adaptar imagen|video horizontal|vertical · /recrear imagen|video horizontal|vertical.','/admirito creativo — Admirito Creative. In its window: create voice "text" female eng · create music "lyrics" male eng funk. Attributes in Detail.'));
+        write(t('/crear cartela tintaelectronica [brief] — 4 imágenes IA y 4 cartelas verticales 3:4 para Diagonal · Samsung EM13DX · 1200×1600; revisión, Stock y playlist de 5 minutos.','/create poster eink [brief] — 4 AI images and 4 portrait 3:4 Diagonal posters · Samsung EM13DX · 1200×1600; review, Stock and 5-minute playlist.'));
+        write(t('/crear contenido [brief] — póster / etiqueta digital PNG + pantalla vertical y horizontal MP4; generación IA explícita, revisión y Stock. Añade anamórfico para solicitar geometría y punto de observación.','/create content [brief] — digital label PNG poster + portrait and landscape MP4 screens; explicit AI generation, review and Stock. Add anamorphic to request geometry and viewing point.'));
         write(t('/creador · /campana — Creador: campaña desde cero; ejemplo Sneakers Store; editar elementos → dirección → instalación → revisar/aprobar → exportar; guía /docs/campanas-instalacion.md.','/creator · /campaign — Creator: campaign from scratch; Sneakers Store example; edit elements → direction → installation → review/approve → export; guide /docs/campanas-instalacion.md.'));
         write(t('/demo creador todo — imagen y vídeo IA nuevos hasta el gemelo 360; sesión y crédito del proveedor. /demo creador — campaña nueva para Sneaker Xtore: brief → concepto → creatividades → adaptación → gemelo 360/3D. nueva · pausa · reanudar · siguiente · estado · stop; historial demo separado.','/demo creator full — new AI image and video into the 360 twin; session and provider credit. /demo creator — new Sneaker Xtore campaign: brief → concept → creatives → adaptation → 360/3D twin. new · pause · resume · next · status · stop; separate demo history.'));
         write(t('/demo sneakers — NEXT STEP: campaña de Sneaker Store; en Creador también /demo. pausa · reiniciar · recorrer · parar.','/demo sneakers — NEXT STEP: Sneaker Store campaign; in Creator also /demo. pause · restart · tour · stop.'));
+        write(t('/demo capsula conocimiento good [es|en] — vídeo vertical de 30 s; /demo capsula cerrar.', '/demo capsule knowledge good [es|en] — 30-second vertical video; /demo capsule close.'));
+        write(t('/demo capsula musical good [es|en] — cápsula musical vertical de 30 s: el Disco de Oro de las Voyager.', '/demo capsule musical good [es|en] — 30-second vertical musical capsule: the Voyager Golden Record.'));
         write(t('/demo taza — cámara en una esquina; /demo taza cerrar — cerrar cámara.','/demo taza — corner camera; /demo taza close — close camera.'));
         write(t('Adaptador Altadis: open adapter → contenido → Ver en gemelo digital en cada tarjeta (Best isométrico; Formato con Anterior/Siguiente y Recorrer formatos cada 8 s (manual, parar al interactuar/cerrar); Calidad Best/Better; Referencia Automática por formato o cinco familias + esquina; Estanco OSM independiente; Planta/De frente; Punto de observación con altura/distancia/lateral; Esc) → formato/estanco → Generar fondo IA → Aplicar demo / Visitar demo (junto a Aplicar, formato y estanco seleccionados, reproduce contenido) → Guardar formatos y aplicaciones. Guía: /docs/altadis-ia-estancos.md\nComandos en este navegador:', 'Altadis adapter: open adapter → content → View in digital twin on each card (Best isometric; Format with Previous/Next and Run format tour every 8 s (manual, stops on interaction/close); Quality Best/Better; Reference Automatic per format or five families + corner; independent OSM Shop; Floor/front; Observation point with height/distance/lateral; Esc) → format/shop → Generate AI background → Apply shop demo / Visit demo (beside Apply, selected format and shop, plays content) → Save formats and placements. Guide: /docs/altadis-ia-estancos.md\nCommands in this browser:') + '\nhelp · clear · echo <text> · date · status · version · history\nopen <home|audio|music|images|video|creator|adapter|stock|assets|docs|radar>\nidioma [/language] [ESP|ENG] — ' + t('alterna o fija el idioma (también idiomaESP)', 'toggle or set language (also idiomaESP)') + '\n' +
           t('/marca [marca] — Marca blanca del catálogo de admiranext.com/marcablanca: /marca <id> viste la web con esa marca, /marca off vuelve a Admira, /marca sola dice cuál está activa y lista las disponibles, /marca <web> abre el analizador en otra pestaña. Alias: /brand.',
@@ -418,10 +441,10 @@
     }
   }
   function connectCommands(engine) {
-    var actions=['marca','brand','marcablanca','creador','creator','campana','campaign','echo','date','fecha','history','historial','open','abrir'];
+    var actions=['adaptar','recrear','importar','import','creativo','creative','crear','create','marca','brand','marcablanca','creador','creator','campana','campaign','echo','date','fecha','history','historial','open','abrir'];
     engine.registerAdapter({id:'studio',onCommand:function(command){history.push(command);if(history.length>100)history.shift();cursor=history.length;draft='';},
-      verbs:actions.map(function(name){return {name:name,desc:[name,name],run:function(args,log,command){return executeAction(command);}};}),
-      demos:['taza','creador','creator','sneakers','sneaker','next-step','nextstep','pausa','pause','reanudar','resume','siguiente','next','estado','status','stop','off',''].map(function(name){return {name:name,when:function(){return name?(!/^(pausa|pause|reanudar|resume|siguiente|next|estado|status|stop|off)$/.test(name)||!!window.CreatorDemo?.active):/\/creador(?:\/|$)|\/campanas\/next-step/.test(location.pathname);},run:function(args){return executeAction({name:'demo',args:(name?name+' ':'')+args.join(' ')});}};})});
+      verbs:actions.map(function(name){return {name:name,desc:name==='creativo'||name==='creative'?['Admirito Creativo: locución, música e importación','Admirito Creative: voice-over, music and import']:[name,name],run:function(args,log,command){return executeAction(command);}};}),
+      demos:['capsula','capsule','taza','creador','creator','sneakers','sneaker','next-step','nextstep','pausa','pause','reanudar','resume','siguiente','next','estado','status','stop','off',''].map(function(name){return {name:name,when:function(){return name?(!/^(pausa|pause|reanudar|resume|siguiente|next|estado|status|stop|off)$/.test(name)||!!window.CreatorDemo?.active):/\/creador(?:\/|$)|\/campanas\/next-step/.test(location.pathname);},run:function(args){return executeAction({name:'demo',args:(name?name+' ':'')+args.join(' ')});}};})});
     COMMANDS=engine.list().flatMap(function(action){return [action.name].concat(action.alias || []);});
   }
   if(window.AdmiraExperto)connectCommands(window.AdmiraExperto);else(window.AdmiraCommandAdapters || (window.AdmiraCommandAdapters=[])).push(connectCommands);
@@ -440,7 +463,7 @@
       if (!c.options.length) return;
       ev.preventDefault();
       input.value = c.value;
-      if (c.options.length > 1) { if (height === MIN) resize(expanded, false); write(c.options.join('  ')); }
+      if (c.options.length > 1) { if (height === MIN&&!docked()) resize(expanded, false); write(c.options.join('  ')); }
       // Con /marca se trae el catálogo real para el siguiente Tab (solo al usar /marca).
       if (/^\s*\/?(?:marca|brand|marcablanca)\s/i.test(input.value)) marca().then(function (M) { if (M) M.listar().catch(function () {}); });
       return;

@@ -1,0 +1,23 @@
+.music-card-tools{width:100%;min-width:0;box-sizing:border-box;color:var(--text,#e7efe8)}
+.music-cartela{width:100%;display:grid;place-items:center;background:#071615;overflow:hidden}
+.music-cartela>svg{display:block;width:100%;height:auto;max-height:600px}
+.music-card-actions{display:flex;flex-wrap:wrap;gap:6px;padding:10px;background:#09241b}
+.music-card-actions button{font:inherit;font-size:12px;padding:8px 10px;border:1px solid #729e7b;border-radius:7px;background:#0a281e;color:#eff5e9;cursor:pointer;min-height:36px}
+.music-card-actions button[aria-pressed=true]{background:#c9dfac;color:#10251b}
+.music-card-actions button:disabled{opacity:.5;cursor:wait}
+.music-card-tools audio{width:100%;display:block;padding:5px;box-sizing:border-box}
+.music-card-status{margin:0;padding:0 10px;font-size:12px;min-height:0;background:#09241b;overflow-wrap:anywhere}
+.music-card-status:not(:empty){padding:8px 10px}
+.stock-card-media:has(.music-card-tools){height:auto;min-height:0;aspect-ratio:auto;overflow:visible;display:block}
+.stock-card-media .music-cartela>svg{position:static!important;object-fit:contain!important}
+#stockLightboxInner:has(.music-card-tools){display:block;min-width:0}
+#stockLightboxInner .music-card-tools{width:min(100%,1100px);margin:auto}
+/* The Stock list's fixed thumbnail ratio must not clip the format/export controls. */
+.music-card-tools{padding:0;margin:0;position:relative;display:block}
+.stock-grid.view-list .stock-card-media:has(.music-card-tools){aspect-ratio:auto;height:auto;overflow:hidden}
+.stock-card-media .music-card-tools audio{position:static;inset:auto;height:48px;background:transparent}
+.music-card-tools[data-music-format=portrait] .music-cartela>svg{width:100%;height:auto;max-height:600px}
+#stockLightboxInner:has(.music-card-tools){overflow:auto}
+#stockLightboxInner .music-cartela>svg{max-height:min(50vh,520px)}
+/* Tall portrait artwork must not stretch the metadata grid or its tag pills. */
+.stock-grid.view-list .stock-card:has(.music-card-tools) .stock-card-body{align-content:start}

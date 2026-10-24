@@ -25,6 +25,7 @@
  * admira.studio (app.js), así que funciona igual en admira.studio, en admira.studio y en los previews.
  */
 import {MOTORES, STAGED_KEY, tipoMimeOk, stockBase, cabeceras, error, respuesta} from '../_stock-proxy.js';
+import {MAX_LOCAL_BYTES} from '../../assets/stock-local-files.mjs';
 
 // Tope de la ruta = el del Worker (STOCK_STAGED_MAX, 2 GB): el Stock de admira.studio ya subía episodios
 // de ese tamaño. Cada cliente pone el suyo (el Adaptador y su caja 2, 500 MB: MAX_STOCK_BYTES).
@@ -56,7 +57,8 @@ async function start(request, env) {
   if (!MOTORES.includes(body.motor) || !tipoMimeOk(body.type, body.mime)) return error(400, 'solo-adaptaciones');
   const size = body.size;
   if (!Number.isSafeInteger(size) || size <= 0) return error(400, 'bad-size');
-  if (size > MAX_SIZE) return error(413, 'too-big', {max: MAX_SIZE});
+  const max=body.motor==='local'?MAX_LOCAL_BYTES:MAX_SIZE;
+  if (size > max) return error(413, 'too-big', {max});
   return reenviarJSON(env, '/stock/upload/init', {mime: body.mime, size});
 }
 
