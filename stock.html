@@ -459,11 +459,17 @@
           <button type="button" class="stock-pager-btn" data-page="last" title="Última página" aria-label="Última página">»</button>
         </div>
       </nav>
-      <div id="stockSavedSearchControls" class="stock-saved-search-controls"></div>
-      <div id="stockStatus" class="stock-status" role="status" aria-live="polite"></div>
     </section>
 
     <div class="stock-order-head" id="stockSortBar" role="group" aria-label="Ordenar contenidos multimedia">
+      <div class="stock-process-dock" id="stockProcessDock" hidden>
+        <span class="stock-process-kind" data-process-kind>ESTADO</span>
+        <span id="stockStatus" class="stock-status" role="status" aria-live="polite"></span>
+        <span class="stock-process-percent" data-process-percent aria-hidden="true"></span>
+        <span class="stock-process-track" data-process-track role="progressbar" aria-valuemin="0" aria-valuemax="100" hidden>
+          <span class="stock-process-fill" data-process-fill></span>
+        </span>
+      </div>
       <span class="stock-order-title">Ordenar contenidos</span>
       <button type="button" class="stock-sort-th" data-key="name">Nombre <span class="stock-sort-arrow">⇅</span></button>
       <button type="button" class="stock-sort-th" data-key="date">Fecha <span class="stock-sort-arrow">⇅</span></button>
@@ -753,7 +759,7 @@
   import {isXpace, blendFor, xpacePoster} from "./assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "./assets/furniture/catalog.mjs";
   import {readNavigation,normalizeNavigation,navigationUrl,saveNavigation} from "/assets/stock-navigation-state.mjs";
-  import {mountSavedSearches} from "/assets/stock-saved-searches.mjs";
+  import {mountStockProcessDock} from "/assets/stock-process-dock.mjs?v=20261024-1";
   (function () {
     const grid = document.getElementById('stockGrid');
     const status = document.getElementById('stockStatus');
@@ -766,6 +772,12 @@
     const musicPreview=it=>cardHtml(it,{format:musicFormats.get(it.id)||(['landscape','portrait'].includes(filters.format)?filters.format:'landscape'),lang:document.documentElement.lang==='en'?'en':'es'});
     const motorFilter = document.getElementById('stockMotorFilter');
     const sortBar = document.getElementById('stockSortBar');
+    mountStockProcessDock({
+      dock:document.getElementById('stockProcessDock'),status,
+      importStatus:document.getElementById('importStatus'),
+      importFill:document.getElementById('importProgressFill'),
+      language:document.documentElement.lang==='en'?'en':'es'
+    });
     const lightbox = document.getElementById('stockLightbox');
     const lightboxInner = document.getElementById('stockLightboxInner');
     const lightboxMeta = document.getElementById('stockLightboxMeta');
@@ -829,7 +841,6 @@
     let sortMode = initialNavigation.sort;
     let pageSize = initialNavigation.pageSize; // 0 = mostrar todos
     let currentPage = initialNavigation.page, requestedPage = currentPage, catalogLoaded = false;
-    let savedSearchControls;
     const pagers = Array.from(document.querySelectorAll('.stock-pager'));
     const pageSizeSels = Array.from(document.querySelectorAll('.stock-page-size'));
     function navigationState() {
@@ -839,7 +850,6 @@
       const state = navigationState();
       try { history.replaceState(history.state, '', navigationUrl(location.href,state)); } catch {}
       saveNavigation(navigationStorage,location.href,state);
-      savedSearchControls?.refresh();
     }
     function restoreStockNavigation(value) {
       const state = normalizeNavigation(value), wasCatalog = filters.type === 'catalogo';
@@ -2398,24 +2408,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     })));
 
-    const typeNames = {
-      '':['Todos los tipos','All types'],video:['Vídeo','Video'],image:['Imagen','Image'],
-      audio:['Audio','Audio'],locucion:['Megafonía','PA audio'],music:['Música','Music'],
-      'twin-npc':['Twin NPCs','Twin NPCs'],'digital-twin':['Digital Twins','Digital Twins'],
-      xpaces:['Xpaces','Xpaces'],catalogo:['Catálogos','Catalogs'],animation:['Animaciones','Animations'],
-      tiktok:['TikToks','TikToks'],furni:['Mobiliario','Furniture'],capsula:['Cápsulas','Capsules'],
-      fallidos:['Importaciones fallidas','Failed imports']
-    };
-    const formatNames = {'':['Todos los formatos','All formats'],landscape:['Horizontal','Horizontal'],
-      portrait:['Vertical','Vertical'],square:['Cuadrado','Square'],unknown:['Sin formato confirmado','Unconfirmed format'],
-      anamorphic:['Anamórfico','Anamorphic']};
-    const localized = (labels,key) => labels[key]?.[language==='en'?1:0] || String(key).replace(/^custom:/,'');
-    savedSearchControls = mountSavedSearches({
-      element:document.getElementById('stockSavedSearchControls'),language,
-      getSearch:()=>({q:filters.q,type:filters.type,format:filters.format}),
-      applySearch:search=>restoreStockNavigation({...navigationState(),...search,origen:'',motor:'',tags:[],tagMode:'or',page:1}),
-      typeLabel:type=>localized(typeNames,type),formatLabel:format=>localized(formatNames,format)
-    });
     document.getElementById('stockClearFilters').addEventListener('click',clearStockFilters);
     renderActiveTagBanner();
 

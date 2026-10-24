@@ -1,22 +1,22 @@
 {
-  "version": "v.24.10.2026.r10.21:48",
-  "deployedAt": "2026-10-24T21:48:44+02:00",
+  "version": "v.24.10.2026.r11.21:57",
+  "deployedAt": "2026-10-24T21:57:02+02:00",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
   "machine": "Codex Desktop",
   "signature": "Codex · Codex Desktop",
-  "git": "cd188184162dfad1a12433a4cca3e0df971ce74f",
-  "gitFull": "cd188184162dfad1a12433a4cca3e0df971ce74f",
-  "gitShort": "cd18818",
+  "git": "428dbc6756f9eef8a0f681cd3858e82cd4d40eef",
+  "gitFull": "428dbc6756f9eef8a0f681cd3858e82cd4d40eef",
+  "gitShort": "428dbc6",
   "dirty": false,
   "novedades": [
-    "Stock · Cápsulas: #traducir/#translate (y alias) ya generan solos los subtítulos: transcripción y traducción con Workers AI (Whisper + Llama), quemado en el navegador y copia guardada con subtitulado-xx + par- (máx. 3 min).",
-    "Stock · Etiquetas: las que hacen algo (traducir, cápsula, pilares, clasificar) se ven en negrita con explicación al pasar el ratón; las marcas automáticas (par-, formato-alterno, subtitulado-) en cursiva.",
-    "AdmiraStudioImporter: nueva extensión Chrome con botón en YouTube, panel lateral, vídeo/audio, etiquetas y handoff automático al Stock, sin pasar por Telegram."
+    "Stock · Barra compacta: se elimina Guardar búsqueda y la franja de orden integra el estado del importador, cápsulas y subtítulos con progreso visual y porcentaje.",
+    "AdmiraStudioImporter: nueva extensión Chrome con botón en YouTube, panel lateral, vídeo/audio, etiquetas y handoff automático al Stock, sin pasar por Telegram.",
+    "Stock · Cápsulas: #traducir/#translate (y alias) ya generan solos los subtítulos: transcripción y traducción con Workers AI (Whisper + Llama), quemado en el navegador y copia guardada con subtitulado-xx + par- (máx. 3 min)."
   ],
   "rollback": {
-    "git": "de22e306da4f71e680ba81a798d7f0359c59eb0f"
+    "git": "428dbc6756f9eef8a0f681cd3858e82cd4d40eef"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -72,7 +72,8 @@
     ".source-patches/capsula-traduce.json",
     ".source-patches/stock-sort-header.json",
     ".source-patches/subtitulos-auto-etiquetas-negrita.json",
-    ".source-patches/admira-studio-importer.json"
+    ".source-patches/admira-studio-importer.json",
+    ".source-patches/stock-process-dock.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
