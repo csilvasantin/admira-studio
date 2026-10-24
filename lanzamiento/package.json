@@ -1,0 +1,43 @@
+{
+  "name": "lanzamiento",
+  "version": "1.0.0",
+  "description": "Lanzamiento · admira.studio: de una campaña del Stock a un vídeo de lanzamiento (voz de Admirito, piezas reales, música de la casa).",
+  "repository": {},
+  "license": "UNLICENSED",
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24"
+  },
+  "private": true,
+  "dependencies": {
+    "@remotion/cli": "4.0.538",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.538",
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.538",
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "eslint": "10.12.0",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "dev": "remotion studio",
+    "build": "remotion bundle",
+    "upgrade": "remotion upgrade",
+    "lint": "eslint src && tsc",
+    "voz": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/voz.mjs",
+    "revisar": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/revisar.mjs",
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/*.test.mjs",
+    "brief": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/brief.mjs",
+    "guion": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/guion.mjs",
+    "montar": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/montar.mjs",
+    "render": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/render.mjs",
+    "publicar": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/publicar.mjs"
+  },
+  "allowScripts": {
+    "esbuild": false
+  }
+}

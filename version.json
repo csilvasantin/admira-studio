@@ -1,20 +1,20 @@
 {
-  "version": "v.24.10.2026.r1.20:08",
-  "deployedAt": "2026-10-24T20:08:11.803547+02:00",
+  "version": "v.24.10.2026.r2.20:09",
+  "deployedAt": "2026-10-24T20:09:18.151682+02:00",
   "author": "GrokBot",
   "agent": "GrokBot",
   "deployer": "GrokBot",
   "machine": "GrokBotBox",
   "signature": "GrokBot · GrokBotBox",
-  "git": "62af25858c90865deb17edb95f132d431e255841",
-  "gitFull": "62af25858c90865deb17edb95f132d431e255841",
-  "gitShort": "62af258",
+  "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
+  "gitFull": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
+  "gitShort": "89955e0",
   "dirty": false,
   "novedades": [
     "Stock · Cápsulas: al subir o etiquetar una cápsula con #capsula + #negocio/#creatividad/#tecnologia (también en inglés: #capsule #business/#creativity/#technology) se genera sola la versión en la otra orientación (16:9 ⇄ 9:16, encuadre centrado + fondo desenfocado) y se guarda en Cápsulas enlazada al original."
   ],
   "rollback": {
-    "git": "62af25858c90865deb17edb95f132d431e255841"
+    "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",

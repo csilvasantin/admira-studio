@@ -1,0 +1,660 @@
+{
+ "nombre": "Un prompt. Una tienda. · demo de lanzamiento · v2",
+ "marca": {
+  "crea": "admira.studio",
+  "emite": "admira.store",
+  "fecha": "22 oct 2026",
+  "voz": "Admirito"
+ },
+ "local": {
+  "cliente": "Starbucks",
+  "nombre": "Gran de Gràcia 51",
+  "pantallas": "siete pantallas, español e inglés"
+ },
+ "titulo": {
+  "linea1": "Un prompt.",
+  "linea2": "Una tienda."
+ },
+ "prompt": {
+  "cabecera": "admira.studio · Crear · ¿Qué montamos hoy?",
+  "texto": "Monta el lanzamiento de otoño para Starbucks · Gran de Gràcia 51. Siete pantallas, español e inglés. Editable.",
+  "pie": "admira.studio · creación y adaptación · Stock"
+ },
+ "piezas": {
+  "horizontal": {
+   "id": "1792161156915-rm01g6",
+   "fichero": "stock/1792161156915-rm01g6.mp4",
+   "poster": "stock/1792161156915-rm01g6.poster.jpg",
+   "titulo": "Starbucks 180 · horizontal · es",
+   "orientacion": "horizontal"
+  },
+  "vertical": {
+   "id": "1792161136964-73h41y",
+   "fichero": "stock/1792161136964-73h41y.mp4",
+   "poster": "stock/1792161136964-73h41y.poster.jpg",
+   "titulo": "Starbucks 180 · vertical · es",
+   "orientacion": "vertical"
+  },
+  "conjunto": {
+   "id": "1792152072921-uk9g2a",
+   "fichero": "stock/1792152072921-uk9g2a.mp4",
+   "poster": "stock/1792152072921-uk9g2a.poster.jpg",
+   "titulo": "Siete mensajes · ES + EN · previo conjunto",
+   "orientacion": "panoramica"
+  },
+  "posters": [
+   "stock/1792161156915-rm01g6.poster.jpg",
+   "stock/1792161136964-73h41y.poster.jpg",
+   "stock/1792161240266-ipokef.poster.jpg",
+   "stock/1792152072921-uk9g2a.poster.jpg",
+   "stock/1792161276914-6fzu0g.poster.jpg"
+  ]
+ },
+ "rotulos": {
+  "stock": "Stock · admira.studio · Starbucks · Gran de Gràcia 51",
+  "pantallas": "Visuales generados · colocados en cada pantalla",
+  "curvas": "admira.studio · adaptación · curva de entrada · fotogramas clave",
+  "anuncio": "admira.store · emitiendo · Starbucks · Gran de Gràcia 51",
+  "listo": "admira.store · siete mensajes · ES + EN · previo conjunto",
+  "tutorial": "Cómo se hace",
+  "cierre": "admira.studio · admira.store",
+  "pantallaHorizontal": "macstudio-starbucks-horizontal · 1920×1080",
+  "pantallaVertical": "vertical · 1080×1920"
+ },
+ "tutorial": [
+  "Entra en admira.studio",
+  "Elige el local",
+  "Describe la campaña",
+  "admira.store la emite en tus pantallas"
+ ],
+ "cierre": {
+  "linea1": "Doce ideas en una tarde.",
+  "linea2": "Emite la que funcione."
+ },
+ "musica": {
+  "fichero": "musica/campanas.mp4",
+  "volumen": 0.34,
+  "volumenHablando": 0.16
+ },
+ "voz": {
+  "volumen": 1.3
+ },
+ "lineas": [
+  {
+   "id": "v1",
+   "quien": "neo",
+   "text": "Empiezo. Cojo las piezas del Stock, preparo las capas y monto las composiciones.",
+   "fichero": "voz/v1.mp3",
+   "durMs": 5619,
+   "palabras": [
+    {
+     "text": "Empiezo.",
+     "startMs": 0,
+     "endMs": 708
+    },
+    {
+     "text": "Cojo",
+     "startMs": 1312,
+     "endMs": 1591
+    },
+    {
+     "text": "las",
+     "startMs": 1637,
+     "endMs": 1753
+    },
+    {
+     "text": "piezas",
+     "startMs": 1811,
+     "endMs": 2067
+    },
+    {
+     "text": "del",
+     "startMs": 2101,
+     "endMs": 2218
+    },
+    {
+     "text": "Stock,",
+     "startMs": 2299,
+     "endMs": 2728
+    },
+    {
+     "text": "preparo",
+     "startMs": 2844,
+     "endMs": 3204
+    },
+    {
+     "text": "las",
+     "startMs": 3239,
+     "endMs": 3367
+    },
+    {
+     "text": "capas",
+     "startMs": 3425,
+     "endMs": 3820
+    },
+    {
+     "text": "y",
+     "startMs": 3913,
+     "endMs": 3982
+    },
+    {
+     "text": "monto",
+     "startMs": 4052,
+     "endMs": 4284
+    },
+    {
+     "text": "las",
+     "startMs": 4319,
+     "endMs": 4412
+    },
+    {
+     "text": "composiciones.",
+     "startMs": 4470,
+     "endMs": 5619
+    }
+   ]
+  },
+  {
+   "id": "v2",
+   "quien": "neo",
+   "text": "Genero los visuales y los coloco en cada escena.",
+   "fichero": "voz/v2.mp3",
+   "durMs": 2879,
+   "palabras": [
+    {
+     "text": "Genero",
+     "startMs": 0,
+     "endMs": 383
+    },
+    {
+     "text": "los",
+     "startMs": 406,
+     "endMs": 534
+    },
+    {
+     "text": "visuales",
+     "startMs": 580,
+     "endMs": 1057
+    },
+    {
+     "text": "y",
+     "startMs": 1138,
+     "endMs": 1184
+    },
+    {
+     "text": "los",
+     "startMs": 1254,
+     "endMs": 1382
+    },
+    {
+     "text": "coloco",
+     "startMs": 1440,
+     "endMs": 1765
+    },
+    {
+     "text": "en",
+     "startMs": 1788,
+     "endMs": 1834
+    },
+    {
+     "text": "cada",
+     "startMs": 1892,
+     "endMs": 2101
+    },
+    {
+     "text": "escena.",
+     "startMs": 2125,
+     "endMs": 2879
+    }
+   ]
+  },
+  {
+   "id": "v3",
+   "quien": "neo",
+   "text": "Afino las curvas y el ritmo.",
+   "fichero": "voz/v3.mp3",
+   "durMs": 1672,
+   "palabras": [
+    {
+     "text": "Afino",
+     "startMs": 0,
+     "endMs": 337
+    },
+    {
+     "text": "las",
+     "startMs": 383,
+     "endMs": 488
+    },
+    {
+     "text": "curvas",
+     "startMs": 546,
+     "endMs": 813
+    },
+    {
+     "text": "y",
+     "startMs": 859,
+     "endMs": 882
+    },
+    {
+     "text": "el",
+     "startMs": 906,
+     "endMs": 964
+    },
+    {
+     "text": "ritmo.",
+     "startMs": 1022,
+     "endMs": 1672
+    }
+   ]
+  },
+  {
+   "id": "v4",
+   "quien": "off",
+   "text": "Con admira.studio haces los anuncios que nunca tuviste tiempo ni presupuesto de hacer. Con un prompt.",
+   "fichero": "voz/v4.mp3",
+   "durMs": 5712,
+   "palabras": [
+    {
+     "text": "Con",
+     "startMs": 0,
+     "endMs": 197
+    },
+    {
+     "text": "admira.studio",
+     "startMs": 255,
+     "endMs": 1242
+    },
+    {
+     "text": "haces",
+     "startMs": 1289,
+     "endMs": 1521
+    },
+    {
+     "text": "los",
+     "startMs": 1556,
+     "endMs": 1672
+    },
+    {
+     "text": "anuncios",
+     "startMs": 1718,
+     "endMs": 2067
+    },
+    {
+     "text": "que",
+     "startMs": 2113,
+     "endMs": 2183
+    },
+    {
+     "text": "nunca",
+     "startMs": 2229,
+     "endMs": 2450
+    },
+    {
+     "text": "tuviste",
+     "startMs": 2485,
+     "endMs": 2786
+    },
+    {
+     "text": "tiempo",
+     "startMs": 2833,
+     "endMs": 3123
+    },
+    {
+     "text": "ni",
+     "startMs": 3170,
+     "endMs": 3239
+    },
+    {
+     "text": "presupuesto",
+     "startMs": 3274,
+     "endMs": 3796
+    },
+    {
+     "text": "de",
+     "startMs": 3855,
+     "endMs": 3901
+    },
+    {
+     "text": "hacer.",
+     "startMs": 3936,
+     "endMs": 4354
+    },
+    {
+     "text": "Con",
+     "startMs": 4679,
+     "endMs": 4841
+    },
+    {
+     "text": "un",
+     "startMs": 4911,
+     "endMs": 4957
+    },
+    {
+     "text": "prompt.",
+     "startMs": 5004,
+     "endMs": 5712
+    }
+   ]
+  },
+  {
+   "id": "v5",
+   "quien": "neo",
+   "text": "Tu lanzamiento está listo. Siete mensajes, en español y en inglés, en las pantallas de Gran de Gràcia 51.",
+   "fichero": "voz/v5.mp3",
+   "durMs": 6502,
+   "palabras": [
+    {
+     "text": "Tu",
+     "startMs": 0,
+     "endMs": 151
+    },
+    {
+     "text": "lanzamiento",
+     "startMs": 197,
+     "endMs": 685
+    },
+    {
+     "text": "está",
+     "startMs": 708,
+     "endMs": 871
+    },
+    {
+     "text": "listo.",
+     "startMs": 917,
+     "endMs": 1451
+    },
+    {
+     "text": "Siete",
+     "startMs": 1892,
+     "endMs": 2159
+    },
+    {
+     "text": "mensajes,",
+     "startMs": 2206,
+     "endMs": 2810
+    },
+    {
+     "text": "en",
+     "startMs": 2856,
+     "endMs": 2961
+    },
+    {
+     "text": "español",
+     "startMs": 3019,
+     "endMs": 3425
+    },
+    {
+     "text": "y",
+     "startMs": 3460,
+     "endMs": 3483
+    },
+    {
+     "text": "en",
+     "startMs": 3506,
+     "endMs": 3553
+    },
+    {
+     "text": "inglés,",
+     "startMs": 3611,
+     "endMs": 3959
+    },
+    {
+     "text": "en",
+     "startMs": 3994,
+     "endMs": 4075
+    },
+    {
+     "text": "las",
+     "startMs": 4122,
+     "endMs": 4226
+    },
+    {
+     "text": "pantallas",
+     "startMs": 4284,
+     "endMs": 4690
+    },
+    {
+     "text": "de",
+     "startMs": 4737,
+     "endMs": 4783
+    },
+    {
+     "text": "Gran",
+     "startMs": 4830,
+     "endMs": 4981
+    },
+    {
+     "text": "de",
+     "startMs": 5016,
+     "endMs": 5074
+    },
+    {
+     "text": "Gràcia",
+     "startMs": 5108,
+     "endMs": 5410
+    },
+    {
+     "text": "51.",
+     "startMs": 5492,
+     "endMs": 6502
+    }
+   ]
+  },
+  {
+   "id": "v6",
+   "quien": "off",
+   "text": "Entra en admira.studio. Elige el local. Describe la campaña. Studio la monta, editable, y admira.store la emite en tus pantallas.",
+   "fichero": "voz/v6.mp3",
+   "durMs": 9845,
+   "palabras": [
+    {
+     "text": "Entra",
+     "startMs": 0,
+     "endMs": 290
+    },
+    {
+     "text": "en",
+     "startMs": 313,
+     "endMs": 372
+    },
+    {
+     "text": "admira.studio.",
+     "startMs": 430,
+     "endMs": 1614
+    },
+    {
+     "text": "Elige",
+     "startMs": 1997,
+     "endMs": 2345
+    },
+    {
+     "text": "el",
+     "startMs": 2368,
+     "endMs": 2415
+    },
+    {
+     "text": "local.",
+     "startMs": 2438,
+     "endMs": 2961
+    },
+    {
+     "text": "Describe",
+     "startMs": 3286,
+     "endMs": 3692
+    },
+    {
+     "text": "la",
+     "startMs": 3727,
+     "endMs": 3796
+    },
+    {
+     "text": "campaña.",
+     "startMs": 3843,
+     "endMs": 4528
+    },
+    {
+     "text": "Studio",
+     "startMs": 4853,
+     "endMs": 5166
+    },
+    {
+     "text": "la",
+     "startMs": 5201,
+     "endMs": 5271
+    },
+    {
+     "text": "monta,",
+     "startMs": 5329,
+     "endMs": 5770
+    },
+    {
+     "text": "editable,",
+     "startMs": 5828,
+     "endMs": 6583
+    },
+    {
+     "text": "y",
+     "startMs": 6908,
+     "endMs": 6978
+    },
+    {
+     "text": "admira.store",
+     "startMs": 7024,
+     "endMs": 8081
+    },
+    {
+     "text": "la",
+     "startMs": 8197,
+     "endMs": 8301
+    },
+    {
+     "text": "emite",
+     "startMs": 8324,
+     "endMs": 8568
+    },
+    {
+     "text": "en",
+     "startMs": 8591,
+     "endMs": 8638
+    },
+    {
+     "text": "tus",
+     "startMs": 8684,
+     "endMs": 8824
+    },
+    {
+     "text": "pantallas.",
+     "startMs": 8870,
+     "endMs": 9845
+    }
+   ]
+  },
+  {
+   "id": "v7",
+   "quien": "off",
+   "text": "Prueba doce ideas en una tarde. Emite la que funcione.",
+   "fichero": "voz/v7.mp3",
+   "durMs": 2972,
+   "palabras": [
+    {
+     "text": "Prueba",
+     "startMs": 0,
+     "endMs": 302
+    },
+    {
+     "text": "doce",
+     "startMs": 348,
+     "endMs": 557
+    },
+    {
+     "text": "ideas",
+     "startMs": 592,
+     "endMs": 848
+    },
+    {
+     "text": "en",
+     "startMs": 894,
+     "endMs": 940
+    },
+    {
+     "text": "una",
+     "startMs": 987,
+     "endMs": 1115
+    },
+    {
+     "text": "tarde.",
+     "startMs": 1173,
+     "endMs": 1544
+    },
+    {
+     "text": "Emite",
+     "startMs": 1591,
+     "endMs": 1892
+    },
+    {
+     "text": "la",
+     "startMs": 1939,
+     "endMs": 1985
+    },
+    {
+     "text": "que",
+     "startMs": 2032,
+     "endMs": 2101
+    },
+    {
+     "text": "funcione.",
+     "startMs": 2148,
+     "endMs": 2972
+    }
+   ]
+  }
+ ],
+ "escenas": [
+  {
+   "id": "titulo",
+   "segundos": 4.5
+  },
+  {
+   "id": "prompt",
+   "segundos": 6
+  },
+  {
+   "id": "stock",
+   "voz": "v1",
+   "respiro": 0.6
+  },
+  {
+   "id": "pantallas",
+   "voz": "v2",
+   "respiro": 0.6
+  },
+  {
+   "id": "curvas",
+   "voz": "v3",
+   "respiro": 0.6
+  },
+  {
+   "id": "anuncio",
+   "voz": "v4",
+   "respiro": 0.9
+  },
+  {
+   "id": "listo",
+   "voz": "v5",
+   "respiro": 0.9
+  },
+  {
+   "id": "tutorial",
+   "voz": "v6",
+   "respiro": 0.9
+  },
+  {
+   "id": "cierre",
+   "voz": "v7",
+   "respiro": 1.6
+  }
+ ],
+ "fps": 30,
+ "ancho": 1920,
+ "alto": 1080
+}
