@@ -1,17 +1,17 @@
 {
-  "version": "v.24.10.2026.r3.19:21",
-  "deployedAt": "2026-10-24T20:09:18.151682+02:00",
-  "author": "Codex",
-  "agent": "Codex",
-  "deployer": "Codex",
-  "machine": "Codex Desktop",
-  "signature": "Codex · Codex Desktop",
+  "version": "v.24.10.2026.r4.20:34",
+  "deployedAt": "2026-10-24T20:34:18.969690+02:00",
+  "author": "Grok Bot",
+  "agent": "Grok Bot",
+  "deployer": "Grok Bot",
+  "machine": "GrokBotBox",
+  "signature": "Grok Bot · GrokBotBox",
   "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
   "gitFull": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
   "gitShort": "89955e0",
   "dirty": false,
   "novedades": [
-    "Stock · YouTube: logotipo oficial reconocible, canal de destino visible antes y durante la publicación, y feedback continuo con progreso y tiempo transcurrido."
+    "Stock · Cápsulas: nuevas etiquetas #traduce (inglés → subtítulos en castellano) y #translate (castellano → subtítulos en inglés), con versión subtitulada enlazada al original (subtitulado-es/en + par-)."
   ],
   "rollback": {
     "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b"
@@ -66,7 +66,8 @@
     ".source-patches/capsula-fuente-v56.json",
     ".source-patches/capsula-cartelas-v57.json",
     ".source-patches/capsula-formato-alterno.json",
-    ".source-patches/youtube-canal-feedback.json"
+    ".source-patches/youtube-canal-feedback.json",
+    ".source-patches/capsula-traduce.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",

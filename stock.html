@@ -2249,8 +2249,13 @@
         onCreated:async id=>{try{const r=await fetch(`${STOCK_BASE}/stock/list?limit=30`,{cache:'no-store'});const d=await r.json();const nuevo=(d.items||[]).find(x=>x.id===id);if(nuevo)document.dispatchEvent(new CustomEvent('stock:local-published',{detail:{item:nuevo}}));}catch(_){}}
       })).catch(()=>{});
     }
-    document.addEventListener('stock:local-published',e=>capsulaAlterna(e.detail?.item));
-    document.addEventListener('stock:tags-saved',e=>capsulaAlterna(e.detail?.item));
+    // #traduce (EN→subtítulos ES) / #translate (ES→subtítulos EN) · assets/capsula-traduce.mjs (sin bucle: subtitulado-*).
+    function capsulaTraduce(it){
+      if(!it||it.type!=='video')return;
+      import('/assets/capsula-traduce.mjs?v=20261024-1').then(m=>m.maybeSubtitle(it,{items:allItemsTodo,onStatus:t=>{status.textContent=t;}})).catch(()=>{});
+    }
+    document.addEventListener('stock:local-published',e=>{capsulaAlterna(e.detail?.item);capsulaTraduce(e.detail?.item);});
+    document.addEventListener('stock:tags-saved',e=>{capsulaAlterna(e.detail?.item);capsulaTraduce(e.detail?.item);});
     document.addEventListener('stock:local-view',()=>{
       if(filters.type==='catalogo')CATALOGO.leave();
       filters.q='';search.value='';filters.type='';typeFilter.value='';filters.format='';filters.tags=[];filters.origen='';sortMode='date-desc';applyFilters(true);
