@@ -1,17 +1,18 @@
 {
-  "version": "v.24.10.2026.r4.20:34",
+  "version": "v.24.10.2026.r5.20:36",
   "deployedAt": "2026-10-24T20:34:18.969690+02:00",
-  "author": "Grok Bot",
-  "agent": "Grok Bot",
-  "deployer": "Grok Bot",
-  "machine": "GrokBotBox",
-  "signature": "Grok Bot · GrokBotBox",
+  "author": "Codex",
+  "agent": "Codex",
+  "deployer": "Codex",
+  "machine": "Codex Desktop",
+  "signature": "Codex · Codex Desktop",
   "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
   "gitFull": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
   "gitShort": "89955e0",
   "dirty": false,
   "novedades": [
-    "Stock · Cápsulas: nuevas etiquetas #traduce (inglés → subtítulos en castellano) y #translate (castellano → subtítulos en inglés), con versión subtitulada enlazada al original (subtitulado-es/en + par-)."
+    "Stock · Cápsulas: nuevas etiquetas #traduce (inglés → subtítulos en castellano) y #translate (castellano → subtítulos en inglés), con versión subtitulada enlazada al original (subtitulado-es/en + par-).",
+    "Stock · YouTube: icono contenido dentro de su botón y cabecera «Compartir - YouTube // Carlos Silva Santin · @csilvasantin»; la cuenta de destino permanece visible aunque el scope OAuth solo permita subir."
   ],
   "rollback": {
     "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b"

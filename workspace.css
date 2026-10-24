@@ -2645,9 +2645,11 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   display: grid; place-items: center;
   cursor: pointer;
   border-radius: 4px;
+  overflow: hidden;
   backdrop-filter: blur(4px);
   transition: border-color .15s, color .15s, transform .15s;
 }
+.stock-card-btn[data-act="compartir"] svg { display: block; width: 18px; height: auto; max-width: 100%; }
 .stock-card-btn:hover { border-color: var(--matrix); transform: scale(1.08); }
 .stock-card-btn.danger { color: #ff8866; }
 .stock-card-btn.danger:hover { border-color: #ff8866; }

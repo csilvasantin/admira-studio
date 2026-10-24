@@ -37,9 +37,17 @@ test('GET identifica el canal de destino conectado', async () => {
     if (String(url).startsWith('https://oauth2')) return Response.json({access_token: 'tok'});
     return Response.json({items: [{id: 'UCADMIRA', snippet: {title: 'Admira', thumbnails: {default: {url: 'https://img.example/admira.jpg'}}}}]});
   };
-  assert.deepEqual(await canalYoutube(ENV, fetchImpl), {id: 'UCADMIRA', nombre: 'Admira', avatar: 'https://img.example/admira.jpg', url: 'https://www.youtube.com/channel/UCADMIRA'});
+  assert.deepEqual(await canalYoutube(ENV, fetchImpl), {id: 'UCADMIRA', nombre: 'Admira', handle: '', avatar: 'https://img.example/admira.jpg', url: 'https://www.youtube.com/channel/UCADMIRA'});
   const body = await (await onRequestGet({env: ENV, data: {fetchImpl}})).json();
   assert.equal(body.canal.nombre, 'Admira');
+});
+
+test('si youtube.upload no permite leer el canal, usa la cuenta configurada', async () => {
+  const env = {...ENV, YOUTUBE_CHANNEL_NAME: 'Carlos Silva Santin', YOUTUBE_CHANNEL_HANDLE: '@csilvasantin', YOUTUBE_CHANNEL_URL: 'https://www.youtube.com/@csilvasantin'};
+  const fetchImpl = async url => String(url).startsWith('https://oauth2')
+    ? Response.json({access_token: 'tok'})
+    : Response.json({error: {message: 'insufficientPermissions'}}, {status: 403});
+  assert.deepEqual(await canalYoutube(env, fetchImpl), {id: '', nombre: 'Carlos Silva Santin', handle: '@csilvasantin', avatar: '', url: 'https://www.youtube.com/@csilvasantin'});
 });
 
 test('sin sesión 401, no superusuario 403, otro origen 403', async () => {
