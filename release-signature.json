@@ -1,12 +1,12 @@
 {
-  "version": "v.24.10.2026.r7.21:41",
-  "author": "GrokBot",
-  "agent": "GrokBot",
-  "deployer": "GrokBot",
-  "machine": "GrokBotBox",
-  "signature": "GrokBot · GrokBotBox",
-  "git": "de22e306da4f71e680ba81a798d7f0359c59eb0f",
-  "gitShort": "de22e30",
-  "gitFull": "de22e306da4f71e680ba81a798d7f0359c59eb0f",
+  "version": "v.24.10.2026.r10.21:48",
+  "author": "Codex",
+  "agent": "Codex",
+  "deployer": "Codex",
+  "machine": "Codex Desktop",
+  "signature": "Codex · Codex Desktop",
+  "git": "cd188184162dfad1a12433a4cca3e0df971ce74f",
+  "gitShort": "cd18818",
+  "gitFull": "cd188184162dfad1a12433a4cca3e0df971ce74f",
   "dirty": false
 }

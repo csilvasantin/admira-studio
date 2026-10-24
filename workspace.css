@@ -2171,6 +2171,21 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
 }
 .stock-toolbar:has(+ .stock-order-head) { margin-bottom: 0; }
 .stock-order-head + section { padding-top: 0; }
+.import-extension-source {
+  margin: -4px 0 12px;
+  padding: 9px 11px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 65, .55);
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(0, 255, 65, .13), rgba(0, 255, 65, .025));
+  color: #b8ffca;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: inset 3px 0 0 #00ff41, 0 0 20px rgba(0, 255, 65, .08);
+}
 .stock-order-title {
   display: flex;
   align-items: center;

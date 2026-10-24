@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "AdmiraStudioImporter",
+  "short_name": "Admira Importer",
+  "version": "1.0.0",
+  "description": "Importa vídeos de YouTube directamente al Stock de Admira Studio, sin pasar por Telegram.",
+  "minimum_chrome_version": "116",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "Abrir AdmiraStudioImporter",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "permissions": [
+    "contextMenus",
+    "sidePanel",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "https://m.youtube.com/*",
+    "https://youtu.be/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*",
+        "https://m.youtube.com/*",
+        "https://youtu.be/*"
+      ],
+      "css": ["content.css"],
+      "js": ["shared.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "commands": {
+    "import-current-video": {
+      "suggested_key": {
+        "default": "Alt+Shift+A"
+      },
+      "description": "Importar el vídeo actual en Admira Studio"
+    }
+  }
+}

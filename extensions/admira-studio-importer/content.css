@@ -1,0 +1,62 @@
+#admira-studio-importer-root {
+  position: fixed;
+  right: 18px;
+  bottom: 22px;
+  z-index: 2147483646;
+  font: 700 12px/1.1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+#admira-studio-importer-root button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 6px 12px 6px 6px;
+  border: 1px solid #00ff68;
+  border-radius: 11px;
+  background: rgba(2, 11, 8, .94);
+  color: #d9ffe7;
+  box-shadow: 0 0 0 1px rgba(0, 255, 104, .12), 0 10px 34px rgba(0, 0, 0, .46), 0 0 26px rgba(0, 255, 104, .13);
+  cursor: pointer;
+  letter-spacing: .055em;
+  backdrop-filter: blur(14px);
+  transition: transform .16s ease, background .16s ease, box-shadow .16s ease;
+}
+
+#admira-studio-importer-root button:hover {
+  transform: translateY(-2px);
+  background: rgba(3, 27, 16, .97);
+  box-shadow: 0 0 0 1px rgba(0, 255, 104, .28), 0 14px 40px rgba(0, 0, 0, .52), 0 0 32px rgba(0, 255, 104, .22);
+}
+
+#admira-studio-importer-root button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+#admira-studio-importer-root .asi-mark {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #00ff68, #8bffbe);
+  color: #00170a;
+  font-size: 18px;
+  box-shadow: 0 0 18px rgba(0, 255, 104, .35);
+}
+
+#admira-studio-importer-root .asi-arrow {
+  color: #00ff68;
+  font-size: 16px;
+}
+
+#admira-studio-importer-root button[data-state="busy"] { opacity: .82; }
+#admira-studio-importer-root button[data-state="ok"] { border-color: #9dff00; }
+#admira-studio-importer-root button[data-state="error"] { border-color: #ff335f; color: #ffdbe3; }
+
+@media (max-width: 720px) {
+  #admira-studio-importer-root { right: 10px; bottom: 74px; }
+  #admira-studio-importer-root .asi-copy { display: none; }
+  #admira-studio-importer-root button { padding-right: 8px; }
+}

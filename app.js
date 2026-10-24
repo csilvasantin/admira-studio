@@ -4157,7 +4157,8 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     }
 
     retryBtn.addEventListener('click', runImport);
-    document.getElementById('doImport')?.addEventListener('click', () => {
+    const chromeImportButton = document.getElementById('doImport');
+    chromeImportButton?.addEventListener('click', () => {
       const raw = document.getElementById('import-url').value;
       const urls = parseUrls(raw);
       const fmt = document.querySelector('input[name="import-fmt"]:checked')?.value || 'video';
@@ -4170,6 +4171,80 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       lastImportArgs = { urls, fmt, comment };
       runImport();
     });
+
+    // Handoff de AdmiraStudioImporter (extensión Chrome). La extensión solo
+    // entrega datos; este flujo conserva el importador yt-dlp, la sesión y todo
+    // el feedback dentro de Admira Studio. Solo acepta vídeos reales de YouTube.
+    function youtubeUrlFromChrome(raw) {
+      try {
+        const u = new URL(String(raw || ''));
+        const host = u.hostname.toLowerCase();
+        let id = '';
+        if (host === 'youtu.be') id = u.pathname.split('/').filter(Boolean)[0] || '';
+        else if (['youtube.com', 'www.youtube.com', 'm.youtube.com', 'music.youtube.com'].includes(host)) {
+          if (u.pathname === '/watch') id = u.searchParams.get('v') || '';
+          else id = (u.pathname.match(/^\/(?:shorts|embed|live)\/([A-Za-z0-9_-]{11})(?:\/|$)/) || [])[1] || '';
+        }
+        return /^[A-Za-z0-9_-]{11}$/.test(id) ? `https://www.youtube.com/watch?v=${id}` : '';
+      } catch (_) {
+        return '';
+      }
+    }
+
+    function openChromeImporterHandoff() {
+      const params = new URLSearchParams(location.search);
+      if (params.get('importSource') !== 'chrome') return;
+      const url = youtubeUrlFromChrome(params.get('importUrl'));
+      const format = params.get('importFormat') === 'audio' ? 'audio' : 'video';
+      const comment = String(params.get('importComment') || '').slice(0, 500);
+      const tags = String(params.get('importTags') || '').slice(0, 400);
+      const title = String(params.get('importTitle') || '').slice(0, 180);
+      const autostart = params.get('importAutostart') === '1';
+
+      // Evita reimportar al recargar o volver atrás, y no deja el título/notas
+      // del contenido en la barra de direcciones ni en un marcador compartido.
+      const clean = new URL(location.href);
+      ['importSource', 'importUrl', 'importFormat', 'importComment', 'importTags', 'importTitle', 'importAutostart']
+        .forEach(key => clean.searchParams.delete(key));
+      history.replaceState({}, '', clean.pathname + clean.search + clean.hash);
+      if (!url) return;
+
+      let source = document.getElementById('import-extension-source');
+      if (!source) {
+        source = document.createElement('div');
+        source.id = 'import-extension-source';
+        source.className = 'import-extension-source';
+        dlg.querySelector('h3')?.insertAdjacentElement('afterend', source);
+      }
+      source.textContent = `⚡ AdmiraStudioImporter · YouTube → Stock${title ? ` · ${title}` : ''}`;
+      dlg.showModal();
+
+      // El MutationObserver del diálogo repone las etiquetas sugeridas al abrir.
+      // Se rellenan después para que las elegidas en la extensión prevalezcan.
+      setTimeout(() => {
+        const urlField = document.getElementById('import-url');
+        const commentField = document.getElementById('import-comment');
+        const tagsField = campoEtiquetasImport();
+        const formatField = document.querySelector(`input[name="import-fmt"][value="${format}"]`);
+        if (urlField) urlField.value = url;
+        if (commentField) commentField.value = comment;
+        if (tagsField && tags) tagsField.value = tags;
+        if (formatField) {
+          formatField.checked = true;
+          formatField.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        const stat = document.getElementById('importStatus');
+        if (stat) {
+          stat.style.display = 'block';
+          stat.textContent = autostart
+            ? '// AdmiraStudioImporter conectado · iniciando importación…'
+            : '// AdmiraStudioImporter conectado · revisa los datos y pulsa Importar.';
+        }
+        if (autostart) chromeImportButton?.click();
+      }, 0);
+    }
+
+    openChromeImporterHandoff();
   }
 
   // Handoff desde el Consejo (admira.live): ?from=consejo&prompt=…&ar=…&motor=…&autoplay=1

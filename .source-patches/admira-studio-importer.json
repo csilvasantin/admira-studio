@@ -1,0 +1,33 @@
+{
+  "kind": "chrome-extension-and-handoff",
+  "domain": "admira.studio",
+  "canonicalBase": "cd18818",
+  "sourceRepository": "csilvasantin/admira-studio",
+  "reason": "Carlos: crear AdmiraStudioImporter para importar contenidos directamente desde YouTube al Stock sin pasar por Telegram, con feedback visible durante todo el proceso.",
+  "files": [
+    "extensions/admira-studio-importer/manifest.json",
+    "extensions/admira-studio-importer/shared.js",
+    "extensions/admira-studio-importer/background.js",
+    "extensions/admira-studio-importer/content.js",
+    "extensions/admira-studio-importer/content.css",
+    "extensions/admira-studio-importer/sidepanel.html",
+    "extensions/admira-studio-importer/sidepanel.css",
+    "extensions/admira-studio-importer/sidepanel.js",
+    "extensions/admira-studio-importer/README.md",
+    "extensions/AdmiraStudioImporter-v1.0.0.zip",
+    "app.js",
+    "stock.html",
+    "en/stock.html",
+    "workspace.css",
+    "test/admira-studio-importer.test.mjs"
+  ],
+  "security": {
+    "containsSecrets": false,
+    "directStockCredentials": false,
+    "allowedSourceHosts": ["youtube.com", "youtu.be"],
+    "handoffOrigin": "https://www.admira.studio"
+  },
+  "rollback": "cd18818",
+  "status": "release-authorized",
+  "release": "v.24.10.2026.r10.21:48"
+}

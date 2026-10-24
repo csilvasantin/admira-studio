@@ -1,19 +1,19 @@
 {
-  "version": "v.24.10.2026.r7.21:41",
-  "deployedAt": "2026-10-24T21:41:00+02:00",
-  "author": "GrokBot",
-  "agent": "GrokBot",
-  "deployer": "GrokBot",
-  "machine": "GrokBotBox",
-  "signature": "GrokBot · GrokBotBox",
-  "git": "de22e306da4f71e680ba81a798d7f0359c59eb0f",
-  "gitFull": "de22e306da4f71e680ba81a798d7f0359c59eb0f",
-  "gitShort": "de22e30",
+  "version": "v.24.10.2026.r10.21:48",
+  "deployedAt": "2026-10-24T21:48:44+02:00",
+  "author": "Codex",
+  "agent": "Codex",
+  "deployer": "Codex",
+  "machine": "Codex Desktop",
+  "signature": "Codex · Codex Desktop",
+  "git": "cd188184162dfad1a12433a4cca3e0df971ce74f",
+  "gitFull": "cd188184162dfad1a12433a4cca3e0df971ce74f",
+  "gitShort": "cd18818",
   "dirty": false,
   "novedades": [
     "Stock · Cápsulas: #traducir/#translate (y alias) ya generan solos los subtítulos: transcripción y traducción con Workers AI (Whisper + Llama), quemado en el navegador y copia guardada con subtitulado-xx + par- (máx. 3 min).",
     "Stock · Etiquetas: las que hacen algo (traducir, cápsula, pilares, clasificar) se ven en negrita con explicación al pasar el ratón; las marcas automáticas (par-, formato-alterno, subtitulado-) en cursiva.",
-    "Stock · Cápsulas: #traducir, #traducción, #traduce, #traducir-es (subtítulos en castellano) y #translate, #translation, #translate-en (subtítulos en inglés) ya se detectan al importar por URL o subir archivo, también escritas en Comentarios; la tarjeta muestra «🈯 subtítulos XX pendientes · copiar encargo»."
+    "AdmiraStudioImporter: nueva extensión Chrome con botón en YouTube, panel lateral, vídeo/audio, etiquetas y handoff automático al Stock, sin pasar por Telegram."
   ],
   "rollback": {
     "git": "de22e306da4f71e680ba81a798d7f0359c59eb0f"
@@ -71,7 +71,8 @@
     ".source-patches/youtube-canal-feedback.json",
     ".source-patches/capsula-traduce.json",
     ".source-patches/stock-sort-header.json",
-    ".source-patches/subtitulos-auto-etiquetas-negrita.json"
+    ".source-patches/subtitulos-auto-etiquetas-negrita.json",
+    ".source-patches/admira-studio-importer.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
