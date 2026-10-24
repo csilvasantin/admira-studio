@@ -40,6 +40,7 @@ test('Stock elimina búsquedas guardadas e integra el dock en el cabezal', () =>
     assert.match(html, /id="stockProcessDock"/);
     assert.match(html, /mountStockProcessDock/);
     assert.match(html, /id="stockStatus"/);
+    assert.match(html, /workspace\.css\?v=stock-process-dock-20261024-1/);
   }
   const css = readFileSync('workspace.css', 'utf8');
   assert.match(css, /\.stock-process-track/);
