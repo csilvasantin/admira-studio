@@ -1,18 +1,19 @@
 {
-  "version": "v.24.10.2026.r6.21:11",
+  "version": "v.24.10.2026.r7.21:27",
   "deployedAt": "2026-10-24T21:11:52.436337+02:00",
-  "author": "GrokBot",
-  "agent": "GrokBot",
-  "deployer": "GrokBot",
-  "machine": "GrokBotBox",
-  "signature": "GrokBot · GrokBotBox",
+  "author": "Codex",
+  "agent": "Codex",
+  "deployer": "Codex",
+  "machine": "Codex Desktop",
+  "signature": "Codex · Codex Desktop",
   "git": "7b67a2993bc8fc9a4b4ba076dee7cad5b2a4d7dd",
   "gitFull": "7b67a2993bc8fc9a4b4ba076dee7cad5b2a4d7dd",
   "gitShort": "7b67a29",
   "dirty": false,
   "novedades": [
     "Stock · Cápsulas: #traducir, #traducción, #traduce, #traducir-es (subtítulos en castellano) y #translate, #translation, #translate-en (subtítulos en inglés) ya se detectan al importar por URL o subir archivo, también escritas en Comentarios; la tarjeta muestra «🈯 subtítulos XX pendientes · copiar encargo».",
-    "Stock · Cápsulas: nuevas etiquetas #traduce (inglés → subtítulos en castellano) y #translate (castellano → subtítulos en inglés), con versión subtitulada enlazada al original (subtitulado-es/en + par-)."
+    "Stock · Cápsulas: nuevas etiquetas #traduce (inglés → subtítulos en castellano) y #translate (castellano → subtítulos en inglés), con versión subtitulada enlazada al original (subtitulado-es/en + par-).",
+    "Stock · Ordenación: nuevo cabezal ancho en la franja superior para ordenar por Nombre, Fecha, Formato, Tipo y Motor; cada campo alterna ascendente/descendente y funciona también en móvil."
   ],
   "rollback": {
     "git": "7b67a2993bc8fc9a4b4ba076dee7cad5b2a4d7dd"
@@ -68,7 +69,8 @@
     ".source-patches/capsula-cartelas-v57.json",
     ".source-patches/capsula-formato-alterno.json",
     ".source-patches/youtube-canal-feedback.json",
-    ".source-patches/capsula-traduce.json"
+    ".source-patches/capsula-traduce.json",
+    ".source-patches/stock-sort-header.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
