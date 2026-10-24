@@ -3,7 +3,9 @@ import {withAvatar} from './_avatar-loader.js';
 import {withPresence} from './_live-presence.js';
 
 const PUBLIC_EXTENSION_DOCUMENTS = new Set([
+  '/extensions/admira-studio-importer/privacy',
   '/extensions/admira-studio-importer/privacy.html',
+  '/extensions/admira-studio-importer/support',
   '/extensions/admira-studio-importer/support.html',
 ]);
 

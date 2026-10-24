@@ -53,7 +53,7 @@ test('la interfaz ofrece botón YouTube, panel y feedback accesible', () => {
   const background = read('background.js');
   assert.match(html, /id="importForm"/);
   assert.match(html, /aria-live="polite"/);
-  assert.match(html, /privacy\.html/);
+  assert.match(html, /admira-studio-importer\/privacy/);
   assert.match(html, /viewBox="0 0 28 20"/);
   assert.match(content, /IMPORTAR EN ADMIRA/);
   assert.match(content, /yt-navigate-finish/);
@@ -74,7 +74,7 @@ test('Admira Studio recibe el handoff, limpia la URL e inicia el importador', ()
 
 test('privacidad y soporte son públicos para la ficha de Chrome Web Store', () => {
   const middleware = readFileSync('functions/_middleware.js', 'utf8');
-  for (const page of ['privacy.html', 'support.html']) {
+  for (const page of ['privacy', 'privacy.html', 'support', 'support.html']) {
     assert.match(middleware, new RegExp(`/extensions/admira-studio-importer/${page.replace('.', '\\.')}`));
   }
   assert.match(middleware, /PUBLIC_EXTENSION_DOCUMENTS\.has\(url\.pathname\)/);

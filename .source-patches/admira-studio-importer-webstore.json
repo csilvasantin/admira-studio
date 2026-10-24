@@ -31,7 +31,7 @@
     "analytics": false,
     "ads": false,
     "tabsPermission": false,
-    "publicPrivacyPolicy": "/extensions/admira-studio-importer/privacy.html"
+    "publicPrivacyPolicy": "/extensions/admira-studio-importer/privacy"
   },
   "rollback": "3a5e013",
   "status": "store-package-ready",

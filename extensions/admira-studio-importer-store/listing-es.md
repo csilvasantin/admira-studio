@@ -10,8 +10,8 @@
 - Visibilidad: `Pública`
 - Regiones: `Todas las regiones`
 - Sitio web: `https://www.admira.studio/`
-- Soporte: `https://www.admira.studio/extensions/admira-studio-importer/support.html`
-- Privacidad: `https://www.admira.studio/extensions/admira-studio-importer/privacy.html`
+- Soporte: `https://www.admira.studio/extensions/admira-studio-importer/support`
+- Privacidad: `https://www.admira.studio/extensions/admira-studio-importer/privacy`
 
 ## Descripción detallada
 
