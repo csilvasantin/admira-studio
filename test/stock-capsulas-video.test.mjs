@@ -15,7 +15,11 @@ test('Cápsulas incluye texto y vídeo capsula/sabiasque; Vídeo los excluye', (
   assert.equal(matchesType({ type: 'video', tags: ['sabiasque'] }, 'capsula'), true);
   assert.equal(matchesType({ type: 'video', tags: ['sabias-que'] }, 'capsula'), true);
   assert.equal(matchesType({ type: 'video', tags: ['tecnologia'] }, 'capsula'), false);
-  assert.equal(matchesType({ type: 'image', tags: ['capsula'] }, 'capsula'), false);
+  // 24-oct-2026: imagen con #capsula/#cápsula/#capsule también es cápsula (versión alterna de cápsula-imagen)
+  assert.equal(matchesType({ type: 'image', tags: ['capsula'] }, 'capsula'), true);
+  assert.equal(matchesType({ type: 'image', tags: ['Cápsula'] }, 'capsula'), true);
+  assert.equal(matchesType({ type: 'video', tags: ['capsule'] }, 'capsula'), true);
+  assert.equal(matchesType({ type: 'image', tags: ['negocio'] }, 'capsula'), false);
   // los vídeos-cápsula NO salen en «Vídeo»; el resto de vídeos sí
   assert.equal(matchesType({ type: 'video', tags: ['capsula'] }, 'video'), false);
   assert.equal(matchesType({ type: 'video', tags: ['capsula', 'sabiasque'] }, 'video'), false);

@@ -1,20 +1,20 @@
 {
-  "version": "v.22.10.2026.r10.22:10",
-  "deployedAt": "2026-10-22T22:10:20.627285+02:00",
-  "author": "WozniakGrokBot",
-  "agent": "WozniakGrokBot",
-  "deployer": "WozniakGrokBot",
+  "version": "v.24.10.2026.r1.20:08",
+  "deployedAt": "2026-10-24T20:08:11.803547+02:00",
+  "author": "GrokBot",
+  "agent": "GrokBot",
+  "deployer": "GrokBot",
   "machine": "GrokBotBox",
-  "signature": "WozniakGrokBot · GrokBotBox",
-  "git": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560",
-  "gitFull": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560",
-  "gitShort": "b5a15cb",
+  "signature": "GrokBot · GrokBotBox",
+  "git": "62af25858c90865deb17edb95f132d431e255841",
+  "gitFull": "62af25858c90865deb17edb95f132d431e255841",
+  "gitShort": "62af258",
   "dirty": false,
   "novedades": [
-    "Creador · Crear cápsula desde URL: interruptores «Preroll» y «Postroll» (cartelas de entrada y cierre), apagados por defecto; sin ellos la cápsula empieza y acaba en el cuerpo."
+    "Stock · Cápsulas: al subir o etiquetar una cápsula con #capsula + #negocio/#creatividad/#tecnologia (también en inglés: #capsule #business/#creativity/#technology) se genera sola la versión en la otra orientación (16:9 ⇄ 9:16, encuadre centrado + fondo desenfocado) y se guarda en Cápsulas enlazada al original."
   ],
   "rollback": {
-    "git": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560"
+    "git": "62af25858c90865deb17edb95f132d431e255841"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -64,7 +64,8 @@
     ".source-patches/creador-url-feedback.json",
     ".source-patches/capsula-fuente-v53.json",
     ".source-patches/capsula-fuente-v56.json",
-    ".source-patches/capsula-cartelas-v57.json"
+    ".source-patches/capsula-cartelas-v57.json",
+    ".source-patches/capsula-formato-alterno.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
