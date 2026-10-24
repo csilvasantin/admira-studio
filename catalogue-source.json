@@ -1,0 +1,10 @@
+{
+  "source": "pixeria",
+  "base": "dfa737be3331829aa581dfd2cc8214102af07ce0",
+  "commit": "94a6187eed87da01782004602af1a3fbfece7d37",
+  "paths": [
+    "stock.html",
+    "en/stock.html"
+  ],
+  "mode": "incremental"
+}

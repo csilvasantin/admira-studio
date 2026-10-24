@@ -1,17 +1,17 @@
 {
-  "version": "v.22.10.2026.r10.22:10",
-  "deployedAt": "2026-10-22T22:10:20.627285+02:00",
-  "author": "WozniakGrokBot",
-  "agent": "WozniakGrokBot",
-  "deployer": "WozniakGrokBot",
-  "machine": "GrokBotBox",
-  "signature": "WozniakGrokBot · GrokBotBox",
-  "git": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560",
-  "gitFull": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560",
-  "gitShort": "b5a15cb",
+  "version": "v.24.10.2026.r3.13:55",
+  "deployedAt": "2026-10-24T11:55:41.045351+00:00",
+  "author": "TrinityMBA16",
+  "agent": "TrinityMBA16",
+  "deployer": "TrinityMBA16",
+  "machine": "MacBookAir16plata",
+  "signature": "TrinityMBA16 · MacBookAir16plata",
+  "git": "5dd4dac3ddeb860b61b283757b44190e5915dd0a",
+  "gitFull": "5dd4dac3ddeb860b61b283757b44190e5915dd0a",
+  "gitShort": "5dd4dac",
   "dirty": false,
   "novedades": [
-    "Creador · Crear cápsula desde URL: interruptores «Preroll» y «Postroll» (cartelas de entrada y cierre), apagados por defecto; sin ellos la cápsula empieza y acaba en el cuerpo."
+    "Editar piezas del catálogo en AInimation y guardar nuevas versiones vinculadas con su proyecto editable."
   ],
   "rollback": {
     "git": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560"
