@@ -58,6 +58,8 @@ test('la interfaz ofrece botón YouTube, panel y feedback accesible', () => {
   assert.match(content, /IMPORTAR EN ADMIRA/);
   assert.match(content, /yt-navigate-finish/);
   assert.match(background, /chrome\.sidePanel\.open/);
+  assert.match(background, /const panelOpening = chrome\.sidePanel\.open\(\{ tabId \}\);\s+const contextUpdate = rememberContext/);
+  assert.doesNotMatch(background, /await rememberContext[\s\S]{0,300}chrome\.sidePanel\.open/);
   assert.match(background, /chrome\.contextMenus\.create/);
   assert.ok(existsSync(resolve(root, 'privacy.html')));
   assert.ok(existsSync(resolve(root, 'support.html')));

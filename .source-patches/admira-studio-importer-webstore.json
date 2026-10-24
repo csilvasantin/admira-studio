@@ -1,7 +1,7 @@
 {
   "kind": "chrome-web-store-release",
   "domain": "admira.studio",
-  "canonicalBase": "3a5e013",
+  "canonicalBase": "46dc249",
   "sourceRepository": "csilvasantin/admira-studio",
   "reason": "Carlos: instalar AdmiraStudioImporter en Chrome y publicarlo gratuitamente para cualquier usuario en Chrome Web Store.",
   "files": [
@@ -11,7 +11,7 @@
     "extensions/admira-studio-importer/privacy.html",
     "extensions/admira-studio-importer/support.html",
     "extensions/admira-studio-importer/README.md",
-    "extensions/AdmiraStudioImporter-v1.0.0.zip",
+    "extensions/AdmiraStudioImporter-v1.0.1.zip",
     "extensions/admira-studio-importer-store/listing-es.md",
     "extensions/admira-studio-importer-store/store-assets.css",
     "extensions/admira-studio-importer-store/screenshot-import.html",
@@ -33,7 +33,7 @@
     "tabsPermission": false,
     "publicPrivacyPolicy": "/extensions/admira-studio-importer/privacy"
   },
-  "rollback": "3a5e013",
+  "rollback": "46dc249",
   "status": "store-package-ready",
-  "release": "v.24.10.2026.r12.22:07"
+  "release": "v.24.10.2026.r13.22:24"
 }

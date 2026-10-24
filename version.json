@@ -1,22 +1,23 @@
 {
-  "version": "v.24.10.2026.r12.22:07",
-  "deployedAt": "2026-10-24T22:07:02+02:00",
+  "version": "v.24.10.2026.r13.22:24",
+  "deployedAt": "2026-10-24T22:24:00+02:00",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
   "machine": "Codex Desktop",
   "signature": "Codex · Codex Desktop",
-  "git": "3a5e013fdec22f44cdfcee0925bd3094558a9673",
-  "gitFull": "3a5e013fdec22f44cdfcee0925bd3094558a9673",
-  "gitShort": "3a5e013",
+  "git": "46dc249b664f40a60deb7aadd558515811e370a0",
+  "gitFull": "46dc249b664f40a60deb7aadd558515811e370a0",
+  "gitShort": "46dc249",
   "dirty": false,
   "novedades": [
+    "AdmiraStudioImporter 1.0.1: el botón de YouTube abre el panel lateral dentro del gesto del usuario, sin el error «Abre la extensión».",
     "AdmiraStudioImporter · Chrome Web Store: paquete público preparado con permisos mínimos, privacidad y soporte accesibles, ficha completa y recursos gráficos reglamentarios.",
     "AdmiraStudioImporter: nueva extensión Chrome con botón en YouTube, panel lateral, vídeo/audio, etiquetas y handoff automático al Stock, sin pasar por Telegram.",
     "Stock · Barra compacta: se elimina Guardar búsqueda y la franja de orden integra el estado del importador, cápsulas y subtítulos con progreso visual y porcentaje."
   ],
   "rollback": {
-    "git": "3a5e013fdec22f44cdfcee0925bd3094558a9673"
+    "git": "46dc249b664f40a60deb7aadd558515811e370a0"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",

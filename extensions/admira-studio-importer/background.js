@@ -58,14 +58,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (!message || typeof message !== 'object') return false;
   if (message.type === 'OPEN_PANEL') {
     const tabId = sender.tab && sender.tab.id;
-    (async () => {
-      await rememberContext(message.context || {});
-      if (Number.isInteger(tabId)) {
-        await chrome.sidePanel.setOptions({ tabId, path: 'sidepanel.html', enabled: true });
-        await chrome.sidePanel.open({ tabId });
-      }
-      sendResponse({ ok: true });
-    })().catch(error => sendResponse({ ok: false, error: String(error && error.message || error) }));
+    if (!Number.isInteger(tabId)) {
+      sendResponse({ ok: false, error: 'No se pudo identificar la pestaña de YouTube' });
+      return false;
+    }
+
+    // Chrome exige que sidePanel.open() se invoque directamente dentro del
+    // gesto del usuario. No debe haber ningún await antes de esta llamada.
+    const panelOpening = chrome.sidePanel.open({ tabId });
+    const contextUpdate = rememberContext(message.context || {});
+    Promise.all([panelOpening, contextUpdate])
+      .then(() => sendResponse({ ok: true }))
+      .catch(error => sendResponse({ ok: false, error: String(error && error.message || error) }));
     return true;
   }
   if (message.type === 'OPEN_IMPORT') {

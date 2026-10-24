@@ -17,7 +17,7 @@ La política específica de la extensión está publicada en `https://www.admira
 
 ## Instalar para probar
 
-Descarga el paquete desde `https://www.admira.studio/extensions/AdmiraStudioImporter-v1.0.0.zip`, descomprímelo y después:
+Descarga el paquete desde `https://www.admira.studio/extensions/AdmiraStudioImporter-v1.0.1.zip`, descomprímelo y después:
 
 1. Abre `chrome://extensions`.
 2. Activa **Modo de desarrollador**.

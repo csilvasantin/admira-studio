@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "AdmiraStudioImporter",
   "short_name": "Admira Importer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Importa vídeos de YouTube directamente al Stock de Admira Studio, sin pasar por Telegram.",
   "minimum_chrome_version": "116",
   "icons": {
