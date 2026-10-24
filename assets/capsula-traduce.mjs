@@ -15,18 +15,35 @@
  */
 import {norm, pairTag, isCapsuleTag, PILLARS, ALT_TAG, MAX_TAGS} from './capsula-alterna.mjs';
 
-export const DIRECTIONS = {
-  traduce: {from: 'en', to: 'es'}, traducir: {from: 'en', to: 'es'}, traduccion: {from: 'en', to: 'es'},
-  translate: {from: 'es', to: 'en'}, translation: {from: 'es', to: 'en'},
-};
+const ES_SUBS = {from: 'en', to: 'es'}, EN_SUBS = {from: 'es', to: 'en'};
+// Alias (24-oct-2026, Carlos importó con #traducir y no pasó nada): palabra española → subtítulos ES
+// a un vídeo en inglés; palabra inglesa → subtítulos EN a un vídeo en castellano.
+export const DIRECTIONS = Object.fromEntries([
+  ...['traduce', 'traducir', 'traduccion', 'traducido', 'traducelo', 'traduceme', 'traducir-es', 'traduce-es', 'traducir-al-espanol',
+    'traducir-castellano', 'traduccion-es', 'subtitular', 'subtitula', 'subtitulos', 'subtitulos-es', 'subtitular-es'].map(k => [k, ES_SUBS]),
+  ...['translate', 'translation', 'translated', 'translate-en', 'translate-to-english', 'translate-english', 'subtitles',
+    'subtitles-en', 'english-subtitles', 'subtitle-en'].map(k => [k, EN_SUBS]),
+]);
 export const SUB_PREFIX = 'subtitulado-';
 export const subTag = lang => SUB_PREFIX + lang;
-export function directionOf(tags) {
-  for (const t of tags || []) { const d = DIRECTIONS[norm(t)]; if (d) return d; }
-  return null;
+const LANG = {es: 'es', spa: 'es', spanish: 'es', espanol: 'es', castellano: 'es', en: 'en', eng: 'en', english: 'en', ingles: 'en'};
+export const langOf = it => LANG[norm(String(it?.lang || it?.language || it?.audioLang || '').split(/[-_]/)[0])] || null;
+// Etiquetas efectivas: las del campo Etiquetas + los #hashtags escritos en Comentarios/título al importar.
+export function tagsOf(it) {
+  const hash = `${it?.comment || ''} ${it?.title || ''}`.match(/#[\p{L}\p{N}_-]+/gu) || [];
+  return [...(it?.tags || []), ...hash];
 }
-export const isSubtitled = it => (it?.tags || []).some(t => norm(t).startsWith(SUB_PREFIX));
-export const qualifiesTranslation = it => !!it && it.type === 'video' && !isSubtitled(it) && !!directionOf(it.tags);
+// Si se conoce el idioma real del audio, manda él: los subtítulos van siempre al idioma contrario.
+export function directionOf(tags, lang) {
+  let d = null;
+  for (const t of tags || []) { d = DIRECTIONS[norm(t)]; if (d) break; }
+  if (!d) return null;
+  if (lang === 'es') return EN_SUBS;
+  if (lang === 'en') return ES_SUBS;
+  return d;
+}
+export const isSubtitled = it => tagsOf(it).some(t => norm(t).startsWith(SUB_PREFIX));
+export const qualifiesTranslation = it => !!it && it.type === 'video' && !isSubtitled(it) && !!directionOf(tagsOf(it), langOf(it));
 export function alreadySubtitled(it, items) {
   const p = pairTag(it.id);
   return (items || []).some(x => x && x.id !== it.id && isSubtitled(x) && !(x.tags || []).some(t => norm(t) === ALT_TAG)
@@ -61,7 +78,15 @@ export const BURN_STYLE = 'FontName=DejaVu Sans,Bold=1,PrimaryColour=&H00FFFFFF,
 export async function maybeSubtitle(it, ctx = {}) {
   if (!qualifiesTranslation(it)) return {skipped: 'no-aplica'};
   if (alreadySubtitled(it, ctx.items)) return {skipped: 'ya-existe'};
-  const dir = directionOf(it.tags);
+  const dir = directionOf(tagsOf(it), langOf(it));
   try { ctx.onStatus?.(`// #${dir.to === 'es' ? 'traduce' : 'translate'}: subtítulos ${dir.to.toUpperCase()} pendientes · se generan fuera del navegador y se guardan con ${subTag(dir.to)} + ${pairTag(it.id)}`); } catch (_) {}
   return {pending: true, from: dir.from, to: dir.to};
+}
+
+// Insignia visible en la tarjeta mientras falten los subtítulos (clic = copiar el encargo para la caja).
+export function pendingInfo(it, items) {
+  if (!qualifiesTranslation(it) || alreadySubtitled(it, items)) return null;
+  const dir = directionOf(tagsOf(it), langOf(it));
+  return {...dir, label: `🈯 subtítulos ${dir.to.toUpperCase()} pendientes`,
+    encargo: `Subtitular ${dir.from.toUpperCase()}→${dir.to.toUpperCase()} el vídeo ${it.id} del Stock (${it.prompt || it.url || ''}): transcribir, traducir, quemar abajo y publicar con ${subTag(dir.to)} + ${pairTag(it.id)}`};
 }

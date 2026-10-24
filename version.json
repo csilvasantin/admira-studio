@@ -1,21 +1,21 @@
 {
-  "version": "v.24.10.2026.r5.20:36",
-  "deployedAt": "2026-10-24T20:34:18.969690+02:00",
-  "author": "Codex",
-  "agent": "Codex",
-  "deployer": "Codex",
-  "machine": "Codex Desktop",
-  "signature": "Codex · Codex Desktop",
-  "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
-  "gitFull": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
-  "gitShort": "89955e0",
+  "version": "v.24.10.2026.r6.21:11",
+  "deployedAt": "2026-10-24T21:11:52.436337+02:00",
+  "author": "GrokBot",
+  "agent": "GrokBot",
+  "deployer": "GrokBot",
+  "machine": "GrokBotBox",
+  "signature": "GrokBot · GrokBotBox",
+  "git": "7b67a2993bc8fc9a4b4ba076dee7cad5b2a4d7dd",
+  "gitFull": "7b67a2993bc8fc9a4b4ba076dee7cad5b2a4d7dd",
+  "gitShort": "7b67a29",
   "dirty": false,
   "novedades": [
-    "Stock · Cápsulas: nuevas etiquetas #traduce (inglés → subtítulos en castellano) y #translate (castellano → subtítulos en inglés), con versión subtitulada enlazada al original (subtitulado-es/en + par-).",
-    "Stock · YouTube: icono contenido dentro de su botón y cabecera «Compartir - YouTube // Carlos Silva Santin · @csilvasantin»; la cuenta de destino permanece visible aunque el scope OAuth solo permita subir."
+    "Stock · Cápsulas: #traducir, #traducción, #traduce, #traducir-es (subtítulos en castellano) y #translate, #translation, #translate-en (subtítulos en inglés) ya se detectan al importar por URL o subir archivo, también escritas en Comentarios; la tarjeta muestra «🈯 subtítulos XX pendientes · copiar encargo».",
+    "Stock · Cápsulas: nuevas etiquetas #traduce (inglés → subtítulos en castellano) y #translate (castellano → subtítulos en inglés), con versión subtitulada enlazada al original (subtitulado-es/en + par-)."
   ],
   "rollback": {
-    "git": "89955e0c37720af05fe2ba86745cbeab7861bd2b"
+    "git": "7b67a2993bc8fc9a4b4ba076dee7cad5b2a4d7dd"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
