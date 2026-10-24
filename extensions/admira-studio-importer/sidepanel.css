@@ -84,6 +84,8 @@ legend, .field { color: #73a487; font-size: 9px; font-weight: 700; letter-spacin
 .status { min-height: 30px; margin: -4px 0 0; color: #668a73; font-size: 9px; line-height: 1.5; text-align: center; }
 .status.ok { color: var(--green-soft); }
 .status.error { color: #ff7894; }
+.privacy-note { margin: -5px 3px 0; color: #587262; font-size: 8px; line-height: 1.5; text-align: center; }
+.privacy-note a { color: #8bffbe; }
 
 footer { display: flex; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 13px; border-top: 1px solid rgba(0,255,104,.12); color: #3d5949; font-size: 8px; }
 footer a { color: #65a77e; text-decoration: none; }

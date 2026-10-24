@@ -15,6 +15,7 @@ test('manifest v3: panel lateral, YouTube y permisos mínimos del flujo', () => 
   assert.deepEqual(manifest.content_scripts[0].js, ['shared.js', 'content.js']);
   assert.ok(manifest.permissions.includes('sidePanel'));
   assert.ok(manifest.permissions.includes('storage'));
+  assert.ok(!manifest.permissions.includes('tabs'));
   assert.ok(manifest.host_permissions.every(host => host.includes('youtube.com') || host.includes('youtu.be')));
   assert.ok(!manifest.permissions.includes('cookies'));
   assert.ok(!manifest.host_permissions.some(host => host.includes('admira.studio')));
@@ -52,11 +53,14 @@ test('la interfaz ofrece botón YouTube, panel y feedback accesible', () => {
   const background = read('background.js');
   assert.match(html, /id="importForm"/);
   assert.match(html, /aria-live="polite"/);
+  assert.match(html, /privacy\.html/);
   assert.match(html, /viewBox="0 0 28 20"/);
   assert.match(content, /IMPORTAR EN ADMIRA/);
   assert.match(content, /yt-navigate-finish/);
   assert.match(background, /chrome\.sidePanel\.open/);
   assert.match(background, /chrome\.contextMenus\.create/);
+  assert.ok(existsSync(resolve(root, 'privacy.html')));
+  assert.ok(existsSync(resolve(root, 'support.html')));
 });
 
 test('Admira Studio recibe el handoff, limpia la URL e inicia el importador', () => {
@@ -66,4 +70,12 @@ test('Admira Studio recibe el handoff, limpia la URL e inicia el importador', ()
   assert.match(app, /AdmiraStudioImporter/);
   assert.match(app, /history\.replaceState/);
   assert.match(app, /chromeImportButton\?\.click\(\)/);
+});
+
+test('privacidad y soporte son públicos para la ficha de Chrome Web Store', () => {
+  const middleware = readFileSync('functions/_middleware.js', 'utf8');
+  for (const page of ['privacy.html', 'support.html']) {
+    assert.match(middleware, new RegExp(`/extensions/admira-studio-importer/${page.replace('.', '\\.')}`));
+  }
+  assert.match(middleware, /PUBLIC_EXTENSION_DOCUMENTS\.has\(url\.pathname\)/);
 });

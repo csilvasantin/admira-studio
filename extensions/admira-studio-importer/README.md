@@ -13,6 +13,8 @@ Extensión Chrome Manifest V3 para importar el vídeo de YouTube que estás vien
 
 La extensión no contiene claves ni descarga el vídeo por su cuenta. Abre un handoff seguro hacia `https://www.admira.studio/stock.html`, que reutiliza el flujo existente `yt-dlp → Stock` y la sesión del usuario.
 
+La política específica de la extensión está publicada en `https://www.admira.studio/extensions/admira-studio-importer/privacy.html` y el soporte en `https://www.admira.studio/extensions/admira-studio-importer/support.html`.
+
 ## Instalar para probar
 
 Descarga el paquete desde `https://www.admira.studio/extensions/AdmiraStudioImporter-v1.0.0.zip`, descomprímelo y después:
@@ -26,3 +28,5 @@ Descarga el paquete desde `https://www.admira.studio/extensions/AdmiraStudioImpo
 ## Publicar
 
 Comprime el contenido de esta carpeta —con `manifest.json` en la raíz del ZIP— y súbelo al Chrome Web Store Developer Dashboard.
+
+Los textos, justificaciones y recursos gráficos preparados para la ficha están en `extensions/admira-studio-importer-store/`.

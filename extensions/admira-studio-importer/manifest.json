@@ -27,12 +27,12 @@
   "permissions": [
     "contextMenus",
     "sidePanel",
-    "storage",
-    "tabs"
+    "storage"
   ],
   "host_permissions": [
     "https://www.youtube.com/*",
     "https://m.youtube.com/*",
+    "https://music.youtube.com/*",
     "https://youtu.be/*"
   ],
   "content_scripts": [
@@ -40,6 +40,7 @@
       "matches": [
         "https://www.youtube.com/*",
         "https://m.youtube.com/*",
+        "https://music.youtube.com/*",
         "https://youtu.be/*"
       ],
       "css": ["content.css"],

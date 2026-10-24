@@ -1,22 +1,22 @@
 {
-  "version": "v.24.10.2026.r11.21:57",
-  "deployedAt": "2026-10-24T21:57:02+02:00",
+  "version": "v.24.10.2026.r12.22:07",
+  "deployedAt": "2026-10-24T22:07:02+02:00",
   "author": "Codex",
   "agent": "Codex",
   "deployer": "Codex",
   "machine": "Codex Desktop",
   "signature": "Codex · Codex Desktop",
-  "git": "428dbc6756f9eef8a0f681cd3858e82cd4d40eef",
-  "gitFull": "428dbc6756f9eef8a0f681cd3858e82cd4d40eef",
-  "gitShort": "428dbc6",
+  "git": "3a5e013fdec22f44cdfcee0925bd3094558a9673",
+  "gitFull": "3a5e013fdec22f44cdfcee0925bd3094558a9673",
+  "gitShort": "3a5e013",
   "dirty": false,
   "novedades": [
-    "Stock · Barra compacta: se elimina Guardar búsqueda y la franja de orden integra el estado del importador, cápsulas y subtítulos con progreso visual y porcentaje.",
+    "AdmiraStudioImporter · Chrome Web Store: paquete público preparado con permisos mínimos, privacidad y soporte accesibles, ficha completa y recursos gráficos reglamentarios.",
     "AdmiraStudioImporter: nueva extensión Chrome con botón en YouTube, panel lateral, vídeo/audio, etiquetas y handoff automático al Stock, sin pasar por Telegram.",
-    "Stock · Cápsulas: #traducir/#translate (y alias) ya generan solos los subtítulos: transcripción y traducción con Workers AI (Whisper + Llama), quemado en el navegador y copia guardada con subtitulado-xx + par- (máx. 3 min)."
+    "Stock · Barra compacta: se elimina Guardar búsqueda y la franja de orden integra el estado del importador, cápsulas y subtítulos con progreso visual y porcentaje."
   ],
   "rollback": {
-    "git": "428dbc6756f9eef8a0f681cd3858e82cd4d40eef"
+    "git": "3a5e013fdec22f44cdfcee0925bd3094558a9673"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -73,7 +73,8 @@
     ".source-patches/stock-sort-header.json",
     ".source-patches/subtitulos-auto-etiquetas-negrita.json",
     ".source-patches/admira-studio-importer.json",
-    ".source-patches/stock-process-dock.json"
+    ".source-patches/stock-process-dock.json",
+    ".source-patches/admira-studio-importer-webstore.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
