@@ -107,7 +107,10 @@ const b64 = async blob => {
   return btoa(text);
 };
 function videoMeta(it) {
-  return new Promise((resolve, reject) => { const v = document.createElement('video'); v.preload = 'metadata'; v.crossOrigin = 'anonymous';
+  // Reading duration/dimensions does not require a CORS-enabled media element.
+  // Keep the same loading mode as Stock's player; the encoder fetches bytes with
+  // CORS separately. A cached non-CORS player response can reject an anonymous load.
+  return new Promise((resolve, reject) => { const v = document.createElement('video'); v.preload = 'metadata';
     const finish = (error, meta) => { clearTimeout(timer); v.onloadedmetadata = v.onerror = null; v.removeAttribute('src'); v.load(); error ? reject(error) : resolve(meta); };
     const timer = setTimeout(() => finish(new Error('media-timeout')), 15000);
     v.onloadedmetadata = () => finish(null, {w: v.videoWidth, h: v.videoHeight, d: v.duration});
