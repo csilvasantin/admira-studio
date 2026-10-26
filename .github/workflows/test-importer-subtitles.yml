@@ -1,11 +1,7 @@
 name: Real Importer subtitles test
 
 on:
-  push:
-    branches: [codex/importer-spanish-subtitles]
-    paths:
-      - .github/workflows/test-importer-subtitles.yml
-      - scripts/test-importer-subtitles-real.mjs
+  workflow_dispatch:
 
 permissions:
   contents: read

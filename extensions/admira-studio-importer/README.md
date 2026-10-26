@@ -50,6 +50,12 @@ node --test test/admira-studio-importer.test.mjs test/capsula-traduce.test.mjs t
 
 El repositorio declara un espejo de Pixeria. Los módulos compartidos ya tenían cambios exclusivos de Studio pendientes de portar; este cambio queda identificado como revisión local en `.source-patches/importer-spanish-subtitles.json`. Antes de regenerar o publicar, hay que resolver esa integración de fuente; no ejecutar una sincronización completa que borre las mejoras existentes.
 
+### Resultado de la prueba real (26-oct-2026)
+
+El vídeo ya importado `1793037808156-6vymvy` permitió reproducir un fallo `media` al cargar los metadatos en la web publicada. La propuesta elimina el modo CORS innecesario de ese elemento y repinta el estado al finalizar, evitando una insignia «en curso» después de un fallo. Estas correcciones aún no están desplegadas.
+
+La prueba aislada con el código real (`scripts/test-importer-subtitles-real.mjs`) llegó a Workers AI, pero la credencial disponible devolvió HTTP 401 / código 10000. No se considera aprobada la integración con Cloudflare ni la sesión de la aplicación por esta prueba. El workflow queda solo bajo ejecución manual; no gasta IA ni publica variantes al modificar archivos. Requiere las credenciales existentes de Cloudflare con acceso válido al servicio antes de volver a ejecutarse. Solo publica una copia después de comprobar audio y dimensiones; conserva el original.
+
 ## Publicar
 
 Comprime el contenido de esta carpeta —con `manifest.json` en la raíz del ZIP— y súbelo al Chrome Web Store Developer Dashboard.
