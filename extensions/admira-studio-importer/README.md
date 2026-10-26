@@ -32,7 +32,9 @@ Para desarrollar una versión nueva en un perfil de pruebas, utiliza esta carpet
 4. Selecciona esta carpeta: `extensions/admira-studio-importer`.
 5. Abre cualquier vídeo o Short de YouTube.
 
-## Cápsulas con subtítulos ES (1.0.2 en desarrollo)
+## Cápsulas con subtítulos ES
+
+La corrección web está publicada desde PR140. Con la extensión instalada **1.0.1** basta marcar un vídeo nuevo con `#capsula` (o `#cápsula`) en Etiquetas o Comentarios: la web fija el destino `subtitulos-es`. Las etiquetas del usuario se conservan, el audio y las importaciones sin marca de cápsula no activan este trabajo. No hace falta reinstalar ni actualizar la extensión. La casilla siguiente pertenece a **1.0.2 en desarrollo**, todavía sin publicar en la tienda.
 
 La casilla solo se ofrece para vídeo y se desmarca al cambiar de vídeo o elegir audio. No se guarda como preferencia ni activa trabajos desde el atajo o menú contextual. El handoff existente entrega `capsula, subtitulos-es` junto con las etiquetas del usuario; no añade credenciales, permisos ni llamadas de IA a la extensión. Si se exceden diez etiquetas o 400 caracteres, el panel pide corregirlas antes de importar.
 
@@ -48,13 +50,13 @@ Pruebas locales (sin servicios de IA reales ni escrituras en Stock):
 node --test test/admira-studio-importer.test.mjs test/capsula-traduce.test.mjs test/stock-subtitles.test.mjs test/etiquetas-funcionales.test.mjs test/capsula-alterna.test.mjs
 ```
 
-El repositorio declara un espejo de Pixeria. Los módulos compartidos ya tenían cambios exclusivos de Studio pendientes de portar; este cambio queda identificado como revisión local en `.source-patches/importer-spanish-subtitles.json`. Antes de regenerar o publicar, hay que resolver esa integración de fuente; no ejecutar una sincronización completa que borre las mejoras existentes.
+La corrección web propia de Studio se identifica en `.source-patches/importer-auto-subtitles-web.json` y se publicó separada del paquete de extensión. PR139 conserva solo la propuesta 1.0.2 y las herramientas de prueba. Al portar la fuente hay que conservar estos cambios; no regenerar el espejo antiguo sobre las mejoras publicadas.
 
 ### Resultado de la prueba real (26-oct-2026)
 
-El vídeo ya importado `1793037808156-6vymvy` permitió reproducir un fallo `media` al cargar los metadatos en la web publicada. La propuesta elimina el modo CORS innecesario de ese elemento y repinta el estado al finalizar, evitando una insignia «en curso» después de un fallo. Estas correcciones aún no están desplegadas.
+El vídeo ya importado `1793037808156-6vymvy` permitió reproducir un fallo `media` al cargar los metadatos con el reproductor nativo. La corrección publicada lee duración y dimensiones mediante FFprobe del mismo motor FFmpeg que extrae el audio. La prueba real en navegador obtuvo 320×240, 19.063583s y 115276bytes de audio con una sola descarga. La cola del motor es común a cápsulas alternas y subtítulos. También se repinta el estado tras finalizar para evitar una insignia «en curso» después de fallar.
 
-La prueba aislada con el código real (`scripts/test-importer-subtitles-real.mjs`) llegó a Workers AI, pero la credencial disponible devolvió HTTP 401 / código 10000. No se considera aprobada la integración con Cloudflare ni la sesión de la aplicación por esta prueba. El workflow queda solo bajo ejecución manual; no gasta IA ni publica variantes al modificar archivos. Requiere las credenciales existentes de Cloudflare con acceso válido al servicio antes de volver a ejecutarse. Solo publica una copia después de comprobar audio y dimensiones; conserva el original.
+La prueba REST aislada (`scripts/test-importer-subtitles-real.mjs`) devolvió HTTP401/código10000. La auditoría de lectura del run40403239960 confirmó un token activo con acceso a Pages (200), pero sin acceso al catálogo de Workers AI (403/código10000). Esta credencial de CI es distinta del binding AI de producción: no se cambiaron permisos ni credenciales. El workflow manual arranca por defecto en modo `audit`, sin inferencias ni escrituras; `render` debe seleccionarse expresamente y requiere una credencial autorizada para esa API.
 
 Se completó una alternativa local con reconocimiento real de Whisper medium.en y traducción revisada en el chat. La copia está en [Stock #1898](https://www.admira.studio/stock.html?highlight=1793048061800-nnxzdn): 19,063583 s, 320×240, 15 fps, cinco bloques ES. Se comprobó que el bitstream de audio es idéntico al original y que el archivo publicado coincide con el generado. Esto demuestra la entrega local y su publicación, sin dar por aprobada la integración automática. La extensión instalada no se modificó y se restauraron las etiquetas temporales del original.
 
@@ -63,3 +65,7 @@ Se completó una alternativa local con reconocimiento real de Whisper medium.en 
 Comprime el contenido de esta carpeta —con `manifest.json` en la raíz del ZIP— y súbelo al Chrome Web Store Developer Dashboard.
 
 Los textos, justificaciones y recursos gráficos preparados para la ficha están en `extensions/admira-studio-importer-store/`.
+
+### Verificación automática en producción
+
+Tras PR140 y el despliegue 40404111096, el vídeo importado `1792770584397-znilej` generó automáticamente con el binding AI real una [versión con 23 frases ES](https://www.admira.studio/stock.html?highlight=1793050177742-l99iqd). Original y copia conservan 720×1280, 30fps y 59.015011s; el hash de la pista de audio es idéntico. Se restauraron las etiquetas temporales del original y del clip de robótica sin voz utilizado para la comprobación negativa. La transcripción automática todavía requiere revisión editorial: esta muestra incluye una hora mal reconocida y dos frases muy breves al final. No se presenta como transcripción revisada.

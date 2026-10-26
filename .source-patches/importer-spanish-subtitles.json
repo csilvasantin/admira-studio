@@ -4,11 +4,11 @@
   "sourceRepository": "csilvasantin/admira-studio",
   "canonicalBase": "744f63504d4e053b95c3a31231028a81f1f84858",
   "reason": "Carlos: preparar una opción para importar una cápsula y generar una versión con subtítulos en castellano de su audio, conservando la extensión instalada y el vídeo original.",
-  "status": "local-review-only",
+  "status": "extension-draft-web-fix-published",
   "extensionVersion": "1.0.2",
   "publishedExtensionVersion": "1.0.1",
-  "requiresWebAndExtensionRelease": true,
-  "sourceIntegration": "Los módulos de subtítulos y la extensión ya son cambios propios de Studio ausentes en origin/main de Pixeria consultado. Resolver el portado de fuente antes de sincronizar o publicar; no regenerar el espejo desde la rama antigua.",
+  "requiresWebAndExtensionRelease": false,
+  "sourceIntegration": "La corrección web se publicó separada como PR140 y .source-patches/importer-auto-subtitles-web.json. Este borrador conserva la extensión 1.0.2 sin publicar y sus pruebas; portar la fuente preservando las mejoras web, sin regenerar el espejo antiguo.",
   "files": [
     "extensions/admira-studio-importer/manifest.json",
     "extensions/admira-studio-importer/shared.js",
@@ -36,5 +36,6 @@
     "preservesOriginalMedia": true,
     "subtitleSelectionPersisted": false,
     "requiresExistingStudioSession": true
-  }
+  },
+  "webReleasePr": 140
 }
