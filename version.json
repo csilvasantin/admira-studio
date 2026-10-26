@@ -1,6 +1,6 @@
 {
-  "version": "v.26.10.2026.r1.22:23",
-  "deployedAt": "2026-10-26T22:23:58.382518+01:00",
+  "version": "v.26.10.2026.r2.22:34",
+  "deployedAt": "2026-10-26T22:34:42.950152+01:00",
   "author": "DeepAgent Trinity",
   "agent": "Trinity",
   "deployer": "DeepAgent Trinity",
@@ -11,6 +11,7 @@
   "gitShort": "46dc249",
   "dirty": false,
   "novedades": [
+    "Subtítulos: la copia confirmada aparece inmediatamente en Stock y retira la marca pendiente, sin esperar al índice.",
     "Importador: cápsulas con subtítulos en castellano desde la web y lectura de vídeo con FFmpeg, conservando imagen, voz y extensión instalada.",
     "AdmiraStudioImporter 1.0.1: el botón de YouTube abre el panel lateral dentro del gesto del usuario, sin el error «Abre la extensión».",
     "AdmiraStudioImporter · Chrome Web Store: paquete público preparado con permisos mínimos, privacidad y soporte accesibles, ficha completa y recursos gráficos reglamentarios.",
