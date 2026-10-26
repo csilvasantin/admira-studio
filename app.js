@@ -3114,7 +3114,21 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     }
     return campo;
   }
-  function etiquetasImport() { const e = parseEtiquetas((document.getElementById('import-tags') || {}).value); return e.length ? e : null; }
+  // The installed 1.0.1 already sends tags/comments. A newly imported video
+  // capsule can request Spanish subtitles on the web without updating Chrome.
+  function capsuleImportTags(tags, comment, type) {
+    const norm = t => String(t).trim().replace(/^#+/, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const effective = [...tags, ...(String(comment || '').match(/#[\p{L}\p{N}_-]+/gu) || [])].map(norm);
+    if (type !== 'video' || !effective.some(t => ['capsula', 'capsulas', 'capsule', 'capsules'].includes(t))
+      || effective.some(t => ['subtitulos-es', 'subtitular-es', 'subtitles-en', 'subtitle-en'].includes(t))) return tags;
+    // Up to ten user tags plus this explicit destination fit the Stock limit of
+    // twelve. Keep every user tag; this processing tag must survive classification.
+    return ['subtitulos-es', ...tags];
+  }
+  function etiquetasImport(type) {
+    const e = capsuleImportTags(parseEtiquetas((document.getElementById('import-tags') || {}).value), document.getElementById('import-comment')?.value, type);
+    return e.length ? e : null;
+  }
 
   function publishBtnHTML(meta) {
     const json = JSON.stringify(meta).replace(/'/g, '&#39;');
@@ -3882,7 +3896,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
           prompt: file.name,
           title: file.name.replace(/\.[^.]+$/, ''),
           comment: comment || null,
-          tags: etiquetasImport(),
+          tags: etiquetasImport(type),
           searchContext:{version:1,description:''},
           costEst: `local · ${sizeMB}MB`,
           url: blobUrl,
@@ -4047,7 +4061,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
             prompt: url,
             title: importedTitle || null,
             comment: comment || null,
-            tags: etiquetasImport(),
+            tags: etiquetasImport(kind),
             searchContext:{version:1,description:typeof out.description==='string' ? out.description : ''},
             costEst: `gratis · ${sizeMB}MB · ${sec}s`,
             url: blobUrl,

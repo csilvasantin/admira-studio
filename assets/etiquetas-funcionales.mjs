@@ -11,7 +11,7 @@ const PILLAR_ES = {business: 'Negocio', creativity: 'Creatividad', technology: '
 const FUNCIONES = new Map();
 const add = (keys, kind, title) => keys.forEach(k => FUNCIONES.set(norm(k), {kind, title}));
 for (const [k, d] of Object.entries(DIRECTIONS))
-  add([k], 'traducir', `Traduce: transcribe el audio (${d.from.toUpperCase()}), lo traduce al ${d.to === 'es' ? 'castellano' : 'inglés'} y guarda una copia con subtítulos ${d.to.toUpperCase()} quemados`);
+  add([k], 'traducir', `Traduce: transcribe el audio (${d.from === 'auto' ? 'idioma detectado automáticamente' : d.from.toUpperCase()}), lo traduce al ${d.to === 'es' ? 'castellano' : 'inglés'} si hace falta y guarda una copia con subtítulos ${d.to.toUpperCase()} quemados`);
 add(CAPSULE_TAGS, 'capsula', 'Clasifica en «Cápsulas». Con un pilar (#negocio, #creatividad, #tecnologia) genera además la versión en la otra orientación (16:9 ⇄ 9:16)');
 add(['sabiasque', 'sabias-que'], 'capsula', 'Clasifica el vídeo en «Cápsulas» («¿Sabías que?»)');
 for (const [p, keys] of Object.entries(PILLARS))

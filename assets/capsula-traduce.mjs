@@ -12,7 +12,7 @@
  * whisper-large-v3-turbo + m2m100-1.2b) → quemado con libass en el navegador → /stock-publish.
  * Si algo falla, la insignia «subtítulos XX pendientes» sigue ahí y copia el encargo para la caja.
  */
-import {norm, pairTag, isCapsuleTag, PILLARS, ALT_TAG, MAX_TAGS} from './capsula-alterna.mjs';
+import {norm, pairTag, isCapsuleTag, PILLARS, ALT_TAG, MAX_TAGS} from './capsula-alterna.mjs?v=20261026-probe';
 
 const ES_SUBS = {from: 'en', to: 'es'}, EN_SUBS = {from: 'es', to: 'en'};
 // Alias (24-oct-2026, Carlos importó con #traducir y no pasó nada): palabra española → subtítulos ES
@@ -22,6 +22,10 @@ export const DIRECTIONS = Object.fromEntries([
     'traducir-castellano', 'traduccion-es', 'subtitular', 'subtitula', 'subtitulos', 'subtitulos-es', 'subtitular-es'].map(k => [k, ES_SUBS]),
   ...['translate', 'translation', 'translated', 'translate-en', 'translate-to-english', 'translate-english', 'subtitles',
     'subtitles-en', 'english-subtitles', 'subtitle-en'].map(k => [k, EN_SUBS]),
+  // An explicit destination never flips to English when the audio is Spanish.
+  // Without an audio-language hint, let Whisper detect the actual language.
+  ...['subtitulos-es', 'subtitular-es'].map(k => [k, {from: 'auto', to: 'es'}]),
+  ...['subtitles-en', 'subtitle-en'].map(k => [k, {from: 'auto', to: 'en'}]),
 ]);
 export const SUB_PREFIX = 'subtitulado-';
 export const subTag = lang => SUB_PREFIX + lang;
@@ -32,8 +36,11 @@ export function tagsOf(it) {
   const hash = `${it?.comment || ''} ${it?.title || ''}`.match(/#[\p{L}\p{N}_-]+/gu) || [];
   return [...(it?.tags || []), ...hash];
 }
-// Si se conoce el idioma real del audio, manda él: los subtítulos van siempre al idioma contrario.
+// Explicit subtitle-language tags keep their destination. Legacy #traduce /
+// #translate retain the opposite-language behavior when an audio hint is known.
 export function directionOf(tags, lang) {
+  const explicit = (tags || []).map(t => DIRECTIONS[norm(t)]).find(d => d?.from === 'auto');
+  if (explicit) return {from: lang || 'auto', to: explicit.to};
   let d = null;
   for (const t of tags || []) { d = DIRECTIONS[norm(t)]; if (d) break; }
   if (!d) return null;
@@ -45,7 +52,10 @@ export const isSubtitled = it => tagsOf(it).some(t => norm(t).startsWith(SUB_PRE
 export const qualifiesTranslation = it => !!it && it.type === 'video' && !isSubtitled(it) && !!directionOf(tagsOf(it), langOf(it));
 export function alreadySubtitled(it, items) {
   const p = pairTag(it.id);
+  const dir = directionOf(tagsOf(it), langOf(it));
+  if (!dir) return false;
   return (items || []).some(x => x && x.id !== it.id && isSubtitled(x) && !(x.tags || []).some(t => norm(t) === ALT_TAG)
+    && (x.tags || []).some(t => norm(t) === subTag(dir.to))
     && (x.externalRef === it.id || (x.tags || []).some(t => norm(t) === p)));
 }
 // Etiquetas de la subtitulada: cápsula, pilar y #traduce/#translate siempre; luego marca y par; tope 12.
@@ -53,7 +63,8 @@ export function subtitledTags(tags, dir, id) {
   const base = (tags || []).filter(t => !norm(t).startsWith('par-') && !norm(t).startsWith(SUB_PREFIX) && norm(t) !== ALT_TAG);
   const keep = base.filter(t => isCapsuleTag(t) || Object.values(PILLARS).flat().includes(norm(t)) || DIRECTIONS[norm(t)]);
   const rest = base.filter(t => !keep.includes(t));
-  return [...keep, subTag(dir.to), ...(id ? [pairTag(id)] : []), ...rest].slice(0, MAX_TAGS);
+  const required = [subTag(dir.to), ...(id ? [pairTag(id)] : [])];
+  return [...keep.slice(0, MAX_TAGS - required.length), ...required, ...rest].slice(0, MAX_TAGS);
 }
 
 // ── SRT ─────────────────────────────────────────────────────────────────────
@@ -84,16 +95,20 @@ export const audioArgs = () => ['-i', 'input', '-vn', '-ac', '1', '-ar', '16000'
 export function burnArgs(w, h) {
   const vertical = h > w, size = vertical ? 11 : 16, margin = vertical ? 38 : 22;
   const style = `${BURN_STYLE},Fontsize=${size},MarginV=${margin},MarginL=18,MarginR=18`;
-  return ['-i', 'input', '-vf', `subtitles=subs.srt:fontsdir=fonts:force_style='${style}'`, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '22',
-    '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', '-y', 'output.mp4'];
+  // Subtitle burn requires a video encode. Keep the source dimensions/frame rate,
+  // use a high-quality CRF, and copy the original audio without another lossy pass.
+  return ['-i', 'input', '-vf', `subtitles=subs.srt:fontsdir=fonts:force_style='${style}'`, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18',
+    '-pix_fmt', 'yuv420p', '-c:a', 'copy', '-movflags', '+faststart', '-y', 'output.mp4'];
 }
-const b64 = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).replace(/^data:[^,]*,/, '')); r.onerror = () => rej(r.error); r.readAsDataURL(blob); });
-function videoMeta(it) {
-  return new Promise((resolve, reject) => { const v = document.createElement('video'); v.preload = 'metadata'; v.crossOrigin = 'anonymous';
-    v.onloadedmetadata = () => resolve({w: v.videoWidth, h: v.videoHeight, d: v.duration}); v.onerror = () => reject(new Error('media')); v.src = it.url; });
-}
+const b64 = async blob => {
+  const bytes = new Uint8Array(await blob.arrayBuffer());
+  let text = '';
+  for (let i = 0; i < bytes.length; i += 32768) text += String.fromCharCode(...bytes.subarray(i, i + 32768));
+  return btoa(text);
+};
 const running = new Set();
-// ctx: {items, onStatus(text), onCreated(id), fetch}. Devuelve {ok,id} | {skipped} | {ok:false,error}.
+// ctx: {items, onStatus(text), onCreated(id), onSettled(), fetch}; optional media/engine/publisher adapters.
+// Devuelve {ok,id} | {skipped} | {ok:false,error}.
 export async function maybeSubtitle(it, ctx = {}) {
   if (!qualifiesTranslation(it)) return {skipped: 'no-aplica'};
   if (alreadySubtitled(it, ctx.items)) return {skipped: 'ya-existe'};
@@ -104,20 +119,25 @@ export async function maybeSubtitle(it, ctx = {}) {
   const f = ctx.fetch || ((...a) => fetch(...a));
   running.add(it.id);
   try {
-    const meta = await videoMeta(it);
-    if (meta.d > MAX_SECONDS + 1) { say(`// 🈯 subtítulos: el vídeo dura ${Math.round(meta.d)} s; el automático llega hasta ${MAX_SECONDS} s`); return {skipped: 'largo'}; }
-    const {sharedEngine, ffmpegQueue} = await import('./capsula-alterna.mjs');
-    const engine = await sharedEngine();
+    const {sharedEngine, ffmpegQueue} = await import('./capsula-alterna.mjs?v=20261026-probe');
+    const engine = ctx.engine || await sharedEngine();
+    say(`🈯 subtítulos ${dir.to.toUpperCase()}: leyendo vídeo…`);
+    const meta = ctx.videoMeta ? await ctx.videoMeta(it) : await ffmpegQueue(() => engine.probe(it.url));
+    if (![meta.w, meta.h, meta.d].every(n => Number.isFinite(n) && n > 0)) throw new Error('media-metadata');
+    if (meta.d > MAX_SECONDS) { say(`// 🈯 subtítulos: el vídeo dura ${Math.round(meta.d)} s; el automático llega hasta ${MAX_SECONDS} s`); return {skipped: 'largo'}; }
     say(`🈯 subtítulos ${dir.to.toUpperCase()}: extrayendo audio…`);
     let audio = null;
     await ffmpegQueue(() => engine.encode(it.url, {args: audioArgs(), outputs: [{file: 'audio.mp3'}]}, () => {}, (_, b) => { audio = b; }));
     if (!audio?.size) throw new Error('audio');
     say(`🈯 subtítulos ${dir.to.toUpperCase()}: transcribiendo y traduciendo…`);
-    const r = await f(SUBTITLES_URL, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({audio: await b64(audio), from: dir.from, to: dir.to})});
+    const r = await f(SUBTITLES_URL, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({audio: await b64(audio), ...(dir.from !== 'auto' ? {from: dir.from} : {}), to: dir.to})});
     const d = await r.json().catch(() => ({}));
     if (!r.ok || !d.ok) throw new Error(d.error || ('HTTP ' + r.status));
+    if (d.to !== dir.to) throw new Error('subtitle-language');
     if (!d.cues?.length) { say('// 🈯 subtítulos: no se ha detectado voz en el vídeo'); return {skipped: 'sin-voz'}; }
-    const srtURL = URL.createObjectURL(new Blob([d.srt], {type: 'text/plain'}));
+    if (!Array.isArray(d.cues) || d.cues.some(c => !Number.isFinite(c.start) || !Number.isFinite(c.end) || c.start < 0 || c.end <= c.start || c.end > meta.d + .25 || typeof c.text !== 'string' || !c.text.trim())) throw new Error('subtitle-cues');
+    const srt = toSrt(d.cues);
+    const srtURL = URL.createObjectURL(new Blob([srt], {type: 'text/plain'}));
     let out = null;
     try {
       await ffmpegQueue(() => engine.encode(it.url, {args: burnArgs(meta.w, meta.h), durationSeconds: meta.d,
@@ -125,10 +145,10 @@ export async function maybeSubtitle(it, ctx = {}) {
         s => s.phase === 'encoding' && say(`🈯 subtítulos ${dir.to.toUpperCase()}: quemando ${Math.round((s.progress || 0) * 100)} %`), (_, b) => { out = b; }));
     } finally { URL.revokeObjectURL(srtURL); }
     if (!out) throw new Error('encoding');
-    const {publishAdaptation} = await import('/adaptaciones/stock-publish.mjs');
+    const publishAdaptation = ctx.publish || (await import('/adaptaciones/stock-publish.mjs')).publishAdaptation;
     const title = [String(it.title || '').trim() || 'Vídeo', `subtítulos ${dir.to.toUpperCase()}`].join(' · ').slice(0, 300);
     const p = await publishAdaptation(out, {title, originId: it.id, format: `subtitulado-${dir.to}`, width: meta.w, height: meta.h, duration: meta.d, type: 'video'},
-      {tags: subtitledTags(it.tags, dir, it.id), externalRef: it.id, comment: `Subtítulos ${d.from.toUpperCase()}→${dir.to.toUpperCase()} (Workers AI) de ${it.id}\n\n${d.srt}`.slice(0, 4000)});
+      {tags: subtitledTags(tagsOf(it), dir, it.id), externalRef: it.id, comment: `Subtítulos ${String(d.from || 'auto').toUpperCase()}→${dir.to.toUpperCase()} (Workers AI) de ${it.id}\n\n${srt}`.slice(0, 4000)});
     if (!p.ok) throw new Error(p.error || 'publish');
     say(`✓ subtítulos ${dir.to.toUpperCase()} quemados y guardados (${d.cues.length} frases)`);
     try { ctx.onCreated?.(p.id); } catch (_) {}
@@ -136,7 +156,10 @@ export async function maybeSubtitle(it, ctx = {}) {
   } catch (e) {
     say(`// 🈯 subtítulos ${dir.to.toUpperCase()}: no se pudieron generar (${String(e?.message || e).slice(0, 60)}) · clic en la insignia para copiar el encargo`);
     return {ok: false, error: String(e?.message || e)};
-  } finally { running.delete(it.id); }
+  } finally {
+    running.delete(it.id);
+    try { ctx.onSettled?.(); } catch (_) {}
+  }
 }
 
 // Insignia visible en la tarjeta mientras falten los subtítulos (clic = copiar el encargo para la caja).
