@@ -142,3 +142,17 @@ test('un fallo deja de mostrarse en curso antes de repintar la insignia', async 
   const result = await maybeSubtitle(it, ctx);
   assert.equal(result.ok, false); assert.equal(settled, false);
 });
+
+test('publicación confirmada actualiza la galería antes de repintar, sin esperar al índice', async () => {
+  const it = original(), {ctx, calls} = subtitleHarness();
+  ctx.onCreated = async (id, item) => {
+    await Promise.resolve();
+    assert.equal(item.id, id); assert.equal(item.externalRef, it.id);
+    assert.deepEqual(item.validacion, {ok: true, ancho: 640, alto: 360, duracion: 2});
+    ctx.items.push(item);
+  };
+  ctx.onSettled = () => {assert.equal(pendingInfo(it, ctx.items), null);};
+  assert.equal((await maybeSubtitle(it, ctx)).ok, true);
+  assert.deepEqual(await maybeSubtitle(it, ctx), {skipped: 'ya-existe'});
+  assert.equal(calls.published.length, 1);
+});

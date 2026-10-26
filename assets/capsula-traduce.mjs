@@ -147,11 +147,15 @@ export async function maybeSubtitle(it, ctx = {}) {
     if (!out) throw new Error('encoding');
     const publishAdaptation = ctx.publish || (await import('/adaptaciones/stock-publish.mjs')).publishAdaptation;
     const title = [String(it.title || '').trim() || 'Vídeo', `subtítulos ${dir.to.toUpperCase()}`].join(' · ').slice(0, 300);
-    const p = await publishAdaptation(out, {title, originId: it.id, format: `subtitulado-${dir.to}`, width: meta.w, height: meta.h, duration: meta.d, type: 'video'},
-      {tags: subtitledTags(tagsOf(it), dir, it.id), externalRef: it.id, comment: `Subtítulos ${String(d.from || 'auto').toUpperCase()}→${dir.to.toUpperCase()} (Workers AI) de ${it.id}\n\n${srt}`.slice(0, 4000)});
+    const extra = {tags: subtitledTags(tagsOf(it), dir, it.id), externalRef: it.id,
+      comment: `Subtítulos ${String(d.from || 'auto').toUpperCase()}→${dir.to.toUpperCase()} (Workers AI) de ${it.id}\n\n${srt}`.slice(0, 4000)};
+    const p = await publishAdaptation(out, {title, originId: it.id, format: `subtitulado-${dir.to}`, width: meta.w, height: meta.h, duration: meta.d, type: 'video'}, extra);
     if (!p.ok) throw new Error(p.error || 'publish');
     say(`✓ subtítulos ${dir.to.toUpperCase()} quemados y guardados (${d.cues.length} frases)`);
-    try { ctx.onCreated?.(p.id); } catch (_) {}
+    // Use the confirmed publication immediately. A short /stock/list page may
+    // omit it while the public index is rebuilding, leaving a false pending badge.
+    try { await ctx.onCreated?.(p.id, {id: p.id, num: p.num, type: 'video', motor: 'adaptador', mime: 'video/mp4', title, ...extra,
+      validacion: {ok: true, ancho: meta.w, alto: meta.h, duracion: meta.d}}); } catch (_) {}
     return {ok: true, id: p.id, cues: d.cues.length};
   } catch (e) {
     say(`// 🈯 subtítulos ${dir.to.toUpperCase()}: no se pudieron generar (${String(e?.message || e).slice(0, 60)}) · clic en la insignia para copiar el encargo`);
