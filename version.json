@@ -1,6 +1,6 @@
 {
-  "version": "v.26.10.2026.r2.22:34",
-  "deployedAt": "2026-10-26T22:34:42.950152+01:00",
+  "version": "v.26.10.2026.r3.23:08",
+  "deployedAt": "2026-10-26T23:08:24.369449+01:00",
   "author": "DeepAgent Trinity",
   "agent": "Trinity",
   "deployer": "DeepAgent Trinity",
@@ -11,6 +11,7 @@
   "gitShort": "46dc249",
   "dirty": false,
   "novedades": [
+    "Importer1.0.2: subtítulos ES/EN y copias vertical/horizontal; subtítulos sobre formato final, máximo dos líneas y voz original intacta.",
     "Subtítulos: la copia confirmada aparece inmediatamente en Stock y retira la marca pendiente, sin esperar al índice.",
     "Importador: cápsulas con subtítulos en castellano desde la web y lectura de vídeo con FFmpeg, conservando imagen, voz y extensión instalada.",
     "AdmiraStudioImporter 1.0.1: el botón de YouTube abre el panel lateral dentro del gesto del usuario, sin el error «Abre la extensión».",
@@ -78,7 +79,8 @@
     ".source-patches/admira-studio-importer.json",
     ".source-patches/stock-process-dock.json",
     ".source-patches/admira-studio-importer-webstore.json",
-    ".source-patches/importer-auto-subtitles-web.json"
+    ".source-patches/importer-auto-subtitles-web.json",
+    ".source-patches/importer-spanish-subtitles.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",

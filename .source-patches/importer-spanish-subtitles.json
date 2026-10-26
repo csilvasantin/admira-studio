@@ -3,8 +3,8 @@
   "domain": "admira.studio",
   "sourceRepository": "csilvasantin/admira-studio",
   "canonicalBase": "744f63504d4e053b95c3a31231028a81f1f84858",
-  "reason": "Carlos (26-oct-2026): actualizar el Importer con subtítulos ES/EN o ninguno y adaptación vertical 9:16, horizontal 16:9 o ambos, conservando originales y voz.",
-  "status": "extension-and-format-web-draft",
+  "reason": "Carlos: probar un vídeo real completo con ES vertical/horizontal y, si pasa, desplegar la web y enviar1.0.2 a Google con publicación diferida, conservando instalada1.0.1.",
+  "status": "release-authorized-deferred-store-publish",
   "extensionVersion": "1.0.2",
   "publishedExtensionVersion": "1.0.1",
   "requiresWebAndExtensionRelease": true,
@@ -33,7 +33,9 @@
     "assets/importer-options.mjs",
     "scripts/package-importer.py",
     "test/importer-options-flow.test.mjs",
-    "test/importer-capsule-tags.test.mjs"
+    "test/importer-capsule-tags.test.mjs",
+    "assets/subtitle-layout.mjs",
+    "test/subtitle-layout.test.mjs"
   ],
   "security": {
     "newPermissions": false,

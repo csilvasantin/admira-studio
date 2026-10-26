@@ -9,7 +9,7 @@
 - Precio: `Gratis`
 - Visibilidad: `Pública`
 - Regiones: `Todas las regiones`
-- Sitio web: `https://www.admira.studio/`
+- Sitio web: `https://www.admira.studio/extensions/admira-studio-importer/support`
 - Soporte: `https://www.admira.studio/extensions/admira-studio-importer/support`
 - Privacidad: `https://www.admira.studio/extensions/admira-studio-importer/privacy`
 
@@ -22,10 +22,15 @@ Funciones principales:
 - Detecta vídeos, Shorts y directos de YouTube.
 - Importa vídeo MP4 o extrae audio MP3.
 - Permite añadir comentarios y etiquetas antes de importar.
+- Subtítulos visibles en castellano o inglés, con detección del idioma original y sin cambiar la voz.
+- Copias verticales 9:16, horizontales 16:9 o ambas, conservando la imagen completa sobre fondo desenfocado.
+- Mantiene el original y evita repetir copias ya generadas.
 - Abre un panel lateral persistente con miniatura, título y canal.
 - Ofrece botón dentro de YouTube, icono de extensión, menú contextual y atajo Alt+Shift+A.
 - Inicia automáticamente la importación o la deja preparada para confirmarla.
 - Muestra el progreso dentro del Stock de Admira Studio.
+
+Los subtítulos y las adaptaciones se procesan en Admira Studio para vídeos de hasta tres minutos. Mantén Stock abierto y revisa la transcripción automática antes de utilizarla. Las opciones se eligen para cada vídeo y se desactivan al importar solo audio.
 
 La extensión es gratuita, no contiene anuncios, no incorpora analítica y no descarga el contenido por su cuenta. Para completar la importación se necesita una cuenta autorizada de Admira Studio.
 

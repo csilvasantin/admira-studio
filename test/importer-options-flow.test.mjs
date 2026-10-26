@@ -38,19 +38,21 @@ test('ambos genera dos destinos desde cuadrado, respeta originales y se deduplic
   assert.deepEqual(await maybeGenerateAlternate(it,ctx),{skipped:'ya-existe'});
   assert.equal(calls.published.length,2);
 });
-test('subtítulos y formato se ejecutan en orden con una sola transcripción',async()=>{
+test('subtítulos se componen sobre el formato final con una sola transcripción y sin segunda adaptación',async()=>{
   const it={id:'english',type:'video',url:'https://media.test/source',tags:['capsula','subtitulos-es','adaptar-vertical']};
   const {ctx,calls}=formatHarness();ctx.mediaSize=async()=>({w:640,h:360,d:3});
   assert.deepEqual(await maybeGenerateAlternate(it,ctx),{skipped:'espera-subtitulos'});
-  let aiCalls=0;
+  let aiCalls=0;const jobs=[],published=[];
   const result=await maybeSubtitle(it,{items:ctx.items,videoMeta:ctx.mediaSize,
-    engine:{encode:async(url,job,status,done)=>done({},new Blob(['data']))},
+    engine:{encode:async(url,job,status,done)=>{jobs.push(job);done({},new Blob(['data']));}},
     fetch:async()=>{aiCalls++;return Response.json({ok:true,from:'en',to:'es',cues:[{start:0,end:2,text:'Hola.'}]});},
-    publish:async()=>({ok:true,id:'spanish'}),
+    publish:async(blob,meta,extra)=>{published.push({meta,extra});return {ok:true,id:'spanish'};},
     onCreated:async(id,item)=>{ctx.items.push(item);await maybeGenerateAlternate({...item,url:'https://media.test/'+id},ctx);}});
-  assert.equal(result.ok,true);assert.equal(aiCalls,1);assert.deepEqual(calls.renders,['9:16']);
-  assert.ok(calls.published[0].extra.tags.includes('subtitulado-es'));
-  assert.equal(calls.published[0].extra.externalRef,'spanish');
+  assert.equal(result.ok,true);assert.equal(aiCalls,1);assert.deepEqual(calls.renders,[]);
+  assert.match(jobs[1].args[jobs[1].args.indexOf('-filter_complex')+1],/\[picture\]subtitles=subs.ass/);
+  assert.equal(published[0].meta.width,1080);assert.equal(published[0].meta.height,1920);
+  assert.ok(published[0].extra.tags.includes('subtitulado-es'));
+  assert.equal(published[0].extra.externalRef,'english');
   assert.deepEqual(await maybeSubtitle(it,{items:ctx.items}),{skipped:'ya-existe'});
 });
 test('si falla el segundo formato, al reintentar se conserva el primero y solo se genera el pendiente',async()=>{
