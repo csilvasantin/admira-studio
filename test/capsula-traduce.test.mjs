@@ -50,3 +50,95 @@ test('insignia pendiente y desaparece cuando existe la subtitulada', () => {
   assert.match(pendingInfo(it, [it]).label, /ES pendientes/);
   assert.equal(pendingInfo(it, [it, {id: 's9', tags: ['subtitulado-es', 'par-o9']}]), null);
 });
+
+test('destino explícito ES detecta el idioma y nunca cambia a inglés', () => {
+  assert.deepEqual(directionOf(['capsula', 'subtitulos-es']), {from: 'auto', to: 'es'});
+  assert.deepEqual(directionOf(['translate', 'subtitulos-es'], 'es'), {from: 'es', to: 'es'});
+  assert.deepEqual(directionOf(['subtitulos-es'], 'en'), {from: 'en', to: 'es'});
+  const it = {id: 'original', type: 'video', tags: ['capsula', 'subtitulos-es']};
+  assert.equal(alreadySubtitled(it, [{id: 'english', tags: ['subtitulado-en', 'par-original']}]), false);
+  assert.equal(alreadySubtitled(it, [{id: 'spanish', tags: ['subtitulado-es'], externalRef: 'original'}]), true);
+});
+
+test('las marcas de resultado y del original sobreviven al límite de etiquetas', () => {
+  const tags = subtitledTags(Array(12).fill('traduce'), {to: 'es'}, 'original');
+  assert.equal(tags.length, 12); assert.ok(tags.includes('subtitulado-es')); assert.ok(tags.includes('par-original'));
+});
+
+const original = () => ({id: 'capsule-fixture', url: 'https://media.example/capsule.mp4', type: 'video', title: 'Capsule', tags: ['capsula', 'subtitulos-es', 'cliente']});
+function subtitleHarness(response = {ok: true, from: 'en', to: 'es', cues: [{start: 0, end: 1, text: 'Hola, mundo.'}]}) {
+  const calls = {encodes: [], requests: [], published: []};
+  const ctx = {
+    items: [], videoMeta: async () => ({w: 640, h: 360, d: 2}),
+    engine: {async encode(url, job, status, result) {
+      calls.encodes.push({url, job});
+      if (job.extraFiles) calls.srt = await (await fetch(job.extraFiles[0].url)).text();
+      result({}, new Blob([job.outputs ? 'audio-fixture' : 'video-fixture']));
+    }},
+    fetch: async (url, init) => {calls.requests.push({url, body: JSON.parse(init.body)}); return Response.json(response, {status: response.ok ? 200 : 502});},
+    publish: async (blob, meta, extra) => {calls.published.push({blob, meta, extra}); return {ok: true, id: 'spanish-version'};},
+  };
+  return {ctx, calls};
+}
+
+test('pipeline: audio → transcripción ES → subtítulos visibles → nueva versión enlazada, original intacto', async () => {
+  const it = original(), before = structuredClone(it), {ctx, calls} = subtitleHarness();
+  const result = await maybeSubtitle(it, ctx);
+  assert.deepEqual(result, {ok: true, id: 'spanish-version', cues: 1});
+  assert.deepEqual(it, before);
+  assert.equal(calls.requests[0].url, '/stock-subtitles');
+  assert.equal(calls.requests[0].body.to, 'es'); assert.equal(calls.requests[0].body.from, undefined);
+  assert.equal(atob(calls.requests[0].body.audio), 'audio-fixture');
+  assert.match(calls.srt, /00:00:00,000 --> 00:00:01,000\nHola, mundo\./);
+  const args = calls.encodes[1].job.args;
+  assert.equal(args[args.indexOf('-c:a') + 1], 'copy');
+  assert.equal(args[args.indexOf('-crf') + 1], '18');
+  for (const option of ['-an', '-b:a', '-ar', '-ac', '-r', '-s']) assert.ok(!args.includes(option));
+  const p = calls.published[0];
+  assert.equal(p.meta.type, 'video'); assert.equal(p.extra.externalRef, it.id);
+  assert.ok(p.extra.tags.includes('subtitulado-es')); assert.ok(p.extra.tags.includes('cliente'));
+  assert.deepEqual(await maybeSubtitle({...it, id: 'spanish-version', tags: p.extra.tags}, ctx), {skipped: 'no-aplica'});
+});
+
+test('pipeline no publica si falla traducción, no hay voz o tiempos/idioma son incorrectos', async () => {
+  for (const response of [
+    {ok: false, error: 'translation-incomplete'},
+    {ok: true, to: 'es', cues: []},
+    {ok: true, to: 'en', cues: [{start: 0, end: 1, text: 'Hi'}]},
+    {ok: true, to: 'es', cues: [{start: 0, end: 8, text: 'Hola'}]},
+  ]) {
+    const {ctx, calls} = subtitleHarness(response), result = await maybeSubtitle(original(), ctx);
+    assert.ok(!result.ok); assert.equal(calls.published.length, 0); assert.equal(calls.encodes.length, 1);
+  }
+});
+
+test('pipeline limita la duración completa y evita trabajos simultáneos duplicados', async () => {
+  const {ctx, calls} = subtitleHarness();
+  ctx.videoMeta = async () => ({w: 640, h: 360, d: 180.2});
+  assert.deepEqual(await maybeSubtitle(original(), ctx), {skipped: 'largo'}); assert.equal(calls.encodes.length, 0);
+  ctx.videoMeta = async () => ({w: 640, h: 360, d: 2});
+  const results = await Promise.all([maybeSubtitle(original(), ctx), maybeSubtitle(original(), ctx)]);
+  assert.equal(results.filter(r => r.ok).length, 1); assert.equal(results[1].skipped, 'en-curso');
+});
+
+test('metadatos: usa el sondeo del motor sin crear un reproductor de Chrome', async () => {
+  const {ctx, calls} = subtitleHarness(); delete ctx.videoMeta;
+  ctx.engine.probe = async url => {calls.probed = url; return {w: 640, h: 360, d: 2};};
+  const result = await maybeSubtitle(original(), ctx);
+  assert.equal(result.ok, true); assert.equal(calls.probed, original().url); assert.equal(calls.published.length, 1);
+});
+
+test('un sondeo fallido no llama a la IA ni publica', async () => {
+  const {ctx, calls} = subtitleHarness(); delete ctx.videoMeta;
+  ctx.engine.probe = async () => {throw new Error('media-metadata');};
+  assert.deepEqual(await maybeSubtitle(original(), ctx), {ok: false, error: 'media-metadata'});
+  assert.equal(calls.encodes.length, 0); assert.equal(calls.requests.length, 0); assert.equal(calls.published.length, 0);
+});
+
+test('un fallo deja de mostrarse en curso antes de repintar la insignia', async () => {
+  const it = original(), {ctx} = subtitleHarness({ok: false, error: 'whisper'});
+  let settled;
+  ctx.onSettled = () => {settled = pendingInfo(it, []).running;};
+  const result = await maybeSubtitle(it, ctx);
+  assert.equal(result.ok, false); assert.equal(settled, false);
+});

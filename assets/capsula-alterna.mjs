@@ -81,7 +81,7 @@ async function renderImage(it, t) {
 // cancela el trabajo anterior si se le llama en paralelo, así que todo pasa por esta cola.
 let engine = null, tail = Promise.resolve();
 export async function sharedEngine() {
-  const {createEngine} = await import('/adaptaciones/adapter-export.js');
+  const {createEngine} = await import('/adaptaciones/adapter-export.js?v=20261026-probe');
   return (engine ||= createEngine());
 }
 export function ffmpegQueue(fn) { const run = tail.then(fn, fn); tail = run.catch(() => {}); return run; }
