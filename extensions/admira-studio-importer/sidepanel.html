@@ -15,7 +15,7 @@
         <strong>ADMIRA<span>STUDIO</span></strong>
         <small>IMPORTER <i></i> ONLINE</small>
       </div>
-      <span class="version">v1.0</span>
+      <span class="version">v1.0.2</span>
     </header>
 
     <section class="empty" id="emptyState" hidden>
@@ -41,12 +41,29 @@
 
       <section class="settings">
         <fieldset>
-          <legend>FORMATO DE DESTINO</legend>
+          <legend>IMPORTAR COMO</legend>
           <div class="format-switch">
             <label><input type="radio" name="format" value="video" checked><span>🎬 VIDEO<small>MP4 + audio</small></span></label>
             <label><input type="radio" name="format" value="audio"><span>🎵 AUDIO<small>MP3</small></span></label>
           </div>
         </fieldset>
+
+        <label class="field" for="subtitleLanguage">SUBTÍTULOS / SUBTITLES
+          <select id="subtitleLanguage" aria-describedby="processingHelp">
+            <option value="none">Sin subtítulos</option>
+            <option value="es">Castellano</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+        <label class="field" for="targetFormat">FORMATO DE LA COPIA
+          <select id="targetFormat" aria-describedby="processingHelp">
+            <option value="original">Conservar formato original</option>
+            <option value="vertical">Vertical · 9:16</option>
+            <option value="horizontal">Horizontal · 16:9</option>
+            <option value="both">Vertical y horizontal</option>
+          </select>
+        </label>
+        <p class="processing-help" id="processingHelp">Conserva el original y su voz. La copia se ajusta sin recortar la imagen, con fondo desenfocado. Máximo 3 minutos; mantén Stock abierto. Revisa los subtítulos automáticos antes de usarlos.</p>
 
         <label class="field">COMENTARIO <small>opcional</small>
           <textarea id="comment" maxlength="500" rows="3" placeholder="Contexto o notas para encontrarlo después…"></textarea>

@@ -89,7 +89,7 @@ test('pipeline: audio → transcripción ES → subtítulos visibles → nueva v
   assert.equal(calls.requests[0].url, '/stock-subtitles');
   assert.equal(calls.requests[0].body.to, 'es'); assert.equal(calls.requests[0].body.from, undefined);
   assert.equal(atob(calls.requests[0].body.audio), 'audio-fixture');
-  assert.match(calls.srt, /00:00:00,000 --> 00:00:01,000\nHola, mundo\./);
+  assert.match(calls.srt, /Dialogue: 0,0:00:00.00,0:00:01.00,Default,,0,0,0,,Hola, mundo\./);
   const args = calls.encodes[1].job.args;
   assert.equal(args[args.indexOf('-c:a') + 1], 'copy');
   assert.equal(args[args.indexOf('-crf') + 1], '18');

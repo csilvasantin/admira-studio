@@ -1,0 +1,47 @@
+name: Real Importer subtitles test
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Read-only access audit, or the real rendering test
+        type: choice
+        default: audit
+        options: [audit, render]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: importer-subtitles-real
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Audit Cloudflare access without inference or writes
+        if: inputs.mode != 'render'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/audit-workers-ai-auth.mjs
+      - name: Transcribe, translate, burn and verify the existing imported clip
+        if: inputs.mode == 'render'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node scripts/test-importer-subtitles-real.mjs
+      - name: Save the result and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: importer-spanish-subtitles-real
+          path: /tmp/importer-subtitles-real/
+          retention-days: 7
+          if-no-files-found: ignore

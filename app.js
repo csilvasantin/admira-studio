@@ -3120,7 +3120,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     const norm = t => String(t).trim().replace(/^#+/, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     const effective = [...tags, ...(String(comment || '').match(/#[\p{L}\p{N}_-]+/gu) || [])].map(norm);
     if (type !== 'video' || !effective.some(t => ['capsula', 'capsulas', 'capsule', 'capsules'].includes(t))
-      || effective.some(t => ['subtitulos-es', 'subtitular-es', 'subtitles-en', 'subtitle-en'].includes(t))) return tags;
+      || effective.some(t => ['subtitulos-es', 'subtitular-es', 'subtitles-en', 'subtitle-en', 'sin-subtitulos'].includes(t))) return tags;
     // Up to ten user tags plus this explicit destination fit the Stock limit of
     // twelve. Keep every user tag; this processing tag must survive classification.
     return ['subtitulos-es', ...tags];
