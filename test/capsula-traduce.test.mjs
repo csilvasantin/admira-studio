@@ -120,3 +120,31 @@ test('pipeline limita la duración completa y evita trabajos simultáneos duplic
   const results = await Promise.all([maybeSubtitle(original(), ctx), maybeSubtitle(original(), ctx)]);
   assert.equal(results.filter(r => r.ok).length, 1); assert.equal(results[1].skipped, 'en-curso');
 });
+
+test('metadatos: un vídeo reproducible sin CORS también puede subtitularse y libera su carga', async () => {
+  const {ctx, calls} = subtitleHarness(); delete ctx.videoMeta;
+  const previousDocument = globalThis.document;
+  let released = false;
+  globalThis.document = {createElement() {return {
+    videoWidth: 640, videoHeight: 360, duration: 2,
+    // Model an otherwise playable cached media response without CORS headers.
+    set crossOrigin(_) {throw new Error('anonymous metadata load rejected');},
+    set src(_) {queueMicrotask(() => this.onloadedmetadata?.());},
+    removeAttribute(name) {if (name === 'src') released = true;}, load() {},
+  };}};
+  try {
+    const result = await maybeSubtitle(original(), ctx);
+    assert.equal(result.ok, true); assert.equal(released, true); assert.equal(calls.published.length, 1);
+  } finally {
+    if (previousDocument === undefined) delete globalThis.document;
+    else globalThis.document = previousDocument;
+  }
+});
+
+test('un fallo deja de mostrarse en curso antes de repintar la insignia', async () => {
+  const it = original(), {ctx} = subtitleHarness({ok: false, error: 'whisper'});
+  let settled;
+  ctx.onSettled = () => {settled = pendingInfo(it, []).running;};
+  const result = await maybeSubtitle(it, ctx);
+  assert.equal(result.ok, false); assert.equal(settled, false);
+});

@@ -25,6 +25,8 @@
     "test/admira-studio-importer.test.mjs",
     "test/capsula-traduce.test.mjs",
     "test/stock-subtitles.test.mjs",
+    "scripts/test-importer-subtitles-real.mjs",
+    ".github/workflows/test-importer-subtitles.yml",
     ".source-patches/importer-spanish-subtitles.json"
   ],
   "security": {

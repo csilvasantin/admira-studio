@@ -23,8 +23,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Install media inspector
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - name: Transcribe, translate, burn and verify the existing imported clip
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

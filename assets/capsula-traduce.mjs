@@ -117,7 +117,7 @@ function videoMeta(it) {
     v.onerror = () => finish(new Error('media')); v.src = it.url; });
 }
 const running = new Set();
-// ctx: {items, onStatus(text), onCreated(id), fetch}; optional media/engine/publisher adapters.
+// ctx: {items, onStatus(text), onCreated(id), onSettled(), fetch}; optional media/engine/publisher adapters.
 // Devuelve {ok,id} | {skipped} | {ok:false,error}.
 export async function maybeSubtitle(it, ctx = {}) {
   if (!qualifiesTranslation(it)) return {skipped: 'no-aplica'};
@@ -165,7 +165,10 @@ export async function maybeSubtitle(it, ctx = {}) {
   } catch (e) {
     say(`// 🈯 subtítulos ${dir.to.toUpperCase()}: no se pudieron generar (${String(e?.message || e).slice(0, 60)}) · clic en la insignia para copiar el encargo`);
     return {ok: false, error: String(e?.message || e)};
-  } finally { running.delete(it.id); }
+  } finally {
+    running.delete(it.id);
+    try { ctx.onSettled?.(); } catch (_) {}
+  }
 }
 
 // Insignia visible en la tarjeta mientras falten los subtítulos (clic = copiar el encargo para la caja).

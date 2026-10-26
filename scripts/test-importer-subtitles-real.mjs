@@ -5,7 +5,6 @@
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {createHmac,randomBytes} from 'node:crypto';
 import {createRequire} from 'node:module';
-import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import {maybeSubtitle} from '../assets/capsula-traduce.mjs';
@@ -37,12 +36,22 @@ env.AI={async run(model,input){
 try{
  const src=await f(source.url,{headers:{'User-Agent':'Mozilla/5.0'}});assert.equal(src.status,200);const bytes=new Uint8Array(await src.arrayBuffer());assert.equal(bytes.length,744412);
  await writeFile(path.join(out,'original.mp4'),bytes);
- const probe=file=>JSON.parse(execFileSync('ffprobe',['-v','error','-show_streams','-show_format','-of','json',path.join(out,file)],{encoding:'utf8'}));
- const before=probe('original.mp4'),v=before.streams.find(s=>s.codec_type==='video');
  for(const name of ['ffmpeg-core.js','ffmpeg-core.wasm']){const r=await f(new URL(name,runtime));assert.ok(r.ok);await writeFile(path.join(out,name==='ffmpeg-core.js'?'ffmpeg-core.cjs':name),new Uint8Array(await r.arrayBuffer()));}
  globalThis.self={location:{href:new URL('file://'+out+'/ffmpeg-core.cjs').href}};
  const core=await createRequire(import.meta.url)(path.join(out,'ffmpeg-core.cjs'))({wasmBinary:await readFile(path.join(out,'ffmpeg-core.wasm'))});
  core.setLogger(()=>{});core.FS.writeFile('input',bytes);
+ const probe=file=>{
+  try{core.FS.unlink('probe.json');}catch{}
+  core.ffprobe('-v','error','-show_streams','-show_format','-of','json','-o','probe.json',file);core.reset();
+  const d=JSON.parse(core.FS.readFile('probe.json',{encoding:'utf8'}));
+  assert.ok(d.streams.length&&Number.isFinite(+d.format.duration));return d;
+ };
+ const before=probe('input'),v=before.streams.find(s=>s.codec_type==='video');
+ const hash=file=>{
+  core.exec('-i',file,'-map','0:a:0','-c:a','copy','-f','hash','-hash','SHA256','audio.hash');
+  const code=core.ret;core.reset();assert.equal(code,0);
+  return core.FS.readFile('audio.hash',{encoding:'utf8'}).trim();
+ };
  const engine={async encode(url,job,onStatus,onResult){
   for(const x of job.extraFiles||[]){if(x.name.includes('/'))try{core.FS.mkdir(x.name.split('/')[0]);}catch{}
    const b=x.url.startsWith('/assets/')?new Uint8Array(await readFile(path.resolve('.'+x.url))):new Uint8Array(await(await f(x.url)).arrayBuffer());core.FS.writeFile(x.name,b);}
@@ -65,9 +74,8 @@ try{
  const result=await maybeSubtitle(source,{items:[],videoMeta:async()=>({w:v.width,h:v.height,d:+before.format.duration}),engine,fetch:workerFetch,
   onStatus:message=>console.log(message),publish:async(blob,meta,extra)=>{
    await writeFile(path.join(out,'me-at-the-zoo-subtitulos-castellano.mp4'),new Uint8Array(await blob.arrayBuffer()));
-   const after=probe('me-at-the-zoo-subtitulos-castellano.mp4'),a=after.streams.find(s=>s.codec_type==='video');
-   const hash=file=>execFileSync('ffmpeg',['-v','error','-i',path.join(out,file),'-map','0:a:0','-c:a','copy','-f','hash','-hash','SHA256','-'],{encoding:'utf8'}).trim();
-   assert.equal(hash('original.mp4'),hash('me-at-the-zoo-subtitulos-castellano.mp4'));
+   const after=probe('output.mp4'),a=after.streams.find(s=>s.codec_type==='video');
+   assert.equal(hash('input'),hash('output.mp4'));
    assert.equal(a.width,v.width);assert.equal(a.height,v.height);assert.equal(a.avg_frame_rate,v.avg_frame_rate);
    report.audioBitstreamIdentical=true;report.width=a.width;report.height=a.height;report.frameRate=a.avg_frame_rate;report.durationSeconds=+after.format.duration;
    // Publish only the verified derivative, using the existing real publisher.
