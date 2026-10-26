@@ -12,7 +12,7 @@
  * whisper-large-v3-turbo + m2m100-1.2b) → quemado con libass en el navegador → /stock-publish.
  * Si algo falla, la insignia «subtítulos XX pendientes» sigue ahí y copia el encargo para la caja.
  */
-import {norm, pairTag, isCapsuleTag, PILLARS, ALT_TAG, MAX_TAGS} from './capsula-alterna.mjs';
+import {norm, pairTag, isCapsuleTag, PILLARS, ALT_TAG, MAX_TAGS} from './capsula-alterna.mjs?v=20261026-probe';
 
 const ES_SUBS = {from: 'en', to: 'es'}, EN_SUBS = {from: 'es', to: 'en'};
 // Alias (24-oct-2026, Carlos importó con #traducir y no pasó nada): palabra española → subtítulos ES
@@ -106,16 +106,6 @@ const b64 = async blob => {
   for (let i = 0; i < bytes.length; i += 32768) text += String.fromCharCode(...bytes.subarray(i, i + 32768));
   return btoa(text);
 };
-function videoMeta(it) {
-  // Reading duration/dimensions does not require a CORS-enabled media element.
-  // Keep the same loading mode as Stock's player; the encoder fetches bytes with
-  // CORS separately. A cached non-CORS player response can reject an anonymous load.
-  return new Promise((resolve, reject) => { const v = document.createElement('video'); v.preload = 'metadata';
-    const finish = (error, meta) => { clearTimeout(timer); v.onloadedmetadata = v.onerror = null; v.removeAttribute('src'); v.load(); error ? reject(error) : resolve(meta); };
-    const timer = setTimeout(() => finish(new Error('media-timeout')), 15000);
-    v.onloadedmetadata = () => finish(null, {w: v.videoWidth, h: v.videoHeight, d: v.duration});
-    v.onerror = () => finish(new Error('media')); v.src = it.url; });
-}
 const running = new Set();
 // ctx: {items, onStatus(text), onCreated(id), onSettled(), fetch}; optional media/engine/publisher adapters.
 // Devuelve {ok,id} | {skipped} | {ok:false,error}.
@@ -129,11 +119,12 @@ export async function maybeSubtitle(it, ctx = {}) {
   const f = ctx.fetch || ((...a) => fetch(...a));
   running.add(it.id);
   try {
-    const meta = await (ctx.videoMeta || videoMeta)(it);
+    const {sharedEngine, ffmpegQueue} = await import('./capsula-alterna.mjs?v=20261026-probe');
+    const engine = ctx.engine || await sharedEngine();
+    say(`🈯 subtítulos ${dir.to.toUpperCase()}: leyendo vídeo…`);
+    const meta = ctx.videoMeta ? await ctx.videoMeta(it) : await ffmpegQueue(() => engine.probe(it.url));
     if (![meta.w, meta.h, meta.d].every(n => Number.isFinite(n) && n > 0)) throw new Error('media-metadata');
     if (meta.d > MAX_SECONDS) { say(`// 🈯 subtítulos: el vídeo dura ${Math.round(meta.d)} s; el automático llega hasta ${MAX_SECONDS} s`); return {skipped: 'largo'}; }
-    const {sharedEngine, ffmpegQueue} = await import('./capsula-alterna.mjs');
-    const engine = ctx.engine || await sharedEngine();
     say(`🈯 subtítulos ${dir.to.toUpperCase()}: extrayendo audio…`);
     let audio = null;
     await ffmpegQueue(() => engine.encode(it.url, {args: audioArgs(), outputs: [{file: 'audio.mp3'}]}, () => {}, (_, b) => { audio = b; }));

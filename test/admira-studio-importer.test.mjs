@@ -74,6 +74,8 @@ test('Admira Studio recibe el handoff, limpia la URL e inicia el importador', ()
   assert.match(app, /chromeImportButton\?\.click\(\)/);
 });
 
+
+
 test('privacidad y soporte son públicos para la ficha de Chrome Web Store', () => {
   const middleware = readFileSync('functions/_middleware.js', 'utf8');
   for (const page of ['privacy', 'privacy.html', 'support', 'support.html']) {

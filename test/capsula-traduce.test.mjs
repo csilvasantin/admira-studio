@@ -121,24 +121,18 @@ test('pipeline limita la duración completa y evita trabajos simultáneos duplic
   assert.equal(results.filter(r => r.ok).length, 1); assert.equal(results[1].skipped, 'en-curso');
 });
 
-test('metadatos: un vídeo reproducible sin CORS también puede subtitularse y libera su carga', async () => {
+test('metadatos: usa el sondeo del motor sin crear un reproductor de Chrome', async () => {
   const {ctx, calls} = subtitleHarness(); delete ctx.videoMeta;
-  const previousDocument = globalThis.document;
-  let released = false;
-  globalThis.document = {createElement() {return {
-    videoWidth: 640, videoHeight: 360, duration: 2,
-    // Model an otherwise playable cached media response without CORS headers.
-    set crossOrigin(_) {throw new Error('anonymous metadata load rejected');},
-    set src(_) {queueMicrotask(() => this.onloadedmetadata?.());},
-    removeAttribute(name) {if (name === 'src') released = true;}, load() {},
-  };}};
-  try {
-    const result = await maybeSubtitle(original(), ctx);
-    assert.equal(result.ok, true); assert.equal(released, true); assert.equal(calls.published.length, 1);
-  } finally {
-    if (previousDocument === undefined) delete globalThis.document;
-    else globalThis.document = previousDocument;
-  }
+  ctx.engine.probe = async url => {calls.probed = url; return {w: 640, h: 360, d: 2};};
+  const result = await maybeSubtitle(original(), ctx);
+  assert.equal(result.ok, true); assert.equal(calls.probed, original().url); assert.equal(calls.published.length, 1);
+});
+
+test('un sondeo fallido no llama a la IA ni publica', async () => {
+  const {ctx, calls} = subtitleHarness(); delete ctx.videoMeta;
+  ctx.engine.probe = async () => {throw new Error('media-metadata');};
+  assert.deepEqual(await maybeSubtitle(original(), ctx), {ok: false, error: 'media-metadata'});
+  assert.equal(calls.encodes.length, 0); assert.equal(calls.requests.length, 0); assert.equal(calls.published.length, 0);
 });
 
 test('un fallo deja de mostrarse en curso antes de repintar la insignia', async () => {
