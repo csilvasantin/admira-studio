@@ -12,7 +12,8 @@
  * whisper-large-v3-turbo + m2m100-1.2b) → quemado con libass en el navegador → /stock-publish.
  * Si algo falla, la insignia «subtítulos XX pendientes» sigue ahí y copia el encargo para la caja.
  */
-import {norm, pairTag, isCapsuleTag, PILLARS, ALT_TAG, MAX_TAGS} from './capsula-alterna.mjs?v=20261026-probe';
+import {norm, pairTag, isCapsuleTag, PILLARS, ALT_TAG, MAX_TAGS} from './capsula-alterna.mjs?v=20261026-importer-options';
+import {SUBTITLE_OFF, isFormatRequestTag} from './importer-options.mjs';
 
 const ES_SUBS = {from: 'en', to: 'es'}, EN_SUBS = {from: 'es', to: 'en'};
 // Alias (24-oct-2026, Carlos importó con #traducir y no pasó nada): palabra española → subtítulos ES
@@ -49,7 +50,8 @@ export function directionOf(tags, lang) {
   return d;
 }
 export const isSubtitled = it => tagsOf(it).some(t => norm(t).startsWith(SUB_PREFIX));
-export const qualifiesTranslation = it => !!it && it.type === 'video' && !isSubtitled(it) && !!directionOf(tagsOf(it), langOf(it));
+export const qualifiesTranslation = it => !!it && it.type === 'video' && !isSubtitled(it)
+  && !tagsOf(it).some(t => norm(t) === SUBTITLE_OFF) && !!directionOf(tagsOf(it), langOf(it));
 export function alreadySubtitled(it, items) {
   const p = pairTag(it.id);
   const dir = directionOf(tagsOf(it), langOf(it));
@@ -61,7 +63,7 @@ export function alreadySubtitled(it, items) {
 // Etiquetas de la subtitulada: cápsula, pilar y #traduce/#translate siempre; luego marca y par; tope 12.
 export function subtitledTags(tags, dir, id) {
   const base = (tags || []).filter(t => !norm(t).startsWith('par-') && !norm(t).startsWith(SUB_PREFIX) && norm(t) !== ALT_TAG);
-  const keep = base.filter(t => isCapsuleTag(t) || Object.values(PILLARS).flat().includes(norm(t)) || DIRECTIONS[norm(t)]);
+  const keep = base.filter(t => isCapsuleTag(t) || Object.values(PILLARS).flat().includes(norm(t)) || DIRECTIONS[norm(t)] || isFormatRequestTag(t));
   const rest = base.filter(t => !keep.includes(t));
   const required = [subTag(dir.to), ...(id ? [pairTag(id)] : [])];
   return [...keep.slice(0, MAX_TAGS - required.length), ...required, ...rest].slice(0, MAX_TAGS);
@@ -119,7 +121,7 @@ export async function maybeSubtitle(it, ctx = {}) {
   const f = ctx.fetch || ((...a) => fetch(...a));
   running.add(it.id);
   try {
-    const {sharedEngine, ffmpegQueue} = await import('./capsula-alterna.mjs?v=20261026-probe');
+    const {sharedEngine, ffmpegQueue} = await import('./capsula-alterna.mjs?v=20261026-importer-options');
     const engine = ctx.engine || await sharedEngine();
     say(`🈯 subtítulos ${dir.to.toUpperCase()}: leyendo vídeo…`);
     const meta = ctx.videoMeta ? await ctx.videoMeta(it) : await ffmpegQueue(() => engine.probe(it.url));

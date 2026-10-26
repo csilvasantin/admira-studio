@@ -32,15 +32,23 @@ Para desarrollar una versión nueva en un perfil de pruebas, utiliza esta carpet
 4. Selecciona esta carpeta: `extensions/admira-studio-importer`.
 5. Abre cualquier vídeo o Short de YouTube.
 
-## Cápsulas con subtítulos ES
+## Subtítulos y formatos (1.0.2 en desarrollo)
 
-La corrección web está publicada desde PR140. Con la extensión instalada **1.0.1** basta marcar un vídeo nuevo con `#capsula` (o `#cápsula`) en Etiquetas o Comentarios: la web fija el destino `subtitulos-es`. Las etiquetas del usuario se conservan, el audio y las importaciones sin marca de cápsula no activan este trabajo. No hace falta reinstalar ni actualizar la extensión. La casilla siguiente pertenece a **1.0.2 en desarrollo**, todavía sin publicar en la tienda.
+La versión instalada 1.0.1 se mantiene intacta. En ella, la corrección web ya publicada permite pedir ES marcando un vídeo con `#capsula` en Etiquetas o Comentarios. La versión 1.0.2 añade dos selectores por vídeo: **Subtítulos / Subtitles: ninguno, castellano o inglés**, y **Formato de la copia: original, vertical 9:16, horizontal 16:9 o ambos**. Se restablecen al cambiar de vídeo y se desactivan en audio; no se guardan como preferencias.
 
-La casilla solo se ofrece para vídeo y se desmarca al cambiar de vídeo o elegir audio. No se guarda como preferencia ni activa trabajos desde el atajo o menú contextual. El handoff existente entrega `capsula, subtitulos-es` junto con las etiquetas del usuario; no añade credenciales, permisos ni llamadas de IA a la extensión. Si se exceden diez etiquetas o 400 caracteres, el panel pide corregirlas antes de importar.
+El handoff conserva su formato existente. Transporta las opciones con etiquetas funcionales explícitas: `subtitulos-es`, `subtitles-en` o `sin-subtitulos`; `formato-original`, `adaptar-vertical`, `adaptar-horizontal` o `adaptar-ambos`. Las elecciones actuales sustituyen otras etiquetas de opción contradictorias; las etiquetas de cliente se conservan. Si se exceden diez etiquetas o 400 caracteres, el panel pide corregirlas antes de importar.
 
-Stock reutiliza `assets/capsula-traduce.mjs`: extrae audio con FFmpeg WASM, llama a `/stock-subtitles` con destino `es` y detección automática del idioma, quema el SRT en otro MP4 y lo publica enlazado al original mediante `externalRef` y `par-<id>`. Las versiones `subtitulado-es` no vuelven a disparar el proceso; una versión EN previa no impide crear la ES. Se conserva la sesión y el publicador existentes. Sin voz, traducción incompleta o vídeo de más de 180 segundos no se publica una copia parcial como si estuviese completa.
+Stock mantiene el original. Si se combinan subtítulos y formato, primero transcribe y traduce una vez, guarda la versión subtitulada y después adapta esa copia. Las copias de formato conservan la imagen completa sobre fondo desenfocado, la cadencia de origen y la pista de audio copiada. Una proporción ya existente se reutiliza; un cuadrado con «ambos» genera dos proporciones. La deduplicación distingue idioma y proporción, y un fallo parcial no vuelve a generar la copia ya guardada. El límite automático es de 180 segundos. La transcripción automática debe revisarse.
 
-La versión web debe incorporar también los cambios de `assets/capsula-traduce.mjs`, `assets/etiquetas-funcionales.mjs`, `functions/stock-subtitles.js` y su importación en `stock.html` antes de distribuir la extensión 1.0.2. No publicar solo el ZIP: el código web anterior puede invertir el destino cuando conoce que el audio está en español.
+Esta ampliación exige desplegar también `assets/importer-options.mjs`, los módulos de cápsulas/subtítulos, `app.js` y `stock.html` antes de enviar el paquete 1.0.2. La web actualmente publicada solo tiene las correcciones de PR140/141; los formatos explícitos de esta propuesta todavía no están desplegados. El ZIP candidato no debe distribuirse como actualización oficial antes de esa validación.
+
+Para preparar el paquete revisable, sin instalar ni enviar a Google:
+
+```sh
+python3 scripts/package-importer.py /ruta/de/salida/AdmiraStudioImporter-v1.0.2-candidate.zip
+```
+
+Para la actualización oficial se sube ese paquete completo a la ficha existente, con versión superior a 1.0.1, se actualizan capturas/textos y se envía a revisión. Se recomienda publicación diferida para verificar la web antes de distribuir. Fuente: https://developer.chrome.com/docs/webstore/update. No es necesario crear otra extensión ni otro ID.
 
 Cada vídeo entregado al importador es la referencia de imagen y voz. La copia subtitulada mantiene resolución, encuadre y cadencia; quemar los subtítulos requiere recodificar la imagen (H.264, CRF 18), por lo que no se promete identidad de píxeles ni mejora del original. La pista de audio se copia sin volver a comprimirla: no se sustituye por una voz sintetizada. La copia mono 16 kHz usada para reconocer voz solo se envía al transcriptor y nunca se usa como audio del vídeo final. Si el audio original no es compatible con el MP4 de salida, la generación informa del fallo en lugar de degradarlo silenciosamente.
 

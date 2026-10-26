@@ -11,6 +11,7 @@ test('el importador instalado 1.0.1 puede activar cápsulas ES con sus etiquetas
   assert.deepEqual(tags(['capsula'], '', 'audio'), ['capsula']);
   assert.deepEqual(tags(['cliente'], '', 'video'), ['cliente']);
   assert.deepEqual(tags(['capsula', 'subtitles-en'], '', 'video'), ['capsula', 'subtitles-en']);
+  assert.deepEqual(tags(['capsula', 'sin-subtitulos'], '', 'video'), ['capsula', 'sin-subtitulos']);
   const full = ['capsula', ...Array.from({length: 9}, (_, i) => 'cliente-' + i)];
   assert.deepEqual(tags(full, '', 'video'), ['subtitulos-es', ...full]);
 });

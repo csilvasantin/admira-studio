@@ -100,6 +100,21 @@ test('cápsula ES: handoff usa etiquetas existentes, sin credenciales ni permiso
   assert.equal(api.tagsForImport({format: 'video', tags: '#cliente'}), '#cliente');
 });
 
+test('subtítulos EN, ES o ninguno combinados con los cuatro formatos respetan la selección', () => {
+  const api = importerApi();
+  for (const language of ['none', 'es', 'en']) for (const targetFormat of ['original', 'vertical', 'horizontal', 'both']) {
+    const tags = api.tagsForImport({format:'video',subtitleLanguage:language,targetFormat,tags:'#cliente, #subtitulos-es, #adaptar-horizontal'}).split(', ');
+    assert.ok(tags.includes({none:'sin-subtitulos',es:'subtitulos-es',en:'subtitles-en'}[language]));
+    assert.ok(tags.includes({original:'formato-original',vertical:'adaptar-vertical',horizontal:'adaptar-horizontal',both:'adaptar-ambos'}[targetFormat]));
+    assert.ok(tags.includes('cliente'));
+    if (language !== 'es') assert.ok(!tags.includes('subtitulos-es'));
+    if (targetFormat !== 'horizontal') assert.ok(!tags.includes('adaptar-horizontal'));
+  }
+  assert.equal(api.tagsForImport({format:'audio',subtitleLanguage:'en',targetFormat:'both',tags:'#cliente'}),'#cliente');
+  assert.throws(()=>api.tagsForImport({subtitleLanguage:'fr'}),/idioma/);
+  assert.throws(()=>api.tagsForImport({targetFormat:'square'}),/formato/);
+});
+
 test('cápsula ES: no pierde etiquetas de cliente al exceder la capacidad del Stock', () => {
   const api = importerApi();
   assert.throws(() => api.tagsForImport({subtitleLanguage: 'es', tags: Array.from({length: 9}, (_, i) => 'cliente' + i).join(',')}), /máximo 10/);
@@ -108,7 +123,7 @@ test('cápsula ES: no pierde etiquetas de cliente al exceder la capacidad del St
   assert.equal(tags, 'capsula, subtitulos-es, cliente, negocio');
 });
 
-test('panel: la opción ES es por vídeo, se desactiva en audio y no queda como preferencia', async () => {
+test('panel: subtítulos y formato son por vídeo, se desactivan en audio y no quedan como preferencias', async () => {
   const elements = new Map();
   const element = id => {
     if (!elements.has(id)) elements.set(id, {id, value: '', checked: false, hidden: false, disabled: false, listeners: {}, addEventListener(name, fn) { this.listeners[name] = fn; }});
@@ -132,20 +147,24 @@ test('panel: la opción ES es por vídeo, se desactiva en audio y no queda como 
   }};
   vm.runInNewContext(read('sidepanel.js'), {document, chrome, AdmiraImporter: importerApi()});
   await new Promise(resolve => setImmediate(resolve));
-  const option = element('subtitleSpanish'); option.checked = true;
+  const option = element('subtitleLanguage'); option.value = 'es';
+  const target = element('targetFormat'); target.value = 'vertical';
   element('autostart').checked = true;
   await element('importForm').listeners.submit({preventDefault() {}});
   assert.equal(messages[0].data.subtitleLanguage, 'es');
+  assert.equal(messages[0].data.targetFormat, 'vertical');
   assert.equal(saved[0].subtitleLanguage, undefined);
+  assert.equal(saved[0].targetFormat, undefined);
   assert.equal(saved[0].tags, '');
   assert.match(element('status').textContent, /castellano/);
   radios[0].checked = false; radios[1].checked = true; radios[1].listeners.change();
-  assert.equal(option.checked, false); assert.equal(option.disabled, true);
+  assert.equal(option.value, 'none'); assert.equal(option.disabled, true);
+  assert.equal(target.value, 'original'); assert.equal(target.disabled, true);
   radios[0].checked = true; radios[1].checked = false; radios[0].listeners.change();
-  option.checked = true;
+  option.value = 'es';
   tab = {...tab, url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'};
-  await events.activate(); assert.equal(option.checked, false);
-  option.checked = true;
+  await events.activate(); assert.equal(option.value, 'none'); assert.equal(target.value, 'original');
+  option.value = 'es';
   element('tags').value = Array.from({length: 9}, (_, i) => 'tag' + i).join(',');
   await element('importForm').listeners.submit({preventDefault() {}});
   assert.equal(messages.length, 1); assert.equal(saved.length, 1);

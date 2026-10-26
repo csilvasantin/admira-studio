@@ -3,12 +3,12 @@
   "domain": "admira.studio",
   "sourceRepository": "csilvasantin/admira-studio",
   "canonicalBase": "744f63504d4e053b95c3a31231028a81f1f84858",
-  "reason": "Carlos: preparar una opción para importar una cápsula y generar una versión con subtítulos en castellano de su audio, conservando la extensión instalada y el vídeo original.",
-  "status": "extension-draft-web-fix-published",
+  "reason": "Carlos (26-oct-2026): actualizar el Importer con subtítulos ES/EN o ninguno y adaptación vertical 9:16, horizontal 16:9 o ambos, conservando originales y voz.",
+  "status": "extension-and-format-web-draft",
   "extensionVersion": "1.0.2",
   "publishedExtensionVersion": "1.0.1",
-  "requiresWebAndExtensionRelease": false,
-  "sourceIntegration": "La corrección web se publicó separada como PR140 y .source-patches/importer-auto-subtitles-web.json. Este borrador conserva la extensión 1.0.2 sin publicar y sus pruebas; portar la fuente preservando las mejoras web, sin regenerar el espejo antiguo.",
+  "requiresWebAndExtensionRelease": true,
+  "sourceIntegration": "PR140/141 publicaron la corrección de carga y subtítulos ES. Esta ampliación en PR139 añade selectores y solicitudes explícitas de formato; requiere desplegar su parte web antes de enviar el ZIP1.0.2. Mantener los cambios propios de Studio al portar la fuente, sin regenerar el espejo antiguo.",
   "files": [
     "extensions/admira-studio-importer/manifest.json",
     "extensions/admira-studio-importer/shared.js",
@@ -27,7 +27,13 @@
     "test/stock-subtitles.test.mjs",
     "scripts/test-importer-subtitles-real.mjs",
     ".github/workflows/test-importer-subtitles.yml",
-    ".source-patches/importer-spanish-subtitles.json"
+    ".source-patches/importer-spanish-subtitles.json",
+    "app.js",
+    "assets/capsula-alterna.mjs",
+    "assets/importer-options.mjs",
+    "scripts/package-importer.py",
+    "test/importer-options-flow.test.mjs",
+    "test/importer-capsule-tags.test.mjs"
   ],
   "security": {
     "newPermissions": false,
@@ -35,7 +41,9 @@
     "changesInstalledExtension": false,
     "preservesOriginalMedia": true,
     "subtitleSelectionPersisted": false,
-    "requiresExistingStudioSession": true
+    "requiresExistingStudioSession": true,
+    "formatSelectionPersisted": false,
+    "preservesOriginalAudioBitstream": true
   },
   "webReleasePr": 140
 }

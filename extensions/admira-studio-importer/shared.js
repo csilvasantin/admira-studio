@@ -40,18 +40,27 @@
   // and reject overflow rather than silently losing a client or the subtitle request.
   function tagsForImport(data) {
     const raw = String((data && data.tags) || '').trim().slice(0, 400);
-    if (!data || data.subtitleLanguage !== 'es' || data.format === 'audio') return raw;
+    if (!data || data.format === 'audio') return raw;
+    const language = data.subtitleLanguage, targetFormat = data.targetFormat;
+    if (language && !['none', 'es', 'en'].includes(language)) throw new Error('Selecciona un idioma de subtítulos válido.');
+    if (targetFormat && !['original', 'vertical', 'horizontal', 'both'].includes(targetFormat)) throw new Error('Selecciona un formato válido.');
+    if (!language && !targetFormat) return raw;
     const text = raw.replace(/[\n;]+/g, ',');
     const parts = (text.includes(',') ? text.split(',') : text.split(/\s+/)).flatMap(p => p.split('#'));
-    const tags = ['capsula', 'subtitulos-es'];
+    const formatTags = {original: 'formato-original', vertical: 'adaptar-vertical', horizontal: 'adaptar-horizontal', both: 'adaptar-ambos'};
+    const tags = [language === 'es' || language === 'en' || ['vertical', 'horizontal', 'both'].includes(targetFormat) ? 'capsula' : null,
+      language === 'es' ? 'subtitulos-es' : language === 'en' ? 'subtitles-en' : language === 'none' ? 'sin-subtitulos' : null,
+      formatTags[targetFormat]].filter(Boolean);
     const key = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const superseded = [...(language ? ['subtitulos-es', 'subtitular-es', 'subtitles-en', 'subtitle-en', 'sin-subtitulos'] : []),
+      ...(targetFormat ? Object.values(formatTags) : [])];
     for (const part of parts) {
       const tag = part.trim().replace(/^[#·.\s]+|[#·.\s]+$/g, '').slice(0, 80);
-      if (tag && !tags.some(t => key(t) === key(tag))) tags.push(tag);
+      if (tag && !superseded.includes(key(tag)) && !tags.some(t => key(t) === key(tag))) tags.push(tag);
     }
     const result = tags.join(', ');
     if (tags.length > 10 || result.length > 400) {
-      throw new Error('Para la cápsula subtitulada, deja espacio para las etiquetas cápsula y subtitulos-es (máximo 10 etiquetas y 400 caracteres en total).');
+      throw new Error('Deja espacio para las opciones de subtítulos y formato: máximo 10 etiquetas y 400 caracteres en total. No se ha descartado ninguna etiqueta de cliente.');
     }
     return result;
   }

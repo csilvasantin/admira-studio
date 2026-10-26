@@ -10,7 +10,8 @@ const ui = {
   comment: document.getElementById('comment'),
   tags: document.getElementById('tags'),
   autostart: document.getElementById('autostart'),
-  subtitleSpanish: document.getElementById('subtitleSpanish'),
+  subtitleLanguage: document.getElementById('subtitleLanguage'),
+  targetFormat: document.getElementById('targetFormat'),
   button: document.getElementById('importButton'),
   status: document.getElementById('status'),
 };
@@ -33,7 +34,7 @@ function render(next) {
   ui.empty.hidden = !!context;
   ui.form.hidden = !context;
   // Translation is an explicit choice for this video, never a sticky preference.
-  if (!context || context.url !== previousUrl) ui.subtitleSpanish.checked = false;
+  if (!context || context.url !== previousUrl) {ui.subtitleLanguage.value = 'none'; ui.targetFormat.value = 'original';}
   if (!context) return;
   ui.thumbnail.src = context.thumbnail;
   ui.title.textContent = context.title || 'Vídeo de YouTube';
@@ -43,8 +44,8 @@ function render(next) {
 
 function updateSubtitleAvailability() {
   const audio = document.querySelector('input[name="format"]:checked')?.value === 'audio';
-  ui.subtitleSpanish.disabled = audio;
-  if (audio) ui.subtitleSpanish.checked = false;
+  ui.subtitleLanguage.disabled = ui.targetFormat.disabled = audio;
+  if (audio) {ui.subtitleLanguage.value = 'none'; ui.targetFormat.value = 'original';}
 }
 document.querySelectorAll('input[name="format"]').forEach(input => input.addEventListener('change', updateSubtitleAvailability));
 
@@ -89,7 +90,8 @@ ui.form.addEventListener('submit', async event => {
     tags: ui.tags.value.trim(),
     format,
     autostart: ui.autostart.checked,
-    subtitleLanguage: format === 'video' && ui.subtitleSpanish.checked ? 'es' : '',
+    subtitleLanguage: format === 'video' ? ui.subtitleLanguage.value : '',
+    targetFormat: format === 'video' ? ui.targetFormat.value : '',
   };
   ui.button.disabled = true;
   showStatus('Abriendo Admira Studio y preparando el Stock…', '');
@@ -102,7 +104,7 @@ ui.form.addEventListener('submit', async event => {
     if (!response || !response.ok) throw new Error(response && response.error || 'No se pudo abrir Admira Studio');
     if (activeTab && activeTab.id) chrome.tabs.sendMessage(activeTab.id, { type: 'IMPORT_STARTED' }).catch(() => {});
     showStatus(data.autostart
-      ? `✓ Importación iniciada.${data.subtitleLanguage ? ' La versión en castellano se preparará en Stock; mantenlo abierto.' : ' El progreso continúa en Admira Studio.'}`
+      ? `✓ Importación iniciada.${['es', 'en'].includes(data.subtitleLanguage) ? ` Subtítulos en ${data.subtitleLanguage === 'es' ? 'castellano' : 'inglés'}.` : ''}${data.targetFormat && data.targetFormat !== 'original' ? ' Se prepararán los formatos elegidos.' : ''} El progreso continúa en Stock; mantenlo abierto.`
       : '✓ Importación preparada para confirmar en Admira Studio.', 'ok');
   } catch (error) {
     showStatus(`No se pudo abrir: ${String(error && error.message || error)}`, 'error');

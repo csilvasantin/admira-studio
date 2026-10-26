@@ -41,17 +41,29 @@
 
       <section class="settings">
         <fieldset>
-          <legend>FORMATO DE DESTINO</legend>
+          <legend>IMPORTAR COMO</legend>
           <div class="format-switch">
             <label><input type="radio" name="format" value="video" checked><span>🎬 VIDEO<small>MP4 + audio</small></span></label>
             <label><input type="radio" name="format" value="audio"><span>🎵 AUDIO<small>MP3</small></span></label>
           </div>
         </fieldset>
 
-        <label class="auto-row" id="subtitleOption">
-          <input id="subtitleSpanish" type="checkbox" aria-describedby="subtitleHelp">
-          <span><b>Cápsula con subtítulos en castellano</b><small id="subtitleHelp">Conserva el original y crea otra versión con el audio original y subtítulos visibles en castellano. Vídeos de hasta 3 minutos. Mantén Stock abierto hasta terminar.</small></span>
+        <label class="field" for="subtitleLanguage">SUBTÍTULOS / SUBTITLES
+          <select id="subtitleLanguage" aria-describedby="processingHelp">
+            <option value="none">Sin subtítulos</option>
+            <option value="es">Castellano</option>
+            <option value="en">English</option>
+          </select>
         </label>
+        <label class="field" for="targetFormat">FORMATO DE LA COPIA
+          <select id="targetFormat" aria-describedby="processingHelp">
+            <option value="original">Conservar formato original</option>
+            <option value="vertical">Vertical · 9:16</option>
+            <option value="horizontal">Horizontal · 16:9</option>
+            <option value="both">Vertical y horizontal</option>
+          </select>
+        </label>
+        <p class="processing-help" id="processingHelp">Conserva el original y su voz. La copia se ajusta sin recortar la imagen, con fondo desenfocado. Máximo 3 minutos; mantén Stock abierto. Revisa los subtítulos automáticos antes de usarlos.</p>
 
         <label class="field">COMENTARIO <small>opcional</small>
           <textarea id="comment" maxlength="500" rows="3" placeholder="Contexto o notas para encontrarlo después…"></textarea>
