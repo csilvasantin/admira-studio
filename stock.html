@@ -1104,6 +1104,25 @@
         if (!controller.signal.aborted) { button.disabled=false; button.setAttribute('aria-expanded','false'); status.textContent="No se pudo abrir el editor. Vuelve a intentarlo."; }
       }
     }
+    // Open the existing creator with this asset's source; generating remains explicit.
+    function createCapsuleHref(it) {
+      const params = new URLSearchParams({ capsula: 'new' });
+      const candidates = [it.capsuleSource?.sourceUrl, it.sourceUrl, it.prompt, it.url];
+      for (const candidate of candidates) {
+        if (typeof candidate !== 'string') continue;
+        const value = candidate.trim();
+        if (!/^https?:\/\/\S+$/i.test(value)) continue;
+        try {
+          const source = new URL(value);
+          if (source.username || source.password) continue;
+          params.set('capsula-url', source.href);
+          break;
+        } catch (_) {}
+      }
+      const english = document.documentElement.lang.startsWith('en');
+      return (english ? '/en' : '') + '/creador/?' + params.toString();
+    }
+
     function ainimationImportHref(it) {
       const params = new URLSearchParams();
       params.set('admiraStockUrl', it.url || '');
@@ -1357,7 +1376,7 @@
               <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Editar en AInimation" aria-label="Editar en AInimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>
               <button type="button" class="stock-card-btn" data-act="playlist" title="Añadir a una playlist" aria-label="Añadir a playlist"><span aria-hidden="true">🎵</span></button>
               <button type="button" class="stock-card-btn" data-act="feed" title="Distribuir a pantallas (elegir destino, ahora o programado)" aria-label="Distribuir a pantallas"><span aria-hidden="true">📡</span></button>
-              <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Abrir asset en pestaña nueva" aria-label="Abrir asset en pestaña nueva" data-act="open"><span aria-hidden="true">↗</span></a>
+              <a class="stock-card-btn" href="${escAttr(createCapsuleHref(it))}" title="${document.documentElement.lang.startsWith('en') ? 'Create capsule' : 'Crear cápsula'}" aria-label="${document.documentElement.lang.startsWith('en') ? 'Create capsule' : 'Crear cápsula'}" data-act="create-capsule"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8.5 5.5a5 5 0 0 1 7 7l-6 6a5 5 0 0 1-7-7z"/><path d="m5.5 8.5 7 7M19 3v6m-3-3h6"/></svg></a>
               <button type="button" class="stock-card-btn" data-act="descargar" title="Descargar el fichero a este ordenador" aria-label="Descargar a este ordenador"><span aria-hidden="true">⬇</span></button>
               <button type="button" class="stock-card-btn" data-act="max" title="Maximizar" aria-label="Maximizar asset"><span aria-hidden="true">⛶</span></button>
               ${typeLabel === 'video' ? `<button type="button" class="stock-card-btn" data-act="compartir" title="Subir a YouTube" aria-label="Subir a YouTube"><svg viewBox="0 0 28 20" width="24" height="17" aria-hidden="true"><path fill="#ff0033" d="M27.4 3.1A3.5 3.5 0 0 0 25 .6C22.8 0 14 0 14 0S5.2 0 3 .6A3.5 3.5 0 0 0 .6 3.1 36.7 36.7 0 0 0 0 10a36.7 36.7 0 0 0 .6 6.9A3.5 3.5 0 0 0 3 19.4c2.2.6 11 .6 11 .6s8.8 0 11-.6a3.5 3.5 0 0 0 2.4-2.5A36.7 36.7 0 0 0 28 10a36.7 36.7 0 0 0-.6-6.9Z"/><path fill="#fff" d="m11.2 14.3 7.3-4.3-7.3-4.3v8.6Z"/></svg></button>` : ''}

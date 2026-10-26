@@ -221,6 +221,14 @@
     [
       "  <title>Creator · Campaigns for screens | Admira Studio</title>\n  <meta name=\"description\"",
       "  <title>Creator · Campaigns for screens | Admira Studio</title>\n  <link rel=\"stylesheet\" href=\"/assets/studio-workflow/creator.css?v=20261022-1\">\n  <script type=\"module\" src=\"/assets/studio-workflow/creator.mjs?v=20261022-1\"></script>\n  <meta name=\"description\""
+    ],
+    [
+      "<a class=\"stock-card-btn\" href=\"${assetUrl}\" target=\"_blank\" rel=\"noopener\" title=\"Abrir asset en pestaña nueva\" aria-label=\"Abrir asset en pestaña nueva\" data-act=\"open\"><span aria-hidden=\"true\">↗</span></a>",
+      "<a class=\"stock-card-btn\" href=\"${escAttr(createCapsuleHref(it))}\" title=\"${document.documentElement.lang.startsWith('en') ? 'Create capsule' : 'Crear cápsula'}\" aria-label=\"${document.documentElement.lang.startsWith('en') ? 'Create capsule' : 'Crear cápsula'}\" data-act=\"create-capsule\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M8.5 5.5a5 5 0 0 1 7 7l-6 6a5 5 0 0 1-7-7z\"/><path d=\"m5.5 8.5 7 7M19 3v6m-3-3h6\"/></svg></a>"
+    ],
+    [
+      "    function ainimationImportHref(it) {",
+      "    // Open the existing creator with this asset's source; generating remains explicit.\n    function createCapsuleHref(it) {\n      const params = new URLSearchParams({ capsula: 'new' });\n      const candidates = [it.capsuleSource?.sourceUrl, it.sourceUrl, it.prompt, it.url];\n      for (const candidate of candidates) {\n        if (typeof candidate !== 'string') continue;\n        const value = candidate.trim();\n        if (!/^https?:\\/\\/\\S+$/i.test(value)) continue;\n        try {\n          const source = new URL(value);\n          if (source.username || source.password) continue;\n          params.set('capsula-url', source.href);\n          break;\n        } catch (_) {}\n      }\n      const english = document.documentElement.lang.startsWith('en');\n      return (english ? '/en' : '') + '/creador/?' + params.toString();\n    }\n\n    function ainimationImportHref(it) {"
     ]
   ],
   "_no_se_sustituye": [
