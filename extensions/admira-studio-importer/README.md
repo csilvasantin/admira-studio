@@ -56,6 +56,8 @@ El vídeo ya importado `1793037808156-6vymvy` permitió reproducir un fallo `med
 
 La prueba aislada con el código real (`scripts/test-importer-subtitles-real.mjs`) llegó a Workers AI, pero la credencial disponible devolvió HTTP 401 / código 10000. No se considera aprobada la integración con Cloudflare ni la sesión de la aplicación por esta prueba. El workflow queda solo bajo ejecución manual; no gasta IA ni publica variantes al modificar archivos. Requiere las credenciales existentes de Cloudflare con acceso válido al servicio antes de volver a ejecutarse. Solo publica una copia después de comprobar audio y dimensiones; conserva el original.
 
+Se completó una alternativa local con reconocimiento real de Whisper medium.en y traducción revisada en el chat. La copia está en [Stock #1898](https://www.admira.studio/stock.html?highlight=1793048061800-nnxzdn): 19,063583 s, 320×240, 15 fps, cinco bloques ES. Se comprobó que el bitstream de audio es idéntico al original y que el archivo publicado coincide con el generado. Esto demuestra la entrega local y su publicación, sin dar por aprobada la integración automática. La extensión instalada no se modificó y se restauraron las etiquetas temporales del original.
+
 ## Publicar
 
 Comprime el contenido de esta carpeta —con `manifest.json` en la raíz del ZIP— y súbelo al Chrome Web Store Developer Dashboard.
