@@ -66,6 +66,7 @@ try{
    const r=await subtitles({request:request(url,init),env});
    const d=await r.clone().json();
    if(d.ok){await writeFile(path.join(out,'subtitles-es.srt'),d.srt);await writeFile(path.join(out,'transcription-translation.json'),JSON.stringify(d,null,2));report.cues=d.cues.length;}
+   else report.providerFailure={error:d.error,detail:d.detail||null};
    return r;
   }
   if(url==='/stock-publish')return publish({request:request(url,init),env});
