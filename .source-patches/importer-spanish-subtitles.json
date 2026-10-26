@@ -1,0 +1,38 @@
+{
+  "kind": "chrome-extension-and-handoff",
+  "domain": "admira.studio",
+  "sourceRepository": "csilvasantin/admira-studio",
+  "canonicalBase": "744f63504d4e053b95c3a31231028a81f1f84858",
+  "reason": "Carlos: preparar una opción para importar una cápsula y generar una versión con subtítulos en castellano de su audio, conservando la extensión instalada y el vídeo original.",
+  "status": "local-review-only",
+  "extensionVersion": "1.0.2",
+  "publishedExtensionVersion": "1.0.1",
+  "requiresWebAndExtensionRelease": true,
+  "sourceIntegration": "Los módulos de subtítulos y la extensión ya son cambios propios de Studio ausentes en origin/main de Pixeria consultado. Resolver el portado de fuente antes de sincronizar o publicar; no regenerar el espejo desde la rama antigua.",
+  "files": [
+    "extensions/admira-studio-importer/manifest.json",
+    "extensions/admira-studio-importer/shared.js",
+    "extensions/admira-studio-importer/sidepanel.html",
+    "extensions/admira-studio-importer/sidepanel.css",
+    "extensions/admira-studio-importer/sidepanel.js",
+    "extensions/admira-studio-importer/privacy.html",
+    "extensions/admira-studio-importer/support.html",
+    "extensions/admira-studio-importer/README.md",
+    "assets/capsula-traduce.mjs",
+    "assets/etiquetas-funcionales.mjs",
+    "functions/stock-subtitles.js",
+    "stock.html",
+    "test/admira-studio-importer.test.mjs",
+    "test/capsula-traduce.test.mjs",
+    "test/stock-subtitles.test.mjs",
+    ".source-patches/importer-spanish-subtitles.json"
+  ],
+  "security": {
+    "newPermissions": false,
+    "containsSecrets": false,
+    "changesInstalledExtension": false,
+    "preservesOriginalMedia": true,
+    "subtitleSelectionPersisted": false,
+    "requiresExistingStudioSession": true
+  }
+}

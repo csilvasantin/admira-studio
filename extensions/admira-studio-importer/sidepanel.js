@@ -10,6 +10,7 @@ const ui = {
   comment: document.getElementById('comment'),
   tags: document.getElementById('tags'),
   autostart: document.getElementById('autostart'),
+  subtitleSpanish: document.getElementById('subtitleSpanish'),
   button: document.getElementById('importButton'),
   status: document.getElementById('status'),
 };
@@ -23,6 +24,7 @@ function showStatus(message, kind) {
 }
 
 function render(next) {
+  const previousUrl = context && context.url;
   context = next && AdmiraImporter.canonicalUrl(next.url) ? {
     ...next,
     url: AdmiraImporter.canonicalUrl(next.url),
@@ -30,12 +32,21 @@ function render(next) {
   } : null;
   ui.empty.hidden = !!context;
   ui.form.hidden = !context;
+  // Translation is an explicit choice for this video, never a sticky preference.
+  if (!context || context.url !== previousUrl) ui.subtitleSpanish.checked = false;
   if (!context) return;
   ui.thumbnail.src = context.thumbnail;
   ui.title.textContent = context.title || 'Vídeo de YouTube';
   ui.channel.textContent = context.channel || 'YouTube';
   showStatus('Listo para importar.', '');
 }
+
+function updateSubtitleAvailability() {
+  const audio = document.querySelector('input[name="format"]:checked')?.value === 'audio';
+  ui.subtitleSpanish.disabled = audio;
+  if (audio) ui.subtitleSpanish.checked = false;
+}
+document.querySelectorAll('input[name="format"]').forEach(input => input.addEventListener('change', updateSubtitleAvailability));
 
 async function contextFromTab(tab) {
   if (!tab || !tab.id) return null;
@@ -64,6 +75,7 @@ async function loadPreferences() {
   if (radio) radio.checked = true;
   ui.tags.value = String(saved.tags || '');
   ui.autostart.checked = saved.autostart !== false;
+  updateSubtitleAvailability();
 }
 
 ui.form.addEventListener('submit', async event => {
@@ -77,15 +89,21 @@ ui.form.addEventListener('submit', async event => {
     tags: ui.tags.value.trim(),
     format,
     autostart: ui.autostart.checked,
+    subtitleLanguage: format === 'video' && ui.subtitleSpanish.checked ? 'es' : '',
   };
-  await chrome.storage.sync.set({ format, tags: data.tags, autostart: data.autostart });
   ui.button.disabled = true;
   showStatus('Abriendo Admira Studio y preparando el Stock…', '');
   try {
+    // Validate before opening a tab or saving preferences. The background repeats
+    // this validation when it builds the handoff.
+    AdmiraImporter.tagsForImport(data);
+    await chrome.storage.sync.set({ format, tags: data.tags, autostart: data.autostart });
     const response = await chrome.runtime.sendMessage({ type: 'OPEN_IMPORT', data, openerTabId: activeTab && activeTab.id });
     if (!response || !response.ok) throw new Error(response && response.error || 'No se pudo abrir Admira Studio');
     if (activeTab && activeTab.id) chrome.tabs.sendMessage(activeTab.id, { type: 'IMPORT_STARTED' }).catch(() => {});
-    showStatus(data.autostart ? '✓ Importación iniciada. El progreso continúa en Admira Studio.' : '✓ Importación preparada para confirmar en Admira Studio.', 'ok');
+    showStatus(data.autostart
+      ? `✓ Importación iniciada.${data.subtitleLanguage ? ' La versión en castellano se preparará en Stock; mantenlo abierto.' : ' El progreso continúa en Admira Studio.'}`
+      : '✓ Importación preparada para confirmar en Admira Studio.', 'ok');
   } catch (error) {
     showStatus(`No se pudo abrir: ${String(error && error.message || error)}`, 'error');
   } finally {

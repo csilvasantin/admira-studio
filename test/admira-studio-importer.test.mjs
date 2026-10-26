@@ -81,3 +81,72 @@ test('privacidad y soporte son públicos para la ficha de Chrome Web Store', () 
   }
   assert.match(middleware, /PUBLIC_EXTENSION_DOCUMENTS\.has\(url\.pathname\)/);
 });
+
+function importerApi() {
+  const sandbox = {URL}; sandbox.globalThis = sandbox;
+  vm.runInNewContext(read('shared.js'), sandbox);
+  return sandbox.AdmiraImporter;
+}
+
+test('cápsula ES: handoff usa etiquetas existentes, sin credenciales ni permisos nuevos', () => {
+  const api = importerApi();
+  const url = new URL(api.handoffUrl({url: 'https://youtu.be/jNQXAC9IVRw', format: 'video', subtitleLanguage: 'es', tags: '#cliente, #Cápsula, #negocio'}));
+  assert.equal(url.searchParams.get('importTags'), 'capsula, subtitulos-es, cliente, negocio');
+  assert.equal(url.searchParams.get('importFormat'), 'video');
+  assert.equal(url.searchParams.has('token'), false);
+  assert.equal(api.tagsForImport({format: 'audio', subtitleLanguage: 'es', tags: '#cliente'}), '#cliente');
+  assert.equal(api.tagsForImport({format: 'video', tags: '#cliente'}), '#cliente');
+});
+
+test('cápsula ES: no pierde etiquetas de cliente al exceder la capacidad del Stock', () => {
+  const api = importerApi();
+  assert.throws(() => api.tagsForImport({subtitleLanguage: 'es', tags: Array.from({length: 9}, (_, i) => 'cliente' + i).join(',')}), /máximo 10/);
+  assert.throws(() => api.tagsForImport({subtitleLanguage: 'es', tags: Array.from({length: 5}, (_, i) => String(i).repeat(76)).join(',')}), /400 caracteres/);
+  const tags = api.tagsForImport({subtitleLanguage: 'es', tags: '#cliente;#negocio\n#subtítulos-es'});
+  assert.equal(tags, 'capsula, subtitulos-es, cliente, negocio');
+});
+
+test('panel: la opción ES es por vídeo, se desactiva en audio y no queda como preferencia', async () => {
+  const elements = new Map();
+  const element = id => {
+    if (!elements.has(id)) elements.set(id, {id, value: '', checked: false, hidden: false, disabled: false, listeners: {}, addEventListener(name, fn) { this.listeners[name] = fn; }});
+    return elements.get(id);
+  };
+  const radios = ['video', 'audio'].map(value => ({...element(value), value}));
+  radios[0].checked = true;
+  const selected = () => radios.find(r => r.checked);
+  const saved = [], messages = [];
+  let tab = {id: 3, url: 'https://www.youtube.com/watch?v=jNQXAC9IVRw'};
+  const events = {};
+  const chrome = {
+    tabs: {query: async () => [tab], sendMessage: async () => ({url: tab.url, title: 'Fixture capsule'}),
+      onActivated: {addListener(fn) {events.activate = fn;}}, onUpdated: {addListener() {}}},
+    storage: {sync: {get: async defaults => defaults, set: async value => saved.push(value)}, session: {get: async () => ({})}},
+    runtime: {sendMessage: async value => {messages.push(value); return {ok: true};}},
+  };
+  const document = {getElementById: element, querySelectorAll: () => radios, querySelector(selector) {
+    const value = /value="(audio|video)"/.exec(selector)?.[1];
+    return value ? radios.find(r => r.value === value) : selected();
+  }};
+  vm.runInNewContext(read('sidepanel.js'), {document, chrome, AdmiraImporter: importerApi()});
+  await new Promise(resolve => setImmediate(resolve));
+  const option = element('subtitleSpanish'); option.checked = true;
+  element('autostart').checked = true;
+  await element('importForm').listeners.submit({preventDefault() {}});
+  assert.equal(messages[0].data.subtitleLanguage, 'es');
+  assert.equal(saved[0].subtitleLanguage, undefined);
+  assert.equal(saved[0].tags, '');
+  assert.match(element('status').textContent, /castellano/);
+  radios[0].checked = false; radios[1].checked = true; radios[1].listeners.change();
+  assert.equal(option.checked, false); assert.equal(option.disabled, true);
+  radios[0].checked = true; radios[1].checked = false; radios[0].listeners.change();
+  option.checked = true;
+  tab = {...tab, url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'};
+  await events.activate(); assert.equal(option.checked, false);
+  option.checked = true;
+  element('tags').value = Array.from({length: 9}, (_, i) => 'tag' + i).join(',');
+  await element('importForm').listeners.submit({preventDefault() {}});
+  assert.equal(messages.length, 1); assert.equal(saved.length, 1);
+  assert.match(element('status').textContent, /máximo 10/);
+  assert.equal(element('importButton').disabled, false);
+});
