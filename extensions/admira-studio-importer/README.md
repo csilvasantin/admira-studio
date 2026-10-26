@@ -40,6 +40,8 @@ Stock reutiliza `assets/capsula-traduce.mjs`: extrae audio con FFmpeg WASM, llam
 
 La versión web debe incorporar también los cambios de `assets/capsula-traduce.mjs`, `assets/etiquetas-funcionales.mjs`, `functions/stock-subtitles.js` y su importación en `stock.html` antes de distribuir la extensión 1.0.2. No publicar solo el ZIP: el código web anterior puede invertir el destino cuando conoce que el audio está en español.
 
+Cada vídeo entregado al importador es la referencia de imagen y voz. La copia subtitulada mantiene resolución, encuadre y cadencia; quemar los subtítulos requiere recodificar la imagen (H.264, CRF 18), por lo que no se promete identidad de píxeles ni mejora del original. La pista de audio se copia sin volver a comprimirla: no se sustituye por una voz sintetizada. La copia mono 16 kHz usada para reconocer voz solo se envía al transcriptor y nunca se usa como audio del vídeo final. Si el audio original no es compatible con el MP4 de salida, la generación informa del fallo en lugar de degradarlo silenciosamente.
+
 Pruebas locales (sin servicios de IA reales ni escrituras en Stock):
 
 ```sh

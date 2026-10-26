@@ -20,6 +20,7 @@ test('argumentos de FFmpeg: audio mono 16k ≤180 s y quemado con fuente empaque
   const a = burnArgs(1920, 1080).join(' ');
   assert.match(a, /subtitles=subs\.srt:fontsdir=fonts:force_style='FontName=DejaVu Sans,Bold=1.*BorderStyle=3/);
   assert.match(burnArgs(1080, 1920).join(' '), /MarginV=38/);
+  assert.match(a, /-c:a copy/); assert.doesNotMatch(a, /-b:a|-ar|-ac\s|-r\s|-s\s/);
 });
 
 // Synthetic, local-only signed agent session: exercise the real authentication

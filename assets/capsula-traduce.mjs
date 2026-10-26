@@ -95,8 +95,10 @@ export const audioArgs = () => ['-i', 'input', '-vn', '-ac', '1', '-ar', '16000'
 export function burnArgs(w, h) {
   const vertical = h > w, size = vertical ? 11 : 16, margin = vertical ? 38 : 22;
   const style = `${BURN_STYLE},Fontsize=${size},MarginV=${margin},MarginL=18,MarginR=18`;
-  return ['-i', 'input', '-vf', `subtitles=subs.srt:fontsdir=fonts:force_style='${style}'`, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '22',
-    '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', '-y', 'output.mp4'];
+  // Subtitle burn requires a video encode. Keep the source dimensions/frame rate,
+  // use a high-quality CRF, and copy the original audio without another lossy pass.
+  return ['-i', 'input', '-vf', `subtitles=subs.srt:fontsdir=fonts:force_style='${style}'`, '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '18',
+    '-pix_fmt', 'yuv420p', '-c:a', 'copy', '-movflags', '+faststart', '-y', 'output.mp4'];
 }
 const b64 = async blob => {
   const bytes = new Uint8Array(await blob.arrayBuffer());

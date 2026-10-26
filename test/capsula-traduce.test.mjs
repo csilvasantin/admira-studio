@@ -90,7 +90,10 @@ test('pipeline: audio → transcripción ES → subtítulos visibles → nueva v
   assert.equal(calls.requests[0].body.to, 'es'); assert.equal(calls.requests[0].body.from, undefined);
   assert.equal(atob(calls.requests[0].body.audio), 'audio-fixture');
   assert.match(calls.srt, /00:00:00,000 --> 00:00:01,000\nHola, mundo\./);
-  assert.ok(calls.encodes[1].job.args.includes('aac')); assert.ok(!calls.encodes[1].job.args.includes('-an'));
+  const args = calls.encodes[1].job.args;
+  assert.equal(args[args.indexOf('-c:a') + 1], 'copy');
+  assert.equal(args[args.indexOf('-crf') + 1], '18');
+  for (const option of ['-an', '-b:a', '-ar', '-ac', '-r', '-s']) assert.ok(!args.includes(option));
   const p = calls.published[0];
   assert.equal(p.meta.type, 'video'); assert.equal(p.extra.externalRef, it.id);
   assert.ok(p.extra.tags.includes('subtitulado-es')); assert.ok(p.extra.tags.includes('cliente'));
