@@ -300,11 +300,16 @@
       "Music",
       "Images",
       "Video",
-      "Assets",
       "Stock"
     ],
     "guide": "/docs/ui-idioma.md",
     "es": "Etiquetas y ayudas según el idioma; valores y contenido originales conservados.",
     "en": "Labels and help follow page language; original values and content retained."
+  },
+  "assetsGenerator": {
+    "url": "https://www.admira.store/assets/",
+    "en": "https://www.admira.store/assets/en/",
+    "es": "Assets se ha trasladado a Store. Studio importa, crea y adapta contenidos multimedia.",
+    "description": "Assets moved to Store. Studio imports, creates and adapts multimedia content."
   }
 }

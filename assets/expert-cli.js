@@ -226,7 +226,7 @@
   var sections = { creator: 'creador/', creador: 'creador/',
     home: en ? '/en/' : '/', audio: 'audio.html', music: 'musica.html', musica: 'musica.html',
     images: 'imagenes.html', imagenes: 'imagenes.html', video: 'video.html',
-    adapter: en ? '/en/adaptaciones/' : '/adaptaciones/', adaptador: '/adaptaciones/', stock: 'stock.html', assets: 'crear/', docs: 'documentacion/', radar: 'radar/'
+    adapter: en ? '/en/adaptaciones/' : '/adaptaciones/', adaptador: '/adaptaciones/', stock: 'stock.html', assets: 'https://www.admira.store/assets/', docs: 'documentacion/', radar: 'radar/'
   };
   function write(text) {
     var line = document.createElement('div');
@@ -436,7 +436,7 @@
       case 'open': case 'abrir':
         var path = Object.prototype.hasOwnProperty.call(sections, arg.toLowerCase()) && sections[arg.toLowerCase()];
         if (!path) { write(t('Usa open seguido de una sección de help.', 'Use open followed by a section from help.')); break; }
-        location.assign(path[0] === '/' ? path : (en ? '/en/' : '/') + path); break;
+        location.assign(/^https:\/\//.test(path) || path[0] === '/' ? path : (en ? '/en/' : '/') + path); break;
       default: write(t('Comando desconocido. Escribe help.', 'Unknown command. Type help.'));
     }
   }

@@ -1,12 +1,18 @@
 {
-  "version": "v.27.10.2026.r3.17:10",
-  "author": "DeepAgent Trinity",
-  "agent": "Trinity",
-  "deployer": "DeepAgent Trinity",
-  "machine": "Mac Studio",
-  "signature": "DeepAgent Trinity · Mac Studio",
+  "version": "v.27.10.2026.r4.21:40",
+  "author": "DeepAgent Codex",
+  "agent": "Codex",
+  "deployer": "DeepAgent Codex",
+  "machine": "MacStudio",
+  "signature": "DeepAgent Codex · MacStudio",
   "git": "d069c84868033dc74eed435b0f54286a22426753",
   "gitShort": "d069c84",
   "gitFull": "d069c84868033dc74eed435b0f54286a22426753",
-  "dirty": false
+  "dirty": false,
+  "novedades": [
+    "Assets · generador 2D trasladado a admira.store/assets; Admira Studio centrado en importar, crear y adaptar multimedia."
+  ],
+  "sourcePatches": [
+    ".source-patches/assets-generator-move.json"
+  ]
 }
