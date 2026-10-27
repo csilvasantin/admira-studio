@@ -3,20 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Soporte · AdmiraStudioImporter</title>
-  <meta name="description" content="Ayuda y soporte de AdmiraStudioImporter para Chrome.">
+  <title>Ayuda y novedades · AdmiraStudioImporter</title>
+  <meta name="description" content="Ayuda de AdmiraStudioImporter para Chrome e historial de novedades por versión: subtítulos, formatos e importación a Stock.">
   <meta name="theme-color" content="#020806">
   <style>:root{color-scheme:dark;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#020806;color:#dffff0;--green:#00ff68;--muted:#78a68b;--line:rgba(0,255,104,.28)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,rgba(0,255,104,.12),transparent 30%),#020806}main{width:min(760px,calc(100% - 32px));margin:auto;padding:56px 0 80px}.eyebrow{color:var(--green);font-size:11px;letter-spacing:.16em}h1{margin:10px 0 28px;color:#fff;font:800 clamp(28px,6vw,46px)/1.05 system-ui,sans-serif}h2{margin:30px 0 10px;color:var(--green);font-size:17px}p,li{color:#b9d7c5;font:14px/1.7 system-ui,sans-serif}a{color:var(--green)}.box{padding:16px;border:1px solid var(--line);background:rgba(0,255,104,.04)}code{color:#fff}footer{margin-top:46px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}</style>
+  <style>html{scroll-behavior:smooth;scroll-padding-top:24px}nav{display:flex;flex-wrap:wrap;gap:10px 24px;margin:0 0 28px;font:14px/1.7 system-ui,sans-serif}h3{margin:0 0 8px;color:#fff;font:700 20px/1.3 system-ui,sans-serif}.release{margin:18px 0;padding:22px;border:1px solid var(--line);border-radius:12px;background:rgba(0,255,104,.035)}.release ul{margin-bottom:0;padding-left:20px}.release-status{margin:0 0 12px;color:var(--muted);font-size:13px}.release-note{padding-left:16px;border-left:2px solid var(--green)}a:focus-visible{outline:2px solid #fff;outline-offset:4px}p,li,a{overflow-wrap:anywhere}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}</style>
 </head>
 <body><main>
   <div class="eyebrow">ADMIRA STUDIO · AYUDA</div><h1>Soporte de AdmiraStudioImporter</h1>
-  <div class="box"><strong>Contacto:</strong> <a href="mailto:hola@admiranext.com">hola@admiranext.com</a><br>Incluye la versión de Chrome, la URL de YouTube y una captura del mensaje de error. No envíes contraseñas ni códigos de acceso.</div>
-  <h2>Cómo se usa</h2><ol><li>Abre un vídeo o Short de YouTube.</li><li>Pulsa <strong>Importar en Admira</strong>, el icono de la extensión, el menú contextual o <code>Alt+Shift+A</code>.</li><li>Elige vídeo/audio, idioma de subtítulos, formato de copia, comentario y etiquetas.</li><li>Pulsa <strong>Importar en Admira Studio</strong> y sigue el progreso en el Stock.</li></ol>
+  <nav aria-label="Ayuda del importador"><a href="#como-se-usa">Cómo se usa</a><a href="#novedades">Novedades por versión</a><a href="#contacto">Contacto</a></nav>
+  <div class="box" id="contacto"><strong>Contacto:</strong> <a href="mailto:hola@admiranext.com">hola@admiranext.com</a><br>Incluye la versión de Chrome, la URL de YouTube y una captura del mensaje de error. No envíes contraseñas ni códigos de acceso.</div>
+  <section id="novedades" aria-labelledby="novedades-titulo">
+    <h2 id="novedades-titulo">Novedades por versión</h2>
+    <p>Consulta qué incorpora cada actualización. El estado de publicación indicado se comprobó el <time datetime="2026-10-27">27 de octubre de 2026</time>; la <a href="https://chromewebstore.google.com/detail/admirastudioimporter/empmdckpifcmhnlalcmkpceanaehedhl">ficha de Chrome Web Store</a> muestra la versión disponible para instalar.</p>
+    <article class="release" id="version-1-0-2" aria-labelledby="release-102">
+      <h3 id="release-102">1.0.2 · Subtítulos y formatos</h3>
+      <p class="release-status">Aprobada por Google · publicación diferida · todavía sin publicar en la comprobación indicada.</p>
+      <ul>
+        <li><strong>Subtítulos por vídeo:</strong> elige Sin subtítulos, Castellano o English desde el panel. Stock crea una copia subtitulada y conserva el original y su voz.</li>
+        <li><strong>Formato de la copia:</strong> conserva el original o pide vertical 9:16, horizontal 16:9 o ambos. La imagen completa se adapta sobre un fondo desenfocado.</li>
+        <li><strong>Opciones independientes:</strong> combina idioma y formato. Se restablecen al cambiar de vídeo y se desactivan al importar solo audio.</li>
+        <li><strong>Etiquetas comprobadas antes de importar:</strong> las opciones sustituyen otras elecciones incompatibles. Si superan diez etiquetas o 400 caracteres en total, el panel pide corregirlas.</li>
+      </ul>
+      <p>Hasta tres minutos por vídeo, con Stock abierto. Los subtítulos se generan automáticamente y deben revisarse. Los permisos de Chrome y los sitios a los que accede la extensión se mantienen respecto a la 1.0.1.</p>
+    </article>
+    <article class="release" id="version-1-0-1" aria-labelledby="release-101">
+      <h3 id="release-101">1.0.1 · Importación a Stock</h3>
+      <p class="release-status">Versión publicada en Chrome Web Store en la comprobación indicada.</p>
+      <ul>
+        <li><strong>YouTube a Stock:</strong> importa vídeo MP4 con audio o extrae audio MP3, con comentario, etiquetas e inicio automático opcional.</li>
+        <li><strong>Panel lateral:</strong> muestra miniatura, título y canal del vídeo detectado.</li>
+        <li><strong>Acceso desde YouTube:</strong> botón Importar en Admira, icono de la extensión, menú contextual y atajo Alt+Shift+A.</li>
+      </ul>
+      <p>Los selectores de subtítulos y orientación se incorporan en la 1.0.2.</p>
+    </article>
+    <p class="release-note"><strong>Mejoras de Stock:</strong> el reconocimiento de voz, la traducción y la creación de las copias se ejecutan en la web. Las correcciones de carga de vídeo y de tiempos de los subtítulos se actualizaron allí por separado; también permiten solicitar una copia en castellano mediante <code>#capsula</code> desde la 1.0.1.</p>
+  </section>
+  <h2 id="como-se-usa">Cómo se usa</h2><ol><li>Abre un vídeo o Short de YouTube.</li><li>Pulsa <strong>Importar en Admira</strong>, el icono de la extensión, el menú contextual o <code>Alt+Shift+A</code>.</li><li>Elige vídeo/audio, comentario y etiquetas. En la 1.0.2 puedes elegir también idioma de subtítulos y formato de copia.</li><li>Pulsa <strong>Importar en Admira Studio</strong> y sigue el progreso en el Stock.</li></ol>
   <h2>Requisitos</h2><p>Google Chrome 116 o posterior. La instalación es gratuita. Para completar la importación se necesita acceso autorizado a Admira Studio.</p>
   <h2>Subtítulos y formato (1.0.2)</h2><p>Los selectores nuevos corresponden a la actualización 1.0.2. Si todavía tienes la versión 1.0.1, puedes pedir una copia en castellano usando <code>#capsula</code> en las etiquetas del importador. Los selectores aparecerán cuando se publique la actualización oficial.</p><p>Para vídeo, elige <strong>Sin subtítulos, Castellano o English</strong> y, por separado, <strong>Original, Vertical 9:16, Horizontal 16:9 o ambos</strong>. Conserva el archivo original. Los subtítulos son visibles en una copia y mantienen la voz original, sin doblaje. El idioma de origen se detecta automáticamente; si coincide con el destino, se transcribe sin traducir. Revisa el resultado antes de usarlo.</p>
   <p>Los formatos conservan toda la imagen en primer plano sobre un fondo desenfocado. Si el archivo ya tiene el formato exacto solicitado, se reutiliza en vez de crear una copia idéntica. Al combinar subtítulos y formato se transcribe una vez y se colocan los subtítulos sobre cada formato final, con un máximo de dos líneas. Las frases demasiado breves o rápidas necesitan revisión antes de guardar. «Ambos» puede generar dos copias desde un vídeo cuadrado.</p>
   <p>Las opciones se restablecen al cambiar de vídeo y se desactivan al elegir audio. El proceso admite vídeos de hasta tres minutos; mantén Stock abierto. Las etiquetas funcionales de las opciones cuentan dentro del máximo de diez etiquetas: si no caben, el panel pide corregirlas sin descartar etiquetas de cliente.</p>
   <h2>Si no detecta el vídeo</h2><ul><li>Comprueba que estás en una página de vídeo, Short o directo de YouTube.</li><li>Recarga la pestaña de YouTube después de instalar o actualizar la extensión.</li><li>Comprueba que la extensión tiene permiso para ejecutarse en YouTube.</li></ul>
   <h2>Si Admira Studio no importa</h2><ul><li>Inicia sesión con una cuenta autorizada.</li><li>Mantén abierta la pestaña del Stock para ver el progreso.</li><li>Reintenta desde el panel; la extensión no descarga ni almacena el archivo por su cuenta.</li></ul>
-  <footer><a href="/extensions/admira-studio-importer/privacy">Política de privacidad</a> · AdmiraStudioImporter v1.0.2</footer>
+  <footer><a href="#novedades">Novedades por versión</a> · <a href="/extensions/admira-studio-importer/privacy">Política de privacidad</a> · AdmiraStudioImporter</footer>
 </main></body></html>
