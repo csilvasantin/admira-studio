@@ -9,6 +9,18 @@ test('parte frases largas repartiendo el tiempo', () => {
   assert.equal(p.length, 2); assert.equal(p[0].start, 0); assert.ok(Math.abs(p[1].end - 10) < 1e-9);
   assert.deepEqual(segmentsOf({segments: [{start: 0, end: 1, text: ' hi '}, {start: 2, end: 1, text: 'x'}]}), [{start: 0, end: 1, text: 'hi'}]);
 });
+test('recupera un intervalo imposible solo de marcas por palabra completas, ordenadas y sin solapes',()=>{
+  const words=[{word:'We',start:100,end:100.3},{word:'are',start:100.3,end:100.6},{word:'the',start:100.6,end:100.9},{word:'cows',start:100.9,end:101.3},{word:'of',start:101.3,end:101.5},{word:'the',start:101.5,end:101.8},{word:'future.',start:101.8,end:102.9}];
+  const last={start:102.8,end:102.9,text:'We are the cows of the future.',words};
+  const prev={start:97,end:99.8,text:'An earlier phrase.'};
+  assert.deepEqual(segmentsOf({segments:[prev,last]}),[prev,{start:100,end:102.9,text:last.text,timingSource:'words'}]);
+  for(const invalid of [words.slice(1),words.toReversed(),words.map(w=>({...w,start:w.start-2,end:w.end-2}))]){
+    assert.deepEqual(segmentsOf({segments:[prev,{...last,words:invalid}]}).at(-1),{start:last.start,end:last.end,text:last.text});
+  }
+  assert.deepEqual(segmentsOf({segments:[{...prev,end:101},last]}).at(-1),{start:last.start,end:last.end,text:last.text});
+  const repeated={start:100,end:102.9,text:last.text,words};
+  assert.deepEqual(segmentsOf({segments:[{start:97,end:99.8,text:last.text},repeated]}).map(s=>s.text),[last.text,last.text]);
+});
 test('sin binding AI → 503; sin sesión → 401', async () => {
   const req = () => new Request('https://x.test/stock-subtitles', {method: 'POST', body: '{}'});
   assert.equal((await onRequestPost({request: req(), env: {}})).status, 503);
@@ -48,6 +60,7 @@ test('API: sesión real firmada; Whisper detecta origen y LLM devuelve SRT en ca
   });
   assert.equal(response.status, 200); assert.equal(response.body.from, 'en'); assert.equal(response.body.to, 'es');
   assert.equal(calls[0].input.language, undefined);
+  assert.equal(calls[0].input.condition_on_previous_text,false);
   assert.equal(response.body.cues[0].text, 'Hola, mundo.');
   assert.match(response.body.srt, /00:00:00,000 --> 00:00:01,800/);
 });
@@ -56,6 +69,16 @@ test('API: audio español se subtitula en español sin traducción ni inversión
   let calls = 0;
   const response = await subtitleRequest(async model => {calls++; assert.match(model, /whisper/); return transcript('es');}, {audio: 'YXVkaW8=', from: 'es', to: 'es'});
   assert.equal(response.status, 200); assert.equal(response.body.cues[0].text, 'Hola, mundo.'); assert.equal(calls, 1);
+});
+test('API: traduce una frase con marcas por palabra válidas y conserva el intervalo recuperado',async()=>{
+  const r=await subtitleRequest(async(model,input)=>model.includes('whisper')?{
+    transcription_info:{language:'en',duration:103},segments:[{start:102.8,end:102.9,text:'We are the cows of the future.',words:[
+      {word:'We',start:100,end:100.3},{word:'are',start:100.3,end:100.6},{word:'the',start:100.6,end:100.9},
+      {word:'cows',start:100.9,end:101.3},{word:'of',start:101.3,end:101.5},{word:'the',start:101.5,end:101.8},{word:'future.',start:101.8,end:102.9}]}]
+    }:{response:'1. Somos las vacas del futuro.'});
+  assert.equal(r.status,200);assert.equal(r.body.recognition.wordTimingRepairs,1);
+  assert.deepEqual(r.body.cues,[{start:100,end:102.9,text:'Somos las vacas del futuro.',source:'We are the cows of the future.'}]);
+  assert.match(r.body.srt,/00:01:40,000 --> 00:01:42,900/);
 });
 
 test('API: un origen francés no se trata como inglés y la ausencia de idioma no se adivina', async () => {

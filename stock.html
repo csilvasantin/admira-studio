@@ -2290,13 +2290,13 @@
     // #traduce (EN→subtítulos ES) / #translate (ES→subtítulos EN) · assets/capsula-traduce.mjs (sin bucle: subtitulado-*).
     function capsulaTraduce(it){
       if(!it||it.type!=='video')return;
-      import('/assets/capsula-traduce.mjs?v=20261027-importer-es5').then(m=>m.maybeSubtitle(it,{items:allItemsTodo,onStatus:t=>{status.textContent=t;traducePendiente=t;
+      import('/assets/capsula-traduce.mjs?v=20261027-importer-es6').then(m=>m.maybeSubtitle(it,{items:allItemsTodo,onStatus:t=>{status.textContent=t;traducePendiente=t;
         try{status.classList.add('stock-traduce-aviso');applyFilters();}catch(_){}},onSettled:()=>{try{applyFilters();}catch(_){}},
         onCreated:(id,item)=>{if(item)document.dispatchEvent(new CustomEvent('stock:local-published',{detail:{item:{...item,url:`${STOCK_BASE}/stock/asset/${encodeURIComponent(id)}`}}}));}})).catch(()=>{});
     }
     let traducePendiente='';
     // Carga el módulo una vez para pintar la insignia «subtítulos XX pendientes» en las tarjetas.
-    import('/assets/capsula-traduce.mjs?v=20261027-importer-es5').then(m=>{window.CapsulaTraduce=m;try{applyFilters();}catch(_){}}).catch(()=>{});
+    import('/assets/capsula-traduce.mjs?v=20261027-importer-es6').then(m=>{window.CapsulaTraduce=m;try{applyFilters();}catch(_){}}).catch(()=>{});
     grid.addEventListener('click',e=>{
       const b=e.target.closest('[data-act="traduce-pendiente"]');if(!b)return;e.preventDefault();e.stopPropagation();
       const txt=b.dataset.encargo||'';try{navigator.clipboard.writeText(txt);}catch(_){}

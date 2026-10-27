@@ -39,8 +39,26 @@ export function splitCue(c, max = 84) {
 }
 export function segmentsOf(out) {
   const segs = Array.isArray(out?.segments) ? out.segments : [];
-  return segs.map(s => ({start: +s.start, end: +s.end, text: String(s.text || '').trim()}))
-    .filter(s => Number.isFinite(s.start) && Number.isFinite(s.end) && s.end > s.start && s.text);
+  const usable=segs.map(s=>({start:+s.start,end:+s.end,text:String(s.text||'').trim(),words:s.words}))
+    .filter(s=>Number.isFinite(s.start)&&Number.isFinite(s.end)&&s.end>s.start&&s.text);
+  const result=[];
+  const letters=s=>String(s).normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]/gu,'');
+  for(let i=0;i<usable.length;i++){
+    const {start,end,text,words}=usable[i];let segment={start,end,text};
+    // Use ASR's own word alignment only when the aggregate segment timestamp
+    // is implausible, every word is covered and its bounds do not overlap a
+    // neighboring segment. Do not invent padding or remove repeated dialogue.
+    if((end-start<.3||text.replace(/\s/g,'').length/(end-start)>45)&&Array.isArray(words)&&words.length){
+      const ordered=words.every((w,j)=>Number.isFinite(w.start)&&Number.isFinite(w.end)&&w.start>=0&&w.end>=w.start
+        &&(!j||w.start>=words[j-1].end-.02));
+      const a=words[0].start,z=words.at(-1).end;
+      if(ordered&&letters(words.map(w=>w.word||'').join(' '))===letters(text)&&z-a>=.3&&z-a<=15
+        &&z<=MAX_SECONDS&&a>=(result.at(-1)?.end||0)-.02&&z<=(usable[i+1]?.start??MAX_SECONDS)+.02)
+        segment={start:a,end:z,text,timingSource:'words'};
+    }
+    result.push(segment);
+  }
+  return result;
 }
 
 const NAME = {es: 'Spanish (Spain, informal "tú")', en: 'English'};
@@ -86,7 +104,9 @@ export async function onRequestPost({request, env}) {
   if (typeof audio !== 'string' || !audio || audio.length > MAX_AUDIO_B64 || !/^[A-Za-z0-9+/=]+$/.test(audio.slice(0, 4096))) return json(400, {ok: false, error: 'bad-audio'});
   if (!LANGS.includes(to) || (from && !LANGS.includes(from))) return json(400, {ok: false, error: 'bad-lang'});
   let out;
-  try { out = await env.AI.run('@cf/openai/whisper-large-v3-turbo', {audio, task: 'transcribe', ...(from ? {language: from} : {}), vad_filter: true}); }
+  // Cloudflare documents this option for avoiding recognition repetition loops:
+  // https://developers.cloudflare.com/workers-ai/models/whisper-large-v3-turbo/
+  try { out = await env.AI.run('@cf/openai/whisper-large-v3-turbo', {audio, task: 'transcribe', ...(from ? {language: from} : {}), vad_filter: true, condition_on_previous_text: false}); }
   catch (e) { return json(502, {ok: false, error: 'whisper', detail: String(e?.message || e).slice(0, 200)}); }
   const detected = languageCode(out?.transcription_info?.language) || languageCode(from);
   const duration = +out?.transcription_info?.duration || 0;
@@ -106,5 +126,6 @@ export async function onRequestPost({request, env}) {
   const fmt = x => { const ms = Math.round(x * 1000), p = (n, l = 2) => String(n).padStart(l, '0');
     return `${p(Math.floor(ms / 3600000))}:${p(Math.floor(ms / 60000) % 60)}:${p(Math.floor(ms / 1000) % 60)},${p(ms % 1000, 3)}`; };
   const srt = cues.map((c, n) => `${n + 1}\n${fmt(c.start)} --> ${fmt(c.end)}\n${c.text}\n`).join('\n');
-  return json(200, {ok: true, from: source, to, duration, cues, srt, text: String(out?.text || '').slice(0, 20000)});
+  return json(200, {ok: true, from: source, to, duration, cues, srt, text: String(out?.text || '').slice(0, 20000),
+    recognition:{conditionOnPreviousText:false,wordTimingRepairs:src.filter(s=>s.timingSource==='words').length}});
 }

@@ -166,7 +166,7 @@ export async function maybeSubtitle(it, ctx = {}) {
     const tags=tagsOf(it).filter(t=>!isFormatRequestTag(t)&&!DIRECTIONS[norm(t)]&&!norm(t).startsWith(SUB_PREFIX)&&!norm(t).startsWith('par-')
       && !['vertical','horizontal','portrait','landscape','9:16','16:9',ALT_TAG,SUBTITLE_OFF].includes(norm(t)));
     const extra = {tags: [...new Set([subTag(dir.to),pairTag(it.id),...(request?['formato-original']:[]),...(target.format?[target.format]:[]),...tags])].slice(0,MAX_TAGS), externalRef: it.id,
-      comment: `Subtítulos ${String(d.from || 'auto').toUpperCase()}→${dir.to.toUpperCase()} (${d.provenance||'Workers AI'}) de ${it.id}${layout.mergedSegments ? ` · ajuste automático de tiempos: ${layout.mergedSegments} fragmentos unidos` : ''}\n\n${srt}`.slice(0, 4000)};
+      comment: `Subtítulos ${String(d.from || 'auto').toUpperCase()}→${dir.to.toUpperCase()} (${d.provenance||'Workers AI'}) de ${it.id}${d.recognition?.wordTimingRepairs ? ` · ${d.recognition.wordTimingRepairs} tiempos recuperados de marcas por palabra` : ''}${layout.mergedSegments ? ` · ajuste automático de tiempos: ${layout.mergedSegments} fragmentos unidos` : ''}\n\n${srt}`.slice(0, 4000)};
     const p = await publishAdaptation(out, {title, originId: it.id, format: target.format||`subtitulado-${dir.to}`, width: target.W, height: target.H, duration: meta.d, type: 'video'}, extra);
     if (!p.ok) throw new Error(p.error || 'publish');
     say(`✓ subtítulos ${dir.to.toUpperCase()} quemados y guardados (${d.cues.length} frases)`);

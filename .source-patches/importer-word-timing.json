@@ -1,0 +1,22 @@
+{
+  "kind": "importer-web-asr-word-timing",
+  "domain": "admira.studio",
+  "canonicalBase": "a779f25138628efdb8a36b146f24fc04a464fd5d",
+  "reason": "Carlos: otro vídeo real con subtítulos ES completamente automáticos, dos formatos, extensión instalada intacta y 1.0.2 diferida. El intento real reveló una frase completa asignada a 102.80–102.90 segundos.",
+  "files": [
+    "functions/stock-subtitles.js",
+    "assets/capsula-traduce.mjs",
+    "stock.html",
+    "test/stock-subtitles.test.mjs",
+    ".source-patches/importer-word-timing.json"
+  ],
+  "providerDocs": "https://developers.cloudflare.com/workers-ai/models/whisper-large-v3-turbo/",
+  "behavior": "Desactiva condition_on_previous_text. Usa marcas de todas las palabras solo para intervalos implausibles, con cobertura exacta, orden, límites y sin solapar vecinos. No borra diálogos repetidos ni añade silencios.",
+  "security": {
+    "changesInstalledExtension": false,
+    "changesStorePackage": false,
+    "changesPermissions": false,
+    "containsSecrets": false,
+    "preservesOriginalAudioBitstream": true
+  }
+}
