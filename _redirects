@@ -1,1 +1,11 @@
 /llms.txt /llms.txt 200
+
+# Assets now belongs to Store; static /assets/* resources remain in Studio.
+/crear https://www.admira.store/assets/ 301
+/crear/ https://www.admira.store/assets/ 301
+/crear/index.html https://www.admira.store/assets/ 301
+/en/crear https://www.admira.store/assets/en/ 301
+/en/crear/ https://www.admira.store/assets/en/ 301
+/en/crear/index.html https://www.admira.store/assets/en/ 301
+/assets https://www.admira.store/assets/ 301
+/assets/ https://www.admira.store/assets/ 301

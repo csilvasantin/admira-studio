@@ -40,9 +40,6 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/radar/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.admira.studio/radar/"/>
   </url>
-  <url><loc>https://www.admira.studio/crear/</loc><lastmod>2026-06-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/crear/"/>
-  </url>
   <url><loc>https://www.admira.studio/crear-campana/</loc><lastmod>2026-06-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.admira.studio/crear-campana/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.admira.studio/en/crear-campana/"/>

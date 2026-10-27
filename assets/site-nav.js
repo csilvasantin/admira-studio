@@ -132,7 +132,6 @@
     ['/musica.html', 'Música'],
     ['/imagenes.html', 'Imágenes'],
     ['/video.html', 'Video'],
-    ['/crear/', 'Assets'],
     ['/stock.html', 'Stock']
   ];
   var EN = [
@@ -142,7 +141,6 @@
     ['/en/musica.html', 'Music'],
     ['/en/imagenes.html', 'Images'],
     ['/en/video.html', 'Video'],
-    ['/en/crear/', 'Assets'],
     ['/en/stock.html', 'Stock']
   ];
 
@@ -377,7 +375,6 @@
     ['/musica.html', 'Música', 'Bandas sonoras, jingles y marca sonora'],
     ['/imagenes.html', 'Imágenes', 'Dirección de arte, producto y estilo'],
     ['/video.html', 'Vídeo', 'Storyboards, generación, edición y loops'],
-    ['/crear/', 'Assets', 'Generar assets: video, imagen, audio, texto, mobiliario'],
     ['/stock.html', 'Stock', 'Galería pública de assets desplegados'],
     ['/avatar.html', 'Avatar 3D', 'Presentadores y avatares generativos'],
     ['/anonimizador.html', 'Anonimizador', 'Privacidad en imagen y vídeo'],

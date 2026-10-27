@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
+const root=new URL('../',import.meta.url),read=p=>readFileSync(new URL(p,root),'utf8');
+test('legacy generator addresses retain query and fragment when moving to Store',()=>{for(const [file,target] of [['crear/index.html','https://www.admira.store/assets/'],['en/crear/index.html','https://www.admira.store/assets/en/']]){const html=read(file);assert(html.includes(target));assert(html.includes('location.search+location.hash'));assert(!html.includes('furniGenerateAI'));}});
+test('Studio navigation has no Assets section while existing open assets reaches Store',()=>{const source=read('assets/site-nav.js');assert(!source.includes("'/crear/', 'Assets'"));assert(!source.includes("'/en/crear/', 'Assets'"));assert(read('assets/expert-cli.js').includes("assets: 'https://www.admira.store/assets/'"));assert(!read('index.html').includes('href="/crear/"'));});

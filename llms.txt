@@ -80,3 +80,5 @@ Tutorial ES/EN: https://admira.studio/docs/creator-content-language.md
 Ocho vídeos ingleses / Eight English movies: https://admira.studio/campanas/starbucks-six/?content=en
 
 ES/EN: Idiomas a crear / Languages to create uses multiple checkboxes, defaults to the UI language for new campaigns, and exports all selected languages; tutorial: https://admira.studio/docs/creator-content-language.md
+
+Assets generator moved to https://www.admira.store/assets/ (ES) and https://www.admira.store/assets/en/ (EN). Studio: multimedia import, creation and adaptation.

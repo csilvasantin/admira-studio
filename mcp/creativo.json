@@ -1,17 +1,29 @@
 {
- "schema":"admira.creativo.mcp.v1",
- "endpoint":"https://mcp-pixeria.admira.store/mcp",
- "tools":["creativo_help","creativo_combo_preparar"],
- "helpCommand":"/admirito creativo help",
- "commands":["/crear combo imagen locucion 10 segundos","/crear combo imagen musica 10 segundos"],
- "guide":"https://admira.studio/docs/creativo-combos-mcp.md",
- "schemaModule":"https://admira.studio/assets/creativo-combo-core.mjs",
- "catalogueModule":"https://admira.studio/assets/creativo-help.mjs",
- "execution":"MCP validates and prepares; generation is explicitly confirmed in the authenticated Creative UI.",
- "generationOnMCPPreparation":false,
- "stockPublication":"explicit review",
- "musicProvider":"consejeros-suno",
- "deliverySeconds":10,
- "voicePolicy":"No word truncation or speed change; shorten if over ten seconds.",
- "musicPolicy":"Wait for actual audio; select an excerpt if longer than ten seconds."
+  "schema": "admira.creativo.mcp.v1",
+  "endpoint": "https://mcp-pixeria.admira.store/mcp",
+  "tools": [
+    "creativo_help",
+    "creativo_combo_preparar"
+  ],
+  "helpCommand": "/admirito creativo help",
+  "commands": [
+    "/crear combo imagen locucion 10 segundos",
+    "/crear combo imagen musica 10 segundos"
+  ],
+  "guide": "https://admira.studio/docs/creativo-combos-mcp.md",
+  "schemaModule": "https://admira.studio/assets/creativo-combo-core.mjs",
+  "catalogueModule": "https://admira.studio/assets/creativo-help.mjs",
+  "execution": "MCP validates and prepares; generation is explicitly confirmed in the authenticated Creative UI.",
+  "generationOnMCPPreparation": false,
+  "stockPublication": "explicit review",
+  "musicProvider": "consejeros-suno",
+  "deliverySeconds": 10,
+  "voicePolicy": "No word truncation or speed change; shorten if over ten seconds.",
+  "musicPolicy": "Wait for actual audio; select an excerpt if longer than ten seconds.",
+  "assetsGenerator": {
+    "url": "https://www.admira.store/assets/",
+    "en": "https://www.admira.store/assets/en/",
+    "es": "Assets se ha trasladado a Store. Studio importa, crea y adapta contenidos multimedia.",
+    "description": "Assets moved to Store. Studio imports, creates and adapts multimedia content."
+  }
 }

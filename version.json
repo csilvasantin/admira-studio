@@ -1,27 +1,20 @@
 {
-  "version": "v.27.10.2026.r3.17:10",
+  "version": "v.27.10.2026.r4.21:40",
   "deployedAt": "2026-10-27T17:10:44.658711+01:00",
-  "author": "DeepAgent Trinity",
-  "agent": "Trinity",
-  "deployer": "DeepAgent Trinity",
-  "machine": "Mac Studio",
-  "signature": "DeepAgent Trinity · Mac Studio",
+  "author": "DeepAgent Codex",
+  "agent": "Codex",
+  "deployer": "DeepAgent Codex",
+  "machine": "MacStudio",
+  "signature": "DeepAgent Codex · MacStudio",
   "git": "d069c84868033dc74eed435b0f54286a22426753",
   "gitFull": "d069c84868033dc74eed435b0f54286a22426753",
   "gitShort": "d069c84",
   "dirty": false,
   "novedades": [
+    "Assets · generador 2D trasladado a admira.store/assets; Admira Studio centrado en importar, crear y adaptar multimedia.",
     "AdmiraStudioImporter: nuevo historial de novedades por versión en la ayuda, con las diferencias entre 1.0.1 y 1.0.2 y su estado de publicación.",
     "La 1.0.2 continúa aprobada con publicación diferida; las novedades web no cambian el paquete ni la extensión instalada.",
-    "Subtítulos automáticos: el reconocimiento evita bucles de repetición y recupera intervalos imposibles solo con marcas por palabra completas y sin solapes.",
-    "Subtítulos: ajuste automático de fragmentos contiguos demasiado breves, conservando todas las palabras, la imagen y la voz. Stock evita guardar etiquetas que superan el límite.",
-    "Importer1.0.2: subtítulos ES/EN y copias vertical/horizontal; subtítulos sobre formato final, máximo dos líneas y voz original intacta.",
-    "Subtítulos: la copia confirmada aparece inmediatamente en Stock y retira la marca pendiente, sin esperar al índice.",
-    "Importador: cápsulas con subtítulos en castellano desde la web y lectura de vídeo con FFmpeg, conservando imagen, voz y extensión instalada.",
-    "AdmiraStudioImporter 1.0.1: el botón de YouTube abre el panel lateral dentro del gesto del usuario, sin el error «Abre la extensión».",
-    "AdmiraStudioImporter · Chrome Web Store: paquete público preparado con permisos mínimos, privacidad y soporte accesibles, ficha completa y recursos gráficos reglamentarios.",
-    "AdmiraStudioImporter: nueva extensión Chrome con botón en YouTube, panel lateral, vídeo/audio, etiquetas y handoff automático al Stock, sin pasar por Telegram.",
-    "Stock · Barra compacta: se elimina Guardar búsqueda y la franja de orden integra el estado del importador, cápsulas y subtítulos con progreso visual y porcentaje."
+    "Subtítulos automáticos: el reconocimiento evita bucles de repetición y recupera intervalos imposibles solo con marcas por palabra completas y sin solapes."
   ],
   "rollback": {
     "git": "80e975be5a96cc1f90519ec16da8f6e204e040fb"
@@ -87,7 +80,8 @@
     ".source-patches/importer-spanish-subtitles.json",
     ".source-patches/importer-auto-timing.json",
     ".source-patches/importer-word-timing.json",
-    ".source-patches/importer-release-notes.json"
+    ".source-patches/importer-release-notes.json",
+    ".source-patches/assets-generator-move.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
