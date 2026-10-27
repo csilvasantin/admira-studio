@@ -1,0 +1,20 @@
+{
+  "kind": "importer-release-notes-web",
+  "domain": "admira.studio",
+  "canonicalBase": "80e975be5a96cc1f90519ec16da8f6e204e040fb",
+  "reason": "Carlos: fusionar PR144 y publicar el apartado de novedades en la web, manteniendo la 1.0.2 diferida y la extensión instalada intacta.",
+  "files": [
+    "extensions/admira-studio-importer/CHANGELOG.md",
+    "extensions/admira-studio-importer/README.md",
+    "extensions/admira-studio-importer/support.html",
+    ".source-patches/importer-release-notes.json"
+  ],
+  "status": "release-authorized",
+  "release": "v.27.10.2026.r3.17:10",
+  "security": {
+    "changesInstalledExtension": false,
+    "changesStorePackage": false,
+    "changesPermissions": false,
+    "containsSecrets": false
+  }
+}
