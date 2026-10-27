@@ -1,14 +1,12 @@
 {
   "source": "pixeria",
-  "base": "3dd17714a672408e8d67aefb1bb6d25c94867a97",
-  "commit": "1667315e5b646a3e3c42eef4bec6af53647abc32",
+  "base": "09a347f876728dc2b7067e7bfd81f84408812fea",
+  "commit": "aa47e6757ea917b7e3bee936b3895db5474409fc",
   "paths": [
     "stock.html",
-    "en/stock.html",
-    "assets/admira-resource-batch.mjs",
-    "assets/admira-batch-create.mjs"
+    "en/stock.html"
   ],
   "mode": "incremental",
-  "release": "batch-create",
-  "prepared": false
+  "release": "linked-drafts",
+  "prepared": true
 }
