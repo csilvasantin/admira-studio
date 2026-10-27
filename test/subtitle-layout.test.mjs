@@ -20,6 +20,25 @@ test('texto no puede introducir instrucciones de ASS y las frases ilegibles requ
   assert.ok(!a.includes('{\\pos'));assert.ok(a.includes('｛＼pos'));
   assert.throws(()=>subtitleLayout([{start:1,end:1.04,text:'Adiós.'}],1080,1920),/subtitle-review-required/);
 });
+test('une fragmentos contiguos demasiado breves sin cambiar palabras ni tiempos exteriores',()=>{
+  const source=[{start:0,end:.06,text:'Las vacas'},{start:.06,end:3,text:'no saben que existe el dinero.'},{start:3,end:3.05,text:'Pero'},{start:3.05,end:6,text:'nosotros sí lo sabemos.'}];
+  const before=structuredClone(source);
+  for(const [w,h] of [[1080,1920],[1920,1080]]){
+    const layout=subtitleLayout(source,w,h);
+    assert.equal(layout.mergedSegments,2);
+    assert.equal(layout.cues.map(c=>c.text).join(' ').replace(/\s+/g,' '),source.map(c=>c.text).join(' '));
+    assert.equal(layout.cues[0].start,0);assert.equal(layout.cues.at(-1).end,6);
+    assert.ok(layout.cues.every(c=>c.end-c.start>=.3&&c.text.split('\n').length<=2));
+  }
+  assert.deepEqual(source,before);
+});
+test('el ajuste automático no rellena silencios ni acepta diálogo que sigue siendo demasiado rápido',()=>{
+  assert.throws(()=>subtitleLayout([{start:0,end:3,text:'Una frase normal.'},{start:4,end:4.05,text:'Adiós.'}],1080,1920),/subtitle-review-required/);
+  assert.throws(()=>subtitleLayout([{start:0,end:.04,text:'Esta frase es demasiado rápida.'},{start:.04,end:.1,text:'Y esta tampoco tiene tiempo de lectura.'}],1080,1920),/subtitle-review-required/);
+  const cues=[{start:0,end:3,text:'Una frase normal.'},{start:3,end:6,text:'Otra frase normal.'}];
+  const result=subtitleLayout(cues,1080,1920);
+  assert.equal(result.mergedSegments,0);assert.deepEqual(result.cues,cues);
+});
 test('ambos se publica por proporción y al reintentar solo falta el segundo, con una transcripción por intento',async()=>{
   const it={id:'two-formats',url:'https://media.test/video',type:'video',tags:['capsula','subtitulos-es','adaptar-ambos']};
   const items=[],published=[];let fail=true,requests=0;
@@ -31,9 +50,20 @@ test('ambos se publica por proporción y al reintentar solo falta el segundo, co
   fail=false;assert.equal((await maybeSubtitle(it,ctx)).ok,true);assert.deepEqual(published,['9:16','16:9']);
   assert.deepEqual(await maybeSubtitle(it,ctx),{skipped:'ya-existe'});assert.equal(requests,2);
 });
+test('una respuesta automática con fragmentos contiguos cortos produce los dos formatos con trazabilidad',async()=>{
+  const published=[];let calls=0;
+  const r=await maybeSubtitle({id:'fresh-short-fragments',url:'https://media.test/fresh-video',type:'video',tags:['subtitulos-es','adaptar-ambos']},
+    {items:[],videoMeta:async()=>({w:1080,h:1080,d:3}),engine:{encode:async(u,j,s,done)=>done({},new Blob(['media']))},
+      fetch:async()=>{calls++;return Response.json({ok:true,from:'en',to:'es',cues:[{start:0,end:.06,text:'Las vacas'},{start:.06,end:3,text:'no saben que existe el dinero.'}]});},
+      publish:async(blob,meta,extra)=>{published.push({meta,extra});return {ok:true,id:'fresh-'+meta.format};}});
+  assert.equal(r.ok,true);assert.equal(calls,1);
+  assert.deepEqual(published.map(p=>[p.meta.width,p.meta.height]),[[1080,1920],[1920,1080]]);
+  for(const {extra} of published){assert.match(extra.comment,/Workers AI.*ajuste automático de tiempos: 1 fragmentos unidos/);assert.match(extra.comment,/Las vacas no saben/);}
+});
 test('si la traducción no es legible no publica ninguno de los dos formatos',async()=>{
-  let writes=0;
+  let writes=0;const statuses=[];
   const r=await maybeSubtitle({id:'bad-cues',url:'https://media.test/video',type:'video',tags:['subtitulos-es','adaptar-ambos']},
-    {items:[],videoMeta:async()=>({w:320,h:240,d:2}),engine:{},subtitleData:{ok:true,from:'en',to:'es',cues:[{start:0,end:.04,text:'Adiós.'}]},publish:async()=>{writes++;}});
+    {items:[],videoMeta:async()=>({w:320,h:240,d:2}),engine:{},subtitleData:{ok:true,from:'en',to:'es',cues:[{start:0,end:.04,text:'Adiós.'}]},publish:async()=>{writes++;},onStatus:s=>statuses.push(s)});
   assert.equal(r.error,'subtitle-review-required');assert.equal(writes,0);
+  assert.deepEqual(r.review,{start:0,end:.04,text:'Adiós.'});assert.ok(statuses.some(s=>s.includes('0.00–0.04 s: «Adiós.»')));
 });

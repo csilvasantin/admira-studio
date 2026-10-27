@@ -1,16 +1,17 @@
 {
-  "version": "v.26.10.2026.r3.23:08",
-  "deployedAt": "2026-10-26T23:08:24.369449+01:00",
+  "version": "v.27.10.2026.r1.09:10",
+  "deployedAt": "2026-10-27T09:10:52.175389+01:00",
   "author": "DeepAgent Trinity",
   "agent": "Trinity",
   "deployer": "DeepAgent Trinity",
   "machine": "Mac Studio",
   "signature": "DeepAgent Trinity · Mac Studio",
-  "git": "46dc249b664f40a60deb7aadd558515811e370a0",
-  "gitFull": "46dc249b664f40a60deb7aadd558515811e370a0",
-  "gitShort": "46dc249",
+  "git": "560dba858b6e7f3954feeba1cda1c139a9ec3b5d",
+  "gitFull": "560dba858b6e7f3954feeba1cda1c139a9ec3b5d",
+  "gitShort": "560dba8",
   "dirty": false,
   "novedades": [
+    "Subtítulos: ajuste automático de fragmentos contiguos demasiado breves, conservando todas las palabras, la imagen y la voz. Stock evita guardar etiquetas que superan el límite.",
     "Importer1.0.2: subtítulos ES/EN y copias vertical/horizontal; subtítulos sobre formato final, máximo dos líneas y voz original intacta.",
     "Subtítulos: la copia confirmada aparece inmediatamente en Stock y retira la marca pendiente, sin esperar al índice.",
     "Importador: cápsulas con subtítulos en castellano desde la web y lectura de vídeo con FFmpeg, conservando imagen, voz y extensión instalada.",
@@ -20,7 +21,7 @@
     "Stock · Barra compacta: se elimina Guardar búsqueda y la franja de orden integra el estado del importador, cápsulas y subtítulos con progreso visual y porcentaje."
   ],
   "rollback": {
-    "git": "744f63504d4e053b95c3a31231028a81f1f84858"
+    "git": "560dba858b6e7f3954feeba1cda1c139a9ec3b5d"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -80,7 +81,8 @@
     ".source-patches/stock-process-dock.json",
     ".source-patches/admira-studio-importer-webstore.json",
     ".source-patches/importer-auto-subtitles-web.json",
-    ".source-patches/importer-spanish-subtitles.json"
+    ".source-patches/importer-spanish-subtitles.json",
+    ".source-patches/importer-auto-timing.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",

@@ -14,7 +14,7 @@
  */
 import {norm, pairTag, isCapsuleTag, PILLARS, ALT_TAG, MAX_TAGS} from './capsula-alterna.mjs?v=20261026-importer-options';
 import {SUBTITLE_OFF, isFormatRequestTag, formatRequest} from './importer-options.mjs';
-import {subtitlePlans,matchesSubtitleFormat,subtitleLayout,subtitleVideoJob} from './subtitle-layout.mjs';
+import {subtitlePlans,matchesSubtitleFormat,subtitleLayout,subtitleVideoJob} from './subtitle-layout.mjs?v=20261027-auto-timing';
 
 const ES_SUBS = {from: 'en', to: 'es'}, EN_SUBS = {from: 'es', to: 'en'};
 // Alias (24-oct-2026, Carlos importó con #traducir y no pasó nada): palabra española → subtítulos ES
@@ -166,7 +166,7 @@ export async function maybeSubtitle(it, ctx = {}) {
     const tags=tagsOf(it).filter(t=>!isFormatRequestTag(t)&&!DIRECTIONS[norm(t)]&&!norm(t).startsWith(SUB_PREFIX)&&!norm(t).startsWith('par-')
       && !['vertical','horizontal','portrait','landscape','9:16','16:9',ALT_TAG,SUBTITLE_OFF].includes(norm(t)));
     const extra = {tags: [...new Set([subTag(dir.to),pairTag(it.id),...(request?['formato-original']:[]),...(target.format?[target.format]:[]),...tags])].slice(0,MAX_TAGS), externalRef: it.id,
-      comment: `Subtítulos ${String(d.from || 'auto').toUpperCase()}→${dir.to.toUpperCase()} (${d.provenance||'Workers AI'}) de ${it.id}\n\n${srt}`.slice(0, 4000)};
+      comment: `Subtítulos ${String(d.from || 'auto').toUpperCase()}→${dir.to.toUpperCase()} (${d.provenance||'Workers AI'}) de ${it.id}${layout.mergedSegments ? ` · ajuste automático de tiempos: ${layout.mergedSegments} fragmentos unidos` : ''}\n\n${srt}`.slice(0, 4000)};
     const p = await publishAdaptation(out, {title, originId: it.id, format: target.format||`subtitulado-${dir.to}`, width: target.W, height: target.H, duration: meta.d, type: 'video'}, extra);
     if (!p.ok) throw new Error(p.error || 'publish');
     say(`✓ subtítulos ${dir.to.toUpperCase()} quemados y guardados (${d.cues.length} frases)`);
@@ -178,9 +178,11 @@ export async function maybeSubtitle(it, ctx = {}) {
     }
     return {ok: true, id: generated[0], cues: d.cues.length};
   } catch (e) {
+    const review=e?.subtitleCue;
     say(e?.message==='subtitle-review-required' ? '// 🈯 subtítulos: hay frases demasiado breves o rápidas; necesitan revisión antes de guardar el vídeo'
+      +(review ? ` · ${review.start.toFixed(2)}–${review.end.toFixed(2)} s: «${review.text.replace(/\s+/g,' ').slice(0,120)}»` : '')
       : `// 🈯 subtítulos ${dir.to.toUpperCase()}: no se pudieron generar (${String(e?.message || e).slice(0, 60)}) · clic en la insignia para copiar el encargo`);
-    return {ok: false, error: String(e?.message || e)};
+    return {ok: false, error: String(e?.message || e),...(review?{review}: {})};
   } finally {
     running.delete(it.id);
     try { ctx.onSettled?.(); } catch (_) {}
