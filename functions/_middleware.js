@@ -12,6 +12,18 @@ const PUBLIC_EXTENSION_DOCUMENTS = new Set([
 // El avatar digital se añade a las páginas que ya pasaron la verja (encargo avatar · 4-oct-2026).
 export async function onRequest(context) {
   const url = new URL(context.request.url);
+  // A moved public address redirects before Studio login; the destination keeps its own perimeter.
+  const movedAssets = new Map([
+    ['/crear','/assets/'],['/crear/','/assets/'],['/crear/index.html','/assets/'],
+    ['/en/crear','/assets/en/'],['/en/crear/','/assets/en/'],['/en/crear/index.html','/assets/en/'],
+    ['/assets','/assets/'],['/assets/','/assets/']
+  ]);
+  if (['GET','HEAD'].includes(context.request.method) && movedAssets.has(url.pathname)) {
+    const destination = new URL(movedAssets.get(url.pathname),'https://www.admira.store');
+    destination.search = url.search;
+    return new Response(null,{status:301,headers:{location:destination.href,'cache-control':'no-store'}});
+  }
+
   if ((context.request.method === 'GET' || context.request.method === 'HEAD') && PUBLIC_EXTENSION_DOCUMENTS.has(url.pathname)) {
     return context.next();
   }

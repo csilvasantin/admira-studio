@@ -8,7 +8,9 @@
     "assets/site-nav.js",
     "assets/expert-cli.js",
     "_redirects",
-    "test/studio-page-exceptions.json"
+    "test/studio-page-exceptions.json",
+    "functions/_middleware.js",
+    "test/assets-redirect.test.mjs"
   ],
   "destination": "https://www.admira.store/assets/",
   "catalogue": "Existing shared Stock IDs remain unchanged.",
