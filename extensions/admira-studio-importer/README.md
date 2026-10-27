@@ -18,7 +18,11 @@ La política específica de la extensión está publicada en `https://www.admira
 
 ## Instalación recomendada
 
-Instala la versión publicada desde [Chrome Web Store](https://chromewebstore.google.com/detail/admirastudioimporter/empmdckpifcmhnlalcmkpceanaehedhl). La versión publicada y este código en desarrollo pueden ser distintas: la opción de subtítulos se prepara para 1.0.2. No sustituyas una instalación existente para revisar este cambio.
+Instala la versión publicada desde [Chrome Web Store](https://chromewebstore.google.com/detail/admirastudioimporter/empmdckpifcmhnlalcmkpceanaehedhl). En la comprobación del 27 de octubre de 2026, la 1.0.1 seguía publicada y Google había aceptado la 1.0.2 con publicación diferida: todavía no se había publicado. No sustituyas una instalación existente para revisar este cambio.
+
+## Novedades por versión
+
+Consulta [CHANGELOG.md](CHANGELOG.md) para comparar las versiones y la [ayuda pública, apartado Novedades](https://www.admira.studio/extensions/admira-studio-importer/support#novedades). La 1.0.1 importa vídeo/audio, comentarios y etiquetas; la 1.0.2 incorpora los selectores de idioma de subtítulos y formato de copia. El historial distingue las novedades del paquete de Chrome de las mejoras desplegadas en Stock.
 
 La publicación de una extensión y el aviso de confianza de Navegación segura mejorada son comprobaciones distintas. Google decide la confianza del editor según su historial de cumplimiento; verificar el dominio no garantiza que desaparezca el aviso ni fija un plazo. [Ayuda de Chrome](https://support.google.com/chrome/answer/2664769?hl=es).
 
@@ -32,7 +36,7 @@ Para desarrollar una versión nueva en un perfil de pruebas, utiliza esta carpet
 4. Selecciona esta carpeta: `extensions/admira-studio-importer`.
 5. Abre cualquier vídeo o Short de YouTube.
 
-## Subtítulos y formatos (1.0.2 en desarrollo)
+## Subtítulos y formatos (1.0.2 aprobada, publicación diferida)
 
 La versión instalada 1.0.1 se mantiene intacta. En ella, la corrección web ya publicada permite pedir ES marcando un vídeo con `#capsula` en Etiquetas o Comentarios. La versión 1.0.2 añade dos selectores por vídeo: **Subtítulos / Subtitles: ninguno, castellano o inglés**, y **Formato de la copia: original, vertical 9:16, horizontal 16:9 o ambos**. Se restablecen al cambiar de vídeo y se desactivan en audio; no se guardan como preferencias.
 
@@ -40,7 +44,7 @@ El handoff conserva su formato existente. Transporta las opciones con etiquetas 
 
 Stock mantiene el original. Si se combinan subtítulos y formato, transcribe y traduce una vez, prepara cada formato y coloca los subtítulos sobre su resolución final. Las copias de formato conservan la imagen completa sobre fondo desenfocado, la cadencia de origen y la pista de audio copiada. Una proporción ya existente se reutiliza; un cuadrado con «ambos» genera dos proporciones. La deduplicación distingue idioma y proporción, y un fallo parcial no vuelve a generar la copia ya guardada. El límite automático es de 180 segundos. La transcripción automática debe revisarse.
 
-Esta ampliación exige desplegar también `assets/importer-options.mjs`, los módulos de cápsulas/subtítulos, `app.js` y `stock.html` antes de enviar el paquete 1.0.2. La web actualmente publicada solo tiene las correcciones de PR140/141; los formatos explícitos de esta propuesta todavía no están desplegados. El ZIP candidato no debe distribuirse como actualización oficial antes de esa validación.
+Esta ampliación depende de `assets/importer-options.mjs`, los módulos de cápsulas/subtítulos, `app.js` y `stock.html`. La web con subtítulos y formatos se desplegó tras PR139; las correcciones de reconocimiento y tiempos de PR142/143 se desplegaron después. La prueba real del 27 de octubre completó una generación automática nueva en ambos formatos, de 102,957279 segundos, con la pista de audio idéntica al original. El paquete 1.0.2 está aprobado por Google, con publicación diferida; no debe publicarse sin una instrucción posterior.
 
 Para preparar el paquete revisable, sin instalar ni enviar a Google:
 
@@ -58,7 +62,7 @@ Pruebas locales (sin servicios de IA reales ni escrituras en Stock):
 node --test test/admira-studio-importer.test.mjs test/capsula-traduce.test.mjs test/stock-subtitles.test.mjs test/etiquetas-funcionales.test.mjs test/capsula-alterna.test.mjs
 ```
 
-La corrección web propia de Studio se identifica en `.source-patches/importer-auto-subtitles-web.json` y se publicó separada del paquete de extensión. PR139 conserva solo la propuesta 1.0.2 y las herramientas de prueba. Al portar la fuente hay que conservar estos cambios; no regenerar el espejo antiguo sobre las mejoras publicadas.
+La corrección web propia de Studio se identifica en `.source-patches/importer-auto-subtitles-web.json` y se publicó separada del paquete de extensión. PR139 integró la 1.0.2 y sus herramientas de prueba; PR142/143 añadieron correcciones web posteriores. Al portar la fuente hay que conservar estos cambios; no regenerar el espejo antiguo sobre las mejoras publicadas.
 
 ### Resultado de la prueba real (26-oct-2026)
 
@@ -70,7 +74,15 @@ Se completó una alternativa local con reconocimiento real de Whisper medium.en 
 
 ## Publicar
 
-Comprime el contenido de esta carpeta —con `manifest.json` en la raíz del ZIP— y súbelo al Chrome Web Store Developer Dashboard.
+Cada release debe actualizar **antes de preparar el ZIP**:
+
+1. `CHANGELOG.md`, con una entrada nueva por versión, novedades para el usuario, límites y dependencias de la web.
+2. `support.html#novedades`, con el mismo resumen visible desde la ayuda. Actualizar la fecha de comprobación y el estado al enviar, aprobar o publicar; una aprobación diferida no cuenta como publicación.
+3. Esta guía y los textos de la ficha que hayan quedado desfasados. Mantener las entradas de versiones anteriores.
+
+Las notas de una versión deben describir su paquete exacto. Las mejoras web y las propuestas todavía sin desplegar se registran por separado. La fecha de aprobación solo se da como exacta si consta en la evidencia; en otro caso se indica cuándo se observó el estado.
+
+Prepara el ZIP con `scripts/package-importer.py`: incluye los archivos de ejecución y los iconos, con `manifest.json` en la raíz. La documentación y la ayuda web no se añaden al paquete. Para cada versión futura, actualiza la versión y la comprobación del empaquetador; conserva intacto cualquier ZIP ya enviado a Google. Después se sube el nuevo paquete al Chrome Web Store Developer Dashboard.
 
 Los textos, justificaciones y recursos gráficos preparados para la ficha están en `extensions/admira-studio-importer-store/`.
 

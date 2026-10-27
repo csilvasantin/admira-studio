@@ -1,16 +1,18 @@
 {
-  "version": "v.27.10.2026.r2.09:25",
-  "deployedAt": "2026-10-27T09:25:04.269687+01:00",
+  "version": "v.27.10.2026.r3.17:10",
+  "deployedAt": "2026-10-27T17:10:44.658711+01:00",
   "author": "DeepAgent Trinity",
   "agent": "Trinity",
   "deployer": "DeepAgent Trinity",
   "machine": "Mac Studio",
   "signature": "DeepAgent Trinity · Mac Studio",
-  "git": "a779f25138628efdb8a36b146f24fc04a464fd5d",
-  "gitFull": "a779f25138628efdb8a36b146f24fc04a464fd5d",
-  "gitShort": "a779f25",
+  "git": "d069c84868033dc74eed435b0f54286a22426753",
+  "gitFull": "d069c84868033dc74eed435b0f54286a22426753",
+  "gitShort": "d069c84",
   "dirty": false,
   "novedades": [
+    "AdmiraStudioImporter: nuevo historial de novedades por versión en la ayuda, con las diferencias entre 1.0.1 y 1.0.2 y su estado de publicación.",
+    "La 1.0.2 continúa aprobada con publicación diferida; las novedades web no cambian el paquete ni la extensión instalada.",
     "Subtítulos automáticos: el reconocimiento evita bucles de repetición y recupera intervalos imposibles solo con marcas por palabra completas y sin solapes.",
     "Subtítulos: ajuste automático de fragmentos contiguos demasiado breves, conservando todas las palabras, la imagen y la voz. Stock evita guardar etiquetas que superan el límite.",
     "Importer1.0.2: subtítulos ES/EN y copias vertical/horizontal; subtítulos sobre formato final, máximo dos líneas y voz original intacta.",
@@ -22,7 +24,7 @@
     "Stock · Barra compacta: se elimina Guardar búsqueda y la franja de orden integra el estado del importador, cápsulas y subtítulos con progreso visual y porcentaje."
   ],
   "rollback": {
-    "git": "a779f25138628efdb8a36b146f24fc04a464fd5d"
+    "git": "80e975be5a96cc1f90519ec16da8f6e204e040fb"
   },
   "sourcePatches": [
     ".source-patches/altadis-18-formato-url.json",
@@ -84,7 +86,8 @@
     ".source-patches/importer-auto-subtitles-web.json",
     ".source-patches/importer-spanish-subtitles.json",
     ".source-patches/importer-auto-timing.json",
-    ".source-patches/importer-word-timing.json"
+    ".source-patches/importer-word-timing.json",
+    ".source-patches/importer-release-notes.json"
   ],
   "recoverySource": "35ccb1d1ba295273679828c5deafdee6b17fb4b3",
   "preflightSource": "d8ee131ba84151533cb08ec004b2e43bd35849e5",
