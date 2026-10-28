@@ -28,13 +28,13 @@ async function voiceToken(request, env, session) {
   if (!session.agent || !new URL(request.url).hostname.endsWith('.admira-studio.pages.dev')) return createApiToken(env,session.email);
   if (!env.ADMIRA_AGENT_LOGIN_TOKEN) throw Error('voice-preview-auth-unavailable');
   const login = await fetch('https://admira.studio/auth/agente', {method:'POST',redirect:'error',signal:AbortSignal.timeout(10000),
-    headers:{Authorization:'Bearer '+env.ADMIRA_AGENT_LOGIN_TOKEN,'X-Agente':'StockVideoPreview'}});
+    headers:cabeceras({Origin:'https://admira.studio', Referer:'https://admira.studio/', Authorization:'Bearer '+env.ADMIRA_AGENT_LOGIN_TOKEN,'X-Agente':'StockVideoPreview'})});
   const cookie = /(?:^|,\s*)(__Host-pixeria_session=[^;,\s]+)/.exec(login.headers.get('Set-Cookie') || '')?.[1];
-  if (!login.ok || !cookie) throw Error('voice-preview-auth-unavailable');
+  if (!login.ok || !cookie) {console.warn(JSON.stringify({message:'voice-preview-auth-unavailable',stage:'login',status:login.status,hasCookie:!!cookie}));throw Error('voice-preview-auth-unavailable');}
   const response = await fetch('https://admira.studio/auth/api-token', {redirect:'error',signal:AbortSignal.timeout(10000),
-    headers:{Cookie:cookie,Accept:'application/json'}});
+    headers:cabeceras({Origin:'https://admira.studio', Referer:'https://admira.studio/', Cookie:cookie,Accept:'application/json'})});
   const signed = await response.json().catch(() => ({}));
-  if (!response.ok || !signed.ok || typeof signed.token !== 'string' || signed.token.length > 4096) throw Error('voice-preview-auth-unavailable');
+  if (!response.ok || !signed.ok || typeof signed.token !== 'string' || signed.token.length > 4096) {console.warn(JSON.stringify({message:'voice-preview-auth-unavailable',stage:'api-token',status:response.status}));throw Error('voice-preview-auth-unavailable');}
   return {token:signed.token};
 }
 
