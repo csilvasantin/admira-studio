@@ -364,6 +364,7 @@
 <script defer src="/assets/ui-locale.js?v=17.10.2026.r6.2255"></script>
   <link rel="stylesheet" href="/assets/music/cards.css?v=17.10.2026.r6.2255">
 <link rel="stylesheet" href="/assets/stock-capsule-editor.css?v=capsule-inline-1">
+<link rel="stylesheet" href="/assets/stock-import-actions.css?v=20261028-7185">
 <link rel="stylesheet" href="/assets/stock-detail-shell.css?v=capsule-inline-1">
 </head>
 <body data-page="stock">
@@ -758,6 +759,7 @@
   import {isFurniture3D} from "/assets/furniture/catalog.mjs";
   import {readNavigation,normalizeNavigation,navigationUrl,saveNavigation} from "/assets/stock-navigation-state.mjs";
   import {mountStockProcessDock} from "/assets/stock-process-dock.mjs?v=20261024-1";
+  import {mountStockImportActions} from "/assets/stock-import-actions.mjs?v=20261028-7185";
   (function () {
     const grid = document.getElementById('stockGrid');
     const status = document.getElementById('stockStatus');
@@ -1661,7 +1663,10 @@
         history.replaceState({...history.state,admiraStockPreview:{id:it.id,returnState:previewReturnState}},'',location.href);
       }
     }
+    let stockImportActions = null;
     function openLightbox(it) {
+      stockImportActions?.destroy();
+      stockImportActions = null;
       resetCapsuleEditor();
       if(window.StockSync?.get(it)){if(window.openSyncCreative)window.openSyncCreative(it);else import('/assets/stock-sync-preview.mjs?v=atlas-2').then(()=>window.openSyncCreative(it)).catch(()=>{status.textContent='No se pudo cargar el previo 3D. Reintenta.';});return;}
       if(isFurniture3D(it)){import('/assets/furniture/editor.mjs').then(m=>m.openFurniture(it));return;}
@@ -1730,6 +1735,8 @@
         const host = lightboxInner.querySelector('.xpace-viewer');
         import('/assets/xpaces/viewer.mjs?v=14.10.2026.r22.1928').then(m => {if (!controller.signal.aborted) return m.mountXpace(host, it, {signal:controller.signal});}).catch(() => {if (!controller.signal.aborted) host.textContent = 'No se ha podido cargar el 3D. Cierra y vuelve a abrir para reintentar.';});
       }
+      stockImportActions = mountStockImportActions({item:it, header:lightboxMeta.querySelector('.stock-lightbox-head'), detailRoot:lightboxMeta, stockBase:STOCK_BASE,
+        onCreated:item=>document.dispatchEvent(new CustomEvent('stock:local-published',{detail:{item}}))});
       window.__lightboxItemId = it.id || null;
       lightbox.hidden = false;
       lightbox.setAttribute('aria-hidden', 'false');
@@ -1756,6 +1763,8 @@
       openLightbox(currentView[j]);
     }
     function finishCloseLightbox() {
+      stockImportActions?.destroy();
+      stockImportActions = null;
       resetCapsuleEditor();
       xpaceController?.abort();
       xpaceController = null;
