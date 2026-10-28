@@ -48,7 +48,10 @@ export async function onRequestPost({request, env}) {
   try { body = await boundedBody(request); } catch (cause) { return error(cause.message === 'too-big' ? 413 : 400, cause.message === 'too-big' ? 'too-big' : 'bad-json'); }
   if (typeof body?.text !== 'string' || !body.text.trim() || body.text.length > 5000 || !['es','en'].includes(body.language)) return error(400, 'invalid-voice');
   let signed;
-  try { signed = await voiceToken(request, env, session); } catch { return error(503, 'voice-preview-auth-unavailable'); }
+  try { signed = await voiceToken(request, env, session); } catch (cause) {
+    console.warn(JSON.stringify({message:'voice-preview-auth-unavailable',stage:'exchange',name:String(cause?.name || 'Error').slice(0,40),code1042:/\b1042\b/.test(String(cause?.message || ''))}));
+    return error(503, 'voice-preview-auth-unavailable');
+  }
   let upstream;
   try {
     upstream = await fetch(stockBase(env) + '/tts', {method:'POST', signal:AbortSignal.timeout(60000),
