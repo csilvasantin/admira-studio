@@ -12,6 +12,26 @@ export const canTransformStockVideo = item => !!item && item.type === 'video' &&
 const other = lang => lang === 'es' ? 'en' : 'es';
 const readSaved = (storage, id) => { try { return JSON.parse(storage?.getItem('admira.stock.video-options.' + id) || 'null') || {}; } catch { return {}; } };
 const save = (storage, id, state) => { try { storage?.setItem('admira.stock.video-options.' + id, JSON.stringify(state)); } catch {} };
+function actionErrorMessage(error, en) {
+  const code = String(error?.message || error || '').toLowerCase();
+  const t = (es, eng) => en ? eng : es;
+  if (/voice-preview-auth|session-required|creative-session|unauthori[sz]ed|(?:voice|creative)-provider-(?:401|403)/.test(code)) return t('No se pudo autorizar la voz. Vuelve a iniciar sesión y reintenta.', 'Voice authorization failed. Sign in again and retry.');
+  if (/gesture-video-too-long|voice-text-too-long/.test(code)) return t('El vídeo supera el límite de esta acción. Recórtalo a 180 segundos o menos y reintenta.', 'The video exceeds the limit for this action. Trim it to 180 seconds or less and retry.');
+  if (/gesture-no-speech/.test(code)) return t('No se ha detectado voz. Prueba otro vídeo o elige Nada en subtítulos.', 'No speech was detected. Try another video or choose None for subtitles.');
+  if (/gesture-no-audio/.test(code)) return t('No se pudo leer el audio. Comprueba que el vídeo tenga sonido y reintenta.', 'Could not read the audio. Check that the video has sound and retry.');
+  if (/brand-logo|brand-card|imagebitmap|image could not be decoded/.test(code)) return t('No se pudo cargar la marca. Revisa la URL del logo o continúa sin logo.', 'Could not load the brand. Check the logo URL or continue without a logo.');
+  if (/brand-name-required/.test(code)) return t('Escribe el nombre del cliente para sus cartelas.', 'Enter the client name for the brand cards.');
+  if (/gesture-square-video/.test(code)) return t('Este vídeo es cuadrado. Para cambiar de orientación, elige un vídeo horizontal o vertical.', 'This video is square. Choose a landscape or portrait video to switch orientation.');
+  if (/voice-opposite-language/.test(code)) return t('Elige el idioma contrario al del audio para la locución.', 'Choose the language opposite to the audio for the voiceover.');
+  if (/(?:voice|creative)-provider-429/.test(code)) return t('El servicio de voz está ocupado. Reintenta en unos minutos.', 'The voice service is busy. Try again in a few minutes.');
+  if (/voice-unreachable|(?:voice|creative)-provider-5\d\d/.test(code)) return t('El servicio de voz no responde. Reintenta en unos minutos.', 'The voice service is not responding. Try again in a few minutes.');
+  if (/voice-(?:empty|invalid-audio|duration)|creative-audio/.test(code)) return t('No se recibió una locución válida. Reintenta.', 'A valid voiceover was not received. Please retry.');
+  if (/subtitle|transcript|recognition|whisper/.test(code)) return t('No se pudieron preparar los subtítulos. Revisa el idioma del audio y reintenta.', 'Could not prepare subtitles. Check the audio language and retry.');
+  if (/gesture-encoding|encoding|ffmpeg/.test(code)) return t('No se pudo montar el vídeo. Reintenta con esta pestaña abierta.', 'Could not render the video. Retry and keep this tab open.');
+  if (/gesture-publish|publish|upload|stock-unreachable/.test(code)) return t('No se pudo guardar la nueva versión en Stock. Comprueba tu conexión y reintenta.', 'Could not save the new version to Stock. Check your connection and retry.');
+  if (/media-metadata|failed to fetch|network|download|media-fetch/.test(code)) return t('No se pudo descargar el vídeo o contactar con el servicio. Comprueba tu conexión y reintenta.', 'Could not download the video or reach the service. Check your connection and retry.');
+  return t('No se pudo crear la versión. Reintenta; si vuelve a fallar, abre de nuevo el vídeo.', 'Could not create the version. Retry; if it fails again, reopen the video.');
+}
 
 export function mountStockImportActions({item, header, detailRoot, stockBase = 'https://api.admira.store',
   onCreated, execute, doc = document, storage = globalThis.localStorage} = {}) {
@@ -116,7 +136,7 @@ export function mountStockImportActions({item, header, detailRoot, stockBase = '
       say(id ? t('✓ Nueva versión guardada en Stock.', '✓ New version saved to Stock.') : t('✓ Nueva versión lista.', '✓ New version ready.'));
       if (created && id) await onCreated?.({...created, id, url: created.url || url});
     } catch (error) {
-      if (!destroyed && error?.name !== 'AbortError') say(t('No se pudo crear la versión: ', 'Could not create the version: ') + String(error?.message || error));
+      if (!destroyed && error?.name !== 'AbortError') say(actionErrorMessage(error, en));
     } finally { if (!destroyed) setBusy(false); }
   });
   return {element: row, options, destroy() { destroyed = true; controller.abort(); resultObjectURL && URL.revokeObjectURL(resultObjectURL); row.remove(); options.remove(); output.remove(); }};
