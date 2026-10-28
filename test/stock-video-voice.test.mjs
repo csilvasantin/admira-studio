@@ -69,6 +69,21 @@ test('verified preview agent exchanges only at fixed production endpoints, retai
   } finally {globalThis.fetch=previous;}
 });
 
+test('official agent key is scoped to authenticated agent previews and is never returned to the browser', async () => {
+  const previous=globalThis.fetch,calls=[],key='local-only-official-fleet-fixture';
+  globalThis.fetch=async(url,init)=>{calls.push({url,init});return new Response('audio',{headers:{'Content-Type':'audio/mpeg'}});};
+  try {
+    const req=new Request('https://preview.admira-studio.pages.dev/stock-video-voice',{method:'POST',headers:{Cookie:cookie(),Origin:'https://preview.admira-studio.pages.dev','Content-Type':'application/json'},body:JSON.stringify({text:'Hello',language:'en'})});
+    const response=await onRequestPost({request:req,env:{...env,STOCK_AGENT_VOICE_KEY:key}});
+    assert.equal(response.status,200);assert.equal(calls.length,1);assert.equal(calls[0].url,'https://api.admira.store/tts');
+    assert.equal(calls[0].init.headers.Authorization,'Bearer '+key);assert.equal(await response.text(),'audio');
+    calls.length=0;
+    await onRequestPost({request:request(),env:{...env,STOCK_AGENT_VOICE_KEY:key}});
+    assert.notEqual(calls[0].init.headers.Authorization,'Bearer '+key);
+    const token=calls[0].init.headers.Authorization.slice(7);assert.ok(await verifyApiToken(token,env));
+  } finally {globalThis.fetch=previous;}
+});
+
 test('browser voice client calls the same-origin relay with bounded public fields and checks audio', async () => {
   let captured;
   const result=await submitStockVoice({brief:'Hello',languages:['ENG']},'',async(url,init)=>{captured={url,init};return new Response('voice',{headers:{'Content-Type':'audio/mpeg'}});});
