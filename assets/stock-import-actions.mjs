@@ -112,6 +112,7 @@ export function mountStockImportActions({item, header, detailRoot, stockBase = '
         const link = doc.createElement('a'); link.href = url; link.target = '_blank'; link.rel = 'noopener'; link.textContent = t('Abrir vídeo resultante', 'Open resulting video'); result.append(link);
       }
       if (id) { const link = doc.createElement('a'); link.href = (en ? '/en' : '') + '/stock.html?highlight=' + encodeURIComponent(id); link.textContent = t('Ver nueva versión en Stock', 'View new version in Stock') + ' →'; result.append(link); }
+      options.open = false;
       say(id ? t('✓ Nueva versión guardada en Stock.', '✓ New version saved to Stock.') : t('✓ Nueva versión lista.', '✓ New version ready.'));
       if (created && id) await onCreated?.({...created, id, url: created.url || url});
     } catch (error) {
