@@ -21,6 +21,23 @@ async function boundedBody(request) {
   return JSON.parse(new TextDecoder().decode(bytes));
 }
 
+// Preview signing keys intentionally differ from production. Only an already
+// verified agent session may exchange the configured agent credential at the
+// fixed production login and token endpoints; no client credential is relayed.
+async function voiceToken(request, env, session) {
+  if (!session.agent || !new URL(request.url).hostname.endsWith('.admira-studio.pages.dev')) return createApiToken(env,session.email);
+  if (!env.ADMIRA_AGENT_LOGIN_TOKEN) throw Error('voice-preview-auth-unavailable');
+  const login = await fetch('https://admira.studio/auth/agente', {method:'POST',redirect:'error',signal:AbortSignal.timeout(10000),
+    headers:{Authorization:'Bearer '+env.ADMIRA_AGENT_LOGIN_TOKEN,'X-Agente':'StockVideoPreview'}});
+  const cookie = /(?:^|,\s*)(__Host-pixeria_session=[^;,\s]+)/.exec(login.headers.get('Set-Cookie') || '')?.[1];
+  if (!login.ok || !cookie) throw Error('voice-preview-auth-unavailable');
+  const response = await fetch('https://admira.studio/auth/api-token', {redirect:'error',signal:AbortSignal.timeout(10000),
+    headers:{Cookie:cookie,Accept:'application/json'}});
+  const signed = await response.json().catch(() => ({}));
+  if (!response.ok || !signed.ok || typeof signed.token !== 'string' || signed.token.length > 4096) throw Error('voice-preview-auth-unavailable');
+  return {token:signed.token};
+}
+
 export async function onRequestPost({request, env}) {
   const origin = request.headers.get('Origin');
   if (origin && origin !== new URL(request.url).origin) return error(403, 'invalid-origin');
@@ -30,7 +47,8 @@ export async function onRequestPost({request, env}) {
   let body;
   try { body = await boundedBody(request); } catch (cause) { return error(cause.message === 'too-big' ? 413 : 400, cause.message === 'too-big' ? 'too-big' : 'bad-json'); }
   if (typeof body?.text !== 'string' || !body.text.trim() || body.text.length > 5000 || !['es','en'].includes(body.language)) return error(400, 'invalid-voice');
-  const signed = await createApiToken(env, session.email);
+  let signed;
+  try { signed = await voiceToken(request, env, session); } catch { return error(503, 'voice-preview-auth-unavailable'); }
   let upstream;
   try {
     upstream = await fetch(stockBase(env) + '/tts', {method:'POST', signal:AbortSignal.timeout(60000),
