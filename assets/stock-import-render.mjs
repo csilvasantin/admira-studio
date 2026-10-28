@@ -9,6 +9,12 @@ import {mediaPreflight, submitMedia} from './creativo-media.mjs';
 
 export const MAX_GESTURE_SECONDS = 180;
 export const BRAND_CARD_SECONDS = 2;
+export function gestureSourceURL(item) {
+  // R2's immutable playback response can be cached without a CORS header before
+  // the encoder reads it. The canonical asset endpoint serves CORS-safe bytes.
+  return /^[a-zA-Z0-9-]{1,100}$/.test(String(item?.id || ''))
+    ? 'https://api.admira.store/stock/asset/' + encodeURIComponent(item.id) : item.url;
+}
 const gestures = new Set(['subtitle', 'voice', 'adapt']);
 const languages = new Set(['es', 'en']);
 const even = n => Math.max(2, Math.round(n / 2) * 2);
@@ -115,6 +121,7 @@ function sourceCues(data) {
 export async function executeStockGesture(item, request, ctx = {}) {
   const r = normalizeGesture(request), say = text => ctx.onStatus?.(text), signal = ctx.signal;
   if (item?.type !== 'video' || !item.url || !item.id) throw Error('gesture-video-required');
+  const sourceURL = gestureSourceURL(item);
   abort(signal);
   const engine = ctx.engine || await sharedEngine();
   const fetcher = ctx.fetch || fetch;
@@ -124,7 +131,7 @@ export async function executeStockGesture(item, request, ctx = {}) {
     try { const result = await fn(); abort(signal); return result; } finally { signal?.removeEventListener('abort', cancel); }
   });
   say('Leyendo el vídeo…');
-  const meta = ctx.videoMeta ? await ctx.videoMeta(item) : await work(() => engine.probe(item.url));
+  const meta = ctx.videoMeta ? await ctx.videoMeta(item) : await work(() => engine.probe(sourceURL));
   // Validate duration and target before any transcription or paid voice request.
   let job = gestureVideoJob(meta, r);
   const objectURLs = [], extraFiles = [];
@@ -134,7 +141,7 @@ export async function executeStockGesture(item, request, ctx = {}) {
     if (r.gesture === 'voice' || r.subtitles !== 'none') {
       say('Extrayendo y transcribiendo el audio…');
       let audio = null;
-      await work(() => engine.encode(item.url, {args:['-i','input','-vn','-ac','1','-ar','16000','-b:a','48k','-y','audio.mp3'], outputs:[{file:'audio.mp3'}]}, () => {}, (_, blob) => { audio = blob; }));
+      await work(() => engine.encode(sourceURL, {args:['-i','input','-vn','-ac','1','-ar','16000','-b:a','48k','-y','audio.mp3'], outputs:[{file:'audio.mp3'}]}, () => {}, (_, blob) => { audio = blob; }));
       if (!audio?.size) throw Error('gesture-no-audio');
       abort(signal);
       const to = r.gesture === 'voice' ? r.targetLanguage : r.subtitles === 'translate' ? (r.sourceLanguage === 'es' ? 'en' : 'es') : r.sourceLanguage;
@@ -183,7 +190,7 @@ export async function executeStockGesture(item, request, ctx = {}) {
     job = {...gestureVideoJob(meta, r, {subtitles:!!cues, voiceDuration:voiceSeconds}), extraFiles};
     say('Montando el vídeo…');
     let output = null;
-    await work(() => engine.encode(item.url, job, status => {
+    await work(() => engine.encode(sourceURL, job, status => {
       if (status.phase === 'encoding') say(`Montando el vídeo: ${Math.round((status.progress || 0)*100)} %`);
     }, (_, blob) => { output = blob; }));
     if (!output?.size) throw Error('gesture-encoding');
