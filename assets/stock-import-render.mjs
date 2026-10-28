@@ -5,7 +5,6 @@ import {isFormatRequestTag} from './importer-options.mjs';
 import {DIRECTIONS} from './capsula-traduce.mjs?v=20261028-stock-actions';
 import {composeFilter} from '../adaptaciones/adapter-core.mjs';
 import {subtitleLayout} from './subtitle-layout.mjs?v=20261027-auto-timing';
-import {mediaPreflight, submitMedia} from './creativo-media.mjs';
 
 export const MAX_GESTURE_SECONDS = 180;
 export const BRAND_CARD_SECONDS = 2;
@@ -19,6 +18,15 @@ const gestures = new Set(['subtitle', 'voice', 'adapt']);
 const languages = new Set(['es', 'en']);
 const even = n => Math.max(2, Math.round(n / 2) * 2);
 const abort = signal => { if (signal?.aborted) throw new DOMException('Cancelado', 'AbortError'); };
+
+export async function submitStockVoice(job, _token, fetcher = fetch, signal) {
+  const response = await fetcher('/stock-video-voice', {method:'POST', headers:{'Content-Type':'application/json'}, signal,
+    body:JSON.stringify({text:job.brief, language:job.languages[0] === 'ENG' ? 'en' : 'es'})});
+  if (!response.ok) { const data = await response.json().catch(() => ({})); throw Error(data.error || 'voice-provider-' + response.status); }
+  if (!response.headers.get('Content-Type')?.startsWith('audio/')) throw Error('voice-invalid-audio');
+  const blob = await response.blob(); if (!blob.size) throw Error('voice-empty');
+  return {blob};
+}
 
 export function normalizeGesture(request = {}) {
   if (!gestures.has(request.gesture)) throw Error('gesture-invalid');
@@ -158,8 +166,8 @@ export async function executeStockGesture(item, request, ctx = {}) {
       const text = subtitleData.cues.map(c => c.text).join(' ').trim();
       if (text.length > 5000) throw Error('voice-text-too-long');
       const voiceJob = {kind:'locucion', brief:text, voice:'chica', languages:[r.targetLanguage === 'es' ? 'ESP' : 'ENG']};
-      const token = await (ctx.voicePreflight || mediaPreflight)(voiceJob, fetcher); abort(signal);
-      const result = await (ctx.submitVoice || submitMedia)(voiceJob, token, fetcher); abort(signal);
+      const token = ctx.voicePreflight ? await ctx.voicePreflight(voiceJob, fetcher) : ''; abort(signal);
+      const result = await (ctx.submitVoice || submitStockVoice)(voiceJob, token, fetcher, signal); abort(signal);
       voice = result.blob;
       if (!voice?.size) throw Error('voice-empty');
       voiceSeconds = await (ctx.audioDuration || audioDuration)(voice, signal);
