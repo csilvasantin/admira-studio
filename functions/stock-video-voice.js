@@ -26,9 +26,6 @@ async function boundedBody(request) {
 // fixed production login and token endpoints; no client credential is relayed.
 async function voiceToken(request, env, session) {
   if (!session.agent || !new URL(request.url).hostname.endsWith('.admira-studio.pages.dev')) return createApiToken(env,session.email);
-  // The API officially accepts a fleet credential for silicon agents. Its
-  // preview-only binding is never used for customers or production requests.
-  if (env.STOCK_AGENT_VOICE_KEY) return {token:env.STOCK_AGENT_VOICE_KEY};
   if (!env.ADMIRA_AGENT_LOGIN_TOKEN) throw Error('voice-preview-auth-unavailable');
   const login = await fetch('https://admira.studio/auth/agente', {method:'POST',redirect:'manual',signal:AbortSignal.timeout(10000),
     headers:cabeceras({Origin:'https://admira.studio', Referer:'https://admira.studio/', Authorization:'Bearer '+env.ADMIRA_AGENT_LOGIN_TOKEN,'X-Agente':'StockVideoPreview'})});
