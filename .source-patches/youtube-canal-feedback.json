@@ -1,0 +1,19 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "f33f54e29be9d2bfc47675c60809ebffe5aa37bd",
+  "sourceRepository": "csilvasantin/admira-studio",
+  "reason": "Carlos: usar el logotipo reconocible de YouTube sin que salga de su casilla y mantener feedback visible durante toda la subida. La cuenta real se verificó desde el vídeo 7dZvpey8Ppk publicado por esta conexión: Carlos Silva Santin · @csilvasantin. Se configura como fallback porque el scope youtube.upload no autoriza siempre channels.list.",
+  "files": [
+    "stock.html",
+    "en/stock.html",
+    "assets/youtube-compartir.js",
+    "functions/_youtube.js",
+    "functions/api/youtube/upload.js",
+    "test/youtube-compartir.test.mjs"
+  ],
+  "preservesFiltersAndAccess": true,
+  "rollback": "f33f54e29be9d2bfc47675c60809ebffe5aa37bd",
+  "status": "release-authorized",
+  "release": "v.24.10.2026.r5.20:36"
+}

@@ -1,12 +1,18 @@
 {
-  "version": "v.22.10.2026.r10.22:10",
-  "author": "WozniakGrokBot",
-  "agent": "WozniakGrokBot",
-  "deployer": "WozniakGrokBot",
-  "machine": "GrokBotBox",
-  "signature": "WozniakGrokBot · GrokBotBox",
-  "git": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560",
-  "gitFull": "b5a15cb44f756b779e17d0dc1f2e51d0fc10f560",
-  "gitShort": "b5a15cb",
-  "dirty": false
+  "version": "v.27.10.2026.r4.21:40",
+  "author": "DeepAgent Codex",
+  "agent": "Codex",
+  "deployer": "DeepAgent Codex",
+  "machine": "MacStudio",
+  "signature": "DeepAgent Codex · MacStudio",
+  "git": "d069c84868033dc74eed435b0f54286a22426753",
+  "gitShort": "d069c84",
+  "gitFull": "d069c84868033dc74eed435b0f54286a22426753",
+  "dirty": false,
+  "novedades": [
+    "Assets · generador 2D trasladado a admira.store/assets; Admira Studio centrado en importar, crear y adaptar multimedia."
+  ],
+  "sourcePatches": [
+    ".source-patches/assets-generator-move.json"
+  ]
 }

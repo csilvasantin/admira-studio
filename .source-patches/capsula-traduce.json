@@ -1,0 +1,16 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "studio-first (pendiente de portar a pixeria)",
+  "reason": "Carlos (24-oct-2026): #traduce (vídeo en inglés → subtítulos en castellano) y #translate (vídeo en castellano → subtítulos en inglés), quemados abajo. Detección y etiquetas (subtitulado-es/en + par-<id>, sin bucle) en assets/capsula-traduce.mjs; la transcripción/traducción se hace fuera (sin motor en Studio). · r6 (24-oct): alias #traducir/#traducción/#traducir-es/#translate-en…, hashtags de Comentarios cuentan, idioma real manda si se conoce, comprobación también al volver de importar (?highlight) e insignia «subtítulos XX pendientes · copiar encargo» en la tarjeta.",
+  "files": [
+    "assets/capsula-traduce.mjs",
+    "stock.html",
+    "test/capsula-traduce.test.mjs",
+    ".source-patches/capsula-traduce.json"
+  ],
+  "secrets": "ninguno",
+  "preservesFiltersAndAccess": true,
+  "status": "release-authorized"
+}

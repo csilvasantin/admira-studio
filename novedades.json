@@ -363,5 +363,9 @@
     "La portada da acceso directo a Crear campaña, Adaptar contenido y Stock.",
     "El Creador agrupa ejemplos, formatos e idiomas y herramientas para mostrar antes las piezas, también en móvil.",
     "La edición, recuperación, revisión y entrega de campañas conservan sus controles actuales."
+  ],
+  "v.27.10.2026.r3.17:10": [
+    "AdmiraStudioImporter: nuevo historial de novedades por versión en la ayuda, con las diferencias entre 1.0.1 y 1.0.2 y su estado de publicación.",
+    "La 1.0.2 continúa aprobada con publicación diferida; las novedades web no cambian el paquete ni la extensión instalada."
   ]
 }

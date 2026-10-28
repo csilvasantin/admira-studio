@@ -3,12 +3,17 @@
  * Solo superusuarios (publica en el canal de Admira). Sin secretos: 503 «YouTube no conectado».
  */
 import {sessionInfo, esSuperusuario} from '../../_auth.js';
-import {youtubeConectado, esVideoCompartible, metadatosYoutube, subirAYoutube, STOCK_ORIGIN} from '../../_youtube.js';
+import {youtubeConectado, canalYoutube, esVideoCompartible, metadatosYoutube, subirAYoutube, STOCK_ORIGIN} from '../../_youtube.js';
 
 const json = (status, obj) => new Response(JSON.stringify(obj), {status, headers: {'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store'}});
 
-export async function onRequestGet({env}) {
-  return json(200, {ok: true, conectado: youtubeConectado(env)});
+export async function onRequestGet({env, data}) {
+  if (!youtubeConectado(env)) return json(200, {ok: true, conectado: false, canal: null});
+  try {
+    return json(200, {ok: true, conectado: true, canal: await canalYoutube(env, data?.fetchImpl || fetch)});
+  } catch (e) {
+    return json(e.status || 502, {ok: false, conectado: true, canal: null, error: e.codigo || 'youtube-canal'});
+  }
 }
 
 export async function onRequestPost({request, env, data}) {

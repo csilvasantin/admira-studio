@@ -1,0 +1,21 @@
+{
+  "kind": "importer-web-automatic-subtitle-timing",
+  "domain": "admira.studio",
+  "canonicalBase": "560dba858b6e7f3954feeba1cda1c139a9ec3b5d",
+  "reason": "Carlos: probar otro vídeo real con subtítulos ES automáticos en vertical y horizontal, sin reutilizar subtítulos revisados ni tocar la extensión instalada; mantener 1.0.2 con publicación diferida.",
+  "files": [
+    "assets/subtitle-layout.mjs",
+    "assets/capsula-traduce.mjs",
+    "stock.html",
+    "test/subtitle-layout.test.mjs",
+    ".source-patches/importer-auto-timing.json"
+  ],
+  "behavior": "Solo une segmentos contiguos dentro de 150 ms, grupos de hasta 8 s. Conserva palabras y tiempos exteriores. Mantiene duración mínima y velocidad de lectura; sigue exigiendo revisión si no se resuelve.",
+  "security": {
+    "changesInstalledExtension": false,
+    "changesStorePackage": false,
+    "changesPermissions": false,
+    "containsSecrets": false,
+    "preservesOriginalAudioBitstream": true
+  }
+}

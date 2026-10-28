@@ -90,5 +90,13 @@
   "campanas/starbucks-180/index.html": {
     "kind": "screen-output",
     "reason": "Existing fullscreen four-screen Starbucks playback canvas with its own panels, matching the seven-screen playback surface."
+  },
+  "crear/index.html": {
+    "kind": "redirect",
+    "target": "https://www.admira.store/assets/"
+  },
+  "en/crear/index.html": {
+    "kind": "redirect",
+    "target": "https://www.admira.store/assets/en/"
   }
 }

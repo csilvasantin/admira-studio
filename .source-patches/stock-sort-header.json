@@ -1,0 +1,12 @@
+{
+  "kind": "shared-interface-change",
+  "domains": ["pixeria.com", "admira.studio"],
+  "canonicalBase": "b7802ac",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "2b75dba",
+  "reason": "Carlos: aprovechar la franja negra que separa filtros y contenidos para un cabezal de ordenación multimedia por Nombre, Fecha, Formato, Tipo y Motor. El cabezal queda fuera del bloque superior para minimizar su altura.",
+  "files": ["stock.html", "en/stock.html", "workspace.css", "test/stock-sort-head.test.mjs"],
+  "rollback": "b7802ac",
+  "status": "release-authorized",
+  "release": "v.24.10.2026.r9.21:35"
+}

@@ -35,7 +35,7 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="admiranext-version" content="Admira Studio v.22.10.2026.r1.11:33">
+  <meta name="admiranext-version" content="v.27.10.2026.r4.21:40">
   <link rel="canonical" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="es" href="https://www.admira.studio/stock.html">
   <link rel="alternate" hreflang="en" href="https://www.admira.studio/en/stock.html">
@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=stock-capsulas-video-20261022-1">
+  <link rel="stylesheet" href="workspace.css?v=stock-process-dock-20261024-1">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -123,7 +123,7 @@
 
     /* Barra flotante de lote */
     .dist-batchbar{ position:fixed; left:50%; bottom:22px; transform:translateX(-50%) translateY(120%);
-      z-index:40; display:flex; gap:14px; align-items:center; padding:12px 18px;
+      z-index:40; display:flex; flex-wrap:wrap; max-width:calc(100vw - 24px); width:max-content; gap:14px; align-items:center; padding:12px 18px;
       background:var(--panel-2); border:1px solid var(--matrix); border-radius:12px; box-shadow:var(--glow);
       font-size:13px; color:var(--matrix); transition:transform .22s ease; }
     .dist-batchbar.show{ transform:translateX(-50%) translateY(0); }
@@ -309,6 +309,7 @@
     /* Etiquetas arrastrables entre assets. */
     .stock-tag[draggable="true"],.stock-tags-drag{cursor:grab}.stock-tag[draggable="true"]:active,.stock-tags-drag:active{cursor:grabbing}
     .stock-tags-drag{border:1px dashed var(--matrix);background:rgba(0,255,65,.06);color:var(--matrix);border-radius:999px;padding:2px 8px;font-family:inherit;font-size:10px;font-weight:700;letter-spacing:.04em}
+    .stock-tag-fn,.stock-tagf.stock-tag-fn,.imp-tag-fn{font-weight:700}.stock-tag-sys{font-style:italic;opacity:.8}
     .stock-card.tag-drop-target{outline:2px dashed var(--matrix);outline-offset:3px;background:rgba(0,255,65,.08)}
     body.tag-dragging .stock-card:not(.tag-drop-target){transition:opacity .15s,outline .15s}.stock-tag.tag-drag-source,.stock-tags-drag.tag-drag-source{opacity:.45}
 
@@ -352,15 +353,19 @@
     .cat-result.bad{ color:#ff8866; border-color:#7a3a2a; }
     .cat-result.sum{ color:var(--muted); border-style:dashed; }
     .cat-result a{ color:var(--matrix); }
+      .stock-traduce-badge{display:inline-block;margin:4px 0;padding:3px 8px;border:1px solid #f5b400;border-radius:6px;background:rgba(245,180,0,.14);color:#f5b400;font:inherit;font-size:12px;cursor:pointer}
+    .stock-traduce-aviso{color:#f5b400}
   </style>
-  <script defer src="/assets/site-nav.js?v=18.10.2026.r16.2219"></script>
+  <script defer src="/assets/site-nav.js?v=27.10.2026.r4.2140"></script>
   <script defer src="/assets/descarga-local.js?v=17.10.2026.r6.2255"></script>
   <script defer src="/assets/youtube-compartir.js?v=22.10.2026.r3.1730"></script>
   <script defer src="/assets/capsula-fuente-interactiva.js?v=22.10.2026.r9"></script>
   <link rel="stylesheet" href="assets/xpaces/viewer.css?v=17.10.2026.r6.2255">
 <link rel="stylesheet" href="/assets/furniture/editor.css">
-  <link rel="stylesheet" href="/assets/cuadratura.css?v=18.10.2026.r16.2219">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=27.10.2026.r4.2140">
   <link rel="stylesheet" href="/assets/music/cards.css?v=17.10.2026.r6.2255">
+<link rel="stylesheet" href="/assets/stock-capsule-editor.css?v=capsule-inline-1">
+<link rel="stylesheet" href="/assets/stock-detail-shell.css?v=capsule-inline-1">
 </head>
 <body data-page="stock">
   <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
@@ -394,7 +399,6 @@
       <a href="/tiktok" data-nav="tiktok">TikTok</a>
       <a href="/creador/" data-nav="publicidad">Creador</a>
       <a href="anonimizador.html" data-nav="anonimizador">Anonimizador</a>
-      <a href="/crear/" data-nav="crear">Assets</a>
       <a href="stock.html" data-nav="stock">Stock</a>
       <a href="/campanas/" data-nav="campanas">Campañas</a>
     </nav>
@@ -446,11 +450,6 @@
           <select id="stockFormatFilter" title="Filtrar por formato" aria-label="Filtrar por formato"><option value="">Todos los formatos</option></select>
           <button type="button" class="stock-pager-btn" id="tagMgrBtn" title="Gestor de etiquetas: renombrar, fusionar variaciones y borrar en todo el Stock">🏷️ Etiquetas</button>
         </div>
-        <div class="stock-pager-sort" id="stockSortBar" role="group" aria-label="Ordenar por">
-          <span class="stock-sortbar-label">Ordenar:</span>
-          <button type="button" class="stock-sort-th" data-key="name">Nombre <span class="stock-sort-arrow">⇅</span></button>
-          <button type="button" class="stock-sort-th" data-key="date">Fecha <span class="stock-sort-arrow">⇅</span></button>
-        </div>
         <div class="stock-pager-controls">
           <button type="button" class="stock-pager-btn" data-page="first" title="Primera página" aria-label="Primera página">«</button>
           <button type="button" class="stock-pager-btn" data-page="prev" title="Anterior" aria-label="Página anterior">‹</button>
@@ -459,9 +458,24 @@
           <button type="button" class="stock-pager-btn" data-page="last" title="Última página" aria-label="Última página">»</button>
         </div>
       </nav>
-      <div id="stockSavedSearchControls" class="stock-saved-search-controls"></div>
-      <div id="stockStatus" class="stock-status" role="status" aria-live="polite"></div>
     </section>
+
+    <div class="stock-order-head" id="stockSortBar" role="group" aria-label="Ordenar contenidos multimedia">
+      <div class="stock-process-dock" id="stockProcessDock" hidden>
+        <span class="stock-process-kind" data-process-kind>ESTADO</span>
+        <span id="stockStatus" class="stock-status" role="status" aria-live="polite"></span>
+        <span class="stock-process-percent" data-process-percent aria-hidden="true"></span>
+        <span class="stock-process-track" data-process-track role="progressbar" aria-valuemin="0" aria-valuemax="100" hidden>
+          <span class="stock-process-fill" data-process-fill></span>
+        </span>
+      </div>
+      <span class="stock-order-title">Ordenar contenidos</span>
+      <button type="button" class="stock-sort-th" data-key="name">Nombre <span class="stock-sort-arrow">⇅</span></button>
+      <button type="button" class="stock-sort-th" data-key="date">Fecha <span class="stock-sort-arrow">⇅</span></button>
+      <button type="button" class="stock-sort-th" data-key="format">Formato <span class="stock-sort-arrow">⇅</span></button>
+      <button type="button" class="stock-sort-th" data-key="type">Tipo <span class="stock-sort-arrow">⇅</span></button>
+      <button type="button" class="stock-sort-th" data-key="motor">Motor <span class="stock-sort-arrow">⇅</span></button>
+    </div>
 
     <section>
 
@@ -501,7 +515,7 @@
     </div>
   </main>
 
-  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.28.08.2026.r8.03:43</a></footer>
+  <footer><a href="https://csilvasantin.github.io/01.-AdmiraXperience-Game/" target="_blank" rel="noopener" title="Abrir Admira XP — ultima version del Gemelo Digital">Admira Studio AI Workspace · Admira Studio · v.27.10.2026.r4.21:40</a></footer>
 
 
   <dialog id="catAssignModal" class="keys-modal">
@@ -588,6 +602,7 @@
     <button type="button" class="btn primary" id="distBatchSend">Distribuir →</button>
     <button type="button" class="btn" id="distBatchPlaylist">🎵 A playlist</button>
     <button type="button" class="btn" id="distBatchDownload" title="Descarga los assets seleccionados a este ordenador, uno detrás de otro">⬇ Descargar</button>
+    <button type="button" class="btn" id="distBatchCreate">AI Crear en AInimation</button>
     <button type="button" class="btn" id="distBatchClear">Limpiar</button>
   </div>
 
@@ -728,7 +743,7 @@
   </dialog>
 
   <script defer src="/matrix-rain.js?v=17.10.2026.r6.2255"></script>
-  <script src="app.js?v=import-ha-20261018-16-clock"></script>
+  <script src="app.js?v=admira-studio-importer-20261024-2"></script>
   <script src="assets/stock-search.js?v=17.10.2026.r6.2255"></script>
   <link rel="stylesheet" href="/assets/stock-sync-creative.css?v=17.10.2026.r6.2255">
   <script src="/assets/stock-sync-core.js?v=17.10.2026.r6.2255"></script>
@@ -743,7 +758,7 @@
   import {isXpace, blendFor, xpacePoster} from "./assets/xpaces/catalog.mjs";
   import {isFurniture3D} from "./assets/furniture/catalog.mjs";
   import {readNavigation,normalizeNavigation,navigationUrl,saveNavigation} from "/assets/stock-navigation-state.mjs";
-  import {mountSavedSearches} from "/assets/stock-saved-searches.mjs";
+  import {mountStockProcessDock} from "/assets/stock-process-dock.mjs?v=20261024-1";
   (function () {
     const grid = document.getElementById('stockGrid');
     const status = document.getElementById('stockStatus');
@@ -756,6 +771,12 @@
     const musicPreview=it=>cardHtml(it,{format:musicFormats.get(it.id)||(['landscape','portrait'].includes(filters.format)?filters.format:'landscape'),lang:document.documentElement.lang==='en'?'en':'es'});
     const motorFilter = document.getElementById('stockMotorFilter');
     const sortBar = document.getElementById('stockSortBar');
+    mountStockProcessDock({
+      dock:document.getElementById('stockProcessDock'),status,
+      importStatus:document.getElementById('importStatus'),
+      importFill:document.getElementById('importProgressFill'),
+      language:document.documentElement.lang==='en'?'en':'es'
+    });
     const lightbox = document.getElementById('stockLightbox');
     const lightboxInner = document.getElementById('stockLightboxInner');
     const lightboxMeta = document.getElementById('stockLightboxMeta');
@@ -819,7 +840,6 @@
     let sortMode = initialNavigation.sort;
     let pageSize = initialNavigation.pageSize; // 0 = mostrar todos
     let currentPage = initialNavigation.page, requestedPage = currentPage, catalogLoaded = false;
-    let savedSearchControls;
     const pagers = Array.from(document.querySelectorAll('.stock-pager'));
     const pageSizeSels = Array.from(document.querySelectorAll('.stock-page-size'));
     function navigationState() {
@@ -829,7 +849,6 @@
       const state = navigationState();
       try { history.replaceState(history.state, '', navigationUrl(location.href,state)); } catch {}
       saveNavigation(navigationStorage,location.href,state);
-      savedSearchControls?.refresh();
     }
     function restoreStockNavigation(value) {
       const state = normalizeNavigation(value), wasCatalog = filters.type === 'catalogo';
@@ -1069,22 +1088,43 @@
         else { seekToPreviewFrame(v); v.src = v.dataset.src; } // fallback sin IO
       });
     }
+    let capsuleEditorAbort = null;
+    function resetCapsuleEditor() { capsuleEditorAbort?.abort(); capsuleEditorAbort = null; }
+    async function editCapsuleInDetail(it, button) {
+      if (capsuleEditorAbort && button.getAttribute('aria-expanded') === 'true' && !button.disabled) { resetCapsuleEditor(); return; }
+      resetCapsuleEditor();
+      const controller = capsuleEditorAbort = new AbortController();
+      button.disabled = true;
+      try {
+        const {openStockCapsuleEditor} = await import('/assets/stock-capsule-editor.mjs?v=capsule-inline-1');
+        if (controller.signal.aborted) return;
+        await openStockCapsuleEditor({item:it,mediaHost:lightboxInner,detailRoot:lightbox,button,signal:controller.signal});
+      } catch (error) {
+        if (!controller.signal.aborted) { button.disabled=false; button.setAttribute('aria-expanded','false'); status.textContent="No se pudo abrir el editor. Vuelve a intentarlo."; }
+      }
+    }
     function isEditableCapsula(it) {
       return !!it && it.type === 'video' && /^capsula-url:[a-f0-9]{16}$/.test(String(it.externalRef || ''));
     }
     function ainimationImportHref(it) {
       const params = new URLSearchParams();
       params.set('admiraStockUrl', it.url || '');
+      const returnUrl = new URL(location.href);
+      returnUrl.searchParams.delete('highlight');returnUrl.searchParams.delete('origen');
+      params.set('admiraReturnUrl', returnUrl.href);
+      if (it.mime) params.set('admiraStockMime', it.mime);
+      if (it.editorKind) params.set('admiraEditable', it.editorKind);
       params.set('admiraStockType', it.type || '');
       params.set('admiraStockTitle', it.title || it.prompt || 'Admira Stock asset');
       if (it.id) params.set('admiraStockId', it.id);
       if (isEditableCapsula(it)) params.set('mode', 'capsula');
+      if (/^capsula-url:[a-f0-9]{16}$/.test(it.externalRef || '')) params.set('admiraCapsuleRef', it.externalRef);
       if (it.prompt) params.set('admiraStockPrompt', it.prompt);
       if (it.thumbnail) params.set('admiraStockThumbnail', it.thumbnail);
       if (it.width) params.set('admiraStockWidth', it.width);
       if (it.height) params.set('admiraStockHeight', it.height);
       if (it.duration) params.set('admiraStockDuration', it.duration);
-      return `https://ainimation.studio/studio.html?${params.toString()}`;
+      return `https://ainimation.studio/${it.editorKind === 'interactive' ? 'interactivos/' : 'studio.html'}?${params.toString()}`;
     }
     function renderPromptHtml(raw) {
       const safe = String(raw || '').replace(/</g,'&lt;');
@@ -1094,11 +1134,18 @@
       }
       return `<span title="${escAttr(raw)}">${trunc}</span>`;
     }
+    // Etiquetas que HACEN algo (traducir, cápsula+pilar, clasificar) en negrita · assets/etiquetas-funcionales.mjs.
+    function tagFx(t) {
+      const c = window.EtiquetasFuncionales?.tagChip?.(t);
+      return c && c.title ? {cls: c.cls ? ' ' + c.cls : '', pre: escAttr(c.title) + ' · '} : {cls: '', pre: ''};
+    }
+    import('/assets/etiquetas-funcionales.mjs?v=20261024-1').then(m => { window.EtiquetasFuncionales = m; try { applyFilters(); } catch (_) {} }).catch(() => {});
     function renderTagsHtml(tags, id) {
       const safeId = String(id || '').replace(/[^A-Za-z0-9-]/g, '');
       const chips = (Array.isArray(tags) ? tags : []).map(t => {
         const safe = verTag(t).replace(/</g, '&lt;');
-        return `<button type="button" class="stock-tag" draggable="true" data-drag-tag="${escAttr(t)}" data-tag="${escAttr(t)}" title="Arrastra para copiar #${escAttr(verTag(t))} a otro contenido · Clic: filtrar · Doble-clic: renombrar">#${safe}</button>`;
+        const fx = tagFx(t);
+        return `<button type="button" class="stock-tag${fx.cls}" draggable="true" data-drag-tag="${escAttr(t)}" data-tag="${escAttr(t)}" title="${fx.pre}Arrastra para copiar #${escAttr(verTag(t))} a otro contenido · Clic: filtrar · Doble-clic: renombrar">#${safe}</button>`;
       }).join('');
       const dragAll = chips ? `<button type="button" class="stock-tags-drag" draggable="true" data-act="drag-tags" data-id="${safeId}" title="Arrastra para copiar todas las etiquetas a otro contenido">⇄ tags</button>` : '';
       // "+ más": añade metatags propias para agrupar (a la derecha de las auto-tags).
@@ -1110,7 +1157,7 @@
       const safeId = String(id || '').replace(/[^A-Za-z0-9-]/g, '');
       const chips = (Array.isArray(tags) ? tags : []).map(t => {
         const safe = verTag(t).replace(/</g, '&lt;');
-        return `<span class="stock-tag-edit"><button type="button" class="stock-tag" data-tag="${escAttr(t)}" title="Filtrar por #${escAttr(verTag(t))}">#${safe}</button><button type="button" class="stock-tag-x" data-act="remove-tag" data-tag="${escAttr(t)}" title="Quitar etiqueta" aria-label="Quitar #${escAttr(verTag(t))}">✕</button></span>`;
+        return `<span class="stock-tag-edit"><button type="button" class="stock-tag${tagFx(t).cls}" data-tag="${escAttr(t)}" title="${tagFx(t).pre}Filtrar por #${escAttr(verTag(t))}">#${safe}</button><button type="button" class="stock-tag-x" data-act="remove-tag" data-tag="${escAttr(t)}" title="Quitar etiqueta" aria-label="Quitar #${escAttr(verTag(t))}">✕</button></span>`;
       }).join('');
       return `<div class="stock-tags-editor" data-edit-id="${safeId}">
         ${chips}
@@ -1129,6 +1176,7 @@
         // Actualiza el item local
         const it = allItems.find(x => x.id === id);
         if (it) it.tags = d.tags || [];
+        if (it) document.dispatchEvent(new CustomEvent('stock:tags-saved', {detail: {item: it}}));
         return d.tags || [];
       } catch (e) {
         if (!(opts && opts.silent)) alert('Error guardando etiquetas: ' + e.message);
@@ -1309,19 +1357,20 @@
             </span>
             ${it.num ? `<span class="stock-num" title="ID único del asset · llámalo con /play${it.num} en admira.tv">#${it.num}</span>` : ''}
             <div class="stock-card-actions">
-              <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Abrir en AINimation" aria-label="Abrir en AINimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>
+              <a class="stock-card-btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener" title="Editar en AInimation" aria-label="Editar en AInimation" data-act="ainimation"><span aria-hidden="true">AI</span></a>
               <button type="button" class="stock-card-btn" data-act="playlist" title="Añadir a una playlist" aria-label="Añadir a playlist"><span aria-hidden="true">🎵</span></button>
               <button type="button" class="stock-card-btn" data-act="feed" title="Distribuir a pantallas (elegir destino, ahora o programado)" aria-label="Distribuir a pantallas"><span aria-hidden="true">📡</span></button>
               <a class="stock-card-btn" href="${assetUrl}" target="_blank" rel="noopener" title="Abrir asset en pestaña nueva" aria-label="Abrir asset en pestaña nueva" data-act="open"><span aria-hidden="true">↗</span></a>
               <button type="button" class="stock-card-btn" data-act="descargar" title="Descargar el fichero a este ordenador" aria-label="Descargar a este ordenador"><span aria-hidden="true">⬇</span></button>
               <button type="button" class="stock-card-btn" data-act="max" title="Maximizar" aria-label="Maximizar asset"><span aria-hidden="true">⛶</span></button>
-              ${typeLabel === 'video' ? `<button type="button" class="stock-card-btn" data-act="compartir" title="Subir a YouTube" aria-label="Subir a YouTube"><span aria-hidden="true">▶&#xFE0E;</span></button>` : ''}
+              ${typeLabel === 'video' ? `<button type="button" class="stock-card-btn" data-act="compartir" title="Subir a YouTube" aria-label="Subir a YouTube"><svg viewBox="0 0 28 20" width="24" height="17" aria-hidden="true"><path fill="#ff0033" d="M27.4 3.1A3.5 3.5 0 0 0 25 .6C22.8 0 14 0 14 0S5.2 0 3 .6A3.5 3.5 0 0 0 .6 3.1 36.7 36.7 0 0 0 0 10a36.7 36.7 0 0 0 .6 6.9A3.5 3.5 0 0 0 3 19.4c2.2.6 11 .6 11 .6s8.8 0 11-.6a3.5 3.5 0 0 0 2.4-2.5A36.7 36.7 0 0 0 28 10a36.7 36.7 0 0 0-.6-6.9Z"/><path fill="#fff" d="m11.2 14.3 7.3-4.3-7.3-4.3v8.6Z"/></svg></button>` : ''}
               <button type="button" class="stock-card-btn danger" data-act="del" title="Eliminar" aria-label="Eliminar asset"><span aria-hidden="true">🗑</span></button>
             </div>
             ${titleInline}
             <span class="stock-head-meta">${headMeta}</span>
           </header>
           ${tagsBlock}
+          ${traduceBadge(it)}
           ${adaptChip(it)}
           <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
           ${commentBlock}
@@ -1332,11 +1381,20 @@
       const sorted = items.slice();
       const recent = (a, b) => (b.createdAt || '').localeCompare(a.createdAt || '');
       const name = it => (it.title || it.prompt || '').trim();
+      const format = it => {
+        const width = Number(it && (it.width || it._mediaWidth)) || 0;
+        const height = Number(it && (it.height || it._mediaHeight)) || 0;
+        const ratio = width && height ? width / height : 0;
+        if (ratio) return ratio < 0.9 ? 'vertical' : ratio > 1.1 ? 'horizontal' : 'cuadrado';
+        return String((it && (it.format || it.aspectRatio || it.mime)) || 'sin formato');
+      };
       const comparators = {
         'date-desc': recent,
         'date-asc':  (a, b) => (a.createdAt || '').localeCompare(b.createdAt || ''),
         'name-asc':  (a, b) => name(a).localeCompare(name(b), 'es', { sensitivity: 'base' }) || recent(a, b),
         'name-desc': (a, b) => name(b).localeCompare(name(a), 'es', { sensitivity: 'base' }) || recent(a, b),
+        'format-asc': (a, b) => format(a).localeCompare(format(b), 'es', { sensitivity: 'base' }) || recent(a, b),
+        'format-desc': (a, b) => format(b).localeCompare(format(a), 'es', { sensitivity: 'base' }) || recent(a, b),
         'type-asc':  (a, b) => ((TYPE_ORDER[displayType(a)] ?? 99) - (TYPE_ORDER[displayType(b)] ?? 99)) || recent(a, b),
         'type-desc': (a, b) => ((TYPE_ORDER[displayType(b)] ?? 99) - (TYPE_ORDER[displayType(a)] ?? 99)) || recent(a, b),
         'motor-asc': (a, b) => String(a.motor || '').localeCompare(String(b.motor || ''), 'es', { sensitivity: 'base' }) || recent(a, b),
@@ -1366,7 +1424,7 @@
       }
       const matching = matchItemsByTags(filters.tags, filters.tagMode);
       const joiner = filters.tagMode === 'and' ? ' Y ' : ' O ';
-      const chips = filters.tags.map(t => `<button type="button" class="stock-tagf" data-tagf="${escAttr(t)}" title="Quitar #${escAttr(verTag(t))}">#${String(t).replace(/</g, '&lt;')} ✕</button>`).join(`<span class="stock-tagf-join">${joiner}</span>`);
+      const chips = filters.tags.map(t => `<button type="button" class="stock-tagf${tagFx(t).cls}" data-tagf="${escAttr(t)}" title="${tagFx(t).pre}Quitar #${escAttr(verTag(t))}">#${String(t).replace(/</g, '&lt;')} ✕</button>`).join(`<span class="stock-tagf-join">${joiner}</span>`);
       const modeBtn = filters.tags.length >= 2 ? `<button type="button" class="stock-tagmode" title="Alternar Y (todas) / O (cualquiera)">${filters.tagMode === 'and' ? 'Y · todas' : 'O · cualquiera'}</button>` : '';
       const critName = filters.tags.join(filters.tagMode === 'and' ? ' + ' : ' / ');
       banner.innerHTML = `<span class="stock-tagf-wrap">Filtrando: ${chips} ${modeBtn}</span><button type="button" class="stock-tag-playlist" title="Crear playlist con los ${matching.length} assets del criterio">🎵 Playlist (${matching.length})</button><button type="button" class="stock-tag-clear">✕ limpiar</button>`;
@@ -1408,7 +1466,9 @@
       const tagsLc = Array.isArray(it.tags) ? it.tags.map(x => String(x).toLowerCase()) : [];
       // Cápsula en vídeo («¿Sabías que?», plantilla v5): vídeo con etiqueta capsula o sabiasque.
       // Solo sale en «Cápsulas»; «Vídeo» la excluye.
-      const isVideoCapsule = it.type === 'video' && tagsLc.some(x => /^#?(capsula|sabias-?que)$/.test(x.trim()));
+      const isVideoCapsule = (it.type === 'video' && tagsLc.some(x => /^#?(capsulas?|capsules?|sabias-?que)$/.test(x.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))))
+        // Imagen con #capsula/#cápsula/#capsule (p. ej. la versión alterna de una cápsula-imagen) también es cápsula.
+        || (it.type === 'image' && tagsLc.some(x => /^#?(capsulas?|capsules?)$/.test(x.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))));
       // Gemelos del Anonimizador: NPC pixel-art (twin-npc) y persona sintética (digital-twin).
       const isTwinNpc = it.type === 'twin-npc' || tagsLc.includes('twin-npc');
       const isDigitalTwin = it.type === 'digital-twin' || tagsLc.includes('digital-twin');
@@ -1450,7 +1510,7 @@
     // Adaptaciones del Adaptador de Admira Studio: vídeos nuevos con motor «adaptador» y
     // externalRef = id del vídeo original. Se agrupan bajo su original con el filtro
     // «origen» (?origen=<id>): el original primero y detrás sus adaptaciones.
-    const isAdaptacion = it => !!(it && it.motor === 'adaptador' && it.externalRef);
+    const isAdaptacion = it => !!(it && (it.motor === 'adaptador' || String(it.motor || '').toLowerCase().startsWith('ainimation')) && it.externalRef);
     let ADAPT = new Map();
     (function () {
       const st = document.createElement('style');
@@ -1468,12 +1528,12 @@
     function adaptChip(it) {
       if (isAdaptacion(it)) {
         const orig = allItems.find(x => x.id === it.externalRef);
-        const label = orig ? `↳ adaptación de «${escTxt((orig.title || orig.id).slice(0, 60))}»` : '↳ adaptación';
-        return `<button type="button" class="stock-adapt-chip" data-act="origen" data-origen="${escTxt(it.externalRef)}" title="Ver el original y sus adaptaciones">${label}</button>`;
+        const label = orig ? `↳ versión de «${escTxt((orig.title || orig.id).slice(0, 60))}»` : '↳ versión';
+        return `<button type="button" class="stock-adapt-chip" data-act="origen" data-origen="${escTxt(it.externalRef)}" title="Ver el original y sus versiones">${label}</button>`;
       }
       const n = ADAPT.get(it.id) || 0;
       if (!n || filters.origen === it.id) return '';
-      return `<button type="button" class="stock-adapt-chip" data-act="origen" data-origen="${escTxt(it.id)}" title="Ver el original y sus adaptaciones">▸ ${n} ${n === 1 ? 'adaptación' : 'adaptaciones'}</button>`;
+      return `<button type="button" class="stock-adapt-chip" data-act="origen" data-origen="${escTxt(it.id)}" title="Ver el original y sus versiones">▸ ${n} ${n === 1 ? 'versión' : 'versiones'}</button>`;
     }
     function renderOrigenBar() {
       const bar = document.getElementById('stockOrigenBar');
@@ -1482,7 +1542,7 @@
       if (!filters.origen) { bar.innerHTML = ''; return; }
       const orig = allItems.find(x => x.id === filters.origen);
       const n = ADAPT.get(filters.origen) || 0;
-      bar.innerHTML = `<span>Original «${escTxt(orig ? (orig.title || orig.id) : filters.origen)}» · ${n} ${n === 1 ? 'adaptación' : 'adaptaciones'}</span><button type="button" data-act="origen" data-origen="">✕ Ver todo el Stock</button>`;
+      bar.innerHTML = `<span>Original «${escTxt(orig ? (orig.title || orig.id) : filters.origen)}» · ${n} ${n === 1 ? 'versión' : 'versiones'}</span><button type="button" data-act="origen" data-origen="">✕ Ver todo el Stock</button>`;
     }
     document.addEventListener('click', e => {
       const b = e.target.closest && e.target.closest('[data-act="origen"]');
@@ -1512,14 +1572,30 @@
       formatIndex=StockFormats.index(allItems.filter(it=>!clienteListo||PC.visible(it)));
       refreshFormatOptions();
       ADAPT = new Map();
-      for (const it of allItems) if (isAdaptacion(it)) ADAPT.set(it.externalRef, (ADAPT.get(it.externalRef) || 0) + 1);
+      for (const it of allItems) {
+        const seen = new Set(); let child = it;
+        while (isAdaptacion(child) && !seen.has(child.id)) {
+          seen.add(child.id);
+          ADAPT.set(child.externalRef, (ADAPT.get(child.externalRef) || 0) + 1);
+          child = allItems.find(x => x.id === child.externalRef);
+        }
+      }
       renderOrigenBar();
       const items = allItems.filter(it => {
         if (clienteListo && !PC.visible(it)) return false;
         if(filters.format&&(hasMusicCards(it)?!['landscape','portrait'].includes(filters.format):mediaOrientation(it).key!==filters.format))return false;
         // A source/adaptation deep link must not bypass the music category filter.
         if (isMusic(it) && !matchesMusicType(it, filters.type)) return false;
-        if (filters.origen) return it.id === filters.origen || (isAdaptacion(it) && it.externalRef === filters.origen);
+        if (filters.origen) {
+          if (it.id === filters.origen) return true;
+          const seen = new Set(); let parent = it;
+          while (isAdaptacion(parent) && !seen.has(parent.id)) {
+            seen.add(parent.id);
+            if (parent.externalRef === filters.origen) return true;
+            parent = allItems.find(x => x.id === parent.externalRef);
+          }
+          return false;
+        }
         if (!matchesType(it, filters.type)) return false;
         if (filters.motor && verMotor(it.motor) !== verMotor(filters.motor)) return false;
         if (filters.tags && filters.tags.length) {
@@ -1630,6 +1706,7 @@
       }
     }
     function openLightbox(it) {
+      resetCapsuleEditor();
       if(window.StockSync?.get(it)){if(window.openSyncCreative)window.openSyncCreative(it);else import('/assets/stock-sync-preview.mjs?v=atlas-2').then(()=>window.openSyncCreative(it)).catch(()=>{status.textContent='No se pudo cargar el previo 3D. Reintenta.';});return;}
       if(isFurniture3D(it)){import('./assets/furniture/editor.mjs').then(m=>m.openFurniture(it));return;}
       rememberPreview(it);
@@ -1680,7 +1757,8 @@
         <p class="stock-prompt">${renderPromptHtml(it.prompt)}</p>
         ${commentBlock}
         <div class="stock-lightbox-actions">
-          <a class="btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener">AI Abrir en AINimation</a>
+          ${/^capsula-url:[a-f0-9]{16}$/.test(it.externalRef || '') ? '<button type="button" class="btn" data-act="edit-capsule" aria-expanded="false">Editar con Ainimation</button>' : ''}
+          <a class="btn" href="${escAttr(ainimationImportHref(it))}" target="_blank" rel="noopener">AI Editar en AInimation</a>
           <button type="button" class="btn" data-act="descargar" title="Guarda el fichero en este ordenador con un nombre legible">⬇ Descargar a este ordenador</button>
           <button type="button" class="btn prio0-btn" data-act="prio0" title="Envía este asset AHORA al destino que elijas e interrumpe lo que se esté emitiendo">⚠ Prioridad 0 · interrumpir</button>
         </div>`;
@@ -1723,6 +1801,7 @@
       openLightbox(currentView[j]);
     }
     function finishCloseLightbox() {
+      resetCapsuleEditor();
       xpaceController?.abort();
       xpaceController = null;
       lightbox.classList.remove('is-xpace');
@@ -1764,6 +1843,9 @@
 
     // Edición de tags dentro del lightbox (quitar / añadir)
     lightboxMeta.addEventListener('click', async e => {
+      const editCapsuleBtn = e.target.closest('[data-act="edit-capsule"]');
+      if (editCapsuleBtn) { e.preventDefault(); e.stopPropagation(); const it = currentItemInLightbox(); if(it) await editCapsuleInDetail(it, editCapsuleBtn); return; }
+
       const ratingBtn = e.target.closest('[data-act="rate-capsule"]');
       if (ratingBtn) {
         e.preventDefault(); e.stopPropagation();
@@ -1906,7 +1988,7 @@
         if (!fresh.length) return;
         const next = Array.isArray(it.tags) ? it.tags.slice() : [];
         for (const t of fresh) if (!next.includes(t)) next.push(t);
-        if (next.length > 12) { alert('Máximo 12 etiquetas por asset (auto + propias). Quita alguna antes.'); }
+        if (next.length > 12) { alert('Máximo 12 etiquetas por asset (auto + propias). Quita alguna antes.'); return; }
         const saved = await saveTags(it.id, next);
         if (saved) { it.tags = saved; applyFilters(); }
         return;
@@ -2160,7 +2242,8 @@
           absorber(indice, true);
         } catch (e) { lastErr = e; }
         const edadMin = (indice && indice.builtAt) ? (Date.now() - Date.parse(indice.builtAt)) / 60000 : Infinity;
-        if (!indice || !(edadMin < 20)) {
+        const highlighted = new URLSearchParams(location.search).get('highlight');
+        if (!indice || !(edadMin < 20) || (highlighted && !indice.some(it => it.id === highlighted))) {
           // 15 s para el worker: tarda 4-9 s medidos; con timeout de 9000 se
           // abortaba a sí mismo casi siempre.
           try { absorber(await fetchSource(STOCK_LIST_FALLBACK, 15000), false); } catch (e) { lastErr = e; }
@@ -2231,6 +2314,35 @@
       const it=e.detail?.item;if(!it?.id||!it.url)return;
       localPublished.set(it.id,it);allItems=soloMio([it,...allItemsTodo.filter(x=>x.id!==it.id)]);writeCache(allItemsTodo);buildMotorOptions();applyFilters(true);feedMatrix();
     });
+    // Cápsula #capsula + pilar (#negocio/#creatividad/#tecnologia, ES/EN) → versión en la otra orientación (assets/capsula-alterna.mjs).
+    function capsulaAlterna(it){
+      if(!it||!['video','image'].includes(it.type))return;
+      import('/assets/capsula-alterna.mjs?v=20261026-importer-options').then(m=>m.maybeGenerateAlternate(it,{items:allItemsTodo,saveTags:(id,t,o)=>saveTags(id,t,o),
+        onStatus:t=>{status.textContent=t;},
+        onCreated:(id,item)=>{if(item)document.dispatchEvent(new CustomEvent('stock:local-published',{detail:{item:{...item,url:`${STOCK_BASE}/stock/asset/${encodeURIComponent(id)}`}}}));}
+      })).catch(()=>{});
+    }
+    function traduceBadge(it){
+      const p=window.CapsulaTraduce?.pendingInfo?.(it,allItemsTodo);if(!p)return '';
+      return `<button type="button" class="stock-traduce-badge" data-act="traduce-pendiente" data-encargo="${escAttr(p.encargo)}" title="Etiqueta de traducción detectada (${p.from.toUpperCase()}→${p.to.toUpperCase()}). Se generan solos (Workers AI + FFmpeg en el navegador, máx. 3 min). Si fallan, clic: copiar el encargo para la caja.">${p.label} · copiar encargo</button>`;
+    }
+    // #traduce (EN→subtítulos ES) / #translate (ES→subtítulos EN) · assets/capsula-traduce.mjs (sin bucle: subtitulado-*).
+    function capsulaTraduce(it){
+      if(!it||it.type!=='video')return;
+      import('/assets/capsula-traduce.mjs?v=20261027-importer-es6').then(m=>m.maybeSubtitle(it,{items:allItemsTodo,onStatus:t=>{status.textContent=t;traducePendiente=t;
+        try{status.classList.add('stock-traduce-aviso');applyFilters();}catch(_){}},onSettled:()=>{try{applyFilters();}catch(_){}},
+        onCreated:(id,item)=>{if(item)document.dispatchEvent(new CustomEvent('stock:local-published',{detail:{item:{...item,url:`${STOCK_BASE}/stock/asset/${encodeURIComponent(id)}`}}}));}})).catch(()=>{});
+    }
+    let traducePendiente='';
+    // Carga el módulo una vez para pintar la insignia «subtítulos XX pendientes» en las tarjetas.
+    import('/assets/capsula-traduce.mjs?v=20261027-importer-es6').then(m=>{window.CapsulaTraduce=m;try{applyFilters();}catch(_){}}).catch(()=>{});
+    grid.addEventListener('click',e=>{
+      const b=e.target.closest('[data-act="traduce-pendiente"]');if(!b)return;e.preventDefault();e.stopPropagation();
+      const txt=b.dataset.encargo||'';try{navigator.clipboard.writeText(txt);}catch(_){}
+      status.textContent='// 🈯 encargo copiado: '+txt+' · pégalo a GrokBot / la caja si el automático no lo ha generado';
+    },true);
+    document.addEventListener('stock:local-published',e=>{capsulaAlterna(e.detail?.item);capsulaTraduce(e.detail?.item);});
+    document.addEventListener('stock:tags-saved',e=>{capsulaAlterna(e.detail?.item);capsulaTraduce(e.detail?.item);});
     document.addEventListener('stock:local-view',()=>{
       if(filters.type==='catalogo')CATALOGO.leave();
       filters.q='';search.value='';filters.type='';typeFilter.value='';filters.format='';filters.tags=[];filters.origen='';sortMode='date-desc';applyFilters(true);
@@ -2273,8 +2385,8 @@
       if (/^https?:\/\//i.test(v) && urlField) { urlField.value = v; search.value = ''; filters.q = ''; applyFilters(true); }
       dlg.showModal();
     });
-    // Cabezales ordenables (Nombre / Fecha / Tipo / Motor) — clic alterna asc/desc
-    const SORT_DEFAULT_DIR = { name: 'asc', date: 'desc' };
+    // Cabezal ordenable — clic alterna asc/desc y se recuerda entre sesiones.
+    const SORT_DEFAULT_DIR = { name: 'asc', date: 'desc', format: 'asc', type: 'asc', motor: 'asc' };
     function applySortIndicators() {
       const [key, dir] = sortMode.split('-');
       sortBar.querySelectorAll('.stock-sort-th').forEach(b => {
@@ -2335,24 +2447,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     })));
 
-    const typeNames = {
-      '':['Todos los tipos','All types'],video:['Vídeo','Video'],image:['Imagen','Image'],
-      audio:['Audio','Audio'],locucion:['Megafonía','PA audio'],music:['Música','Music'],
-      'twin-npc':['Twin NPCs','Twin NPCs'],'digital-twin':['Digital Twins','Digital Twins'],
-      xpaces:['Xpaces','Xpaces'],catalogo:['Catálogos','Catalogs'],animation:['Animaciones','Animations'],
-      tiktok:['TikToks','TikToks'],furni:['Mobiliario','Furniture'],capsula:['Cápsulas','Capsules'],
-      fallidos:['Importaciones fallidas','Failed imports']
-    };
-    const formatNames = {'':['Todos los formatos','All formats'],landscape:['Horizontal','Horizontal'],
-      portrait:['Vertical','Vertical'],square:['Cuadrado','Square'],unknown:['Sin formato confirmado','Unconfirmed format'],
-      anamorphic:['Anamórfico','Anamorphic']};
-    const localized = (labels,key) => labels[key]?.[language==='en'?1:0] || String(key).replace(/^custom:/,'');
-    savedSearchControls = mountSavedSearches({
-      element:document.getElementById('stockSavedSearchControls'),language,
-      getSearch:()=>({q:filters.q,type:filters.type,format:filters.format}),
-      applySearch:search=>restoreStockNavigation({...navigationState(),...search,origen:'',motor:'',tags:[],tagMode:'or',page:1}),
-      typeLabel:type=>localized(typeNames,type),formatLabel:format=>localized(formatNames,format)
-    });
     document.getElementById('stockClearFilters').addEventListener('click',clearStockFilters);
     renderActiveTagBanner();
 
@@ -2399,6 +2493,8 @@
       }
       try { const u = new URL(location.href); u.searchParams.delete('highlight'); history.replaceState(history.state, '', u); } catch {}
       openLightbox(item);
+      capsulaAlterna(item);
+      capsulaTraduce(item); // tras importar por URL/subida se llega aquí con ?highlight (antes no se comprobaba #traducir)
     }
 
     // ── DISTRIBUIDOR DE ASSETS ────────────────────────────────────────────
@@ -2817,6 +2913,12 @@
         // Barra de lote
         $('distBatchSend').addEventListener('click', () => open(selectedItems()));
         $('distBatchClear').addEventListener('click', clearSelection);
+        $('distBatchCreate').addEventListener('click', async () => {
+          try {
+            const {openBatchCreator}=await import('/assets/admira-batch-create.mjs?v=batch-1');
+            openBatchCreator([...sel].map(id=>allItems.find(item=>item.id===id)).filter(Boolean));
+          } catch(error) { window.alert(error.message); }
+        });
         const bdl = $('distBatchDownload');
         if (bdl) bdl.addEventListener('click', () => descargarAssets(selectedItems()));
         const bpl = $('distBatchPlaylist'); if (bpl) bpl.addEventListener('click', () => { if (window.PL) window.PL.open(selectedItems()); });
@@ -3556,7 +3658,7 @@
       .catch(()=>{});
   })();
   </script>
-  <script defer src="/assets/cuadratura.js?v=18.10.2026.r16.2219"></script>
+  <script defer src="/assets/cuadratura.js?v=27.10.2026.r4.2140"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
 </body>
 </html>

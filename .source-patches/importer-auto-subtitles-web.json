@@ -1,0 +1,38 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "sourceRepository": "csilvasantin/admira-studio",
+  "canonicalBase": "744f63504d4e053b95c3a31231028a81f1f84858",
+  "reason": "Carlos (26-oct-2026): corregir la carga del vídeo y activar subtítulos ES automáticos desde el importador existente sin tocar la extensión instalada.",
+  "status": "web-release-authorized",
+  "extensionReleaseRequired": false,
+  "sourceIntegration": "Cambio propio de Studio sobre sus módulos de subtítulos existentes; conservar como parche Studio al portar la fuente, sin regenerar el espejo antiguo ni publicar Pixeria. El paquete de extensión 1.0.2 permanece separado en PR139.",
+  "files": [
+    "adaptaciones/adapter-export.js",
+    "assets/capsula-alterna.mjs",
+    "assets/capsula-traduce.mjs",
+    "assets/etiquetas-funcionales.mjs",
+    "functions/stock-subtitles.js",
+    "stock.html",
+    "app.js",
+    "test/adapter-export.test.mjs",
+    "test/capsula-traduce.test.mjs",
+    "test/stock-subtitles.test.mjs",
+    "test/importer-capsule-tags.test.mjs"
+  ],
+  "authAudit": {
+    "at": "2026-10-26T21:18:44Z",
+    "run": 40403239960,
+    "tokenActive": true,
+    "pagesRead": 200,
+    "aiCatalogRead": 403,
+    "productionAiBinding": true,
+    "credentialChanged": false
+  },
+  "security": {
+    "containsSecrets": false,
+    "changesInstalledExtension": false,
+    "preservesOriginalMedia": true,
+    "requiresExistingStudioSession": true
+  }
+}

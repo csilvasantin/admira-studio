@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Privacidad · AdmiraStudioImporter</title>
+  <meta name="description" content="Política de privacidad de la extensión AdmiraStudioImporter para Chrome.">
+  <meta name="theme-color" content="#020806">
+  <style>
+    :root{color-scheme:dark;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#020806;color:#dffff0;--green:#00ff68;--muted:#78a68b;--line:rgba(0,255,104,.28)}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,rgba(0,255,104,.12),transparent 30%),#020806}main{width:min(820px,calc(100% - 32px));margin:0 auto;padding:56px 0 80px}header{padding-bottom:24px;border-bottom:1px solid var(--line)}.eyebrow{color:var(--green);font-size:11px;letter-spacing:.16em;text-transform:uppercase}h1{margin:10px 0 8px;color:#fff;font:800 clamp(28px,6vw,48px)/1.05 system-ui,sans-serif}h2{margin:34px 0 10px;color:var(--green);font-size:17px}p,li{color:#b9d7c5;font:14px/1.7 system-ui,sans-serif}a{color:var(--green)}.updated,.note{color:var(--muted);font-size:12px}.note{padding:14px;border:1px solid var(--line);background:rgba(0,255,104,.04)}table{width:100%;border-collapse:collapse}th,td{padding:10px;border:1px solid var(--line);font:13px/1.5 system-ui,sans-serif;text-align:left;vertical-align:top}th{color:var(--green)}footer{margin-top:46px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}@media(max-width:620px){table,tbody,tr,th,td{display:block}th{display:none}td{border-top:0}tr td:first-child{border-top:1px solid var(--line);color:var(--green)}}
+  </style>
+</head>
+<body>
+  <main>
+    <header><div class="eyebrow">Admira Studio · Chrome Extension</div><h1>Privacidad de AdmiraStudioImporter</h1><p class="updated">Última actualización: 26 de octubre de 2026</p></header>
+    <p>Esta política describe el tratamiento de datos realizado por la extensión <strong>AdmiraStudioImporter</strong>. Su única finalidad es preparar, a petición del usuario, la importación del vídeo de YouTube abierto hacia el Stock de Admira Studio.</p>
+
+    <h2>Responsable y contacto</h2>
+    <p>Carlos Silva (Admira Studio). Para privacidad, soporte o eliminación de datos: <a href="mailto:hola@admiranext.com">hola@admiranext.com</a>.</p>
+
+    <h2>Datos que utiliza la extensión</h2>
+    <table><thead><tr><th>Dato</th><th>Uso</th><th>Conservación</th></tr></thead><tbody>
+      <tr><td>URL, título, canal y miniatura del vídeo de YouTube abierto</td><td>Mostrar el vídeo detectado y construir la importación solicitada.</td><td>El contexto actual se conserva temporalmente en <code>chrome.storage.session</code> y desaparece al finalizar la sesión del navegador.</td></tr>
+      <tr><td>Formato, etiquetas y preferencia de inicio automático</td><td>Recordar la configuración elegida por el usuario.</td><td>Se guarda en <code>chrome.storage.sync</code> hasta que el usuario la cambie, borre los datos de la extensión o la desinstale.</td></tr>
+      <tr><td>Comentario y etiquetas introducidos por el usuario</td><td>Añadir contexto al contenido importado en Admira Studio.</td><td>No se guardan de forma permanente dentro de la extensión.</td></tr>
+    </tbody></table>
+
+    <h2>Cuándo se transmiten datos</h2>
+    <p>La extensión no envía información en segundo plano. Solo cuando el usuario pulsa <strong>Importar en Admira Studio</strong>, abre mediante HTTPS una página de <code>www.admira.studio</code> con la URL del vídeo, su título y los campos opcionales introducidos. Admira Studio procesa esos datos para ejecutar la importación y guardar el contenido solicitado en el Stock. El acceso final puede requerir una cuenta autorizada de Admira Studio.</p>
+
+    <h2>Subtítulos opcionales para cápsulas</h2>
+    <p>Si eliges subtítulos en castellano o inglés, Admira Studio extrae el audio del vídeo importado y lo envía a Cloudflare Workers AI para transcribirlo y traducirlo. El vídeo con subtítulos visibles se genera en tu navegador y se guarda como una nueva versión en Stock, conservando el original. Si eliges formato vertical, horizontal o ambos, el navegador prepara las copias con la imagen completa y el audio original; este ajuste de formato no envía el vídeo a un servicio de IA. Ambas opciones se aplican solo al vídeo seleccionado y no se guardan como preferencias. La extensión no envía directamente audio a servicios de IA ni contiene claves. Mantén Stock abierto durante el proceso y revisa los subtítulos automáticos.</p>
+
+    <h2>Lo que no hacemos</h2>
+    <ul>
+      <li>No vendemos datos ni los usamos para publicidad, perfiles comerciales o decisiones crediticias.</li>
+      <li>No accedemos a contraseñas, cookies, correos, contactos ni al historial completo del navegador.</li>
+      <li>No incorporamos analítica, anuncios, rastreadores ni código remoto.</li>
+      <li>No compartimos información con terceros ajenos a la prestación solicitada.</li>
+    </ul>
+
+    <h2>Permisos de Chrome</h2>
+    <p>La extensión limita su acceso a páginas de YouTube. Usa el panel lateral para mostrar el importador, almacenamiento para conservar preferencias y contexto temporal, y el menú contextual para ofrecer la acción de importación. No solicita acceso al contenido de <code>admira.studio</code>.</p>
+
+    <h2>Seguridad, eliminación y derechos</h2>
+    <p>La transferencia hacia Admira Studio se realiza exclusivamente mediante HTTPS. Para borrar las preferencias locales, elimina los datos de la extensión o desinstálala. Para solicitar acceso, rectificación o eliminación de contenidos ya importados en Admira Studio, escribe a <a href="mailto:hola@admiranext.com">hola@admiranext.com</a>.</p>
+
+    <p class="note">El uso de la información recibida de las API de Google cumple la Política de Datos de Usuario de Chrome Web Store, incluidos sus requisitos de Uso Limitado. / The use of information received from Google APIs adheres to the Chrome Web Store User Data Policy, including the Limited Use requirements.</p>
+
+    <h2>English summary</h2>
+    <p>AdmiraStudioImporter only reads the current YouTube video's URL and visible metadata to prepare an import explicitly requested by the user. Preferences are stored in Chrome; no analytics, ads, remote code or background transmission are used. Data is sent over HTTPS to Admira Studio only after the user presses the import button. Contact: <a href="mailto:hola@admiranext.com">hola@admiranext.com</a>.</p>
+    <footer>AdmiraStudioImporter · Admira Studio · <a href="/extensions/admira-studio-importer/support">Soporte</a></footer>
+  </main>
+</body>
+</html>

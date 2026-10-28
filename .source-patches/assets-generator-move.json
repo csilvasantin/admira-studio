@@ -1,0 +1,18 @@
+{
+  "kind": "assets-generator-move",
+  "domain": "admira.studio",
+  "reason": "Carlos: Assets pasa a admira.store/assets; Studio importa, crea y adapta contenidos multimedia.",
+  "files": [
+    "crear/index.html",
+    "en/crear/index.html",
+    "assets/site-nav.js",
+    "assets/expert-cli.js",
+    "_redirects",
+    "test/studio-page-exceptions.json",
+    "functions/_middleware.js",
+    "test/assets-redirect.test.mjs"
+  ],
+  "destination": "https://www.admira.store/assets/",
+  "catalogue": "Existing shared Stock IDs remain unchanged.",
+  "localState": "Local browser wallet and remote keys are not copied to another origin."
+}

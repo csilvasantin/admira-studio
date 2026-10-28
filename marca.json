@@ -273,7 +273,13 @@
     "privacy.html",
     "novedades.json",
     "assets/intro-studio/",
-    "assets/studio-workflow/"
+    "assets/studio-workflow/",
+    "crear/index.html",
+    "en/crear/index.html",
+    "assets/site-nav.js",
+    "assets/expert-cli.js",
+    "_redirects",
+    "test/studio-page-exceptions.json"
   ],
   "_por_que_propios": [
     "Existen solo en admira.studio y no tienen equivalente en Pixeria. El sync no los toca",

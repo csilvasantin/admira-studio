@@ -1,0 +1,39 @@
+{
+  "kind": "chrome-web-store-release",
+  "domain": "admira.studio",
+  "canonicalBase": "46dc249",
+  "sourceRepository": "csilvasantin/admira-studio",
+  "reason": "Carlos: instalar AdmiraStudioImporter en Chrome y publicarlo gratuitamente para cualquier usuario en Chrome Web Store.",
+  "files": [
+    "extensions/admira-studio-importer/manifest.json",
+    "extensions/admira-studio-importer/sidepanel.html",
+    "extensions/admira-studio-importer/sidepanel.css",
+    "extensions/admira-studio-importer/privacy.html",
+    "extensions/admira-studio-importer/support.html",
+    "extensions/admira-studio-importer/README.md",
+    "extensions/AdmiraStudioImporter-v1.0.1.zip",
+    "extensions/admira-studio-importer-store/listing-es.md",
+    "extensions/admira-studio-importer-store/store-assets.css",
+    "extensions/admira-studio-importer-store/screenshot-import.html",
+    "extensions/admira-studio-importer-store/screenshot-progress.html",
+    "extensions/admira-studio-importer-store/small-tile.html",
+    "extensions/admira-studio-importer-store/marquee.html",
+    "extensions/admira-studio-importer-store/screenshot-import-1280x800.jpg",
+    "extensions/admira-studio-importer-store/screenshot-progress-1280x800.jpg",
+    "extensions/admira-studio-importer-store/small-promo-440x280.jpg",
+    "extensions/admira-studio-importer-store/marquee-1400x560.jpg",
+    "functions/_middleware.js",
+    "test/admira-studio-importer.test.mjs"
+  ],
+  "security": {
+    "containsSecrets": false,
+    "remoteCode": false,
+    "analytics": false,
+    "ads": false,
+    "tabsPermission": false,
+    "publicPrivacyPolicy": "/extensions/admira-studio-importer/privacy"
+  },
+  "rollback": "46dc249",
+  "status": "store-package-ready",
+  "release": "v.24.10.2026.r13.22:24"
+}

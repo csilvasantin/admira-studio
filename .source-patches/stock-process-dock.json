@@ -1,0 +1,17 @@
+{
+  "kind": "stock-interface-progress",
+  "domain": "admira.studio",
+  "canonicalBase": "428dbc6",
+  "sourceRepository": "csilvasantin/admira-studio",
+  "reason": "Carlos: eliminar Guardar búsqueda, comprimir la zona superior y unir la ordenación con el feedback del importador y una barra de progreso para cápsulas y subtítulos.",
+  "files": [
+    "stock.html",
+    "en/stock.html",
+    "workspace.css",
+    "assets/stock-process-dock.mjs",
+    "test/stock-process-dock.test.mjs"
+  ],
+  "rollback": "428dbc6",
+  "status": "release-authorized",
+  "release": "v.24.10.2026.r11.21:57"
+}

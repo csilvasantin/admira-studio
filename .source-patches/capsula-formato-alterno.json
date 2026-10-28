@@ -1,0 +1,20 @@
+{
+  "kind": "canonical-domain-change",
+  "domain": "admira.studio",
+  "canonicalBase": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
+  "sourceRepository": "csilvasantin/pixeria",
+  "sourceCommit": "studio-first (pendiente de portar a pixeria)",
+  "reason": "Carlos (24-oct-2026): al importar una cápsula etiquetada #capsula + pilar Admira U (#negocio/#business, #creatividad/#creativity, #tecnologia/#technology) se genera sola la orientación contraria (16:9 ⇄ 9:16) y se guarda en Cápsulas con las mismas etiquetas, enlazada al original (externalRef + par-<id>), sin bucle (formato-alterno) y sin duplicar.",
+  "files": [
+    "assets/capsula-alterna.mjs",
+    "stock.html",
+    "test/capsula-alterna.test.mjs",
+    "test/stock-capsulas-video.test.mjs",
+    ".source-patches/capsula-formato-alterno.json"
+  ],
+  "secrets": "ninguno",
+  "preservesFiltersAndAccess": true,
+  "rollback": "89955e0c37720af05fe2ba86745cbeab7861bd2b",
+  "status": "release-authorized",
+  "release": "v.24.10.2026.r2.20:09"
+}

@@ -52,6 +52,24 @@ export async function accessToken(env, fetchImpl = fetch) {
   return j.access_token;
 }
 
+export async function canalYoutube(env, fetchImpl = fetch) {
+  const token = await accessToken(env, fetchImpl);
+  const r = await fetchImpl('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true', {
+    headers: {Authorization: `Bearer ${token}`},
+  });
+  const j = await r.json().catch(() => ({}));
+  const canal = j?.items?.[0];
+  if (r.ok && canal?.id) return {id: canal.id, nombre: canal.snippet?.title || canal.id,
+    handle: '', avatar: canal.snippet?.thumbnails?.default?.url || '', url: `https://www.youtube.com/channel/${canal.id}`};
+  // El scope youtube.upload permite publicar pero Google puede negar channels.list.
+  // En ese caso usamos la identidad verificada a partir de una publicación real de esta conexión.
+  if (env?.YOUTUBE_CHANNEL_NAME && env?.YOUTUBE_CHANNEL_URL) return {
+    id: env.YOUTUBE_CHANNEL_ID || '', nombre: env.YOUTUBE_CHANNEL_NAME,
+    handle: env.YOUTUBE_CHANNEL_HANDLE || '', avatar: '', url: env.YOUTUBE_CHANNEL_URL,
+  };
+  throw Object.assign(new Error('channel'), {codigo: 'youtube-canal', status: 502});
+}
+
 // Sube el vídeo: abre la sesión reanudable y le pasa el MP4 del Stock en streaming (sin cargarlo en memoria).
 export async function subirAYoutube(env, it, meta, fetchImpl = fetch) {
   const token = await accessToken(env, fetchImpl);

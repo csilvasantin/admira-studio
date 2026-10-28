@@ -3102,10 +3102,33 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       caja.innerHTML = `<label for="import-tags">${ETIQ_EN ? 'Tags' : 'Etiquetas'} <small style="color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none">(${ETIQ_EN ? 'optional · client, venue or screen' : 'opcional · cliente, centro o pantalla'})</small></label><input type="text" id="import-tags" maxlength="400" autocomplete="off" spellcheck="false" placeholder="${escAttr(ETIQ_PISTA)}" title="${escAttr(ETIQ_AYUDA)}">`;
       (comentario.closest('.field') || comentario).insertAdjacentElement('afterend', caja);
       campo = caja.querySelector('input');
+      // Vista previa: las etiquetas que hacen algo (traducir, cápsula, pilar, clasificar) salen en negrita.
+      const vista = document.createElement('div');
+      vista.className = 'imp-tags-preview'; vista.style.cssText = 'margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;font-size:12px';
+      campo.insertAdjacentElement('afterend', vista);
+      const pinta = () => import('/assets/etiquetas-funcionales.mjs?v=20261024-1').then(m => {
+        vista.innerHTML = parseEtiquetas(campo.value).map(t => { const c = m.tagChip(t);
+          return `<span class="stock-tag${c.cls ? ' ' + c.cls : ''}"${c.title ? ` title="${escAttr(c.title)}"` : ''} style="${c.cls === 'stock-tag-fn' ? 'font-weight:700' : ''}">#${escAttr(t)}</span>`; }).join('');
+      }).catch(() => {});
+      campo.addEventListener('input', pinta);
     }
     return campo;
   }
-  function etiquetasImport() { const e = parseEtiquetas((document.getElementById('import-tags') || {}).value); return e.length ? e : null; }
+  // The installed 1.0.1 already sends tags/comments. A newly imported video
+  // capsule can request Spanish subtitles on the web without updating Chrome.
+  function capsuleImportTags(tags, comment, type) {
+    const norm = t => String(t).trim().replace(/^#+/, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const effective = [...tags, ...(String(comment || '').match(/#[\p{L}\p{N}_-]+/gu) || [])].map(norm);
+    if (type !== 'video' || !effective.some(t => ['capsula', 'capsulas', 'capsule', 'capsules'].includes(t))
+      || effective.some(t => ['subtitulos-es', 'subtitular-es', 'subtitles-en', 'subtitle-en', 'sin-subtitulos'].includes(t))) return tags;
+    // Up to ten user tags plus this explicit destination fit the Stock limit of
+    // twelve. Keep every user tag; this processing tag must survive classification.
+    return ['subtitulos-es', ...tags];
+  }
+  function etiquetasImport(type) {
+    const e = capsuleImportTags(parseEtiquetas((document.getElementById('import-tags') || {}).value), document.getElementById('import-comment')?.value, type);
+    return e.length ? e : null;
+  }
 
   function publishBtnHTML(meta) {
     const json = JSON.stringify(meta).replace(/'/g, '&#39;');
@@ -3873,7 +3896,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
           prompt: file.name,
           title: file.name.replace(/\.[^.]+$/, ''),
           comment: comment || null,
-          tags: etiquetasImport(),
+          tags: etiquetasImport(type),
           searchContext:{version:1,description:''},
           costEst: `local · ${sizeMB}MB`,
           url: blobUrl,
@@ -4038,7 +4061,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
             prompt: url,
             title: importedTitle || null,
             comment: comment || null,
-            tags: etiquetasImport(),
+            tags: etiquetasImport(kind),
             searchContext:{version:1,description:typeof out.description==='string' ? out.description : ''},
             costEst: `gratis · ${sizeMB}MB · ${sec}s`,
             url: blobUrl,
@@ -4148,7 +4171,8 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
     }
 
     retryBtn.addEventListener('click', runImport);
-    document.getElementById('doImport')?.addEventListener('click', () => {
+    const chromeImportButton = document.getElementById('doImport');
+    chromeImportButton?.addEventListener('click', () => {
       const raw = document.getElementById('import-url').value;
       const urls = parseUrls(raw);
       const fmt = document.querySelector('input[name="import-fmt"]:checked')?.value || 'video';
@@ -4161,6 +4185,80 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       lastImportArgs = { urls, fmt, comment };
       runImport();
     });
+
+    // Handoff de AdmiraStudioImporter (extensión Chrome). La extensión solo
+    // entrega datos; este flujo conserva el importador yt-dlp, la sesión y todo
+    // el feedback dentro de Admira Studio. Solo acepta vídeos reales de YouTube.
+    function youtubeUrlFromChrome(raw) {
+      try {
+        const u = new URL(String(raw || ''));
+        const host = u.hostname.toLowerCase();
+        let id = '';
+        if (host === 'youtu.be') id = u.pathname.split('/').filter(Boolean)[0] || '';
+        else if (['youtube.com', 'www.youtube.com', 'm.youtube.com', 'music.youtube.com'].includes(host)) {
+          if (u.pathname === '/watch') id = u.searchParams.get('v') || '';
+          else id = (u.pathname.match(/^\/(?:shorts|embed|live)\/([A-Za-z0-9_-]{11})(?:\/|$)/) || [])[1] || '';
+        }
+        return /^[A-Za-z0-9_-]{11}$/.test(id) ? `https://www.youtube.com/watch?v=${id}` : '';
+      } catch (_) {
+        return '';
+      }
+    }
+
+    function openChromeImporterHandoff() {
+      const params = new URLSearchParams(location.search);
+      if (params.get('importSource') !== 'chrome') return;
+      const url = youtubeUrlFromChrome(params.get('importUrl'));
+      const format = params.get('importFormat') === 'audio' ? 'audio' : 'video';
+      const comment = String(params.get('importComment') || '').slice(0, 500);
+      const tags = String(params.get('importTags') || '').slice(0, 400);
+      const title = String(params.get('importTitle') || '').slice(0, 180);
+      const autostart = params.get('importAutostart') === '1';
+
+      // Evita reimportar al recargar o volver atrás, y no deja el título/notas
+      // del contenido en la barra de direcciones ni en un marcador compartido.
+      const clean = new URL(location.href);
+      ['importSource', 'importUrl', 'importFormat', 'importComment', 'importTags', 'importTitle', 'importAutostart']
+        .forEach(key => clean.searchParams.delete(key));
+      history.replaceState({}, '', clean.pathname + clean.search + clean.hash);
+      if (!url) return;
+
+      let source = document.getElementById('import-extension-source');
+      if (!source) {
+        source = document.createElement('div');
+        source.id = 'import-extension-source';
+        source.className = 'import-extension-source';
+        dlg.querySelector('h3')?.insertAdjacentElement('afterend', source);
+      }
+      source.textContent = `⚡ AdmiraStudioImporter · YouTube → Stock${title ? ` · ${title}` : ''}`;
+      dlg.showModal();
+
+      // El MutationObserver del diálogo repone las etiquetas sugeridas al abrir.
+      // Se rellenan después para que las elegidas en la extensión prevalezcan.
+      setTimeout(() => {
+        const urlField = document.getElementById('import-url');
+        const commentField = document.getElementById('import-comment');
+        const tagsField = campoEtiquetasImport();
+        const formatField = document.querySelector(`input[name="import-fmt"][value="${format}"]`);
+        if (urlField) urlField.value = url;
+        if (commentField) commentField.value = comment;
+        if (tagsField && tags) tagsField.value = tags;
+        if (formatField) {
+          formatField.checked = true;
+          formatField.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        const stat = document.getElementById('importStatus');
+        if (stat) {
+          stat.style.display = 'block';
+          stat.textContent = autostart
+            ? '// AdmiraStudioImporter conectado · iniciando importación…'
+            : '// AdmiraStudioImporter conectado · revisa los datos y pulsa Importar.';
+        }
+        if (autostart) chromeImportButton?.click();
+      }, 0);
+    }
+
+    openChromeImporterHandoff();
   }
 
   // Handoff desde el Consejo (admira.live): ?from=consejo&prompt=…&ar=…&motor=…&autoplay=1
