@@ -30,20 +30,3 @@ YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@csilvasantin"
 binding = "AUTH_DB"
 database_name = "AUTH_DB"
 database_id = "1568f825-4dfb-40a9-ac40-c6776ee62b3e"
-
-# Preview narration authenticates against the public Studio perimeter.
-[env.preview]
-compatibility_flags = ["global_fetch_strictly_public"]
-
-[env.preview.ai]
-binding = "AI"
-
-[env.preview.vars]
-YOUTUBE_CHANNEL_NAME = "Carlos Silva Santin"
-YOUTUBE_CHANNEL_HANDLE = "@csilvasantin"
-YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@csilvasantin"
-
-[[env.preview.d1_databases]]
-binding = "AUTH_DB"
-database_name = "AUTH_DB"
-database_id = "1568f825-4dfb-40a9-ac40-c6776ee62b3e"
