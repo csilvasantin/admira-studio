@@ -1,10 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {executeStockGesture, gestureVideoJob, normalizeGesture} from '../assets/stock-import-render.mjs';
+import {executeStockGesture, gestureVideoJob, normalizeGesture, gestureSourceURL} from '../assets/stock-import-render.mjs';
 
 const item = {id:'youtube-real', type:'video', title:'Imported video', url:'https://stock.example/video.mp4', tags:['capsula','negocio','horizontal']};
 const meta = {w:320,h:240,d:19};
 const request = {gesture:'adapt', sourceLanguage:'en', targetLanguage:'es', subtitles:'none', brand:{mode:'white-label',name:'Starbucks'}, cards:{initial:true,final:true}};
+
+test('encoder uses canonical CORS asset bytes separately from the cached R2 playback URL', () => {
+  assert.equal(gestureSourceURL(item),'https://api.admira.store/stock/asset/youtube-real');
+});
 
 test('adaptation graph changes ratio, brackets the complete body with brand cards, and offsets audio', () => {
   const job = gestureVideoJob(meta, request);
