@@ -12,8 +12,8 @@ function cookie() {
   const body = Buffer.from(JSON.stringify({aud:'admira.studio',email:'agentes@silicio.admiranext.com',iat:now,exp:now+600,agent:sign('agente:'+env.ADMIRA_AGENT_LOGIN_TOKEN).slice(0,22)})).toString('base64url');
   return '__Host-pixeria_session='+body+'.'+sign('px:'+body);
 }
-const request = (body={text:'Hello world',language:'en'},headers={}) => new Request('https://preview.admira-studio.pages.dev/stock-video-voice',{
-  method:'POST',headers:{Cookie:cookie(),Origin:'https://preview.admira-studio.pages.dev','Content-Type':'application/json',...headers},body:JSON.stringify(body)});
+const request = (body={text:'Hello world',language:'en'},headers={}) => new Request('https://admira.studio/stock-video-voice',{
+  method:'POST',headers:{Cookie:cookie(),Origin:'https://admira.studio','Content-Type':'application/json',...headers},body:JSON.stringify(body)});
 
 test('voice relay rejects foreign origins, unauthenticated sessions and oversized text before provider calls', async () => {
   assert.equal((await onRequestPost({request:request({}, {Origin:'https://evil.example'}),env})).status,403);
@@ -47,6 +47,25 @@ test('provider errors and non-audio responses are surfaced without publishing su
     assert.equal(response.status,429);assert.equal((await response.json()).error,'voice-provider-429');
     globalThis.fetch=async()=>Response.json({token:'never-forward-this'});
     response=await onRequestPost({request:request(),env});assert.equal(response.status,502);
+  } finally {globalThis.fetch=previous;}
+});
+
+test('verified preview agent exchanges only at fixed production endpoints, retaining credentials on the server', async () => {
+  const previous=globalThis.fetch,calls=[];
+  globalThis.fetch=async(url,init={})=>{
+    calls.push({url,init});
+    if(url==='https://admira.studio/auth/agente')return Response.json({ok:true},{headers:{'Set-Cookie':'__Host-pixeria_session=production-fixture; Path=/; Secure; HttpOnly'}});
+    if(url==='https://admira.studio/auth/api-token')return Response.json({ok:true,token:'production-api-fixture'});
+    return new Response('audio',{headers:{'Content-Type':'audio/mpeg'}});
+  };
+  try {
+    const req=new Request('https://preview.admira-studio.pages.dev/stock-video-voice',{method:'POST',headers:{Cookie:cookie(),Origin:'https://preview.admira-studio.pages.dev','Content-Type':'application/json'},body:JSON.stringify({text:'Hello',language:'en'})});
+    const response=await onRequestPost({request:req,env});assert.equal(response.status,200);
+    assert.deepEqual(calls.map(c=>c.url),['https://admira.studio/auth/agente','https://admira.studio/auth/api-token','https://api.admira.store/tts']);
+    assert.equal(calls[0].init.headers.Authorization,'Bearer '+env.ADMIRA_AGENT_LOGIN_TOKEN);
+    assert.equal(calls[1].init.headers.Cookie,'__Host-pixeria_session=production-fixture');
+    assert.equal(calls[2].init.headers.Authorization,'Bearer production-api-fixture');
+    assert.equal(await response.text(),'audio');assert.equal(response.headers.get('Set-Cookie'),null);
   } finally {globalThis.fetch=previous;}
 });
 
