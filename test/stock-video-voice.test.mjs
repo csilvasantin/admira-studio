@@ -63,6 +63,7 @@ test('verified preview agent exchanges only at fixed production endpoints, retai
     const response=await onRequestPost({request:req,env});assert.equal(response.status,200);
     assert.deepEqual(calls.map(c=>c.url),['https://admira.studio/auth/agente','https://admira.studio/auth/api-token','https://api.admira.store/tts']);
     assert.equal(calls[0].init.headers.Authorization,'Bearer '+env.ADMIRA_AGENT_LOGIN_TOKEN);
+    assert.equal(calls[0].init.redirect,'manual');assert.equal(calls[1].init.redirect,'manual');
     assert.equal(calls[1].init.headers.Cookie,'__Host-pixeria_session=production-fixture');
     assert.equal(calls[2].init.headers.Authorization,'Bearer production-api-fixture');
     assert.equal(await response.text(),'audio');assert.equal(response.headers.get('Set-Cookie'),null);
