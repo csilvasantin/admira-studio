@@ -24,7 +24,8 @@ export function mountStockImportActions({item, header, detailRoot, stockBase = '
     brand: {mode: saved.brand?.mode === 'white-label' ? 'white-label' : 'admira', name: String(saved.brand?.name || '').slice(0, 80), logo: String(saved.brand?.logo || '').slice(0, 2000)},
     cards: {initial: saved.cards?.initial !== false, final: saved.cards?.final !== false}
   };
-  const targets = {subtitle: state.subtitles === 'translate' ? other(state.sourceLanguage) : state.sourceLanguage, voice: other(state.sourceLanguage), adapt: state.sourceLanguage};
+  const subtitleLanguage = state.subtitles === 'translate' ? other(state.sourceLanguage) : state.sourceLanguage;
+  const targets = {subtitle: subtitleLanguage, voice: other(state.sourceLanguage), adapt: subtitleLanguage};
   const controller = new AbortController(); let destroyed = false, busy = false, resultObjectURL;
   const row = doc.createElement('span'); row.className = 'stock-import-actions'; row.setAttribute('role', 'group'); row.setAttribute('aria-label', t('Acciones del vídeo importado', 'Imported video actions'));
   const actions = [['subtitle', t('Subtitular', 'Subtitle'), t('Añadir subtítulos al vídeo', 'Add subtitles to the video')], ['voice', t('Locutar', 'Dub'), t('Crear una locución en el idioma elegido', 'Create a voiceover in the selected language')], ['adapt', t('Adaptar', 'Adapt'), t('Cambiar horizontal ↔ vertical', 'Switch landscape ↔ portrait')]];
@@ -62,7 +63,11 @@ export function mountStockImportActions({item, header, detailRoot, stockBase = '
     options.querySelector('[data-brand-summary]').textContent = custom ? state.brand.name || t('Tu marca', 'Your brand') : 'Admira';
   }
   updateBrand();
-  function syncSubtitleTarget() { targets.subtitle = state.subtitles === 'translate' ? other(state.sourceLanguage) : state.sourceLanguage; row.querySelector('[data-gesture-language="subtitle"]').value = targets.subtitle; }
+  function syncSubtitleTarget() {
+    targets.subtitle = state.subtitles === 'translate' ? other(state.sourceLanguage) : state.sourceLanguage;
+    row.querySelector('[data-gesture-language="subtitle"]').value = targets.subtitle;
+    if (state.subtitles !== 'none') { targets.adapt = targets.subtitle; row.querySelector('[data-gesture-language="adapt"]').value = targets.adapt; }
+  }
   function say(text) { if (destroyed) return; output.hidden = false; status.textContent = String(text); }
   function setBusy(value) { busy = value; row.querySelectorAll('button,select').forEach(el => { el.disabled = value; }); options.querySelectorAll('input,select').forEach(el => { el.disabled = value; }); row.setAttribute('aria-busy', String(value)); }
   function remember() { save(storage, item.id, state); }
@@ -78,7 +83,7 @@ export function mountStockImportActions({item, header, detailRoot, stockBase = '
   row.addEventListener('change', event => {
     const gesture = event.target.dataset.gestureLanguage; if (!gesture) return;
     targets[gesture] = event.target.value;
-    if (gesture === 'subtitle') { state.subtitles = targets.subtitle === state.sourceLanguage ? 'original' : 'translate'; field('subtitles').value = state.subtitles; remember(); }
+    if (gesture === 'subtitle') { state.subtitles = targets.subtitle === state.sourceLanguage ? 'original' : 'translate'; field('subtitles').value = state.subtitles; syncSubtitleTarget(); remember(); }
     if (gesture === 'adapt' && state.subtitles !== 'none') { state.subtitles = targets.adapt === state.sourceLanguage ? 'original' : 'translate'; field('subtitles').value = state.subtitles; syncSubtitleTarget(); remember(); }
   });
   row.addEventListener('click', async event => {
