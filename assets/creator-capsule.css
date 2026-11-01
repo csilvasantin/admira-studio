@@ -12,3 +12,4 @@
 #cap-status{font-size:13px;line-height:1.5;overflow-wrap:anywhere}
 @media(max-width:600px){.creator-capsule-grid{grid-template-columns:1fr}.creator-capsule-modal{padding:14px}.creator-capsule-open{margin-left:0}}
 .creator-capsule-url h3{margin:.2rem 0 .3rem}.creator-capsule-url p{margin:.2rem 0 .6rem}.creator-capsule-url .capurl-origen{font-size:.85em;opacity:.75;word-break:break-all}.creator-capsule-url hr{margin:1rem 0;border:0;border-top:1px solid rgba(127,127,127,.3)}.creator-capsule-url details summary{cursor:pointer;font-size:.9em}
+.creator-capsule-count{align-self:flex-end;opacity:.6;font-size:11px}.creator-capsule-hint{opacity:.6;font-size:11px!important;margin:4px 0 0}
