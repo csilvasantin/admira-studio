@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- ═══════════════ VERJA DE ACCESO · ADMIRA STUDIO CERRADO HASTA LANZAMIENTO ═══════════════
+       Reutiliza la MISMA verja del ecosistema (admira.live / admiranext.com): auth-gate.js,
+       login con Google + misma whitelist de usuarios (worker admira-whitelist). Verja ACTIVA
+       por defecto. ?gate=off es un escape SOLO para esa carga (no persiste), por si el login
+       falla. Mientras esté cerrado: meta noindex + robots.txt Disallow.
+       PARA REABRIR EL SITIO EL DÍA DEL LANZAMIENTO: borrar TODO este bloque (marcadores
+       GATE-INICIO … GATE-FIN) de cada .html, restaurar robots.public.txt → robots.txt y
+       borrar /auth-gate.js. Ver checklist en el PR de la verja. -->
+  <!-- GATE-INICIO -->
+  <meta name="robots" content="noindex, nofollow">
+  <script>
+  (function(){
+    var GATE_DEFAULT = 'on';                       // verja activa — sitio cerrado
+    var on = GATE_DEFAULT;
+    try{
+      var q = new URLSearchParams(location.search).get('gate');
+      if(q==='on'||q==='off') on = q;              // escape puntual, solo esta carga
+    }catch(e){}
+    if(on!=='on') return;                          // sitio normal SOLO con ?gate=off explícito
+    var s=document.createElement('script'); s.src='/auth-gate.js?v=17.10.2026.r6.2255';
+    (document.head||document.documentElement).appendChild(s);
+    // Si a los 10s el gate sigue bloqueando y no hay sesión, lo más probable es que el
+    // origen aún no esté autorizado en Google → mensaje claro en pantalla.
+    setTimeout(function(){
+      if(!document.documentElement.classList.contains('gate-locked')) return;
+      var el=document.getElementById('admira-err');
+      if(el && !el.textContent) el.textContent='\u2716 SI EL LOGIN NO ABRE: ORIGEN www.admira.studio PENDIENTE DE AUTORIZAR EN GOOGLE CLOUD';
+    }, 10000);
+  })();
+  </script>
+  <!-- GATE-FIN -->
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="admiranext-version" content="v.27.10.2026.r4.21:40">
+  <title>Demos — Admira Studio</title>
+  <meta name="description" content="Vídeos de cada mejora de Admira Studio: qué hace, cómo se usa y dónde probarla.">
+  <meta name="theme-color" content="#020602">
+  <link rel="canonical" href="https://www.admira.studio/demos/">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="/assets/favicon-180.png">
+  <link rel="preconnect" href="https://www.carlossilva.info" crossorigin>
+  <link rel="dns-prefetch" href="https://www.carlossilva.info">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/tokens.css">
+  <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
+  <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
+  <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
+  <link rel="stylesheet" href="/assets/styles.css?v=17.10.2026.r6.2255">
+  <link rel="stylesheet" href="/assets/cuadratura.css?v=27.10.2026.r4.2140">
+  <style>
+    .demos-list{display:grid;gap:28px;margin-top:24px}
+    .demo-card{border:1px solid rgba(0,255,65,.35);border-radius:12px;padding:18px;background:rgba(2,10,4,.85)}
+    .demo-card video{width:100%;max-width:960px;display:block;border-radius:8px;background:#000}
+    .demo-card h2{margin:12px 0 6px;font-size:22px}
+    .demo-card p{margin:4px 0;opacity:.85}
+    .demo-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin-top:8px}
+    .demo-meta a{color:var(--matrix,#00ff41)}
+  </style>
+  <script defer src="/assets/site-nav.js?v=27.10.2026.r4.2140"></script>
+</head>
+<body>
+  <!-- Cuadratura: los paneles entran cerrados en cada carga (sin parpadeo) y se superponen al contenido -->
+  <script>
+  document.body.classList.add('pf-left-off','pf-right-off','pf-bottom-off');
+  </script>
+  <nav class="admira-nav admira-nav-static" aria-label="Admira · Xperience">
+    <a class="admira-nav-brand" href="https://www.admira.app">
+      <span class="admira-nav-brand-name">Admira</span>
+      <span class="admira-nav-brand-tag">Xperience</span>
+    </a>
+    <div class="admira-nav-items">
+      <a class="admira-nav-link admira-nav-link-active" href="https://www.admira.studio">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.studio">Admira Studio</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.xpaceos.com">XpaceOS</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.clearchannel.tv">ClearChannel</a>
+      <a class="admira-nav-link admira-nav-link-external" href="https://www.admira.live">Live</a>
+      <a class="admira-nav-link admira-nav-link-cta" href="https://www.admira.studio/#contact" data-admira-contact>Contacto</a>
+    </div>
+  </nav>
+  <canvas id="matrix-rain" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Admira Studio inicio">
+      <span>Admira Studio</span>
+    </a>
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="/audio.html">Audio</a>
+      <a href="/musica.html">Música</a>
+      <a href="/imagenes.html">Imágenes</a>
+      <a href="/video.html">Video</a>
+      <a href="/tiktok">TikTok</a>
+      <a href="/creador/">Creador</a>
+      <a href="/stock.html">Stock</a>
+    </nav>
+    <div class="header-actions">
+      <div class="language-switcher" aria-label="Selección de idioma">
+        <a class="lang-toggle" href="/en/" aria-label="Cambiar a inglés">ENG</a>
+      </div>
+      <a class="nav-action" href="/#contact" data-admira-contact>Contacto</a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil">
+    <a href="/audio.html">Audio</a>
+    <a href="/musica.html">Música</a>
+    <a href="/imagenes.html">Imágenes</a>
+    <a href="/video.html">Video</a>
+    <a href="/tiktok">TikTok</a>
+    <a href="/creador/">Creador</a>
+    <a href="/avatar.html">Avatar 3D</a>
+    <a href="/stock.html">Stock</a>
+    <div class="mobile-language-switcher" aria-label="Selección de idioma">
+      <a class="lang-toggle" href="/en/" aria-label="Cambiar a inglés">ENG</a>
+    </div>
+    <a class="mobile-cta" href="/#contact" data-admira-contact>Contacto</a>
+  </nav>
+
+  <main id="top">
+    <section class="band" id="demos">
+      <div class="section-head">
+        <p class="eyebrow"><a href="/" style="color:inherit">Admira Studio</a> · Demos</p>
+        <h1>Cada mejora, en vídeo.</h1>
+        <p>Lo nuevo de Admira Studio contado en un minuto: qué hace y dónde probarlo.</p>
+      </div>
+      <div class="demos-list" id="demosList" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Admira Studio</span>
+    <p>Creacion de contenidos con IA, dirigida con criterio humano.</p>
+    <a href="mailto:hola@admiranext.com">hola@admiranext.com</a>
+    <a href="/privacidad.html">Privacidad · analitica sin cookies</a>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    (function () {
+      const toggle = document.querySelector('.nav-toggle');
+      const mobileNav = document.getElementById('mobileNav');
+      if (!toggle || !mobileNav) return;
+      function positionMobileNav() {
+        const headerH = document.querySelector('.site-header')?.offsetHeight || 58;
+        mobileNav.style.top = headerH + 'px';
+      }
+      function setOpen(open) {
+        mobileNav.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.style.overflow = open ? 'hidden' : '';
+        if (open) positionMobileNav();
+      }
+      toggle.addEventListener('click', () => setOpen(!mobileNav.classList.contains('open')));
+      mobileNav.addEventListener('click', (e) => { if (e.target.tagName === 'A') setOpen(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && mobileNav.classList.contains('open')) setOpen(false); });
+      let resizeT;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeT);
+        resizeT = setTimeout(() => { positionMobileNav(); if (window.innerWidth > 860 && mobileNav.classList.contains('open')) setOpen(false); }, 120);
+      });
+      positionMobileNav();
+    })();
+  </script>
+  <script>
+    (function(){
+      const list=document.getElementById('demosList'),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      fetch('/demos/demos.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{
+        list.innerHTML=(d.demos||[]).map(x=>`<article class="demo-card" id="${esc(x.id)}"><video controls preload="metadata" playsinline poster="${esc(x.poster)}" src="${esc(x.video)}"></video><h2>${esc(x.titulo)}</h2><p>${esc(x.resumen)}</p><div class="demo-meta"><span>${esc(new Date(x.fecha+'T12:00:00').toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'}))}</span>${x.probar?`<a href="${esc(x.probar)}">Probar →</a>`:''}${x.pr?`<a href="${esc(x.pr)}" rel="noopener">Cambio</a>`:''}</div></article>`).join('')||'<p>Aún no hay demos.</p>';
+      }).catch(()=>{list.innerHTML='<p>No se pudo cargar la lista de demos.</p>';});
+    })();
+  </script>
+  <script defer src="/assets/matrix-rain.js?v=17.10.2026.r6.2255"></script>
+  <script defer src="/assets/newsletter.js?v=17.10.2026.r6.2255"></script>
+  <script defer src="/assets/cuadratura.js?v=27.10.2026.r4.2140"></script>
+</body>
