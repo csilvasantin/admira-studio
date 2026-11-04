@@ -13,3 +13,12 @@
 @media(max-width:600px){.creator-capsule-grid{grid-template-columns:1fr}.creator-capsule-modal{padding:14px}.creator-capsule-open{margin-left:0}}
 .creator-capsule-url h3{margin:.2rem 0 .3rem}.creator-capsule-url p{margin:.2rem 0 .6rem}.creator-capsule-url .capurl-origen{font-size:.85em;opacity:.75;word-break:break-all}.creator-capsule-url hr{margin:1rem 0;border:0;border-top:1px solid rgba(127,127,127,.3)}.creator-capsule-url details summary{cursor:pointer;font-size:.9em}
 .creator-capsule-count{align-self:flex-end;opacity:.6;font-size:11px}.creator-capsule-hint{opacity:.6;font-size:11px!important;margin:4px 0 0}
+.creator-capsule-grid .creator-capsule-switch{flex-direction:column}.creator-capsule-switch span{display:flex;gap:8px;align-items:center}.creator-capsule-switch input{width:auto!important}.creator-capsule-switch small{opacity:.65;font-size:11px}
+.capurl-pv-h4{margin:14px 0 6px;font-size:13px}.capurl-preview{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.capurl-pv{margin:0;position:relative;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:4px;padding:12px;border:1px solid #227b36;border-radius:8px;background:#020a04 center/cover;color:#eafff0;overflow:hidden;font-size:10px;line-height:1.3}
+.capurl-pv-v{width:150px;aspect-ratio:9/16}.capurl-pv-h{flex:1;min-width:220px;max-width:320px;aspect-ratio:16/9;padding:12px 18px}
+.capurl-pv strong{font-size:13px;color:var(--matrix,#00ff41)}.capurl-pv em{opacity:.8}.capurl-pv-tema{text-transform:uppercase;letter-spacing:.08em;opacity:.6;font-size:8px}.capurl-pv-cifra{font-size:18px;color:#fff}
+.capurl-pv ol{margin:4px 0;padding-left:14px}.capurl-pv li.vacia{opacity:.35}.capurl-pv small{opacity:.65;font-size:8px}.capurl-pv figcaption{position:absolute;right:6px;bottom:4px;font-size:8px;opacity:.5}
+.capurl-avisos{list-style:none;margin:6px 0 0;padding:0;font-size:12px;color:#f5b400}
+.capurl-lote{margin:10px 0}.capurl-lote textarea{box-sizing:border-box;width:100%;margin-top:6px;padding:9px;border:1px solid #227b36;background:#020a04;color:inherit;font:inherit;border-radius:5px}
+.capurl-cola{margin:10px 0 0;padding-left:20px;font-size:12px}.capurl-cola-item{margin:4px 0}.capurl-cola-item.actual{color:var(--matrix,#00ff41)}.capurl-cola-url{overflow-wrap:anywhere}
