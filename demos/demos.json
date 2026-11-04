@@ -1,0 +1,15 @@
+{
+  "_comentario": "Vídeos de demo de cada mejora de admira.studio (regla de Neo, 4-nov-2026: todo lo que se hace lleva vídeo bajo /demos/). Añadir arriba, el más reciente primero.",
+  "demos": [
+    {
+      "id": "creador-capsulas-20261104",
+      "fecha": "2026-11-04",
+      "titulo": "Creador de cápsulas: vista previa, bilingüe y lote",
+      "resumen": "Vista previa 9:16 y 16:9 de la cartela antes del render v5, cápsula bilingüe con IA en un clic y lote de hasta 10 URLs con cola.",
+      "video": "/assets/demos/creador-capsulas/creador-capsulas-20261104.mp4",
+      "poster": "/assets/demos/creador-capsulas/creador-capsulas-20261104.jpg",
+      "pr": "https://github.com/csilvasantin/admira-studio/pull/149",
+      "probar": "/creador/?capsula=new"
+    }
+  ]
+}
