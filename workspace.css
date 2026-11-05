@@ -2812,7 +2812,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   width: 220px;
   aspect-ratio: 16 / 9;
 }
-.stock-grid.view-list .stock-card-body { flex: 1 1 auto; padding: 8px 14px; }
+.stock-grid.view-list .stock-card-body { flex: 1 1 auto; padding: 8px 14px; align-content: start; }
 .stock-grid.view-list .stock-prompt { max-height: 3em; }
 @media (max-width: 560px) {
   .stock-grid.view-list .stock-card-media { flex-basis: 130px; width: 130px; }

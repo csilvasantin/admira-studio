@@ -2,6 +2,15 @@
   "_comentario": "Vídeos de demo de cada mejora de admira.studio (regla de Neo, 4-nov-2026: todo lo que se hace lleva vídeo bajo /demos/). Añadir arriba, el más reciente primero.",
   "demos": [
     {
+      "id": "stock-verticales-20261105",
+      "fecha": "2026-11-05",
+      "titulo": "Stock: vídeos verticales sin bandas negras",
+      "resumen": "La miniatura de cada vídeo vertical o cuadrado toma su proporción real (9:16, 3:4, 1:1) en lista y rejilla, en vez de una caja 16:9 con franjas negras.",
+      "video": "/assets/demos/stock-verticales/stock-verticales-20261105.mp4",
+      "poster": "/assets/demos/stock-verticales/stock-verticales-20261105.jpg",
+      "pr": "https://github.com/csilvasantin/admira-studio/pulls?q=head%3Aclaude%2Fproject-thread-mogpl6"
+    },
+    {
       "id": "creador-capsulas-20261104",
       "fecha": "2026-11-04",
       "titulo": "Creador de cápsulas: vista previa, bilingüe y lote",
