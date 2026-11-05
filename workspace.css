@@ -2331,9 +2331,14 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
    estirar la fila), no la 16/10 de las horizontales. Así el póster 9:16 ocupa
    toda la caja en vez de verse como una tira pequeña con bandas laterales.
    La vista lista conserva su caja fija de miniatura. */
-.stock-grid:not(.view-list) .stock-card[data-orientation="portrait"] .stock-card-media {
-  aspect-ratio: 9 / 16;
+.stock-grid:not(.view-list) .stock-card[data-orientation="portrait"] .stock-card-media,
+.stock-grid:not(.view-list) .stock-card[data-orientation="square"] .stock-card-media {
+  aspect-ratio: var(--media-ar, 9 / 16);
   max-height: 440px;
+  /* Ancho = alto máximo × proporción real: con el tope de alto la caja ya no
+     queda más ancha que el vídeo (sin bandas negras a los lados). */
+  width: min(100%, calc(440px * var(--media-ar, .5625)));
+  margin-inline: auto;
 }
 /* Causa raíz del "recorte horizontal": la caja .stock-card-media solo tiene
    alto por aspect-ratio (no es un alto definido), así que el height:100% del <img>
@@ -2807,7 +2812,7 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   width: 220px;
   aspect-ratio: 16 / 9;
 }
-.stock-grid.view-list .stock-card-body { flex: 1 1 auto; padding: 8px 14px; }
+.stock-grid.view-list .stock-card-body { flex: 1 1 auto; padding: 8px 14px; align-content: start; }
 .stock-grid.view-list .stock-prompt { max-height: 3em; }
 @media (max-width: 560px) {
   .stock-grid.view-list .stock-card-media { flex-basis: 130px; width: 130px; }
@@ -2831,6 +2836,30 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   .stock-grid.view-list .stock-card[data-type="video"] .stock-card-media,
   .stock-grid.view-list .stock-card[data-type="animation"] .stock-card-media {
     flex-basis: auto; width: 100%;
+  }
+}
+
+/* Lista · vertical/cuadrado: la miniatura toma la proporción REAL del medio
+   (--media-ar = ancho/alto, lo pone stock.html) a alto fijo. Antes era una
+   caja 16:9 de 220px con el póster vertical en contain → bandas negras. */
+.stock-grid.view-list .stock-card:is([data-orientation="portrait"],[data-orientation="square"]) .stock-card-media {
+  flex: 0 0 auto;
+  height: 200px;
+  width: auto;
+  aspect-ratio: var(--media-ar, 9 / 16);
+  max-width: 220px;
+}
+.stock-grid.view-list .stock-card:is([data-orientation="portrait"],[data-orientation="square"]) .stock-card-media :is(img, video) {
+  object-fit: cover;
+}
+@media (max-width: 560px) {
+  .stock-grid.view-list .stock-card:is([data-orientation="portrait"],[data-orientation="square"]) .stock-card-media { height: 150px; max-width: 150px; }
+}
+@media (max-width: 480px) {
+  .stock-grid.view-list .stock-card:is([data-orientation="portrait"],[data-orientation="square"]) .stock-card-media {
+    height: auto; max-width: 100%;
+    width: min(100%, calc(360px * var(--media-ar, .5625)));
+    align-self: center;
   }
 }
 

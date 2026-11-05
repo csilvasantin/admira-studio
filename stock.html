@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="https://www.carlossilva.info/admira-design/nav.css">
   <link rel="preload" as="style" href="https://www.carlossilva.info/admira-design/contact-panel.css" onload="this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://www.carlossilva.info/admira-design/contact-panel.css"></noscript>
   <script defer src="https://www.carlossilva.info/admira-design/contact-panel.js"></script>
-  <link rel="stylesheet" href="workspace.css?v=stock-process-dock-20261024-1">
+  <link rel="stylesheet" href="workspace.css?v=stock-media-ar-20261105-1">
   <style>
     /* Contador de elementos en stock (en el título), con flash al crecer */
     .stock-count{ font-variant-numeric:tabular-nums; display:inline-block; }
@@ -1023,6 +1023,10 @@
     // Una cápsula es texto que viene del índice, así que se escapa aquí antes de pintarla.
     function escText(s){ return String(s||'').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
 
+    // Proporción real del medio (ancho/alto) como variable CSS: la caja de la
+    // miniatura vertical/cuadrada se ajusta a ella y desaparecen las bandas negras.
+    function mediaAr(it){const d=StockFormats.dimensions(it);return d?Math.round(d.width/d.height*1e4)/1e4:0;}
+    function mediaArStyle(it){const r=mediaAr(it);return r?` style="--media-ar:${r}"`:'';}
     function setMediaOrientation(media, width, height) {
       if (!media || !(width > 0) || !(height > 0)) return;
       const card = media.closest('.stock-card');
@@ -1031,6 +1035,7 @@
       if (it) { it._mediaWidth = width; it._mediaHeight = height; }
       const o = mediaOrientation(it);
       card.dataset.orientation = o.key;
+      const ar=mediaAr(it);if(ar)card.style.setProperty('--media-ar',ar);
       const badge=card.querySelector('[data-role="orientation"]');if(badge)badge.outerHTML=orientationBadgeHtml(it);
       refreshFormatOptions();
       if(filters.format&&filters.format!==o.key)setTimeout(()=>applyFilters(false),0);
@@ -1345,7 +1350,7 @@
         : '';
       const tagsBlock = renderTagsHtml(it.tags, it.id);
       const selected = DIST.isSelected(it.id) ? ' is-selected' : '';
-      return `<article class="stock-card${selected}" data-type="${typeLabel}" data-motor="${it.motor}" data-id="${idAttr}" tabindex="0" role="button" aria-label="Maximizar ${typeLabel}">
+      return `<article class="stock-card${selected}" data-type="${typeLabel}" data-motor="${it.motor}" data-id="${idAttr}"${mediaArStyle(it)} tabindex="0" role="button" aria-label="Maximizar ${typeLabel}">
         <button type="button" class="stock-select" data-act="select" title="Seleccionar para distribuir en lote" aria-label="Seleccionar asset" aria-pressed="${DIST.isSelected(it.id) ? 'true' : 'false'}"><span aria-hidden="true">${DIST.isSelected(it.id) ? '✓' : '+'}</span></button>
         <div class="stock-card-media">
           ${renderPreview(it)}
