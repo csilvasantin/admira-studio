@@ -2844,6 +2844,39 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   }
 }
 
+/* Lista: la miniatura de vídeo ocupa TODA la altura de la fila (Neo, 5-nov-2026:
+   nada de hueco negro bajo la miniatura cuando la ficha es más alta). Ancho fijo
+   igual para todas; la pieza va entera (contain) sobre su póster desenfocado. */
+.stock-grid.view-list .stock-card:is([data-type="video"],[data-type="animation"]) .stock-card-media {
+  align-self: stretch;
+  aspect-ratio: auto;
+  height: auto;
+  min-height: 124px;
+}
+.stock-grid.view-list .stock-card:is([data-type="video"],[data-type="animation"]) .stock-card-media::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  background: var(--poster, none) center / cover no-repeat;
+  filter: blur(18px) brightness(.55) saturate(1.2);
+  z-index: 0;
+  pointer-events: none;
+}
+.stock-grid.view-list .stock-card:is([data-type="video"],[data-type="animation"]) .stock-card-media > :is(img, video) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 1;
+  background: transparent !important;
+}
+@media (max-width: 480px) {
+  .stock-grid.view-list .stock-card:is([data-type="video"],[data-type="animation"]) .stock-card-media {
+    align-self: auto; aspect-ratio: 16 / 9; min-height: 0;
+  }
+}
+
 /* ── Lightbox: maximizar un asset ── */
 .stock-lightbox {
   position: fixed; inset: 0; z-index: 1500;

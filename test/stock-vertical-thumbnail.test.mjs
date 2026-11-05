@@ -25,3 +25,5 @@ assert.doesNotMatch(html, /v\.style\.cssText = '[^']*object-fit:cover/);
 assert.match(css, /\.stock-grid\s*\{[^}]*align-items:\s*start/);
 assert.match(css, /\.stock-group-grid\s*\{[^}]*align-items:\s*start/);
 console.log('stock-vertical-thumbnail ok');
+// Lista: la miniatura de vídeo ocupa toda la altura de la fila (sin hueco negro debajo).
+assert.match(css, /\.stock-grid\.view-list \.stock-card:is\(\[data-type="video"\],\[data-type="animation"\]\) \.stock-card-media\s*\{[^}]*align-self:\s*stretch/);
