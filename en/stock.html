@@ -1025,7 +1025,9 @@
     // Proporción real del medio (ancho/alto) como variable CSS: la caja de la
     // miniatura vertical/cuadrada se ajusta a ella y desaparecen las bandas negras.
     function mediaAr(it){const d=StockFormats.dimensions(it);return d?Math.round(d.width/d.height*1e4)/1e4:0;}
-    function mediaArStyle(it){const r=mediaAr(it);return r?` style="--media-ar:${r}"`:'';}
+    function posterUrl(it){if(it.type==='video'||it.type==='animation'){const p=[it.poster,it.thumbnail].find(u=>/^https?:\/\//.test(String(u||'')));return p||'';}return (it.type==='image'||it.type==='digital-twin')?(it.thumbnail||it.url||''):'';}
+    // --poster: fondo desenfocado que rellena la caja fija de las piezas verticales/cuadradas.
+    function mediaArStyle(it){const r=mediaAr(it),p=posterUrl(it),v=[r?`--media-ar:${r}`:'',p?`--poster:url('${String(p).replace(/['"\\()\s]/g,c=>encodeURIComponent(c))}')`:''].filter(Boolean).join(';');return v?` style="${v}"`:'';}
     function setMediaOrientation(media, width, height) {
       if (!media || !(width > 0) || !(height > 0)) return;
       const card = media.closest('.stock-card');
