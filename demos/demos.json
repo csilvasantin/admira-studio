@@ -5,7 +5,7 @@
       "id": "stock-verticales-20261105",
       "fecha": "2026-11-05",
       "titulo": "Stock: vídeos verticales sin bandas negras",
-      "resumen": "La miniatura de cada vídeo vertical o cuadrado toma su proporción real (9:16, 3:4, 1:1) en lista y rejilla, en vez de una caja 16:9 con franjas negras.",
+      "resumen": "Todas las miniaturas del Stock miden lo mismo; los vídeos verticales y cuadrados se ven enteros sobre su propio póster desenfocado, sin franjas negras.",
       "video": "/assets/demos/stock-verticales/stock-verticales-20261105.mp4",
       "poster": "/assets/demos/stock-verticales/stock-verticales-20261105.jpg",
       "pr": "https://github.com/csilvasantin/admira-studio/pulls?q=head%3Aclaude%2Fproject-thread-mogpl6"

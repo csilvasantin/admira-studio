@@ -2327,18 +2327,23 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
     linear-gradient(90deg, rgba(0,255,65,.05), transparent 22%, transparent 78%, rgba(0,255,65,.05)),
     #020602;
 }
-/* Rejilla: la caja de una pieza vertical es 9:16 (con tope de alto para no
-   estirar la fila), no la 16/10 de las horizontales. Así el póster 9:16 ocupa
-   toda la caja en vez de verse como una tira pequeña con bandas laterales.
-   La vista lista conserva su caja fija de miniatura. */
-.stock-grid:not(.view-list) .stock-card[data-orientation="portrait"] .stock-card-media,
-.stock-grid:not(.view-list) .stock-card[data-orientation="square"] .stock-card-media {
-  aspect-ratio: var(--media-ar, 9 / 16);
-  max-height: 440px;
-  /* Ancho = alto máximo × proporción real: con el tope de alto la caja ya no
-     queda más ancha que el vídeo (sin bandas negras a los lados). */
-  width: min(100%, calc(440px * var(--media-ar, .5625)));
-  margin-inline: auto;
+/* Todas las miniaturas miden lo mismo (caja 16/10 en rejilla, 16:9 en lista),
+   también las verticales y cuadradas (Neo, 5-nov-2026). Para que no queden bandas
+   negras, el hueco lo rellena el propio póster desenfocado (--poster, lo pone
+   stock.html en la tarjeta) y encima va la pieza entera en contain. */
+.stock-card:is([data-orientation="portrait"],[data-orientation="square"]) .stock-card-media::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  background: var(--poster, none) center / cover no-repeat;
+  filter: blur(18px) brightness(.55) saturate(1.2);
+  z-index: 0;
+  pointer-events: none;
+}
+.stock-card:is([data-orientation="portrait"],[data-orientation="square"]) .stock-card-media > :is(img, video) {
+  z-index: 1;
+  /* el póster trae background:#0a0f14 en línea y taparía el relleno */
+  background: transparent !important;
 }
 /* Causa raíz del "recorte horizontal": la caja .stock-card-media solo tiene
    alto por aspect-ratio (no es un alto definido), así que el height:100% del <img>
@@ -2836,30 +2841,6 @@ body[data-page="stock"] .primary-nav a[data-nav="stock"] {
   .stock-grid.view-list .stock-card[data-type="video"] .stock-card-media,
   .stock-grid.view-list .stock-card[data-type="animation"] .stock-card-media {
     flex-basis: auto; width: 100%;
-  }
-}
-
-/* Lista · vertical/cuadrado: la miniatura toma la proporción REAL del medio
-   (--media-ar = ancho/alto, lo pone stock.html) a alto fijo. Antes era una
-   caja 16:9 de 220px con el póster vertical en contain → bandas negras. */
-.stock-grid.view-list .stock-card:is([data-orientation="portrait"],[data-orientation="square"]) .stock-card-media {
-  flex: 0 0 auto;
-  height: 200px;
-  width: auto;
-  aspect-ratio: var(--media-ar, 9 / 16);
-  max-width: 220px;
-}
-.stock-grid.view-list .stock-card:is([data-orientation="portrait"],[data-orientation="square"]) .stock-card-media :is(img, video) {
-  object-fit: cover;
-}
-@media (max-width: 560px) {
-  .stock-grid.view-list .stock-card:is([data-orientation="portrait"],[data-orientation="square"]) .stock-card-media { height: 150px; max-width: 150px; }
-}
-@media (max-width: 480px) {
-  .stock-grid.view-list .stock-card:is([data-orientation="portrait"],[data-orientation="square"]) .stock-card-media {
-    height: auto; max-width: 100%;
-    width: min(100%, calc(360px * var(--media-ar, .5625)));
-    align-self: center;
   }
 }
 
