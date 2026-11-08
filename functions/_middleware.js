@@ -1,4 +1,4 @@
-import {handleAuth, hasSession, safeReturnTo} from './_auth.js';
+import {handleAuth, hasSession, safeReturnTo, sessionInfo} from './_auth.js';
 import {withAvatar} from './_avatar-loader.js';
 import {withPresence} from './_live-presence.js';
 
@@ -12,6 +12,9 @@ const PUBLIC_EXTENSION_DOCUMENTS = new Set([
 // El avatar digital se añade a las páginas que ya pasaron la verja (encargo avatar · 4-oct-2026).
 export async function onRequest(context) {
   const url = new URL(context.request.url);
+  if (/^\/demo\/hawkins(?:\/|$)/i.test(decodePath(url.pathname).replace(/\/{2,}/g, '/'))) {
+    return hawkinsDemo(context, url);
+  }
   // A moved public address redirects before Studio login; the destination keeps its own perimeter.
   const movedAssets = new Map([
     ['/crear','/assets/'],['/crear/','/assets/'],['/crear/index.html','/assets/'],
@@ -29,6 +32,33 @@ export async function onRequest(context) {
   }
   const response = await guardedRequest(context);
   return withPresence(withAvatar(response, url));
+}
+
+function decodePath(pathname) {
+  try { return decodeURIComponent(pathname); }
+  catch { return pathname; }
+}
+
+async function hawkinsDemo(context, url) {
+  const headers = {
+    'cache-control':'private, no-store',
+    'x-robots-tag':'noindex, nofollow',
+    'referrer-policy':'no-referrer'
+  };
+  const session = await sessionInfo(context.request, context.env);
+  if (!session) {
+    const returnTo = safeReturnTo(url.pathname + url.search);
+    return new Response(null, {status:302, headers:{
+      ...headers, location:`/auth/login?return_to=${encodeURIComponent(returnTo)}`
+    }});
+  }
+  if (session.agent || !['csilva@admira.com', 'csilvasantin@gmail.com'].includes(session.email)) {
+    return new Response(null, {status:403, headers});
+  }
+  const asset = await context.next();
+  const response = new Response(asset.body, asset);
+  for (const [key, value] of Object.entries(headers)) response.headers.set(key, value);
+  return response;
 }
 
 async function guardedRequest(context) {
