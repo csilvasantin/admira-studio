@@ -1,0 +1,91 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Stranger Things · Planta 2D</title>
+<style>
+:root{color-scheme:dark;--foreground:#f7f1e7;--background:#100c12;--muted:#251d2b;--muted-foreground:#c7b9cc;--border:#6e5b70;--accent:#26384e;--blue:#9bd1ff}
+body{margin:0;background:var(--background);color:var(--foreground);font:16px/1.45 system-ui,sans-serif}
+main{max-width:920px;margin:auto;padding:22px clamp(14px,4vw,50px)}
+h1{font-size:clamp(1.6rem,5vw,2.7rem);letter-spacing:-.04em}
+.text-muted,.text-small{color:var(--muted-foreground)}
+.text-small{font-size:.875rem}
+.btn{border:1px solid var(--border);background:var(--muted);color:inherit;border-radius:6px;padding:7px 9px;font:inherit;font-size:.89rem;min-height:36px}
+.btn[aria-pressed=true]{background:var(--accent);border-color:var(--blue)}
+footer{border-top:1px solid var(--border);padding-top:10px;margin-top:12px;color:var(--muted-foreground)}
+</style></head><body><main><section id="hawkins-planta">
+<style>
+#hawkins-planta{display:grid;gap:12px;color:var(--foreground);font-family:system-ui,sans-serif}
+#hawkins-planta header,#hawkins-planta p{margin:0}
+#hawkins-planta h1{margin:0 0 4px}
+#hawkins-planta .plan{width:100%;display:block;max-height:590px}
+#hawkins-planta .room{stroke:var(--border);stroke-width:2;fill:var(--muted)}
+#hawkins-planta .fixture{stroke:var(--muted-foreground);fill:none;opacity:.55;stroke-width:1.5}
+#hawkins-planta .edge{stroke:var(--foreground);stroke-width:3;fill:none}
+#hawkins-planta .uncertain{stroke:var(--muted-foreground);stroke-width:2.5;stroke-dasharray:7 5;fill:none}
+#hawkins-planta .num{fill:var(--foreground);font-size:26px;text-anchor:middle;dominant-baseline:central;font-weight:500}
+#hawkins-planta .active .room{stroke:var(--blue);stroke-width:3;fill:var(--accent)}
+#hawkins-planta .zones{display:flex;flex-wrap:wrap;gap:5px}
+#hawkins-planta .legend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted-foreground)}
+#hawkins-planta .legend span{display:inline-flex;align-items:center;gap:6px}
+#hawkins-planta .legend i{width:21px;border-top:2px solid var(--foreground)}
+#hawkins-planta .legend .dash{border-top:2px dashed var(--muted-foreground)}
+#hawkins-planta .detail{min-height:3.2em}
+#hawkins-planta a{color:var(--foreground)}
+</style>
+<header><h1>Stranger Things · Planta 2D</h1><p class="text-muted">Showcase Mall, Las Vegas · V0.1 · sin escala ni orientación verificada</p></header>
+<svg class="plan" viewBox="0 0 630 500" role="img" aria-labelledby="hawkins-map-title hawkins-map-desc">
+<title id="hawkins-map-title">Planta esquemática de la tienda Stranger Things en Las Vegas</title>
+<desc id="hawkins-map-desc">El acceso conecta con el vestíbulo, el pasillo rojo y Byers. Starcourt conecta con Arcade, Hawkins High y Creel. La conexión entre el portal de Creel y la cámara del Demogorgon está pendiente de confirmar. Las formas representan espacios esquemáticos.</desc>
+<g data-room="6"><rect class="room" x="236" y="12" width="159" height="102"/><path class="fixture" d="M250 29h131m-119 0v16h20V29m14 0v16h20V29m14 0v16h20V29"/><text class="num" x="316" y="75">06</text></g>
+<g data-room="7"><rect class="room" x="433" y="12" width="177" height="102"/><path class="fixture" d="M449 26h145v18H449zM576 63h19v35h-19z"/><text class="num" x="520" y="76">07</text></g>
+<g data-room="4"><rect class="room" x="20" y="156" width="179" height="148"/><path class="fixture" d="M41 174h99v22H41zM46 213h37v24H46zM153 171h29v91h-29z"/><text class="num" x="106" y="264">04</text></g>
+<g data-room="5"><rect class="room" x="236" y="156" width="159" height="148"/><path class="fixture" d="M250 171h130v15H250zM254 256h34v30h-34zM345 256h34v30h-34z"/><text class="num" x="315" y="224">05</text></g>
+<g data-room="8"><rect class="room" x="433" y="156" width="177" height="148"/><path class="fixture" d="M452 173h140v17H452zM452 276h139v13H452z"/><text class="num" x="518" y="220">08</text><path class="fixture" d="M503 266l15-16 15 16"/><text class="num" x="518" y="274">09</text></g>
+<g data-room="3"><rect class="room" x="60" y="339" width="95" height="65"/><path class="fixture" d="M75 352v38m64-38v38"/><text class="num" x="108" y="373">03</text></g>
+<g data-room="2"><rect class="room" x="192" y="339" width="203" height="91"/><path class="fixture" d="M211 354h165m-23 21h23v38h-23z"/><text class="num" x="296" y="388">02</text></g>
+<g data-room="10"><rect class="room" x="433" y="354" width="177" height="76" stroke-dasharray="6 4"/><text class="num" x="520" y="391">10</text></g>
+<g data-room="1" class="active"><rect class="room" x="219" y="453" width="148" height="43"/><path class="fixture" d="M234 463h33m-33 6h33m-33 6h33m-33 6h33m-33 6h33"/><text class="num" x="305" y="475">01</text></g>
+<path class="edge" d="M292 453v-23 M192 373h-37 M108 339v-35 M199 229h37 M316 156v-42 M395 201h19V64h19 M395 235h38"/>
+<path class="uncertain" d="M519 304v50"/>
+</svg>
+<div class="legend text-small"><span><i></i> Paso visible</span><span><i class="dash"></i> Continuidad por confirmar</span></div>
+<div class="zones" role="group" aria-label="Zonas de la planta">
+<button class="btn" type="button" data-zone="1" aria-pressed="true">01 Escalera</button>
+<button class="btn" type="button" data-zone="2" aria-pressed="false">02 Vestíbulo</button>
+<button class="btn" type="button" data-zone="3" aria-pressed="false">03 Pasillo rojo</button>
+<button class="btn" type="button" data-zone="4" aria-pressed="false">04 Byers</button>
+<button class="btn" type="button" data-zone="5" aria-pressed="false">05 Starcourt</button>
+<button class="btn" type="button" data-zone="6" aria-pressed="false">06 Palace Arcade</button>
+<button class="btn" type="button" data-zone="7" aria-pressed="false">07 Hawkins High</button>
+<button class="btn" type="button" data-zone="8" aria-pressed="false">08 Creel / Vecna</button>
+<button class="btn" type="button" data-zone="9" aria-pressed="false">09 Portal</button>
+<button class="btn" type="button" data-zone="10" aria-pressed="false">10 Demogorgon</button>
+</div>
+<p class="detail" aria-live="polite"><span data-detail>Escalera mecánica de bajada hacia el vestíbulo.</span> <a data-video href="https://www.youtube.com/watch?v=qHUrZksvstM&amp;t=54s" target="_blank" rel="noopener noreferrer">Vídeo · 0:54</a></p>
+</section>
+<script>
+{
+ const root=document.getElementById('hawkins-planta');
+ const evidence=[
+  [54,'0:54','Escalera mecánica de bajada hacia el vestíbulo.'],
+  [63,'1:03','Llegada con cartel de Hawkins, figura de Eleven y, en otro lado, un Demogorgon con bicicletas.'],
+  [95,'1:35','Pasillo de neón rojo. El recorrido muestra su desembocadura en Byers.'],
+  [101,'1:41','Salón Byers, con sofá, pared del alfabeto y estanterías. Desde Starcourt se ve el acceso de vuelta.'],
+  [178,'2:58','Zona comercial con rótulo Starcourt. El giro hacia Byers se ve entre 2:58 y 3:04.'],
+  [145,'2:25','El arco de colores da paso desde la zona comercial a las recreativas.'],
+  [195,'3:15','Un arco distinto lleva a las vitrinas verdes y a los expositores de Hawkins High.'],
+  [214,'3:34','Paso desde la zona comercial a la sala revestida de madera, con Vecna, guitarras y merchandising.'],
+  [226,'3:46','La abertura roja se ve en el revestimiento de madera. Su paso a la cámara siguiente queda sin confirmar.'],
+  [234,'3:54','El montaje muestra un Demogorgon bajo luz roja. Quedan por confirmar la conexión y la forma de la sala.']
+ ];
+ const buttons=[...root.querySelectorAll('[data-zone]')];
+ for(const button of buttons)button.addEventListener('click',()=>{
+  const id=Number(button.dataset.zone);
+  const [seconds,label,detail]=evidence[id-1];
+  for(const other of buttons)other.setAttribute('aria-pressed',String(other===button));
+  for(const room of root.querySelectorAll('[data-room]'))room.classList.toggle('active',Number(room.dataset.room)===(id===9?8:id));
+  root.querySelector('[data-detail]').textContent=detail;
+  const video=root.querySelector('[data-video]');
+  video.href='https://www.youtube.com/watch?v=qHUrZksvstM&t='+seconds+'s';
+  video.textContent='Vídeo · '+label;
+ });
+}
+</script>
+<footer>Contornos y mobiliario orientativos. Pendientes de levantar cotas, perímetro, caja y salidas. <a href="/demo/hawkins/" style="color:inherit">Volver a la demo de Hawkins</a></footer></main></body></html>
