@@ -8,6 +8,12 @@ h1{font-size:clamp(1.6rem,5vw,2.7rem);letter-spacing:-.04em}
 .text-small{font-size:.875rem}
 .btn{border:1px solid var(--border);background:var(--muted);color:inherit;border-radius:6px;padding:7px 9px;font:inherit;font-size:.89rem;min-height:36px}
 .btn[aria-pressed=true]{background:var(--accent);border-color:var(--blue)}
+#hawkins-stage{height:clamp(360px,62vw,590px);background:#110f1b;border:1px solid #44394f;border-radius:12px;overflow:hidden}
+#hawkins-stage canvas{display:block;width:100%;height:100%;touch-action:none}
+#hawkins-controls{margin:8px 0}
+#hawkins-planta nav a{padding:4px 10px;border-bottom:2px solid transparent}
+#hawkins-planta nav a[aria-current]{border-bottom-color:var(--blue)}
+#hawkins-planta .plan[hidden]{display:none}
 footer{border-top:1px solid var(--border);padding-top:10px;margin-top:12px;color:var(--muted-foreground)}
 </style></head><body><main><section id="hawkins-planta">
 <style>
@@ -30,6 +36,22 @@ footer{border-top:1px solid var(--border);padding-top:10px;margin-top:12px;color
 #hawkins-planta a{color:var(--foreground)}
 </style>
 <header><h1>Stranger Things · Planta 2D</h1><p class="text-muted">Showcase Mall, Las Vegas · V0.2 · sin escala ni orientación verificada</p></header>
+<nav class="zones" aria-label="Vista del gemelo">
+  <a href="?vista=2d" id="view2d" aria-current="page">Planta 2D</a>
+  <a href="?vista=3d" id="view3d">Maqueta 3D</a>
+</nav>
+<section id="hawkins-model" hidden aria-label="Maqueta 3D">
+  <div id="hawkins-stage"></div>
+  <div class="zones" id="hawkins-controls" role="group" aria-label="Cámara 3D">
+    <button class="btn" type="button" data-camera="left">Girar izquierda</button>
+    <button class="btn" type="button" data-camera="right">Girar derecha</button>
+    <button class="btn" type="button" data-camera="in">Acercar</button>
+    <button class="btn" type="button" data-camera="out">Alejar</button>
+    <button class="btn" type="button" data-camera="reset">Vista general</button>
+  </div>
+  <p class="text-small">Arrastra para girar. Las alturas y el mobiliario son aproximados.</p>
+</section>
+<p id="hawkins-model-status" role="status" hidden></p>
 <svg class="plan" viewBox="0 0 630 500" role="img" aria-labelledby="hawkins-map-title hawkins-map-desc">
 <title id="hawkins-map-title">Planta esquemática de la tienda Stranger Things en Las Vegas</title>
 <desc id="hawkins-map-desc">Las flechas muestran el sentido de avance de la cámara. Se ve el acceso de Starcourt a Byers y los umbrales de la zona comercial hacia Arcade, Hawkins High y Creel. La cámara del Demogorgon aparece tras el portal, pero el montaje no permite confirmar el paso físico. Las formas son esquemáticas.</desc>
@@ -94,7 +116,29 @@ footer{border-top:1px solid var(--border);padding-top:10px;margin-top:12px;color
   const video=root.querySelector('[data-video]');
   video.href='https://www.youtube.com/watch?v=qHUrZksvstM&t='+seconds+'s';
   video.textContent='Vídeo · '+label;
+  root.dispatchEvent(new CustomEvent('hawkins-zone',{detail:id}));
  });
+}
+</script>
+<script type="module">
+if(new URLSearchParams(location.search).get('vista')==='3d'){
+ const root=document.getElementById('hawkins-planta');
+ const panel=document.getElementById('hawkins-model');
+ const status=document.getElementById('hawkins-model-status');
+ try{
+  const {mountModel}=await import('./maqueta-3d.js');
+  panel.hidden=false;
+  mountModel(root);
+  root.querySelector('h1').textContent='Stranger Things · Maqueta 3D';
+  document.title='Stranger Things · Maqueta 3D';
+  root.querySelector('.plan').setAttribute('hidden','');
+  document.getElementById('view2d').removeAttribute('aria-current');
+  document.getElementById('view3d').setAttribute('aria-current','page');
+ }catch(error){
+  panel.hidden=true;
+  status.hidden=false;
+  status.textContent='La maqueta necesita WebGL. Puedes consultar la planta 2D en este navegador.';
+ }
 }
 </script>
 <footer>Las flechas siguen la cámara. Su posición en la planta es esquemática. Pendientes de levantar cotas, perímetro, caja y salidas. <a href="/demo/hawkins/" style="color:inherit">Volver a la demo de Hawkins</a></footer></main></body></html>
