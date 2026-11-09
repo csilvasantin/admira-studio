@@ -2,6 +2,15 @@
   "_comentario": "Vídeos de demo de cada mejora de admira.studio (regla de Neo, 4-nov-2026: todo lo que se hace lleva vídeo bajo /demos/). Añadir arriba, el más reciente primero.",
   "demos": [
     {
+      "id": "vozcontenido-20261109",
+      "fecha": "2026-11-09",
+      "titulo": "VozContenido / Voice Content: voz IA sobre vídeos del Stock",
+      "resumen": "Junto a «＋ Nueva campaña»: eliges un vídeo del Stock, escribes o dictas el mensaje, Admira genera la voz, graba el vídeo con voz y lo guarda en el Stock con la etiqueta storeos para que aparezca en storeos.com.",
+      "video": "/assets/demos/vozcontenido/vozcontenido-20261109.mp4",
+      "poster": "/assets/demos/vozcontenido/vozcontenido-20261109.jpg",
+      "pr": "https://github.com/csilvasantin/admira-studio/pull/156"
+    },
+    {
       "id": "muro-planeta7-20261109",
       "fecha": "2026-11-09",
       "titulo": "Muro del Planeta 7 en la nube: SINCRO, EXTENDIDO y STOP",
