@@ -159,14 +159,14 @@ export function mountModel(root, tour = false) {
       {time:0,id:1,name:'Escalera · 0:54'},
       {time:5,id:2,name:'Vestíbulo · 1:09'},
       {time:10,id:3,name:'Pasillo rojo · 1:36'},
-      {time:15,id:4,name:'Salón Byers · 1:41'}
+      {time:15,id:4,name:'Salón Byers · 1:44'}
     ];
     // Each pose contains time, eye X/Z/height, and a point ahead on the filmed route.
     const poses=[
       [0,292,489,2.15,292,432],[3,292,455,1.65,292,399],
       [5,292,412,1.48,272,342],[6.5,282,391,1.48,348,343],
       [8,244,374,1.48,172,373],[9.2,145,373,1.48,91,368],
-      [10,108,369,1.48,108,309],[13,108,327,1.48,108,284],[15,108,288,1.48,101,187],[18,104,254,1.48,97,177]
+      [10,108,369,1.48,108,309],[13,108,327,1.48,108,284],[15,108,288,1.48,102,184],[18,118,261,1.52,100,173]
     ];
     const end=poses.at(-1)[0];
     let time=0, frame=0, last=0, chapter=-1, syncing=false;
@@ -216,7 +216,7 @@ export function mountModel(root, tour = false) {
       const stop=chapters.find(item=>item.id===id);
       if(stop){pause();setTime(stop.time);}
     });
-    setTime(0);
+    setTime(new URLSearchParams(location.search).get('parada')==='byers'?end:0);
   }
   if(tour){
     // Dressing for the eye-level reconstruction, using the plan's coordinate grid.
@@ -272,24 +272,49 @@ export function mountModel(root, tour = false) {
     scene.add(tunnelLight);
     box(109,157,178,4,3.05,0x957055);
     for(const x of [22,197])box(x,227,4,140,2.7,wood);
-    box(91,190,87,22,0.52,0xaa6647);
-    box(91,182,87,8,0.95,0xb57950);
-    box(67,224,35,21,0.43,wood);
-    for(let i=0;i<26;i++){
-      const bulb=box(39+(i%13)*10.6,160,1.4,1.4,0.075,i%2?0xf5bc42:0x53b7ff,2.5-Math.floor(i/13)*0.36);
-      bulb.material.emissive.copy(bulb.material.color);
+    const upholstery=0xbba04f;
+    box(101,192,86,24,0.38,0x735d36,0.27);
+    box(101,182,86,8,0.82,upholstery,0.54);
+    for(const x of [74,101,128]){
+      box(x,192,24,21,0.12,upholstery,0.47);
+      box(x,188,24,3,0.4,upholstery,0.71);
+      for(const offset of [-8,-2,5]){
+        box(x+offset,190,1.7,0.7,0.38,0x7f7244,0.71);
+        box(x+offset,192,1.7,21,0.009,0x8a7b47,0.535);
+      }
+    }
+    for(const x of [58,144])box(x,192,7,24,0.61,upholstery);
+    box(101,218,54,27,0.10,wood,0.43);
+    for(const x of [78,124])for(const z of [208,228])box(x,z,4,4,0.39,wood);
+    for(const x of [43,159]){
+      box(x,190,16,16,0.45,wood);
+      box(x,190,2,2,0.34,0x805b3d,0.62);
+      const shade=box(x,190,12,10,0.22,0xe0a84c,0.91);
+      shade.material.emissive.setHex(0xe4a450).multiplyScalar(0.55);
     }
     const sign=document.createElement('canvas');
-    sign.width=512;sign.height=128;
+    sign.width=640;sign.height=256;
     const g=sign.getContext('2d');
-    g.font='bold 34px Georgia';g.textAlign='center';g.fillStyle='#271a26';
-    g.fillText('A B C D E F G H I J K L M',256,53);
-    g.fillText('N O P Q R S T U V W X Y Z',256,105);
+    g.font='bold 43px Georgia';
+    g.textAlign='center';
+    g.textBaseline='middle';
+    const rows=['ABCDEFGH','IJKLMNOPQ','RSTUVWXYZ'];
+    const palette=['#f8bd4b','#77dba0','#ff7370','#80b9ff'];
+    rows.forEach((row,r)=>{
+      for(let i=0;i<row.length;i++){
+        const x=320+(i-(row.length-1)/2)*61;
+        const y=55+r*69;
+        g.fillStyle=palette[(i+r)%palette.length];
+        g.beginPath();g.ellipse(x,y-25,4,7,0,0,Math.PI*2);g.fill();
+        g.fillStyle='#271a26';
+        g.fillText(row[i],x,y+3);
+      }
+    });
     const texture=new THREE.CanvasTexture(sign);
     texture.colorSpace=THREE.SRGBColorSpace;
     const letters=new THREE.Mesh(new THREE.PlaneGeometry(5.3,1.32),new THREE.MeshBasicMaterial({map:texture,transparent:true}));
-    const [x,z]=point(104,160);
-    letters.position.set(x,1.99,z);
+    const [x,z]=point(101,160);
+    letters.position.set(x,2.0,z);
     scene.add(letters);
     const light=new THREE.PointLight(0xff965a,22,9);
     const [lx,lz]=point(110,195);
