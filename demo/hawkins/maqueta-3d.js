@@ -86,8 +86,10 @@ export function mountModel(root, tour = false) {
     floors.set(id,floor);
     // Low sections on the rear edges leave the observed thresholds visible.
     const wallColor=new THREE.Color(color).multiplyScalar(0.43);
-    box(x+w*0.22,z+2,w*0.44,4,0.74,wallColor);
-    box(x+w*0.78,z+2,w*0.44,4,0.74,wallColor);
+    if(!tour){
+      box(x+w*0.22,z+2,w*0.44,4,0.74,wallColor);
+      box(x+w*0.78,z+2,w*0.44,4,0.74,wallColor);
+    }
     for(const [fx,fz,fw,fd,h] of (tour&&id===4?[]:furniture[id]||[])){
       box(fx,fz,fw,fd,h,wallColor);
       box(fx,fz,fw,fd,0.055,color,h);
@@ -155,16 +157,16 @@ export function mountModel(root, tour = false) {
     const status=panel.querySelector('[data-tour=status]');
     const chapters=[
       {time:0,id:1,name:'Escalera · 0:54'},
-      {time:5,id:2,name:'Vestíbulo · 1:03'},
-      {time:10,id:3,name:'Pasillo rojo · 1:35'},
+      {time:5,id:2,name:'Vestíbulo · 1:09'},
+      {time:10,id:3,name:'Pasillo rojo · 1:36'},
       {time:15,id:4,name:'Salón Byers · 1:41'}
     ];
     // Each pose contains time, eye X/Z/height, and a point ahead on the filmed route.
     const poses=[
       [0,292,489,2.15,292,432],[3,292,455,1.65,292,399],
-      [5,292,412,1.48,278,374],[7,286,375,1.48,191,373],
-      [9,165,373,1.48,108,368],[10,112,373,1.48,108,332],
-      [13,108,327,1.48,108,284],[15,108,288,1.48,101,187],[18,104,254,1.48,97,177]
+      [5,292,412,1.48,272,342],[6.5,282,391,1.48,348,343],
+      [8,244,374,1.48,172,373],[9.2,145,373,1.48,91,368],
+      [10,108,369,1.48,108,309],[13,108,327,1.48,108,284],[15,108,288,1.48,101,187],[18,104,254,1.48,97,177]
     ];
     const end=poses.at(-1)[0];
     let time=0, frame=0, last=0, chapter=-1, syncing=false;
@@ -222,6 +224,36 @@ export function mountModel(root, tour = false) {
     box(267,475,4,44,2.8,wall);
     box(317,475,4,44,2.8,wall);
     box(292,440,54,26,0.16,0x48768b,-0.08);
+    function signboard(x,z,y,width,height,lines,background,ink,rotation=0){
+      const canvas=document.createElement('canvas');
+      canvas.width=512;canvas.height=192;
+      const ctx=canvas.getContext('2d');
+      ctx.fillStyle=background;
+      ctx.fillRect(0,0,512,192);
+      ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=ink;
+      lines.forEach((line,i)=>{
+        ctx.font=(i===0?'600 33px':'bold 57px')+' Georgia';
+        ctx.fillText(line,256,lines.length===1?96:63+i*67,460);
+      });
+      const texture=new THREE.CanvasTexture(canvas);
+      texture.colorSpace=THREE.SRGBColorSpace;
+      const panel=new THREE.Mesh(new THREE.PlaneGeometry(width,height),new THREE.MeshBasicMaterial({map:texture}));
+      const [px,pz]=point(x,z);
+      panel.position.set(px,y,pz);
+      panel.rotation.y=rotation;
+      scene.add(panel);
+    }
+    box(272,342,101,5,2.75,0x1b3559);
+    box(272,351,94,15,0.11,0x77853c,0.05);
+    signboard(272,345,1.67,3.55,1.22,['WELCOME TO','HAWKINS'],'#183358','#fff2ac');
+    box(356,342,68,5,2.75,0x653334);
+    signboard(356,345,1.68,2.37,1.26,['THE UPSIDE DOWN'],'#5a292e','#ffb67d');
+    box(356,353,54,15,0.26,0x432432);
+    const foyerLight=new THREE.PointLight(0xa9ccff,13,8);
+    const [foyerX,foyerZ]=point(272,365);
+    foyerLight.position.set(foyerX,2.38,foyerZ);
+    scene.add(foyerLight);
+
     box(172,373,39,31,0.16,0x493346,-0.08);
     box(108,321,43,36,0.16,0x663343,-0.08);
     for(const [x,z,length] of [[83,348,98],[133,332,66],[133,393,9]]){
@@ -231,6 +263,13 @@ export function mountModel(root, tour = false) {
         neon.material.emissive.setHex(red).multiplyScalar(1.5);
       }
     }
+    box(108,344,54,101,0.1,0x21121f,2.76);
+    box(108,346,49,96,0.1,0x281926,-0.05);
+    signboard(86,371,1.77,1.30,0.60,['STRANGER','THINGS'],'#36111d','#ff6265',Math.PI/2);
+    const tunnelLight=new THREE.PointLight(red,18,6);
+    const [tunnelX,tunnelZ]=point(111,350);
+    tunnelLight.position.set(tunnelX,1.85,tunnelZ);
+    scene.add(tunnelLight);
     box(109,157,178,4,3.05,0x957055);
     for(const x of [22,197])box(x,227,4,140,2.7,wood);
     box(91,190,87,22,0.52,0xaa6647);
