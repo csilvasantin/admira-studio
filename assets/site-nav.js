@@ -381,6 +381,7 @@
     ['/ideas.html', 'Ideas', 'Mapas del tesoro del Consejo: ideas para debatir'],
     ['/plataforma.html', 'Plataforma', 'Mapa de capas, motores y salida a XpaceOS'],
     ['/crear-campana/', 'Campañas', 'Compra y activación en puntos y pantallas'],
+    ['/vozcontenido/', 'VozContenido', 'Voz IA sobre vídeos del Stock, lista para storeos.com'],
     ['/clearchannel/', 'Demo Clear Channel', 'Pixer Feed en vivo sobre pantallas reales']
   ];
   var HOME_RAIL_DOCS = [
@@ -685,7 +686,7 @@
     });
     var sectionLabels = {
       'Avatar 3D':'Avatar 3D', 'Anonimizador':'Anonymizer', 'Plataforma':'Platform',
-      'Campañas':'Campaigns', 'Demo Clear Channel':'Clear Channel demo'
+      'Campañas':'Campaigns', 'VozContenido':'Voice Content', 'Demo Clear Channel':'Clear Channel demo'
     };
     document.querySelectorAll('.rail-left .rail-nav a').forEach(function (link) {
       var url = new URL(link.href, location.href);

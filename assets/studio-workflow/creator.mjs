@@ -6,6 +6,7 @@ export function compactCreator(root, en = document.documentElement.lang === 'en'
   const newCampaign = root.querySelector('#campaign-new');
   const edit = root.querySelector('#campaign-edit');
   const fromUrl = root.querySelector('#campaign-url-form');
+  const voz = root.querySelector('#campaign-voz');
   const resume = root.querySelector('#campaign-resume')?.closest('.campaign-tools');
   if (!toolbar || !newCampaign || !edit || !resume) return;
   const t = (es, english) => en ? english : es;
@@ -32,9 +33,9 @@ export function compactCreator(root, en = document.documentElement.lang === 'en'
   const secondary = document.createElement('div');
   secondary.className = 'studio-creator-secondary';
   saved.body.append(resume);
-  primary.append(newCampaign, ...(fromUrl ? [fromUrl] : []), saved.details, edit);
+  primary.append(newCampaign, ...(voz ? [voz] : []), ...(fromUrl ? [fromUrl] : []), saved.details, edit);
   for (const control of original) {
-    if (control === newCampaign || control === edit || control === fromUrl) continue;
+    if (control === newCampaign || control === edit || control === fromUrl || control === voz) continue;
     const href = control.getAttribute('href') || '';
     const isExample = ['campaign-starbucks', 'campaign-demo'].includes(control.id)
       || href.includes('demo=creador') || href.includes('/campanas/next-step/');

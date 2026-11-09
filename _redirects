@@ -9,3 +9,9 @@
 /en/crear/index.html https://www.admira.store/assets/en/ 301
 /assets https://www.admira.store/assets/ 301
 /assets/ https://www.admira.store/assets/ 301
+
+# VozContenido / Voice Content (9-nov-2026)
+/en/vozcontenido /vozcontenido/?lang=en 302
+/en/vozcontenido/ /vozcontenido/?lang=en 302
+/en/voice-content /vozcontenido/?lang=en 302
+/voice-content /vozcontenido/?lang=en 302

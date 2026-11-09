@@ -25,7 +25,7 @@ test('borrador-campana reenvía al borrador del worker en modo campana, con sesi
 });
 test('el campo «Crear desde URL» va justo debajo de «＋ Nueva campaña» y el Creador lo mantiene en las acciones principales',()=>{
  const s=readFileSync(new URL('../adaptaciones/campaign-studio.mjs',import.meta.url),'utf8');const a=s.indexOf('id="campaign-new"'),b=s.indexOf('id="campaign-url-form"');assert.ok(a>0&&b>a&&b-a<200);assert.match(s,/mountUrlCampaign\(/);
- const w=readFileSync(new URL('../assets/studio-workflow/creator.mjs',import.meta.url),'utf8');assert.match(w,/primary\.append\(newCampaign, \.\.\.\(fromUrl \? \[fromUrl\] : \[\]\)/);
+ const w=readFileSync(new URL('../assets/studio-workflow/creator.mjs',import.meta.url),'utf8');assert.match(w,/primary\.append\(newCampaign, \.\.\.\(voz \? \[voz\] : \[\]\), \.\.\.\(fromUrl \? \[fromUrl\] : \[\]\)/);
 });
 
 import {isCampaignUrl,urlError} from '../adaptaciones/campaign-url.mjs';
