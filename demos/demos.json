@@ -2,6 +2,24 @@
   "_comentario": "Vídeos de demo de cada mejora de admira.studio (regla de Neo, 4-nov-2026: todo lo que se hace lleva vídeo bajo /demos/). Añadir arriba, el más reciente primero.",
   "demos": [
     {
+      "id": "gemelo-plantillas-20261111",
+      "fecha": "2026-11-11",
+      "titulo": "admira.store: plantillas por sector para tu gemelo",
+      "resumen": "En el paso 1 de www.admira.store/xpacios/gemelo/ eliges tienda, hamburguesería, hotel o estanco y el local llega amueblado con pantallas y muebles típicos, listo para ajustar y publicar.",
+      "video": "/assets/demos/gemelo-plantillas/gemelo-plantillas-20261111.mp4",
+      "poster": "/assets/demos/gemelo-plantillas/gemelo-plantillas-20261111.jpg",
+      "pr": "https://github.com/csilvasantin/admira-store/pull/206"
+    },
+    {
+      "id": "gemelo-compartible-20261111",
+      "fecha": "2026-11-11",
+      "titulo": "admira.store: gemelo compartible e incrustable",
+      "resumen": "Cada gemelo publicado tiene enlace con vista previa (nombre, resumen y foto en WhatsApp/LinkedIn) y código iframe para insertarlo en la web de la tienda.",
+      "video": "/assets/demos/gemelo-compartible/gemelo-compartible-20261111.mp4",
+      "poster": "/assets/demos/gemelo-compartible/gemelo-compartible-20261111.jpg",
+      "pr": "https://github.com/csilvasantin/admira-store/pull/205"
+    },
+    {
       "id": "gemelo-3-pasos-20261111",
       "fecha": "2026-11-11",
       "titulo": "admira.store: Crea tu gemelo en 3 pasos",
