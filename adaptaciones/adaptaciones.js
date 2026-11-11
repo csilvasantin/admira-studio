@@ -1,4 +1,4 @@
-import {mountAdapterInstallations} from './client-format-controls.mjs?v=seven-formats-1';
+import {mountAdapterInstallations} from './client-format-controls.mjs?v=project-destinations-1';
 import {readHandoff} from './campaign-handoff.mjs?v=coffee-journey-1';
 import {classicTargets,isClassicFormat,extraFormats} from './classic-step.mjs?v=20261009-classic-step-1';
 import {mountAdvertisement} from './anuncio-studio.mjs?v=classic-auto-6';
@@ -20,7 +20,7 @@ import { createEngine, MAX_SOURCE_BYTES } from './adapter-export.js?v=installati
 import { createExportQueue } from './export-queue.js';
 import { publishAdaptation, shortFormat, adaptationTitle, MAX_STOCK_BYTES } from './stock-publish.mjs';
 import { createCatalog, CATEGORIES, CAMPAIGNS, matchingFormats, customFormat, restoreCustomFormats, formatFamily, isProjectFormat, isLibrarySize, applyCampaign, setGroupSelected, groupSelection, selectAllSizes } from './format-catalog.mjs';
-import { GENERAL, YOKUP_URL, PROJECT_KEY, projectStorageKey, formatRef, resolveRef, projectLibrary, projectCampaigns, parseYokup, mergeProjects, migrateStorage, initialProject } from './proyectos-core.mjs';
+import { GENERAL, YOKUP_URL, PROJECT_KEY, projectStorageKey, formatRef, resolveRef, projectLibrary, projectCampaigns, parseYokup, mergeProjects, migrateStorage, initialProject, adaptationFormats } from './proyectos-core.mjs?v=project-destinations-1';
 import { geometry, segmentsJob, atlasJob, atlasFilename, segmentFilename, segmentKbps } from './especiales-core.mjs?v=adapter-detail-1';
 import { sizeGroups, selectionState, toggleSelection, selectionAction } from './format-catalog.mjs';
 import { pngDensity } from './png-density.mjs';
@@ -81,9 +81,15 @@ let vistaFormato = null, formatoEnfocar = '';
 // [CLASSIC-SELECTION-START]
 let classicTargetId = '', specialSelectedId = '', currentStep = 1, specialStepVisited = false;
 const classicActive = () => isImage() && currentStep === 1 && !!classicTargetId;
+const projectScoped = esPaginaAdaptador(location.pathname);
+const availableFormats = () => {
+  if (!projectScoped) return extraFormats(FORMATOS, isImage());
+  const formats = adaptationFormats(state.proyecto, FORMATOS);
+  return state.proyecto === GENERAL ? extraFormats(formats, isImage()) : formats;
+};
 const selectedFormats = () => classicActive()
   ? FORMATOS.filter(f => isClassicFormat(f) && f.id === classicTargetId)
-  : extraFormats(FORMATOS,isImage()).filter(f => f.on && (state.profile === 'proyecto' ? isProjectFormat(f) : formatFamily(f) === state.profile));
+  : availableFormats().filter(f => f.on && (state.profile === 'proyecto' ? isProjectFormat(f) : formatFamily(f) === state.profile));
 const currentSelected = () => selectedFormats().find(f => f.id === state.sel);
 // [CLASSIC-SELECTION-END]
 // Biblioteca uses the compatibility selector; project formats keep native resolutions.
@@ -121,12 +127,16 @@ function saveSettings() {
   catch (_) { $('#settings-status').textContent = t('Este navegador no permite guardar los ajustes.', 'This browser does not allow saving settings.'); }
 }
 const hasFamily = fam => fam === 'standard' || FORMATOS.some(fam === 'proyecto' ? isProjectFormat : f => f.especial && fam === 'especiales');
-const defaultFamily = () => FICHA && hasFamily(FICHA.ajustes?.familia) ? FICHA.ajustes.familia : 'standard';
-// Fresh state of the active project: the four ratios of the library, the project's flat formats
-// on (as the Altadis profile always loaded), segmented walls off, and the ficha's defaults.
+const defaultFamily = () => {
+  if (projectScoped && FORMATOS.some(isProjectFormat)) return 'proyecto';
+  return FICHA && hasFamily(FICHA.ajustes?.familia) ? FICHA.ajustes.familia : 'standard';
+};
+// The Adapter starts a project with its destinations selected. The shared
+// Creator workflow keeps its existing default selection.
 function resetState() {
   Object.assign(state, {profile: defaultFamily(), compat: 'fhd', modoGlobal: FICHA?.ajustes?.metodo || 'auto'});
-  FORMATOS.forEach(f => { f.on = f.proyecto ? !f.especial : RATIOS.includes(f.id); state.fmt[f.id] = defaults(); state.crear[f.id] = crearBase(f); });
+  FORMATOS.forEach(f => { f.on = f.proyecto ? (projectScoped || !f.especial)
+    : (!projectScoped || state.proyecto === GENERAL ? RATIOS.includes(f.id) : isClassicFormat(f)); state.fmt[f.id] = defaults(); state.crear[f.id] = crearBase(f); });
 }
 function syncControls() {
   $('#format-profile').value = state.profile; $('#compat').value = state.compat; $('#modo-global').value = state.modoGlobal;
@@ -141,6 +151,9 @@ function restoreSettings(lists) {
   try {
     const raw = readJSON(keyFor(state.proyecto)), saved = restore(raw, FORMATOS);
     if (saved) { Object.assign(state, {profile:saved.profile,compat:saved.compat,modoGlobal:saved.modoGlobal,fmt:saved.fmt}); FORMATOS.forEach(f=>f.on=saved.selected.includes(f.id)); }
+    if (saved && projectScoped && state.proyecto !== GENERAL && state.profile === 'standard' && FORMATOS.some(isProjectFormat)) {
+      state.profile = defaultFamily();
+    }
     if (saved && raw.crear && typeof raw.crear === 'object') FORMATOS.forEach(f => { state.crear[f.id] = crearSettings(raw.crear[f.id], crearBase(f)); });
   } catch (_) { /* corrupt or unavailable storage: keep safe defaults */ }
   syncControls(); initialized = true;
@@ -375,7 +388,7 @@ function selectionControl(members, name, key, filtered, input = document.createE
   return {state: s, action, input};
 }
 function buildPicker() {
-  const available=extraFormats(FORMATOS,isImage());
+  const available=availableFormats();
   const visible=matchingFormats(available,{query:picker.query,orientation:picker.orientation,profile:state.profile});
   const shown=new Set(visible),filtered=pickerFiltered();
   const focusKey=document.activeElement?.dataset?.selectKey||null;
@@ -1476,12 +1489,13 @@ window.addEventListener('pagehide', pausePaso1);
 // [CLASSIC-STEP-START]
 function classicSource() { return {...state.src,kind:srcKind}; }
 function syncClassicEntry() {
-  const targets=classicTargets(classicSource(),mediaReady());
+  const hasProject = projectScoped && state.proyecto !== GENERAL;
+  const targets = hasProject ? [] : classicTargets(classicSource(),mediaReady());
   const portrait=$('#btn-portrait'),landscape=$('#btn-landscape');
   portrait.textContent=t('Horizontal → vertical','Landscape → portrait');
   landscape.textContent=t('Vertical → horizontal','Portrait → landscape');
-  $('#btn-adaptar').hidden=isImage();
-  $('#btn-adaptar').textContent=t('Adaptar →','Adapt →');
+  $('#btn-adaptar').hidden = isImage() && !hasProject;
+  $('#btn-adaptar').textContent = hasProject ? t('Ver formatos del proyecto →','View project formats →') : t('Adaptar →','Adapt →');
   if(state.src.ancho===state.src.alto){portrait.textContent=t('Crear vertical 9:16','Create portrait 9:16');landscape.textContent=t('Crear horizontal 16:9','Create landscape 16:9');}
   for(const [button,id] of [[portrait,'9:16'],[landscape,'16:9']]){button.hidden=!targets.includes(id);button.disabled=button.hidden||!!advertisement?.busy();}
   const host=$('#classic-host');host.hidden=!classicActive();
@@ -1537,7 +1551,7 @@ function enterClassic(id) {
 $('#btn-portrait').onclick=()=>enterClassic('9:16');
 $('#btn-landscape').onclick=()=>enterClassic('16:9');
 document.querySelectorAll('.steps .step').forEach(b=>b.onclick=()=>goStep(+b.dataset.go));
-$('#btn-adaptar').onclick=()=>{if(isImage()){const ids=classicTargets(classicSource(),mediaReady());if(ids.length===1)enterClassic(ids[0]);else goStep(1);}else goStep(2);};
+$('#btn-adaptar').onclick=()=>{if(isImage()&&(!projectScoped||state.proyecto===GENERAL)){const ids=classicTargets(classicSource(),mediaReady());if(ids.length===1)enterClassic(ids[0]);else goStep(1);}else goStep(2);};
 $('#btn-volver').onclick=()=>goStep(1);
 // [CLASSIC-STEP-END]
 $('#btn-sizes').onclick = () => { const m = document.querySelector('.pix-nav-icon-menu'); if (m && document.body.classList.contains('pf-left-off')) m.click(); else document.body.classList.remove('pf-left-off'); };
@@ -1910,16 +1924,19 @@ function renderProjects() {
   const own = PROJECTS.filter(p => p.propios), rest = PROJECTS.filter(p => !p.propios);
   const count = p => (p.ficha.formatos?.estandar || 0) + (p.ficha.formatos?.especiales || 0);
   group(t('Con formatos propios', 'With own formats'), own, p => `★ ${p.nombre} · ${count(p)} ${t('formatos', 'formats')}${p.ficha.instalaciones?' + '+p.ficha.instalaciones+' '+t('montajes','layouts'):''}`);
-  group(t('Proyectos de Yokup · solo biblioteca general', 'Yokup projects · general library only'), rest, p => p.nombre);
+  group(projectScoped ? t('Proyectos · vertical y horizontal', 'Projects · portrait and landscape') : t('Proyectos de Yokup', 'Yokup projects'), rest, p => p.nombre);
   if (state.proyecto !== GENERAL && !PROJECTS.some(p => p.id === state.proyecto)) option(sel, state.proyecto, state.proyecto);
   sel.value = state.proyecto;
 }
 function renderProjectStatus(extra = '') {
   const box = $('#project-status'); if (!box) return;
+  const stepLabel = $('#adapter-step-formats-label');
+  if (stepLabel) stepLabel.textContent = state.proyecto === GENERAL ? t('Formatos especiales', 'Special formats') : t('Formatos del proyecto', 'Project formats');
   const own = FORMATOS.filter(f => f.proyecto && !f.especial).length, walls = FORMATOS.filter(f => f.especial).length, myblu = FORMATOS.filter(f => f.proyecto && f.myblu).length;
   const what = state.proyecto === GENERAL ? t('Biblioteca general, sin ajustes de cliente.', 'General library, no client settings.')
-    : FICHA ? `${t('Biblioteca general', 'General library')} + ${own} ${t('formatos propios', 'own formats')}${myblu ? ` (${myblu} MyBlu)` : ''}${walls ? ` + ${walls} ${t('videowalls segmentados', 'segmented video walls')}` : ''}${FICHA.instalaciones?.length?' + '+FICHA.instalaciones.length+' '+t('montajes de Creador','Creator layouts'):''}.`
-    : t('Sin ficha propia: usa solo la biblioteca general.', 'No project file: uses the general library only.');
+    : FICHA && (own + walls || FICHA.instalaciones?.length) ? `${projectScoped ? '' : t('Biblioteca general + ', 'General library + ')}${own} ${t('formatos propios', 'own formats')}${myblu ? ` (${myblu} MyBlu)` : ''}${walls ? ` + ${walls} ${t('videowalls segmentados', 'segmented video walls')}` : ''}${FICHA.instalaciones?.length?' + '+FICHA.instalaciones.length+' '+t('montajes de Creador','Creator layouts'):''}.`
+    : projectScoped ? t('Vertical 9:16 y horizontal 16:9.', 'Portrait 9:16 and landscape 16:9.')
+      : t('Sin ficha propia: usa solo la biblioteca general.', 'No project file: uses the general library only.');
   const src = yokupSource === 'live' ? t('Proyectos de Yokup en vivo.', 'Live Yokup projects.')
     : yokupSource === 'saved' ? t(`Proyectos de Yokup: copia guardada (${yokupDate}).`, `Yokup projects: saved copy (${yokupDate}).`) : '';
   box.textContent = [extra, what, src].filter(Boolean).join(' ');
@@ -1928,7 +1945,9 @@ function renderProjectStatus(extra = '') {
 function renderProfiles() {
   const sel = $('#format-profile'), fam = FICHA?.familias || {}, name = FICHA?.nombre || '';
   const set = (value, label, on) => { const o = sel.querySelector(`option[value="${value}"]`); if (!o) return; o.textContent = label; o.disabled = !on; o.hidden = !on; };
-  set('proyecto', fam.proyecto ? (EN ? fam.proyecto.en : fam.proyecto.es) : `${name} · ${t('formatos propios', 'own formats')}`, hasFamily('proyecto') && FORMATOS.some(f => f.proyecto && !f.especial));
+  const ownFormats = FORMATOS.some(isProjectFormat);
+  if (projectScoped) set('standard', state.proyecto === GENERAL ? t('Biblioteca · redes, digital, display e impresión', 'Library · social, digital, display and print') : t('Vertical y horizontal', 'Portrait and landscape'), !ownFormats);
+  set('proyecto', fam.proyecto ? (EN ? fam.proyecto.en : fam.proyecto.es) : `${name} · ${t('formatos propios', 'own formats')}`, (projectScoped ? ownFormats : FORMATOS.some(f => f.proyecto && !f.especial)));
   set('especiales', fam.especiales ? (EN ? fam.especiales.en : fam.especiales.es) : `${name} · ${t('videowalls segmentados', 'segmented video walls')}`, FORMATOS.some(f => f.especial));
   sel.value = state.profile;
   const notes = $('#project-notes'), box = notes?.closest('details');
@@ -2001,19 +2020,28 @@ function enfocarFormatoURL() {
   state.sel = card.dataset.f; markSelected(); buildCardSettings();
   card.focus({preventScroll: true}); card.scrollIntoView({block: 'nearest', behavior: movimientoReducido ? 'instant' : 'smooth'});
 }
-let sourceHandoff=null;const installationPanel=mountAdapterInstallations({host:document.querySelector('#paso-2'),t,getSource:()=>isImage()&&img.naturalWidth?img:null,getCampaign:()=>sourceHandoff?.campaign,locked:()=>!!pkg?.running});
+let sourceHandoff=null;const installationPanel=mountAdapterInstallations({host:document.querySelector('#paso-2'),t,visit:projectScoped?f=>twin?.open(f):null,getSource:()=>isImage()&&img.naturalWidth?img:null,getCampaign:()=>sourceHandoff?.campaign,locked:()=>!!pkg?.running});
 let switching = 0;
 async function switchProject(id) {
   resetClassic({keepStep:true,keepAnalysis:true});saveSettings();
+  if (projectScoped) twin?.close();
   const turn = ++switching, entry = INDEX.find(x => x.id === id);
   let ficha = null, lists = {}, note = '', estancos = null;
   if (entry) {
     try { ({ficha, lists, estancos} = await loadFicha(entry)); }
-    catch (_) { note = t('No se pudo leer la ficha del proyecto: se usa la biblioteca general.', 'Could not read the project file: using the general library.'); }
+    catch (_) { note = projectScoped
+      ? t('No se pudo leer la ficha del proyecto. Se muestran vertical y horizontal.', 'Could not load the project file. Portrait and landscape are shown.')
+      : t('No se pudo leer la ficha del proyecto: se usa la biblioteca general.', 'Could not read the project file: using the general library.'); }
   }
   if (turn !== switching) return; // a later pick won while this ficha was loading
   FICHA = ficha; state.proyecto = id;installationPanel.update(ficha);
-  campaigns = [...projectCampaigns(ficha), ...CAMPAIGNS];
+  campaigns = projectScoped && id !== GENERAL ? projectCampaigns(ficha) : [...projectCampaigns(ficha), ...CAMPAIGNS];
+  if (projectScoped) {
+    $('#project-campaigns-heading').hidden = !campaigns.length;
+    $('.custom-size').hidden = id !== GENERAL;
+    picker.query = ''; picker.orientation = 'all';
+    $('#size-search').value = ''; $('#size-orientation').value = 'all';
+  }
   restoreSettings(lists);
   setEstancos(estancos);
   renderProfiles(); renderCampaigns(); renderProjects(); renderProjectStatus(note); syncURL();
@@ -2084,7 +2112,15 @@ function endTwinPlayback(){
   if(twinPlayback.kind===srcKind){if(srcKind==='video'){if(twinPlayback.paused)video.pause();video.muted=twinPlayback.muted;}else if(anim&&twinPlayback.paused)anim.pause();}
   twinPlayback=null;
 }
-twin=mountTwin({t,start:startTwinPlayback,end:endTwinPlayback,transport:campaignWorkshop?.twinPlayback,ready:()=>campaignWorkshop?.active()?campaignWorkshop.ready():mediaReady(),destino:f=>f.installation?{ancho:f.installation.width,alto:f.installation.height}:destino(f),formats:()=>campaignWorkshop?.active()?campaignWorkshop.formats():FORMATOS.filter(isProjectFormat),background:f=>studio?.background(f),shops:()=>EST?.estancos,shop:()=>studio?.shop(),selectShop:id=>studio?.selectShop(id),draw:(cv,f,bg)=>{if(campaignWorkshop?.draw(cv,f))return;if(advertisement?.draw(cv,f))return;if(creando(f)&&!bg)paintCrear(cv,destino(f),f);else paint(cv,destino(f),modoEfectivo(f),state.fmt[f.id],null,bg);}});
+twin=mountTwin({t,start:startTwinPlayback,end:endTwinPlayback,transport:campaignWorkshop?.twinPlayback,ready:()=>campaignWorkshop?.active()?campaignWorkshop.ready():mediaReady(),destino:f=>f.installation?{ancho:f.installation.width,alto:f.installation.height}:destino(f),formats:()=>campaignWorkshop?.active()?campaignWorkshop.formats():projectScoped
+  ? [...adaptationFormats(state.proyecto, FORMATOS).filter(f=>state.proyecto!==GENERAL||isClassicFormat(f)),...installationPanel.formats()]
+  : FORMATOS.filter(isProjectFormat),background:f=>studio?.background(f),shops:()=>EST?.estancos,shop:()=>studio?.shop(),selectShop:id=>studio?.selectShop(id),draw:(cv,f,bg)=>{
+  if(campaignWorkshop?.active()&&campaignWorkshop.draw(cv,f))return;
+  if(f.installation){paint(cv,{ancho:f.installation.width,alto:f.installation.height},'blur',defaults());return;}
+  if(advertisement?.draw(cv,f))return;
+  if(creando(f)&&!bg)paintCrear(cv,destino(f),f);
+  else paint(cv,destino(f),modoEfectivo(f),state.fmt[f.id],null,bg);
+}});
 campaignWorkshop?.refresh();
 advertisement=mountAdvertisement({t,formats:()=>FORMATOS,selected:selectedFormats,classicTarget:()=>classicActive()?classicTargetId:null,source:()=>({kind:srcKind,image:img,src:state.src,composition:state.origin?.composition||null}),destino,seconds:()=>stillSec,
 textZone:f=>{if(!f.especial)return null;const seg=geometry(f.layout).segments.reduce((a,b)=>a.wall.w*a.wall.h>=b.wall.w*b.wall.h?a:b);return {...seg.wall};},
