@@ -102,13 +102,13 @@
     <p class="lead">Crea piezas musicales listas para pantallas, ambientes, eventos y canales Admira. Define intención, produce con Admira Studio Music y publica en Stock sin perder trazabilidad.</p>
   </header>
 
-  <section class="module cap-hilo" aria-label="Capacidad · Hilo musical para espacios">
-    <div class="module-head"><h3><span class="accent" style="background: var(--music);"></span>Hilo musical para espacios</h3><small>Generación Suno · propuesta Eleven Music pendiente</small></div>
+  <details class="module cap-hilo" aria-label="Hilo musical para espacios">
+    <summary style="cursor:pointer;color:var(--music);font-weight:700">Hilo musical para espacios <small style="margin-left:.75em;color:var(--muted);font-weight:400">Ver detalles</small></summary>
     <p style="color:var(--muted);line-height:1.55;max-width:820px">Los selectores actuales generan pistas mediante el proxy configurado de <strong>Suno</strong>, con crédito del proveedor. Una playlist para un espacio necesita selección, curación y distribución autorizada. El hilo continuo renovable es una propuesta, no el resultado automático de generar una pista.</p>
     <p style="color:var(--muted);line-height:1.5;max-width:820px"><strong>Eleven Music:</strong> integración propuesta y pendiente, no el proveedor de estos selectores. La página de Clear Channel reproduce muestras locales preparadas; no llama a Eleven Music ni emite a un local.</p>
     <p style="color:var(--muted);line-height:1.5;max-width:820px"><strong>Derechos de uso:</strong> comprobar las condiciones de la cuenta del proveedor y el uso comercial o en espacios públicos previsto antes de distribuir. Esta demo no certifica esos derechos.</p>
     <p style="margin-top:8px"><a class="btn" href="/clearchannel/#hilo">▶ Escuchar muestras preparadas · Clear Channel</a></p>
-  </section>
+  </details>
 
   <main>
     <form id="briefForm">
@@ -218,6 +218,8 @@
             <label for="sunoPrompt">Prompt</label>
             <textarea id="sunoPrompt" class="suno-prompt" name="musica.suno.prompt" rows="5" placeholder="Tribal highlife song about toxic cycles"></textarea>
           </div>
+          <button type="button" class="btn" id="sunoRandom">Sortear estilo y voz</button>
+          <span id="sunoRandomResult" role="status"></span>
           <button type="button" class="suno-create" id="sunoCreate">♪ Create</button>
           <div class="suno-job" id="sunoJobStatus">Cola lista. Create encola con execute=true (idiomas ESP/ENG) → suno-local → Stock.</div>
         </section>
@@ -346,5 +348,6 @@
   <script src="app.js?v=import-ha-20261018-16-clock"></script>
   <script defer src="/assets/cuadratura.js?v=27.10.2026.r4.2140"></script>
   <script src="/assets/admira-version-watch.js" defer></script>
+  <script type="module" src="/assets/suno-capsula-random.mjs?v=1"></script>
 </body>
 </html>
