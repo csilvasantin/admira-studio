@@ -44,7 +44,7 @@
   <link rel="canonical" href="https://www.admira.studio/adaptaciones/">
   <!-- Tema Matrix compartido con /video.html y el resto del sitio (tokens, mono, CRT y lluvia) -->
   <link rel="stylesheet" href="/workspace.css?v=17.10.2026.r6.2255">
-  <link rel="stylesheet" href="/adaptaciones/adaptaciones.css?v=delivery-20261019-1">
+  <link rel="stylesheet" href="/adaptaciones/adaptaciones.css?v=delivery-20261019-1-project-destinations-1">
   <link rel="stylesheet" href="/assets/cuadratura.css?v=27.10.2026.r4.2140">
   <script defer src="/assets/site-nav.js?v=27.10.2026.r4.2140"></script>
   <script src="/assets/ui-locale.js?v=17.10.2026.r6.2255"></script>
@@ -63,8 +63,12 @@
       <div class="sec-hd"><h1 title="Step 1: choose an image and complete its landscape/portrait adaptation. Step 2: project, video-wall and additional formats.">Adaptation: one piece of content, n formats for every Xpace</h1></div>
       <nav class="steps" aria-label="Steps">
         <button type="button" class="step" data-go="1" aria-current="step"><b>1</b> Classic</button><span class="step-sep" aria-hidden="true">·</span>
-        <button type="button" class="step" data-go="2" disabled><b>2</b> Special formats</button>
+        <button type="button" class="step" data-go="2" disabled><b>2</b> <span id="adapter-step-formats-label">Special formats</span></button>
       </nav>
+      <div class="adapter-project-picker">
+        <label class="project-label">Project<select id="adapter-project" aria-describedby="project-status"><option value="general">General (no project)</option></select></label>
+        <p id="project-status" class="muted project-status" role="status"></p>
+      </div>
       <div id="paso-1" class="paso">
         <div class="src-options">
           <div class="src-opt src-opt-main"><span class="n">1</span><h3>Stock content</h3><div class="stk-tag"><input id="stock-tag" type="search" list="stock-tags" autocomplete="off" spellcheck="false" placeholder="#hashtag · all" aria-label="Filter the Stock by hashtag"><button type="button" id="stock-tag-clear" class="stk-tag-clear" aria-label="Clear the hashtag" title="Clear the hashtag" hidden>×</button><datalist id="stock-tags"></datalist></div><p class="muted">Ready-made <b id="stock-count">…</b> <span id="stock-nombre">videos</span> from the Admira Studio library<span id="stock-cliente"></span>.</p>
@@ -87,8 +91,6 @@
       <div class="adapter-workspace">
       <aside class="size-library" id="cuad-opciones" aria-label="Size library">
         <h2>Sizes</h2>
-        <label class="project-label">Project<select id="adapter-project" aria-describedby="project-status"><option value="general">General (no project)</option></select></label>
-        <p id="project-status" class="muted project-status" role="status"></p>
         <section id="estancos" class="estancos" aria-labelledby="estancos-h" hidden>
           <h3 id="estancos-h">Tobacconists</h3>
           <p id="estancos-nota" class="muted estancos-nota"></p>
@@ -102,7 +104,7 @@
         <p class="muted">A campaign selects its batch. The checkbox of each group and All sizes select the whole group in one click and, if it is already complete, clear it; with a search or orientation filter, only what is visible. Adapt generates the checked sizes, in a queue.</p>
         <label class="size-search-label">Search formats or sizes<input id="size-search" type="search" placeholder="Name or 300 × 250…"></label>
         <label class="orientation-label">Filter by orientation<select id="size-orientation"><option value="all">All</option><option value="portrait">Portrait</option><option value="landscape">Landscape</option><option value="square">Square</option></select></label>
-        <h3>Full campaigns</h3>
+        <h3 id="project-campaigns-heading">Full campaigns</h3>
         <div id="campaigns"></div>
         <label class="all-sizes"><input type="checkbox" id="all-sizes"><span class="all-sizes-text"><b>All sizes</b><small id="all-sizes-action" aria-hidden="true">Select all 42</small></span><span id="all-sizes-count" class="all-sizes-count">0/42</span></label>
         <p id="group-status" class="visually-hidden" role="status" aria-live="polite"></p>
@@ -162,7 +164,7 @@
   <script defer src="/adaptaciones/stock-select.js?v=17.10.2026.r6.2255"></script>
   <script defer src="/adaptaciones/ficha-tecnica.js?v=17.10.2026.r6.2255"></script>
   <script defer src="/adaptaciones/importar.js?v=import-ha-20261018-16"></script>
-  <script type="module" src="/adaptaciones/adaptaciones.js?v=delivery-20261019-1"></script>
+  <script type="module" src="/adaptaciones/adaptaciones.js?v=delivery-20261019-1-project-destinations-1"></script>
   <script defer src="/matrix-rain.js?v=17.10.2026.r6.2255"></script>
   <script defer src="/assets/cuadratura.js?v=27.10.2026.r4.2140"></script>
   <script src="/assets/admira-version-watch.js" defer></script>

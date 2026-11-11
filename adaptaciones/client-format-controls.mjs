@@ -33,16 +33,24 @@ export function mountCreatorFormats({root,t,get,begin,newCampaign,select,source,
  }
  return {init,update,fresh};
 }
-export function mountAdapterInstallations({host,t,getSource,getCampaign,locked}){
- const panel=document.createElement('section');panel.className='adapter-client-installations';panel.hidden=true;host.prepend(panel);let current=null,working=false;
- function update(ficha){current=ficha;panel.replaceChildren();panel.hidden=!ficha?.instalaciones?.length;if(panel.hidden)return;
+export function mountAdapterInstallations({host,t,getSource,getCampaign,locked,visit}){
+ const panel=document.createElement('section');panel.className='adapter-client-installations';panel.hidden=true;host.prepend(panel);let current=null,working=false,formats=[];
+ function update(ficha){current=ficha;formats=[];panel.replaceChildren();panel.hidden=!ficha?.instalaciones?.length;if(panel.hidden)return;
   const heading=document.createElement('h2');heading.textContent=ficha.nombre+' · '+t('Montajes de pantallas','Screen layouts');const description=document.createElement('p');description.textContent=t('Usa la imagen de esta campaña y continúa en Creador para preparar el vídeo por pantalla.','Use this campaign image and continue in Creator to prepare per-screen video.');panel.append(heading,description);
-  for(const i of clientInstallations(ficha)){const card=document.createElement('div');card.className='adapter-installation-card';const title=document.createElement('b');title.textContent=i.name[document.documentElement.lang==='en'?'en':'es'];const map=document.createElement('div');map.className='client-screen-map';map.setAttribute('aria-label',i.pattern);let group=null;
+  for(const i of clientInstallations(ficha)){
+   const format={id:i.id,nombre:i.name[document.documentElement.lang==='en'?'en':'es'],installation:i,client:{id:ficha.cliente}};
+   formats.push(format);
+   const card=document.createElement('div');card.className='adapter-installation-card';const title=document.createElement('b');title.textContent=i.name[document.documentElement.lang==='en'?'en':'es'];const map=document.createElement('div');map.className='client-screen-map';map.setAttribute('aria-label',i.pattern);let group=null;
    for(const s of i.screens){if(group?.dataset.group!==String(s.group||1)){group=document.createElement('span');group.className='client-screen-group';group.dataset.group=s.group||1;map.append(group);}const screen=document.createElement('span');screen.className=s.w>s.h?'client-screen landscape':'client-screen portrait';screen.textContent=s.w>s.h?'H':'V';group.append(screen);}
    const link=document.createElement('button');link.type='button';link.className='pill';link.textContent=t('Crear este montaje','Create this layout');link.onclick=async()=>{if(working||locked())return;working=true;panel.querySelectorAll('button').forEach(b=>b.disabled=true);try{const image=getSource();if(!image){location.href=(document.documentElement.lang==='en'?'/en/creador/':'/creador/')+'?proyecto='+encodeURIComponent(current.id)+'&cliente='+encodeURIComponent(current.cliente)+'&instalacion='+encodeURIComponent(i.id);return;}
      const blob=await imageBlob(image),id=await saveHandoff({source:{blob,name:t('Imagen de campaña','Campaign image')},campaign:getCampaign?.()||null,project:current.id,installation:i.id});location.href=handoffURL(document.documentElement.lang==='en'?'/en/creador/':'/creador/',id,{project:current.id,installation:i.id,client:current.cliente});
-    }catch{description.textContent=t('No se pudo trasladar la imagen. Conserva el original y vuelve a intentarlo.','The image could not transfer. Keep the original and try again.');}finally{working=false;panel.querySelectorAll('button').forEach(b=>b.disabled=false);}};card.append(title,map,link);panel.append(card);
+    }catch{description.textContent=t('No se pudo trasladar la imagen. Conserva el original y vuelve a intentarlo.','The image could not transfer. Keep the original and try again.');}finally{working=false;panel.querySelectorAll('button').forEach(b=>b.disabled=false);}};card.append(title,map);
+   if(visit){
+    const preview=document.createElement('button');preview.type='button';preview.className='pill';preview.textContent=t('Ver en gemelo 3D','Preview in 3D twin');preview.onclick=()=>visit(format);
+    card.append(preview);
+   }
+   card.append(link);panel.append(card);
   }
  }
- return {update};
+ return {update,formats:()=>formats};
 }

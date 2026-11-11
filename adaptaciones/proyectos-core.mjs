@@ -4,6 +4,13 @@
 // usa solo la biblioteca general. Módulo puro: lo usan el navegador, los tests y el generador.
 import {settings} from './adapter-core.mjs?v=adapter-detail-1';
 import {RECETAS} from './crear-core.mjs?v=adapter-detail-1';
+import {isClassicFormat} from './classic-step.mjs';
+
+export function adaptationFormats(project, formats) {
+  if (project === GENERAL) return formats;
+  const own = formats.filter(format => format.proyecto === project);
+  return own.length ? own : formats.filter(isClassicFormat);
+}
 
 export const GENERAL = 'general';
 export const YOKUP_URL = 'https://api.yokup.com/projects';
