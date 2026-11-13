@@ -221,6 +221,14 @@
     [
       "  <title>Creator · Campaigns for screens | Admira Studio</title>\n  <meta name=\"description\"",
       "  <title>Creator · Campaigns for screens | Admira Studio</title>\n  <link rel=\"stylesheet\" href=\"/assets/studio-workflow/creator.css?v=20261022-1\">\n  <script type=\"module\" src=\"/assets/studio-workflow/creator.mjs?v=20261022-1\"></script>\n  <meta name=\"description\""
+    ],
+    [
+      "import {withAvatar} from './_avatar-loader.js';",
+      "import {withAvatar} from './_avatar-loader.js';\nimport {studioHomeForGuest} from './_studio-home.js';"
+    ],
+    [
+      "  const response = await guardedRequest(context);\n",
+      "  const response = await guardedRequest(context);\n  const guestHome = studioHomeForGuest(context.request, response);\n  if (guestHome) return guestHome;\n"
     ]
   ],
   "_no_se_sustituye": [
@@ -279,7 +287,8 @@
     "assets/site-nav.js",
     "assets/expert-cli.js",
     "_redirects",
-    "test/studio-page-exceptions.json"
+    "test/studio-page-exceptions.json",
+    "functions/_studio-home.js"
   ],
   "_por_que_propios": [
     "Existen solo en admira.studio y no tienen equivalente en Pixeria. El sync no los toca",
