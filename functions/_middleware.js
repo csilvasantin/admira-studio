@@ -1,5 +1,6 @@
 import {handleAuth, hasSession, safeReturnTo, sessionInfo} from './_auth.js';
 import {withAvatar} from './_avatar-loader.js';
+import {studioHomeForGuest} from './_studio-home.js';
 import {withPresence} from './_live-presence.js';
 
 const PUBLIC_EXTENSION_DOCUMENTS = new Set([
@@ -31,6 +32,8 @@ export async function onRequest(context) {
     return context.next();
   }
   const response = await guardedRequest(context);
+  const guestHome = studioHomeForGuest(context.request, response);
+  if (guestHome) return guestHome;
   return withPresence(withAvatar(response, url));
 }
 
