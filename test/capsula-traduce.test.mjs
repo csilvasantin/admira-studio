@@ -156,3 +156,16 @@ test('publicación confirmada actualiza la galería antes de repintar, sin esper
   assert.deepEqual(await maybeSubtitle(it, ctx), {skipped: 'ya-existe'});
   assert.equal(calls.published.length, 1);
 });
+
+test('empty or malformed recognition never publishes or reports subtitle success', async () => {
+  for (const cues of [[], undefined]) {
+    const {ctx,calls}=subtitleHarness({ok:true,from:'en',to:'es',cues});
+    const statuses=[]; ctx.onStatus=s=>statuses.push(s);
+    const result=await maybeSubtitle(original(),ctx);
+    assert.equal(result.ok,false);
+    assert.equal(result.error,Array.isArray(cues)?'no-recognizable-speech':'subtitle-cues');
+    assert.equal(calls.published.length,0);
+    assert.equal(calls.encodes.length,1);
+    if(Array.isArray(cues))assert.match(statuses.at(-1),/no generados.*original sigue en Stock/);
+  }
+});
