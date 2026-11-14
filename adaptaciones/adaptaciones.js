@@ -1,11 +1,11 @@
-import {mountAdapterInstallations} from './client-format-controls.mjs?v=project-destinations-1';
+import {mountAdapterInstallations} from './client-format-controls.mjs?v=creator-project-20261114';
 import {readHandoff} from './campaign-handoff.mjs?v=coffee-journey-1';
 import {classicTargets,isClassicFormat,extraFormats} from './classic-step.mjs?v=20261009-classic-step-1';
 import {mountAdvertisement} from './anuncio-studio.mjs?v=classic-auto-6';
 import {compositionFromStock} from '../assets/content-composition.mjs?v=composition-1';
-import {mountCampaign} from './campaign-studio.mjs?v=campana-url-2';
+import {mountCampaign} from './campaign-studio.mjs?v=creator-project-20261114';
 let campaignWorkshop=null;
-import {mountTwin} from './gemelo-digital.mjs?v=coffee-journey-1';
+import {mountTwin} from './gemelo-digital.mjs?v=creator-project-20261114';
 import {aiJob} from './ia-core.mjs?v=adapter-detail-1';
 import {APPLICATION_KEY,restoreApplications,applyApplications} from './aplicaciones-core.mjs';
 import {mountStudio} from './studio-adaptaciones.mjs';
@@ -2156,7 +2156,7 @@ async function exportAdvertisements(formats,kinds,extra){
 // Expert project filter: independent of branding and account permissions.
 if(esPaginaAdaptador(location.pathname)){
   try{
-    const {mountProjectView}=await import('/assets/project-scope.mjs?v=20261114-project-1');
+    const {mountProjectView}=await import('/assets/project-scope.mjs?v=creator-project-20261114');
     const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/project-scope.css?v=20261114-project-1';document.head.append(css);
     window.AdmiraProjectView=await mountProjectView({host:document.querySelector('.adapt-main'),onLayout:async id=>{const u=new URL(location.href);u.searchParams.set('instalacion',id);history.replaceState(history.state,'',u.pathname+u.search);installationPanel.update(FICHA);if(mediaReady())goStep(2);else announce(t('Elige un contenido para preparar el montaje seleccionado.','Choose content to prepare the selected layout.'));},onSelect:async id=>{
       if(state.proyecto!==id){soltarFormatosURL();await switchProject(id);}

@@ -390,7 +390,7 @@
     }
     switch (name) {
       case 'proyecto': case 'project':
-        import('/assets/project-scope.mjs?v=20261114-project-1').then(function(m){return m.runProjectCommand(arg);}).then(write).catch(function(error){write(error.message);});break;
+        import('/assets/project-scope.mjs?v=creator-project-20261114').then(function(m){return m.runProjectCommand(arg);}).then(write).catch(function(error){write(error.message);});break;
 
       // /crear and /create are reserved and dispatched only by AdmiraExperto.exec.
 

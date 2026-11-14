@@ -14,6 +14,7 @@ export function applyClientInstallations(c,ficha,{only=null,fresh=false}={}){
  const list=clientInstallations(ficha);if(only&&!list.some(i=>i.id===only))throw Error('client-installation-not-found');
  const next=clone(c);next.client={id:ficha.cliente,name:ficha.nombre};
  if(fresh)for(const key of ['visualStyle','direction','seconds','unitSeconds','background','accent','foreground','logo'])if(ficha.creacion?.[key]!==undefined)next[key]=clone(ficha.creacion[key]);
+ if(fresh&&ficha.creacion?.exclusiveFormats){next.installations=list.map(i=>({...i,enabled:!only||i.id===only}));next.revision++;return restoreCampaign(next);}
  if(fresh)next.installations=INSTALLATIONS.slice(0,2).map(i=>({...clone(i),phase:'unit'}));
  for(const unit of INSTALLATIONS.slice(0,2)){const existing=next.installations.find(i=>i.id===unit.id);if(existing)existing.phase='unit';else next.installations.push({...clone(unit),phase:'unit'});}
  if(next.unitSeconds===undefined)next.unitSeconds=next.seconds;
