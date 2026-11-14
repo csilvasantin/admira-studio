@@ -3956,7 +3956,10 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
           const newId = ok[ok.length - 1].id || '';
           setTimeout(() => {
             try { dlg.close(); } catch {}
-            location.href = 'https://www.admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
+            const destination=new URL('https://www.admira.studio/stock.html');
+            if(newId)destination.searchParams.set('highlight',newId);
+            if(chromeCustomFormat&&ok.length===1&&ok[0].url===chromeCustomFormat.url){destination.searchParams.set('adapterProject',chromeCustomFormat.project);destination.searchParams.set('adapterFormat',chromeCustomFormat.custom);}
+            location.href=destination.href;
           }, total > 1 ? 1800 : 900);
         }
       } finally {
@@ -4162,7 +4165,10 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
           const newId = ok[ok.length - 1].id || '';
           setTimeout(() => {
             try { dlg.close(); } catch {}
-            location.href = 'https://www.admira.studio/stock.html' + (newId ? '?highlight=' + encodeURIComponent(newId) : '');
+            const destination=new URL('https://www.admira.studio/stock.html');
+            if(newId)destination.searchParams.set('highlight',newId);
+            if(chromeCustomFormat&&ok.length===1&&ok[0].url===chromeCustomFormat.url){destination.searchParams.set('adapterProject',chromeCustomFormat.project);destination.searchParams.set('adapterFormat',chromeCustomFormat.custom);}
+            location.href=destination.href;
           }, total > 1 ? 1800 : 900);
         }
       } finally {
@@ -4205,6 +4211,7 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       }
     }
 
+    let chromeCustomFormat = null;
     function openChromeImporterHandoff() {
       const params = new URLSearchParams(location.search);
       if (params.get('importSource') !== 'chrome') return;
@@ -4214,11 +4221,13 @@ title: ${(first.title || titleHint || '').replace(/</g,'&lt;')}</pre>
       const tags = String(params.get('importTags') || '').slice(0, 400);
       const title = String(params.get('importTitle') || '').slice(0, 180);
       const autostart = params.get('importAutostart') === '1';
+      const project=params.get('importProject'),custom=params.get('importCustomFormat');
+      chromeCustomFormat=/^[a-z0-9][a-z0-9-]{0,79}$/.test(project||'')&&(custom==='all'||/^(project|layout):[a-z0-9][a-z0-9:-]{0,79}$/.test(custom||''))?{project,custom,url}:null;
 
       // Evita reimportar al recargar o volver atrás, y no deja el título/notas
       // del contenido en la barra de direcciones ni en un marcador compartido.
       const clean = new URL(location.href);
-      ['importSource', 'importUrl', 'importFormat', 'importComment', 'importTags', 'importTitle', 'importAutostart']
+      ['importSource', 'importUrl', 'importFormat', 'importComment', 'importTags', 'importTitle', 'importAutostart', 'importProject', 'importCustomFormat']
         .forEach(key => clean.searchParams.delete(key));
       history.replaceState({}, '', clean.pathname + clean.search + clean.hash);
       if (!url) return;

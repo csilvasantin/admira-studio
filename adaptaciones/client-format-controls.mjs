@@ -1,8 +1,8 @@
 import {clientEntry,clientInstallations,applyClientInstallations} from './client-installations.mjs?v=seven-formats-1';
 import {saveHandoff,readHandoff,handoffURL} from './campaign-handoff.mjs?v=coffee-footer-1';
 const getJSON=async url=>{const r=await fetch(url+(url.includes("/adaptaciones/proyectos/")?(url.includes("?")?"&":"?")+"v=starbucks-layouts-5":""),{cache:"no-cache"});if(!r.ok)throw Error('catalogue');return r.json();};
-// A client counts the formats of its latest delivered content when known (Stock card, ES + EN); otherwise landscape, portrait and its layouts.
-const formatCount=p=>p.ultimoContenido?.formatos||2+p.instalaciones;
+// Count configured formats and layouts, never the outputs of the latest campaign.
+const formatCount=p=>(p.formatos?.estandar||0)+(p.formatos?.especiales||0)+(p.instalaciones||0);
 const imageBlob=async image=>{const cv=document.createElement('canvas');cv.width=image.naturalWidth;cv.height=image.naturalHeight;cv.getContext('2d').drawImage(image,0,0);try{const blob=await new Promise(r=>cv.toBlob(r,'image/png'));if(!blob)throw Error('image');return blob;}finally{cv.width=cv.height=0;}};
 export function mountCreatorFormats({root,t,get,begin,newCampaign,select,source,portable,locked,say,hadSaved=false}){
  const en=document.documentElement.lang==='en',params=new URLSearchParams(location.search),panel=document.createElement('section');panel.className='campaign-client-formats';
@@ -20,7 +20,7 @@ export function mountCreatorFormats({root,t,get,begin,newCampaign,select,source,
  async function fresh(){const entry=clientEntry(index,pick.value);return entry?applyClientInstallations(newCampaign(),await ficha(entry),{fresh:true}):newCampaign();}
  async function init(){
   try{const [data,session]=await Promise.all([getJSON('/adaptaciones/proyectos/index.json'),getJSON('/auth/session').catch(()=>null)]);const permitted=Array.isArray(session?.clientes)?session.clientes:window.PixeriaCliente?.permitidos?.();index=(data.proyectos||[]).filter(p=>p.creador&&(!permitted||permitted.includes(p.cliente)||permitted.includes('alsea')&&p.cliente==='starbucks'));
-   pick.replaceChildren(new Option(t('General · biblioteca de formatos','General · format library'),''),...index.map(p=>new Option(p.nombre+' · '+formatCount(p)+' '+t('formatos','formats'),p.id)));
+   pick.replaceChildren(new Option(t('General · biblioteca de formatos','General · format library'),''),...index.map(p=>new Option(p.nombre+' ('+formatCount(p)+') '+t('formatos','formats'),p.id)));
    const requested=clientEntry(index,params.get('proyecto')||params.get('cliente')||get().client?.id||window.PixeriaCliente?.actual?.()?.id);if(requested)pick.value=requested.id;pick.onchange();
    if(params.has('handoff')){const transfer=await readHandoff(params.get('handoff')),entry=clientEntry(index,transfer.project||requested?.id);let next=transfer.campaign||newCampaign();
     if(transfer.source.blob.size>8*1048576)throw Error('handoff-image-too-large');
@@ -37,10 +37,16 @@ export function mountAdapterInstallations({host,t,getSource,getCampaign,locked,v
  const panel=document.createElement('section');panel.className='adapter-client-installations';panel.hidden=true;host.prepend(panel);let current=null,working=false,formats=[];
  function update(ficha){current=ficha;formats=[];panel.replaceChildren();panel.hidden=!ficha?.instalaciones?.length;if(panel.hidden)return;
   const heading=document.createElement('h2');heading.textContent=ficha.nombre+' · '+t('Montajes de pantallas','Screen layouts');const description=document.createElement('p');description.textContent=t('Usa la imagen de esta campaña y continúa en Creador para preparar el vídeo por pantalla.','Use this campaign image and continue in Creator to prepare per-screen video.');panel.append(heading,description);
-  for(const i of clientInstallations(ficha)){
+  const installations=clientInstallations(ficha);
+  const picker=document.createElement('select');picker.setAttribute('aria-label',t('Formatos del proyecto','Project formats'));
+  const all=new Option(t('Todos los montajes','All layouts'),'');picker.append(all);
+  for(const i of installations)picker.append(new Option(i.name[document.documentElement.lang==='en'?'en':'es']+' · '+i.pattern,i.id));
+  panel.append(picker);
+  picker.onchange=()=>{panel.querySelectorAll('.adapter-installation-card').forEach(card=>card.hidden=!!picker.value&&card.dataset.installation!==picker.value);};
+  for(const i of installations){
    const format={id:i.id,nombre:i.name[document.documentElement.lang==='en'?'en':'es'],installation:i,client:{id:ficha.cliente}};
    formats.push(format);
-   const card=document.createElement('div');card.className='adapter-installation-card';const title=document.createElement('b');title.textContent=i.name[document.documentElement.lang==='en'?'en':'es'];const map=document.createElement('div');map.className='client-screen-map';map.setAttribute('aria-label',i.pattern);let group=null;
+   const card=document.createElement('div');card.className='adapter-installation-card';card.dataset.installation=i.id;const title=document.createElement('b');title.textContent=i.name[document.documentElement.lang==='en'?'en':'es'];const map=document.createElement('div');map.className='client-screen-map';map.setAttribute('aria-label',i.pattern);let group=null;
    for(const s of i.screens){if(group?.dataset.group!==String(s.group||1)){group=document.createElement('span');group.className='client-screen-group';group.dataset.group=s.group||1;map.append(group);}const screen=document.createElement('span');screen.className=s.w>s.h?'client-screen landscape':'client-screen portrait';screen.textContent=s.w>s.h?'H':'V';group.append(screen);}
    const link=document.createElement('button');link.type='button';link.className='pill';link.textContent=t('Crear este montaje','Create this layout');link.onclick=async()=>{if(working||locked())return;working=true;panel.querySelectorAll('button').forEach(b=>b.disabled=true);try{const image=getSource();if(!image){location.href=(document.documentElement.lang==='en'?'/en/creador/':'/creador/')+'?proyecto='+encodeURIComponent(current.id)+'&cliente='+encodeURIComponent(current.cliente)+'&instalacion='+encodeURIComponent(i.id);return;}
      const blob=await imageBlob(image),id=await saveHandoff({source:{blob,name:t('Imagen de campaña','Campaign image')},campaign:getCampaign?.()||null,project:current.id,installation:i.id});location.href=handoffURL(document.documentElement.lang==='en'?'/en/creador/':'/creador/',id,{project:current.id,installation:i.id,client:current.cliente});
@@ -51,6 +57,8 @@ export function mountAdapterInstallations({host,t,getSource,getCampaign,locked,v
    }
    card.append(link);panel.append(card);
   }
+  const requested=new URLSearchParams(location.search).get('instalacion');
+  if(installations.some(i=>i.id===requested)){picker.value=requested;picker.onchange();}
  }
  return {update,formats:()=>formats};
 }

@@ -9,12 +9,27 @@ function textFrom(selector) {
 
 function pageContext() {
   const url = AdmiraImporter.canonicalUrl(location.href);
-  const ogTitle = document.querySelector('meta[property="og:title"]')?.content || '';
-  const title = String(ogTitle || document.title || '').replace(/\s+-\s+YouTube\s*$/i, '').trim();
-  const channel = textFrom('ytd-watch-metadata ytd-channel-name a')
-    || textFrom('#owner #channel-name a')
-    || textFrom('ytm-slim-owner-renderer .slim-owner-channel-name');
-  return { url, title, channel, thumbnail: AdmiraImporter.thumbnailUrl(url) };
+  const meta = selector => document.querySelector(selector)?.content || '';
+  const metaUrl = AdmiraImporter.canonicalUrl(meta('meta[property="og:url"]'));
+  const id = AdmiraImporter.videoId(url);
+  const matchingMetadata = !!id && (metaUrl ? metaUrl === url : meta('meta[itemprop="videoId"]') === id);
+  const short = location.pathname.startsWith('/shorts/');
+  const title = String((matchingMetadata && meta('meta[property="og:title"]'))
+    || (!short && textFrom('ytd-watch-metadata h1'))
+    || document.title || '').replace(/\s+-\s+YouTube\s*$/i, '').trim().slice(0, 180);
+  const channel = (short ? textFrom('ytd-reel-video-renderer[is-active] #channel-name a')
+    : textFrom('ytd-watch-metadata ytd-channel-name a')
+      || textFrom('#owner #channel-name a')
+      || textFrom('ytm-slim-owner-renderer .slim-owner-channel-name')).slice(0, 100);
+  const player = short ? document.querySelector('ytd-reel-video-renderer[is-active]')
+    : document.querySelector('ytd-watch-flexy[video-id]');
+  const playerId = player?.getAttribute('video-id') || player?.getAttribute('videoid');
+  const video = (!short || player) && (!playerId || playerId === id)
+    ? (player || document).querySelector(short ? 'video' : 'video.html5-main-video') : null;
+  const original = video && !video.closest('.ad-showing') ? video : null;
+  return { url, title, channel, short, width: original?.videoWidth, height: original?.videoHeight, thumbnail: AdmiraImporter.thumbnailUrl(url),
+    keywords: matchingMetadata ? meta('meta[name="keywords"]').slice(0, 800) : '',
+    description: matchingMetadata ? meta('meta[property="og:description"]').slice(0, 600) : '' };
 }
 
 function setButtonState(label, state) {
@@ -87,7 +102,16 @@ function scheduleMount() {
   scheduled = setTimeout(mountButton, 180);
 }
 
-document.addEventListener('yt-navigate-finish', scheduleMount, true);
+function notifyContextChange() {
+  chrome.runtime.sendMessage({ type: 'VIDEO_CONTEXT_CHANGED' }).catch(() => {});
+}
+document.addEventListener('yt-navigate-finish', () => {
+  scheduleMount();
+  notifyContextChange();
+}, true);
+document.addEventListener('loadedmetadata', event => {
+  if (event.target instanceof HTMLVideoElement) notifyContextChange();
+}, true);
 window.addEventListener('popstate', scheduleMount);
 new MutationObserver(scheduleMount).observe(document.documentElement, { childList: true, subtree: true });
 scheduleMount();
