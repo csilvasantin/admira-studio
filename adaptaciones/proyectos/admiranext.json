@@ -117,5 +117,14 @@
         }
       ]
     }
-  ]
+  ],
+  "creacion": {
+    "exclusiveFormats": true
+  },
+  "gemelo": {
+    "id": "lab-gran-de-gracia-51",
+    "planta": 1,
+    "geometryStatus": "schematic-estimated",
+    "source": "Modelo Gran de Gràcia 51, 15 octubre 2026; pantallas actualizadas a V-H-V por Carlos el 14 noviembre 2026"
+  }
 }

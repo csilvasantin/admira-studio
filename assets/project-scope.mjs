@@ -26,7 +26,8 @@ export async function runProjectCommand(arg,win=window){
   if(win.AdmiraProjectView){await win.AdmiraProjectView.select(id);}
   else {
     win.sessionStorage.setItem(SCOPE_KEY,id);
-    const url=new URL(en?'/en/adaptaciones/':'/adaptaciones/',win.location.origin);
+    const creator=/(?:^|\/)creador(?:\/|$)/.test(win.location.pathname||'');
+    const url=new URL(creator?(en?'/en/creador/':'/creador/'):(en?'/en/adaptaciones/':'/adaptaciones/'),win.location.origin);
     url.searchParams.set('expertProject',id);url.searchParams.set('proyecto',id==='all'?'general':id);
     win.location.assign(url.pathname+url.search);
   }

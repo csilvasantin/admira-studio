@@ -1,4 +1,4 @@
-import {clientEntry,clientInstallations,applyClientInstallations} from './client-installations.mjs?v=seven-formats-1';
+import {clientEntry,clientInstallations,applyClientInstallations} from './client-installations.mjs?v=creator-project-20261114';
 import {saveHandoff,readHandoff,handoffURL} from './campaign-handoff.mjs?v=coffee-footer-1';
 const getJSON=async url=>{const r=await fetch(url+(url.includes("/adaptaciones/proyectos/")?(url.includes("?")?"&":"?")+"v=starbucks-layouts-5":""),{cache:"no-cache"});if(!r.ok)throw Error('catalogue');return r.json();};
 // Count configured formats and layouts, never the outputs of the latest campaign.
@@ -21,7 +21,7 @@ export function mountCreatorFormats({root,t,get,begin,newCampaign,select,source,
  async function init(){
   try{const [data,session]=await Promise.all([getJSON('/adaptaciones/proyectos/index.json'),getJSON('/auth/session').catch(()=>null)]);const permitted=Array.isArray(session?.clientes)?session.clientes:window.PixeriaCliente?.permitidos?.();index=(data.proyectos||[]).filter(p=>p.creador&&(!permitted||permitted.includes(p.cliente)||permitted.includes('alsea')&&p.cliente==='starbucks'));
    pick.replaceChildren(new Option(t('General · biblioteca de formatos','General · format library'),''),...index.map(p=>new Option(p.nombre+' ('+formatCount(p)+') '+t('formatos','formats'),p.id)));
-   const requested=clientEntry(index,params.get('proyecto')||params.get('cliente')||get().client?.id||window.PixeriaCliente?.actual?.()?.id);if(requested)pick.value=requested.id;pick.onchange();
+   const requested=clientEntry(index,params.get('proyecto')||params.get('cliente')||((sessionStorage.getItem('admira.studio.projectScope')||'all')!=='all'?sessionStorage.getItem('admira.studio.projectScope'):null)||get().client?.id);if(requested)pick.value=requested.id;pick.onchange();
    if(params.has('handoff')){const transfer=await readHandoff(params.get('handoff')),entry=clientEntry(index,transfer.project||requested?.id);let next=transfer.campaign||newCampaign();
     if(transfer.source.blob.size>8*1048576)throw Error('handoff-image-too-large');
     if(!transfer.campaign){next.product=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(transfer.source.blob);});next.productLabel=transfer.source.name||next.name;}
