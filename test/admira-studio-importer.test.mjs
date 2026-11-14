@@ -16,9 +16,9 @@ test('manifest v3: panel lateral, YouTube y permisos mínimos del flujo', () => 
   assert.ok(manifest.permissions.includes('sidePanel'));
   assert.ok(manifest.permissions.includes('storage'));
   assert.ok(!manifest.permissions.includes('tabs'));
-  assert.ok(manifest.host_permissions.every(host => host.includes('youtube.com') || host.includes('youtu.be')));
+  assert.ok(manifest.host_permissions.every(host => host === 'https://admira.studio/*' || host.includes('youtube.com') || host.includes('youtu.be')));
   assert.ok(!manifest.permissions.includes('cookies'));
-  assert.ok(!manifest.host_permissions.some(host => host.includes('admira.studio')));
+  assert.ok(manifest.host_permissions.includes('https://admira.studio/*'));
   for (const [declaredSize, path] of Object.entries(manifest.icons)) {
     const iconPath = resolve(root, path);
     assert.ok(existsSync(iconPath), `falta ${path}`);
@@ -117,7 +117,7 @@ test('subtítulos EN, ES o ninguno combinados con los cuatro formatos respetan l
 
 test('cápsula ES: no pierde etiquetas de cliente al exceder la capacidad del Stock', () => {
   const api = importerApi();
-  assert.throws(() => api.tagsForImport({subtitleLanguage: 'es', tags: Array.from({length: 9}, (_, i) => 'cliente' + i).join(',')}), /máximo 10/);
+  assert.throws(() => api.tagsForImport({subtitleLanguage: 'es', tags: Array.from({length: 9}, (_, i) => 'cliente' + i).join(',')}), /máximo (?:es )?10/);
   assert.throws(() => api.tagsForImport({subtitleLanguage: 'es', tags: Array.from({length: 5}, (_, i) => String(i).repeat(76)).join(',')}), /400 caracteres/);
   const tags = api.tagsForImport({subtitleLanguage: 'es', tags: '#cliente;#negocio\n#subtítulos-es'});
   assert.equal(tags, 'capsula, subtitulos-es, cliente, negocio');
@@ -126,7 +126,7 @@ test('cápsula ES: no pierde etiquetas de cliente al exceder la capacidad del St
 test('panel: subtítulos y formato son por vídeo, se desactivan en audio y no quedan como preferencias', async () => {
   const elements = new Map();
   const element = id => {
-    if (!elements.has(id)) elements.set(id, {id, value: '', checked: false, hidden: false, disabled: false, listeners: {}, addEventListener(name, fn) { this.listeners[name] = fn; }});
+    if (!elements.has(id)) elements.set(id, {id, value: '', checked: false, hidden: false, disabled: false, options: [], replaceChildren(...items){this.options=items;}, append(){}, setAttribute(){}, querySelectorAll(){return [];}, listeners: {}, addEventListener(name, fn) { this.listeners[name] = fn; }});
     return elements.get(id);
   };
   const radios = ['video', 'audio'].map(value => ({...element(value), value}));
@@ -139,23 +139,24 @@ test('panel: subtítulos y formato son por vídeo, se desactivan en audio y no q
     tabs: {query: async () => [tab], sendMessage: async () => ({url: tab.url, title: 'Fixture capsule'}),
       onActivated: {addListener(fn) {events.activate = fn;}}, onUpdated: {addListener() {}}},
     storage: {sync: {get: async defaults => defaults, set: async value => saved.push(value)}, session: {get: async () => ({})}},
-    runtime: {sendMessage: async value => {messages.push(value); return {ok: true};}},
+    runtime: {getManifest:()=>({version:'1.0.6'}),onMessage:{addListener(){}},sendMessage: async value => {if(value.type==='GET_PROJECT_SESSION')return {ok:true,authenticated:true,account:'fixture',allProjects:true,projects:[]}; messages.push(value); return {ok: true};}},
   };
   const document = {getElementById: element, querySelectorAll: () => radios, querySelector(selector) {
     const value = /value="(audio|video)"/.exec(selector)?.[1];
     return value ? radios.find(r => r.value === value) : selected();
   }};
-  vm.runInNewContext(read('sidepanel.js'), {document, chrome, AdmiraImporter: importerApi()});
+  vm.runInNewContext(read('sidepanel.js'), {document, chrome, window:{addEventListener(){}}, Option:function(text,value){this.textContent=text;this.value=value;}, AdmiraProjectFormats:{label:p=>p.name}, AdmiraImporter: importerApi()});
   await new Promise(resolve => setImmediate(resolve));
   const option = element('subtitleLanguage'); option.value = 'es';
   const target = element('targetFormat'); target.value = 'vertical';
   element('autostart').checked = true;
   await element('importForm').listeners.submit({preventDefault() {}});
+  assert.ok(messages.length, element('status').textContent+' / '+element('projectStatus').textContent);
   assert.equal(messages[0].data.subtitleLanguage, 'es');
   assert.equal(messages[0].data.targetFormat, 'vertical');
   assert.equal(saved[0].subtitleLanguage, undefined);
   assert.equal(saved[0].targetFormat, undefined);
-  assert.equal(saved[0].tags, '');
+  assert.equal(saved[0].tags, undefined);
   assert.match(element('status').textContent, /castellano/);
   radios[0].checked = false; radios[1].checked = true; radios[1].listeners.change();
   assert.equal(option.value, 'none'); assert.equal(option.disabled, true);
@@ -168,6 +169,6 @@ test('panel: subtítulos y formato son por vídeo, se desactivan en audio y no q
   element('tags').value = Array.from({length: 9}, (_, i) => 'tag' + i).join(',');
   await element('importForm').listeners.submit({preventDefault() {}});
   assert.equal(messages.length, 1); assert.equal(saved.length, 1);
-  assert.match(element('status').textContent, /máximo 10/);
+  assert.match(element('status').textContent, /máximo (?:es )?10/);
   assert.equal(element('importButton').disabled, false);
 });

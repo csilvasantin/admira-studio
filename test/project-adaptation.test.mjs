@@ -37,13 +37,22 @@ test('Altadis provides all 29 destinations with valid wall geometry for 3D', () 
   }
 });
 
-test('Starbucks retains its two output presets and its four installed layouts have screen geometry', () => {
+test('Starbucks retains its two output presets and its five installed layouts have screen geometry', () => {
   const {ficha, formats} = project('pixeria-alsea');
   assert.equal(formats.length, 2);
   const layouts = clientInstallations(ficha);
-  assert.equal(layouts.length, 4);
+  assert.equal(layouts.length, 5);
   for (const installation of layouts) {
     const wall = twinGeometry({installation});
     assert.equal(wall.segments.length, installation.screens.length);
   }
+});
+
+test('MacStudio has its own three-screen V-H-V layout, without the Mac Mini or laptop', async()=>{
+ const doc=JSON.parse(readFileSync(new URL('../adaptaciones/proyectos/pixeria-alsea.json',import.meta.url),'utf8'));
+ const layout=doc.instalaciones.find(i=>i.id==='macstudio-vhv');
+ assert.equal(layout.pattern,'V-H-V');assert.equal(layout.screens.length,3);
+ assert.deepEqual(layout.screens.map(s=>s.w>s.h?'H':'V'),['V','H','V']);
+ assert.deepEqual(layout.screens.map(s=>s.x),[0,1080,3000]);
+ assert.ok(layout.screens.every(s=>s.id.startsWith('macstudio-')));
 });

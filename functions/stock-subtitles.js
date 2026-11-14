@@ -103,17 +103,33 @@ export async function onRequestPost({request, env}) {
   const {audio, from, to} = body || {};
   if (typeof audio !== 'string' || !audio || audio.length > MAX_AUDIO_B64 || !/^[A-Za-z0-9+/=]+$/.test(audio.slice(0, 4096))) return json(400, {ok: false, error: 'bad-audio'});
   if (!LANGS.includes(to) || (from && !LANGS.includes(from))) return json(400, {ok: false, error: 'bad-lang'});
-  let out;
-  // Cloudflare documents this option for avoiding recognition repetition loops:
-  // https://developers.cloudflare.com/workers-ai/models/whisper-large-v3-turbo/
-  try { out = await env.AI.run('@cf/openai/whisper-large-v3-turbo', {audio, task: 'transcribe', ...(from ? {language: from} : {}), vad_filter: true, condition_on_previous_text: false}); }
-  catch (e) { return json(502, {ok: false, error: 'whisper', detail: String(e?.message || e).slice(0, 200)}); }
+  let out, retriedWithoutVad = false;
+  const recognize = vad_filter => env.AI.run('@cf/openai/whisper-large-v3-turbo', {
+    audio, task: 'transcribe', ...(from ? {language: from} : {}), vad_filter,
+    condition_on_previous_text: false,
+  });
+  try {
+    out = await recognize(true);
+    // VAD can remove singing or speech mixed with music. Retry once on the
+    // original audio; keep ASR's confidence/silence filters and timestamps.
+    if (!segmentsOf(out).length && !(+out?.transcription_info?.duration > MAX_SECONDS)) {
+      retriedWithoutVad = true;
+      out = await recognize(false);
+    }
+  } catch (e) { return json(502, {ok: false, error: 'whisper', detail: String(e?.message || e).slice(0, 200)}); }
+  if (!Array.isArray(out?.segments)) return json(502, {ok: false, error: 'invalid-transcription'});
   const detected = languageCode(out?.transcription_info?.language) || languageCode(from);
   const duration = +out?.transcription_info?.duration || 0;
   if (duration > MAX_SECONDS) return json(413, {ok: false, error: 'too-long', duration});
   const src = segmentsOf(out);
   if (src.length > 200) return json(413, {ok: false, error: 'too-many-segments'});
-  if (!src.length) return json(200, {ok: true, from: detected, to, cues: [], srt: '', text: ''});
+  if (!src.length) {
+    // A transcript without valid timings is a provider error, not evidence of silence.
+    if (String(out.text || '').trim() || out.segments.length)
+      return json(502, {ok: false, error: 'transcription-timestamps-missing'});
+    return json(200, {ok: true, from: detected, to, cues: [], srt: '', text: '',
+      reason: 'no-recognizable-speech', recognition: {retriedWithoutVad}});
+  }
   if (!detected) return json(502, {ok: false, error: 'language-undetected'});
   if (src.some(c => c.start < 0 || c.end > MAX_SECONDS)) return json(502, {ok: false, error: 'invalid-timestamps'});
   const source = detected;
@@ -127,5 +143,5 @@ export async function onRequestPost({request, env}) {
     return `${p(Math.floor(ms / 3600000))}:${p(Math.floor(ms / 60000) % 60)}:${p(Math.floor(ms / 1000) % 60)},${p(ms % 1000, 3)}`; };
   const srt = cues.map((c, n) => `${n + 1}\n${fmt(c.start)} --> ${fmt(c.end)}\n${c.text}\n`).join('\n');
   return json(200, {ok: true, from: source, to, duration, cues, srt, text: String(out?.text || '').slice(0, 20000),
-    recognition:{conditionOnPreviousText:false,wordTimingRepairs:src.filter(s=>s.timingSource==='words').length}});
+    recognition:{retriedWithoutVad,conditionOnPreviousText:false,wordTimingRepairs:src.filter(s=>s.timingSource==='words').length}});
 }

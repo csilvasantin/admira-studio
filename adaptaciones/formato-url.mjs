@@ -28,7 +28,7 @@ export function formatosPedidos(search, validos = null) {
   for (const valor of valores) {
     for (const trozo of String(valor).slice(0, MAX_LARGO).split(',')) {
       const id = trozo.trim().toLowerCase();
-      if (!ID_RE.test(id) || ids.includes(id) || (existe && !existe.has(id))) continue;
+      if (!(existe ? /^[a-z0-9][a-z0-9:-]{0,79}$/.test(id)&&existe.has(id) : ID_RE.test(id)) || ids.includes(id)) continue;
       ids.push(id);
       if (ids.length >= MAX_IDS) return ids;
     }

@@ -1,5 +1,15 @@
 # Novedades de AdmiraStudioImporter
 
+## 1.0.6 · Formatos por proyecto (preparada; pendiente de envío)
+
+- «Todos los formatos del proyecto»; sin formatos propios, vertical y horizontal.
+- Catálogo de formatos custom y montajes, con recuento y orden V-H-V de pantallas.
+- Verificación del proyecto y su catálogo antes de importar.
+- Los formatos custom se trasladan desde Stock al Adaptador para revisión y exportación; no se anuncian como renders automáticos terminados.
+- «Importación automática» debajo del botón de importar, marcada por defecto.
+- Requiere desplegar la actualización web de formatos antes de publicar este paquete.
+
+
 Historial de los cambios del paquete de Chrome. La ayuda pública ofrece este mismo apartado en [Novedades por versión](https://www.admira.studio/extensions/admira-studio-importer/support#novedades).
 
 El estado indicado se comprobó el **27 de octubre de 2026**. Es una observación de ese día, no la fecha exacta de aprobación ni una garantía sobre la versión instalada. La [ficha oficial](https://chromewebstore.google.com/detail/admirastudioimporter/empmdckpifcmhnlalcmkpceanaehedhl) muestra la versión disponible para instalar.

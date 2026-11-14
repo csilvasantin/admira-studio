@@ -380,6 +380,52 @@
           "group": 1
         }
       ]
+    },
+    {
+      "id": "macstudio-vhv",
+      "name": {
+        "es": "MacStudio · V-H-V",
+        "en": "MacStudio · V-H-V"
+      },
+      "pattern": "V-H-V",
+      "width": 4080,
+      "height": 1920,
+      "phase": "mural",
+      "approximate": true,
+      "geometryStatus": "nominal",
+      "catalogClient": "starbucks",
+      "groups": [
+        3
+      ],
+      "screens": [
+        {
+          "id": "macstudio-starbucks-vertical",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macstudio-starbucks-horizontal",
+          "x": 1080,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macstudio-starbucks-vertical-right",
+          "x": 3000,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        }
+      ]
     }
   ],
   "notas": {

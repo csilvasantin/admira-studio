@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "id": "admiranext",
+  "nombre": "AdmiraNeXT",
+  "cliente": "admiranext",
+  "alias": [
+    "admiranext-despacho",
+    "despacho",
+    "gran-de-gracia"
+  ],
+  "hereda": "general",
+  "fuente": {
+    "titulo": "Carlos · Despacho AdmiraNeXT, Gran de Gràcia: MacStudio y MacMini, ambos V-H-V",
+    "nota": "Medidas nominales heredadas de la instalación existente; confirmar resoluciones físicas antes de entrega."
+  },
+  "formatos": {
+    "estandar": [],
+    "especiales": []
+  },
+  "ajustes": {
+    "metodo": "auto",
+    "compatibilidad": "uhd",
+    "fps": 25,
+    "codec": "h264",
+    "familia": "standard"
+  },
+  "instalaciones": [
+    {
+      "id": "macstudio-vhv",
+      "name": {
+        "es": "MacStudio · V-H-V",
+        "en": "MacStudio · V-H-V"
+      },
+      "pattern": "V-H-V",
+      "width": 4080,
+      "height": 1920,
+      "phase": "mural",
+      "approximate": true,
+      "geometryStatus": "nominal",
+      "catalogClient": "admiranext",
+      "groups": [
+        3
+      ],
+      "screens": [
+        {
+          "id": "macstudio-starbucks-vertical",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macstudio-starbucks-horizontal",
+          "x": 1080,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macstudio-starbucks-vertical-right",
+          "x": 3000,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        }
+      ]
+    },
+    {
+      "id": "macmini-vhv",
+      "name": {
+        "es": "MacMini · V-H-V",
+        "en": "MacMini · V-H-V"
+      },
+      "pattern": "V-H-V",
+      "width": 4080,
+      "height": 1920,
+      "phase": "mural",
+      "approximate": true,
+      "geometryStatus": "nominal",
+      "catalogClient": "admiranext",
+      "groups": [
+        3
+      ],
+      "screens": [
+        {
+          "id": "macmini-starbucks-vertical",
+          "x": 0,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macmini-starbucks-horizontal",
+          "x": 1080,
+          "y": 420,
+          "w": 1920,
+          "h": 1080,
+          "rotation": 0,
+          "group": 1
+        },
+        {
+          "id": "macmini-starbucks-vertical-right",
+          "x": 3000,
+          "y": 0,
+          "w": 1080,
+          "h": 1920,
+          "rotation": 0,
+          "group": 1
+        }
+      ]
+    }
+  ]
+}

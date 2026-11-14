@@ -117,3 +117,27 @@ test('API: origen ajeno, sin sesión, silencio y límites nunca anuncian una ver
   const tooLong = await subtitleRequest(async () => ({...transcript('en'), transcription_info: {language: 'en', duration: 186}}));
   assert.equal(tooLong.status, 413);
 });
+
+test('API: retries empty VAD once without filtering and translates recovered lyrics', async () => {
+  const calls = [];
+  const r = await subtitleRequest(async (model, input) => {
+    calls.push({model, input});
+    if (!model.includes('whisper')) return {response:'1. Hola, mundo.'};
+    return input.vad_filter ? {segments: [], transcription_info:{language:'en',duration:2}} : transcript('en');
+  });
+  assert.equal(r.status, 200);
+  assert.deepEqual(calls.filter(c=>c.model.includes('whisper')).map(c=>c.input.vad_filter),[true,false]);
+  assert.equal(r.body.cues[0].text,'Hola, mundo.');
+  assert.equal(r.body.recognition.retriedWithoutVad,true);
+});
+test('API: empty retry is explicit; malformed timestamps and retry failure are not silence', async () => {
+  let calls=0;
+  const empty=await subtitleRequest(async()=>{calls++;return {segments:[]};});
+  assert.equal(calls,2);assert.equal(empty.body.reason,'no-recognizable-speech');
+  for (const invalid of [{}, {text:'Hello world',segments:[]}, {segments:[{text:'Hello',start:2,end:1}]}]) {
+    const r=await subtitleRequest(async()=>invalid);
+    assert.equal(r.status,502); assert.equal(r.body.ok,false);
+  }
+  const failed=await subtitleRequest(async(_,input)=>{if(input.vad_filter)return {segments:[]};throw Error('offline');});
+  assert.equal(failed.status,502); assert.equal(failed.body.error,'whisper');
+});

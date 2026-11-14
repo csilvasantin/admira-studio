@@ -14,37 +14,55 @@
       <div>
         <strong>ADMIRA<span>STUDIO</span></strong>
         <small>IMPORTER <i></i> ONLINE</small>
+        <span class="version" id="version"></span>
       </div>
-      <span class="version">v1.0.2</span>
+      <div class="project-control">
+        <button class="project-button" id="googleLogin" type="button" disabled>Entrar con Google</button>
+        <select class="project-button" id="importProject" aria-label="Proyecto de destino" hidden></select>
+      </div>
     </header>
+    <p class="project-status" id="projectStatus" role="status"></p>
 
-    <section class="empty" id="emptyState" hidden>
-      <div class="empty-icon">▶</div>
-      <h1>Abre un vídeo de YouTube</h1>
-      <p>El Importer detectará el vídeo actual y lo enviará directamente al Stock.</p>
-    </section>
+    <form class="youtube-search" id="youtubeSearch" role="search" aria-label="YouTube">
+      <div class="search-controls">
+        <span class="youtube-search-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 5v14l11-7z"/></svg>
+        </span>
+        <input id="youtubeQuery" type="search" aria-label="Buscar en YouTube" placeholder="Título, tema o enlace" maxlength="2048" required>
+        <button type="submit" class="youtube-search-button">Buscar</button>
+      </div>
+      <p id="youtubeSearchStatus" role="status"></p>
+      <ul class="search-results" id="youtubeResults" aria-label="Resultados de YouTube" tabindex="0" hidden></ul>
+    </form>
 
     <form id="importForm" hidden>
       <section class="video-card">
-        <div class="thumb-wrap">
+        <div class="thumb-wrap" id="videoPoster">
           <img id="thumbnail" alt="Miniatura del vídeo actual">
-          <span class="youtube-mark" aria-label="YouTube">
+          <button class="youtube-mark" id="playPreview" type="button" aria-label="Reproducir vídeo en el panel" title="Reproducir vídeo">
             <svg viewBox="0 0 28 20" aria-hidden="true"><path fill="#ff0033" d="M27.4 3.1A3.5 3.5 0 0 0 25 .6C22.8 0 14 0 14 0S5.2 0 3 .6A3.5 3.5 0 0 0 .6 3.1 36.7 36.7 0 0 0 0 10a36.7 36.7 0 0 0 .6 6.9A3.5 3.5 0 0 0 3 19.4c2.2.6 11 .6 11 .6s8.8 0 11-.6a3.5 3.5 0 0 0 2.4-2.5A36.7 36.7 0 0 0 28 10a36.7 36.7 0 0 0-.6-6.9Z"/><path fill="#fff" d="m11.2 14.3 7.3-4.3-7.3-4.3v8.6Z"/></svg>
-          </span>
+          </button>
         </div>
+        <div class="video-preview" id="videoPreview" hidden></div>
         <div class="video-copy">
-          <p class="eyebrow">VÍDEO DETECTADO</p>
+          <p class="eyebrow" id="videoSource">VÍDEO DETECTADO</p>
           <h1 id="videoTitle">—</h1>
           <p id="videoChannel" class="channel">YouTube</p>
+          <p class="preview-status" id="previewStatus" role="status" hidden></p>
         </div>
       </section>
 
       <section class="settings">
+        <label class="field" for="tags">ETIQUETAS
+          <input id="tags" maxlength="400" aria-describedby="tagHelp" placeholder="Añade o edita etiquetas">
+          <small id="tagHelp"></small>
+        </label>
+
         <fieldset>
           <legend>IMPORTAR COMO</legend>
           <div class="format-switch">
-            <label><input type="radio" name="format" value="video" checked><span>🎬 VIDEO<small>MP4 + audio</small></span></label>
-            <label><input type="radio" name="format" value="audio"><span>🎵 AUDIO<small>MP3</small></span></label>
+            <label><input type="radio" name="format" value="video" checked><span><i aria-hidden="true">🎬</i> VÍDEO <small>MP4 + audio</small></span></label>
+            <label><input type="radio" name="format" value="audio"><span><i aria-hidden="true">🎵</i> AUDIO <small>MP3</small></span></label>
           </div>
         </fieldset>
 
@@ -55,39 +73,38 @@
             <option value="en">English</option>
           </select>
         </label>
-        <label class="field" for="targetFormat">FORMATO DE LA COPIA
-          <select id="targetFormat" aria-describedby="processingHelp">
+        <label class="field" for="targetFormat">FORMATOS
+          <select id="targetFormat" aria-describedby="formatHelp processingHelp">
             <option value="original">Conservar formato original</option>
             <option value="vertical">Vertical · 9:16</option>
             <option value="horizontal">Horizontal · 16:9</option>
             <option value="both">Vertical y horizontal</option>
+            <option value="all">Todos los formatos del proyecto</option>
           </select>
+          <small id="formatHelp"></small>
         </label>
         <p class="processing-help" id="processingHelp">Conserva el original y su voz. La copia se ajusta sin recortar la imagen, con fondo desenfocado. Máximo 3 minutos; mantén Stock abierto. Revisa los subtítulos automáticos antes de usarlos.</p>
 
         <label class="field">COMENTARIO <small>opcional</small>
-          <textarea id="comment" maxlength="500" rows="3" placeholder="Contexto o notas para encontrarlo después…"></textarea>
+          <textarea id="comment" maxlength="500" rows="3" placeholder="Título o notas para encontrarlo en Stock"></textarea>
         </label>
 
-        <label class="field">ETIQUETAS <small>opcional</small>
-          <input id="tags" maxlength="400" placeholder="#cliente #campaña #pantalla">
-        </label>
-
-        <label class="auto-row">
-          <input id="autostart" type="checkbox" checked>
-          <span><b>Importación automática</b><small>Abre Admira Studio y comienza sin otro clic.</small></span>
-        </label>
       </section>
 
       <div class="route" aria-label="Flujo de importación">
         <span>YouTube</span><b>→</b><span>yt-dlp</span><b>→</b><span>Stock</span>
       </div>
 
-      <button class="import-button" id="importButton" type="submit">
+      <button class="import-button" id="importButton" type="submit" disabled>
         <span class="pulse" aria-hidden="true"></span>
         IMPORTAR EN ADMIRA STUDIO
         <b aria-hidden="true">↗</b>
       </button>
+
+      <label class="auto-row">
+        <input id="autostart" type="checkbox" checked>
+        <span><b>Importación automática</b><small>Abre Admira Studio y comienza sin otro clic.</small></span>
+      </label>
 
       <p class="status" id="status" role="status" aria-live="polite">Listo para importar.</p>
       <p class="privacy-note">Al continuar, la URL, el título y los datos que añadas se envían de forma segura a Admira Studio para realizar la importación. <a href="https://www.admira.studio/extensions/admira-studio-importer/privacy" target="_blank" rel="noopener">Privacidad</a></p>
@@ -99,6 +116,7 @@
     </footer>
   </main>
   <script src="shared.js"></script>
+  <script src="project-formats.js"></script>
   <script src="sidepanel.js"></script>
 </body>
 </html>

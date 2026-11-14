@@ -10,8 +10,8 @@ parser.add_argument('output', type=Path)
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1] / 'extensions/admira-studio-importer'
 manifest = json.loads((root / 'manifest.json').read_text())
-files = ['manifest.json', 'background.js', 'content.js', 'content.css', 'shared.js', 'sidepanel.html', 'sidepanel.css', 'sidepanel.js', *manifest['icons'].values()]
-assert manifest['manifest_version'] == 3 and manifest['version'] == '1.0.2'
+files = ['manifest.json', 'background.js', 'content.js', 'content.css', 'shared.js', 'youtube-search.js', 'project-formats.js', 'sidepanel.html', 'sidepanel.css', 'sidepanel.js', *manifest['icons'].values()]
+assert manifest['manifest_version'] == 3 and manifest['version'] == '1.0.6'
 assert len(files) == len(set(files))
 assert all((root / name).is_file() and (root / name).resolve().is_relative_to(root) for name in files)
 args.output.parent.mkdir(parents=True, exist_ok=True)

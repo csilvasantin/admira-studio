@@ -2346,13 +2346,24 @@
     // #traduce (EN→subtítulos ES) / #translate (ES→subtítulos EN) · assets/capsula-traduce.mjs (sin bucle: subtitulado-*).
     function capsulaTraduce(it){
       if(!it||it.type!=='video')return;
-      import('/assets/capsula-traduce.mjs?v=20261027-importer-es6').then(m=>m.maybeSubtitle(it,{items:allItemsTodo,onStatus:t=>{status.textContent=t;traducePendiente=t;
+      import('/assets/capsula-traduce.mjs?v=20261114-vad-retry').then(m=>m.maybeSubtitle(it,{items:allItemsTodo,onStatus:t=>{status.textContent=t;traducePendiente=t;
         try{status.classList.add('stock-traduce-aviso');applyFilters();}catch(_){}},onSettled:()=>{try{applyFilters();}catch(_){}},
         onCreated:(id,item)=>{if(item)document.dispatchEvent(new CustomEvent('stock:local-published',{detail:{item:{...item,url:`${STOCK_BASE}/stock/asset/${encodeURIComponent(id)}`}}}));}})).catch(()=>{});
     }
+    // Keep the requested custom layout attached to the imported Stock item.
+    {
+      const q=new URLSearchParams(location.search),project=q.get('adapterProject'),format=q.get('adapterFormat'),id=q.get('highlight');
+      if(/^[a-z0-9][a-z0-9-]{0,79}$/.test(project||'')&&(format==='all'||/^(project|layout):[a-z0-9][a-z0-9:-]{0,79}$/.test(format||''))&&/^[a-zA-Z0-9_-]{1,160}$/.test(id||'')){
+        const dest=new URL('/adaptaciones/',location.origin);dest.searchParams.set('proyecto',project);dest.searchParams.set('stock',id);
+        if(format==='all')dest.searchParams.set('formatos','todos');
+        else dest.searchParams.set(format.startsWith('layout:')?'instalacion':'formato',format.slice(format.indexOf(':')+1));
+        const link=document.createElement('a');link.className='btn';link.href=dest.pathname+dest.search;link.textContent=format==='all'?'Preparar todos los formatos del proyecto en Adaptador →':'Revisar formato del proyecto en Adaptador →';
+        document.querySelector('main')?.prepend(link);
+      }
+    }
     let traducePendiente='';
     // Carga el módulo una vez para pintar la insignia «subtítulos XX pendientes» en las tarjetas.
-    import('/assets/capsula-traduce.mjs?v=20261027-importer-es6').then(m=>{window.CapsulaTraduce=m;try{applyFilters();}catch(_){}}).catch(()=>{});
+    import('/assets/capsula-traduce.mjs?v=20261114-vad-retry').then(m=>{window.CapsulaTraduce=m;try{applyFilters();}catch(_){}}).catch(()=>{});
     grid.addEventListener('click',e=>{
       const b=e.target.closest('[data-act="traduce-pendiente"]');if(!b)return;e.preventDefault();e.stopPropagation();
       const txt=b.dataset.encargo||'';try{navigator.clipboard.writeText(txt);}catch(_){}

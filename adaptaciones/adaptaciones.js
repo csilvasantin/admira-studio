@@ -1922,8 +1922,8 @@ function renderProjects() {
   sel.replaceChildren();
   option(sel, GENERAL, t('General (sin proyecto)', 'General (no project)'));
   const own = PROJECTS.filter(p => p.propios), rest = PROJECTS.filter(p => !p.propios);
-  const count = p => (p.ficha.formatos?.estandar || 0) + (p.ficha.formatos?.especiales || 0);
-  group(t('Con formatos propios', 'With own formats'), own, p => `★ ${p.nombre} · ${count(p)} ${t('formatos', 'formats')}${p.ficha.instalaciones?' + '+p.ficha.instalaciones+' '+t('montajes','layouts'):''}`);
+  const count = p => (p.ficha.formatos?.estandar || 0) + (p.ficha.formatos?.especiales || 0) + (p.ficha.instalaciones || 0);
+  group(t('Con formatos propios', 'With own formats'), own, p => `${p.nombre} (${count(p)}) ${t('formatos', 'formats')}`);
   group(projectScoped ? t('Proyectos · vertical y horizontal', 'Projects · portrait and landscape') : t('Proyectos de Yokup', 'Yokup projects'), rest, p => p.nombre);
   if (state.proyecto !== GENERAL && !PROJECTS.some(p => p.id === state.proyecto)) option(sel, state.proyecto, state.proyecto);
   sel.value = state.proyecto;
@@ -2076,6 +2076,11 @@ if (formatosURL.length && !(query && String(query).trim())) {
   try { const entry = INDEX.find(x => x.id === PROYECTO_ALTADIS); if (entry) { const {ficha, lists} = await loadFicha(entry); ids = projectLibrary([], ficha, lists, EN).map(f => f.id); } } catch (_) {}
   formatosURL = formatosPedidos(location.search, ids); query = proyectoPorFormatos(query, formatosURL);
 }
+if (query && esPaginaAdaptador(location.pathname)) {
+  try {const entry=INDEX.find(x=>x.id===query || x.alias?.includes(query));
+    if(entry){const {ficha,lists}=await loadFicha(entry);formatosURL=formatosPedidos(location.search,projectLibrary([],ficha,lists,EN).map(f=>f.id));}}
+  catch{formatosURL=[];}
+}
 if (!formatosURL.length && esPaginaAdaptador(location.pathname)) quitarFormatoURL(); // ninguno vale (cliente-99): fuera de la URL, sin aviso
 if (formatosURL.length) vistaFormato = {ids: formatosURL}; // pendiente: nada se guarda hasta aplicarla
 try { lastProject = localStorage.getItem(PROJECT_KEY) || migratedTo; } catch (_) { lastProject = migratedTo; }
@@ -2087,6 +2092,12 @@ await switchProject(start.id);
 if (start.unknown) renderProjectStatus(t(`«${start.unknown}» no es un proyecto de Yokup: se usa ${projectName(start.id) === GENERAL ? 'General' : projectName(start.id)}.`, `«${start.unknown}» is not a Yokup project: using ${projectName(start.id) === GENERAL ? 'General' : projectName(start.id)}.`));
 aplicarFormatosURL();
 emptySource(); loop();
+const requestedStock=new URLSearchParams(location.search).get('stock');
+if(/^[a-zA-Z0-9_-]{1,160}$/.test(requestedStock||'')){
+  try{await cargarFuente({url:'https://api.admira.store/stock/asset/'+encodeURIComponent(requestedStock),nombre:'Stock '+requestedStock,origin:{id:requestedStock,title:'Stock '+requestedStock},clase:'video',origen:'stock'});}
+  catch{announce(t('No se pudo cargar el contenido importado. Puedes elegirlo en Stock.','Could not load imported content. Select it from Stock.'));}
+}
+
 if(!/(?:^|\/)creador(?:\/|$)/.test(location.pathname)&&new URLSearchParams(location.search).has('handoff')){try{sourceHandoff=await readHandoff(new URLSearchParams(location.search).get('handoff'));await cargarFuente({file:new File([sourceHandoff.source.blob],sourceHandoff.source.name||'campaign.png',{type:sourceHandoff.source.blob.type}),nombre:sourceHandoff.source.name||'Campaign',origen:'creador'});}catch{announce(t('No se pudo recuperar la imagen de Creador. Vuelve a abrirla desde la campaña.','Creator image could not restore. Open it again from the campaign.'));}}
 
 // El desplegable y el contador del Stock viven en ./stock-select.js (script clásico aparte): si este
@@ -2140,4 +2151,20 @@ async function exportAdvertisements(formats,kinds,extra){
   if(!jobs.length){if(f.print&&kinds!=='jpg')blob=new Blob([pngDensity(new Uint8Array(await blob.arrayBuffer()))],{type:'image/png'});const jpg=kinds==='jpg';queue.addReady({label,sub:t('Texto completo recompuesto','Complete typeset copy'),sourceURL:null,format:f,...ctx,receta:a.action},[{blob,filename:`${f.id}-${a.action}-${a.canvas.width}x${a.canvas.height}.${jpg?'jpg':'png'}`}]);}
   else {const sourceURL=URL.createObjectURL(blob);for(const job of jobs)queue.add({label,sub:t('Composición aprobada · texto completo','Approved composition · complete copy'),sourceURL,job,format:f,...ctx,receta:a.action});}
  }
+}
+
+// Expert project filter: independent of branding and account permissions.
+if(esPaginaAdaptador(location.pathname)){
+  try{
+    const {mountProjectView}=await import('/assets/project-scope.mjs?v=20261114-project-1');
+    const css=document.createElement('link');css.rel='stylesheet';css.href='/assets/project-scope.css?v=20261114-project-1';document.head.append(css);
+    window.AdmiraProjectView=await mountProjectView({host:document.querySelector('.adapt-main'),onLayout:async id=>{const u=new URL(location.href);u.searchParams.set('instalacion',id);history.replaceState(history.state,'',u.pathname+u.search);installationPanel.update(FICHA);if(mediaReady())goStep(2);else announce(t('Elige un contenido para preparar el montaje seleccionado.','Choose content to prepare the selected layout.'));},onSelect:async id=>{
+      if(state.proyecto!==id){soltarFormatosURL();await switchProject(id);}
+      if(new URLSearchParams(location.search).get('formatos')==='todos'){
+        const own=availableFormats();FORMATOS.forEach(f=>f.on=own.includes(f));
+        state.profile=defaultFamily();syncControls();buildGrid();
+      }
+      const u=new URL(location.href);u.searchParams.set('expertProject',id===GENERAL?'all':id);history.replaceState(history.state,'',u.pathname+u.search);
+    }});
+  }catch(error){announce(error.message);}
 }

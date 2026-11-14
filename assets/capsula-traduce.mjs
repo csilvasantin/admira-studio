@@ -144,7 +144,11 @@ export async function maybeSubtitle(it, ctx = {}) {
     if (!r.ok || !d.ok) throw new Error(d.error || ('HTTP ' + r.status));
     }
     if (d.to !== dir.to) throw new Error('subtitle-language');
-    if (!d.cues?.length) { say('// 🈯 subtítulos: no se ha detectado voz en el vídeo'); return {skipped: 'sin-voz'}; }
+    if (!Array.isArray(d.cues)) throw new Error('subtitle-cues');
+    if (!d.cues.length) {
+      say('// 🈯 subtítulos no generados: no se ha podido transcribir el audio. Puede contener música o voz cantada que el reconocimiento no identifica. El original sigue en Stock.');
+      return {ok: false, error: 'no-recognizable-speech'};
+    }
     if (!Array.isArray(d.cues) || d.cues.some(c => !Number.isFinite(c.start) || !Number.isFinite(c.end) || c.start < 0 || c.end <= c.start || c.end > meta.d + .25 || typeof c.text !== 'string' || !c.text.trim())) throw new Error('subtitle-cues');
     const request=formatRequest(tagsOf(it)), items=[...(ctx.items||[])], generated=[];
     const plans=subtitlePlans(meta.w,meta.h,request)
