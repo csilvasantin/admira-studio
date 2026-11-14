@@ -60,6 +60,21 @@ npm run publicar -- <nombre> --idioma es --si [--solo vertical] [--version v2] [
 
 Cada versión (16:9 y vertical) es una pieza aparte del Stock: subida por partes (`/stock/upload/init` → `part?n=` → `complete`) y alta (`/stock/publish` con `r2Staged`), título «Cliente · Local · Descripción · Lanzamiento ES · 16:9|vertical 9:16 · v1», etiquetas `lanzamiento`, `lanzamiento-horizontal|vertical`, `campaign:<id>`, `installation:<principal>`, `content-language:<idioma>`, cliente y marcas, y póster sacado del propio render (escena del anuncio). Exige que `render.<idioma>.json` esté OK. Deja `trabajo/<nombre>/publicacion.<idioma>.json` y la línea para el HANDON (`--handon` la añade al fichero). Sin `--si` nunca sube.
 
+## Piezas por personaje del Hotel Creel (14-nov-2026)
+
+`scripts/creel.mjs` hace una pieza por cada uno de los 13 personajes de la maqueta del Hotel Creel (PortAventura NeXT, admira.store): intro con las luces A–Z deletreando el nombre, ficha (minifigura, nombre, zona y celda), su línea con la voz de Admirito y subtítulo palabra a palabra sobre su efecto (lago, radio, portal…), y cierre. Composición `CreelPersonaje` (`src/creel/`), 1920×1080 a 30 fps; lo importante va entre y=180 y y=900 porque la LED del hotel es 8:3 y recorta el 16:9. Reparto en `scripts/creel/personajes.json` (copiado de `creel-escena.js` de admira-store).
+
+```bash
+npm run creel -- musica                 # public/musica/creel-bed.mp3, sintetizada en casa (sin material de terceros)
+npm run creel -- voz [--solo vecna]     # Admirito con tiempos por palabra → public/voz/creel/es/ + trabajo/creel/voz.es.json
+npm run creel -- montar                 # props/creel/<slug>.es.json validados (palabras prohibidas incluidas)
+npm run creel -- render [--solo vecna]  # salida/creel/<slug>.es.mp4 + póster; ffprobe y nivel de audio; trabajo/creel/render.es.json
+npm run creel -- publicar               # EN SECO; con --si sube cada pieza al Stock (título «Hotel Creel · <Nombre> · <zona> · ES · 16:9 · v1»,
+                                        # etiquetas hotel-creel, stranger-things, creel-personaje, personaje:<slug>, horizontal, …)
+```
+
+La pared de la maqueta y el kiosko `/creel` de admira.tv emiten solas las piezas etiquetadas `personaje:<slug>` mientras ese personaje manda. Para que lleguen, hay que poner las piezas en la playlist de la pantalla `hotel-creel` desde el Stock (admira.store): aquí no se emite nada. `tests/creel.test.mjs` prueba datos, plan, ficha y música sin red.
+
 ## Uso
 
 ```bash
