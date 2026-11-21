@@ -21,13 +21,19 @@
  * ningún campo que el Worker trate como privilegiado (externalId, catalogo…).
  */
 import {MOTORES, STAGED_KEY, tipoMimeOk, stockBase, cabeceras, error, respuesta} from './_stock-proxy.js';
+import {onRequest as distribute} from './stock-playlists.js';
 import {sessionInfo,createApiToken} from './_auth.js';
 import {validateComposition} from '../assets/content-composition.mjs';
 
 const MAX_BODY = 95 * 1024 * 1024; // el borde corta en 100 MB
 const CAMPOS = ['type', 'motor', 'prompt', 'title', 'comment', 'tags', 'costEst', 'mime', 'externalRef', 'validacion', 'quality', 'dimensions'];
 
-export async function onRequestPost({ request, env }) {
+export function onRequestPost(context) {
+  const job=publish(context);
+  context.waitUntil?.(job.then(()=>{},()=>{}));
+  return job;
+}
+async function publish({ request, env }) {
   if (+request.headers.get('content-length') > MAX_BODY) return error(413, 'too-big');
   let body;
   try { body = await request.json(); } catch { return error(400, 'bad-json'); }
@@ -36,6 +42,12 @@ export async function onRequestPost({ request, env }) {
   const conStaged = typeof body?.r2Staged === 'string' && STAGED_KEY.test(body.r2Staged);
   if (!body || !MOTORES.includes(body.motor) || !tipoMimeOk(body.type, body.mime) || conBase64 === conStaged) {
     return error(400, 'solo-adaptaciones');
+  }
+  const delivery=body.delivery;
+  if(delivery!==undefined){
+    if(request.headers.get('Origin')!==new URL(request.url).origin)return error(403,'invalid-origin');
+    if(!await sessionInfo(request,env))return error(401,'session-required');
+    if(!delivery?.selection?.device||![0,1,2].includes(delivery.priority)||!/^([a-f0-9]{8}-)([a-f0-9]{4}-){3}[a-f0-9]{12}$/i.test(delivery.event||''))return error(400,'invalid_delivery');
   }
   const limpio = {};
   for (const k of CAMPOS) if (body[k] != null) limpio[k] = body[k];
@@ -67,5 +79,16 @@ export async function onRequestPost({ request, env }) {
   } catch (e) {
     return error(502, 'stock-unreachable');
   }
-  return respuesta(r);
+  if(!delivery || !r.ok)return respuesta(r);
+  const saved=await r.json();
+  if(saved.ok&&saved.id){
+    const headers={'Content-Type':'application/json',Origin:new URL(request.url).origin};
+    for(const name of ['Cookie','Authorization'])if(request.headers.has(name))headers[name]=request.headers.get(name);
+    const payload={selection:delivery.selection,stockIds:[saved.id],priority:delivery.priority,event:delivery.event};
+    try{
+      const response=await distribute({request:new Request(new URL('/stock-playlists',request.url),{method:'POST',headers,body:JSON.stringify(payload)}),env});
+      saved.delivery=await response.json();
+    }catch{saved.delivery={ok:false,error:'distribution_unavailable'};}
+  }
+  return Response.json(saved,{status:r.status,headers:{'Cache-Control':'no-store'}});
 }

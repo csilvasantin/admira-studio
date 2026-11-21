@@ -128,6 +128,13 @@
     target.searchParams.set('importUrl', sourceUrl);
     target.searchParams.set('importFormat', !youtube ? 'auto' : data?.format === 'audio' ? 'audio' : 'video');
     target.searchParams.set('importAutostart', data && data.autostart === false ? '0' : '1');
+    const priority=data?.priority===undefined ? 2 : data.priority;
+    if(![0,1,2].includes(priority))throw new Error('Prioridad no válida.');
+    if(priority!==2 || data.queue===true){
+      target.searchParams.set('importDelivery','1');
+      target.searchParams.set('importPriority',String(priority));
+      if(data.projectId)target.searchParams.set('deliveryProject',data.projectId);
+    }
     const title = String((data && data.title) || '').trim().slice(0, 180);
     const comment = String((data && data.comment) || '').trim().slice(0, 500);
     const tags = tagsForImport(youtube ? data : {...data, targetFormat:'', subtitleLanguage:''});

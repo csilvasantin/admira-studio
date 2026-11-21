@@ -38,9 +38,12 @@ export async function onRequest({request,env,waitUntil}){
   if(request.headers.get('Origin')!==new URL(request.url).origin)return reply({ok:false,error:'origin_denied'},403);
   if(!/^application\/json(?:;|$)/i.test(request.headers.get('Content-Type')||''))return reply({ok:false,error:'json_required'},415);
   let body;try{const raw=await request.text();if(raw.length>65536)return reply({ok:false,error:'body_too_large'},413);body=JSON.parse(raw);}catch{return reply({ok:false,error:'invalid_json'},400);}
+  const delivery=Object.hasOwn(body||{},'priority');
+  if(delivery&&(![0,1,2].includes(body.priority)||!body.selection?.device||!body.event))return reply({ok:false,error:'invalid_delivery'},400);
+  if(delivery&&payload.priorityVersion!==1)return reply({ok:false,error:'player_priority_unavailable'},503);
   const screens=selectionScreens(data.rows,body.selection);
   if(!screens.length||screens.length>36)return reply({ok:false,error:screens.length?'too_many_screens':'no_destination'},400);
-  const r=await fetch(TV,{method:'POST',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify({screens,stockIds:body.stockIds,name:body.name})}).catch(()=>null);
+  const r=await fetch(TV,{method:'POST',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify({screens,stockIds:body.stockIds,name:body.name,...(delivery?{priority:body.priority,event:body.event}:{})})}).catch(()=>null);
   if(!r)return reply({ok:false,error:'distribution_unavailable'},503);
   const result=await r.json().catch(()=>({ok:false,error:'distribution_failed'}));
   return reply(result,r.status);

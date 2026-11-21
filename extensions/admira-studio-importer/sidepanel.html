@@ -87,6 +87,15 @@
         <p class="processing-help" id="processingHelp">Conserva el original y su voz. La copia se ajusta sin recortar la imagen, con fondo desenfocado. Máximo 3 minutos; mantén Stock abierto. Revisa los subtítulos automáticos antes de usarlos.</p>
 
         </div>
+        <label class="field" for="priority">Prioridad de emisión
+          <select id="priority">
+            <option value="2">2 · Normal</option>
+            <option value="1">1 · Emitir primero</option>
+            <option value="0">0 · Emergencia exclusiva</option>
+          </select>
+        </label>
+        <label id="queue-option"><input type="checkbox" id="queue"> Añadir al final de una playlist</label>
+        <small id="priority-help">Sin destino, se guarda en Stock.</small>
         <label class="field">COMENTARIO <small>opcional</small>
           <textarea id="comment" maxlength="500" rows="3" placeholder="Título o notas para encontrarlo en Stock"></textarea>
         </label>

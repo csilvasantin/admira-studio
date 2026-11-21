@@ -1,6 +1,6 @@
 # AdmiraStudioImporter
 
-Extensión Chrome Manifest V3 para importar imágenes, vídeos y audios desde enlaces públicos al Stock. La 1.0.7 permite pegar un enlace de LinkedIn en el panel y conserva las opciones de YouTube.
+Extensión Chrome Manifest V3 para importar imágenes, vídeos y audios desde enlaces públicos al Stock. La 1.0.8 añade prioridades 0, 1 y 2 y selección de pantalla en Studio. La 1.0.7 permite pegar un enlace de LinkedIn en el panel y conserva las opciones de YouTube.
 
 ## Qué incluye
 

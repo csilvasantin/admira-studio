@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "AdmiraStudioImporter",
   "short_name": "Admira Importer",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Importa imágenes, vídeos y audios desde enlaces públicos de LinkedIn, YouTube y otras webs al Stock de Admira Studio.",
   "minimum_chrome_version": "116",
   "icons": {

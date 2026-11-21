@@ -8,7 +8,7 @@
 :root{color-scheme:dark;font-family:system-ui,sans-serif;background:#06110d;color:#eef6f1}*{box-sizing:border-box}
 body{margin:0}header{padding:18px clamp(16px,5vw,64px);border-bottom:1px solid #345246}a{color:#9be4b2}
 main{max-width:40rem;margin:clamp(24px,8vh,88px) auto;padding:0 20px}h1{font-size:clamp(1.75rem,5vw,2.75rem);letter-spacing:-.04em}form{display:grid;gap:16px}
-label{display:grid;gap:.45em}input,textarea{font:inherit;width:100%;padding:12px;color:inherit;background:#11211a;border:1px solid #60776b;border-radius:8px}
+[hidden]{display:none!important}select{max-width:100%;font:inherit;padding:10px;color:inherit;background:#11211a;border:1px solid #60776b;border-radius:8px}label{display:grid;gap:.45em}input,textarea{font:inherit;width:100%;padding:12px;color:inherit;background:#11211a;border:1px solid #60776b;border-radius:8px}
 button{font:inherit;font-weight:650;border:0;border-radius:8px;background:#9be4b2;color:#102019;padding:14px;cursor:pointer}button:disabled{opacity:.6}
 </style></head>
 <body><header><a href="/stock.html">Admira Studio · Stock</a></header><main>
@@ -16,6 +16,15 @@ button{font:inherit;font-weight:650;border:0;border-radius:8px;background:#9be4b
 <form id="link-form"><label>Enlace público<input id="source" type="url" maxlength="4096" required inputmode="url"></label>
 <label>Comentario<textarea id="notes" maxlength="500" rows="2"></textarea></label>
 <label>Etiquetas y proyecto<input id="tags" maxlength="400"></label>
+<label class="field" for="priority">Prioridad de emisión
+          <select id="priority">
+            <option value="2">2 · Normal</option>
+            <option value="1">1 · Emitir primero</option>
+            <option value="0">0 · Emergencia exclusiva</option>
+          </select>
+        </label>
+<label id="assign-row"><span><input type="checkbox" style="width:auto" id="assign"> Añadir a una playlist</span></label>
+<label id="destination-row" hidden>Pantalla de destino<select id="destination"></select></label>
 <button id="submit" type="submit">Importar en Stock</button></form>
-<p role="status" id="progress"></p><a id="stock-result" hidden>Ver contenido en Stock</a>
+<p role="status" id="progress"></p><button type="button" id="retry-delivery" hidden>Reintentar el envío a la playlist</button> <a id="stock-result" hidden>Ver contenido en Stock</a>
 </main><script type="module" src="/assets/importar-enlace.mjs"></script></body></html>

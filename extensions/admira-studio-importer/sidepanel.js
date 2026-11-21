@@ -337,6 +337,17 @@ async function loadPreferences() {
   updateSubtitleAvailability();
 }
 
+const priorityInput=document.getElementById('priority'), queueInput=document.getElementById('queue');
+function resetDelivery(){
+  priorityInput.value='2';queueInput.checked=false;updateDelivery();
+}
+function updateDelivery(){
+  document.getElementById('queue-option').hidden=priorityInput.value!=='2';
+  document.getElementById('priority-help').textContent=priorityInput.value==='2'&&!queueInput.checked
+    ? 'Sin destino, se guarda en Stock.' : 'Elige la pantalla en Studio antes de empezar la importación.';
+}
+priorityInput.onchange=queueInput.onchange=updateDelivery;
+
 ui.form.addEventListener('submit', async event => {
   event.preventDefault();
   const projectId = selectedProject();
@@ -350,6 +361,8 @@ ui.form.addEventListener('submit', async event => {
     tags: ui.tags.value.trim(),
     format,
     projectId,
+    priority:Number(priorityInput.value || 2),
+    queue:queueInput.checked,
     autostart: ui.autostart.checked,
     subtitleLanguage: format === 'video' ? ui.subtitleLanguage.value : '',
     targetFormat: format === 'video' ? ui.targetFormat.value : '',
@@ -366,8 +379,9 @@ ui.form.addEventListener('submit', async event => {
     await chrome.storage.sync.set({ ...(format !== 'auto' ? {format} : {}), autostart: data.autostart });
     const response = await chrome.runtime.sendMessage({ type: 'OPEN_IMPORT', data, openerTabId, account });
     if (!response || !response.ok) throw new Error(response && response.error || 'No se pudo abrir Admira Studio');
+    resetDelivery();
     if (openerTabId && importingActiveVideo) chrome.tabs.sendMessage(openerTabId, { type: 'IMPORT_STARTED' }).catch(() => {});
-    showStatus(data.autostart
+    showStatus(data.queue || data.priority!==2 ? 'Elige la pantalla de destino en Admira Studio.' : data.autostart
       ? `✓ Importación iniciada.${['es', 'en'].includes(data.subtitleLanguage) ? ` Subtítulos en ${data.subtitleLanguage === 'es' ? 'castellano' : 'inglés'}.` : ''}${data.targetFormat && data.targetFormat !== 'original' ? ' Se prepararán los formatos elegidos.' : ''} El progreso continúa en Stock; mantenlo abierto.`
       : '✓ Importación preparada para confirmar en Admira Studio.', 'ok');
   } catch (error) {
