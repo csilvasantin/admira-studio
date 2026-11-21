@@ -41,6 +41,10 @@ No vale para piezas sin material en el Stock: primero hay que crear o subir las 
 5. Enseña la prueba en seco de `publicar`. **Solo con su sí** repite con `--si` (y `--handon <HANDON del día>` para dejar la línea anotada).
 6. Para emitir en pantallas, pide su sí aparte: se hace desde admira.store, no desde aquí.
 
+## Piezas por personaje del Hotel Creel (PortAventura NeXT)
+
+Si piden las piezas de los personajes del Hotel Creel (la maqueta de admira.store), la herramienta es `npm run creel -- <musica|voz|montar|render|publicar>` en el mismo `lanzamiento/` (reparto en `scripts/creel/personajes.json`). Misma regla: `publicar` en seco por defecto y `--si` solo con el permiso del humano; cada pieza lleva la etiqueta `personaje:<slug>`, que es la que leen la pared de la maqueta y el kiosko `/creel` de admira.tv. Ponerlas en la playlist `hotel-creel` es otra orden, en admira.store.
+
 ## Palabras prohibidas en pantalla y en voz
 
 `Claude`, `Codex`, `Remotion`, nombres de modelos y de conectores. La validación para si aparecen; el asistente en pantalla es admira.studio, la emisión admira.store, la voz Admirito. Pixeria solo si el humano lo pide para esa pieza.

@@ -1,0 +1,18 @@
+{
+  "fuente": "admira-store/portaventura/hotel/casa-creel/creel-escena.js (reparto del Hotel Creel, Neo 12-nov-2026)",
+  "personajes": [
+    {"id": 1, "nombre": "Will", "slug": "will", "celda": "D14", "zona": "Jardín", "chaqueta": "#dc9b38", "pelo": "#392617", "efecto": "lago", "linea": "El lago refleja una sombra que no está en el jardín."},
+    {"id": 2, "nombre": "Mike", "slug": "mike", "celda": "G15", "zona": "Sendero", "chaqueta": "#266aa0", "pelo": "#201a24", "efecto": "sendero", "linea": "Las balizas del sendero señalan el porche."},
+    {"id": 3, "nombre": "Lucas", "slug": "lucas", "celda": "L15", "zona": "Entrada", "chaqueta": "#366c52", "pelo": "#272027", "piel": "#a56d4a", "efecto": "linterna", "linea": "Una linterna ilumina la entrada del hotel."},
+    {"id": 4, "nombre": "Dustin", "slug": "dustin", "celda": "D09", "zona": "Puesto de radio", "chaqueta": "#365b9d", "pelo": "#dd763f", "efecto": "radio", "linea": "La radio WSQK recibe la primera pista."},
+    {"id": 5, "nombre": "Nancy", "slug": "nancy", "celda": "E06", "zona": "Lateral oeste", "chaqueta": "#5e394c", "pelo": "#663a26", "efecto": "ventanas", "linea": "Una luz en las ventanas marca la dirección de la torre."},
+    {"id": 6, "nombre": "Jonathan", "slug": "jonathan", "celda": "H04", "zona": "Parte trasera", "chaqueta": "#7d4b32", "pelo": "#38251e", "efecto": "flash", "linea": "El flash de la cámara revela una silueta."},
+    {"id": 7, "nombre": "Steve", "slug": "steve", "celda": "Q15", "zona": "Acceso de vehículos", "chaqueta": "#7b333f", "pelo": "#51311f", "efecto": "faros", "linea": "Los faros iluminan el acceso."},
+    {"id": 8, "nombre": "Robin", "slug": "robin", "celda": "T10", "zona": "Puesto de pistas", "chaqueta": "#28768a", "pelo": "#8c542e", "efecto": "frecuencia", "linea": "Robin descifra la frecuencia. Segunda pista."},
+    {"id": 9, "nombre": "Holly", "slug": "holly", "celda": "P12", "zona": "Porche", "chaqueta": "#ca6986", "pelo": "#b4853b", "efecto": "porche", "linea": "Las luces cálidas del porche marcan un refugio."},
+    {"id": 10, "nombre": "Sr. Whatsit", "slug": "sr-whatsit", "celda": "T06", "zona": "Lateral este", "chaqueta": "#ac9b77", "pelo": "#694831", "efecto": "grieta", "linea": "El jardín cambia de tono y aparece una grieta."},
+    {"id": 11, "nombre": "Max", "slug": "max", "celda": "P04", "zona": "Refugio trasero", "chaqueta": "#a23d46", "pelo": "#a64d26", "efecto": "pulso", "linea": "Un pulso de música mantiene a Max a salvo. Tercera pista."},
+    {"id": 12, "nombre": "Vecna", "slug": "vecna", "celda": "M05", "zona": "Estación de la torre", "chaqueta": "#714148", "pelo": "#995956", "piel": "#a4736d", "efecto": "portal", "linea": "El reloj se detiene y el portal se abre sobre el hotel."},
+    {"id": 13, "nombre": "Once", "slug": "once", "celda": "U14", "zona": "Junto al lago", "chaqueta": "#744a92", "pelo": "#40291f", "efecto": "cierre", "linea": "Once cierra el portal. Las luces de Hawkins vuelven."}
+  ]
+}

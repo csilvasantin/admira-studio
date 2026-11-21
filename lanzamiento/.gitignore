@@ -7,3 +7,4 @@ salida/
 props/*.es.json
 props/*.en.json
 public/voz/*/
+props/creel/
