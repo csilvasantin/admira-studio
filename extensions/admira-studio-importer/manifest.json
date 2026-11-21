@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "AdmiraStudioImporter",
   "short_name": "Admira Importer",
-  "version": "1.0.6",
-  "description": "Importación y adaptación de contenidos de YouTube en Admira Studio. Elige el formato y guarda tus vídeos en Stock.",
+  "version": "1.0.7",
+  "description": "Importa imágenes, vídeos y audios desde enlaces públicos de LinkedIn, YouTube y otras webs al Stock de Admira Studio.",
   "minimum_chrome_version": "116",
   "icons": {
     "16": "icons/icon-16.png",

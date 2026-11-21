@@ -1,7 +1,7 @@
 import {sessionInfo} from '../_auth.js';
 // Los índices 0 y 1 se conservan para reanudar trabajos anteriores. Studio usa 2.
 const NODES=['https://macmini.tail48b61c.ts.net/admira/tube','https://macbook-pro-16.tail48b61c.ts.net/admira/tube','https://macstudio.tail48b61c.ts.net/admira/tube'];
-const ALLOWED=/(^|\.)(youtube\.com|youtu\.be|vimeo\.com|twitter\.com|x\.com|tiktok\.com|instagram\.com|facebook\.com|fb\.watch)$/i;
+const ALLOWED=/(^|\.)(youtube\.com|youtu\.be|vimeo\.com|twitter\.com|x\.com|tiktok\.com|instagram\.com|facebook\.com|fb\.watch|linkedin\.com|lnkd\.in|suno\.com|t\.me)$/i;
 const json=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 export async function importRelay({request,env,params},fetcher=fetch,authorize=sessionInfo){
  if(!await authorize(request,env))return json({error:'session-required'},401);

@@ -1,7 +1,7 @@
 /* global AdmiraImporter */
 'use strict';
 
-importScripts('shared.js', 'youtube-search.js', 'project-formats.js');
+importScripts('media-link.js', 'shared.js', 'youtube-search.js', 'project-formats.js');
 
 const MENU_ID = 'admira-studio-import-youtube';
 const STUDIO_ORIGIN = 'https://admira.studio';
@@ -118,12 +118,8 @@ chrome.runtime.onInstalled.addListener(() => {
     chrome.contextMenus.create({
       id: MENU_ID,
       title: 'Importar en Admira Studio',
-      contexts: ['page', 'link'],
-      documentUrlPatterns: [
-        'https://www.youtube.com/*',
-        'https://m.youtube.com/*',
-        'https://youtu.be/*',
-      ],
+      contexts: ['page', 'link', 'image', 'audio', 'video'],
+      documentUrlPatterns: ['https://*/*', 'http://*/*'],
     });
   });
 });
@@ -195,7 +191,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 async function prepareQuickImport(rawUrl, tab) {
-  const url = AdmiraImporter.canonicalUrl(rawUrl);
+  const url = AdmiraImporter.canonicalUrl(rawUrl) || AdmiraMediaLink.publicURL(rawUrl);
   if (!url) return;
   let context = { url: rawUrl };
   if (AdmiraImporter.canonicalUrl(tab?.url) === url) {
@@ -213,7 +209,7 @@ async function prepareQuickImport(rawUrl, tab) {
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId !== MENU_ID) return;
-  prepareQuickImport(info.linkUrl || info.pageUrl || tab?.url, tab).catch(() => {});
+  prepareQuickImport(info.srcUrl || info.linkUrl || info.pageUrl || tab?.url, tab).catch(() => {});
 });
 
 chrome.commands.onCommand.addListener(async command => {

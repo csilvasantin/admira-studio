@@ -28,7 +28,7 @@
         <span class="youtube-search-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 5v14l11-7z"/></svg>
         </span>
-        <input id="youtubeQuery" type="search" aria-label="Buscar en YouTube" placeholder="Título, tema o enlace" maxlength="2048" required>
+        <input id="youtubeQuery" type="search" aria-label="Buscar en YouTube o pegar enlace público" placeholder="Busca en YouTube o pega un enlace" maxlength="2048" required>
         <button type="submit" class="youtube-search-button">Buscar</button>
       </div>
       <p id="youtubeSearchStatus" role="status"></p>
@@ -58,7 +58,8 @@
           <small id="tagHelp"></small>
         </label>
 
-        <fieldset>
+        <p id="autoFormat" hidden>Stock detectará la imagen, el vídeo o el audio del enlace.</p>
+        <div id="mediaOptions"><fieldset>
           <legend>IMPORTAR COMO</legend>
           <div class="format-switch">
             <label><input type="radio" name="format" value="video" checked><span><i aria-hidden="true">🎬</i> VÍDEO <small>MP4 + audio</small></span></label>
@@ -85,6 +86,7 @@
         </label>
         <p class="processing-help" id="processingHelp">Conserva el original y su voz. La copia se ajusta sin recortar la imagen, con fondo desenfocado. Máximo 3 minutos; mantén Stock abierto. Revisa los subtítulos automáticos antes de usarlos.</p>
 
+        </div>
         <label class="field">COMENTARIO <small>opcional</small>
           <textarea id="comment" maxlength="500" rows="3" placeholder="Título o notas para encontrarlo en Stock"></textarea>
         </label>
@@ -92,7 +94,7 @@
       </section>
 
       <div class="route" aria-label="Flujo de importación">
-        <span>YouTube</span><b>→</b><span>yt-dlp</span><b>→</b><span>Stock</span>
+        <span>Enlace</span><b>→</b><span>Importador</span><b>→</b><span>Stock</span>
       </div>
 
       <button class="import-button" id="importButton" type="submit" disabled>
@@ -115,6 +117,7 @@
       <a href="https://www.admira.studio/extensions/admira-studio-importer/support" target="_blank" rel="noopener">SOPORTE ↗</a>
     </footer>
   </main>
+  <script src="media-link.js"></script>
   <script src="shared.js"></script>
   <script src="project-formats.js"></script>
   <script src="sidepanel.js"></script>
