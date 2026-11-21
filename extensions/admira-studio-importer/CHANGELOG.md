@@ -1,5 +1,9 @@
 # Novedades de AdmiraStudioImporter
 
+## 1.0.8 · Prioridad de emisión
+
+Al importar se puede elegir una pantalla y añadir la pieza a la cola, darle paso inmediato o emitirla como aviso exclusivo. Por defecto se guarda en Stock.
+
 ## 1.0.7 · Enlaces multimedia
 
 Importación de enlaces públicos y publicaciones de LinkedIn con detección del tipo en Stock. El menú contextual admite imágenes, vídeos y audio. Requiere la actualización web de importación multimedia.
