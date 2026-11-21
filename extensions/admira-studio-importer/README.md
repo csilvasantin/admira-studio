@@ -1,6 +1,6 @@
 # AdmiraStudioImporter
 
-Extensión Chrome Manifest V3 para importar el vídeo de YouTube que estás viendo directamente al Stock de Admira Studio, sin pasar por Telegram.
+Extensión Chrome Manifest V3 para importar imágenes, vídeos y audios desde enlaces públicos al Stock. La 1.0.7 permite pegar un enlace de LinkedIn en el panel y conserva las opciones de YouTube.
 
 ## Qué incluye
 

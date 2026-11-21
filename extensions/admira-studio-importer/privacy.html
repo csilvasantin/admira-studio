@@ -13,7 +13,7 @@
 <body>
   <main>
     <header><div class="eyebrow">Admira Studio · Chrome Extension</div><h1>Privacidad de AdmiraStudioImporter</h1><p class="updated">Actualizada para la versión 1.0.4</p></header>
-    <p>La extensión <strong>AdmiraStudioImporter</strong> permite buscar o elegir un vídeo de YouTube y preparar su importación al Stock de Admira Studio.</p>
+    <p>La extensión <strong>AdmiraStudioImporter</strong> permite pegar un enlace público de imagen, vídeo o audio, o buscar un vídeo de YouTube y preparar su importación al Stock de Admira Studio.</p>
     <p>El buscador integrado y la comprobación de sesión para elegir proyecto se incorporan en la versión 1.0.4. En las versiones anteriores, la extensión prepara la importación a partir de un vídeo abierto en YouTube y la comprobación del acceso se realiza en Admira Studio.</p>
 
     <h2>Responsable y contacto</h2>
@@ -30,7 +30,7 @@
 
     <h2>Cuándo se transmiten datos</h2>
     <p>Al pulsar <strong>Reproducir vídeo</strong>, el panel carga el reproductor integrado de YouTube. YouTube recibe el identificador del vídeo y de la extensión para servir la reproducción y aplica su propia política de privacidad.</p>
-    <p>Al usar el buscador, la extensión envía la consulta a YouTube. Para mostrar el selector de proyectos, consulta la sesión existente en <code>admira.studio</code> y carga el catálogo público de proyectos de Yokup. El inicio de sesión se realiza en Admira Studio con Google. Al pulsar <strong>Importar en Admira Studio</strong>, la extensión abre el Stock mediante HTTPS con la URL y el título del vídeo, el comentario, las etiquetas y las opciones de importación, incluido el destino elegido cuando se indica un proyecto. Admira Studio utiliza esos datos para ejecutar la importación solicitada.</p>
+    <p>Los enlaces públicos que seleccionas se entregan a Admira Studio al importar. Studio consulta el sitio de origen para recuperar el contenido. Las búsquedas por título se envían a YouTube. Para mostrar el selector de proyectos, consulta la sesión existente en <code>admira.studio</code> y carga el catálogo público de proyectos de Yokup. El inicio de sesión se realiza en Admira Studio con Google. Al pulsar <strong>Importar en Admira Studio</strong>, la extensión abre el Stock mediante HTTPS con la URL y el título del vídeo, el comentario, las etiquetas y las opciones de importación, incluido el destino elegido cuando se indica un proyecto. Admira Studio utiliza esos datos para ejecutar la importación solicitada.</p>
 
     <h2>Subtítulos opcionales para cápsulas</h2>
     <p>Si eliges subtítulos en castellano o inglés, Admira Studio extrae el audio del vídeo importado y lo envía a Cloudflare Workers AI para transcribirlo y traducirlo. El vídeo con subtítulos visibles se genera en tu navegador y se guarda como una nueva versión en Stock, conservando el original. Si eliges formato vertical, horizontal o ambos, el navegador prepara las copias con la imagen completa y el audio original; este ajuste de formato no envía el vídeo a un servicio de IA. Ambas opciones se aplican solo al vídeo seleccionado y no se guardan como preferencias. La extensión no envía directamente audio a servicios de IA ni contiene claves. Mantén Stock abierto durante el proceso y revisa los subtítulos automáticos.</p>
@@ -53,7 +53,7 @@
     <p class="note">El uso de la información recibida de las API de Google cumple la Política de Datos de Usuario de Chrome Web Store, incluidos sus requisitos de Uso Limitado. / The use of information received from Google APIs adheres to the Chrome Web Store User Data Policy, including the Limited Use requirements.</p>
 
     <h2>English summary</h2>
-    <p>AdmiraStudioImporter sends submitted searches to YouTube, reads public video metadata and checks the existing Admira Studio session to list available projects. The selected video and import options are sent to Admira Studio when the user requests an import. Chrome stores import preferences. The extension contains no analytics, ads or remotely loaded code. Contact: <a href="mailto:hola@admiranext.com">hola@admiranext.com</a>.</p>
+    <p>AdmiraStudioImporter sends selected public media links to Studio and title searches to YouTube, reads public video metadata and checks the existing Admira Studio session to list available projects. The selected video and import options are sent to Admira Studio when the user requests an import. Chrome stores import preferences. The extension contains no analytics, ads or remotely loaded code. Contact: <a href="mailto:hola@admiranext.com">hola@admiranext.com</a>.</p>
     <footer>AdmiraStudioImporter · Admira Studio · <a href="/extensions/admira-studio-importer/support">Soporte</a></footer>
   </main>
 </body>

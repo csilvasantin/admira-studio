@@ -13,6 +13,11 @@ const PUBLIC_EXTENSION_DOCUMENTS = new Set([
 // El avatar digital se añade a las páginas que ya pasaron la verja (encargo avatar · 4-oct-2026).
 export async function onRequest(context) {
   const url = new URL(context.request.url);
+  // 1.0.7 sends generic media through Stock. Keep older YouTube handoffs on their original route.
+  if (context.request.method === 'GET' && /^\/(?:en\/)?stock(?:\.html)?\/?$/.test(url.pathname) &&
+      url.searchParams.get('importSource') === 'chrome' && url.searchParams.get('importFormat') === 'auto') {
+    return new Response(null, {status:302,headers:{location:'/importar-enlace/'+url.search,'cache-control':'no-store','referrer-policy':'no-referrer'}});
+  }
   if (/^\/demo\/hawkins(?:\/|$)/i.test(decodePath(url.pathname).replace(/\/{2,}/g, '/'))) {
     return hawkinsDemo(context, url);
   }

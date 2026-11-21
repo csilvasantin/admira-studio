@@ -1,5 +1,9 @@
 # Novedades de AdmiraStudioImporter
 
+## 1.0.7 · Enlaces multimedia
+
+Importación de enlaces públicos y publicaciones de LinkedIn con detección del tipo en Stock. El menú contextual admite imágenes, vídeos y audio. Requiere la actualización web de importación multimedia.
+
 ## 1.0.6 · Formatos por proyecto (preparada; pendiente de envío)
 
 - «Todos los formatos del proyecto»; sin formatos propios, vertical y horizontal.

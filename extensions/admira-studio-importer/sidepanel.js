@@ -167,7 +167,8 @@ ui.search.addEventListener('submit', async event => {
   const sequence = ++searchSequence;
   const query = ui.query.value.trim();
   const bareYoutubeLink = /^(?:(?:www\.|m\.|music\.)?youtube\.com|youtu\.be)\//i.test(query);
-  const videoUrl = AdmiraImporter.canonicalUrl(bareYoutubeLink ? `https://${query}` : query);
+  const candidate = bareYoutubeLink ? `https://${query}` : query;
+  const videoUrl = AdmiraImporter.canonicalUrl(candidate) || AdmiraMediaLink.publicURL(candidate);
   showResults([]);
   if (videoUrl) {
     selectedResult = context?.url === videoUrl ? context : { url: videoUrl, short: /\/shorts\//i.test(query) };
@@ -177,11 +178,11 @@ ui.search.addEventListener('submit', async event => {
     return;
   }
   if (!query) {
-    ui.searchStatus.textContent = 'Escribe un título o pega un enlace de YouTube.';
+    ui.searchStatus.textContent = 'Busca un título en YouTube o pega un enlace público.';
     return;
   }
   if (bareYoutubeLink || /^[a-z][a-z\d+.-]*:\/\//i.test(query)) {
-    ui.searchStatus.textContent = 'Pega el enlace de un vídeo, Short o directo de YouTube.';
+    ui.searchStatus.textContent = 'Introduce una URL pública HTTP o HTTPS.';
     return;
   }
   ui.searchStatus.textContent = 'Buscando en YouTube…';
@@ -237,9 +238,10 @@ ui.playPreview.addEventListener('click', async () => {
 
 function render(next) {
   const previousUrl = context && context.url;
-  context = next && AdmiraImporter.canonicalUrl(next.url) ? {
+  const source = next && (AdmiraImporter.canonicalUrl(next.url) || AdmiraMediaLink.publicURL(next.url));
+  context = source ? {
     ...next,
-    url: AdmiraImporter.canonicalUrl(next.url),
+    url: source,
     thumbnail: next.thumbnail || AdmiraImporter.thumbnailUrl(next.url),
   } : null;
   ui.form.hidden = !context;
@@ -253,6 +255,12 @@ function render(next) {
     formatEdited = false;
   }
   if (!context) return;
+  const external = !AdmiraImporter.videoId(context.url);
+  document.getElementById('mediaOptions').hidden = external;
+  document.getElementById('autoFormat').hidden = !external;
+  ui.poster.hidden = external;
+  const hostname = external ? new URL(context.url).hostname : 'YouTube';
+  ui.videoSource.textContent = external ? 'ENLACE ELEGIDO' : ui.videoSource.textContent;
   const title = String(context.title || '').trim();
   if (title !== defaultComment) {
     const notes = ui.comment.value.startsWith(defaultComment + '\n')
@@ -261,16 +269,16 @@ function render(next) {
     defaultComment = title;
     ui.comment.value = [title, notes].filter(Boolean).join('\n').slice(0, ui.comment.maxLength);
   }
-  ui.thumbnail.src = context.thumbnail;
-  ui.title.textContent = context.title || 'Vídeo de YouTube';
-  ui.channel.textContent = context.channel || 'YouTube';
+  if (context.thumbnail) ui.thumbnail.src = context.thumbnail;
+  ui.title.textContent = context.title || (external ? context.url : 'Vídeo de YouTube');
+  ui.channel.textContent = context.channel || hostname;
   updateSubtitleAvailability();
   if (!tagsEdited) {
     const suggested = AdmiraImporter.suggestTags(context, selectedQuery);
     ui.tags.value = suggested.join(', ');
     ui.tagHelp.textContent = selectedQuery
       ? 'Etiquetas del vídeo y de tu búsqueda. Puedes editarlas.'
-      : 'Etiquetas sugeridas a partir de los datos de YouTube. Puedes editarlas.';
+      : external ? 'Añade las etiquetas del contenido.' : 'Etiquetas sugeridas a partir de los datos de YouTube. Puedes editarlas.';
   }
   showStatus('Listo para importar.', '');
 }
@@ -334,7 +342,7 @@ ui.form.addEventListener('submit', async event => {
   const projectId = selectedProject();
   if (!context || importing || projectId === null) return;
   const account = projectSession.account;
-  const format = document.querySelector('input[name="format"]:checked')?.value || 'video';
+  const format = AdmiraImporter.videoId(context.url) ? document.querySelector('input[name="format"]:checked')?.value || 'video' : 'auto';
   const data = {
     url: context.url,
     title: context.title,
@@ -355,7 +363,7 @@ ui.form.addEventListener('submit', async event => {
     // Validate before opening a tab or saving preferences. The background repeats
     // this validation when it builds the handoff.
     AdmiraImporter.tagsForImport(data);
-    await chrome.storage.sync.set({ format, autostart: data.autostart });
+    await chrome.storage.sync.set({ ...(format !== 'auto' ? {format} : {}), autostart: data.autostart });
     const response = await chrome.runtime.sendMessage({ type: 'OPEN_IMPORT', data, openerTabId, account });
     if (!response || !response.ok) throw new Error(response && response.error || 'No se pudo abrir Admira Studio');
     if (openerTabId && importingActiveVideo) chrome.tabs.sendMessage(openerTabId, { type: 'IMPORT_STARTED' }).catch(() => {});

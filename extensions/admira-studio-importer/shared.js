@@ -120,17 +120,18 @@
   }
 
   function handoffUrl(data) {
-    const sourceUrl = canonicalUrl(data && data.url);
+    const youtube = canonicalUrl(data?.url);
+    const sourceUrl = youtube || global.AdmiraMediaLink?.publicURL(data?.url);
     if (!sourceUrl) return '';
     const target = new URL('https://www.admira.studio/stock.html');
     target.searchParams.set('importSource', 'chrome');
     target.searchParams.set('importUrl', sourceUrl);
-    target.searchParams.set('importFormat', data && data.format === 'audio' ? 'audio' : 'video');
+    target.searchParams.set('importFormat', !youtube ? 'auto' : data?.format === 'audio' ? 'audio' : 'video');
     target.searchParams.set('importAutostart', data && data.autostart === false ? '0' : '1');
     const title = String((data && data.title) || '').trim().slice(0, 180);
     const comment = String((data && data.comment) || '').trim().slice(0, 500);
-    const tags = tagsForImport(data);
-    if(data.format !== 'audio' && (data.targetFormat === 'all' && !!data.projectId || /^(project|layout):[a-z0-9][a-z0-9:-]{0,79}$/.test(data.targetFormat || ''))) {
+    const tags = tagsForImport(youtube ? data : {...data, targetFormat:'', subtitleLanguage:''});
+    if(youtube && data.format !== 'audio' && (data.targetFormat === 'all' && !!data.projectId || /^(project|layout):[a-z0-9][a-z0-9:-]{0,79}$/.test(data.targetFormat || ''))) {
       if(!/^[a-z0-9][a-z0-9-]{0,79}$/.test(data.formatProject || data.projectId || ''))throw new Error('El formato necesita un proyecto.');
       target.searchParams.set('importProject',data.formatProject || data.projectId);
       target.searchParams.set('importCustomFormat',data.targetFormat);

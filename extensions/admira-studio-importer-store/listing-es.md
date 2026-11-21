@@ -3,7 +3,7 @@
 ## Ficha
 
 - Nombre: `AdmiraStudioImporter`
-- Resumen: `Importa vídeos y audio de YouTube directamente al Stock de Admira Studio, sin pasar por Telegram.`
+- Resumen: `Importa imágenes, vídeos y audios desde enlaces públicos directamente al Stock de Admira Studio.`
 - Categoría: `Productividad`
 - Idioma principal: `Español`
 - Precio: `Gratis`
@@ -15,7 +15,7 @@
 
 ## Descripción detallada
 
-AdmiraStudioImporter lleva el vídeo de YouTube que estás viendo directamente al Stock de Admira Studio. Elimina el paso intermedio por Telegram y mantiene visible el contexto de la importación.
+Pega un enlace público, incluido un post de LinkedIn, para importar su imagen, vídeo o audio al Stock de Admira Studio. Elimina el paso intermedio por Telegram y mantiene visible el contexto de la importación.
 
 Funciones principales:
 
@@ -36,7 +36,7 @@ La extensión es gratuita, no contiene anuncios, no incorpora analítica y no de
 
 ## Única finalidad
 
-Preparar, bajo una acción explícita del usuario, la importación del vídeo de YouTube abierto hacia el Stock de Admira Studio.
+Preparar, bajo una acción explícita del usuario, la importación de un contenido multimedia seleccionado hacia el Stock de Admira Studio.
 
 ## Justificación de permisos
 
